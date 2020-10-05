@@ -1,5 +1,6 @@
-# Dom's dotfiles
-
-> 🔧 [@dominicegginton's](https://github.com/dominicegginton) config files
-
-**Warning**: If you want to give these dotfiles a try, you should first fork this repository, review the code, and remove things you don’t want or need. Don’t blindly use my settings unless you know what that entails. Use at your own risk!
+<h1 align='center'>:house: Dom's dotfiles</h1>
+<h4 align='center'>There's no place like ~</h4>
+<div align='center'>
+  <img src='assets/linux.svg' width='50'>
+  <img src='assets/macos.svg' width='50'>
+</div>
