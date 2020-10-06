@@ -1,0 +1,21 @@
+[user]
+	name = Dominic Egginton
+	email = dominic.egginton@gmail.com
+	signingKey = 4C79CE4F82847A9F
+[github]
+	user = dominicegginton
+[core]
+	editor = nano
+	hooksPath = .githooks
+[alias]
+	graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = true
+[pull]
+	ff = only
+[credential]
+	helper = store
+[color]
+	ui = auto
