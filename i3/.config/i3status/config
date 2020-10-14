@@ -1,0 +1,67 @@
+general {
+        output_format = "i3bar"
+        colors = true
+        markup = pango
+        interval = 5
+        color_good = '#2f343f'
+	color_degraded = '#ebcb8b'
+	color_bad = '#ba5e57'
+}
+
+order += "load"
+order += "cpu_temperature 0"
+order += "disk /"
+order += "ethernet enp55s0u2u2"
+order += "wireless wlp108s0"
+order += "volume master"
+order += "battery 0"
+order += "tztime local"
+
+load {
+        format = "<span color='#f59335'> %5min Load </span>"
+}
+
+cpu_temperature 0 {
+        format = "<span color='#bf616a'> %degrees °C </span>"
+        path = "/sys/class/thermal/thermal_zone3/temp"
+}
+
+disk "/" {
+        format = "<span color='#fec7cd'> %free Free </span>"
+}
+
+ethernet enp55s0u2u2 {
+        format_up = "<span color='#88c0d0'> %ip </span>"
+        format_down = "<span color='#88c0d0'> Disconnected </span>"
+}
+
+wireless wlp108s0 {
+        format_up = "<span color='#b48ead'> %essid %ip</span>"
+        format_down = "<span color='#b48ead'> Disconnected </span>"
+}
+
+volume master {
+        format = "<span color='#ebcb8b'> %volume </span>"
+        format_muted = "<span color='#ebcb8b'> Muted </span>"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
+
+battery 0 {
+	last_full_capacity = true
+        format = "<span color='#a3be8c'> %status %percentage </span>"
+        format_down = "No Battery"
+        status_chr = "Charging"
+        status_bat = "Battery"
+        status_unk = "Unknown"
+        status_full = "Charged"
+        path = "/sys/class/power_supply/BAT%d/uevent"
+        low_threshold = 10
+}
+
+tztime local {
+		format = "<span color='#81a1c1'> %time </span>"
+		format_time = "%a %-d %b %H:%M"
+}
+
