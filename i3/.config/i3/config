@@ -97,7 +97,7 @@ mode "$mode_system" {
     bindsym l exec --no-startup-id betterlockscreen -l, mode "default"
     bindsym s exec --no-startup-id betterlockscreen -s, mode "default"
     bindsym r exec --no-startup-id reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id shutdown, mode "default"
+    bindsym Shift+s exec --no-startup-id shutdown now, mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
