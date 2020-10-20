@@ -40,18 +40,21 @@ set $ws1 "Main"
 set $ws2 "Web"
 set $ws3 "Discord"
 set $ws4 "Mail"
+set $ws0 "Desktop"
 
 # switch to workspace
 bindsym $super+1 workspace $ws1
 bindsym $super+2 workspace $ws2
 bindsym $super+3 workspace $ws3
 bindsym $super+4 workspace $ws4
+bindsym $super+0 workspace $ws0
 
 # move focused container to workspace
 bindsym $super+Shift+1 move container to workspace $ws1
 bindsym $super+Shift+2 move container to workspace $ws2
 bindsym $super+Shift+3 move container to workspace $ws3
 bindsym $super+Shift+4 move container to workspace $ws4
+bindsym $super+Shift+0 move container to workspace $ws0
 
 # move workspace between monitors
 bindsym $super+Shift+Left move workspace to output left
