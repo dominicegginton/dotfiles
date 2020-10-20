@@ -50,6 +50,12 @@ bindsym $super+Shift+2 move container to workspace $ws2
 bindsym $super+Shift+3 move container to workspace $ws3
 bindsym $super+Shift+4 move container to workspace $ws4
 
+# move workspace between monitors
+bindsym $super+Shift+Left move workspace to output left
+bindsym $super+Shift+Right move workspace to output right
+bindsym $super+Shift+Up move workspace to output up
+bindsym $super+Shift+Down move workspace to output down
+
 # change focus
 bindsym $super+Left focus left
 bindsym $super+Down focus down
