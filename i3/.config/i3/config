@@ -17,13 +17,16 @@ exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinpu
 bindsym $super+Return exec alacritty
 
 # start dmenu (a program launcher)
-bindsym $super+Shift+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'Noto Sans:size=8'"
+bindsym $super+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'Noto Sans:size=8'"
 bindsym $super+space exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Noto Sans 8'
 
 # common apps keybinds
+bindsym $super+Shift+w exec qutebrowser;workspace $ws2;focus
+bindsym $super+Shift+d exec discord;workspace $ws3;focus
+bindsym $super+Shift+m exec thunderbird;workspace $ws4;focus
+
+# screenshot
 bindsym Print exec scrot 'screenshot-%a-%d%b%y_%H.%M.png' -e 'viewnior ~/$f'
-bindsym $super+Shift+w exec qutebrowser;workspace 2;focus
-bindsym $super+Shift+m exec thunderbird;workspace 3;focus
 
 # kill focused window
 bindsym $super+c kill
