@@ -98,11 +98,11 @@ bindsym $super+r mode "resize"
 bindsym $super+Shift+space focus mode_toggle
 
 bindsym $super+Escape mode "$mode_system"
-set $mode_system Lock [l] - Suspend [s] - Reboot [r] - Shutdown [Shift+s]
+set $mode_system Lock [l] - Suspend [s] - Reboot [Shift+r] - Shutdown [Shift+s]
 mode "$mode_system" {
     bindsym l exec --no-startup-id betterlockscreen -l, mode "default"
     bindsym s exec --no-startup-id betterlockscreen -s, mode "default"
-    bindsym r exec --no-startup-id reboot, mode "default"
+    bindsym Shift-r exec --no-startup-id reboot, mode "default"
     bindsym Shift+s exec --no-startup-id shutdown now, mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
