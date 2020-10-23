@@ -1,0 +1,150 @@
+env:
+  TERM: xterm-256color
+  WINIT_X11_SCALE_FACTOR: "1.75"
+
+window:
+  dimensions:
+    columns: 0
+    lines: 0
+  padding:
+    x: 10
+    y: 5
+  decorations: full
+  startup_mode: Windowed
+
+scrolling:
+  history: 400
+  multiplier: 3
+
+font:
+  normal:
+    family: "Noto Mono"
+  size: 5
+  letter-spacing: 0
+  use_thin_strokes: true
+  offset:
+    x: 1
+    y: 1
+  glyph_offset:
+    x: 0
+    y: 0
+  use_thin_strokes: true
+
+draw_bold_text_with_bright_colors: false
+
+colors:
+  primary:
+    background: '0x232627'
+    foreground: '0xfcfcfc'
+  normal:
+    black:   '0x232627'
+    red:     '0xed1515'
+    green:   '0x11d116'
+    yellow:  '0xf67400'
+    blue:    '0x1d99f3'
+    magenta: '0x9b59b6'
+    cyan:    '0x1abc9c'
+    white:   '0xfcfcfc'
+  bright:
+    black:   '0x7f8c8d'
+    red:     '0xc0392b'
+    green:   '0x1cdc9a'
+    yellow:  '0xfdbc4b'
+    blue:    '0x3daee9'
+    magenta: '0x8e44ad'
+    cyan:    '0x16a085'
+    white:   '0xffffff'
+  dim:
+    black:   '0x31363b'
+    red:     '0x783228'
+    green:   '0x17a262'
+    yellow:  '0xb65619'
+    blue:    '0x1b668f'
+    magenta: '0x614a73'
+    cyan:    '0x186c60'
+    white:   '0x63686d'
+
+bell:
+  animation: EaseOutExpo
+  color: '0xffffff'
+  duration: 0
+
+background_opacity: 1.0
+
+key_bindings:
+  - { key: V, mods: Command, action: Paste }
+  - { key: C, mods: Command, action: Copy }
+  - { key: N, mods: Command, action: SpawnNewInstance }
+  - { key: Home, chars: "\x1bOH", mode: AppCursor }
+  - { key: Home, chars: "\x1b[H", mode: ~AppCursor }
+  - { key: End, chars: "\x1bOF", mode: AppCursor }
+  - { key: End, chars: "\x1b[F", mode: ~AppCursor  }
+  - { key: Equals, mods: Command, action: IncreaseFontSize }
+  - { key: Minus, mods: Command, action: DecreaseFontSize }
+  - { key: Minus, mods: Command|Shift, action: ResetFontSize }
+  - { key: PageUp, mods: Shift, chars: "\x1b[5;2~" }
+  - { key: PageUp, mods: Control, chars: "\x1b[5;5~" }
+  - { key: PageUp, chars: "\x1b[5~" }
+  - { key: PageDown, mods: Shift, chars: "\x1b[6;2~" }
+  - { key: PageDown, mods: Control, chars: "\x1b[6;5~" }
+  - { key: PageDown, chars: "\x1b[6~" }
+  - { key: Left, mods: Shift, chars: "\x1b[1;2D" }
+  - { key: Left, mods: Control, chars: "\x1b[1;5D" }
+  - { key: Left, mods: Alt, chars: "\x1b[1;3D" }
+  - { key: Left, chars: "\x1b[D", mode: ~AppCursor }
+  - { key: Left, chars: "\x1bOD", mode: AppCursor }
+  - { key: Right, mods: Shift, chars: "\x1b[1;2C" }
+  - { key: Right, mods: Control, chars: "\x1b[1;5C" }
+  - { key: Right, mods: Alt, chars: "\x1b[1;3C" }
+  - { key: Right,nchars: "\x1b[C", mode: ~AppCursor }
+  - { key: Right, chars: "\x1bOC", mode: AppCursor }
+  - { key: Up, mods: Shift, chars: "\x1b[1;2A" }
+  - { key: Up, mods: Control, chars: "\x1b[1;5A"                   }
+  - { key: Up, mods: Alt, chars: "\x1b[1;3A" }
+  - { key: Up, chars: "\x1b[A", mode: ~AppCursor }
+  - { key: Up, chars: "\x1bOA", mode: AppCursor }
+  - { key: Down, mods: Shift, chars: "\x1b[1;2B" }
+  - { key: Down, mods: Control, chars: "\x1b[1;5B" }
+  - { key: Down, mods: Alt, chars: "\x1b[1;3B" }
+  - { key: Down, chars: "\x1b[B", mode: ~AppCursor  }
+  - { key: Down, chars: "\x1bOB", mode: AppCursor   }
+  - { key: Tab, mods: Shift, chars: "\x1b[Z" }
+  - { key: F1, chars: "\x1bOP" }
+  - { key: F2, chars: "\x1bOQ" }
+  - { key: F3, chars: "\x1bOR" }
+  - { key: F4, chars: "\x1bOS" }
+  - { key: F5, chars: "\x1b[15~" }
+  - { key: F6, chars: "\x1b[17~" }
+  - { key: F7, chars: "\x1b[18~" }
+  - { key: F8, chars: "\x1b[19~" }
+  - { key: F9, chars: "\x1b[20~" }
+  - { key: F10, chars: "\x1b[21~" }
+  - { key: F11, chars: "\x1b[23~" }
+  - { key: F12, chars: "\x1b[24~" }
+  - { key: Back, chars: "\x7f" }
+  - { key: Back, mods: Alt, chars: "\x1b\x7f" }
+  - { key: Insert, chars: "\x1b[2~" }
+  - { key: Delete, chars: "\x1b[3~" }
+
+mouse:
+  double_click: { threshold: 300 }
+  triple_click: { threshold: 300 }
+  hide_when_typing: false
+  url:
+    modifiers: Control
+
+cursor:
+  style: Block
+  unfocused_hollow: true
+
+live_config_reload: true
+
+shell:
+  program: /usr/bin/zsh
+
+debug:
+  render_timer: false
+  persistent_logging: false
+  log_level: None
+  print_events: false
+  ref_test: false
