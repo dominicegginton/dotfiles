@@ -18,7 +18,7 @@ bindsym $super+Return exec alacritty
 
 # start dmenu (a program launcher)
 bindsym $super+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'Noto Sans:size=8'"
-bindsym $super+space exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -sidebar-mode -columns 3 -font 'Noto Sans 8'
+bindsym $super+space exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -columns 3 -font 'Noto Sans 10'
 
 # common apps keybinds
 bindsym $super+Shift+w exec qutebrowser;workspace $ws2;focus
@@ -33,7 +33,7 @@ bindsym $super+c kill
 bindsym $alt+F4 kill
 
 # alt tab
-bindsym mod1+Tab exec "rofi -show window"
+bindsym mod1+Tab exec rofi -show window -lines 12 -padding 18 -location 0 -show drun -columns 3 -font 'Noto Sans 10'
 
 # workspace names
 set $ws1 "Main"
