@@ -138,7 +138,7 @@ bar {
 		separator #4b5262
 		
 		# colour of border, background, and text
-		focused_workspace	#2f343f	#81a1c1	#2f343f
+		focused_workspace	#81a1c1	#81a1c1	#2f343f
 		active_workspace	#2f343f	#2f343f	#d8dee8
 		inactive_workspace	#2f343f 	#2f343f	#d8dee8
 		urgent_workspace	#2f343f	#ebcb8b	#2f343f
