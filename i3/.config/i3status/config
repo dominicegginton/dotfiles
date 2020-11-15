@@ -2,72 +2,68 @@ general {
 	output_format = "i3bar"
 	colors = true
 	markup = pango
-	interval = 5
-	color_good = "#81a1c1"
-	color_degraded = "#ebcb8b"
-	color_bad = "#ba5e57"
+	interval = 1
+	color_good = "#ffffff"
+	color_degraded = "#f66a0a"
+	color_bad = "#d73a49"
 }
 
-order += "load"
 order += "cpu_usage"
 order += "cpu_temperature 0"
 order += "disk /"
-order += "ethernet enp55s0u2u2"
-order += "wireless wlp108s0"
+order += "ethernet _first_"
+order += "wireless _first_"
 order += "volume master"
-order += "battery 0"
+order += "battery all"
 order += "tztime local"
 
 cpu_usage {
-	format = "<span color='#81a1c1'> CPU %usage </span>"
-	format_above_threshold = "<span color='#bf616a'> CPU %usage </span>"
-	max_threshold = 75
+	format = "&#xf2db; %usage"
+	max_threshold = 80
 }
 
 cpu_temperature 0 {
-	format = "<span color='#81a1c1'> CPU %degrees °C </span>"
-	format_above_threshold = "<span color='#bf616a'> CPU %degrees °C </span>"
-	max_threshold = 50
-	path = "/sys/class/thermal/thermal_zone3/temp"
+	format = "&#xf2ca; %degrees°C"
+	format_above_threshold = "&#xf2c8; %degrees°C"
+	max_threshold = 42
+	path = "/sys/class/thermal/thermal_zone2/temp"
 }
 
 disk "/" {
-	format = "<span color='#81a1c1'> %free / %total </span>"
-	format_below_threshold = "<span color='#bf616a'> %free / %total </span>"
+	format = "&#xf0a0; %free / %total"
+	prefix_type = "custom"
 	low_threshold = 10
 }
 
-ethernet enp55s0u2u2 {
-	format_up = "<span color='#81a1c1'> E: %ip (%speed) </span>"
-	format_down = "<span color='#bf616a'> E: Disconnected </span>"
+ethernet _first_ {
+	format_up = "&#xf6ff; %ip"
+	format_down = "&#xf6ff; Disconnected"
 }
 
-wireless wlp108s0 {
-	format_up = "<span color='#81a1c1'> W: %ip (%quality at %essid, %bitrate / %frequency)</span>"
-	format_down = "<span color='#bf616a'> W: Disconnected </span>"
+wireless _first_ {
+	format_up = "&#xf1eb; %essid %ip"
+	format_down = "&#xf1eb; Disconnected"
 }
 
 volume master {
-	format = "<span color='#81a1c1'> ♪: %volume </span>"
-	format_muted = "<span color='#bf616a'> ♪: Muted </span>"
-	device = "default"
+	format = "&#xf028; %volume"
+	format_muted = "&#xf6a9;"
+	device = "pulse"
 	mixer = "Master"
 	mixer_idx = 0
 }
 
-battery 0 {
+battery all {
 	last_full_capacity = true
-	format = "<span color='#81a1c1'> %status %percentage </span>"
-	format_down = "<span color='#bf616a'> No Battery </span>"
-	status_chr = "Charging"
-	status_bat = "Battery"
+	format = "%status %percentage"
+	status_chr = "&#xf0e7; &#xf241;"
+	status_bat = "&#xf241;"
 	status_unk = "Unknown"
-	status_full = "Charged"
-	path = "/sys/class/power_supply/BAT%d/uevent"
-	low_threshold = 10
+	status_full = "&#xf240;"
+	low_threshold = 20
 }
 
 tztime local {
-	format = "<span color='#81a1c1'> %time </span>"
+	format = "&#xf073; %time"
 	format_time = "%a %-d %b %H:%M"
 }
