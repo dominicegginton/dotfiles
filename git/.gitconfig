@@ -3,7 +3,7 @@
 	email = dominic.egginton@gmail.com
 	signingKey = 4C79CE4F82847A9F
 [github]
-    user = dominicegginton
+	user = dominicegginton
 [core]
 	editor = nano
 	hooksPath = .githooks
@@ -15,6 +15,8 @@
 	gpgsign = true
 [pull]
 	ff = only
+[rebase]
+	autosquash = true
 [credential]
 	helper = store
 [color]
