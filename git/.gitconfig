@@ -15,6 +15,8 @@
 	gpgsign = true
 [pull]
 	ff = only
+[rebase]
+	autosquash = true
 [credential]
 	helper = store
 [color]
