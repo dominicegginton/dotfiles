@@ -7,8 +7,8 @@ window:
     columns: 0
     lines: 0
   padding:
-    x: 10
-    y: 5
+    x: 15
+    y: 10
   decorations: full
   startup_mode: Windowed
 
@@ -18,7 +18,7 @@ scrolling:
 
 font:
   normal:
-    family: "Noto Mono"
+    family: "Noto Sans Mono"
   size: 5
   letter-spacing: 0
   use_thin_strokes: true
@@ -34,35 +34,28 @@ draw_bold_text_with_bright_colors: false
 
 colors:
   primary:
-    background: '0x232627'
-    foreground: '0xfcfcfc'
+    background: '0x1b1f23'
+    foreground: '0xfafbfc'
+  # Normal colors
   normal:
-    black:   '0x232627'
-    red:     '0xed1515'
-    green:   '0x11d116'
-    yellow:  '0xf67400'
-    blue:    '0x1d99f3'
-    magenta: '0x9b59b6'
-    cyan:    '0x1abc9c'
-    white:   '0xfcfcfc'
-  bright:
-    black:   '0x7f8c8d'
-    red:     '0xc0392b'
-    green:   '0x1cdc9a'
-    yellow:  '0xfdbc4b'
-    blue:    '0x3daee9'
-    magenta: '0x8e44ad'
-    cyan:    '0x16a085'
+    black:   '0x24292e'
+    red:     '0xd73a49'
+    green:   '0x28a745'
+    yellow:  '0xffd33d'
+    blue:    '0x0366d6'
+    magenta: '0x6f42c1'
+    cyan:    '0x0366d6'
     white:   '0xffffff'
-  dim:
-    black:   '0x31363b'
-    red:     '0x783228'
-    green:   '0x17a262'
-    yellow:  '0xb65619'
-    blue:    '0x1b668f'
-    magenta: '0x614a73'
-    cyan:    '0x186c60'
-    white:   '0x63686d'
+  # Bright colors
+  bright:
+    black:   '0x6a737d'
+    red:     '0xf97583'
+    green:   '0x85e89d'
+    yellow:  '0xffea7f'
+    blue:    '0x79b8ff'
+    magenta: '0xb392f0'
+    cyan:    '0x79b8ff'
+    white:   '0xffffff'
 
 bell:
   animation: EaseOutExpo
@@ -99,7 +92,7 @@ key_bindings:
   - { key: Right, chars: "\x1b[C", mode: ~AppCursor }
   - { key: Right, chars: "\x1bOC", mode: AppCursor }
   - { key: Up, mods: Shift, chars: "\x1b[1;2A" }
-  - { key: Up, mods: Control, chars: "\x1b[1;5A"                   }
+  - { key: Up, mods: Control, chars: "\x1b[1;5A" }
   - { key: Up, mods: Alt, chars: "\x1b[1;3A" }
   - { key: Up, chars: "\x1b[A", mode: ~AppCursor }
   - { key: Up, chars: "\x1bOA", mode: AppCursor }

@@ -26,17 +26,3 @@
 ! white
 *.color7  : #e5e9f0
 *.color15 : #d1d5dc
-
-! dmenu config
-dmenu.selforeground:	    #d8dee9
-dmenu.background:	        #2e3440
-dmenu.selbackground:	    #81a1c1
-dmenu.foreground:	        #d8dee9
-
-! rofi config
-rofi.color-enabled: true
-rofi.modi: run,drun,window
-rofi.color-window: #2e3440, #2e3440, #2e3440
-rofi.color-normal: #2e3440, #d8dee9, #2e3440, #2e3440, #81a1c1
-rofi.color-active: #2e3440, #89d0bA, #2e3440, #2e3440, #89d0bA
-rofi.color-urgent: #2e3440, #ebcb8b, #2e3440, #2e3440, #ebcb8b

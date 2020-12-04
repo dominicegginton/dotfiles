@@ -1,0 +1,7 @@
+configuration {
+	modi: "run,drun,window,ssh";
+	color-normal: "#24292e, #fafbfc, #24292e, #0366d6, #fafbfc";
+	color-urgent: "#24292e, #fafbfc, #24292e, #d73a49, #fafbfc";
+	color-active: "#24292e, #fafbfc, #24292e, #0366d6, #fafbfc";
+	color-window: "#24292e, #24292e, #24292e";
+}
