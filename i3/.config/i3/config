@@ -3,44 +3,44 @@ set $super Mod4
 set $alt Mod1
 
 # set font
-font pango: Noto Sans 8
+font pango: Noto Sans 10
 
 # Use Mouse+$super to drag floating windows to their wanted position
 floating_modifier $super
+floating_minimum_size 75 x 50
+floating_maximum_size 1600 x 900
 
-#autostart
-exec --no-startup-id hsetroot -center ~/Backgrounds/coast-mountains.jpg 
+# autostart
+exec --no-startup-id hsetroot -cover ~/Backgrounds/city-sky.jpg 
 exec --no-startup-id xsettingsd &
 exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinput Natural Scrolling Enabled" 1
 
 # start a terminal
 bindsym $super+Return exec alacritty
 
-# start dmenu (a program launcher)
-bindsym $super+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'Noto Sans:size=8'"
-bindsym $super+space exec rofi -lines 12 -padding 18 -width 60 -location 0 -show drun -columns 3 -font 'Noto Sans 10'
+# rofi
+bindsym $super+space exec rofi -show drun -lines 12 -padding 18 -width 35 -location 0 -font 'Noto Sans 10' -terminal alacritty
+bindsym $alt+Tab exec rofi -show window -padding 18 -width 35 -location 0 -font 'Noto Sans 10' -terminal alacritty
+bindsym $super+Shift+s exec rofi -show ssh -padding 18 -width 35 -location 0 -font 'Noto Sans 10' -terminal alacritty
 
 # common apps keybinds
 bindsym $super+Shift+w exec qutebrowser;workspace $ws2;focus
 bindsym $super+Shift+d exec discord;workspace $ws3;focus
-bindsym $super+Shift+m exec thunderbird;workspace $ws4;focus
+bindsym $super+Shift+m exec mailspring;workspace $ws4;focus
 
 # screenshot
-bindsym Print exec scrot 'screenshot-%a-%d%b%y_%H.%M.png' -e 'viewnior ~/$f'
+# bindsym Print exec scrot 'screenshot-%a-%d%b%y_%H.%M.png' -e 'viewnior ~/$f'
 
 # kill focused window
 bindsym $super+c kill
 bindsym $alt+F4 kill
 
-# alt tab
-bindsym mod1+Tab exec rofi -show window -lines 12 -padding 18 -location 0 -show drun -columns 3 -font 'Noto Sans 10'
-
 # workspace names
-set $ws1 "Main"
-set $ws2 "Web"
-set $ws3 "Discord"
-set $ws4 "Mail"
-set $ws0 "Desktop"
+set $ws1 "1:&#xf120;"
+set $ws2 "2:&#xf268;"
+set $ws3 "3:&#xf392;"
+set $ws4 "4:&#xf1fa;"
+set $ws0 "0:&#xf108;"
 
 # switch to workspace
 bindsym $super+1 workspace $ws1
@@ -62,29 +62,32 @@ bindsym $super+Shift+Right move workspace to output right
 bindsym $super+Shift+Up move workspace to output up
 bindsym $super+Shift+Down move workspace to output down
 
-# change focus
+# change container focus
 bindsym $super+Left focus left
 bindsym $super+Down focus down
 bindsym $super+Up focus up
 bindsym $super+Right focus right
-
-# split orientation
-bindsym $super+h split h
-bindsym $super+v split v
 
 # change layout
 bindsym $super+s layout default
 bindsym $super+t layout tabbed
 bindsym $super+y layout toggle
 
+# split orientation
+bindsym $super+h split h
+bindsym $super+v split v
+
 # toggle tiling / floating
 bindsym $super+Shift+f floating toggle
+
+# change focus between tiling / floating windows
+bindsym $super+Shift+space focus mode_toggle
 
 # toggle fullscreen mode for the focused container
 bindsym $super+f fullscreen toggle
 
 # resize window (you can also use the mouse for that)
-mode "resize" {
+mode "Resize" {
 	bindsym Left resize shrink width 5 px or 5 ppt
 	bindsym Down resize grow height 5 px or 5 ppt
 	bindsym Up resize shrink height 5 px or 5 ppt
@@ -92,70 +95,83 @@ mode "resize" {
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 }
-bindsym $super+r mode "resize"
+bindsym $super+r mode "Resize"
 
-# change focus between tiling / floating windows
-bindsym $super+Shift+space focus mode_toggle
-
-bindsym $super+Escape mode "$mode_system"
-set $mode_system Lock [l] - Suspend [s] - Reboot [Shift+r] - Shutdown [Shift+s]
+set $mode_system Lock [L] Suspend [S], Exit I3 [Shift+E] Reboot [Shift+R] Shutdown [Shift+S]
 mode "$mode_system" {
     bindsym l exec --no-startup-id betterlockscreen -l, mode "default"
+		bindsym Shift+E exec --no-startup-id i3exit logout, mode "default"
     bindsym s exec --no-startup-id betterlockscreen -s, mode "default"
     bindsym Shift+r exec --no-startup-id reboot, mode "default"
     bindsym Shift+s exec --no-startup-id shutdown now, mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+bindsym $super+Escape mode "$mode_system"
 
-# exit i3 (logs you out of your X session)
-# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+set $mode_screenshot Fullscreen [1], Focused Window [2], Select Window [3], Select Area [4]
+mode "$mode_screenshot" {
+	bindsym 1 exec --no-startup-id scrot 'screenshot-%a-%d%b%y_%H.%M.png' -e 'viewnior ~/$f', mode "default"
+	bindsym 2 exec --no-startup-id scrot 'screenshot-%a-%d%b%y_%H.%M.png' -u, mode "default"
+	bindsym 3 exec scrot -s 'screenshot-%a-%d%b%y_%H.%M.png'
+	bindsym Escape mode "default"
+}
+bindsym Print mode "$mode_screenshot"
 
 # volume control
 bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+
 bindsym XF86AudioLowerVolume exec amixer -q set Master 5%-
 bindsym XF86AudioMute exec amixer set Master toggle
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
 
 # brightness control
 bindsym XF86MonBrightnessUp exec "xbacklight -inc 10
 bindsym XF86MonBrightnessDown exec "xbacklight -dec 10
-
-
-# music control
-bindsym XF86AudioNext exec mpc next
-bindsym XF86AudioPrev exec mpc prev
-bindsym XF86AudioPlay exec mpc toggle
-bindsym XF86AudioStop exec mpc stop
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $super+Shift+r restart
 
 # panel
 bar {
+	status_command i3status
+	workspace_min_width 30
+  font pango: Noto Sans 9
+	position top
+  strip_workspace_numbers yes
+	tray_padding 2
 	colors {
-		background #232627 
-		statusline #232627
-		separator #4b5262
+		background #1b1f23 
+    statusline #fafbfc
+		separator #1b1f23
 		
 		# colour of border, background, and text
-		focused_workspace	#81a1c1	#81a1c1	#2f343f
-		active_workspace	#2f343f	#2f343f	#d8dee8
-		inactive_workspace	#2f343f 	#2f343f	#d8dee8
-		urgent_workspace	#2f343f	#ebcb8b	#2f343f
+		focused_workspace	#1b1f23	#1b1f23	#fafbfc
+		active_workspace #1b1f23 #1b1f23	#959da5
+		inactive_workspace	#1b1f23 #1b1f23	#959da5
+		urgent_workspace #fafbfc	#fafbfc	#1b1f23
+		binding_mode #fafbfc #fafbfc #1b1f23
 	}
-	status_command i3status
 }
 
-# window rules, you can find the window class using xprop
+#window border
 for_window [class=".*"] border pixel 1
+
+# assign window to workspace
 assign [class=Code] $ws1
-assign [class=qutebrowser|google-chrome-stable|google-chrome-dev] $ws2
+assign [class=qutebrowser|google-chrome-stabl] $ws2
 assign [class=discord] $ws3
+assign [class=Mailspring] $ws4
+
+# assign window to default to floating
+for_window [class=feh] floating enable
+for_window [class=mpv] floating enable
 
 # colour of border, background, text, indicator, and child_border
-client.focused	#81a1c1	#2f343f	#d8dee8	#81a1c1	#d8dee8
-client.focused_inactive	#2f343f	#2f343f	#d8dee8	#2f343f	#2f343f
-client.unfocused	#2f343f	#2f343f	#d8dee8	#2f343f	#2f343f
-client.urgent	#2f343f	#2f343f	#d8dee8	#2f343f	#2f343f
-client.placeholder	#2f343f	#2f343f	#d8dee8	#2f343f	#2f343f
-client.background	#2f343f
+client.focused	#1b1f23	#1b1f23 #fafbfc	#0366d6	#fafbfc
+client.focused_inactive	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
+client.unfocused	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
+client.urgent	#1b1f23	#1b1f23	#1b1f23	#fafbfc	#1b1f23
+client.placeholder	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
+client.background	#1b1f23
