@@ -30,7 +30,7 @@ cpu_temperature 0 {
 }
 
 disk "/" {
-	format = "&#xf0a0; %free / %total"
+	format = "&#xf0a0; %free"
 	prefix_type = "custom"
 	low_threshold = 10
 }
