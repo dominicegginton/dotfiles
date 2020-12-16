@@ -3,4 +3,5 @@
 <div align='center'>
   <img src='assets/linux.svg' width='50'>
   <img src='assets/macos.svg' width='50'>
+  <img src='assets/screenshot.png'>
 </div>
