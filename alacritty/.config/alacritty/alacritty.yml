@@ -133,7 +133,7 @@ cursor:
 live_config_reload: true
 
 shell:
-  program: /usr/bin/zsh
+  program: /usr/bin/fish
 
 debug:
   render_timer: false
