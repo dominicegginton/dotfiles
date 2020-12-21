@@ -3,7 +3,7 @@ set fish_prompt_pwd_dir_length 0
 # Git prompt
 set __fish_git_prompt_showdirtystate 'yes'
 set __fish_git_prompt_showupstream 'yes'
-set __fish_git_prompt_color_branch 242
+set __fish_git_prompt_color_branch magenta
 set __fish_git_prompt_color_dirtystate yellow
 set __fish_git_prompt_color_stagedstate blue
 set __fish_git_prompt_color_upstream blue
