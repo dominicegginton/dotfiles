@@ -169,7 +169,7 @@ for_window [class=feh] floating enable
 for_window [class=mpv] floating enable
 
 # colour of border, background, text, indicator, and child_border
-client.focused	#1b1f23	#1b1f23 #fafbfc	#0366d6	#fafbfc
+client.focused	#1b1f23	#1b1f23 #fafbfc	#fafbfc	#fafbfc
 client.focused_inactive	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
 client.unfocused	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
 client.urgent	#1b1f23	#1b1f23	#1b1f23	#fafbfc	#1b1f23
