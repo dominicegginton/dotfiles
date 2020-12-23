@@ -19,4 +19,4 @@ Dotfiles are the files used to store user-specific application configuration.Thi
 
 ## Bugs
 
-I want my dotfiles to work for everyone; that means when you clone and install them they should just work. That said, I do use this repository foras my personal dotfiles, so there's a good chance I may break something. If you run into any problems or bug when installing or using these dotfiles please feel free to open a [GitHub Issue](https://github.com/dominicegginton/dotfiles/issues/new) on this respository and I'd love to get it fixed for you.
+I want my dotfiles to work for everyone; that means when you clone and install them they should just work. That said, I use this repository for my personal evolving dotfiles, so there's a good chance I may break something. If you run into any problems or bug when installing or using these dotfiles please feel free to open a [GitHub Issue](https://github.com/dominicegginton/dotfiles/issues/new) on this repository and I'd love to get it fixed for you.
