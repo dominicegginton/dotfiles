@@ -165,7 +165,7 @@ bar {
 }
 
 #window border
-for_window [class=".*"] border pixel 3
+for_window [class=".*"] border pixel 1
 
 # assign window to workspace
 assign [class=Code] $ws1
