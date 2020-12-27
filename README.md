@@ -5,12 +5,10 @@
 <div align='center'>
   <img src='assets/linux.svg' width='50'>
   <img src='assets/macos.svg' width='50'>
+  <br><br>
+  <img align='center' width='500' src='assets/screenshot.png'>
+  <br><br>
 </div>
-
-<br>
-<img align='center' src='assets/screenshot.png'>
-<br>
-<br>
 
 Dotfiles are the files used to store user-specific application configuration. This repository contains my personal ever evolving dotfiles that are used to configure software across both the **Linux** and **MacOS** platforms. I'm mainly a **Linux** guy but feel comfortable switching it up when when the situation calls for it. This repository allows me to easily store, manage and access my dotfiles, even when faced with a fresh environment I am able to be set up in minutes making me feel at `~` once again. My dotfiles are managed with [GNU Stow](https://www.gnu.org/software/stow/) a *free* and *open source* symlink farm manager. I am working on a setup script capable of auto installing all dotfiles with stow based upon platform.
 
