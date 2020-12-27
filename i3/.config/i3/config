@@ -40,7 +40,7 @@ set $inner_gaps 15
 set $outer_gaps 10
 gaps inner  $inner_gaps
 gaps outer $outer_gaps
-smart_gaps on
+# smart_gaps on
 smart_borders on
 
 # workspace names
