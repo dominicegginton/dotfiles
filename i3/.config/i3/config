@@ -11,7 +11,7 @@ floating_minimum_size 75 x 50
 floating_maximum_size 1600 x 900
 
 # autostart
-exec --no-startup-id hsetroot -cover ~/Backgrounds/city-sky.jpg 
+exec --no-startup-id xwallpaper --stretch ~/Background.jpg
 exec --no-startup-id xsettingsd &
 exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinput Natural Scrolling Enabled" 1
 
@@ -149,6 +149,7 @@ bar {
 	position top
   strip_workspace_numbers yes
 	tray_padding 2
+	height 30
 	colors {
 		background #1b1f23 
     statusline #fafbfc
@@ -164,7 +165,7 @@ bar {
 }
 
 #window border
-for_window [class=".*"] border pixel 1
+for_window [class=".*"] border pixel 3
 
 # assign window to workspace
 assign [class=Code] $ws1
