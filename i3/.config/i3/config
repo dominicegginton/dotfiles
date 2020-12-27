@@ -35,6 +35,14 @@ bindsym $super+Shift+m exec mailspring;workspace $ws4;focus
 bindsym $super+c kill
 bindsym $alt+F4 kill
 
+# gaps
+set $inner_gaps 15
+set $outer_gaps 10
+gaps inner  $inner_gaps
+gaps outer $outer_gaps
+smart_gaps on
+smart_borders on
+
 # workspace names
 set $ws1 "1:&#xf120;"
 set $ws2 "2:&#xf268;"
