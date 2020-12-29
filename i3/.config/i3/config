@@ -36,8 +36,8 @@ bindsym $super+c kill
 bindsym $alt+F4 kill
 
 # gaps
-set $inner_gaps 15
-set $outer_gaps 10
+set $inner_gaps 10
+set $outer_gaps 0
 gaps inner  $inner_gaps
 gaps outer $outer_gaps
 # smart_gaps on
