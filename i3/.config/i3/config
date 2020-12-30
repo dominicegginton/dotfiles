@@ -28,9 +28,6 @@ bindsym $super+Shift+w exec qutebrowser;workspace $ws2;focus
 bindsym $super+Shift+d exec discord;workspace $ws3;focus
 bindsym $super+Shift+m exec mailspring;workspace $ws4;focus
 
-# screenshot
-# bindsym Print exec scrot 'screenshot-%a-%d%b%y_%H.%M.png' -e 'viewnior ~/$f'
-
 # kill focused window
 bindsym $super+c kill
 bindsym $alt+F4 kill
@@ -117,11 +114,10 @@ mode "$mode_system" {
 }
 bindsym $super+Escape mode "$mode_system"
 
-set $mode_screenshot Fullscreen [1], Focused Window [2], Select Window [3], Select Area [4]
+set $mode_screenshot Fullscreen Capture [1], Focused Window Capture [2]
 mode "$mode_screenshot" {
 	bindsym 1 exec --no-startup-id scrot 'screenshot-%a-%d%b%y_%H.%M.png' -e 'viewnior ~/$f', mode "default"
 	bindsym 2 exec --no-startup-id scrot 'screenshot-%a-%d%b%y_%H.%M.png' -u, mode "default"
-	bindsym 3 exec scrot -s 'screenshot-%a-%d%b%y_%H.%M.png'
 	bindsym Escape mode "default"
 }
 bindsym Print mode "$mode_screenshot"
