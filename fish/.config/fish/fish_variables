@@ -2,8 +2,8 @@
 # VERSION: 3.0
 SETUVAR __fish_initialized:3100
 SETUVAR _fish_abbr_code:code\x20\x2d\x2denable\x2dproposed\x2dapi\x20GitHub\x2evscode\x2dpull\x2drequest\x2dgithub\x20\x2d\x2denable\x2dproposed\x2dapi\x20ms\x2dpython\x2epython
-SETUVAR _fish_abbr_exa:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit\x20\x2d\x2dgroup
-SETUVAR _fish_abbr_ls:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit\x20\x2d\x2dgroup
+SETUVAR _fish_abbr_exa:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit
+SETUVAR _fish_abbr_ls:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit
 SETUVAR _fish_abbr_tree:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit\x20\x2d\x2dtree
 SETUVAR fish_color_autosuggestion:586e75
 SETUVAR fish_color_cancel:\x2dr
