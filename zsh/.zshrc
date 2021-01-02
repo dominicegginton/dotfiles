@@ -2,7 +2,8 @@
 export GPG_TTY=$(tty)
 
 # alisas
-alias ls='ls -l --color'
+alias ls'exa --long --header --git --group'
+alias exa='exa --long --header --git --group'
 alias tree='tree -C'
 alias code='code --enable-proposed-api GitHub.vscode-pull-request-github --enable-proposed-api ms-python.python'
 
