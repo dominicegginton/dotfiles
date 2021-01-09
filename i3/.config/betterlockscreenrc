@@ -1,0 +1,16 @@
+insidecolor=00000000
+ringcolor=ffffffff
+keyhlcolor=0366d6ff
+bshlcolor=0366d6ff
+separatorcolor=00000000
+insidevercolor=00000000
+insidewrongcolor=00000000
+ringvercolor=28a745ff
+ringwrongcolor=d73a49ff
+verifcolor=ffffffff
+timecolor=ffffffff
+datecolor=ffffffff
+loginbox=0366d6ff
+font="Noto Sans"
+locktext='Type password to unlock ...'
+wallpaper_cmd='xwallpaper --stretch'
