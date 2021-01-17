@@ -6,7 +6,5 @@
 
 config_version: 2
 settings:
-  colors.webpage.darkmode.enabled:
-    global: false
-  content.geolocation:
-    https://www.google.com: true
+  content.notifications:
+    https://www.netflix.com: false
