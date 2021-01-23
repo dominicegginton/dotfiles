@@ -11,6 +11,7 @@ floating_minimum_size 75 x 50
 floating_maximum_size 1600 x 900
 
 # autostart
+exec --no-startup-id picom -b
 exec --no-startup-id xwallpaper --zoom ~/Background.jpg
 exec --no-startup-id betterlockscreen -u ~/Background.jpg
 exec --no-startup-id xsettingsd &
