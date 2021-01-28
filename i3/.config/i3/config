@@ -17,6 +17,7 @@ exec --no-startup-id xwallpaper --zoom ~/Background.jpg
 exec --no-startup-id betterlockscreen -u ~/Background.jpg
 exec --no-startup-id xsettingsd &
 exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinput Natural Scrolling Enabled" 1
+exec --no-startup-id xset s off
 
 # start a terminal
 bindsym $super+Return exec alacritty
