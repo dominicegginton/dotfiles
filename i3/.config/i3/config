@@ -30,7 +30,7 @@ bindsym $super+Shift+s exec rofi -show ssh -padding 18 -width 35 -location 0 -fo
 
 # common apps keybinds
 bindsym $super+Shift+w exec qutebrowser;workspace $ws2;focus
-bindsym $super+Shift+c exec google-chrome-stable;workspace $ws2;focus
+bindsym $super+Shift+c exec google-chrome-stable --force-dark-mode;workspace $ws2;focus
 bindsym $super+Shift+d exec discord;workspace $ws3;focus
 bindsym $super+Shift+m exec mailspring;workspace $ws4;focus
 
