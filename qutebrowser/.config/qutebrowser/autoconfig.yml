@@ -8,3 +8,4 @@ config_version: 2
 settings:
   content.notifications:
     https://www.netflix.com: false
+    https://www.youtube.com: true
