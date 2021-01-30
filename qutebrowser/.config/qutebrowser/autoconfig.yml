@@ -6,6 +6,8 @@
 
 config_version: 2
 settings:
+  content.geolocation:
+    https://www.google.com: true
   content.notifications:
     https://www.netflix.com: false
     https://www.youtube.com: true
