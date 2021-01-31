@@ -2,7 +2,6 @@
 # VERSION: 3.0
 SETUVAR __fish_initialized:3100
 SETUVAR _fish_abbr_aura:aura\x20\x2dc\x20\x27c4\x20c7
-SETUVAR _fish_abbr_code:code\x20\x2d\x2denable\x2dproposed\x2dapi\x20GitHub\x2evscode\x2dpull\x2drequest\x2dgithub\x20\x2d\x2denable\x2dproposed\x2dapi\x20ms\x2dpython\x2epython
 SETUVAR _fish_abbr_exa:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit
 SETUVAR _fish_abbr_ls:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit
 SETUVAR _fish_abbr_pacman:paru
