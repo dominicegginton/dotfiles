@@ -305,7 +305,7 @@
 
     # Redisplay last message(s). Equivalent dunstctl command:
     # dunstctl history-pop
-    # history = ctrl+grave
+    history = ctrl+mod4+n
 
     # Context menu. Equivalent dunstctl command:
     # dunstctl context
