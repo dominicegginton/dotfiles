@@ -172,7 +172,7 @@ for_window [class=".*"] border pixel 1
 # assign window to workspace
 assign [class=code-oss] $ws1
 assign [class=qutebrowser|Google-chrome] $ws2
-assign [class=discord] $ws3
+assign [class=discord|Signal] $ws3
 assign [class=Mailspring] $ws4
 
 # assign window to default to floating
