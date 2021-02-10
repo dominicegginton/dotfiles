@@ -1,0 +1,17 @@
+#export=doc,pdf
+depth=100
+no-prompt=true
+desk
+
+[list]
+depth=2
+long=true
+
+[push]
+verbose=true
+
+[stat]
+depth=3
+
+[pull/push]
+no-clobber=true
