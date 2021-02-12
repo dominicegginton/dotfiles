@@ -32,7 +32,7 @@ bindsym $super+Shift+s exec rofi -show ssh -padding 18 -width 35 -location 0 -fo
 bindsym $super+Shift+w exec qutebrowser;workspace $ws2;focus
 bindsym $super+Shift+c exec google-chrome-stable --force-dark-mode;workspace $ws2;focus
 bindsym $super+Shift+d exec discord;workspace $ws3;focus
-bindsym $super+Shift+m exec mailspring;workspace $ws4;focus
+bindsym $super+Shift+t exec teams;workspace $ws4;focus
 
 # kill focused window
 bindsym $super+c kill
@@ -50,7 +50,7 @@ smart_borders on
 set $ws1 "1:&#xf120;"
 set $ws2 "2:&#xf268;"
 set $ws3 "3:&#xf392;"
-set $ws4 "4:&#xf1fa;"
+set $ws4 "4:&#xf3ca;"
 set $ws0 "0:&#xf108;"
 
 # switch to workspace
@@ -173,7 +173,7 @@ for_window [class=".*"] border pixel 1
 assign [class=code-oss] $ws1
 assign [class=qutebrowser|Google-chrome] $ws2
 assign [class=discord|Signal] $ws3
-assign [class=Mailspring] $ws4
+assign [class="Microsoft Teams - Preview"] $ws4
 
 # assign window to default to floating
 for_window [class=feh] floating enable
