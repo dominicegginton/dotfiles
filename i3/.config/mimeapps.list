@@ -1,5 +1,5 @@
 [Added Associations]
-inode/directory=ranger.desktop;pcmanfm.desktop;
+inode/directory=thunar.desktop,ranger.desktop;
 x-scheme-handler/mailto=qutebrowser.qutebrowser.desktop;
 video/mp4=mpv.desktop;mpv.desktop;
 image/jpeg=feh.desktop;
