@@ -1,6 +1,6 @@
 env:
   TERM: xterm-256color
-  WINIT_X11_SCALE_FACTOR: "1.75"
+  WINIT_X11_SCALE_FACTOR: "1"
 
 window:
   dimensions:
@@ -9,7 +9,7 @@ window:
   padding:
     x: 15
     y: 10
-  decorations: full
+  decorations: none
   startup_mode: Windowed
 
 scrolling:
@@ -19,7 +19,14 @@ scrolling:
 font:
   normal:
     family: "Noto Sans Mono"
-  size: 5
+    style: Regular
+  bold:
+    family: "Noto Sans Mono"
+    style: Bold
+  italic:
+    family: "Noto Sans Mono"
+    style: Italic
+  size: 8.5
   letter-spacing: 0
   use_thin_strokes: true
   offset:
