@@ -6,6 +6,8 @@
 
 config_version: 2
 settings:
+  content.desktop_capture:
+    https://teams.microsoft.com: true
   content.geolocation:
     https://www.google.com: true
   content.notifications:
