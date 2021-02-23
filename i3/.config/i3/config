@@ -110,13 +110,13 @@ bindsym $super+r mode "Resize"
 
 set $mode_system Lock [L] Suspend [S], Exit I3 [Shift+E] Reboot [Shift+R] Shutdown [Shift+S]
 mode "$mode_system" {
-    bindsym l exec --no-startup-id betterlockscreen -l, mode "default"
-		bindsym Shift+E exec --no-startup-id i3exit logout, mode "default"
-    bindsym s exec --no-startup-id betterlockscreen -s, mode "default"
-    bindsym Shift+r exec --no-startup-id reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id shutdown now, mode "default"
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+	bindsym l exec --no-startup-id betterlockscreen -l, mode "default"
+	bindsym Shift+E exec --no-startup-id i3exit logout, mode "default"
+	bindsym s exec --no-startup-id betterlockscreen -s, mode "default"
+	bindsym Shift+r exec --no-startup-id reboot, mode "default"
+	bindsym Shift+s exec --no-startup-id shutdown now, mode "default"
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
 }
 bindsym $super+Escape mode "$mode_system"
 
@@ -147,16 +147,16 @@ bindsym $super+Shift+r restart
 bar {
 	status_command i3status
 	workspace_min_width 30
-  font pango: Noto Sans 9
+	font pango: Noto Sans 9
 	position top
   strip_workspace_numbers yes
 	tray_padding 2
 	height 30
 	colors {
 		background #000000
-    statusline #c9d1d9
+		statusline #c9d1d9
 		separator #000000
-		
+
 		# colour of border, background, and text
 		focused_workspace	#000000	#000000	#c9d1d9
 		active_workspace #000000 #000000	#6e7681
