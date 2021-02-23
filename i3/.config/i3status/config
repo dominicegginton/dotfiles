@@ -3,7 +3,7 @@ general {
 	colors = true
 	markup = pango
 	interval = 1
-	color_good = "#ffffff"
+	color_good = "#c9d1d9"
 	color_degraded = "#f66a0a"
 	color_bad = "#d73a49"
 }

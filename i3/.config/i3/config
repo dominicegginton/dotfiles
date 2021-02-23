@@ -153,16 +153,16 @@ bar {
 	tray_padding 2
 	height 30
 	colors {
-		background #1b1f23 
-    statusline #fafbfc
-		separator #1b1f23
+		background #000000
+    statusline #c9d1d9
+		separator #000000
 		
 		# colour of border, background, and text
-		focused_workspace	#1b1f23	#1b1f23	#fafbfc
-		active_workspace #1b1f23 #1b1f23	#959da5
-		inactive_workspace	#1b1f23 #1b1f23	#959da5
-		urgent_workspace #fafbfc	#fafbfc	#1b1f23
-		binding_mode #fafbfc #fafbfc #1b1f23
+		focused_workspace	#000000	#000000	#c9d1d9
+		active_workspace #000000 #000000	#6e7681
+		inactive_workspace	#000000 #000000	#6e7681
+		urgent_workspace #c9d1d9	#c9d1d9	#000000
+		binding_mode #FFFFFF #FFFFFF #000000
 	}
 }
 
