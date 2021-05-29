@@ -7,6 +7,7 @@ alias exa='exa --long --header --git'
 alias tree='exa --long --header --git --tree'
 alias pacman='paru'
 alias yay='paru'
+alias dotfiles='code ~/.dotfiles'
 
 # options
 setopt correct
@@ -19,7 +20,7 @@ zstyle :prompt:pure:prompt:error color red
 zstyle :prompt:pure:git:stash show yes
 
 autoload -U promptinit; promptinit
-prompt pure
+# prompt pure
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fpath=(/usr/share/zsh/site-functions $fpath)
