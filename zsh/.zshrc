@@ -1,9 +1,12 @@
-# gpg
+# exports
 export GPG_TTY=$(tty)
+export EDITOR=nano
+export LANG=en_GB.UTF-8
 
 # alisas
-alias ls'exa --long --header --git'
-alias exa='exa --long --header --git'
+alias ls='exa -F --long --header --git'
+alias la='exa -aF --long --header --git'
+alias exa='exa -F --long --header --git'
 alias tree='exa --long --header --git --tree'
 alias pacman='paru'
 alias yay='paru'
