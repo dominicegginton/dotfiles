@@ -1,7 +1,7 @@
 configuration {
 	modi: "run,drun,window,ssh";
-	color-normal: "#161b22, #c9d1d9, #161b22, #1f6feb, #c9d1d9";
-	color-urgent: "#161b22, #c9d1d9, #161b22, #da3633, #c9d1d9";
-	color-active: "#161b22, #c9d1d9, #161b22, #1f6feb, #c9d1d9";
-	color-window: "#161b22, #161b22, #161b22";
+	color-normal: "#161B22, #C9D1D9, #161B22, #1F6FEB, #C9D1D9";
+	color-urgent: "#161B22, #C9D1D9, #161B22, #DA3633, #C9D1D9";
+	color-active: "#161B22, #C9D1D9, #161B22, #1F6FEB, #C9D1D9";
+	color-window: "#161B22, #161B22, #161B22";
 }

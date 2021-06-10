@@ -3,9 +3,9 @@ general {
 	colors = true
 	markup = pango
 	interval = 1
-	color_good = "#c9d1d9"
-	color_degraded = "#bd561d"
-	color_bad = "#da3633"
+	color_good = "#C9D1D9"
+	color_degraded = "#BD561D"
+	color_bad = "#DA3633"
 }
 
 order += "cpu_usage"

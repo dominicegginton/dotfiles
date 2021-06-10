@@ -16,7 +16,7 @@ exec --no-startup-id xwallpaper --zoom ~/Background.jpg
 exec --no-startup-id betterlockscreen -u ~/Background.jpg -r 1920x1080
 exec --no-startup-id xsettingsd &
 exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinput Natural Scrolling Enabled" 1
-exec --no-startup-id xset s off
+exec --no-startup-id dunst
 exec --no-startup-id xset -dpms
 exec --no-startup-id picom -b --experimental-backend
 
@@ -156,15 +156,15 @@ bar {
 	height 30
 	colors {
 		background #000000
-		statusline #c9d1d9
+		statusline #C9D1D9
 		separator #000000
 
 		# colour of border, background, and text
-		focused_workspace	#000000	#000000	#c9d1d9
-		active_workspace #000000 #000000	#484f58
-		inactive_workspace	#000000 #000000	#484f58
-		urgent_workspace #c9d1d9	#c9d1d9	#000000
-		binding_mode #c9d1d9 #c9d1d9 #000000
+		focused_workspace	#000000	#000000	#C9D1D9
+		active_workspace #000000 #000000	#484F58
+		inactive_workspace	#000000 #000000	#484F58
+		urgent_workspace #C9D1D9	#C9D1D9	#000000
+		binding_mode #C9D1D9 #C9D1D9 #000000
 	}
 }
 
@@ -182,9 +182,9 @@ for_window [class=feh] floating enable
 for_window [class=mpv] floating enable
 
 # colour of border, background, text, indicator, and child_border
-client.focused	#000000	#000000 #c9d1d9	#c9d1d9	#c9d1d9
-client.focused_inactive	#000000	#000000	#c9d1d9	#000000	#000000
-client.unfocused	#000000	#000000	#c9d1d9	#000000	#000000
-client.urgent	#000000	#000000	#000000	#c9d1d9	#000000
-client.placeholder	#000000	#000000	#c9d1d9	#000000	#000000
+client.focused	#000000	#000000 #C9D1D9	#C9D1D9	#C9D1D9
+client.focused_inactive	#000000	#000000	#C9D1D9	#000000	#000000
+client.unfocused	#000000	#000000	#C9D1D9	#000000	#000000
+client.urgent	#000000	#000000	#000000	#C9D1D9	#000000
+client.placeholder	#000000	#000000	#C9D1D9	#000000	#000000
 client.background	#000000
