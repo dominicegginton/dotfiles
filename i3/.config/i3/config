@@ -161,10 +161,10 @@ bar {
 
 		# colour of border, background, and text
 		focused_workspace	#000000	#000000	#c9d1d9
-		active_workspace #000000 #000000	#6e7681
-		inactive_workspace	#000000 #000000	#6e7681
+		active_workspace #000000 #000000	#484f58
+		inactive_workspace	#000000 #000000	#484f58
 		urgent_workspace #c9d1d9	#c9d1d9	#000000
-		binding_mode #FFFFFF #FFFFFF #000000
+		binding_mode #c9d1d9 #c9d1d9 #000000
 	}
 }
 
@@ -182,9 +182,9 @@ for_window [class=feh] floating enable
 for_window [class=mpv] floating enable
 
 # colour of border, background, text, indicator, and child_border
-client.focused	#1b1f23	#1b1f23 #fafbfc	#fafbfc	#fafbfc
-client.focused_inactive	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
-client.unfocused	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
-client.urgent	#1b1f23	#1b1f23	#1b1f23	#fafbfc	#1b1f23
-client.placeholder	#1b1f23	#1b1f23	#fafbfc	#1b1f23	#1b1f23
-client.background	#1b1f23
+client.focused	#000000	#000000 #c9d1d9	#c9d1d9	#c9d1d9
+client.focused_inactive	#000000	#000000	#c9d1d9	#000000	#000000
+client.unfocused	#000000	#000000	#c9d1d9	#000000	#000000
+client.urgent	#000000	#000000	#000000	#c9d1d9	#000000
+client.placeholder	#000000	#000000	#c9d1d9	#000000	#000000
+client.background	#000000
