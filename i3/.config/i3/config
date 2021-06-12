@@ -44,6 +44,7 @@ gaps inner  $inner_gaps
 gaps outer $outer_gaps
 # smart_gaps on
 smart_borders on
+bindsym $super+g exec --no-startup-id "if [ `i3-msg -t get_tree | grep -Po '.*\\"gaps\\":{\\"inner\\":\K(-|)[0-9]+(?=.*\\"focused\\":true)'` -eq 0 ]; then i3-msg gaps inner current set 0; else i3-msg gaps inner current set $inner_gaps; fi"
 
 # workspace names
 set $ws1 "1:&#xf120;"
