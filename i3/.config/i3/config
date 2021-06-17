@@ -154,6 +154,7 @@ bar {
 	position top
   strip_workspace_numbers yes
 	tray_padding 2
+	tray_output none
 	height 30
 	colors {
 		background #000000
