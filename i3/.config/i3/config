@@ -51,6 +51,7 @@ set $ws1 "1:&#xf120;"
 set $ws2 "2:&#xf268;"
 set $ws3 "3:&#xf392;"
 set $ws4 "4:&#xf3ca;"
+set $ws9 "9:&#xf233;"
 set $ws0 "0:&#xf108;"
 
 # switch to workspace
@@ -58,6 +59,7 @@ bindsym $super+1 workspace $ws1
 bindsym $super+2 workspace $ws2
 bindsym $super+3 workspace $ws3
 bindsym $super+4 workspace $ws4
+bindsym $super+9 workspace $ws9
 bindsym $super+0 workspace $ws0
 
 # move focused container to workspace
@@ -65,6 +67,7 @@ bindsym $super+Shift+1 move container to workspace $ws1
 bindsym $super+Shift+2 move container to workspace $ws2
 bindsym $super+Shift+3 move container to workspace $ws3
 bindsym $super+Shift+4 move container to workspace $ws4
+bindsym $super+Shift+9 move container to workspace $ws9
 bindsym $super+Shift+0 move container to workspace $ws0
 
 # move workspace between monitors
