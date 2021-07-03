@@ -18,6 +18,7 @@ exec --no-startup-id xsettingsd &
 exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id dunst
 exec --no-startup-id xset -dpms
+exec --no-startup-id setxkmap gb
 exec --no-startup-id picom -b --experimental-backend
 
 # start a terminal
