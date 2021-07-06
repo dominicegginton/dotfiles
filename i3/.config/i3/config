@@ -25,9 +25,9 @@ exec --no-startup-id picom -b --experimental-backend
 bindsym $super+Return exec alacritty
 
 # rofi
-bindsym $super+space exec rofi -show drun -lines 12 -padding 18 -width 35 -location 0 -font 'Noto Sans 10' -terminal alacritty
-bindsym $alt+Tab exec rofi -show window -padding 18 -width 35 -location 0 -font 'Noto Sans 10' -terminal alacritty
-bindsym $super+Shift+s exec rofi -show ssh -padding 18 -width 35 -location 0 -font 'Noto Sans 10' -terminal alacritty
+bindsym $super+space exec rofi -show drun
+bindsym $alt+Tab exec rofi -show window
+bindsym $super+Shift+s exec rofi -show ssh
 
 # common apps keybinds
 bindsym $super+Shift+c exec google-chrome-stable --force-dark-mode --use-gl=desktop --enable-features=VaapiVideoDecoder;workspace $ws2;focus
