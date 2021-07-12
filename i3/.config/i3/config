@@ -30,7 +30,7 @@ bindsym $alt+Tab exec rofi -show window
 bindsym $super+Shift+s exec rofi -show ssh
 
 # common apps keybinds
-bindsym $super+Shift+c exec google-chrome-stable --force-dark-mode --use-gl=desktop --enable-features=VaapiVideoDecoder;workspace $ws2;focus
+bindsym $super+Shift+w exec google-chrome-unstable --force-dark-mode --use-gl=desktop --enable-features=VaapiVideoDecoder;workspace $ws2;focus
 bindsym $super+Shift+d exec discord;workspace $ws3;focus
 
 # kill focused window
