@@ -40,32 +40,30 @@ draw_bold_text_with_bright_colors: false
 
 colors:
   primary:
-    background: '0x000000'
-    foreground: '0xc9d1d9'
-  # Normal colors
+    background: '#000000'
+    foreground: '#C9D1D9'
   normal:
-    black:   '0x0d1117'
-    red:     '0xff7b72'
-    green:   '0x3fb950'
-    yellow:  '0xd29922'
-    blue:    '0x58a6ff'
-    magenta: '0xbc8cff'
-    cyan:    '0x76e3ea'
-    white:   '0xb1bac4'
-  # Bright colors
+    black:   '#0D1117'
+    red:     '#FF7B72'
+    green:   '#3FB950'
+    yellow:  '#D29922'
+    blue:    '#58A6FF'
+    magenta: '#BC8CCF'
+    cyan:    '#76E3EA'
+    white:   '#B1BAC4'
   bright:
-    black:   '0x161b22'
-    red:     '0xffa198'
-    green:   '0x56d364'
-    yellow:  '0xe3b341'
-    blue:    '0x79c0ff'
-    magenta: '0xd2a8ff'
-    cyan:    '0xb3f0ff'
-    white:   '0xb1bac4'
+    black:   '#161B22'
+    red:     '#FFA198'
+    green:   '#56D364'
+    yellow:  '#E3B341'
+    blue:    '#79C0FF'
+    magenta: '#D2A8FF'
+    cyan:    '#B3F0FF'
+    white:   '#B1BAC4'
 
 bell:
   animation: EaseOutExpo
-  color: '0xb1bac4'
+  color: '#B1BAC4'
   duration: 0
 
 background_opacity: 1.0
