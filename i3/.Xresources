@@ -1,28 +1,28 @@
 !  ui colors
-*.foreground:   #ffffff
-*.background:   #24292e
-*.cursorColor:  #ffffff
+*.foreground: #C9D1D9
+*.background:   #000000
+*.cursorColor:  #C9D1D9
 ! black
-*.color0  : #24292e
-*.color8  : #24292e
+*.color0  : #0D1117
+*.color8  : #161B22
 ! red
-*.color1  : #ea4a5a
-*.color9  : #ea4a5a
+*.color1  : #FF7B72
+*.color9  : #FFA198
 ! green
-*.color2  : #34d058
-*.color10 : #34d058
+*.color2  : #3FB950
+*.color10 : #56D364
 ! yellow
-*.color3  : #ffdf5d
-*.color11 : #ffdf5d
+*.color3  : #D29922
+*.color11 : #E3B341
 ! blue
-*.color4  : #79b8ff
-*.color12 : #79b8ff
+*.color4  : #58A6FF
+*.color12 : #79C0FF
 ! magenta
-*.color5  : #8a63d2
-*.color13 : #8a63d2
+*.color5  : #BC8CFF
+*.color13 : #D2A8FF
 ! cyan
-*.color6  : #79b8ff
-*.color14 : #79b8ff
+*.color6  : #76E3EA
+*.color14 : #B3F0FF
 ! white
-*.color7  : #ffffff
-*.color15 : #ffffff
+*.color7  : #B1BAC4
+*.color15 : #B1bAC4
