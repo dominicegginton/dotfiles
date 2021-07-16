@@ -9,7 +9,6 @@ alias la='exa -aF --long --header --git'
 alias exa='exa -F --long --header --git'
 alias tree='exa --long --header --git --tree'
 alias pacman='paru'
-alias yay='paru'
 alias dotfiles='code ~/.dotfiles'
 
 # options

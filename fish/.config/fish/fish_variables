@@ -7,7 +7,6 @@ SETUVAR _fish_abbr_la:exa\x20\x2daF\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2
 SETUVAR _fish_abbr_ls:exa\x20\x2dF\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit
 SETUVAR _fish_abbr_pacman:paru
 SETUVAR _fish_abbr_tree:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit\x20\x2d\x2dtree
-SETUVAR _fish_abbr_yay:paru
 SETUVAR fish_color_autosuggestion:586e75
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:93a1a1
@@ -37,3 +36,4 @@ SETUVAR fish_pager_color_completion:B3A06D
 SETUVAR fish_pager_color_description:B3A06D
 SETUVAR fish_pager_color_prefix:cyan\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
+SETUVAR fish_prompt_pwd_dir_length:0
