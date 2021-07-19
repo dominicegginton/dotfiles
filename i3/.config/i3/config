@@ -85,7 +85,7 @@ bindsym $super+Right focus right
 # change layout
 bindsym $super+s layout default
 bindsym $super+t layout tabbed
-bindsym $super+y layout toggle
+bindsym $super+l layout toggle
 
 # split orientation
 bindsym $super+h split h
