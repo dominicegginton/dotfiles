@@ -28,6 +28,7 @@ bindsym $super+Return exec alacritty
 bindsym $super+space exec rofi -show drun
 bindsym $alt+Tab exec rofi -show window
 bindsym $super+Shift+s exec rofi -show ssh
+bindsym $alt+space exec rofi -show emoji
 
 # common apps keybinds
 bindsym $super+Shift+w exec google-chrome-unstable --force-dark-mode --use-gl=desktop --enable-features=VaapiVideoDecoder;workspace $ws2;focus

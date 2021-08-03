@@ -1,5 +1,5 @@
 configuration {
-	modi: "run,drun,window,ssh,calc";
+	modi: "run,drun,window,ssh,calc,emoji";
 	width: 35;
 	lines: 12;
 	columns: 1;
