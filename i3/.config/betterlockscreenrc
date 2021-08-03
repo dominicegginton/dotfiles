@@ -13,4 +13,4 @@ datecolor=ffffffff
 loginbox=0366d6ff
 font="Noto Sans"
 locktext='Type password to unlock ...'
-wallpaper_cmd='xwallpaper --stretch'
+wallpaper_cmd='xwallpaper --zoom'
