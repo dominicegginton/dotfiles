@@ -1,7 +1,6 @@
-#export=doc,pdf
+# export=doc,pdf
 depth=100
 no-prompt=true
-desk
 
 [list]
 depth=2
