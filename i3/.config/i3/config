@@ -155,7 +155,7 @@ bindsym $super+Shift+r restart
 bar {
 	status_command i3status
 	workspace_min_width 30
-	font pango: Noto Sans 9
+	font pango: Noto Sans 9.5
 	position top
   strip_workspace_numbers yes
 	tray_padding 2
