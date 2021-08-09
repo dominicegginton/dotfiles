@@ -29,3 +29,5 @@
 	required = true
 [lfs]
 	pruneverifyremotealways = true
+[init]
+	defaultBranch = main
