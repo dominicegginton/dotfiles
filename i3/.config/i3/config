@@ -13,7 +13,7 @@ floating_maximum_size 1600 x 900
 # autostart
 exec --no-startup-id xset s off
 exec --no-startup-id xwallpaper --zoom ~/Background.jpg
-exec --no-startup-id betterlockscreen -u ~/Background.jpg -r 1920x1080
+exec --no-startup-id betterlockscreen -u ~/Background.jpg
 exec --no-startup-id xsettingsd &
 exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id dunst
