@@ -20,6 +20,7 @@ exec --no-startup-id dunst
 exec --no-startup-id xset -dpms
 exec --no-startup-id setxkmap gb
 exec --no-startup-id picom -b --experimental-backend
+exec --no-startup-id gnome-keyring-daemon --replace --components=secrets,ssh,pcks11
 
 # start a terminal
 bindsym $super+Return exec alacritty
@@ -31,7 +32,7 @@ bindsym $super+Shift+s exec rofi -show ssh
 bindsym $alt+space exec rofi -show emoji
 
 # common apps keybinds
-bindsym $super+Shift+w exec google-chrome-unstable --force-dark-mode --use-gl=desktop --enable-features=VaapiVideoDecoder;workspace $ws2;focus
+bindsym $super+Shift+w exec google-chrome-unstable --password-store=gnome --force-dark-mode --use-gl=desktop --enable-features=VaapiVideoDecoder;workspace $ws2;focus
 bindsym $super+Shift+d exec discord;workspace $ws3;focus
 
 # kill focused window
