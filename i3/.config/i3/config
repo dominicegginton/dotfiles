@@ -60,7 +60,6 @@ set $ws0 "0:&#xf108;"
 bindsym $super+1 workspace $ws1
 bindsym $super+2 workspace $ws2
 bindsym $super+3 workspace $ws3
-bindsym $super+4 workspace $ws4
 bindsym $super+9 workspace $ws9
 bindsym $super+0 workspace $ws0
 
@@ -68,7 +67,6 @@ bindsym $super+0 workspace $ws0
 bindsym $super+Shift+1 move container to workspace $ws1
 bindsym $super+Shift+2 move container to workspace $ws2
 bindsym $super+Shift+3 move container to workspace $ws3
-bindsym $super+Shift+4 move container to workspace $ws4
 bindsym $super+Shift+9 move container to workspace $ws9
 bindsym $super+Shift+0 move container to workspace $ws0
 
@@ -183,7 +181,6 @@ for_window [class=".*"] border pixel 1
 assign [class=code-oss] $ws1
 assign [class=Google-chrome] $ws2
 assign [class=discord] $ws3
-assign [class="Microsoft Teams - Preview"] $ws4
 
 # assign window to default to floating
 for_window [class=feh] floating enable
