@@ -18,7 +18,7 @@ exec --no-startup-id xsettingsd &
 exec --no-startup-id xinput --set-prop "DELL0823:00 044E:120A Touchpad" "libinput Natural Scrolling Enabled" 1
 exec --no-startup-id dunst
 exec --no-startup-id xset -dpms
-exec --no-startup-id setxkmap gb
+exec --no-startup-id "setxkmap gb"
 exec --no-startup-id picom -b --experimental-backend
 exec --no-startup-id gnome-keyring-daemon --replace --components=secrets,ssh,pcks11
 
@@ -36,7 +36,7 @@ bindsym $super+Shift+w exec google-chrome-unstable --password-store=gnome --forc
 bindsym $super+Shift+d exec discord;workspace $ws3;focus
 
 # kill focused window
-bindsym $super+c kill
+bindsym $super+q kill
 bindsym $alt+F4 kill
 
 # gaps
