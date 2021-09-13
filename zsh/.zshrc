@@ -37,6 +37,13 @@ function parse_git_branch {
 }
 
 # ZSH OPTIONS
+setopt AUTO_CD
+setopt CORRECT_ALL
+setopt CHECK_JOBS
+setopt LONG_LIST_JOBS
+setopt HIST_APPEND
+setopt ALIASES
+setopt INTERACTIVE_COMMENTS
 
 # PROMPT
 if [[ "$SSH_CLIENT" ]]; then
