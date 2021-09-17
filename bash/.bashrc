@@ -55,17 +55,12 @@ function parse_git_branch {
 }
 
 # BASH OPTIONS
-shopt -s autocd
 shopt -s cdable_vars
 shopt -s cdspell
 shopt -s checkhash
-shopt -s checkjobs
 shopt -s checkwinsize
 shopt -s histappend
 shopt -s cmdhist
-shopt -s complete_fullquote
-shopt -s direxpand
-shopt -s dirspell
 shopt -s dotglob
 shopt -s expand_aliases
 shopt -u failglob
