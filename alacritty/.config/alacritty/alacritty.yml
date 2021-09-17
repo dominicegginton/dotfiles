@@ -47,7 +47,7 @@ draw_bold_text_with_bright_colors: false
 
 colors:
   primary:
-    background: '#000000'
+    background: '#0D1117'
     foreground: '#C9D1D9'
     #dim_foreground: '#000000'
     #bright_foreground: '#000000'
