@@ -72,7 +72,7 @@ shopt -s interactive_comments
 
 # PROMPT
 if [[ "$SSH_CLIENT" ]]; then
-    export PS1="$GREEN\u@\h $BLUE\w$MAGENTA\$(parse_git_branch) $YELLOW\$(parse_git_status)\n$MAGENTA❯$CLEAR "
+    export PS1="$GREEN\u@\h $BLUE\w$MAGENTA\$(parse_git_branch) $YELLOW\$(parse_git_status)\n$MAGENTA\$$CLEAR "
 else
-    export PS1="$BLUE\w$MAGENTA\$(parse_git_branch) $YELLOW\$(parse_git_status)\n$MAGENTA❯$CLEAR "
+    export PS1="$BLUE\w$MAGENTA\$(parse_git_branch) $YELLOW\$(parse_git_status)\n$MAGENTA\$$CLEAR "
 fi

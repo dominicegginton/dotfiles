@@ -49,5 +49,5 @@ function fish_prompt
   else
     set_color red
   end
-  echo "❯ "
+  echo "\$ "
 end
