@@ -31,3 +31,7 @@
 	pruneverifyremotealways = true
 [init]
 	defaultBranch = main
+[includeIf "gitdir:~/dev/arup/**"]
+	path = .arup.gitconfig
+[includeIf "gitdir:~/playgrounds/arup/**"]
+	path = .arup.gitconfig
