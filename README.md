@@ -16,6 +16,7 @@ Dotfiles are the files used to store user-specific application configuration. Th
 - **bash** *bash configuration with git status*
 - **drive** *google drive client for linux configuration*
 - **fish** *fish configuration, variables and functions*
+- **gh** *gitthub cli configuration*
 - **git** *git configuration*
 - **htop** *htop system monitor configuration*
 - **i3** *configuration and theme files for i3, i3 status, xorg, picom, rofi, dunst, and betterlockscreen*
