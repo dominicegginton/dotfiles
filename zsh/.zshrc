@@ -1,4 +1,7 @@
 # ALIAS
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 alias ls='exa -F --long --header --git'
 alias la='exa -aF --long --header --git'
 alias exa='exa -F --long --header --git'

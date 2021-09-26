@@ -17,6 +17,9 @@ WHITE="\[\033[0;97m\]"
 CLEAR="\[\033[0m\]"
 
 # ALIAS
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
 alias ls='exa -F --long --header --git'
 alias la='exa -aF --long --header --git'
 alias exa='exa -F --long --header --git'
