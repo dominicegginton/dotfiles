@@ -33,3 +33,5 @@
 	defaultBranch = main
 [includeIf "gitdir:~/dev/arup-group/**"]
 	path = .arup.gitconfig
+[tag]
+	gpgsign = true
