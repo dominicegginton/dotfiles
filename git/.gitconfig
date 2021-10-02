@@ -5,7 +5,7 @@
 [github]
 	user = dominicegginton
 [core]
-	editor = nano
+	editor = code --wait
 	hooksPath = .githooks
 	excludesfile = ~/.gitignore
 [alias]
@@ -35,3 +35,12 @@
 	path = .arup.gitconfig
 [tag]
 	gpgsign = true
+[diff]
+	guitool = code --diff
+	tool = vscode
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE
