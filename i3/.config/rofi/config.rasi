@@ -55,7 +55,7 @@ configuration {
 /*	window-format: "{w}    {c}   {t}";*/
 /*	click-to-exit: true;*/
 /*	show-match: true;*/
-/*	theme: ;*/
+	theme: "theme";
 	color-normal: "#161B22, #C9D1D9, #161B22, #1F6FEB, #C9D1D9";
 	color-urgent: "#161B22, #C9D1D9, #161B22, #DA3633, #C9D1D9";
 	color-active: "#161B22, #C9D1D9, #161B22, #1F6FEB, #C9D1D9";
