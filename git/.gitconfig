@@ -5,7 +5,7 @@
 [github]
 	user = dominicegginton
 [core]
-	editor = code --wait
+	editor = nano
 	hooksPath = .githooks
 	excludesfile = ~/.gitignore
 [alias]
