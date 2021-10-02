@@ -14,6 +14,7 @@ Dotfiles are the files used to store user-specific application configuration. Th
 - **alacritty** *alacritty configuration and theme*
 - **background** *desktop background*
 - **bash** *bash configuration with git status*
+- **cutefish** *configuration files for cutefish and cutefishos apps*
 - **drive** *google drive client for linux configuration*
 - **fish** *fish configuration, variables and functions*
 - **gh** *gitthub cli configuration*
