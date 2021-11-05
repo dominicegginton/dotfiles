@@ -35,6 +35,9 @@ set __fish_git_prompt_color_upstream blue
 # SET PROMPT OPTIONS
 set -U fish_prompt_pwd_dir_length 0
 
+# PATH
+set -U fish_user_paths ~/Library/Python/3.9/bin $fish_user_paths
+
 # FISH PROMPT
 function fish_prompt
   set -l last_status $status

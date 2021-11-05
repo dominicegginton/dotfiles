@@ -73,6 +73,9 @@ shopt -s nocaseglob
 shopt -s hostcomplete
 shopt -s interactive_comments
 
+# PATH
+export PATH="$PATH:~/Library/Python/3.9/bin"
+
 # PROMPT
 if [[ "$SSH_CLIENT" ]]; then
     export PS1="$GREEN\u@\h $BLUE\w$MAGENTA\$(parse_git_branch) $YELLOW\$(parse_git_status)\n$MAGENTA\$$CLEAR "

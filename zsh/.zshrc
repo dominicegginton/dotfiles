@@ -48,6 +48,9 @@ setopt HIST_APPEND
 setopt ALIASES
 setopt INTERACTIVE_COMMENTS
 
+# PATH
+export PATH="$PATH:~/Library/Python/3.9/bin"
+
 # PROMPT
 if [[ "$SSH_CLIENT" ]]; then
   PROMPT="%F{green}%n@%m %F{blue}%~%F{magenta}$(parse_git_branch) %F{yellow}$(parse_git_status)$prompt_newline%F{magenta}$%F{default} "
