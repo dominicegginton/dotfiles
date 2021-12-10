@@ -75,6 +75,9 @@ shopt -s interactive_comments
 
 # PATH
 export PATH="$PATH:~/Library/Python/3.9/bin"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # PROMPT
 if [[ "$SSH_CLIENT" ]]; then
