@@ -23,9 +23,9 @@ Dotfiles are the files used to store user-specific application configuration. Th
 ## Installation
 
 ``` shell
-$ git clone https://github.com/dominicegginton/dotfiles ~/.dotfiles
-$ cd ~/.dotfiles
-$ stow {package}
+git clone https://github.com/dominicegginton/dotfiles ~/.dotfiles
+cd ~/.dotfiles
+stow {package}
 ```
 
 ## Bugs
