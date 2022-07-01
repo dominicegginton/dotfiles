@@ -5,7 +5,7 @@
 [github]
 	user = dominicegginton
 [core]
-	editor = nano
+	editor = nvim
 	hooksPath = .githooks
 	excludesfile = ~/.gitignore
 [alias]

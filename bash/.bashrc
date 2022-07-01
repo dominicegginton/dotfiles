@@ -29,7 +29,7 @@ alias dotfiles='code ~/.dotfiles'
 
 # ENVIROMENT VARIABLES
 export GPG_TTY=$(tty)
-export EDITOR=nano
+export EDITOR=vnim
 export LANG=en_GB.UTF-8
 
 # PARSE GIT STATUS
