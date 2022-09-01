@@ -8,12 +8,14 @@
 	editor = nvim
 	hooksPath = .githooks
 	excludesfile = ~/.gitignore
+	autocrlf = input
 [alias]
 	graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
 [gpg]
 	program = gpg
 [commit]
 	gpgsign = true
+	template = /Users/dom.egginton/.gitmessage
 [pull]
 	ff = only
 [rebase]
