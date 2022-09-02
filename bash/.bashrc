@@ -26,6 +26,7 @@ alias exa='exa -F --long --header --git'
 alias tree='exa --long --header --git --tree'
 alias pacman='paru'
 alias dotfiles='code ~/.dotfiles'
+alias notebook='code ~/dev/dominicegginton/notebook'
 
 # ENVIROMENT VARIABLES
 export GPG_TTY=$(tty)
