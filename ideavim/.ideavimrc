@@ -1,2 +1,12 @@
-set relativenumber
+""" VIM PLUGINS """
 set NERDTree
+
+""" COMMON SEETINGS """
+set number relativenumber
+set scrolloff=5
+set incsearch
+
+""" IDEAVIM SPECIFIC SETTINGS """
+set ideajoin
+set ideawrite=all
+set idearefactormode=keep
