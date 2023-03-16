@@ -1,6 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
-SETUVAR __fish_initialized:3100
+SETUVAR __fish_initialized:3400
 SETUVAR _fish_abbr_cp:cp\x20\x2di
 SETUVAR _fish_abbr_dotfiles:code\x20\x7e/\x2edotfiles
 SETUVAR _fish_abbr_exa:exa\x20\x2dF\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit
@@ -42,4 +42,6 @@ SETUVAR fish_pager_color_completion:B3A06D
 SETUVAR fish_pager_color_description:B3A06D
 SETUVAR fish_pager_color_prefix:cyan\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
+SETUVAR fish_pager_color_selected_background:\x2dr
 SETUVAR fish_prompt_pwd_dir_length:0
+SETUVAR fish_user_paths:/Users/dom\x2eegginton/Library/Python/3\x2e9/bin

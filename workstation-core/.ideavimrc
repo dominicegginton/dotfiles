@@ -1,0 +1,67 @@
+""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""" LEADER KEY """"""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""
+
+" Map leader key to space "
+let mapleader=" "
+
+""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""" PLUGINS """""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""
+
+" NERDTree "
+Plug 'preservim/nerdtree'
+
+""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""" CLIPBOARD """"""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use the OS clipboard "
+set clipboard+=unnamedplus,unnamed
+
+" Enable native paste action for put operations "
+set clipboard+=ideaput
+
+" Enable Idea bookmark integration with Vim marks"
+set ideamarks
+
+""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""" CONFIGURATION """"""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""
+
+" Use relative line numbers "
+set number relativenumber
+
+" Show the current mode in the status line "
+set showmode
+
+set ideajoin
+set idearefactormode=keep
+set ideawrite=all
+set history=1000
+
+""" USER INTERFACE """
+set scrolloff=5
+set ruler
+set colorcolumn=80
+highlight ColorColumn ctermbg=0 guibg=lightgrey
+
+set ignorecase
+set smartcase
+set incsearch
+set showmatch
+set mat=2
+set ttyfast
+set visualbell
+
+""" TEXT, TAB AND INDENTATION """
+set expandtab
+set smarttab
+set shiftwidth=4
+set tabstop=4
+
+set lbr
+set tw=5500
+set ai "Auto indent"
+set si "Smart indent"
+set wrap "Wrap lines"
