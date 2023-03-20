@@ -36,3 +36,7 @@ yabai -m config                                 \
     mouse_action1                move           \
     mouse_action2                resize         \
     mouse_drop_action            swap
+
+yabai -m rule --add app="Microsoft Teams" sticky=on layer=above manage=off
+yabai -m rule --add app="System Settings" sticky=on layer=above manage=off
+yabai -m rule --add app="JetBrains Toolbox" sticky=on layer=above manage=off
