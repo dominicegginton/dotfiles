@@ -1,6 +1,6 @@
 # Dom's dotfiles
 
-My dotfiles managed by [stow](https://www.gnu.org/software/stow/).
+My dotfiles are managed by [stow](https://www.gnu.org/software/stow/).
 
 ## Packages
 
