@@ -16,21 +16,8 @@ LIGHTCYAN="\[\033[0;96m\]"
 WHITE="\[\033[0;97m\]"
 CLEAR="\[\033[0m\]"
 
-# ALIAS
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias ls='exa -F --long --header --git'
-alias la='exa -aF --long --header --git'
-alias exa='exa -F --long --header --git'
-alias tree='exa --long --header --git --tree'
-alias pacman='paru'
-alias dotfiles='code ~/.dotfiles'
-alias notebook='code ~/dev/dominicegginton/notebook'
-
 # ENVIROMENT VARIABLES
 export GPG_TTY=$(tty)
-export EDITOR=vnim
 export LANG=en_GB.UTF-8
 
 # PARSE GIT STATUS
