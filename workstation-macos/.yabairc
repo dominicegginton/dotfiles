@@ -38,7 +38,7 @@ yabai -m config                                 \
     mouse_drop_action            swap
 
 # System Apps
-SystemApps='^(System Setting)$'
+SystemApps='^(System Setting|Finder)$'
 yabai -m rule --add app="${SystemApps}" sticky=on layer=above manage=off
 
 # JetBrains Apps
