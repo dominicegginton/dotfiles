@@ -1,0 +1,2 @@
+workstation-core/.ssh/*
+!workstation-core/.shh/config
