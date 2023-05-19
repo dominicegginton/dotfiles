@@ -1,48 +1,52 @@
 [user]
-	name = Dominic Egginton
-	email = dominic.egginton@gmail.com
-	signingKey = 4C79CE4F82847A9F
+  name = Dominic Egginton
+  email = dominic.egginton@gmail.com
+  signingKey = 4C79CE4F82847A9F
 [github]
-	user = dominicegginton
+  user = dominicegginton
 [core]
-	editor = nvim
-	hooksPath = .githooks
-	excludesfile = ~/.gitignore
-	autocrlf = input
+  editor = nvim
+  hooksPath = .githooks
+  excludesfile = ~/.gitignore
+  autocrlf = input
 [alias]
-	graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+  status = status -sb
+  graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
 [gpg]
-	program = gpg
+  program = gpg
 [commit]
-	gpgsign = true
-	template = /Users/dom.egginton/.gitmessage
+  gpgsign = true
+  template = /Users/dom.egginton/.gitmessage
 [pull]
-	ff = only
+  ff = only
 [rebase]
-	autosquash = true
+  autosquash = true
 [credential]
-	helper = store
+  helper = store
 [color]
-	ui = auto
+  ui = auto
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
 [lfs]
-	pruneverifyremotealways = true
+  pruneverifyremotealways = true
 [init]
-	defaultBranch = main
+  defaultBranch = main
 [includeIf "gitdir:~/dev/arup-group/**"]
-	path = .arup.gitconfig
+  path = .arup.gitconfig
 [tag]
-	gpgsign = true
-[diff]
-	guitool = code --diff
-	tool = vscode
+  gpgsign = true
+[difftool]
+  prompt = false
 [merge]
-	tool = vscode
-[mergetool "vscode"]
-	cmd = code --wait $MERGED
-[difftool "vscode"]
-	cmd = code --wait --diff $LOCAL $REMOTE
+  tool = nvimdiff
+[mergetool]
+  prompt = false
+[mergetool "nvimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE $BASE
+[diff]
+  tool = nvimdiff
+[difftool "nvimdiff"]
+  cmd = nvim -d $LOCAL $REMOTE

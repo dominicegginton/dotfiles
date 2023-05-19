@@ -1,63 +1,33 @@
+# !/bin/zsh
+
+# .zshrc
+# ZSH configuration file
+
 # ALIAS
-alias rm='rm -i'
-alias cp='cp -i'
-alias mv='mv -i'
-alias ls='exa -F --long --header --git'
-alias la='exa -aF --long --header --git'
-alias exa='exa -F --long --header --git'
-alias tree='exa --long --header --git --tree'
-alias pacman='paru'
-alias dotfiles='code ~/.dotfiles'
-alias notebook='code ~/dev/dominicegginton/notebook'
+alias ls='ls -Gl --color=auto'
 
-# ENVIROMENT VARIABLES
-export GPG_TTY=$(tty)
-export EDITOR=nvim
+# ENVIRONMENT VARIABLES
 export LANG=en_GB.UTF-8
-
-# PARSE GIT STATUS
-function parse_git_status {
-        git_status=`git status 2> /dev/null`
-        dirty=`echo -n "${git_status}" 2> /dev/null | grep -q "Changes not staged for commit" 2> /dev/null; echo "$?"`
-        untracked=`echo -n "${git_status}" 2> /dev/null | grep -q "Untracked files" 2> /dev/null; echo "$?"`
-        ahead=`echo -n "${git_status}" 2> /dev/null | grep -q "Your branch is ahead" 2> /dev/null; echo "$?"`
-        behind=`echo -n "${git_status}" 2> /dev/null | grep -q "Your branch is behind" 2> /dev/null; echo "$?"`
-        newfile=`echo -n "${git_status}" 2> /dev/null | grep -q "new file:" 2> /dev/null; echo "$?"`
-        renamed=`echo -n "${git_statu}s" 2> /dev/null | grep -q "renamed:" 2> /dev/null; echo "$?"`
-        bits=''
-        remote=''
-        if [ "${dirty}" = "0" ]; then bits="${bits}M"; fi
-        if [ "${untracked}" = "0" ]; then bits="${bits}U"; fi
-        if [ "${newfile}" = "0" ]; then bits="${bits}N"; fi
-        if [ "${renamed}" = "0" ]; then bits="${bits}R"; fi
-        if [ "${ahead}" = "0" ]; then remote="${remote}⇡"; fi
-        if [ "${behind}" = "0" ]; then remote="${remote}⇣"; fi
-        echo "${bits}${remote}"
-}
-
-# PARSE GIT BRANCH
-function parse_git_branch {
-  git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e "s/* \(.*\)/ \1/"
-}
+export EDITOR=nvim
+export GPG_TTY=$(tty)
 
 # ZSH OPTIONS
-setopt AUTO_CD
-setopt CORRECT_ALL
-setopt CHECK_JOBS
-setopt LONG_LIST_JOBS
-setopt HIST_APPEND
-setopt ALIASES
-setopt INTERACTIVE_COMMENTS
+setopt AUTO_CD # cd to directory if command is not found
+setopt CORRECT_ALL # correct command if typo
+setopt CHECK_JOBS # check if jobs running on exit
+setopt LONG_LIST_JOBS # list jobs in long format
+setopt HIST_APPEND # append to history file
+setopt ALIASES # expand aliases
+setopt INTERACTIVE_COMMENTS # allow comments in interactive shell
 
-# PATH
-export PATH="$PATH:~/Library/Python/3.9/bin"
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# PATH CONFIGURATION
+export PATH="$HOME/.bin:$PATH" # user bin directory
+export PATH="$HOME/.local/bin:$PATH" # user local bin directory
+export PATH="$HOME/.cargo/bin:$PATH" # rust bin directory
 
 # PROMPT
-if [[ "$SSH_CLIENT" ]]; then
-  PROMPT="%F{green}%n@%m %F{blue}%~%F{magenta}$(parse_git_branch) %F{yellow}$(parse_git_status)$prompt_newline%F{magenta}$%F{default} "
+if [[ -n "$SSH_CLIENT" ]]; then
+    PROMPT='%F{red}%n%f@%F{green}%m%f:%F{blue}%~%f $ '
 else
-  PROMPT="%F{blue}%~%F{magenta}$(parse_git_branch) %F{yellow}$(parse_git_status)$prompt_newline%F{magenta}$%F{default} "
+  PROMPT='%F{blue}%~%f $ '
 fi

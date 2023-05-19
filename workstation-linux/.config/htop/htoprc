@@ -1,15 +1,17 @@
 # Beware! This file is rewritten by htop when settings are changed in the interface.
 # The parser is also very primitive, and not human-friendly.
-htop_version=3.2.1
+htop_version=3.2.2
 config_reader_min_version=3
 fields=0 2 48 37 49 17 18 46 47 38 1
 hide_kernel_threads=1
 hide_userland_threads=0
+hide_running_in_container=0
 shadow_other_users=0
 show_thread_names=0
 show_program_path=0
 highlight_base_name=1
 highlight_deleted_exe=1
+shadow_distribution_path_prefix=0
 highlight_megabytes=1
 highlight_threads=1
 highlight_changes=0
@@ -38,7 +40,7 @@ tree_view=1
 sort_key=46
 tree_sort_key=46
 sort_direction=1
-tree_sort_direction=1
+tree_sort_direction=-1
 tree_view_always_by_pid=0
 all_branches_collapsed=0
 screen:Main=PID STATE USER PROCESSOR TIME PRIORITY NICE PERCENT_CPU PERCENT_MEM M_VIRT Command
@@ -47,5 +49,5 @@ screen:Main=PID STATE USER PROCESSOR TIME PRIORITY NICE PERCENT_CPU PERCENT_MEM 
 .tree_view=1
 .tree_view_always_by_pid=0
 .sort_direction=1
-.tree_sort_direction=1
+.tree_sort_direction=-1
 .all_branches_collapsed=0

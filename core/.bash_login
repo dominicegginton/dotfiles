@@ -1,0 +1,6 @@
+# !/bin/bash
+
+# .bash_login
+# Executed by bash(1) when login shell exits on login.
+
+source ~./bashrc
