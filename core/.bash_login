@@ -4,3 +4,4 @@
 # Executed by bash(1) when login shell exits on login.
 
 source ~./bashrc
+. "$HOME/.cargo/env"

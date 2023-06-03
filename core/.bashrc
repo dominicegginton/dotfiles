@@ -40,3 +40,4 @@ if [[ "$SSH_CLIENT" ]]; then
 else
   export PS1="\[\e[0m\]:\[\e[1;34m\]\w\[\e[0m\] \$ "
 fi
+. "$HOME/.cargo/env"
