@@ -31,3 +31,4 @@ if [[ -n "$SSH_CLIENT" ]]; then
 else
   PROMPT='%F{blue}%~%f $ '
 fi
+
