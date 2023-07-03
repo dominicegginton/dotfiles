@@ -16,7 +16,7 @@
   program = gpg
 [commit]
   gpgsign = true
-  template = /Users/dom.egginton/.gitmessage
+  template = ~/.gitmessage
 [pull]
   ff = only
 [rebase]
