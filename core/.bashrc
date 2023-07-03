@@ -1,12 +1,7 @@
 # !/bin/bash
 
 # .bashrc
-# Executed by bash(1) for interactive shells in non-login mode.
-
-# SOURCE GLOBAL DEFINITIONS
-if [ -f /etc/bashrc ]; then
-  . /etc/bashrc
-fi
+# Executed by bash for interactive shells in non-login mode.
 
 # ALIASES
 alias ls='ls -Gl --color=auto'
