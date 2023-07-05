@@ -68,7 +68,7 @@ return require('packer').startup(function(use)
   use 'folke/which-key.nvim'
   
   -- Git
-  use { 'TimUntersberger/neogit', requires = 'nvim-lua/plenary.nvim' }
+  use { 'neogitorg/neogit', requires = 'nvim-lua/plenary.nvim' }
   use 'lewis6991/gitsigns.nvim'
 
   -- Misc
