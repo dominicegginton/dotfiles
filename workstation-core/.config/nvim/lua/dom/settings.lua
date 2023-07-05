@@ -21,6 +21,8 @@ vim.opt.showmatch = true
 vim.opt.synmaxcol = 300 -- stop syntax highlighting for performance
 vim.opt.laststatus = 2 -- always show statusline
 
+vim.opt.autoread = true -- auto reload files when changed outside vim
+
 -- Sidebar
 vim.opt.numberwidth = 3
 vim.opt.showcmd = true
