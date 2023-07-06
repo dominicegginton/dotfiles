@@ -12,7 +12,7 @@ end
 local packer_bootstrap = ensure_packer()
 
 return require('packer').startup(function(use)
-  -- Packer can manage itself
+  -- Packer
   use 'wbthomason/packer.nvim'
 
   -- LSP
@@ -20,7 +20,7 @@ return require('packer').startup(function(use)
   use 'williamboman/mason-lspconfig.nvim'
   use 'neovim/nvim-lspconfig'
 
-  -- Completion
+  -- LSP Completion
   use 'echasnovski/mini.completion'
 
   -- Syntax Highlighting
@@ -42,14 +42,10 @@ return require('packer').startup(function(use)
       'sharkdp/fd',
     }
   }
-  
-  -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   use {
     'nvim-telescope/telescope-fzf-native.nvim',
     run = 'make'
   }
-
-  -- Fuzzy Finder File Browser
   use {
     'nvim-telescope/telescope-file-browser.nvim',
     requires = {
@@ -60,19 +56,24 @@ return require('packer').startup(function(use)
   -- UI
   use 'projekt0n/github-nvim-theme'
   use 'nvim-tree/nvim-web-devicons'
-  use 'nvim-tree/nvim-tree.lua'
-  use 'glepnir/dashboard-nvim'
+  use 'Bekaboo/dropbar.nvim'
   use 'echasnovski/mini.tabline'
   use 'echasnovski/mini.statusline'
   use 'echasnovski/mini.indentscope'
-  use 'folke/which-key.nvim'
   
   -- Git
-  use { 'neogitorg/neogit', requires = 'nvim-lua/plenary.nvim' }
+  use {
+    'neogitorg/neogit',
+    requires = 'nvim-lua/plenary.nvim'
+  }
+  use 'sindrets/diffview.nvim'
   use 'lewis6991/gitsigns.nvim'
 
-  -- Misc
+  -- GitHub Copilot
   use 'github/copilot.vim'
+
+  -- Extra
+  use 'folke/which-key.nvim'
 
   if packer_bootstrap then
     require('packer').sync()
