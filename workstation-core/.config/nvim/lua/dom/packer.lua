@@ -21,7 +21,13 @@ return require('packer').startup(function(use)
   use 'neovim/nvim-lspconfig'
 
   -- LSP Completion
-  use 'echasnovski/mini.completion'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'hrsh7th/cmp-cmdline'
+  use 'hrsh7th/nvim-cmp'
+  use 'L3MON4D3/LuaSnip'
+  use 'saadparwaiz1/cmp_luasnip'
 
   -- Syntax Highlighting
    use {
@@ -56,6 +62,7 @@ return require('packer').startup(function(use)
   -- UI
   use 'projekt0n/github-nvim-theme'
   use 'nvim-tree/nvim-web-devicons'
+  use 'nvim-tree/nvim-tree.lua'
   use 'Bekaboo/dropbar.nvim'
   use 'echasnovski/mini.tabline'
   use 'echasnovski/mini.statusline'
@@ -68,6 +75,7 @@ return require('packer').startup(function(use)
     requires = 'nvim-lua/plenary.nvim'
   }
   use 'sindrets/diffview.nvim'
+  use 'tveskag/nvim-blame-line'
   use 'lewis6991/gitsigns.nvim'
 
   -- GitHub Copilot
