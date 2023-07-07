@@ -56,6 +56,7 @@ return require('packer').startup(function(use)
   -- UI
   use 'projekt0n/github-nvim-theme'
   use 'nvim-tree/nvim-web-devicons'
+  use 'nvim-tree/nvim-tree.lua'
   use 'Bekaboo/dropbar.nvim'
   use 'echasnovski/mini.tabline'
   use 'echasnovski/mini.statusline'

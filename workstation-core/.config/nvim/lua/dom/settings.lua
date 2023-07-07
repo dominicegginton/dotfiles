@@ -27,7 +27,6 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 50
-vim.o.termguicolors = true
 
 -- LSP Settings
 local mason = require('mason')
@@ -104,14 +103,21 @@ telescope.load_extension('file_browser')
 
 -- UI Settings
 local github_theme = require('github-theme')
+local nvim_tree = require('nvim-tree')
 local dropbar = require("dropbar")
 local tabline = require('mini.tabline')
 local tabline = require('mini.tabline')
 local statusline = require('mini.statusline')
 local indentscope = require('mini.indentscope')
 
+vim.opt.termguicolors = true
 github_theme.setup()
 vim.cmd('colorscheme github_light')
+
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+nvim_tree.setup()
+
 dropbar.setup()
 tabline.setup()
 statusline.setup()
