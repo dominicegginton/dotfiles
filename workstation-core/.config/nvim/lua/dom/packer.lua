@@ -56,11 +56,11 @@ return require('packer').startup(function(use)
   -- UI
   use 'projekt0n/github-nvim-theme'
   use 'nvim-tree/nvim-web-devicons'
-  use 'nvim-tree/nvim-tree.lua'
   use 'Bekaboo/dropbar.nvim'
   use 'echasnovski/mini.tabline'
   use 'echasnovski/mini.statusline'
   use 'echasnovski/mini.indentscope'
+  use 'folke/which-key.nvim'
   
   -- Git
   use {
@@ -74,7 +74,7 @@ return require('packer').startup(function(use)
   use 'github/copilot.vim'
 
   -- Extra
-  use 'folke/which-key.nvim'
+  use 'jghauser/mkdir.nvim'
 
   if packer_bootstrap then
     require('packer').sync()
