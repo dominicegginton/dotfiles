@@ -20,14 +20,13 @@ vim.opt.autoread = true
 vim.opt.numberwidth = 3
 vim.opt.showcmd = true
 vim.opt.cmdheight=0
-vim.o.incsearch = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
+vim.opt.incsearch = true
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 50
-vim.opt.colorcolumn = "100"
 vim.o.termguicolors = true
 
 -- LSP Settings
