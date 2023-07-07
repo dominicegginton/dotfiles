@@ -28,29 +28,75 @@ vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 50
 
--- LSP Settings
+-- LSP & Completion Settings
 local mason = require('mason')
 local mason_lspconfig = require('mason-lspconfig')
 local lspconfig = require('lspconfig')
+local cmp = require('cmp')
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+cmp.setup({
+  snippit = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body)
+    end,
+  },
+  mapping = cmp.mapping.preset.insert({
+      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.abort(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  }),
+  sources = cmp.config.sources(
+    {
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+      { name = 'buffer' },
+      { name = 'path' },
+      { name = 'cmdline' },
+    },
+    {
+      { name = 'buffer' },
+    }
+  ),
+})
 
 mason.setup()
 mason_lspconfig.setup()
-lspconfig['tsserver'].setup({})
-lspconfig['angularls'].setup({})
-lspconfig['pyright'].setup({})
-lspconfig['rust_analyzer'].setup({})
-lspconfig['vimls'].setup({})
-lspconfig['yamlls'].setup({})
-lspconfig['jsonls'].setup({})
-lspconfig['html'].setup({})
-lspconfig['cssls'].setup({})
-lspconfig['bashls'].setup({})
-lspconfig['dockerls'].setup({})
-
--- LSP Completion Settings
-local mini_completion = require('mini.completion')
-
-mini_completion.setup()
+lspconfig['tsserver'].setup({
+  capabilities = capabilities,
+})
+lspconfig['angularls'].setup({
+  capabilities = capabilities,
+})
+lspconfig['pyright'].setup({
+  capabilities = capabilities,
+})
+lspconfig['rust_analyzer'].setup({
+  capabilities = capabilities,
+})
+lspconfig['vimls'].setup({
+  capabilities = capabilities,
+})
+lspconfig['yamlls'].setup({
+  capabilities = capabilities,
+})
+lspconfig['jsonls'].setup({
+  capabilities = capabilities,
+})
+lspconfig['html'].setup({
+  capabilities = capabilities,
+})
+lspconfig['cssls'].setup({
+  capabilities = capabilities,
+})
+lspconfig['bashls'].setup({
+  capabilities = capabilities,
+})
+lspconfig['dockerls'].setup({
+  capabilities = capabilities,
+})
 
 -- Syntax Highlighting Settings
 local treesitter = require('nvim-treesitter.configs')
