@@ -224,7 +224,7 @@ nvim_tree.setup({
   },
 })
 
--- dropbar.setup()
+dropbar.setup()
 tabline.setup()
 
 statusline.setup()
