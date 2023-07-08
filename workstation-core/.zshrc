@@ -3,6 +3,8 @@
 # .zshrc
 # ZSH configuration file
 
+# Source bash configuratio
+
 # ALIAS
 alias ls='ls -Gl --color=auto'
 
@@ -12,23 +14,31 @@ export EDITOR=nvim
 export GPG_TTY=$(tty)
 
 # ZSH OPTIONS
-setopt AUTO_CD # cd to directory if command is not found
-setopt CORRECT_ALL # correct command if typo
-setopt CHECK_JOBS # check if jobs running on exit
-setopt LONG_LIST_JOBS # list jobs in long format
-setopt HIST_APPEND # append to history file
-setopt ALIASES # expand aliases
-setopt INTERACTIVE_COMMENTS # allow comments in interactive shell
+setopt AUTO_CD
+setopt CORRECT_ALL
+setopt CHECK_JOBS
+setopt LONG_LIST_JOBS
+setopt HIST_APPEND
+setopt ALIASES
+setopt INTERACTIVE_COMMENTS
+setopt PROMPT_SUBST
 
 # PATH CONFIGURATION
-export PATH="$HOME/.bin:$PATH" # user bin directory
-export PATH="$HOME/.local/bin:$PATH" # user local bin directory
-export PATH="$HOME/.cargo/bin:$PATH" # rust bin directory
+export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/share:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.npm-global:$PATH"
 
 # PROMPT
-if [[ -n "$SSH_CLIENT" ]]; then
-    PROMPT='%F{red}%n%f@%F{green}%m%f:%F{blue}%~%f $ '
-else
-  PROMPT='%F{blue}%~%f $ '
+autoload -U colors && colors
+autoload -Uz vcs_info
+autoload -Uz promptinit && promptinit
+zstyle ':vcs_info:git:*' formats '%b '
+precmd() { vcs_info }
+if [[ "$SSH_CLIENT" ]]; then
+  PROMPT='%F{red}%n@%m%f %F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{green}$.%F{red}$)%f '
+else 
+  PROMPT='%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{green}$.%F{red}$)%f '
 fi
 
