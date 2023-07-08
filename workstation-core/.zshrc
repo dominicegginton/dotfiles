@@ -38,8 +38,8 @@ autoload -Uz promptinit && promptinit
 zstyle ':vcs_info:git:*' formats '%b '
 precmd() { vcs_info }
 if [[ "$SSH_CLIENT" ]]; then
-  PROMPT='%F{red}%n@%m%f %F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{purple}$.%F{red}$)%f '
+  PROMPT='%F{red}%n@%m%f %F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{magenta}$.%F{red}$)%f '
 else 
-  PROMPT='%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{purple}$.%F{red}$)%f '
+  PROMPT='%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{magenta}$.%F{red}$)%f '
 fi
 
