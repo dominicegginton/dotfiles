@@ -39,4 +39,4 @@ SETUVAR fish_pager_color_prefix:cyan\x1e\x2d\x2dunderline
 SETUVAR fish_pager_color_progress:brwhite\x1e\x2d\x2dbackground\x3dcyan
 SETUVAR fish_pager_color_selected_background:\x2dr
 SETUVAR fish_prompt_pwd_dir_length:0
-SETUVAR fish_user_paths:/Users/dom\x2eegginton/\x2elocal/share/bob/nvim\x2dbin\x1e/Users/dom\x2eegginton/Library/Python/3\x2e9/bin\x1e/usr/local/sbin
+SETUVAR fish_user_paths:/Users/dom\x2eegginton/Library/Python/3\x2e9/bin\x1e/Users/dom\x2eegginton/\x2elocal/share/bob/nvim\x2dbin\x1e/usr/local/sbin
