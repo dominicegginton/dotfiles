@@ -69,7 +69,7 @@ return require('packer').startup(function(use)
     'j-hui/fidget.nvim',
     tag = 'legacy',
   }
-  
+
   -- Git
   use 'neogitorg/neogit'
   use 'sindrets/diffview.nvim'
@@ -82,7 +82,8 @@ return require('packer').startup(function(use)
   -- Extra
   use 'folke/which-key.nvim'
   use 'jghauser/mkdir.nvim'
-
+  use 'preservim/nerdcommenter'
+  use 'mattkubej/jest.nvim'
 
   if packer_bootstrap then
     require('packer').sync()
