@@ -14,13 +14,14 @@ local packer_bootstrap = ensure_packer()
 return require('packer').startup(function(use)
   -- Packer
   use 'wbthomason/packer.nvim'
+ 
+  -- Plenary
+  use 'nvim-lua/plenary.nvim'
 
-  -- LSP
+  -- LSP & Completion
   use 'williamboman/mason.nvim'
   use 'williamboman/mason-lspconfig.nvim'
   use 'neovim/nvim-lspconfig'
-
-  -- LSP Completion
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
@@ -28,6 +29,8 @@ return require('packer').startup(function(use)
   use 'hrsh7th/nvim-cmp'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
+  use 'RishabhRD/nvim-lsputils'
+  use 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
 
   -- Syntax Highlighting
    use {
@@ -43,7 +46,6 @@ return require('packer').startup(function(use)
     'nvim-telescope/telescope.nvim',
     tag = '0.1.1',
     requires = {
-      'nvim-lua/plenary.nvim',
       'BurntSushi/ripgrep',
       'sharkdp/fd',
     }
@@ -52,12 +54,7 @@ return require('packer').startup(function(use)
     'nvim-telescope/telescope-fzf-native.nvim',
     run = 'make'
   }
-  use {
-    'nvim-telescope/telescope-file-browser.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim'
-    }
-  }
+  use 'nvim-telescope/telescope-file-browser.nvim'
 
   -- UI
   use 'projekt0n/github-nvim-theme'
@@ -67,13 +64,14 @@ return require('packer').startup(function(use)
   use 'echasnovski/mini.tabline'
   use 'echasnovski/mini.statusline'
   use 'echasnovski/mini.indentscope'
-  use 'folke/which-key.nvim'
+  use 'RishabhRD/popfix'
+  use {
+    'j-hui/fidget.nvim',
+    tag = 'legacy',
+  }
   
   -- Git
-  use {
-    'neogitorg/neogit',
-    requires = 'nvim-lua/plenary.nvim'
-  }
+  use 'neogitorg/neogit'
   use 'sindrets/diffview.nvim'
   use 'tveskag/nvim-blame-line'
   use 'lewis6991/gitsigns.nvim'
@@ -82,7 +80,9 @@ return require('packer').startup(function(use)
   use 'github/copilot.vim'
 
   -- Extra
+  use 'folke/which-key.nvim'
   use 'jghauser/mkdir.nvim'
+
 
   if packer_bootstrap then
     require('packer').sync()

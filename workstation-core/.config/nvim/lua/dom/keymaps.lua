@@ -42,13 +42,11 @@ vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find help tags' }
 local builtin = require('telescope.builtin')
 local neogit = require('neogit')
 
-vim.keymap.set('n', '<leader>go', neogit.open, { desc = 'NeoGit' })
-vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = 'Find git files' })
+vim.keymap.set('n', '<leader>gg', neogit.open, { desc = 'NeoGit' })
+vim.keymap.set('n', '<leader>gd', function() vim.cmd('DiffviewOpen') end, { desc = 'Diffview' })
 
 -- Source NeoVIM Config
-vim.keymap.set('n', '<leader>sv', function()
-  vim.cmd('source $MYVIMRC')
-end, { desc = 'Reload NeoVIM config' })
+vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/init.lua<cr>", { desc = 'Source NeoVIM Config' })
 
 -- Which Key Settings
 local wk = require('which-key')
@@ -57,7 +55,6 @@ wk.register(
   {
     f = 'Find',
     g = 'Git',
-    s = 'System'
   },
   {
     prefix = '<leader>'

@@ -34,6 +34,7 @@ local mason_lspconfig = require('mason-lspconfig')
 local lspconfig = require('lspconfig')
 local cmp = require('cmp')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+local lsp_lines = require('lsp_lines')
 
 cmp.setup({
   snippit = {
@@ -62,40 +63,60 @@ cmp.setup({
   ),
 })
 
+local function on_attach(client, bufnr)
+  
+end
+
 mason.setup()
 mason_lspconfig.setup()
+
 lspconfig['tsserver'].setup({
   capabilities = capabilities,
+  on_attach = opn_attach,
 })
 lspconfig['angularls'].setup({
   capabilities = capabilities,
+  on_attach = on_attach,
 })
 lspconfig['pyright'].setup({
   capabilities = capabilities,
+  on_attach = on_attach,
 })
-lspconfig['rust_analyzer'].setup({
+lspconfig['lua_ls'].setup({
   capabilities = capabilities,
+  on_attach = on_attach,
 })
-lspconfig['vimls'].setup({
-  capabilities = capabilities,
-})
-lspconfig['yamlls'].setup({
-  capabilities = capabilities,
-})
-lspconfig['jsonls'].setup({
-  capabilities = capabilities,
-})
-lspconfig['html'].setup({
-  capabilities = capabilities,
-})
-lspconfig['cssls'].setup({
-  capabilities = capabilities,
-})
-lspconfig['bashls'].setup({
-  capabilities = capabilities,
-})
-lspconfig['dockerls'].setup({
-  capabilities = capabilities,
+
+local bufnr = vim.api.nvim_buf_get_number(0)
+vim.lsp.handlers['textDocument/codeAction'] = function(_, _, actions)
+  require('lsputil.codeAction').code_action_handler(nil, actions, nil, nil, nil)
+end
+vim.lsp.handlers['textDocument/references'] = function(_, _, result)
+  require('lsputil.locations').references_handler(nil, result, { bufnr = bufnr }, nil)
+end
+vim.lsp.handlers['textDocument/definition'] = function(_, method, result)
+  require('lsputil.locations').definition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+vim.lsp.handlers['textDocument/declaration'] = function(_, method, result)
+  require('lsputil.locations').declaration_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+
+vim.lsp.handlers['textDocument/typeDefinition'] = function(_, method, result)
+  require('lsputil.locations').typeDefinition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+vim.lsp.handlers['textDocument/implementation'] = function(_, method, result)
+  require('lsputil.locations').implementation_handler(nil, result, { bufnr = bufnr, method = method }, nil)
+end
+vim.lsp.handlers['textDocument/documentSymbol'] = function(_, _, result, _, bufn)
+  require('lsputil.symbols').document_handler(nil, result, { bufnr = bufn }, nil)
+end
+vim.lsp.handlers['textDocument/symbol'] = function(_, _, result, _, bufn)
+  require('lsputil.symbols').workspace_handler(nil, result, { bufnr = bufn }, nil)
+end
+
+lsp_lines.setup()
+vim.diagnostic.config({
+  virtual_text = false,
 })
 
 -- Syntax Highlighting Settings
@@ -155,6 +176,7 @@ local tabline = require('mini.tabline')
 local tabline = require('mini.tabline')
 local statusline = require('mini.statusline')
 local indentscope = require('mini.indentscope')
+local fidget = require('fidget')
 
 vim.opt.termguicolors = true
 github_theme.setup()
@@ -162,17 +184,67 @@ vim.cmd('colorscheme github_light')
 
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-nvim_tree.setup()
+local HEIGHT_RATIO = 1
+local WIDTH_RATIO = 0.25
+nvim_tree.setup({
+  sort_by = 'case_sensitive',
+  view = {
+    side = 'right',
+    float = {
+      enable = false,
+      open_win_config = function()
+        local screen_w = vim.opt.columns:get()
+        local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
+        local window_w = screen_w * WIDTH_RATIO
+        local window_h = screen_h * HEIGHT_RATIO
+        local window_w_int = math.floor(window_w)
+        local window_h_int = math.floor(window_h)
+        local center_x = (screen_w - window_w) / 2
+        local center_y = ((vim.opt.lines:get() - window_h) / 2) - vim.opt.cmdheight:get()
+        return {
+          relative = 'editor',
+          row = center_y,
+          col = center_x,
+          width = window_w_int,
+          height = window_h_int,
+        }
+      end,
+    },
+    width = function()
+      return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
+    end,
+  },
+  git = {
+    enable = true,
+    ignore = true,
+    timeout = 500,
+  },
+  filters = {
+    dotfiles = false,
+  },
+})
 
-dropbar.setup()
+-- dropbar.setup()
 tabline.setup()
+
 statusline.setup()
 indentscope.setup()
+fidget.setup()
 
 -- Git Settings
 local neogit = require('neogit')
 local gitsigns = require('gitsigns')
 
-neogit.setup()
+neogit.setup({
+  preview_buffer = {
+    kind = "split",
+  },
+  popup = {
+    kind = "split",
+  },
+  intergrations = {
+    diffview = true,
+  },
+})
 gitsigns.setup()
 

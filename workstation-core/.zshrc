@@ -11,6 +11,7 @@ alias ls='ls -Gl --color=auto'
 # ENVIRONMENT VARIABLES
 export LANG=en_GB.UTF-8
 export EDITOR=nvim
+export TERM=xterm-256color
 export GPG_TTY=$(tty)
 
 # ZSH OPTIONS
@@ -26,9 +27,9 @@ setopt PROMPT_SUBST
 # PATH CONFIGURATION
 export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/share:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.npm-global:$PATH"
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
 # PROMPT
 autoload -U colors && colors
@@ -37,8 +38,8 @@ autoload -Uz promptinit && promptinit
 zstyle ':vcs_info:git:*' formats '%b '
 precmd() { vcs_info }
 if [[ "$SSH_CLIENT" ]]; then
-  PROMPT='%F{red}%n@%m%f %F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{green}$.%F{red}$)%f '
+  PROMPT='%F{red}%n@%m%f %F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{purple}$.%F{red}$)%f '
 else 
-  PROMPT='%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{green}$.%F{red}$)%f '
+  PROMPT='%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{purple}$.%F{red}$)%f '
 fi
 

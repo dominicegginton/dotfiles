@@ -10,7 +10,6 @@ export EDITOR=vim
 # PATH CONFIGURATION
 export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.local/share:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.npm-global:$PATH"
 
