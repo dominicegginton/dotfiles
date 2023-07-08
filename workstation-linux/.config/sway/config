@@ -26,12 +26,12 @@ output DP-5 {
 }
 
 exec swayidle -w \
-    timeout 300 'swaylock -f -c 000000' \
-    timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
-    before-sleep 'swaylock -f -c 000000'
+  timeout 300 'swaylock -f -c 000000' \
+  timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
+  before-sleep 'swaylock -f -c 000000'
 
 input "1102:4618:DELL0823:00_044E:120A_Touchpad" {
-    natural_scroll enabled
+  natural_scroll enabled
 }
 
 input "1102:4618:DELL0823:00_044E:120A_UNKNOWN" {
@@ -98,26 +98,58 @@ bindsym $super+Shift+minus move scratchpad
 bindsym $super+minus scratchpad show
 
 mode "resize" {
-    bindsym $left resize shrink width 10px
-    bindsym $down resize grow height 10px
-    bindsym $up resize shrink height 10px
-    bindsym $right resize grow width 10px
-    bindsym Left resize shrink width 10px
-    bindsym Down resize grow height 10px
-    bindsym Up resize shrink height 10px
-    bindsym Right resize grow width 10px
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+  bindsym $left resize shrink width 10px
+  bindsym $down resize grow height 10px
+  bindsym $up resize shrink height 10px
+  bindsym $right resize grow width 10px
+  bindsym Left resize shrink width 10px
+  bindsym Down resize grow height 10px
+  bindsym Up resize shrink height 10px
+  bindsym Right resize grow width 10px
+  bindsym Return mode "default"
+  bindsym Escape mode "default"
 }
 bindsym $super+r mode "resize"
 
+set $base00 #f2f2f2
+set $base01 #e5e5e5
+set $base02 #d9d9d9
+set $base03 #cccccc
+set $base04 #ababab
+set $base05 #767676
+set $base06 #414141
+set $base07 #0c0c0c
+set $base08 #c50f1f
+set $base09 #f9f1a5
+set $base0A #c19c00
+set $base0B #13a10e
+set $base0C #3a96dd
+set $base0D #0037da
+set $base0E #881798
+set $base0F #16c60c
+
+client.focused          $base05 $base0D $base00 $base0D $base0D
+client.focused_inactive $base01 $base01 $base05 $base03 $base01
+client.unfocused        $base01 $base00 $base05 $base01 $base01
+client.urgent           $base08 $base08 $base00 $base08 $base08
+client.placeholder      $base00 $base00 $base05 $base00 $base00
+client.background       $base07
+
+
+
 bar {
-    position top
-    colors {
-        statusline #ffffff
-        background #323232
-        inactive_workspace #32323200 #32323200 #5c5c5c
-    }
+  position top
+  colors {
+    background $base00
+    separator  $base01
+    statusline $base04
+
+    focused_workspace   $base05 $base0D $base00
+    active_workspace    $base05 $base03 $base00
+    inactive_workspace  $base03 $base01 $base05
+    urgent_workspace    $base08 $base08 $base00
+    binding_mode        $base00 $base0A $base00
+  }
 }
 
 include /etc/sway/config.d/*
