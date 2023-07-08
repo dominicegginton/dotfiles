@@ -14,7 +14,7 @@ local packer_bootstrap = ensure_packer()
 return require('packer').startup(function(use)
   -- Packer
   use 'wbthomason/packer.nvim'
- 
+
   -- Plenary
   use 'nvim-lua/plenary.nvim'
 
@@ -64,7 +64,8 @@ return require('packer').startup(function(use)
   use 'echasnovski/mini.tabline'
   use 'echasnovski/mini.statusline'
   use 'echasnovski/mini.indentscope'
-  use 'RishabhRD/popfix'
+  use 'folke/trouble.nvim'
+  use 'rcarriga/nvim-notify'
   use {
     'j-hui/fidget.nvim',
     tag = 'legacy',

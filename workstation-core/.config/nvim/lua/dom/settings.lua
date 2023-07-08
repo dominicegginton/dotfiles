@@ -63,56 +63,21 @@ cmp.setup({
   ),
 })
 
-local function on_attach(client, bufnr)
-  
-end
-
 mason.setup()
 mason_lspconfig.setup()
 
 lspconfig['tsserver'].setup({
   capabilities = capabilities,
-  on_attach = opn_attach,
 })
 lspconfig['angularls'].setup({
   capabilities = capabilities,
-  on_attach = on_attach,
 })
 lspconfig['pyright'].setup({
   capabilities = capabilities,
-  on_attach = on_attach,
 })
 lspconfig['lua_ls'].setup({
   capabilities = capabilities,
-  on_attach = on_attach,
 })
-
-local bufnr = vim.api.nvim_buf_get_number(0)
-vim.lsp.handlers['textDocument/codeAction'] = function(_, _, actions)
-  require('lsputil.codeAction').code_action_handler(nil, actions, nil, nil, nil)
-end
-vim.lsp.handlers['textDocument/references'] = function(_, _, result)
-  require('lsputil.locations').references_handler(nil, result, { bufnr = bufnr }, nil)
-end
-vim.lsp.handlers['textDocument/definition'] = function(_, method, result)
-  require('lsputil.locations').definition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-end
-vim.lsp.handlers['textDocument/declaration'] = function(_, method, result)
-  require('lsputil.locations').declaration_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-end
-
-vim.lsp.handlers['textDocument/typeDefinition'] = function(_, method, result)
-  require('lsputil.locations').typeDefinition_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-end
-vim.lsp.handlers['textDocument/implementation'] = function(_, method, result)
-  require('lsputil.locations').implementation_handler(nil, result, { bufnr = bufnr, method = method }, nil)
-end
-vim.lsp.handlers['textDocument/documentSymbol'] = function(_, _, result, _, bufn)
-  require('lsputil.symbols').document_handler(nil, result, { bufnr = bufn }, nil)
-end
-vim.lsp.handlers['textDocument/symbol'] = function(_, _, result, _, bufn)
-  require('lsputil.symbols').workspace_handler(nil, result, { bufnr = bufn }, nil)
-end
 
 lsp_lines.setup()
 vim.diagnostic.config({
@@ -146,7 +111,6 @@ treesitter.setup({
 
 -- Fuzzy Finder Settings
 local telescope = require('telescope')
-local builtin = require('telescope.builtin')
 
 telescope.setup({
   file_browser = {
@@ -173,9 +137,9 @@ local github_theme = require('github-theme')
 local nvim_tree = require('nvim-tree')
 local dropbar = require("dropbar")
 local tabline = require('mini.tabline')
-local tabline = require('mini.tabline')
 local statusline = require('mini.statusline')
 local indentscope = require('mini.indentscope')
+local notify = require('notify')
 local fidget = require('fidget')
 
 vim.opt.termguicolors = true
@@ -226,9 +190,9 @@ nvim_tree.setup({
 
 dropbar.setup()
 tabline.setup()
-
 statusline.setup()
 indentscope.setup()
+vim.notify = notify
 fidget.setup()
 
 -- Git Settings
@@ -247,4 +211,9 @@ neogit.setup({
   },
 })
 gitsigns.setup()
+
+-- Extra Settings
+local jest = require('nvim-jest')
+
+jest.setup()
 
