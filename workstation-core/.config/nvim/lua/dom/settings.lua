@@ -214,6 +214,12 @@ gitsigns.setup()
 
 -- Extra Settings
 local jest = require('nvim-jest')
+local other = require('other-nvim')
 
 jest.setup()
+other.setup({
+  mappings = {
+    "angular",
+  },
+})
 

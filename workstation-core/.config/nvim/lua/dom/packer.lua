@@ -85,6 +85,7 @@ return require('packer').startup(function(use)
   use 'jghauser/mkdir.nvim'
   use 'preservim/nerdcommenter'
   use 'mattkubej/jest.nvim'
+  use 'rgroli/other.nvim'
 
   if packer_bootstrap then
     require('packer').sync()

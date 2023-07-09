@@ -51,9 +51,13 @@ vim.keymap.set('n', '<leader>gd', function() vim.cmd('DiffviewOpen') end, { desc
 
 -- UI Keymaps
 vim.keymap.set('n', '<leader>tt', function() vim.cmd('NvimTreeToggle') end, { desc = 'Toggle NvimTree' })
+vim.keymap.set('n', '<leader>tD', function() vim.cmd('TroubleToggle') end, { desc = 'Toggle Trouble' })
 
--- Source NeoVIM Config
-vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/.config/nvim/init.lua<cr>", { desc = 'Source NeoVIM Config' })
+-- Extra Keymaps
+vim.api.nvim_set_keymap("n", "<leader>ll", "<cmd>:Other<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lp", "<cmd>:OtherSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>:OtherVSplit<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>:OtherClear<CR>", { noremap = true, silent = true })
 
 -- Which Key Settings
 local wk = require('which-key')
