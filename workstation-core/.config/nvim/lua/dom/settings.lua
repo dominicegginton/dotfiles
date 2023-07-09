@@ -178,6 +178,14 @@ nvim_tree.setup({
       return math.floor(vim.opt.columns:get() * WIDTH_RATIO)
     end,
   },
+  renderer = {
+    highlight_opened_files = 'all',
+    highlight_modified = 'all',
+  },
+  diagnostics = {
+    enable = true,
+    show_on_dirs = true,
+  },
   git = {
     enable = true,
     ignore = true,
