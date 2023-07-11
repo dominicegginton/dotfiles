@@ -171,11 +171,13 @@ local statusline = require('mini.statusline')
 local indentscope = require('mini.indentscope')
 local notify = require('notify')
 local fidget = require('fidget')
+local wk = require('which-key')
+local neogit = require('neogit')
+local gitsigns = require('gitsigns')
 
 vim.opt.termguicolors = true
 github_theme.setup()
 vim.cmd('colorscheme github_light')
-
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 local HEIGHT_RATIO = 1
@@ -225,18 +227,16 @@ nvim_tree.setup({
     dotfiles = false,
   },
 })
-
 dropbar.setup()
 tabline.setup()
 statusline.setup()
 indentscope.setup()
 vim.notify = notify
 fidget.setup()
-
--- Git Settings
-local neogit = require('neogit')
-local gitsigns = require('gitsigns')
-
+wk.register(
+  { t = 'Toggle', f = 'Find' },
+  { prefix = '<leader>' }
+)
 neogit.setup({
   preview_buffer = {
     kind = "split",

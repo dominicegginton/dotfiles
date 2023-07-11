@@ -5,7 +5,6 @@ vim.g.mapleader = ' '
 -- LSP Keymaps
 local builtin = require('telescope.builtin')
 
-vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { desc = 'Toggle diagnostics' })
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, { desc = 'Open diagnostics' })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic' })
@@ -16,8 +15,6 @@ vim.keymap.set('n', '<space>fr', builtin.lsp_references, { desc = 'References' }
 vim.keymap.set('n', '<space>fd', builtin.lsp_definitions, { desc = 'Definitions' })
 vim.keymap.set('n', '<space>fi', builtin.lsp_implementations, { desc = 'Implementations' })
 vim.keymap.set('n', '<space>ft', builtin.lsp_type_definitions, { desc = 'Type definitions' })
-vim.keymap.set('n', '<space>aa', function() vim.cmd('AerialToggle!') end, { desc = 'Aerial' })
-
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
@@ -37,9 +34,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, { buffer = ev.buf, desc = 'Rename' })
     vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, { buffer = ev.buf, desc = 'Code action' })
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = ev.buf, desc = 'Go to references' })
-    vim.keymap.set('n', '<space><space>f', function()
-      vim.lsp.buf.format { async = true }
-    end, { buffer = ev.buf, desc = 'Format' })
   end,
 })
 
@@ -50,30 +44,9 @@ vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find buffers' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find help tags' })
 vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = 'Find old files' })
 
--- Git Keymaps
-local neogit = require('neogit')
-
-vim.keymap.set('n', '<leader>gg', neogit.open, { desc = 'NeoGit' })
-vim.keymap.set('n', '<leader>gd', function() vim.cmd('DiffviewOpen') end, { desc = 'Diffview' })
-
 -- UI Keymaps
-vim.keymap.set('n', '<leader>tt', function() vim.cmd('NvimTreeToggle') end, { desc = 'Toggle NvimTree' })
-
--- Extra Keymaps
-vim.api.nvim_set_keymap("n", "<leader>ll", "<cmd>:Other<CR>", { desc = 'Open other' })
-vim.api.nvim_set_keymap("n", "<leader>lp", "<cmd>:OtherSplit<CR>", { desc = 'Open other in split' })
-vim.api.nvim_set_keymap("n", "<leader>lv", "<cmd>:OtherVSplit<CR>", { desc = 'Open other in vsplit' })
-vim.api.nvim_set_keymap("n", "<leader>lc", "<cmd>:OtherClear<CR>", { desc = 'Open otherClear' })
-
--- Which Key Settings
-local wk = require('which-key')
-
-wk.register(
-  {
-    f = 'Find',
-    g = 'Git',
-  },
-  {
-    prefix = '<leader>'
-  }
-)
+vim.keymap.set('n', '<leader>tt', function() vim.cmd('NvimTreeToggle') end, { desc = 'File Explorer' })
+vim.keymap.set('n', '<leader>tg', function() vim.cmd('Neogit') end, { desc = 'Git UI' })
+vim.keymap.set('n', '<leader>tc', function() vim.cmd('DiffviewOpen') end, { desc = 'Changes' })
+vim.keymap.set('n', '<leader>ta', function() vim.cmd('AerialToggle!') end, { desc = 'Code Outline' })
+vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { desc = 'Diagnostics' })
