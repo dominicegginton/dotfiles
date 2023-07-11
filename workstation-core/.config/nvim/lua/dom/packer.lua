@@ -87,6 +87,7 @@ return require('packer').startup(function(use)
   use 'preservim/nerdcommenter'
   use 'mattkubej/jest.nvim'
   use 'rgroli/other.nvim'
+  use 'christoomey/vim-tmux-navigator'
 
   if packer_bootstrap then
     require('packer').sync()
