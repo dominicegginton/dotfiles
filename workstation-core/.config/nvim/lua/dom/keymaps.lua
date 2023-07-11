@@ -16,6 +16,7 @@ vim.keymap.set('n', '<space>fr', builtin.lsp_references, { desc = 'References' }
 vim.keymap.set('n', '<space>fd', builtin.lsp_definitions, { desc = 'Definitions' })
 vim.keymap.set('n', '<space>fi', builtin.lsp_implementations, { desc = 'Implementations' })
 vim.keymap.set('n', '<space>ft', builtin.lsp_type_definitions, { desc = 'Type definitions' })
+vim.keymap.set('n', '<space>aa', function() vim.cmd('AerialToggle!') end, { desc = 'Aerial' })
 
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),

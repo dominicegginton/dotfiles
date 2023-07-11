@@ -1,9 +1,9 @@
 -- Settings
 vim.opt.nu = true
 vim.opt.relativenumber = true
-vim.opt.tabstop=2
-vim.opt.shiftwidth=2
-vim.opt.softtabstop=2
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
@@ -19,7 +19,7 @@ vim.opt.laststatus = 2
 vim.opt.autoread = true
 vim.opt.numberwidth = 3
 vim.opt.showcmd = true
-vim.opt.cmdheight=0
+vim.opt.cmdheight = 0
 vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
@@ -35,6 +35,9 @@ local lspconfig = require('lspconfig')
 local cmp = require('cmp')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
 local lsp_lines = require('lsp_lines')
+local aerial = require('aerial')
+local null_ls = require('null-ls')
+local prettier = require('prettier')
 
 cmp.setup({
   snippit = {
@@ -43,11 +46,11 @@ cmp.setup({
     end,
   },
   mapping = cmp.mapping.preset.insert({
-      ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
   }),
   sources = cmp.config.sources(
     {
@@ -65,24 +68,50 @@ cmp.setup({
 
 mason.setup()
 mason_lspconfig.setup()
+lspconfig['tsserver'].setup({ capabilities = capabilities })
+lspconfig['angularls'].setup({ capabilities = capabilities })
+lspconfig['pyright'].setup({ capabilities = capabilities })
+lspconfig['lua_ls'].setup({ capabilities = capabilities })
 
-lspconfig['tsserver'].setup({
-  capabilities = capabilities,
-})
-lspconfig['angularls'].setup({
-  capabilities = capabilities,
-})
-lspconfig['pyright'].setup({
-  capabilities = capabilities,
-})
-lspconfig['lua_ls'].setup({
-  capabilities = capabilities,
-})
+aerial.setup()
 
 lsp_lines.setup()
-vim.diagnostic.config({
-  virtual_text = false,
+vim.diagnostic.config({ virtual_text = false })
+
+local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
+local event = "BufWritePre"
+local async = event == "BufWritePost"
+null_ls.setup({
+  sources = {
+    null_ls.builtins.formatting.stylua,
+    null_ls.builtins.diagnostics.eslint,
+    null_ls.builtins.completion.spell,
+  },
+  on_attach = function(client, bufnr)
+    if client.supports_method("textDocument/formatting") then
+      vim.keymap.set("n", "<leader>f", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+
+      vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+      vim.api.nvim_create_autocmd(event, {
+        buffer = bufnr,
+        group = group,
+        callback = function()
+          vim.lsp.buf.format({ bufnr = bufnr, async = async })
+        end,
+        desc = "[lsp] format on save",
+      })
+    end
+
+    if client.supports_method("textDocument/rangeFormatting") then
+      vim.keymap.set("x", "<leader>f", function()
+        vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+      end, { buffer = bufnr, desc = "[lsp] format" })
+    end
+  end,
 })
+prettier.setup()
 
 -- Syntax Highlighting Settings
 local treesitter = require('nvim-treesitter.configs')
@@ -130,6 +159,7 @@ telescope.setup({
   }
 })
 telescope.load_extension('fzf')
+telescope.load_extension('aerial')
 telescope.load_extension('file_browser')
 
 -- UI Settings
@@ -230,4 +260,3 @@ other.setup({
     "angular",
   },
 })
-
