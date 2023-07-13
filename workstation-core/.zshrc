@@ -23,6 +23,7 @@ setopt HIST_APPEND
 setopt ALIASES
 setopt INTERACTIVE_COMMENTS
 setopt PROMPT_SUBST
+setopt VI
 
 # PATH CONFIGURATION
 export PATH="$HOME/.bin:$PATH"
