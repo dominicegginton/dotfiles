@@ -1,13 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
 SETUVAR __fish_initialized:3400
-SETUVAR _fish_abbr_cp:cp\x20\x2di
-SETUVAR _fish_abbr_exa:exa\x20\x2dF\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit
-SETUVAR _fish_abbr_mv:mv\x20\x2di
-SETUVAR _fish_abbr_rm:rm\x20\x2di
-SETUVAR _fish_abbr_tree:exa\x20\x2d\x2dlong\x20\x2d\x2dheader\x20\x2d\x2dgit\x20\x2d\x2dtree
-SETUVAR _fisher_edc_2F_bass_files:/Users/dom\x2eegginton/\x2econfig/fish/functions/__bass\x2epy\x1e/Users/dom\x2eegginton/\x2econfig/fish/functions/bass\x2efish
-SETUVAR _fisher_plugins:edc/bass
 SETUVAR fish_color_autosuggestion:586e75
 SETUVAR fish_color_cancel:\x2dr
 SETUVAR fish_color_command:93a1a1
