@@ -3,6 +3,9 @@
 # .bashrc
 # Executed by bash for interactive shells in non-login mode.
 
+# OPTION
+set -o vi
+
 # ENVIRONMENT VARIABLES
 export LANG=en_GB.UTF-8
 export EDITOR=vim
