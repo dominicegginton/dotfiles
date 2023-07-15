@@ -3,5 +3,5 @@
 # .bash_login
 # Executed by bash when login shell exits on login.
 
-source ~./bashrc
+source ~/.bashrc
 . "$HOME/.cargo/env"
