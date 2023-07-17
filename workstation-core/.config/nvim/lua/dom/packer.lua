@@ -58,6 +58,7 @@ return require('packer').startup(function(use)
     run = 'make'
   }
   use 'nvim-telescope/telescope-file-browser.nvim'
+  use 'nvim-telescope/telescope-github.nvim'
 
   -- UI
   use 'projekt0n/github-nvim-theme'

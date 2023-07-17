@@ -161,6 +161,7 @@ telescope.setup({
 telescope.load_extension('fzf')
 telescope.load_extension('aerial')
 telescope.load_extension('file_browser')
+telescope.load_extension('gh')
 
 -- UI Settings
 local github_theme = require('github-theme')
