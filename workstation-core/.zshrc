@@ -31,6 +31,10 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.npm-global:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+export PATH="$HOME/.nvm:$PATH"
+
+[ -s "$HOME/.nvm/nvm.sh" ] && \. "$HOME/.nvm/nvm.sh" --no-use
+[ -s "$HOME/.nvm/bash_completion" ] && \. "$HOME/.nvm/bash_completion"
 
 # PROMPT
 autoload -U colors && colors
