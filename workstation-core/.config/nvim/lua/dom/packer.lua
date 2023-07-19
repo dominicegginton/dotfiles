@@ -18,10 +18,12 @@ return require('packer').startup(function(use)
   -- Plenary
   use 'nvim-lua/plenary.nvim'
 
-  -- LSP & Completion
+  -- LSP
   use 'williamboman/mason.nvim'
   use 'williamboman/mason-lspconfig.nvim'
   use 'neovim/nvim-lspconfig'
+
+  -- Completion
   use 'hrsh7th/cmp-nvim-lsp'
   use 'hrsh7th/cmp-buffer'
   use 'hrsh7th/cmp-path'
@@ -29,8 +31,12 @@ return require('packer').startup(function(use)
   use 'hrsh7th/nvim-cmp'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
-  use 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
-  use 'stevearc/aerial.nvim'
+  use 'lukas-reineke/cmp-under-comparator'
+
+  -- Debugging
+  use 'mfussenegger/nvim-dap'
+
+  -- Linting & Formatting
   use 'jose-elias-alvarez/null-ls.nvim'
   use 'MunifTanjim/eslint.nvim'
   use 'MunifTanjim/prettier.nvim'
@@ -44,7 +50,7 @@ return require('packer').startup(function(use)
     end,
   }
 
-  -- Fuzzy Finder
+  -- Telescope
   use {
     'nvim-telescope/telescope.nvim',
     tag = '0.1.1',
@@ -60,34 +66,44 @@ return require('packer').startup(function(use)
   use 'nvim-telescope/telescope-file-browser.nvim'
   use 'nvim-telescope/telescope-github.nvim'
 
-  -- UI
+  -- Theme
   use 'projekt0n/github-nvim-theme'
   use 'nvim-tree/nvim-web-devicons'
+
+  -- UI
   use 'nvim-tree/nvim-tree.lua'
   use 'Bekaboo/dropbar.nvim'
   use 'echasnovski/mini.tabline'
   use 'echasnovski/mini.statusline'
   use 'echasnovski/mini.indentscope'
-  use 'folke/trouble.nvim'
   use 'rcarriga/nvim-notify'
+
+  use 'neogitorg/neogit'
+  use 'sindrets/diffview.nvim'
+  use 'rcarriga/nvim-dap-ui'
+  use 'folke/trouble.nvim'
+  use 'stevearc/aerial.nvim'
+  use 'kevinhwang91/nvim-bqf'
+
+  use 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
+  use 'tveskag/nvim-blame-line'
+  use 'lewis6991/gitsigns.nvim'
   use {
     'j-hui/fidget.nvim',
     tag = 'legacy',
   }
-  use 'folke/which-key.nvim'
-  use 'neogitorg/neogit'
-  use 'sindrets/diffview.nvim'
-  use 'tveskag/nvim-blame-line'
-  use 'lewis6991/gitsigns.nvim'
 
-  -- GitHub Copilot
-  use 'github/copilot.vim'
+  -- Which Key
+  use 'folke/which-key.nvim'
 
   -- Extra
+  use 'github/copilot.vim'
   use 'jghauser/mkdir.nvim'
+  use 'AckslD/nvim-neoclip.lua'
+  use 'MunifTanjim/nui.nvim'
   use 'preservim/nerdcommenter'
   use 'mattkubej/jest.nvim'
-  use 'rgroli/other.nvim'
+  use 'google/executor.nvim'
   use 'christoomey/vim-tmux-navigator'
 
   if packer_bootstrap then

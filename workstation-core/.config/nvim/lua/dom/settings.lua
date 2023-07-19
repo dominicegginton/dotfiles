@@ -27,17 +27,16 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 50
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
 
 -- LSP & Completion Settings
 local mason = require('mason')
 local mason_lspconfig = require('mason-lspconfig')
 local lspconfig = require('lspconfig')
 local cmp = require('cmp')
+local cmp_under_comparator = require('cmp-under-comparator')
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
-local lsp_lines = require('lsp_lines')
-local aerial = require('aerial')
-local null_ls = require('null-ls')
-local prettier = require('prettier')
 
 cmp.setup({
   snippit = {
@@ -64,19 +63,30 @@ cmp.setup({
       { name = 'buffer' },
     }
   ),
+  sorting = {
+    comparators = {
+      cmp.config.compare.offset,
+      cmp.config.compare.exact,
+      cmp.config.compare.score,
+      cmp_under_comparator.under,
+      cmp.config.compare.kind,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  }
 })
-
 mason.setup()
 mason_lspconfig.setup()
 lspconfig['tsserver'].setup({ capabilities = capabilities })
 lspconfig['angularls'].setup({ capabilities = capabilities })
 lspconfig['pyright'].setup({ capabilities = capabilities })
 lspconfig['lua_ls'].setup({ capabilities = capabilities })
-
-aerial.setup()
-
-lsp_lines.setup()
 vim.diagnostic.config({ virtual_text = false })
+
+-- Linting & Formatting Settings
+local null_ls = require('null-ls')
+local prettier = require('prettier')
 
 local group = vim.api.nvim_create_augroup("lsp_format_on_save", { clear = false })
 local event = "BufWritePre"
@@ -113,6 +123,14 @@ null_ls.setup({
 })
 prettier.setup()
 
+-- Debugging Settings
+local dap = require('dap')
+local vscode = require('dap.ext.vscode')
+local debugger = require('dom.plugins.debugger')
+
+vscode.load_launchjs(nil, {})
+debugger.setup()
+
 -- Syntax Highlighting Settings
 local treesitter = require('nvim-treesitter.configs')
 
@@ -138,7 +156,7 @@ treesitter.setup({
   }
 })
 
--- Fuzzy Finder Settings
+-- Telescope Settings
 local telescope = require('telescope')
 
 telescope.setup({
@@ -162,9 +180,15 @@ telescope.load_extension('fzf')
 telescope.load_extension('aerial')
 telescope.load_extension('file_browser')
 telescope.load_extension('gh')
+telescope.load_extension('neoclip')
+
+-- Theme
+local github_theme = require('github-theme')
+
+github_theme.setup()
+vim.cmd('colorscheme github_light')
 
 -- UI Settings
-local github_theme = require('github-theme')
 local nvim_tree = require('nvim-tree')
 local dropbar = require("dropbar")
 local tabline = require('mini.tabline')
@@ -172,15 +196,13 @@ local statusline = require('mini.statusline')
 local indentscope = require('mini.indentscope')
 local notify = require('notify')
 local fidget = require('fidget')
-local wk = require('which-key')
 local neogit = require('neogit')
 local gitsigns = require('gitsigns')
+local lsp_lines = require('lsp_lines')
+local aerial = require('aerial')
+local dap = require('dap')
+local dapui = require('dapui')
 
-vim.opt.termguicolors = true
-github_theme.setup()
-vim.cmd('colorscheme github_light')
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
 local HEIGHT_RATIO = 1
 local WIDTH_RATIO = 0.25
 nvim_tree.setup({
@@ -231,13 +253,6 @@ nvim_tree.setup({
 dropbar.setup()
 tabline.setup()
 statusline.setup()
-indentscope.setup()
-vim.notify = notify
-fidget.setup()
-wk.register(
-  { t = 'Toggle', f = 'Find' },
-  { prefix = '<leader>' }
-)
 neogit.setup({
   preview_buffer = {
     kind = "split",
@@ -249,15 +264,36 @@ neogit.setup({
     diffview = true,
   },
 })
+indentscope.setup()
+notify.setup({ stages = 'static' })
+vim.notify = notify
+fidget.setup()
 gitsigns.setup()
+aerial.setup()
+lsp_lines.setup()
+dapui.setup()
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
+
+-- Which Key Settings
+local wk = require('which-key')
+wk.register(
+  { t = 'Toggle', f = 'Find', e = 'Executor' },
+  { prefix = '<leader>' }
+)
 
 -- Extra Settings
+local neoclip = require('neoclip')
+local executor = require('executor')
 local jest = require('nvim-jest')
-local other = require('other-nvim')
 
+neoclip.setup()
+executor.setup({})
 jest.setup()
-other.setup({
-  mappings = {
-    "angular",
-  },
-})
