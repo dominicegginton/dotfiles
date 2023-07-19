@@ -1,0 +1,4 @@
+search_paths:
+  - "~/.dotfiles"
+  - "~/dev"
+  - "~/playgrounds"
