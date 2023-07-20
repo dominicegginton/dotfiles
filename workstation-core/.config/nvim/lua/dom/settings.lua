@@ -200,7 +200,6 @@ local neogit = require('neogit')
 local gitsigns = require('gitsigns')
 local lsp_lines = require('lsp_lines')
 local aerial = require('aerial')
-local dap = require('dap')
 local dapui = require('dapui')
 
 local HEIGHT_RATIO = 1
@@ -264,7 +263,11 @@ neogit.setup({
     diffview = true,
   },
 })
-indentscope.setup()
+indentscope.setup({
+  draw = {
+    animation = indentscope.gen_animation.none()
+  }
+})
 notify.setup({ stages = 'static' })
 vim.notify = notify
 fidget.setup()
