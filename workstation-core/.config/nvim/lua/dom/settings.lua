@@ -272,7 +272,7 @@ notify.setup({ stages = 'static' })
 vim.notify = notify
 fidget.setup()
 gitsigns.setup()
-aerial.setup()
+aerial.setup({ filter_kind = false })
 lsp_lines.setup()
 dapui.setup()
 dap.listeners.after.event_initialized["dapui_config"] = function()
