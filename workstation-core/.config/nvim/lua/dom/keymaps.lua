@@ -3,6 +3,8 @@ vim.leader = ' '
 vim.g.mapleader = ' '
 
 -- LSP Keymaps
+vim.keymap.set('n', 'e', vim.diagnostic.open_float, { desc = 'Open Diagnostics' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Set Location List' })
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
