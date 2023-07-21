@@ -14,13 +14,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf, desc = 'Hover' })
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = ev.buf, desc = 'Goto Implementation' })
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = ev.buf, desc = 'Signature Help' })
-    vim.keymap.set('n', '<leader>wa', vim.lsp.buf.add_workspace_folder,
-      { buffer = ev.buf, desc = 'Add Workspace Folder' })
-    vim.keymap.set('n', '<leader>wr', vim.lsp.buf.remove_workspace_folder,
-      { buffer = ev.buf, desc = 'Remove Workspace Folder' })
-    vim.keymap.set('n', '<leader>wl', function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, { buffer = ev.buf, desc = 'List Workspace Folders' })
+    vim.keymap.set(
+      'n',
+      '<leader>wa',
+      vim.lsp.buf.add_workspace_folder,
+      { buffer = ev.buf, desc = 'Add Workspace Folder' }
+    )
+    vim.keymap.set(
+      'n',
+      '<leader>wr',
+      vim.lsp.buf.remove_workspace_folder,
+      { buffer = ev.buf, desc = 'Remove Workspace Folder' }
+    )
+    vim.keymap.set(
+      'n',
+      '<leader>wl',
+      function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+      { buffer = ev.buf, desc = 'List Workspace Folders' }
+    )
     vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { buffer = ev.buf, desc = 'Goto Type Definition' })
     vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = ev.buf, desc = 'Rename' })
     vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { buffer = ev.buf, desc = 'Code Action' })
@@ -61,8 +72,3 @@ vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { des
 vim.keymap.set('n', '<leader>tr', dapui.toggle, { desc = 'Toggle Debugger' })
 vim.keymap.set('n', '<leader>tq', quickfix_list.toggle, { desc = 'Toggle Quickfix' })
 vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
-
--- Extra Keymaps
-vim.keymap.set('n', '<leader>er', function() vim.cmd('ExecutorRun') end, { desc = 'Run' })
-vim.keymap.set('n', '<leader>ex', function() vim.cmd('ExecutorClear') end, { desc = 'Reset' })
-vim.keymap.set('n', '<leader>ev', function() vim.cmd('ExecutorToggleDetail') end, { desc = 'Toggle Detail' })

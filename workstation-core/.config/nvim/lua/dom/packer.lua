@@ -3,7 +3,7 @@ local ensure_packer = function()
   local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
   if fn.empty(fn.glob(install_path)) > 0 then
     fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-    vim.cmd [[packadd packer.nvim]]
+    vim.cmd([[packadd packer.nvim]])
     return true
   end
   return false
@@ -11,102 +11,83 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-return require('packer').startup(function(use)
-  -- Packer
-  use 'wbthomason/packer.nvim'
+local run_treesitter = function()
+  local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
+  ts_update()
+end
 
-  -- Plenary
-  use 'nvim-lua/plenary.nvim'
+return require('packer').startup(function(use)
+  -- Packer & Utils & Helpers
+  use('wbthomason/packer.nvim')
+  use('nvim-lua/plenary.nvim')
+  use('MunifTanjim/nui.nvim')
 
   -- LSP
-  use 'williamboman/mason.nvim'
-  use 'williamboman/mason-lspconfig.nvim'
-  use 'neovim/nvim-lspconfig'
+  use('williamboman/mason.nvim')
+  use('williamboman/mason-lspconfig.nvim')
+  use('neovim/nvim-lspconfig')
 
   -- Completion
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/nvim-cmp'
-  use 'L3MON4D3/LuaSnip'
-  use 'saadparwaiz1/cmp_luasnip'
-  use 'lukas-reineke/cmp-under-comparator'
-
-  -- Debugging
-  use 'mfussenegger/nvim-dap'
-
-  -- Linting & Formatting
-  use 'jose-elias-alvarez/null-ls.nvim'
-  use 'MunifTanjim/eslint.nvim'
-  use 'MunifTanjim/prettier.nvim'
+  use('hrsh7th/cmp-nvim-lsp')
+  use('hrsh7th/cmp-buffer')
+  use('hrsh7th/cmp-path')
+  use('hrsh7th/cmp-cmdline')
+  use('hrsh7th/nvim-cmp')
+  use('L3MON4D3/LuaSnip')
+  use('saadparwaiz1/cmp_luasnip')
+  use('lukas-reineke/cmp-under-comparator')
 
   -- Syntax Highlighting
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    run = function()
-      local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-      ts_update()
-    end,
-  }
+  use({ 'nvim-treesitter/nvim-treesitter', run = run_treesitter })
 
   -- Telescope
-  use {
-    'nvim-telescope/telescope.nvim',
-    tag = '0.1.1',
-    requires = {
-      'BurntSushi/ripgrep',
-      'sharkdp/fd',
-    }
-  }
-  use {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    run = 'make'
-  }
-  use 'nvim-telescope/telescope-file-browser.nvim'
-  use 'nvim-telescope/telescope-github.nvim'
+  use({ 'nvim-telescope/telescope.nvim', branch = '0.1.x' })
+  use('BurntSushi/ripgrep')
+  use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
 
-  -- Theme
-  use 'projekt0n/github-nvim-theme'
-  use 'nvim-tree/nvim-web-devicons'
+  -- Colorscheme
+  use('projekt0n/github-nvim-theme')
+
+  -- Icons
+  use('nvim-tree/nvim-web-devicons')
+  use('lewis6991/gitsigns.nvim')
 
   -- UI
-  use 'nvim-tree/nvim-tree.lua'
-  use 'Bekaboo/dropbar.nvim'
-  use 'echasnovski/mini.tabline'
-  use 'echasnovski/mini.statusline'
-  use 'echasnovski/mini.indentscope'
-  use 'rcarriga/nvim-notify'
+  use('nvim-tree/nvim-tree.lua')
+  use('Bekaboo/dropbar.nvim')
+  use('echasnovski/mini.tabline')
+  use('echasnovski/mini.statusline')
+  use('rcarriga/nvim-notify')
+  use('neogitorg/neogit')
+  use('sindrets/diffview.nvim')
+  use('folke/trouble.nvim')
+  use('stevearc/aerial.nvim')
+  use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
+  use('kevinhwang91/nvim-bqf')
+  use('rcarriga/nvim-dap-ui')
+  use('folke/which-key.nvim')
+  use({ 'j-hui/fidget.nvim', tag = 'legacy' })
+  use('echasnovski/mini.indentscope')
+  use('tveskag/nvim-blame-line')
 
-  use 'neogitorg/neogit'
-  use 'sindrets/diffview.nvim'
-  use 'rcarriga/nvim-dap-ui'
-  use 'folke/trouble.nvim'
-  use 'stevearc/aerial.nvim'
-  use 'kevinhwang91/nvim-bqf'
+  -- Editor
+  use('preservim/nerdcommenter')
 
-  use 'https://git.sr.ht/~whynothugo/lsp_lines.nvim'
-  use 'tveskag/nvim-blame-line'
-  use 'lewis6991/gitsigns.nvim'
-  use {
-    'j-hui/fidget.nvim',
-    tag = 'legacy',
-  }
+  -- Linting & Formatting
+  use('jose-elias-alvarez/null-ls.nvim')
+  use('MunifTanjim/eslint.nvim')
+  use('MunifTanjim/prettier.nvim')
 
-  -- Which Key
-  use 'folke/which-key.nvim'
+  -- Testing
+  use('mattkubej/jest.nvim')
+
+  -- Debugging
+  use('mfussenegger/nvim-dap')
 
   -- Extra
-  use 'github/copilot.vim'
-  use 'jghauser/mkdir.nvim'
-  use 'AckslD/nvim-neoclip.lua'
-  use 'MunifTanjim/nui.nvim'
-  use 'preservim/nerdcommenter'
-  use 'mattkubej/jest.nvim'
-  use 'google/executor.nvim'
-  use 'christoomey/vim-tmux-navigator'
+  use('github/copilot.vim')
+  use('jghauser/mkdir.nvim')
+  use('christoomey/vim-tmux-navigator')
 
-  if packer_bootstrap then
-    require('packer').sync()
-  end
+  if packer_bootstrap then require('packer').sync() end
 end)
