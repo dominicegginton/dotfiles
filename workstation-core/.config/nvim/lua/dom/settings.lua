@@ -138,12 +138,10 @@ local statusline = require('mini.statusline')
 local notify = require('notify')
 local neogit = require('neogit')
 local aerial = require('aerial')
-local lsp_lines = require('lsp_lines')
 local wk = require('which-key')
 local dapui = require('dapui')
 local dap = require('dap')
 local fidget = require('fidget')
-local indentscope = require('mini.indentscope')
 
 local HEIGHT_RATIO = 1
 local WIDTH_RATIO = 0.25
@@ -210,7 +208,6 @@ neogit.setup({
   },
 })
 aerial.setup({ filter_kind = false })
-lsp_lines.setup()
 dapui.setup()
 dap.listeners.after.event_initialized['dapui_config'] = function() dapui.open() end
 dap.listeners.before.event_terminated['dapui_config'] = function() dapui.close() end
@@ -223,11 +220,21 @@ wk.setup({
 })
 wk.register({ t = 'Toggle', f = 'Find' }, { prefix = '<leader>' })
 fidget.setup()
-indentscope.setup({
-  draw = {
-    animation = indentscope.gen_animation.none(),
-  },
-})
+
+-- Editor Settings
+local lsp_lines = require('lsp_lines')
+local comment = require('mini.comment')
+local indentscope = require('mini.indentscope')
+local hipatterns = require('mini.hipatterns')
+local trailspace = require('mini.trailspace')
+local move = require('mini.move')
+
+lsp_lines.setup()
+comment.setup()
+indentscope.setup({ draw = { animation = indentscope.gen_animation.none() } })
+hipatterns.setup({ highlighters = { hex_color = hipatterns.gen_highlighter.hex_color() } })
+trailspace.setup()
+move.setup()
 
 -- Linting & Formatting Settings
 local null_ls = require('null-ls')

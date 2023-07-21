@@ -62,16 +62,19 @@ return require('packer').startup(function(use)
   use('sindrets/diffview.nvim')
   use('folke/trouble.nvim')
   use('stevearc/aerial.nvim')
-  use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
   use('kevinhwang91/nvim-bqf')
   use('rcarriga/nvim-dap-ui')
   use('folke/which-key.nvim')
   use({ 'j-hui/fidget.nvim', tag = 'legacy' })
-  use('echasnovski/mini.indentscope')
   use('tveskag/nvim-blame-line')
 
   -- Editor
-  use('preservim/nerdcommenter')
+  use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
+  use('echasnovski/mini.comment')
+  use('echasnovski/mini.indentscope')
+  use('echasnovski/mini.hipatterns')
+  use('echasnovski/mini.trailspace')
+  use('echasnovski/mini.move')
 
   -- Linting & Formatting
   use('jose-elias-alvarez/null-ls.nvim')
