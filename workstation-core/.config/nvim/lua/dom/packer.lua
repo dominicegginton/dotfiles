@@ -62,6 +62,7 @@ return require('packer').startup(function(use)
   use('sindrets/diffview.nvim')
   use('folke/trouble.nvim')
   use('stevearc/aerial.nvim')
+  use('weilbith/nvim-code-action-menu')
   use('kevinhwang91/nvim-bqf')
   use('rcarriga/nvim-dap-ui')
   use('Pocco81/true-zen.nvim')
@@ -84,6 +85,7 @@ return require('packer').startup(function(use)
 
   -- Navigation
   use('ThePrimeagen/harpoon')
+  use('rmagatti/goto-preview')
 
   -- Testing
   use('mattkubej/jest.nvim')

@@ -282,6 +282,11 @@ null_ls.setup({
 eslint.setup()
 prettier.setup()
 
+-- Navigation Settings
+local goto_preview = require('goto-preview')
+
+goto_preview.setup()
+
 -- Debugging Settings
 local vscode = require('dap.ext.vscode')
 local debugger = require('dom.plugins.debugger')

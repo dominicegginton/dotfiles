@@ -3,41 +3,63 @@ vim.leader = ' '
 vim.g.mapleader = ' '
 
 -- LSP Keymaps
+local lsp_on_attach = function(ev)
+  local goto_preview = require('goto-preview')
+  vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf, desc = 'Hover' })
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = ev.buf, desc = 'Goto Declaration' })
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = ev.buf, desc = 'Goto Definition' })
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = ev.buf, desc = 'Goto Implementation' })
+  vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, { buffer = ev.buf, desc = 'Goto Type Definition' })
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = ev.buf, desc = 'Goto References' })
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = ev.buf, desc = 'Signature Help' })
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = ev.buf, desc = 'Rename' })
+  vim.keymap.set(
+    { 'n', 'v' },
+    '<leader>ca',
+    function() vim.cmd('CodeActionMenu') end,
+    { buffer = ev.buf, desc = 'Code Action' }
+  )
+  vim.keymap.set('n', 'gpd', goto_preview.goto_preview_definition, { buffer = ev.buf, desc = 'Preview Definition' })
+  vim.keymap.set('n', 'gpr', goto_preview.goto_preview_references, { buffer = ev.buf, desc = 'Preview References' })
+  vim.keymap.set(
+    'n',
+    'gpi',
+    goto_preview.goto_preview_implementation,
+    { buffer = ev.buf, desc = 'Preview Implementation' }
+  )
+  vim.keymap.set(
+    'n',
+    'gpt',
+    goto_preview.goto_preview_type_definition,
+    { buffer = ev.buf, desc = 'Preview Type Definition' }
+  )
+
+  vim.keymap.set(
+    'n',
+    '<leader>wa',
+    vim.lsp.buf.add_workspace_folder,
+    { buffer = ev.buf, desc = 'Add Workspace Folder' }
+  )
+  vim.keymap.set(
+    'n',
+    '<leader>wr',
+    vim.lsp.buf.remove_workspace_folder,
+    { buffer = ev.buf, desc = 'Remove Workspace Folder' }
+  )
+  vim.keymap.set(
+    'n',
+    '<leader>wl',
+    function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+    { buffer = ev.buf, desc = 'List Workspace Folders' }
+  )
+end
 vim.keymap.set('n', 'e', vim.diagnostic.open_float, { desc = 'Open Diagnostics' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Set Location List' })
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-  callback = function(ev)
-    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = ev.buf, desc = 'Goto Declaration' })
-    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = ev.buf, desc = 'Goto Definition' })
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf, desc = 'Hover' })
-    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = ev.buf, desc = 'Goto Implementation' })
-    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, { buffer = ev.buf, desc = 'Signature Help' })
-    vim.keymap.set(
-      'n',
-      '<leader>wa',
-      vim.lsp.buf.add_workspace_folder,
-      { buffer = ev.buf, desc = 'Add Workspace Folder' }
-    )
-    vim.keymap.set(
-      'n',
-      '<leader>wr',
-      vim.lsp.buf.remove_workspace_folder,
-      { buffer = ev.buf, desc = 'Remove Workspace Folder' }
-    )
-    vim.keymap.set(
-      'n',
-      '<leader>wl',
-      function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-      { buffer = ev.buf, desc = 'List Workspace Folders' }
-    )
-    vim.keymap.set('n', '<leader>D', vim.lsp.buf.type_definition, { buffer = ev.buf, desc = 'Goto Type Definition' })
-    vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = ev.buf, desc = 'Rename' })
-    vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { buffer = ev.buf, desc = 'Code Action' })
-    vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = ev.buf, desc = 'Goto References' })
-  end,
-})
+vim.api.nvim_create_autocmd(
+  'LspAttach',
+  { group = vim.api.nvim_create_augroup('UserLspConfig', {}), callback = lsp_on_attach }
+)
 
 -- Telescope Keymaps
 local builtin = require('telescope.builtin')
@@ -79,4 +101,7 @@ vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { d
 vim.keymap.set('n', '<C-w>o', focus.toggle, { desc = 'Toggle Focus' })
 
 -- Naviagation Keymaps
+local preview = require('goto-preview')
+
 vim.keymap.set('n', '<leader>m', harpoon_mark.add_file, { desc = 'Mark File' })
+vim.keymap.set('n', '<leader>P', preview.close_all_win, { desc = 'Close All Preview Windows' })
