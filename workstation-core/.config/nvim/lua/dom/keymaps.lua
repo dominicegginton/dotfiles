@@ -42,6 +42,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Telescope Keymaps
 local builtin = require('telescope.builtin')
 local notify = require('telescope').extensions.notify
+local harpoon = require('telescope').extensions.harpoon
 
 vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find, { desc = 'Find In Buffer' })
 vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find File' })
@@ -57,13 +58,16 @@ vim.keymap.set('n', '<leader>fd', builtin.lsp_definitions, { desc = 'Find Defini
 vim.keymap.set('n', '<leader>fi', builtin.lsp_implementations, { desc = 'Find Implementation' })
 vim.keymap.set('n', '<leader>ft', builtin.lsp_type_definitions, { desc = 'Find Type Definition' })
 vim.keymap.set('n', '<leader>fq', builtin.quickfix, { desc = 'Find Quickfix' })
-vim.keymap.set('n', '<leader>fn', notify.notify, { desc = 'Find Notification' })
-vim.keymap.set('n', '<leader>fy', function() vim.cmd('Telescope neoclip') end, { desc = 'Find Register' })
+vim.keymap.set('n', '<leader>fy', builtin.registers, { desc = 'Find Register' })
 vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Find Keymap' })
+vim.keymap.set('n', '<leader>fm', harpoon.marks, { desc = 'Find Marked File' })
+vim.keymap.set('n', '<leader>fn', notify.notify, { desc = 'Find Notification' })
 
 -- UI Keymaps
 local dapui = require('dapui')
+local focus = require('true-zen.focus')
 local quickfix_list = require('dom.plugins.quickfix-list')
+local harpoon_mark = require('harpoon.mark')
 
 vim.keymap.set('n', '<leader>te', function() vim.cmd('NvimTreeToggle') end, { desc = 'Toggle File Explorer' })
 vim.keymap.set('n', '<leader>tg', function() vim.cmd('Neogit') end, { desc = 'Toggle Neogit' })
@@ -72,3 +76,7 @@ vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { des
 vim.keymap.set('n', '<leader>tr', dapui.toggle, { desc = 'Toggle Debugger' })
 vim.keymap.set('n', '<leader>tq', quickfix_list.toggle, { desc = 'Toggle Quickfix' })
 vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
+vim.keymap.set('n', '<C-w>o', focus.toggle, { desc = 'Toggle Focus' })
+
+-- Naviagation Keymaps
+vim.keymap.set('n', '<leader>m', harpoon_mark.add_file, { desc = 'Mark File' })

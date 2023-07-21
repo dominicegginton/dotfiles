@@ -119,6 +119,7 @@ telescope.setup({
 })
 telescope.load_extension('fzf')
 telescope.load_extension('aerial')
+telescope.load_extension('harpoon')
 
 -- Colorscheme Settings
 local github_theme = require('github-theme')
@@ -291,3 +292,6 @@ debugger.setup()
 local jest = require('nvim-jest')
 
 jest.setup()
+
+-- local other = require('dom.plugins.other')
+-- other.setup()

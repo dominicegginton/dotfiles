@@ -64,6 +64,7 @@ return require('packer').startup(function(use)
   use('stevearc/aerial.nvim')
   use('kevinhwang91/nvim-bqf')
   use('rcarriga/nvim-dap-ui')
+  use('Pocco81/true-zen.nvim')
   use('folke/which-key.nvim')
   use({ 'j-hui/fidget.nvim', tag = 'legacy' })
   use('tveskag/nvim-blame-line')
@@ -80,6 +81,9 @@ return require('packer').startup(function(use)
   use('jose-elias-alvarez/null-ls.nvim')
   use('MunifTanjim/eslint.nvim')
   use('MunifTanjim/prettier.nvim')
+
+  -- Navigation
+  use('ThePrimeagen/harpoon')
 
   -- Testing
   use('mattkubej/jest.nvim')
