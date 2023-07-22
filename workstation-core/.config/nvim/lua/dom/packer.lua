@@ -11,12 +11,9 @@ end
 
 local packer_bootstrap = ensure_packer()
 
-local run_treesitter = function()
-  local ts_update = require('nvim-treesitter.install').update({ with_sync = true })
-  ts_update()
-end
+local H = {}
 
-return require('packer').startup(function(use)
+require('packer').startup(function(use)
   -- Packer & Utils & Helpers
   use('wbthomason/packer.nvim')
   use('nvim-lua/plenary.nvim')
@@ -26,8 +23,6 @@ return require('packer').startup(function(use)
   use('williamboman/mason.nvim')
   use('williamboman/mason-lspconfig.nvim')
   use('neovim/nvim-lspconfig')
-
-  -- Completion
   use('hrsh7th/cmp-nvim-lsp')
   use('hrsh7th/cmp-buffer')
   use('hrsh7th/cmp-path')
@@ -36,67 +31,64 @@ return require('packer').startup(function(use)
   use('L3MON4D3/LuaSnip')
   use('saadparwaiz1/cmp_luasnip')
   use('lukas-reineke/cmp-under-comparator')
+  use({ 'nvim-treesitter/nvim-treesitter', run = H.run_treesitter })
 
-  -- Syntax Highlighting
-  use({ 'nvim-treesitter/nvim-treesitter', run = run_treesitter })
-
-  -- Telescope
-  use({ 'nvim-telescope/telescope.nvim', branch = '0.1.x' })
-  use('BurntSushi/ripgrep')
-  use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
-
-  -- Colorscheme
-  use('projekt0n/github-nvim-theme')
-
-  -- Icons
-  use('nvim-tree/nvim-web-devicons')
-  use('lewis6991/gitsigns.nvim')
+  -- Dap
+  use('mfussenegger/nvim-dap')
+  use('mxsdev/nvim-dap-vscode-js')
+  use({
+    'microsoft/vscode-js-debug',
+    opt = true,
+    run = H.run_vscode_js_debug,
+  })
 
   -- UI
-  use('nvim-tree/nvim-tree.lua')
-  use('Bekaboo/dropbar.nvim')
-  use('echasnovski/mini.tabline')
-  use('echasnovski/mini.statusline')
-  use('rcarriga/nvim-notify')
-  use('neogitorg/neogit')
-  use('sindrets/diffview.nvim')
-  use('folke/trouble.nvim')
   use('stevearc/aerial.nvim')
-  use('weilbith/nvim-code-action-menu')
-  use('kevinhwang91/nvim-bqf')
   use('rcarriga/nvim-dap-ui')
-  use('Pocco81/true-zen.nvim')
-  use('folke/which-key.nvim')
   use({ 'j-hui/fidget.nvim', tag = 'legacy' })
-  use('tveskag/nvim-blame-line')
+  use('nvim-focus/focus.nvim')
+  use('projekt0n/github-nvim-theme')
+  use('lewis6991/gitsigns.nvim')
+  use('rmagatti/goto-preview')
+  use('echasnovski/mini.statusline')
+  use('echasnovski/mini.tabline')
+  use('neogitorg/neogit')
+  use('rcarriga/nvim-notify')
+  use('nvim-tree/nvim-tree.lua')
+  use('nvim-tree/nvim-web-devicons')
+  use('nvim-telescope/telescope.nvim')
+  use('BurntSushi/ripgrep')
+  use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+  use('folke/which-key.nvim')
+  use('sindrets/diffview.nvim')
+  use('kevinhwang91/nvim-bqf')
+  use('weilbith/nvim-code-action-menu')
+  use('folke/trouble.nvim')
+  use('Pocco81/true-zen.nvim')
 
   -- Editor
   use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
   use('echasnovski/mini.comment')
-  use('echasnovski/mini.indentscope')
   use('echasnovski/mini.hipatterns')
-  use('echasnovski/mini.trailspace')
+  use('echasnovski/mini.indentscope')
   use('echasnovski/mini.move')
-
-  -- Linting & Formatting
-  use('jose-elias-alvarez/null-ls.nvim')
-  use('MunifTanjim/eslint.nvim')
-  use('MunifTanjim/prettier.nvim')
-
-  -- Navigation
-  use('ThePrimeagen/harpoon')
-  use('rmagatti/goto-preview')
-
-  -- Testing
-  use('mattkubej/jest.nvim')
-
-  -- Debugging
-  use('mfussenegger/nvim-dap')
+  use('echasnovski/mini.trailspace')
+  use('tveskag/nvim-blame-line')
 
   -- Extra
   use('github/copilot.vim')
+  use('ThePrimeagen/harpoon')
   use('jghauser/mkdir.nvim')
   use('christoomey/vim-tmux-navigator')
+  use('mhartington/formatter.nvim')
 
   if packer_bootstrap then require('packer').sync() end
 end)
+
+H.run_treesitter = function()
+  local ts_install = require('nvim-treesitter.install')
+  local ts_update = ts_install.update({ with_sync = true })
+  ts_update()
+end
+
+H.run_vscode_js_debug = 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out'
