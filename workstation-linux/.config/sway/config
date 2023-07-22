@@ -1,3 +1,5 @@
+include /etc/sway/definitions
+
 set $super Mod4
 set $alt Mod1
 set $left h
@@ -5,10 +7,11 @@ set $down j
 set $up k
 set $right l
 set $term alacritty
-set $menu dmenu_path | dmenu | xargs swaymsg exec --
+set $menu dmenu_path | wofi -d | xargs swaymsg exec --
+set $statusbar waybar
 set $laptop-screen eDP-1
 
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg ~/bliss.jpg fill
 
 output $laptop-screen {
   mode 1920x1080
@@ -29,6 +32,8 @@ exec swayidle -w \
   timeout 300 'swaylock -f -c 000000' \
   timeout 600 'swaymsg "output * power off"' resume 'swaymsg "output * power on"' \
   before-sleep 'swaylock -f -c 000000'
+
+exec waybar
 
 input "1102:4618:DELL0823:00_044E:120A_Touchpad" {
   natural_scroll enabled
@@ -111,46 +116,29 @@ mode "resize" {
 }
 bindsym $super+r mode "resize"
 
-set $base00 #f2f2f2
-set $base01 #e5e5e5
-set $base02 #d9d9d9
-set $base03 #cccccc
-set $base04 #ababab
-set $base05 #767676
-set $base06 #414141
-set $base07 #0c0c0c
-set $base08 #c50f1f
-set $base09 #f9f1a5
-set $base0A #c19c00
-set $base0B #13a10e
-set $base0C #3a96dd
-set $base0D #0037da
-set $base0E #881798
-set $base0F #16c60c
+set $base00 #FFFFFF
+set $base01 #24292E
+set $base02 #D73A49
+set $base03 #28A745
+set $base04 #DBAB09
+set $base05 #0366D6
+set $base06 #5A32A3
+set $base07 #0598BC
+set $base08 #6A737D
+set $base09 #959DA5
+set $base0A #FB0120
+set $base0B #22863A
+set $base0C #B08800
+set $base0D #005CC5
+set $base0E #5A32A3
+set $base0F #3192AA
 
-client.focused          $base05 $base0D $base00 $base0D $base0D
-client.focused_inactive $base01 $base01 $base05 $base03 $base01
-client.unfocused        $base01 $base00 $base05 $base01 $base01
-client.urgent           $base08 $base08 $base00 $base08 $base08
-client.placeholder      $base00 $base00 $base05 $base00 $base00
-client.background       $base07
-
-
-
-bar {
-  position top
-  colors {
-    background $base00
-    separator  $base01
-    statusline $base04
-
-    focused_workspace   $base05 $base0D $base00
-    active_workspace    $base05 $base03 $base00
-    inactive_workspace  $base03 $base01 $base05
-    urgent_workspace    $base08 $base08 $base00
-    binding_mode        $base00 $base0A $base00
-  }
-}
+# Property Name         Border  BG      Text    Indicator Child Border
+client.focused          $base05 $base05 $base00 $base00 $base05
+client.focused_inactive $base01 $base01 $base00 $base00 $base01
+client.unfocused        $base01 $base00 $base05 $base00 $base01
+client.urgent           $base04 $base04 $base00 $base00 $base04
+client.placeholder      $base01 $base01 $base05 $base00 $base00
+client.background       $base00
 
 include /etc/sway/config.d/*
-

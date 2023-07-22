@@ -1,0 +1,100 @@
+* {
+  border: none;
+  border-radius: 0;
+  font-size: 16px;
+  min-height: 0;
+}
+
+window#waybar {
+    background: #000000;
+    color: #6A737D;
+}
+
+#workspaces button {
+    padding: 0 15px 0 0;
+    color: #FFFFFF;
+}
+
+#workspaces button.focused {
+    background: #24292f;
+}
+
+#workspaces button.urgent {
+    background-color: #bf616a;
+}
+
+#mode {
+    background: #64727D;
+    border-bottom: 3px solid #ffffff;
+}
+
+#clock,
+#battery,
+#backlight,
+#network,
+#pulseaudio,
+#tray,
+#mode,
+#idle_inhibitor {
+    padding: 0 10px;
+    margin: 0 0px;
+}
+
+#clock {
+    color: #FFFFFF;
+}
+
+#battery {
+    color: #FFFFFF;
+}
+
+#battery.charging {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+@keyframes blink {
+    to {
+        color: #FFFFFF;
+    }
+}
+
+#battery.critical:not(.charging) {
+    background: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+
+#backlight {
+    color: #FFFFFF;
+}
+
+#network {
+    color: #FFFFFF;
+}
+
+#network.disconnected {
+    color: #FFFFFF;
+}
+
+#pulseaudio {
+    color: #FFFFFF;
+}
+
+#pulseaudio.muted {
+    color: #FFFFFF;
+}
+
+#tray {
+    color: #FFFFFF;
+}
+
+#idle_inhibitor.activated {
+    background-color: #FFFFFF;
+    color: #24292E;
+}
