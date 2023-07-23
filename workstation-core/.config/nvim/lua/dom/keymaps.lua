@@ -1,6 +1,7 @@
 local dap = require('dap')
 local preview = require('goto-preview')
 local builtin = require('telescope.builtin')
+local utils = require('telescope.utils')
 local notify = require('telescope').extensions.notify
 local harpoon = require('telescope').extensions.harpoon
 local harpoon_mark = require('harpoon.mark')
@@ -45,6 +46,12 @@ vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Continue' })
 -- Telescope Keymaps
 vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find, { desc = 'Find In Buffer' })
 vim.keymap.set('n', '<leader>fo', builtin.find_files, { desc = 'Find File' })
+vim.keymap.set(
+  'n',
+  '<leader>fl',
+  function() builtin.find_files({ cwd = utils.buffer_dir() }) end,
+  { desc = 'Find File In Current Directory' }
+)
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find In Files' })
 vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find Buffer' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find Help Tag' })
