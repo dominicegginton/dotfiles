@@ -1,27 +1,19 @@
 # Dom's dotfiles
 
-My dotfiles are managed by [stow](https://www.gnu.org/software/stow/).
+> TODO
 
-- **core** _Core system configuration_ 
-- **server** _System configuration for servers_
-- **workstation-core** _Core system configuration for workstation_
-- **workstation-linux** _System configuration for workstation on the Linux platform_
-- **workstation-macos** _System configuration for workstation on macOS platform_
+## Platforms
 
-## Packages
+- **server-debian** _System configuration for Linux Debian based servers_
+- **workstation-arch** _System configuration for Linux Arch based workstations_
+- **workstation-darwin** _System configuration for MacOS Darwin based workstations_
 
-### `core`
+## Instalation
 
-Core system configuration for all systems.
+> TODO
 
-#### Software
+## Scripts
 
-- **bash** - GNU Bourne-Again SHell
-- **git** - Distributed version control system
-- **stow** - Symlink farm manager
-- **vim** - Vi IMproved - enhanced vi editor
-
-#### Configuration
-
-- **.bashrc** - Bash configuration
-- **.bash_profile** - Bash profile
+- **install** _Install software and configuration_
+- **helthcheck** _Perform a system helthcheck_
+- **uprade** _Perform a system upgrade_

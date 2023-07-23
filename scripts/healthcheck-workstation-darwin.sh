@@ -1,0 +1,1 @@
+echo 'healthcheck workstation-darwin'

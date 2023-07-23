@@ -1,0 +1,1 @@
+echo 'upgrade workstation-arch'
