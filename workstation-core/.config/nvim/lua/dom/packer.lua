@@ -81,6 +81,7 @@ require('packer').startup(function(use)
   use('jghauser/mkdir.nvim')
   use('christoomey/vim-tmux-navigator')
   use('mhartington/formatter.nvim')
+  use('editorconfig/editorconfig-vim')
 
   if packer_bootstrap then require('packer').sync() end
 end)
