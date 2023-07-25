@@ -49,7 +49,7 @@ vim.keymap.set('n', '<leader>fo', builtin.find_files, { desc = 'Find File' })
 vim.keymap.set(
   'n',
   '<leader>fl',
-  function() builtin.find_files({ cwd = utils.buffer_dir() }) end,
+  function() builtin.find_files({ cwd = utils.buffer_dir(), hidden = true }) end,
   { desc = 'Find File In Current Directory' }
 )
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find In Files' })
