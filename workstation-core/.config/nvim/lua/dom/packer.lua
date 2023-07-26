@@ -64,6 +64,7 @@ require('packer').startup(function(use)
   use('kevinhwang91/nvim-bqf')
   use('weilbith/nvim-code-action-menu')
   use('folke/trouble.nvim')
+  use('Bekaboo/dropbar.nvim')
   use('Pocco81/true-zen.nvim')
 
   -- Editor
