@@ -76,6 +76,7 @@ vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { des
 vim.keymap.set('n', '<leader>tq', function() quickfix_list.toggle() end, { desc = 'Toggle Quickfix' })
 vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
 vim.keymap.set('n', '<C-w>o', function() focus.toggle() end, { desc = 'Toggle Focus' })
+vim.keymap.set('n', '<C-w>=', function() vim.cmd('FocusEqualise') end, { desc = 'Equalize Focus' })
 vim.keymap.set('n', '<leader>m', function() harpoon_mark.add_file() end, { desc = 'Mark File' })
 
 -- Formatting Keymaps
