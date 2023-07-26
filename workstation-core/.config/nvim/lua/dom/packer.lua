@@ -35,6 +35,7 @@ require('packer').startup(function(use)
 
   -- Dap
   use('mfussenegger/nvim-dap')
+  use('mfussenegger/nvim-dap-python')
   use('mxsdev/nvim-dap-vscode-js')
   use({
     'microsoft/vscode-js-debug',
@@ -44,7 +45,6 @@ require('packer').startup(function(use)
 
   -- UI
   use('stevearc/aerial.nvim')
-  use('rcarriga/nvim-dap-ui')
   use({ 'j-hui/fidget.nvim', tag = 'legacy' })
   use('nvim-focus/focus.nvim')
   use('projekt0n/github-nvim-theme')
@@ -53,6 +53,8 @@ require('packer').startup(function(use)
   use('echasnovski/mini.statusline')
   use('echasnovski/mini.tabline')
   use('neogitorg/neogit')
+  use('rcarriga/nvim-dap-ui')
+  use('theHamsta/nvim-dap-virtual-text')
   use('rcarriga/nvim-notify')
   use('nvim-tree/nvim-tree.lua')
   use('nvim-tree/nvim-web-devicons')
