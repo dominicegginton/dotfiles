@@ -82,6 +82,12 @@ require('packer').startup(function(use)
   use('christoomey/vim-tmux-navigator')
   use('mhartington/formatter.nvim')
   use('editorconfig/editorconfig-vim')
+  use({
+    'iamcco/markdown-preview.nvim',
+    run = 'cd app && npm install',
+    setup = H.markdown_preview_setup,
+    ft = { 'markdown' },
+  })
 
   if packer_bootstrap then require('packer').sync() end
 end)
@@ -91,5 +97,7 @@ H.run_treesitter = function()
   local ts_update = ts_install.update({ with_sync = true })
   ts_update()
 end
+
+H.markdown_preview_setup = function() vim.g.mkdp_filetypes = { 'markdown' } end
 
 H.run_vscode_js_debug = 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out'
