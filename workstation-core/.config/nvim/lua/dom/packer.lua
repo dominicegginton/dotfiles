@@ -81,6 +81,7 @@ require('packer').startup(function(use)
   -- Extra
   use('github/copilot.vim')
   use('ThePrimeagen/harpoon')
+  use('axkirillov/hbac.nvim')
   use('jghauser/mkdir.nvim')
   use('christoomey/vim-tmux-navigator')
   use('mhartington/formatter.nvim')

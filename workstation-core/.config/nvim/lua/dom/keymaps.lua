@@ -7,6 +7,7 @@ local harpoon = require('telescope').extensions.harpoon
 local harpoon_mark = require('harpoon.mark')
 local focus = require('true-zen.focus')
 local quickfix_list = require('dom.plugins.quickfix-list')
+local hbac = require('hbac')
 
 vim.leader = ' '
 vim.g.mapleader = ' '
@@ -53,7 +54,7 @@ vim.keymap.set(
   { desc = 'Find File In Current Directory' }
 )
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find In Files' })
-vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find Buffer' })
+vim.keymap.set('n', '<leader>fb', hbac.telescope, { desc = 'Find Buffer' })
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find Help Tag' })
 vim.keymap.set('n', '<leader>fO', builtin.oldfiles, { desc = 'Find Old File' })
 vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = 'Find Command' })
@@ -77,6 +78,7 @@ vim.keymap.set('n', '<leader>tq', function() quickfix_list.toggle() end, { desc 
 vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
 vim.keymap.set('n', '<C-w>o', function() focus.toggle() end, { desc = 'Toggle Focus' })
 vim.keymap.set('n', '<C-w>=', function() vim.cmd('FocusEqualise') end, { desc = 'Equalize Focus' })
+vim.keymap.set('n', '<leader>p', function() hbac.toggle_pin() end, { desc = 'Toggle Buffer Pin' })
 vim.keymap.set('n', '<leader>m', function() harpoon_mark.add_file() end, { desc = 'Mark File' })
 
 -- Formatting Keymaps
