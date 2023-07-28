@@ -23,6 +23,7 @@ set -gx PATH $HOME/.cargo/bin $PATH
 set -gx PATH $HOME/.npm-global $PATH
 set -gx PATH $HOME/.local/share/bob/nvim-bin $PATH
 set -gx PATH $HOME/.nvm $PATH
+set -gx PATH $HOME/.docker/bin $PATH
 
 # PROMPT
 set __fish_git_prompt_showdirtystate 'yes'
