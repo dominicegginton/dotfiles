@@ -24,6 +24,9 @@ export EDITOR=nvim
 export TERM=xterm-256color
 export GPG_TTY=$(tty)
 
+# SECRETS
+source ~/secrets.sh
+
 # PATH
 export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"

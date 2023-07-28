@@ -22,6 +22,9 @@ export LANG=en_GB.UTF-8
 export EDITOR=vim
 export GPG_TTY=$(tty)
 
+# SECRETS
+source ~/.secrets.sh
+
 # PATH
 export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
