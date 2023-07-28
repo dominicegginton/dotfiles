@@ -31,6 +31,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.npm-global:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.nvm:$PATH"
+export PATH="$HOME/.docker/bin:$PATH"
 
 # PROMPT
 autoload -U colors && colors
@@ -40,7 +41,7 @@ zstyle ':vcs_info:git:*' formats '%b '
 precmd() { vcs_info }
 if [[ "$SSH_CLIENT" ]]; then
   PROMPT='%F{red}%n@%m%f %F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{magenta}$.%F{red}$)%f '
-else 
+else
   PROMPT='%F{blue}%~%f %F{yellow}${vcs_info_msg_0_}%f${prompt_newline}%(?.%F{magenta}$.%F{red}$)%f '
 fi
 
