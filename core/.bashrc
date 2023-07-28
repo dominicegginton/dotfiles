@@ -29,6 +29,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/.npm-global:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export PATH="$HOME/.nvm:$PATH"
+export PATH="$HOME/.docker/bin:$PATH"
 
 # PROMPT
 if [[ "$SSH_CLIENT" ]]; then
