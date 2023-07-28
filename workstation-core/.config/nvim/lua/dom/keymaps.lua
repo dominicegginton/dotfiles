@@ -50,12 +50,12 @@ vim.keymap.set('n', '<leader>fo', builtin.find_files, { desc = 'Find File' })
 vim.keymap.set(
   'n',
   '<leader>fl',
-  function() builtin.find_files({ cwd = utils.buffer_dir(), hidden = true }) end,
+  function() builtin.find_files({ cwd = utils.buffer_dir() }) end,
   { desc = 'Find File In Current Directory' }
 )
+vim.keymap.set('n', '<leader>fh', function() builtin.find_files({ hidden = true }) end, { desc = 'Find File (Hidden)' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find In Files' })
 vim.keymap.set('n', '<leader>fb', hbac.telescope, { desc = 'Find Buffer' })
-vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find Help Tag' })
 vim.keymap.set('n', '<leader>fO', builtin.oldfiles, { desc = 'Find Old File' })
 vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = 'Find Command' })
 vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, { desc = 'Find Document Symbol' })
@@ -78,7 +78,7 @@ vim.keymap.set('n', '<leader>tq', function() quickfix_list.toggle() end, { desc 
 vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
 vim.keymap.set('n', '<C-w>o', function() focus.toggle() end, { desc = 'Toggle Focus' })
 vim.keymap.set('n', '<C-w>=', function() vim.cmd('FocusEqualise') end, { desc = 'Equalize Focus' })
-vim.keymap.set('n', '<C-w>q', function() hbac.close_unpinned() end, { desc = 'Increase Focus' })
+vim.keymap.set('n', '<C-w>Q', function() hbac.close_unpinned() end, { desc = 'Close Unpinned Buffers' })
 vim.keymap.set('n', '<leader>p', function() hbac.toggle_pin() end, { desc = 'Toggle Buffer Pin' })
 vim.keymap.set('n', '<leader>m', function() harpoon_mark.add_file() end, { desc = 'Mark File' })
 
