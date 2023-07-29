@@ -15,6 +15,8 @@ vim.g.mapleader = ' '
 -- Lsp Keymaps
 vim.keymap.set('n', 'e', vim.diagnostic.open_float, { desc = 'Open Diagnostics' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Set Location List' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Goto Next Diagnostic' })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Goto Previous Diagnostic' })
 local lsp_attach = function(ev)
   vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.keymap.set(
