@@ -11,7 +11,7 @@ set $menu dmenu_path | wofi -d | xargs swaymsg exec --
 set $statusbar waybar
 set $laptop-screen eDP-1
 
-output * bg ~/bliss.jpg fill
+output * bg ~/background.jpg fill
 
 output $laptop-screen {
   mode 1920x1080
