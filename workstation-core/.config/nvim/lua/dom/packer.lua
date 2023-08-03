@@ -45,6 +45,7 @@ require('packer').startup(function(use)
 
   -- UI
   use('stevearc/aerial.nvim')
+  use('stevearc/dressing.nvim')
   use({ 'j-hui/fidget.nvim', tag = 'legacy' })
   use('nvim-focus/focus.nvim')
   use('projekt0n/github-nvim-theme')
