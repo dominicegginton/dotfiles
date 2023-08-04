@@ -8,6 +8,7 @@ local harpoon_mark = require('harpoon.mark')
 local focus = require('true-zen.focus')
 local quickfix_list = require('dom.plugins.quickfix-list')
 local hbac = require('hbac')
+local lsp_lines = require('lsp_lines')
 
 vim.leader = ' '
 vim.g.mapleader = ' '
@@ -77,6 +78,7 @@ vim.keymap.set('n', '<leader>te', function() vim.cmd('NvimTreeToggle') end, { de
 vim.keymap.set('n', '<leader>to', function() vim.cmd('AerialToggle!') end, { desc = 'Toggle Code Outline' })
 vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { desc = 'Toggle Diagnostics' })
 vim.keymap.set('n', '<leader>tq', function() quickfix_list.toggle() end, { desc = 'Toggle Quickfix' })
+vim.keymap.set('n', '<leader>tl', function() lsp_lines.toggle() end, { desc = 'Toggle LSP' })
 vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
 vim.keymap.set('n', '<leader>tp', function() vim.cmd('CmdPalette') end, { desc = 'Open Command Palette' })
 vim.keymap.set('n', '<C-w>o', function() focus.toggle() end, { desc = 'Toggle Focus' })
