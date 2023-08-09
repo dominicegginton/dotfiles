@@ -79,6 +79,7 @@ require('packer').startup(function(use)
   use('echasnovski/mini.trailspace')
   use('tveskag/nvim-blame-line')
   use('RRethy/vim-illuminate')
+  use('smjonas/inc-rename.nvim')
 
   -- Extra
   use('github/copilot.vim')

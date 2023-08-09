@@ -18,6 +18,12 @@ vim.keymap.set('n', 'e', vim.diagnostic.open_float, { desc = 'Open Diagnostics' 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Set Location List' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Goto Next Diagnostic' })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Goto Previous Diagnostic' })
+vim.keymap.set(
+  'n',
+  '<leader>rn',
+  function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
+  { expr = true, desc = 'Rename' }
+)
 local lsp_attach = function(ev)
   vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.keymap.set(
@@ -27,7 +33,6 @@ local lsp_attach = function(ev)
     { buffer = ev.buf, desc = 'Code Action' }
   )
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf, desc = 'Hover' })
-  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, { buffer = ev.buf, desc = 'Rename' })
   vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = ev.buf, desc = 'Goto Declaration' })
   vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = ev.buf, desc = 'Goto Definition' })
   vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = ev.buf, desc = 'Goto Implementation' })
