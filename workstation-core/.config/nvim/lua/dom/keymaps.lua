@@ -9,6 +9,7 @@ local focus = require('true-zen.focus')
 local quickfix_list = require('dom.plugins.quickfix-list')
 local hbac = require('hbac')
 local lsp_lines = require('lsp_lines')
+local package_info = require('package-info')
 
 vim.leader = ' '
 vim.g.mapleader = ' '
@@ -91,9 +92,21 @@ vim.keymap.set('n', '<C-w>=', function() vim.cmd('FocusEqualise') end, { desc = 
 vim.keymap.set('n', '<C-w>Q', function() hbac.close_unpinned() end, { desc = 'Close Unpinned Buffers' })
 vim.keymap.set('n', '<leader>p', function() hbac.toggle_pin() end, { desc = 'Toggle Buffer Pin' })
 vim.keymap.set('n', '<leader>m', function() harpoon_mark.add_file() end, { desc = 'Mark File' })
+vim.api.nvim_create_autocmd('BufEnter', {
+  pattern = 'package.json',
+  callback = function()
+    vim.keymap.set(
+      'n',
+      '<leader>tp',
+      package_info.toggle,
+      { silent = true, noremap = true, desc = 'Toggle Package Info' }
+    )
+  end,
+})
 
 -- Formatting Keymaps
 vim.keymap.set('n', '<leader><leader>f', function() vim.cmd('Format') end, { desc = 'Format' })
-local buff_write_post = function() vim.cmd('FormatWrite') end
-local buff_write_post_group = vim.api.nvim_create_augroup('UserFormat', {})
-vim.api.nvim_create_autocmd('BufWritePost', { group = buff_write_post_group, callback = buff_write_post })
+vim.api.nvim_create_autocmd(
+  'BufWritePost',
+  { group = vim.api.nvim_create_augroup('UserFormat', {}), callback = function() vim.cmd('FormatWrite') end }
+)

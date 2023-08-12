@@ -96,6 +96,8 @@ require('packer').startup(function(use)
     ft = { 'markdown' },
   })
 
+  use('vuki656/package-info.nvim')
+
   if packer_bootstrap then require('packer').sync() end
 end)
 

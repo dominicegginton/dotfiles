@@ -10,12 +10,21 @@ local function eslint_on_attach(_, bufnr)
   vim.api.nvim_create_autocmd('BufWritePre', { buffer = bufnr, command = 'EslintFixAll' })
 end
 
-lspconfig['lua_ls'].setup({ capabilities = capabilities })
+lspconfig['vimls'].setup({ capabilities = capabilities })
+lspconfig['bashls'].setup({ capabilities = capabilities })
+lspconfig['jsonls'].setup({ capabilities = capabilities })
+lspconfig['yamlls'].setup({ capabilities = capabilities })
+lspconfig['dockerls'].setup({ capabilities = capabilities })
+lspconfig['docker_compose_language_service'].setup({ capabilities = capabilities })
 lspconfig['tsserver'].setup({ capabilities = capabilities })
 lspconfig['eslint'].setup({ capabilities = capabilities, on_attach = eslint_on_attach })
 lspconfig['html'].setup({ capabilities = capabilities })
 lspconfig['cssls'].setup({ capabilities = capabilities })
-lspconfig['jsonls'].setup({ capabilities = capabilities })
 lspconfig['angularls'].setup({ capabilities = capabilities })
 lspconfig['custom_elements_ls'].setup({ capabilities = capabilities })
 lspconfig['pyright'].setup({ capabilities = capabilities })
+lspconfig['rust_analyzer'].setup({
+  capabilities = capabilities,
+  ssettings = { ['rust-analyzer'] = { diagnostics = { enable = false } } },
+})
+lspconfig['lua_ls'].setup({ capabilities = capabilities })
