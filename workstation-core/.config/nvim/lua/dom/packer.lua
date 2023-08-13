@@ -96,7 +96,7 @@ require('packer').startup(function(use)
     setup = H.markdown_preview_setup,
     ft = { 'markdown' },
   })
-
+  use('echasnovski/mini.sessions')
   use('vuki656/package-info.nvim')
 
   if packer_bootstrap then require('packer').sync() end
