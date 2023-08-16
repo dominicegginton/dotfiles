@@ -74,12 +74,12 @@ require('packer').startup(function(use)
   -- Editor
   use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
   use('echasnovski/mini.comment')
+  use('echasnovski/mini.cursorword')
   use('echasnovski/mini.hipatterns')
   use('echasnovski/mini.indentscope')
   use('echasnovski/mini.move')
   use('echasnovski/mini.trailspace')
   use('tveskag/nvim-blame-line')
-  use('RRethy/vim-illuminate')
   use('smjonas/inc-rename.nvim')
 
   -- Extra
