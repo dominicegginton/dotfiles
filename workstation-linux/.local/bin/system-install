@@ -1,0 +1,9 @@
+#/usr/bin/env sh
+
+source ~/.local/utils/pacman.sh
+source ~/.local/utils/cargo.sh
+source ~/.local/utils/npm.sh
+
+install_pacman_packages
+# install_cargo_packages
+install_npm_packages

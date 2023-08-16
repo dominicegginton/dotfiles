@@ -1,0 +1,7 @@
+#/usr/bin/env sh
+
+paru -S --needed --noconfirm $(paru -Qqtd)
+paru -Syuu
+cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+sudo npm update -g
+bob use nightly

@@ -1,1 +1,0 @@
-echo 'upgrade server-debian'

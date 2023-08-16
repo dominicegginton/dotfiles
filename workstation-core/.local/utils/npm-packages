@@ -1,0 +1,12 @@
+@angular/language-service
+@microsoft/compose-language-service
+bash-language-server
+cssmodules-language-server
+custom-elements-languageserver
+dockerfile-language-server-nodejs
+eslint
+prettier
+pyright
+typescript-language-server
+vscode-langservers-extracted
+yaml-language-server
