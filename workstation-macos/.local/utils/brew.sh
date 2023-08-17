@@ -12,3 +12,10 @@ install_brew_packages () {
     install_brew_package $packages
   fi
 }
+
+update_brew_packages () {
+  brew update
+  brew outdated --greedy
+  brew upgrade --greedy
+  brew cleanup
+}
