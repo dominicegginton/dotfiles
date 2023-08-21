@@ -2,10 +2,11 @@
 
 source ~/.local/utils/brew.sh
 source ~/.local/utils/cargo.sh
+source ~/.local/utils/macos.sh
 source ~/.local/utils/npm.sh
 source ~/.local/utils/bob.sh
 
-sudo softwareupdate --install --all
+update_macos
 update_brew_packages
 update_cargo_packages
 update_npm_packages

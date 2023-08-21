@@ -1,7 +1,7 @@
 #/usr/local/env sh
 
 install_cargo_package () {
-  cargo install $1
+  sudo cargo install $1
 }
 
 install_cargo_packages () {
@@ -14,5 +14,5 @@ install_cargo_packages () {
 }
 
 update_cargo_packages () {
-  cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+  sudo cargo install $(cargo install --list | egrep '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
 }
