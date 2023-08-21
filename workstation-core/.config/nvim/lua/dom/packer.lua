@@ -17,6 +17,7 @@ require('packer').startup(function(use)
   -- Packer & Utils & Helpers
   use('wbthomason/packer.nvim')
   use('nvim-lua/plenary.nvim')
+  use('kevinhwang91/promise-async')
   use('MunifTanjim/nui.nvim')
 
   -- LSP
@@ -80,6 +81,7 @@ require('packer').startup(function(use)
   use('echasnovski/mini.move')
   use('echasnovski/mini.trailspace')
   use('tveskag/nvim-blame-line')
+  use('kevinhwang91/nvim-ufo')
   use('smjonas/inc-rename.nvim')
 
   -- Extra
