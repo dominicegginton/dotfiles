@@ -1,3 +1,7 @@
 local sessions = require('mini.sessions')
 
-sessions.setup({ directory = '~/.local/share/nvim/sessions' })
+sessions.setup({
+  autoread = true,
+  autowrite = true,
+  directory = '~/.local/share/nvim/sessions',
+})
