@@ -10,6 +10,7 @@ local quickfix_list = require('dom.plugins.quickfix-list')
 local hbac = require('hbac')
 local lsp_lines = require('lsp_lines')
 local package_info = require('package-info')
+local renamer = require('renamer')
 
 vim.leader = ' '
 vim.g.mapleader = ' '
@@ -19,12 +20,7 @@ vim.keymap.set('n', 'e', vim.diagnostic.open_float, { desc = 'Open Diagnostics' 
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Set Location List' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Goto Next Diagnostic' })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Goto Previous Diagnostic' })
-vim.keymap.set(
-  'n',
-  '<leader>rn',
-  function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
-  { expr = true, desc = 'Rename' }
-)
+vim.keymap.set('n', '<leader>rn', renamer.rename, { desc = 'Rename' })
 local lsp_attach = function(ev)
   vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.keymap.set(

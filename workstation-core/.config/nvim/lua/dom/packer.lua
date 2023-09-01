@@ -82,7 +82,7 @@ require('packer').startup(function(use)
   use('echasnovski/mini.trailspace')
   use('tveskag/nvim-blame-line')
   use('kevinhwang91/nvim-ufo')
-  use('smjonas/inc-rename.nvim')
+  use('filipdutescu/renamer.nvim')
 
   -- Extra
   use('github/copilot.vim')
