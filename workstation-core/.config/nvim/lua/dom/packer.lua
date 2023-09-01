@@ -18,7 +18,7 @@ require('packer').startup(function(use)
   use('wbthomason/packer.nvim')
   use('nvim-lua/plenary.nvim')
   use('kevinhwang91/promise-async')
-  use('MunifTanjim/nui.nvim')
+  use('muniftanjim/nui.nvim')
 
   -- LSP
   use('williamboman/mason.nvim')
@@ -29,7 +29,7 @@ require('packer').startup(function(use)
   use('hrsh7th/cmp-path')
   use('hrsh7th/cmp-cmdline')
   use('hrsh7th/nvim-cmp')
-  use('L3MON4D3/LuaSnip')
+  use({ 'l3mon4d3/luasnip', run = H.run_luasnip })
   use('saadparwaiz1/cmp_luasnip')
   use('lukas-reineke/cmp-under-comparator')
   use({ 'nvim-treesitter/nvim-treesitter', run = H.run_treesitter })
@@ -55,18 +55,18 @@ require('packer').startup(function(use)
   use('echasnovski/mini.tabline')
   use('neogitorg/neogit')
   use('rcarriga/nvim-dap-ui')
-  use('theHamsta/nvim-dap-virtual-text')
+  use('thehamsta/nvim-dap-virtual-text')
   use('nvim-tree/nvim-tree.lua')
   use('nvim-tree/nvim-web-devicons')
   use('nvim-telescope/telescope.nvim')
-  use('BurntSushi/ripgrep')
-  use({ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' })
+  use('burntsushi/ripgrep')
+  use({ 'nvim-telescope/telescope-fzf-native.nvim', run = H.run_telescope_fzf_native })
   use('folke/which-key.nvim')
   use('sindrets/diffview.nvim')
   use('weilbith/nvim-code-action-menu')
   use('folke/trouble.nvim')
-  use('Bekaboo/dropbar.nvim')
-  use('Pocco81/true-zen.nvim')
+  use('bekaboo/dropbar.nvim')
+  use('pocco81/true-zen.nvim')
 
   -- Editor
   use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
@@ -82,7 +82,7 @@ require('packer').startup(function(use)
 
   -- Extra
   use('github/copilot.vim')
-  use('ThePrimeagen/harpoon')
+  use('theprimeagen/harpoon')
   use('axkirillov/hbac.nvim')
   use('jghauser/mkdir.nvim')
   use('christoomey/vim-tmux-navigator')
@@ -90,8 +90,8 @@ require('packer').startup(function(use)
   use('editorconfig/editorconfig-vim')
   use({
     'iamcco/markdown-preview.nvim',
-    run = 'cd app && npm install',
-    setup = H.markdown_preview_setup,
+    run = H.run_markdown_preview,
+    setup = H.setup_markdown_preview,
     ft = { 'markdown' },
   })
   use('echasnovski/mini.sessions')
@@ -106,6 +106,12 @@ H.run_treesitter = function()
   ts_update()
 end
 
-H.markdown_preview_setup = function() vim.g.mkdp_filetypes = { 'markdown' } end
+H.run_luasnip = 'make'
+
+H.run_telescope_fzf_native = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+
+H.run_markdown_preview = 'cd app && npm install'
+
+H.setup_markdown_preview = function() vim.g.mkdp_filetypes = { 'markdown' } end
 
 H.run_vscode_js_debug = 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out'
