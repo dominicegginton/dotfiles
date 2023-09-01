@@ -3,13 +3,9 @@ local themes = require('telescope.themes')
 
 telescope.setup({
   defaults = vim.tbl_extend('force', {
-    layout_strategy = 'bottom_pane',
-    layout_config = {
-      height = 0.4,
-    },
     border = true,
     sorting_strategy = 'ascending',
-  }, themes.get_ivy({})),
+  }, themes.get_dropdown()),
   extentions = {
     fzf = {
       fuzzy = true,
@@ -20,5 +16,4 @@ telescope.setup({
   },
 })
 telescope.load_extension('fzf')
-telescope.load_extension('aerial')
 telescope.load_extension('harpoon')
