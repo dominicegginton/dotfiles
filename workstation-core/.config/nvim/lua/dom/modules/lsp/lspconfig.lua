@@ -28,3 +28,4 @@ lspconfig['rust_analyzer'].setup({
   ssettings = { ['rust-analyzer'] = { diagnostics = { enable = false } } },
 })
 lspconfig['lua_ls'].setup({ capabilities = capabilities })
+lspconfig['sourcekit'].setup({ capabilities = capabilities })
