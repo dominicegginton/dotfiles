@@ -44,12 +44,7 @@ vim.keymap.set('n', '<leader>dB', dap.set_breakpoint, { desc = 'Set Conditional 
 vim.keymap.set('n', '<F5>', dap.continue, { desc = 'Continue' })
 
 -- Telescope Keymaps
-vim.keymap.set(
-  'n',
-  '<leader>/',
-  function () builtin.current_buffer_fuzzy_find(theme.get_cursor()) end,
-  { desc = 'Find In Buffer' }
-)
+vim.keymap.set('n', '<leader>/', builtin.current_buffer_fuzzy_find, { desc = 'Find In Buffer' })
 vim.keymap.set('n', '<leader>fo', builtin.find_files, { desc = 'Find File' })
 vim.keymap.set(
   'n',
@@ -67,12 +62,7 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find In Files' })
 vim.keymap.set('n', '<leader>fb', hbac.telescope, { desc = 'Find Buffer' })
 vim.keymap.set('n', '<leader>fO', builtin.oldfiles, { desc = 'Find Old File' })
 vim.keymap.set('n', '<leader>fc', builtin.commands, { desc = 'Find Command' })
-vim.keymap.set(
-  'n',
-  '<leader>fs',
-  function() builtin.lsp_document_symbols(theme.get_cursor()) end,
-  { desc = 'Find Document Symbol' }
-)
+vim.keymap.set('n', '<leader>fs', builtin.lsp_document_symbols, { desc = 'Find Document Symbol' })
 vim.keymap.set('n', '<leader>fw', builtin.lsp_workspace_symbols, { desc = 'Find Workspace Symbol' })
 vim.keymap.set('n', '<leader>fr', builtin.lsp_references, { desc = 'Find Reference' })
 vim.keymap.set('n', '<leader>fd', builtin.lsp_definitions, { desc = 'Find Definitions' })
