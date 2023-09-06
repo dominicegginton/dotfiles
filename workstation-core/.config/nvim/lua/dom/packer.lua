@@ -21,8 +21,6 @@ require('packer').startup(function(use)
   use('muniftanjim/nui.nvim')
 
   -- LSP
-  use('williamboman/mason.nvim')
-  use('williamboman/mason-lspconfig.nvim')
   use('neovim/nvim-lspconfig')
   use('hrsh7th/cmp-nvim-lsp')
   use('hrsh7th/cmp-buffer')
@@ -108,7 +106,7 @@ end
 
 H.run_luasnip = 'make'
 
-H.run_telescope_fzf_native = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build'
+H.run_telescope_fzf_native = 'make'
 
 H.run_markdown_preview = 'cd app && npm install'
 

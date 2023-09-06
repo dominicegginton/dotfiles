@@ -1,7 +1,6 @@
 require('dom.packer')
 require('dom.settings')
 require('dom.keymaps')
-require('dom.modules.lsp.mason')
 require('dom.modules.lsp.lspconfig')
 require('dom.modules.lsp.cmp')
 require('dom.modules.lsp.treesitter')
