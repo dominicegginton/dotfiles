@@ -8,6 +8,7 @@ treesitter.setup({
     'json',
     'yaml',
     'dockerfile',
+    'terraform',
     'toml',
     'html',
     'css',
