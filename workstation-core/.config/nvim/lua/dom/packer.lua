@@ -32,7 +32,7 @@ require('packer').startup(function(use)
   use('lukas-reineke/cmp-under-comparator')
   use({ 'nvim-treesitter/nvim-treesitter', run = H.run_treesitter })
 
-  -- Dap
+  -- DAP
   use('mfussenegger/nvim-dap')
   use('mfussenegger/nvim-dap-python')
   use('mxsdev/nvim-dap-vscode-js')
@@ -41,6 +41,11 @@ require('packer').startup(function(use)
     opt = true,
     run = H.run_vscode_js_debug,
   })
+
+  -- DADBOB
+  use('tpope/vim-dadbod')
+  use('kristijanhusak/vim-dadbod-ui')
+  use('kristijanhusak/vim-dadbod-completion')
 
   -- UI
   use('stevearc/dressing.nvim')
@@ -67,7 +72,6 @@ require('packer').startup(function(use)
   use('pocco81/true-zen.nvim')
 
   -- Editor
-  use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
   use('echasnovski/mini.comment')
   use('echasnovski/mini.cursorword')
   use('echasnovski/mini.hipatterns')
