@@ -1,8 +1,12 @@
 local nvim_tree = require('nvim-tree')
 local nvim_tree_api = require('nvim-tree.api')
 
+-- HEIGHT AND WIDTH
 local HEIGHT_RATIO = 1
 local WIDTH_RATIO = 0.25
+local width = function() return math.floor(vim.opt.columns:get() * WIDTH_RATIO) end
+
+-- OPEN WINDOW CONFIG
 local open_win_config = function()
   local screen_w = vim.opt.columns:get()
   local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
@@ -20,14 +24,18 @@ local open_win_config = function()
     height = window_h_int,
   }
 end
-local width = function() return math.floor(vim.opt.columns:get() * WIDTH_RATIO) end
+
+-- OPEN NVIM TREE
 local open_nvim_tree = function(data)
   local real_file = vim.fn.filereadable(data.file) == 1
   local no_name = data.file == '' and vim.bo[data.buf].buftype == ''
   if not real_file and not no_name then return end
+  if vim.fn.expand('%') == '.git/COMMIT_EDITMSG' then return end
   nvim_tree_api.tree.toggle({ focus = false, find_file = true })
 end
+vim.api.nvim_create_autocmd({ 'VimEnter' }, { callback = open_nvim_tree })
 
+-- NVIM TREE
 nvim_tree.setup({
   sort_by = 'case_sensitive',
   update_focused_file = { enable = true },
@@ -57,4 +65,3 @@ nvim_tree.setup({
     custom = { '^.git$' },
   },
 })
-vim.api.nvim_create_autocmd({ 'VimEnter' }, { callback = open_nvim_tree })
