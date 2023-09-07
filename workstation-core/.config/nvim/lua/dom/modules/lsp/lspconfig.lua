@@ -12,7 +12,7 @@ end
 
 lspconfig['vimls'].setup({ capabilities = capabilities })
 lspconfig['bashls'].setup({ capabilities = capabilities })
-lspconfig['jsonls'].setup({ capabilities = capabilities })
+-- lspconfig['jsonls'].setup({ capabilities = capabilities })
 lspconfig['yamlls'].setup({ capabilities = capabilities })
 lspconfig['dockerls'].setup({ capabilities = capabilities })
 lspconfig['docker_compose_language_service'].setup({ capabilities = capabilities })
