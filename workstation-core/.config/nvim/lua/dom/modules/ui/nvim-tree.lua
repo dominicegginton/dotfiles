@@ -19,6 +19,7 @@ local open_win_config = function()
   return {
     relative = 'editor',
     row = center_y,
+    border = 'none',
     col = center_x,
     width = window_w_int,
     height = window_h_int,
@@ -41,11 +42,12 @@ nvim_tree.setup({
   update_focused_file = { enable = true },
   view = {
     side = 'right',
+    signcolumn = 'no',
+    width = width,
     float = {
       enable = false,
       open_win_config = open_win_config,
     },
-    width = width,
   },
   renderer = {
     highlight_opened_files = 'all',
