@@ -1,3 +1,3 @@
 local renamer = require('renamer')
 
-renamer.setup()
+renamer.setup({ border = false })

@@ -51,12 +51,7 @@ vim.keymap.set(
   function() builtin.find_files({ cwd = utils.buffer_dir() }) end,
   { desc = 'Find File In Current Directory' }
 )
-vim.keymap.set(
-  'n',
-  '<leader>fh',
-  function() builtin.find_files({ hidden = true }) end,
-  { desc = 'Find File (Hidden)' }
-)
+vim.keymap.set('n', '<leader>fh', function() builtin.find_files({ hidden = true }) end, { desc = 'Find File (Hidden)' })
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Find In Files' })
 vim.keymap.set('n', '<leader>fb', hbac.telescope, { desc = 'Find Buffer' })
 vim.keymap.set('n', '<leader>fO', builtin.oldfiles, { desc = 'Find Old File' })
@@ -78,6 +73,7 @@ vim.keymap.set('n', '<leader>to', function() vim.cmd('AerialToggle!') end, { des
 vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { desc = 'Toggle Diagnostics' })
 vim.keymap.set('n', '<leader>tq', function() quickfix_list.toggle() end, { desc = 'Toggle Quickfix' })
 vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
+vim.keymap.set('n', '<leader>tr', function() vim.cmd('FSToggle') end, { desc = 'Toggle Read' })
 vim.keymap.set('n', '<leader>tp', function() vim.cmd('CmdPalette') end, { desc = 'Open Command Palette' })
 vim.keymap.set('n', '<C-w>o', function() focus.toggle() end, { desc = 'Toggle Focus' })
 vim.keymap.set('n', '<C-w>=', function() vim.cmd('FocusEqualise') end, { desc = 'Equalize Focus' })

@@ -21,6 +21,7 @@ option.laststatus = 3
 option.scrolloff = 8
 option.sidescrolloff = 8
 option.cmdheight = 0
+global.flow_strength = 0
 
 -- TABS AND INDENTATION
 option.expandtab = true

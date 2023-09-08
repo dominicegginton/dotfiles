@@ -81,6 +81,7 @@ require('packer').startup(function(use)
   use('tveskag/nvim-blame-line')
   use('kevinhwang91/nvim-ufo')
   use('filipdutescu/renamer.nvim')
+  use('nullchilly/fsread.nvim')
 
   -- Extra
   use('github/copilot.vim')

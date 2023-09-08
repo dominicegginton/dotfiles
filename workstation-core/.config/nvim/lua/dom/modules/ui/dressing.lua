@@ -1,3 +1,7 @@
 local dressing = require('dressing')
 
-dressing.setup()
+dressing.setup({
+  input = { border = 'solid' },
+  select = { border = 'solid' },
+  builtin = { border = 'solid' },
+})
