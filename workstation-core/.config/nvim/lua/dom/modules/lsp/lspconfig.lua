@@ -19,7 +19,7 @@ lspconfig['docker_compose_language_service'].setup({ capabilities = capabilities
 lspconfig['tsserver'].setup({ capabilities = capabilities })
 lspconfig['eslint'].setup({ capabilities = capabilities, on_attach = eslint_on_attach })
 -- lspconfig['html'].setup({ capabilities = capabilities })
-lspconfig['cssls'].setup({ capabilities = capabilities })
+-- lspconfig['cssls'].setup({ capabilities = capabilities })
 lspconfig['angularls'].setup({ capabilities = capabilities })
 lspconfig['custom_elements_ls'].setup({ capabilities = capabilities })
 lspconfig['pyright'].setup({ capabilities = capabilities })
