@@ -2,6 +2,7 @@ local treesitter = require('nvim-treesitter.configs')
 
 treesitter.setup({
   ensure_installed = {
+    'nix',
     'vim',
     'lua',
     'bash',
