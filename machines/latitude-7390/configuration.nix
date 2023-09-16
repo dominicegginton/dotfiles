@@ -25,6 +25,10 @@
   i18n.defaultLocale = "en_GB.UTF-8";
 
   security.sudo.execWheelOnly = true;
+  programs.light.enable = true;
+
+  services.printing.enable = true;
+  sound.enable = true;
 
   programs.sway = {
     enable = true;
@@ -49,8 +53,6 @@
     '';
   };
   programs.waybar.enable = true;
-  services.printing.enable = true;
-  sound.enable = true;
   programs.gnupg.agent.enable = true;
 
   system.stateVersion = "23.05";

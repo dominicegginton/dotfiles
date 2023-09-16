@@ -68,7 +68,7 @@ vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = 'Find Keymap' })
 vim.keymap.set('n', '<leader>fm', harpoon.marks, { desc = 'Find Marked File' })
 
 -- User Interface Keymaps
-vim.keymap.set('n', ':', '<cmd>FineCmdline<CR>', { noremap = true })
+-- vim.keymap.set('n', ':', '<cmd>FineCmdline<CR>', { noremap = true })
 vim.keymap.set('n', '<leader>te', function() vim.cmd('NvimTreeToggle') end, { desc = 'Toggle File Explorer' })
 vim.keymap.set('n', '<leader>to', function() vim.cmd('AerialToggle!') end, { desc = 'Toggle Code Outline' })
 vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { desc = 'Toggle Diagnostics' })
