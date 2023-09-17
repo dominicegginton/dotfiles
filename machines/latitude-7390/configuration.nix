@@ -27,8 +27,11 @@
   security.sudo.execWheelOnly = true;
   programs.light.enable = true;
 
+  services.upower.enable = true;
   services.printing.enable = true;
   sound.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
 
   programs.sway = {
     enable = true;

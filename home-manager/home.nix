@@ -13,6 +13,7 @@
     git
     firefox
     neovim
+    google-chrome
   ];
   
   home.stateVersion = "22.11";
