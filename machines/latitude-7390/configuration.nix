@@ -55,6 +55,13 @@
   programs.waybar.enable = true;
   programs.gnupg.agent.enable = true;
 
+  fonts.fonts = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    jetbrains-mono
+  ];
+
   system.stateVersion = "23.05";
 }
 
