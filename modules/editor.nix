@@ -1,33 +1,9 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 {
-  imports = [
-    ./shell.nix
-    ../modules/tmux
-  ];
-
-  home.username = "dom";
-  home.homeDirectory = "/home/dom";
-
-  home.sessionVariables = {
-    MOZ_ENABLE_WAYLAND = 1;
-    MOZ_USE_XINPUT2 = "1";
-    XDG_CURRENT_DESKTOP = "sway"; 
-  };
-
-  home.packages = with pkgs; [
-    pinentry
-    gnupg
-    git
-  ];
-
-  programs.firefox = {
-    enable = true;
-    package = pkgs.firefox-devedition;
-  };
-
   programs.neovim = {
     enable = true;
+    package = pkgs.neovim-nightly;
     extraPackages = with pkgs; [
       tree-sitter
       pkgs.rnix-lsp
@@ -45,6 +21,4 @@
       nodePackages.prettier
     ];
   };
-
-  home.stateVersion = "22.11";
 }
