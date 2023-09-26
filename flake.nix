@@ -10,9 +10,18 @@
     # Temporary fix for neovim nightly overlay
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.url = "github:pegasust/neovim-darwin-overlay/neovim-fix";
+    firefox-darwin-overlay.url = "github:bandithedoge/nixpkgs-firefox-darwin";
   };
 
-  outputs = { self, nixpkgs, darwin, home-manager, neovim-nightly-overlay, ... } @inputs:
+  outputs = {
+    self,
+    nixpkgs,
+    darwin,
+    home-manager,
+    neovim-nightly-overlay,
+    firefox-darwin-overlay,
+    ...
+  } @inputs:
   let
     stateVersion = "22.11";
   in {
@@ -44,6 +53,7 @@
                 ./modules/shell.nix
                 ./modules/editor.nix
                 ./modules/wayland.nix
+                ./modules/browser.nix
               ];
 
               home.stateVersion = stateVersion;
@@ -58,7 +68,10 @@
         pkgs = nixpkgs.legacyPackages."x86_64-darwin";
         modules = [
           {
-            nixpkgs.overlays = [ neovim-nightly-overlay.overlay ];
+            nixpkgs.overlays = [
+              neovim-nightly-overlay.overlay
+              firefox-darwin-overlay.overlay
+            ];
             nixpkgs.config.allowUnfree = true;
             nixpkgs.config.allowUnfreePredicate = (_: true);
             programs.home-manager.enable = true;
@@ -70,12 +83,11 @@
               ./users/dom.nix
               ./modules/shell.nix
               ./modules/editor.nix
+              ./modules/browser.nix
             ];
 
             home.stateVersion = stateVersion;
-
           }
-          ./users/dom.nix
         ];
       };
     };
