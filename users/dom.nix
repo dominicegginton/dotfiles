@@ -11,6 +11,7 @@
     pinentry
     gnupg
     git
+    twm
     alacritty
     noto-fonts
     noto-fonts-cjk

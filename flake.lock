@@ -226,16 +226,17 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1695427468,
-        "narHash": "sha256-LjVp//svQX0mLbzbP8hNUqVcDZPtvWxF1rjeTJRBy1M=",
-        "owner": "nix-community",
-        "repo": "neovim-nightly-overlay",
-        "rev": "5940bca71d4c8b7a688d72aefc4c29b1350b8c21",
+        "lastModified": 1695696555,
+        "narHash": "sha256-VTr8ULHPszU/3BHEjUlOWQXiI6IlRAeDj4HJNlvsjIA=",
+        "owner": "pegasust",
+        "repo": "neovim-darwin-overlay",
+        "rev": "24e038f80f68de2e62983ce31cd34faf3890e67e",
         "type": "github"
       },
       "original": {
-        "owner": "nix-community",
-        "repo": "neovim-nightly-overlay",
+        "owner": "pegasust",
+        "ref": "neovim-fix",
+        "repo": "neovim-darwin-overlay",
         "type": "github"
       }
     },
@@ -275,16 +276,16 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1695227375,
-        "narHash": "sha256-76WTkeCu3npPZDkay2hB2Dj3cOuCiF0P41dbmXWUKtA=",
-        "owner": "NixOS",
+        "lastModified": 1695695966,
+        "narHash": "sha256-SuSkBGLPdaIwiwN45uT/yMtZvDdiQdqvDx/WMB93Qso=",
+        "owner": "pegasust",
         "repo": "nixpkgs",
-        "rev": "fe977679240ac2027b151ecca1bc6ce808c2e8af",
+        "rev": "63df58ab349526d3b24f32aec9efc1d5c1de905d",
         "type": "github"
       },
       "original": {
-        "owner": "NixOS",
-        "ref": "nixpkgs-unstable",
+        "owner": "pegasust",
+        "ref": "nvim-patch-liblpeg",
         "repo": "nixpkgs",
         "type": "github"
       }

@@ -7,10 +7,12 @@
     darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    # Temporary fix for neovim nightly overlay
+    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay.url = "github:pegasust/neovim-darwin-overlay/neovim-fix";
   };
 
-  outputs = { self, nixpkgs, darwin, home-manager, neovim-nightly-overlay,  ... } @inputs:
+  outputs = { self, nixpkgs, darwin, home-manager, neovim-nightly-overlay, ... } @inputs:
   let
     stateVersion = "22.11";
   in {
@@ -67,6 +69,7 @@
             imports = [
               ./users/dom.nix
               ./modules/shell.nix
+              ./modules/editor.nix
             ];
 
             home.stateVersion = stateVersion;

@@ -6,7 +6,7 @@
     package = pkgs.neovim-nightly;
     extraPackages = with pkgs; [
       tree-sitter
-      pkgs.rnix-lsp
+      rnix-lsp
       nodePackages.typescript
       nodePackages.typescript-language-server
       nodePackages.bash-language-server
@@ -16,9 +16,9 @@
       nodePackages.typescript-language-server
       nodePackages.intelephense
       nodePackages.dockerfile-language-server-nodejs
+      nodePackages.prettier
       rust-analyzer
       stylua
-      nodePackages.prettier
     ];
   };
 }
