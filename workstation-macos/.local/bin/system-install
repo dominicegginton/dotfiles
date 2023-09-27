@@ -1,7 +1,0 @@
-#/usr/local/env sh
-
-source ~/.local/utils/cargo.sh
-source ~/.local/utils/npm.sh
-
-install_cargo_packages
-install_npm_packages
