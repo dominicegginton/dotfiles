@@ -5,6 +5,7 @@
     enable = true;
     package = pkgs.neovim-nightly;
     extraPackages = with pkgs; [
+      fzf
       tree-sitter
       rnix-lsp
       terraform-lsp
