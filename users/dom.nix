@@ -3,6 +3,8 @@
 {
   imports = [
     ../modules/shell.nix
+    ../modules/editor.nix
+    ../modules/browser.nix
   ];
 
   fonts.fontconfig.enable = true;
@@ -11,12 +13,13 @@
     pinentry
     gnupg
     git
-    twm
     alacritty
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
     font-awesome
     jetbrains-mono
+
+    nodejs-slim
   ];
 }

@@ -50,10 +50,7 @@
 
               imports = [
                 ./users/dom.nix
-                ./modules/shell.nix
-                ./modules/editor.nix
                 ./modules/wayland.nix
-                ./modules/browser.nix
               ];
 
               home.stateVersion = stateVersion;
@@ -81,9 +78,6 @@
 
             imports = [
               ./users/dom.nix
-              ./modules/shell.nix
-              ./modules/editor.nix
-              ./modules/browser.nix
               ./modules/darwin-applications.nix
             ];
 

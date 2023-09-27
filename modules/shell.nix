@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 {
   programs.zsh = {
     enable = true;
@@ -13,4 +15,8 @@
     enableZshIntegration = true;
     tmux.enableShellIntegration = true;
   };
+
+  home.packages = with pkgs; [
+    twm
+  ];
 }
