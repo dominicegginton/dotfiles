@@ -1,6 +1,0 @@
-git_protocol: https
-editor: !!null nvim
-prompt: enabled
-pager: !!null less
-aliases:
-    co: pr checkout
