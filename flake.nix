@@ -84,6 +84,7 @@
               ./modules/shell.nix
               ./modules/editor.nix
               ./modules/browser.nix
+              ./modules/darwin-applications.nix
             ];
 
             home.stateVersion = stateVersion;
