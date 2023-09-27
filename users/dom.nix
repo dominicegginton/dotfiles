@@ -22,4 +22,39 @@
 
     nodejs-slim
   ];
+
+  home.file = {
+    ".config" = {
+      source = ../workstation-core/.config;
+      recursive = true;
+    };
+
+    ".arup.gitconfig" = {
+      source = ../workstation-core/.arup.gitconfig;
+    };
+
+    ".editorconfig" = {
+      source = ../workstation-core/.editorconfig;
+    };
+
+    ".gitconfig" = {
+      source  = ../workstation-core/.gitconfig;
+    };
+
+    ".gitignore" = {
+      source = ../workstation-core/.gitignore;
+    };
+
+    ".gitmessage" = {
+      source = ../workstation-core/.gitmessage;
+    };
+
+    ".npmrc" = {
+      source = ../workstation-core/.npmrc;
+    };
+
+    ".tmux.conf" = {
+      source = ../workstation-core/.tmux.conf;
+    };
+  };
 }
