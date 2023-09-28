@@ -24,6 +24,8 @@
       nodePackages.prettier
       stylua
 
+      gcc
+      gnumake
       nodejs-slim
       swift
     ];
