@@ -29,6 +29,11 @@
       recursive = true;
     };
 
+    ".local" = {
+      source = ../workstation-core/.local;
+      recursive = true;
+    };
+
     ".arup.gitconfig" = {
       source = ../workstation-core/.arup.gitconfig;
     };
