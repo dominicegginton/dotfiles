@@ -27,6 +27,8 @@
   in {
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
 
+    overlays.my = import ./packages;
+
     nixosConfigurations = {
       latitude-7390 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -36,7 +38,10 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            nixpkgs.overlays = [ neovim-nightly-overlay.overlay ];
+            nixpkgs.overlays = [
+              neovim-nightly-overlay.overlay
+              self.overlays.my
+            ];
 
             home-manager.users.dom = ({ config, pkgs, ... }: {
               home.username = "dom";
@@ -68,6 +73,7 @@
             nixpkgs.overlays = [
               neovim-nightly-overlay.overlay
               firefox-darwin-overlay.overlay
+              self.overlays.my
             ];
             nixpkgs.config.allowUnfree = true;
             nixpkgs.config.allowUnfreePredicate = (_: true);
