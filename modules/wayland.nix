@@ -116,7 +116,7 @@ in
       export MOZ_ENABLE_WAYLAND=1
     '';
     extraConfig = ''
-      output * bg ~/.dotfiles/workstation-core/background.jpg fill
+      output * bg ~/background.jpg fill
       bindsym XF86MonBrightnessDown exec light -U 10
       bindsym XF86MonBrightnessUp exec light -A 10
       bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +1%'

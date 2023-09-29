@@ -61,5 +61,9 @@
     ".tmux.conf" = {
       source = ../workstation-core/.tmux.conf;
     };
+
+    "background.jpg" = {
+      source = ../workstation-core/background.jpg;
+    };
   };
 }
