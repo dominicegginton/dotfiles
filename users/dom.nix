@@ -65,5 +65,9 @@
     "background.jpg" = {
       source = ../workstation-core/background.jpg;
     };
+
+    "dom.jpg" = {
+      source = ../workstation-core/dom.jpg;
+    };
   };
 }
