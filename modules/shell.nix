@@ -6,6 +6,8 @@
     enableCompletion = true;
     enableAutosuggestions = true;
     syntaxHighlighting.enable = true;
+    autocd = true;
+    defaultKeymap = "viins";
   };
 
   programs.tmux = {

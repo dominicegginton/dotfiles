@@ -1,9 +1,0 @@
-# !/bin/bash
-
-# .bash_login
-# Executed by bash when login shell exits on login.
-
-source ~/.bashrc
-
-# CARGO
-. "$HOME/.cargo/env"
