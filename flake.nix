@@ -84,7 +84,8 @@
 
             imports = [
               ./users/dom.nix
-              ./modules/darwin-applications.nix
+              ./modules/network-filters.nix
+              # ./modules/darwin-applications.nix
             ];
 
             home.stateVersion = stateVersion;

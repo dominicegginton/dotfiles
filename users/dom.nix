@@ -29,11 +29,6 @@
       recursive = true;
     };
 
-    ".local" = {
-      source = ../workstation-core/.local;
-      recursive = true;
-    };
-
     ".arup.gitconfig" = {
       source = ../workstation-core/.arup.gitconfig;
     };
@@ -56,10 +51,6 @@
 
     ".npmrc" = {
       source = ../workstation-core/.npmrc;
-    };
-
-    ".tmux.conf" = {
-      source = ../workstation-core/.tmux.conf;
     };
 
     "background.jpg" = {
