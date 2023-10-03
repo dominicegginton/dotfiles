@@ -5,6 +5,8 @@
     ../modules/shell.nix
     ../modules/editor.nix
     ../modules/browser.nix
+    ../modules/home-manager-applications.nix
+    ../modules/network-filters.nix
   ];
 
   fonts.fontconfig.enable = true;
@@ -25,40 +27,40 @@
 
   home.file = {
     ".config" = {
-      source = ../workstation-core/.config;
+      source = ../sources/.config;
       recursive = true;
     };
 
     ".arup.gitconfig" = {
-      source = ../workstation-core/.arup.gitconfig;
+      source = ../sources/.arup.gitconfig;
     };
 
     ".editorconfig" = {
-      source = ../workstation-core/.editorconfig;
+      source = ../sources/.editorconfig;
     };
 
     ".gitconfig" = {
-      source  = ../workstation-core/.gitconfig;
+      source  = ../sources/.gitconfig;
     };
 
     ".gitignore" = {
-      source = ../workstation-core/.gitignore;
+      source = ../sources/.gitignore;
     };
 
     ".gitmessage" = {
-      source = ../workstation-core/.gitmessage;
+      source = ../sources/.gitmessage;
     };
 
     ".npmrc" = {
-      source = ../workstation-core/.npmrc;
+      source = ../sources/.npmrc;
     };
 
     "background.jpg" = {
-      source = ../workstation-core/background.jpg;
+      source = ../sources/background.jpg;
     };
 
     "dom.jpg" = {
-      source = ../workstation-core/dom.jpg;
+      source = ../sources/dom.jpg;
     };
   };
 }

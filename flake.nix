@@ -43,7 +43,7 @@
               self.overlays.my
             ];
 
-            home-manager.users.dom = ({ config, pkgs, ... }: {
+            home-manager.users.dom = {
               home.username = "dom";
               home.homeDirectory = "/home/dom";
 
@@ -59,7 +59,7 @@
               ];
 
               home.stateVersion = stateVersion;
-            });
+            };
           }
         ];
       };
@@ -84,8 +84,6 @@
 
             imports = [
               ./users/dom.nix
-              ./modules/network-filters.nix
-              # ./modules/darwin-applications.nix
             ];
 
             home.stateVersion = stateVersion;
