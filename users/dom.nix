@@ -7,6 +7,7 @@
     ../modules/browser.nix
     ../modules/home-manager-applications.nix
     ../modules/network-filters.nix
+    ../sources
   ];
 
   fonts.fontconfig.enable = true;
@@ -24,43 +25,4 @@
 
     nodejs-slim
   ];
-
-  home.file = {
-    ".config" = {
-      source = ../sources/.config;
-      recursive = true;
-    };
-
-    ".arup.gitconfig" = {
-      source = ../sources/.arup.gitconfig;
-    };
-
-    ".editorconfig" = {
-      source = ../sources/.editorconfig;
-    };
-
-    ".gitconfig" = {
-      source  = ../sources/.gitconfig;
-    };
-
-    ".gitignore" = {
-      source = ../sources/.gitignore;
-    };
-
-    ".gitmessage" = {
-      source = ../sources/.gitmessage;
-    };
-
-    ".npmrc" = {
-      source = ../sources/.npmrc;
-    };
-
-    "background.jpg" = {
-      source = ../sources/background.jpg;
-    };
-
-    "dom.jpg" = {
-      source = ../sources/dom.jpg;
-    };
-  };
 }
