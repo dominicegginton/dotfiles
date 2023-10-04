@@ -15,6 +15,7 @@ treesitter.setup({
     'css',
     'javascript',
     'typescript',
+    'markdown',
     'python',
     'rust',
     'swift',
