@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   imports = [
@@ -6,7 +6,6 @@
     ../modules/editor.nix
     ../modules/browser.nix
     ../modules/home-manager-applications.nix
-    ../modules/network-filters.nix
     ../sources
   ];
 
@@ -22,7 +21,18 @@
     noto-fonts-emoji
     font-awesome
     jetbrains-mono
-
     nodejs-slim
-  ];
+  ]
+    ++
+  (
+    if pkgs.stdenv.isLinux
+    then []
+    else []
+  )
+    ++
+  (
+    if pkgs.stdenv.isDarwin
+    then [ my.network-filters ]
+    else []
+  );
 }

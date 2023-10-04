@@ -1,3 +1,5 @@
 final: prev: {
-  my = {};
+  my = {
+    network-filters = final.callPackage ./network-filters.nix {};
+  };
 }
