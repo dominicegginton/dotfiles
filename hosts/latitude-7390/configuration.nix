@@ -57,6 +57,9 @@
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio" ];
     shell = pkgs.zsh;
+    packages = with pkgs; [
+      wpa_supplicant_gui
+    ];
   };
 
   system.stateVersion = "23.05";
