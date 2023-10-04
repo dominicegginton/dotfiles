@@ -10,6 +10,7 @@
     # Temporary fix for neovim nightly overlay
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.url = "github:pegasust/neovim-darwin-overlay/neovim-fix";
+    nixneovimplugins.url = "github:jooooscha/nixpkgs-vim-extra-plugins";
     firefox-darwin-overlay.url = "github:bandithedoge/nixpkgs-firefox-darwin";
   };
 
@@ -19,6 +20,7 @@
     darwin,
     home-manager,
     neovim-nightly-overlay,
+    nixneovimplugins,
     firefox-darwin-overlay,
     ...
   } @inputs:
@@ -40,6 +42,7 @@
             home-manager.useUserPackages = true;
             nixpkgs.overlays = [
               neovim-nightly-overlay.overlay
+              nixneovimplugins.overlays.default
               self.overlays.my
             ];
 
@@ -72,6 +75,7 @@
           {
             nixpkgs.overlays = [
               neovim-nightly-overlay.overlay
+              nixneovimplugins.overlays.default
               firefox-darwin-overlay.overlay
               self.overlays.my
             ];
