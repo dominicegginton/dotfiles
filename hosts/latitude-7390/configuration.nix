@@ -18,6 +18,11 @@
     };
 
   };
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [ 80 443 ];
+    allowedUDPPortRanges = [  ];
+  };
 
   hardware.bluetooth.enable = true;
   hardware.opengl.enable = true;
@@ -44,6 +49,7 @@
 
   services.upower.enable = true;
   services.printing.enable = true;
+  services.blueman.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
