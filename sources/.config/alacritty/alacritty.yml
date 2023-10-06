@@ -1,3 +1,6 @@
+live_config_reload: true
+import:
+  - ~./config/alacritty/github-dark-theme.yml
 font:
   normal:
     family: JetBrainsMono Nerd Font

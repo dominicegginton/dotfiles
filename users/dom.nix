@@ -32,7 +32,7 @@
     ++
   (
     if pkgs.stdenv.isDarwin
-    then [ my.network-filters ]
+    then []
     else []
   );
 }
