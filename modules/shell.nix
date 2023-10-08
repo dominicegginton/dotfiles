@@ -8,6 +8,10 @@
     syntaxHighlighting.enable = true;
     autocd = true;
     defaultKeymap = "viins";
+    oh-my-zsh = {
+      enable = true;
+      theme = "eastwood";
+    };
   };
 
   programs.tmux = {
