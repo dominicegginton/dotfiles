@@ -16,12 +16,12 @@
     gnupg
     git
     alacritty
+    tailscale
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
     font-awesome
     jetbrains-mono
-    nodejs-slim
   ]
     ++
   (
