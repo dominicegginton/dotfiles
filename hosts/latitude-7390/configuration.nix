@@ -62,6 +62,7 @@
   services.power-profiles-daemon.enable = false;
   services.thermald.enable = true;
   services.upower.enable = true;
+  services.tailscale.enable = true;
   services.printing.enable = true;
   services.blueman.enable = true;
   services.pipewire = {
