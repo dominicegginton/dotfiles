@@ -113,6 +113,7 @@
 
   home.packages = with pkgs; [
     twm
+    htop-vim
     ranger
   ];
 }
