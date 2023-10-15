@@ -33,9 +33,14 @@
     firefox-darwin-overlay,
     ...
   } @inputs:
+
   let
+    inherit (self) inputs outputs;
     stateVersion = "23.05";
-  in {
+    libx = import ./lib { inherit inputs outputs stateVersion; };
+  in
+
+  {
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
 
     overlays.my = import ./packages;
