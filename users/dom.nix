@@ -14,6 +14,7 @@
   home.packages = with pkgs; [
     pinentry
     gnupg
+    my.gpg-keys-utils
     git
     alacritty
     tailscale
