@@ -1,7 +1,7 @@
 { stdenv, pkgs, ... }:
 
 pkgs.writeShellApplication {
-  name = "import-gpg-keys";
+  name = "gpg-import-keys";
 
   runtimeInputs = with pkgs; [
     gnupg
@@ -13,6 +13,6 @@ pkgs.writeShellApplication {
     mkdir "$HOME"/gpg
     gsutil rsync -r gs://dominicegginton/gpg "$HOME"/gpg
     gpg --import "$HOME"/gpg/*
-    shred -u "$HOME"/gpg
+    rm -rf "$HOME"/gpg
   '';
 }
