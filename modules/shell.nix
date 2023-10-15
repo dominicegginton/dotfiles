@@ -5,7 +5,6 @@
     enable = true;
     enableCompletion = true;
     enableAutosuggestions = true;
-    syntaxHighlighting.enable = true;
     autocd = true;
     defaultKeymap = "viins";
     oh-my-zsh = {
