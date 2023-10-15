@@ -3,10 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+
     darwin.url = "github:lnl7/nix-darwin";
     darwin.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
     # Temporary fix for neovim nightly overlay
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly-overlay.url = "github:pegasust/neovim-darwin-overlay/neovim-fix";
@@ -32,6 +36,12 @@
     overlays.my = import ./packages;
 
     nixosConfigurations = {
+      iso-console = nixpkgs.lib.nixosSystem {
+        hostname = "iso-console";
+        username = "nixos";
+        installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
+      };
+
       latitude-7390 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
