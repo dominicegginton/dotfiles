@@ -115,5 +115,10 @@
         ];
       };
     };
+
+    devShells = libx.forAllSystems (system:
+      let pkgs = nixpkgs.legacyPackages.${system};
+      in import ./shell.nix { inherit pkgs; }
+    );
   };
 }
