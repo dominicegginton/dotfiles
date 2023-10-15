@@ -29,7 +29,7 @@
     ...
   } @inputs:
   let
-    stateVersion = "22.11";
+    stateVersion = "23.05";
   in {
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
 
