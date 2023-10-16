@@ -19,6 +19,8 @@
   template = ~/.gitmessage
 [pull]
   ff = only
+[push]
+  autoSetupRemote = true
 [rebase]
   autosquash = true
 [credential]

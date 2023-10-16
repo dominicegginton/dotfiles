@@ -14,7 +14,7 @@
   home.packages = with pkgs; [
     pinentry
     gnupg
-    my.gpg-import-keys
+    gpg-import-keys
     git
     alacritty
     tailscale
@@ -34,8 +34,8 @@
   (
     if pkgs.stdenv.isDarwin
     then [
-      my.network-filters-enable
-      my.network-filters-disable
+      network-filters-enable
+      network-filters-disable
     ]
     else []
   );

@@ -43,8 +43,6 @@
   {
     formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
 
-    overlays.my = import ./packages;
-
     nixosConfigurations = {
       iso-console = nixpkgs.lib.nixosSystem {
         hostname = "iso-console";
@@ -63,7 +61,9 @@
             nixpkgs.overlays = [
               neovim-nightly-overlay.overlay
               nixneovimplugins.overlays.default
-              self.overlays.my
+              self.overlays.additions
+              self.overlays.modifications
+              self.overlays.unstable-packages
             ];
 
             home-manager.users.dom = {
@@ -97,7 +97,9 @@
               neovim-nightly-overlay.overlay
               nixneovimplugins.overlays.default
               firefox-darwin-overlay.overlay
-              self.overlays.my
+              self.overlays.additions
+              self.overlays.modifications
+              self.overlays.unstable-packages
             ];
             nixpkgs.config.allowUnfree = true;
             nixpkgs.config.allowUnfreePredicate = (_: true);
@@ -119,6 +121,13 @@
     devShells = libx.forAllSystems (system:
       let pkgs = nixpkgs.legacyPackages.${system};
       in import ./shell.nix { inherit pkgs; }
+    );
+
+    overlays = import ./overlays { inherit inputs; };
+
+    packages = libx.forAllSystems (system:
+      let pkgs = nixpkgs.legacyPackages.${system};
+      in import ./pkgs { inherit pkgs; }
     );
   };
 }
