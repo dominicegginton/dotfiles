@@ -14,7 +14,7 @@
     };
 
     ".gitconfig" = {
-      source  = ../sources/.gitconfig;
+      source = ../sources/.gitconfig;
     };
 
     ".gitignore" = {

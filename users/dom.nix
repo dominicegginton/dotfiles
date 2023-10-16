@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -24,19 +24,19 @@
     font-awesome
     jetbrains-mono
   ]
-    ++
+  ++
   (
     if pkgs.stdenv.isLinux
-    then []
-    else []
+    then [ ]
+    else [ ]
   )
-    ++
+  ++
   (
     if pkgs.stdenv.isDarwin
     then [
       network-filters-enable
       network-filters-disable
     ]
-    else []
+    else [ ]
   );
 }

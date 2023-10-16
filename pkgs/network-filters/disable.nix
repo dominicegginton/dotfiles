@@ -1,4 +1,4 @@
-{ stdenv, pkgs, ... }:
+{ pkgs, ... }:
 
 pkgs.writeShellApplication {
   name = "network-filters-disable";

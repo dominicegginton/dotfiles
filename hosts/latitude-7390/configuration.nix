@@ -21,7 +21,7 @@
   networking.firewall = {
     enable = true;
     allowedTCPPorts = [ 80 443 ];
-    allowedUDPPortRanges = [  ];
+    allowedUDPPortRanges = [ ];
   };
 
   hardware.bluetooth.enable = true;

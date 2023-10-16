@@ -17,14 +17,16 @@ let
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme 'Dracula'
-    '';
+    text =
+      let
+        schema = pkgs.gsettings-desktop-schemas;
+        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+      in
+      ''
+        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+        gnome_schema=org.gnome.desktop.interface
+        gsettings set $gnome_schema gtk-theme 'Dracula'
+      '';
   };
 in
 
@@ -43,7 +45,7 @@ in
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
     dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme  # default gnome cursors
+    gnome3.adwaita-icon-theme # default gnome cursors
     swaylock
     swayidle
     grim # screenshot functionality
@@ -147,7 +149,7 @@ in
           "sway/mode"
           "sway/scratchpad"
         ];
-        modules-center = [];
+        modules-center = [ ];
         modules-right = [
           "mpd"
           "pulseaudio"
@@ -173,7 +175,7 @@ in
           };
         };
         mpd = {
-           format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
+          format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
           "format-disconnected" = "Disconnected ";
           "format-stopped" = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ";
           "unknown-tag" = "N/A";
@@ -208,7 +210,7 @@ in
         };
         "backlight" = {
           "format" = "{percent}% {icon}";
-          "format-icons" = ["" "" "" "" "" "" "" "" ""];
+          "format-icons" = [ "" "" "" "" "" "" "" "" "" ];
         };
         "pulseaudio" = {
           format = "{volume}% {icon} {format_source}";
@@ -217,14 +219,14 @@ in
           "format-muted" = " {format_source}";
           "format-source" = "{volume}% ";
           "format-source-muted" = "";
-          "format-icons"= {
+          "format-icons" = {
             headphone = "";
             "hands-free" = "";
             headset = "";
             phone = "";
             portable = "";
             car = "";
-            default = ["" "" ""];
+            default = [ "" "" "" ];
           };
           "on-click" = "pavucontrol";
         };
@@ -238,7 +240,7 @@ in
           "format-charging" = "{capacity}% ";
           "format-plugged" = "{capacity}% ";
           "format-alt" = "{time} {icon}";
-          "format-icons" = ["" "" "" "" ""];
+          "format-icons" = [ "" "" "" "" "" ];
         };
         network = {
           "format-wifi" = "{essid} ({signalStrength}%) ";
@@ -251,72 +253,72 @@ in
       };
     };
     style = ''
-      * {
-        border: none;
-        border-radius: 0;
-        font-size: 14px;
-        min-height: 0;
-        color: #FFFFFF;
-        background: #000000;
-      }
+       * {
+         border: none;
+         border-radius: 0;
+         font-size: 14px;
+         min-height: 0;
+         color: #FFFFFF;
+         background: #000000;
+       }
 
-      window#waybar {
-        background: #000000;
-        color: #6A737D;
-      }
+       window#waybar {
+         background: #000000;
+         color: #6A737D;
+       }
 
-      #workspaces button {
-        padding: 0 15px 0 0;
-      }
+       #workspaces button {
+         padding: 0 15px 0 0;
+       }
 
-      #workspaces button.focused {
-        background: #24292f;
-      }
+       #workspaces button.focused {
+         background: #24292f;
+       }
 
-      #workspaces button.urgent {
-        background-color: #bf616a;
-      }
+       #workspaces button.urgent {
+         background-color: #bf616a;
+       }
 
-      #mode {
-        background: #64727D;
-        border-bottom: none;
-      }
+       #mode {
+         background: #64727D;
+         border-bottom: none;
+       }
 
-      #clock,
-      #battery,
-      #backlight,
-      #network,
-      #pulseaudio,
-      #tray,
-      #mode,
-      #idle_inhibitor {
-        padding: 0 10px;
-        margin: 0 0px;
-      }
+       #clock,
+       #battery,
+       #backlight,
+       #network,
+       #pulseaudio,
+       #tray,
+       #mode,
+       #idle_inhibitor {
+         padding: 0 10px;
+         margin: 0 0px;
+       }
 
-     #battery.charging {
-        background-color: #000000;
-      }
+      #battery.charging {
+         background-color: #000000;
+       }
 
-      @keyframes blink {
-        to {
-          color: #FFFFFF;
-        }
-      }
+       @keyframes blink {
+         to {
+           color: #FFFFFF;
+         }
+       }
 
-      #battery.critical:not(.charging) {
-        background: #f53c3c;
-        animation-name: blink;
-        animation-duration: 0.5s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-      }
+       #battery.critical:not(.charging) {
+         background: #f53c3c;
+         animation-name: blink;
+         animation-duration: 0.5s;
+         animation-timing-function: linear;
+         animation-iteration-count: infinite;
+         animation-direction: alternate;
+       }
 
-      #idle_inhibitor.activated {
-        background-color: #FFFFFF;
-        color: #24292E;
-      }
+       #idle_inhibitor.activated {
+         background-color: #FFFFFF;
+         color: #24292E;
+       }
     '';
   };
 }

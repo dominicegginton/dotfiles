@@ -7,7 +7,7 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-    plugins = with pkgs.vimExtraPlugins; [];
+    plugins = with pkgs.vimExtraPlugins; [ ];
     extraPackages = with pkgs; [
       fzf
       tree-sitter

@@ -13,121 +13,137 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    agenix.url = "github:ryantm/agenix";
+    agenix.inputs.nixpkgs.follows = "nixpkgs";
+
+    nix-formatter-pack.url = "github:Gerschtli/nix-formatter-pack";
+    nix-formatter-pack.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Temporary fix for neovim nightly overlay
     # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly-overlay.url = "github:pegasust/neovim-darwin-overlay/neovim-fix";
+    neovim-nightly-overlay.url = "github:pegasust/neovim-darwin-overlay/neovim-fix"; # Temporary fix for neovim nightly overlay
     nixneovimplugins.url = "github:jooooscha/nixpkgs-vim-extra-plugins";
+
     firefox-darwin-overlay.url = "github:bandithedoge/nixpkgs-firefox-darwin";
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    darwin,
-    home-manager,
-    neovim-nightly-overlay,
-    nixneovimplugins,
-    firefox-darwin-overlay,
-    ...
-  } @inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , nix-formatter-pack
+    , home-manager
+    , neovim-nightly-overlay
+    , nixneovimplugins
+    , firefox-darwin-overlay
+    , ...
+    }:
 
-  let
-    inherit (self) inputs outputs;
-    stateVersion = "23.05";
-    libx = import ./lib { inherit inputs outputs stateVersion; };
-  in
+    let
+      inherit (self) inputs outputs;
+      stateVersion = "23.05";
+      libx = import ./lib { inherit inputs outputs stateVersion; };
+    in
 
-  {
-    formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixpkgs-fmt;
+    {
+      formatter = libx.forAllSystems (system:
+        nix-formatter-pack.lib.mkFormatter {
+          pkgs = nixpkgs.legacyPackages.${system};
+          config.tools = {
+            alejandra.enable = false;
+            deadnix.enable = true;
+            nixpkgs-fmt.enable = true;
+            statix.enable = true;
+          };
+        }
+      );
 
-    nixosConfigurations = {
-      iso-console = nixpkgs.lib.nixosSystem {
-        hostname = "iso-console";
-        username = "nixos";
-        installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
+      overlays = import ./overlays { inherit inputs; };
+
+      devShells = libx.forAllSystems (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in import ./shell.nix { inherit pkgs; }
+      );
+
+      packages = libx.forAllSystems (system:
+        let pkgs = nixpkgs.legacyPackages.${system};
+        in import ./pkgs { inherit pkgs; }
+      );
+
+      nixosConfigurations = {
+        iso-console = nixpkgs.lib.nixosSystem {
+          hostname = "iso-console";
+          username = "nixos";
+          installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
+        };
+
+        latitude-7390 = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/latitude-7390/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              nixpkgs.overlays = [
+                neovim-nightly-overlay.overlay
+                nixneovimplugins.overlays.default
+                self.overlays.additions
+                self.overlays.modifications
+                self.overlays.unstable-packages
+              ];
+
+              home-manager.users.dom = {
+                home.username = "dom";
+                home.homeDirectory = "/home/dom";
+
+                services.gpg-agent = {
+                  enable = true;
+                  defaultCacheTtl = 1800;
+                  enableSshSupport = true;
+                };
+
+                imports = [
+                  ./users/dom.nix
+                  ./modules/wayland.nix
+                ];
+
+                home.stateVersion = stateVersion;
+              };
+            }
+          ];
+        };
       };
 
-      latitude-7390 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          ./hosts/latitude-7390/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            nixpkgs.overlays = [
-              neovim-nightly-overlay.overlay
-              nixneovimplugins.overlays.default
-              self.overlays.additions
-              self.overlays.modifications
-              self.overlays.unstable-packages
-            ];
+      homeConfigurations = {
+        WORK = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages."x86_64-darwin";
+          modules = [
+            {
+              nixpkgs.overlays = [
+                neovim-nightly-overlay.overlay
+                nixneovimplugins.overlays.default
+                firefox-darwin-overlay.overlay
+                self.overlays.additions
+                self.overlays.modifications
+                self.overlays.unstable-packages
+              ];
+              nixpkgs.config.allowUnfree = true;
+              nixpkgs.config.allowUnfreePredicate = _: true;
+              programs.home-manager.enable = true;
 
-            home-manager.users.dom = {
-              home.username = "dom";
-              home.homeDirectory = "/home/dom";
-
-              services.gpg-agent = {
-                enable = true;
-                defaultCacheTtl = 1800;
-                enableSshSupport = true;
-              };
+              home.username = "dom.egginton";
+              home.homeDirectory = "/Users/dom.egginton";
 
               imports = [
                 ./users/dom.nix
-                ./modules/wayland.nix
               ];
 
               home.stateVersion = stateVersion;
-            };
-          }
-        ];
+            }
+          ];
+        };
       };
     };
-
-    homeConfigurations = {
-      WORK = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages."x86_64-darwin";
-        modules = [
-          {
-            nixpkgs.overlays = [
-              neovim-nightly-overlay.overlay
-              nixneovimplugins.overlays.default
-              firefox-darwin-overlay.overlay
-              self.overlays.additions
-              self.overlays.modifications
-              self.overlays.unstable-packages
-            ];
-            nixpkgs.config.allowUnfree = true;
-            nixpkgs.config.allowUnfreePredicate = (_: true);
-            programs.home-manager.enable = true;
-
-            home.username = "dom.egginton";
-            home.homeDirectory = "/Users/dom.egginton";
-
-            imports = [
-              ./users/dom.nix
-            ];
-
-            home.stateVersion = stateVersion;
-          }
-        ];
-      };
-    };
-
-    devShells = libx.forAllSystems (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
-      in import ./shell.nix { inherit pkgs; }
-    );
-
-    overlays = import ./overlays { inherit inputs; };
-
-    packages = libx.forAllSystems (system:
-      let pkgs = nixpkgs.legacyPackages.${system};
-      in import ./pkgs { inherit pkgs; }
-    );
-  };
 }
