@@ -23,6 +23,9 @@
     noto-fonts-emoji
     font-awesome
     jetbrains-mono
+    rebuild-host
+    rebuild-home
+    rebuild-iso-console
   ]
   ++
   (
