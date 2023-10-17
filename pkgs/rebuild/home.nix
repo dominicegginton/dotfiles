@@ -9,6 +9,6 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    home-manager switch -b backup --flake "$HOME"/.dotfiles
+    home-manager switch -b backup --impure --flake "$HOME"/.dotfiles
   '';
 }

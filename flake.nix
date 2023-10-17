@@ -51,10 +51,7 @@
         nix-formatter-pack.lib.mkFormatter {
           pkgs = nixpkgs.legacyPackages.${system};
           config.tools = {
-            alejandra.enable = false;
-            deadnix.enable = true;
             nixpkgs-fmt.enable = true;
-            statix.enable = true;
           };
         }
       );
@@ -72,7 +69,7 @@
       );
 
       nixosConfigurations = {
-        iso-console = nixpkgs.lib.nixosSystem {
+        iso-console = libx.mkHost {
           hostname = "iso-console";
           username = "nixos";
           installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
@@ -117,7 +114,9 @@
       };
 
       homeConfigurations = {
-        WORK = home-manager.lib.homeManagerConfiguration {
+        "dom@latitude-7390" = libx.mkHome { hostname = "latitude-7390"; username = "dom"; desktop = "sway"; };
+
+        "dom.egginton@MCCML44WMD6T" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages."x86_64-darwin";
           modules = [
             {
