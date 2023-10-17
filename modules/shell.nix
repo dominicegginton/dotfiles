@@ -114,5 +114,6 @@
     twm
     htop-vim
     ranger
+    nodejs-slim
   ];
 }
