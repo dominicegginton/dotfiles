@@ -75,6 +75,12 @@
           installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
         };
 
+        latitude-7390-new = libx.mkHost {
+          hostname = "latitude-7390";
+          username = "dom";
+          desktop = "sway";
+        };
+
         latitude-7390 = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [

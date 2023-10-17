@@ -17,7 +17,14 @@
     inputs.disko.nixosModules.disko
     (modulesPath + "/installer/scan/not-detected.nix")
     ./${hostname}
-  ];
+    ./_common/console
+    ./_common/services/firewall.nix
+    ./_common/services/tailescale.nix
+    ./_common/services/smartmon.nix
+    ./_common/users/root
+  ]
+  ++ lib.optional (builtins.pathExists ./_common/users/${username}.nix) (import ./_common/users/${username}.nix)
+  ++ lib.optional (desktop != null) ./_common/desktop;
 
   i18n = {
     defaultLocale = "en_GB.utf8";
@@ -111,6 +118,7 @@
     ];
     config = {
       allowUnfree = true;
+      joypixels.acceptLicense = true;
     };
   };
 

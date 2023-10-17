@@ -3,8 +3,8 @@ import:
   - ~./config/alacritty/github-dark-theme.yml
 font:
   normal:
-    family: JetBrainsMono Nerd Font
-  size: 14
+    family: JetBrainsMono
+  size: 12
 colors:
   primary:
     background: '0xffffff'
