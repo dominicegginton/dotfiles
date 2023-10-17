@@ -1,0 +1,5 @@
+_:
+
+{
+  disko.devices = { };
+}
