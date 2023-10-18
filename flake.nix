@@ -89,6 +89,11 @@
           desktop = "sway";
         };
 
+        "dom@burbage" = libx.mkHome {
+          hostname = "burbage";
+          username = "dom";
+        };
+
         "dom.egginton@MCCML44WMD6T" = libx.mkHome {
           hostname = "MCCML44WMD6T";
           username = "dom.egginton";

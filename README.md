@@ -4,21 +4,22 @@
 
 ## Hosts
 
-|    Hostname     | OEM  |           Model           |  OS   |    Role     |
-| :-------------: | :--: | :-----------------------: | :---: | :---------: |
-| `latitude-7390` | DELL | latitude 7390 Two in One  | NixOS |   Laptop    |
-| `MCCLTDNGRLN3`  | DELL | Macbook Pro 16-inch, 2019 | MacOS | Work Laptop |
+|    Hostname     | OEM  |           Model           |   OS   |    Role     |
+| :-------------: | :--: | :-----------------------: | :----: | :---------: |
+| `latitude-7390` | DELL | latitude 7390 Two in One  | NixOS  |   Laptop    |
+|    `burbage`    | N/A  |         Intel I3          | Debian |   Server    |
+| `MCCLTDNGRLN3`  | DELL | Macbook Pro 16-inch, 2019 | MacOS  | Work Laptop |
 
 ## Installing NixOS
 
-- Boot off a .iso image created by this flake using `rebuild-iso-console` (*see below*)
+- Boot off a .iso image created by this flake using `rebuild-iso-console` (_see below_)
 - Put the .iso image on a USB drive
 - Boot the target computer from the USB drive
 - Run `install-system <hostname> <username>` from a terminal
   - The install script uses [Disko] to automatically partition and format the disks, then uses my flake via `nixos-install` to complete a full-system installation
   - This flake is copied to the target user's home directory as `~/.dotfiles`
 - Reboot
-- Login and run `rebuild-home` (*see below*) from a terminal to complete the Home Manager configuration.
+- Login and run `rebuild-home` (_see below_) from a terminal to complete the Home Manager configuration.
 
 If the target system is booted from something other than the .iso image created by this flake, you can still install the system using the following:
 
