@@ -40,20 +40,19 @@ in
   home.packages = with pkgs; [
     dbus-sway-environment
     configure-gtk
-    alacritty # gpu accelerated terminal
+    alacritty
     wayland
-    xdg-utils # for opening default programs when clicking links
-    glib # gsettings
-    dracula-theme # gtk theme
-    gnome3.adwaita-icon-theme # default gnome cursors
+    xdg-utils
+    glib
+    dracula-theme
+    gnome3.adwaita-icon-theme
     swaylock
     swayidle
     grim # screenshot functionality
-    slurp # screenshot functionality
-    wl-clipboard # wl-copy and wl-paste for copy/paste from stdin / stdout
-    bemenu # wayland clone of dmenu
-    mako # notification system developed by swaywm maintainer
-    wdisplays # tool to configure displays
+    wl-clipboard
+    bemenu
+    mako
+    wdisplays
     pulseaudioFull
   ];
 

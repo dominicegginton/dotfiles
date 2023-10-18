@@ -80,75 +80,20 @@
           username = "dom";
           desktop = "sway";
         };
-
-        latitude7390-backup = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            ./hosts/latitude-7390/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              nixpkgs.overlays = [
-                neovim-nightly-overlay.overlay
-                nixneovimplugins.overlays.default
-                self.overlays.additions
-                self.overlays.modifications
-                self.overlays.unstable-packages
-              ];
-
-              home-manager.users.dom = {
-                home.username = "dom";
-                home.homeDirectory = "/home/dom";
-
-                services.gpg-agent = {
-                  enable = true;
-                  defaultCacheTtl = 1800;
-                  enableSshSupport = true;
-                };
-
-                imports = [
-                  ./users/dom.nix
-                  ./modules/wayland.nix
-                ];
-
-                home.stateVersion = stateVersion;
-              };
-            }
-          ];
-        };
       };
 
       homeConfigurations = {
-        "dom@latitude-7390" = libx.mkHome { hostname = "latitude-7390"; username = "dom"; desktop = "sway"; };
-        "dom.egginton@MCCML44WMD6T" = libx.mkHome { hostname = "MCCML44WMD6T"; username = "dom.egginton"; desktop = "quartz"; platform = "x86_64-darwin"; };
+        "dom@latitude-7390" = libx.mkHome {
+          hostname = "latitude-7390";
+          username = "dom";
+          desktop = "sway";
+        };
 
-        "dom.egginton@MCCML44WMD6T-backup" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages."x86_64-darwin";
-          modules = [
-            {
-              nixpkgs.overlays = [
-                neovim-nightly-overlay.overlay
-                nixneovimplugins.overlays.default
-                firefox-darwin-overlay.overlay
-                self.overlays.additions
-                self.overlays.modifications
-                self.overlays.unstable-packages
-              ];
-              nixpkgs.config.allowUnfree = true;
-              nixpkgs.config.allowUnfreePredicate = _: true;
-              programs.home-manager.enable = true;
-
-              home.username = "dom.egginton";
-              home.homeDirectory = "/Users/dom.egginton";
-
-              imports = [
-                ./users/dom.nix
-              ];
-
-              home.stateVersion = stateVersion;
-            }
-          ];
+        "dom.egginton@MCCML44WMD6T" = libx.mkHome {
+          hostname = "MCCML44WMD6T";
+          username = "dom.egginton";
+          desktop = "quartz";
+          platform = "x86_64-darwin";
         };
       };
     };
