@@ -14,9 +14,18 @@ let
   inherit (pkgs.stdenv) isDarwin;
 in
 {
-  imports = [ ];
+  imports = [
+    ./_common/console
+    ./_common/modules/alias-applications.nix
+  ]
+  ++ lib.optional (builtins.isPath (./. + "/_mixins/users/${username}")) ./_mixins/users/${username}
+  ++ lib.optional (builtins.pathExists (./. + "/_mixins/users/${username}/hosts/${hostname}.nix")) ./_mixins/users/${username}/hosts/${hostname}.nix
+  ++ lib.optional (desktop != null) ./_mixins/desktop;
 
   home = {
+    activation.report-changes = config.lib.dag.entryAnywhere ''
+      ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
+    '';
     homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
     sessionPath = [ "$HOME/.local/bin" ];
     inherit stateVersion;

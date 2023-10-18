@@ -11,7 +11,7 @@
     };
     sshguard = {
       enable = true;
-      whitelist = [];
+      whitelist = [ ];
     };
   };
   programs.ssh.startAgent = true;

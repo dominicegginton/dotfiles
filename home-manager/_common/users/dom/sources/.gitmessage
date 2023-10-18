@@ -1,0 +1,109 @@
+
+
+# ────────────────────────────────────────── 100 chars ────────────────────────────────────────────┤
+
+
+# ─── Example: Simple feature  ────────────────────────────────────────────────────────────────────┤
+# feat(core): add about page
+#
+# Created new route with a path of */about* in router that loads the `AboutPageComponent`.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Example: Simple refactor ────────────────────────────────────────────────────────────────────┤
+# refactor(core): rename `FooModel` to `BarModel`
+#
+# Improve code readability. The original name no longer matches how the function is used.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Example: Simple docs change ─────────────────────────────────────────────────────────────────┤
+# docs: clarify prerequisites in installation steps
+#
+# Fixes #36332
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Example: A bug fix ──────────────────────────────────────────────────────────────────────────┤
+# fix(core): only log errors to console in local and dev environments
+#
+# Previously errors are being logged to the console in all environments. Users can see the errors
+# when the console is open, this is an undesirable.
+
+# Now we check the configuration and only log errors to the console when the environment is *local*
+# or *development*.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Example: Breaking change ────────────────────────────────────────────────────────────────────┤
+# chore(workspace): support latest chrome browser only
+#
+# This commit modifies the browserslist browser support list to only include the latest version
+# of *Come* and drops support for both the last two versions of Firefox, Edge, Safari and iOS.
+#
+# BREAKING CHANGE: Support dropped for the last two versions of Firefox, Edge, Safari and iOS.
+# ─────────────────────────────────────────────────────────────────────────────────────────────────┤
+
+
+# Commit Message Format
+# =============================
+#
+# Each commit message consists of a *header*, a *body*, and a *footer*.
+#
+# <header>
+# <BLANK LINE>
+# <body>
+# <BLANK LINE>
+# <footer>
+#
+# The header is mandatory.
+#
+# The body is mandatory for all commits except for those of scope "docs". When the body is required
+# it must be at least 20 characters long.
+#
+# The footer is optional.
+#
+# Any line of the commit message cannot be longer than 100 characters.
+#
+#
+# Commit Message Header
+# ---------------------
+#
+# <type>(<scope>): <short summary>
+#   │       │             │
+#   │       │             └─⫸ Summary in present tense. Not capitalized. No period at the end.
+#   │       │
+#   │       └─⫸ Commit Scope: workspace|{module}
+#   │
+#   └─⫸ Commit Type: build|ci|docs|feat|fix|perf|refactor|style|test
+#
+#
+# Commit Message Body
+# ---------------------
+#
+# Just as in the summary, use the imperative, present tense: "fix" not "fixed" nor "fixes".
+#
+# Explain the motivation for the change in the commit message body. This commit message should
+# explain WHY you are making the change. You can include a comparison of the previous behavior with
+# the new behavior in order to illustrate the impact of the change.
+#
+#
+# Commit Message Footer
+# ---------------------
+#
+# The footer can contain information about breaking changes and is also the place to reference
+# GitHub issues, Jira tickets, and other PRs that this commit closes or is related to.
+#
+# ```
+# BREAKING CHANGE: <breaking change summary>
+# <BLANK LINE>
+# <breaking change description + migration instructions>
+# <BLANK LINE>
+# <BLANK LINE>
+# Fixes #<issue number>
+# ```
+#
+# Breaking Change section should start with the phrase "BREAKING CHANGE: " followed by a summary of
+# the breaking change, a blank line, and a detailed description of the breaking change that also
+# includes migration instructions.
+#
