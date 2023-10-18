@@ -1,7 +1,16 @@
-{ desktop, lib, username, ... }:
+{ desktop, pkgs, lib, username, ... }:
+
+let
+  inherit (pkgs) stdenv;
+  inherit (lib) mkIf;
+in
 
 {
-  services.mpris-proxy.enable = true;
+  imports = [ ]
+  ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix
+  ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop/${desktop}.nix")) ../users/${username}/desktop/${desktop}.nix;
+
+  services.mpris-proxy.enable = mkIf stdenv.isLinux true;
 
   xresources.properties = {
     "*color0" = "#141417";
@@ -22,8 +31,21 @@
     "*color15" = "#e9e9e9";
   };
 
-  programs.firefox.enable = true;
-  imports = [ ]
-  ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix
-  ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop/${desktop}.nix")) ../users/${username}/desktop/${desktop}.nix;
+  fonts.fontconfig.enable = true;
+
+  home.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk
+    noto-fonts-emoji
+    font-awesome
+    jetbrains-mono
+  ];
+
+
+  programs = {
+    firefox = {
+      enable = true;
+      package = pkgs.firefox-devedition-bin;
+    };
+  };
 }

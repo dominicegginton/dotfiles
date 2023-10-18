@@ -1,5 +1,10 @@
 { config, lib, hostname, pkgs, username, ... }:
 
+let
+  inherit (pkgs) stdenv;
+  inherit (lib) mkIf;
+in
+
 {
   imports = [
    ./console
@@ -15,9 +20,7 @@
     sessionVariables = { };
   };
 
-  programs = { };
-
-  systemd.user.tmpfiles.rules = [
+  systemd.user.tmpfiles.rules = mkIf stdenv.isLinux [
     "d ${config.home.homeDirectory}/dev/ 0755 ${username} users - -"
     "d ${config.home.homeDirectory}/playgrounds/ 0755 ${username} users - -"
     "d ${config.home.homeDirectory}/.dotfiles 0755 ${username} users - -"

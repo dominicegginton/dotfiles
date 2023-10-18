@@ -81,7 +81,7 @@
           desktop = "sway";
         };
 
-        latitude = nixpkgs.lib.nixosSystem {
+        latitude7390-backup = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             ./hosts/latitude-7390/configuration.nix
@@ -121,8 +121,9 @@
 
       homeConfigurations = {
         "dom@latitude-7390" = libx.mkHome { hostname = "latitude-7390"; username = "dom"; desktop = "sway"; };
+        "dom.egginton@MCCML44WMD6T" = libx.mkHome { hostname = "MCCML44WMD6T"; username = "dom.egginton"; desktop = "quartz"; platform = "x86_64-darwin"; };
 
-        "dom.egginton@MCCML44WMD6T" = home-manager.lib.homeManagerConfiguration {
+        "dom.egginton@MCCML44WMD6T-backup" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages."x86_64-darwin";
           modules = [
             {

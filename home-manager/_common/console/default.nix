@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+
+let
+  inherit (pkgs) stdenv;
+  inherit (lib) mkIf;
+in
 
 {
   home = {
@@ -151,7 +156,7 @@
   };
 
   services = {
-    gpg-agent = {
+    gpg-agent = mkIf stdenv.isLinux {
       enable = true;
       enableSshSupport = true;
       pinentryFlavor = "curses";
@@ -170,5 +175,6 @@
     gnupg
     pinentry
     gpg-import-keys
+    rebuild-home
   ];
 }

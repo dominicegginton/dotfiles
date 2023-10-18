@@ -2,10 +2,12 @@
 
 let
   flakePkg = uri: (builtins.getFlake uri).packages.${builtins.currentSystem}.default;
+  inherit (lib) mkIf;
   inherit (pkgs.stdenv) isDarwin;
 in
+
 {
-  home.activation.aliasApplications = lib.mkIf isDarwin (
+  home.activation.aliasApplications = mkIf isDarwin (
     let
       apps = pkgs.buildEnv {
         name = "home-manager-applications";
@@ -29,4 +31,8 @@ in
       fi
     ''
   );
+
+  home.packages = with pkgs; [
+    alacritty
+  ];
 }
