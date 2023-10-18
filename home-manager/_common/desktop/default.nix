@@ -44,8 +44,8 @@ in
 
   programs = {
     firefox = {
-      enable = mkIf stdenv.isLinux true;
-      package = pkgs.firefox-devedition-bin;
+      enable = true;
+      package = if stdenv.isLinux then pkgs.firefox-devedition else pkgs.firefox-devedition-bin;
     };
   };
 }
