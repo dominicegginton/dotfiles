@@ -23,7 +23,7 @@
     ./_common/services/smartmon.nix
     ./_common/users/root
   ]
-  ++ lib.optional (builtins.pathExists ./_common/users/${username}.nix) (import ./_common/users/${username}.nix)
+  ++ lib.optional (builtins.pathExists ./_common/users/${username}) (import ./_common/users/${username})
   ++ lib.optional (desktop != null) ./_common/desktop;
 
   i18n = {
@@ -60,6 +60,9 @@
       unzip
       usbutils
       wget
+      wpa_supplicant_gui
+      rebuild-host
+      rebuild-home
     ];
     variables = {
       EDITOR = "vim";
@@ -80,6 +83,7 @@
       source-serif
       ubuntu_font_family
       work-sans
+      jetbrains-mono
     ];
 
     enableDefaultFonts = false;
@@ -115,6 +119,8 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      inputs.neovim-nightly-overlay.overlay
+      inputs.nixneovimplugins.overlays.default
     ];
     config = {
       allowUnfree = true;
@@ -138,6 +144,12 @@
       keep-derivations = true;
       warn-dirty = false;
     };
+  };
+
+  security = {
+    sudo.execWheelOnly = true;
+    polkit.enable = true;
+    rtkit.enable = true;
   };
 
   programs = {

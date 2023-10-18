@@ -1,11 +1,6 @@
 { desktop, lib, username, ... }:
 
 {
-  imports = [
-    (./. + "/${desktop}.nix")
-  ]
-  ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop.nix")) ../users/${username}/desktop.nix;
-
   services.mpris-proxy.enable = true;
 
   xresources.properties = {
@@ -26,4 +21,9 @@
     "*color7" = "#c8c8c8";
     "*color15" = "#e9e9e9";
   };
+
+  programs.firefox.enable = true;
+  imports = [ ]
+  ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix
+  ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop/${desktop}.nix")) ../users/${username}/desktop/${desktop}.nix;
 }
