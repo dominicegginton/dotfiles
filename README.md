@@ -4,11 +4,11 @@
 
 ## Hosts
 
-|    Hostname     | OEM  |           Model           |   OS   |    Role     |
-| :-------------: | :--: | :-----------------------: | :----: | :---------: |
-| `latitude-7390` | DELL | latitude 7390 Two in One  | NixOS  |   Laptop    |
-|    `burbage`    | N/A  |         Intel I3          | Debian |   Server    |
-| `MCCLTDNGRLN3`  | DELL | Macbook Pro 16-inch, 2019 | MacOS  | Work Laptop |
+|    Hostname     | OEM   |           Model           |   OS   |             Role            |
+| :-------------: | :---: | :-----------------------: | :----: | :-------------------------: |
+| `latitude-7390` | DELL  | latitude 7390 Two in One  | NixOS  |     Workstation - Laptop    |
+|    `burbage`    | DIY   |        Intel i3-21        | Debian |           Server            |
+| `MCCLTDNGRLN3`  | Apple | Macbook Pro 16-inch, 2019 | MacOS  | Workstation - Laptop (Work) |
 
 ## Installing NixOS
 
