@@ -172,9 +172,12 @@ in
 
     htop-vim
 
+    tailscale
+
     gnupg
     pinentry
     gpg-import-keys
+
     rebuild-home
   ];
 }
