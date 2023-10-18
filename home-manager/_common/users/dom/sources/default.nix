@@ -32,9 +32,5 @@
     "background.jpg" = {
       source = ../sources/background.jpg;
     };
-
-    "dom.jpg" = {
-      source = ../sources/dom.jpg;
-    };
   };
 }
