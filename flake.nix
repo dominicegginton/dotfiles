@@ -78,7 +78,7 @@
         latitude-7390 = libx.mkHost {
           hostname = "latitude-7390";
           username = "dom";
-          desktop = "sway";
+          desktop = "kde";
         };
       };
 
