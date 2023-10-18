@@ -13,6 +13,7 @@
 let
   inherit (pkgs.stdenv) isDarwin;
 in
+
 {
   imports = [
     ./_common/console
@@ -38,7 +39,6 @@ in
       outputs.overlays.unstable-packages
       inputs.neovim-nightly-overlay.overlay
       inputs.nixneovimplugins.overlays.default
-      inputs.firefox-darwin-overlay.overlay
     ];
     config = {
       allowUnfree = true;

@@ -7,8 +7,8 @@ in
 
 {
   imports = [
-   ./console
-   ./sources
+    ./console
+    ./sources
   ];
 
   home = {

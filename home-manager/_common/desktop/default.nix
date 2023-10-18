@@ -7,8 +7,8 @@ in
 
 {
   imports = [ ]
-  ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix
-  ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop/${desktop}.nix")) ../users/${username}/desktop/${desktop}.nix;
+    ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix
+    ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop/${desktop}.nix")) ../users/${username}/desktop/${desktop}.nix;
 
   services.mpris-proxy.enable = mkIf stdenv.isLinux true;
 
@@ -44,7 +44,7 @@ in
 
   programs = {
     firefox = {
-      enable = true;
+      enable = mkIf stdenv.isLinux true;
       package = pkgs.firefox-devedition-bin;
     };
   };
