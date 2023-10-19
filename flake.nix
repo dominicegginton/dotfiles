@@ -29,16 +29,7 @@
     firefox-darwin-overlay.url = "github:bandithedoge/nixpkgs-firefox-darwin";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , nix-formatter-pack
-    , home-manager
-    , neovim-nightly-overlay
-    , nixneovimplugins
-    , firefox-darwin-overlay
-    , ...
-    }:
+  outputs = { self, nixpkgs, nix-formatter-pack, ... }:
 
     let
       inherit (self) inputs outputs;
