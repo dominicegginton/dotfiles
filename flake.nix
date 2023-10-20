@@ -13,6 +13,9 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     agenix.url = "github:ryantm/agenix";
     agenix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -51,7 +54,13 @@
 
       devShells = libx.forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./shell.nix { inherit pkgs; }
+        in pkgs.callPackage ./shell.nix {
+          inherit pkgs;
+          inherit (inputs.sops-nix.packages."${system}")
+            sops-import-keys-hook
+            ssh-to-pgp
+            sops-init-gpg-key;
+        }
       );
 
       packages = libx.forAllSystems (system:

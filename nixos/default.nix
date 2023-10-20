@@ -15,16 +15,20 @@
 {
   imports = [
     inputs.disko.nixosModules.disko
+    inputs.sops-nix.nixosModules.sops
     (modulesPath + "/installer/scan/not-detected.nix")
     ./${hostname}
     ./_common/console
     ./_common/services/firewall.nix
     ./_common/services/tailescale.nix
+    ./_common/services/ssh.nix
     ./_common/services/smartmon.nix
     ./_common/users/root
   ]
   ++ lib.optional (builtins.pathExists ./_common/users/${username}) (import ./_common/users/${username})
   ++ lib.optional (desktop != null) ./_common/desktop;
+
+  sops.defaultSopsFile = ../secrets.yaml;
 
   i18n = {
     defaultLocale = "en_GB.utf8";
