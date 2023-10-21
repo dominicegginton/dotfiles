@@ -9,7 +9,7 @@
 {
   default = pkgs.mkShell {
     NIX_CONFIG = "experimental-features = nix-command flakes";
-    sopsPGPKeyDirs = [ ".secrets/keys" ];
+    sopsPGPKeyDirs = [ "./secrets/keys" ];
     nativeBuildInputs = with pkgs; [
       nix
       home-manager

@@ -1,14 +1,14 @@
 { config, ... }:
 
 {
-  sops.secrets.home_wifi_psk = { };
+  sops.secrets."wireless.env" = { };
 
   networking.wireless = {
     enable = true;
     userControlled.enable = true;
     userControlled.group = "wheel";
     fallbackToWPA2 = true;
-    networks.Home.psk = config.sops.secrets.home_wifi_psk.path;
-    networks.Home.authProtocols = [ "WPA-PSK" ];
+    environmentFile = config.sops.secrets."wireless.env".path;
+    networks."@home_uuid@".psk = "@home_psk@";
   };
 }
