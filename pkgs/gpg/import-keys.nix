@@ -4,15 +4,17 @@ pkgs.writeShellApplication {
   name = "gpg-import-keys";
 
   runtimeInputs = with pkgs; [
+    pinentry
     gnupg
     google-cloud-sdk
   ];
 
   text = ''
     gcloud auth login
-    mkdir "$HOME"/gpg
-    gsutil rsync -r gs://dominicegginton/gpg "$HOME"/gpg
-    gpg --import "$HOME"/gpg/*
-    rm -rf "$HOME"/gpg
+    if [ ! -d "$HOME"/.gnupg ]; then
+      mkdir "$HOME"/.gnupg
+    fi
+    gsutil rsync -r gs://dominicegginton/gpg "$HOME"/.gnupg
+    gpg --import "$HOME"/.gnupg/*
   '';
 }
