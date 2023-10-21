@@ -1,4 +1,4 @@
-{ pkgs ? (import ./nixpkgs.nix) { }
+{ pkgs ? (import ./nixpkgs.nix)
 , sops
 , sops-import-keys-hook
 , ssh-to-pgp
@@ -9,7 +9,7 @@
 {
   default = pkgs.mkShell {
     NIX_CONFIG = "experimental-features = nix-command flakes";
-    sopsPGPKeyDirs = [ "./keys" ];
+    sopsPGPKeyDirs = [ ".secrets/keys" ];
     nativeBuildInputs = with pkgs; [
       nix
       home-manager
@@ -19,6 +19,8 @@
       sops-import-keys-hook
       ssh-to-pgp
       sops-init-gpg-key
+      rebuild-host
+      rebuild-home
     ];
   };
 }

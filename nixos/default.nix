@@ -28,7 +28,7 @@
   ++ lib.optional (builtins.pathExists ./_common/users/${username}) (import ./_common/users/${username})
   ++ lib.optional (desktop != null) ./_common/desktop;
 
-  sops.defaultSopsFile = ../secrets.yaml;
+  sops.defaultSopsFile = ../secrets/secrets.yaml;
 
   i18n = {
     defaultLocale = "en_GB.utf8";

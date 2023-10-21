@@ -52,20 +52,29 @@
 
       overlays = import ./overlays { inherit inputs; };
 
-      devShells = libx.forAllSystems (system:
+      packages = libx.forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
-        in pkgs.callPackage ./shell.nix {
+        in import ./pkgs { inherit pkgs; }
+      );
+
+      devShells = libx.forAllSystems (system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [
+              outputs.overlays.additions
+              outputs.overlays.modifications
+              outputs.overlays.unstable-packages
+            ];
+          };
+        in
+        pkgs.callPackage ./shell.nix {
           inherit pkgs;
           inherit (inputs.sops-nix.packages."${system}")
             sops-import-keys-hook
             ssh-to-pgp
             sops-init-gpg-key;
         }
-      );
-
-      packages = libx.forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./pkgs { inherit pkgs; }
       );
 
       nixosConfigurations = {
