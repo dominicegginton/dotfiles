@@ -15,7 +15,9 @@ in
     file.".face".source = ./face.jpg;
     file.".ssh/config".text = "";
 
-    packages = with pkgs; [ ];
+    packages = with pkgs; [
+      discord
+    ];
 
     sessionVariables = { };
   };
