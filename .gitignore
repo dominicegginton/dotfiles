@@ -1,4 +1,1 @@
-workstation-core/secrets.sh
-workstation-core/.ssh/*
-!workstation-core/.shh/config
-workstation-core/.config/nvim/plugin
+result

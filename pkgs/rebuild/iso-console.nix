@@ -9,7 +9,7 @@ pkgs.writeShellApplication {
 
   text = ''
     pushd "$HOME"/.dotfiles
-    nix build .#nixosConfigurations.iso.config.system.build.isoImage
+    nix build .#nixosConfigurations.iso-console.config.system.build.isoImage
     popd
   '';
 }

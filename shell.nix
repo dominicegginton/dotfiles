@@ -21,6 +21,7 @@
       sops-init-gpg-key
       rebuild-host
       rebuild-home
+      rebuild-iso-console
     ];
   };
 }
