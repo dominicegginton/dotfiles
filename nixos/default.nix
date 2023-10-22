@@ -30,6 +30,29 @@
 
   sops.defaultSopsFile = ../secrets/secrets.yaml;
 
+  boot = {
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+    kernelModules = [ "vhost_vsock" ];
+    kernelParams = [
+      "boot.shell_on_fail"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
+    kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+      "net.ipv6.conf.all.forwarding" = 1;
+    };
+  };
+
+  console = {
+    font = "${pkgs.tamzen}/share/consolefonts/TamzenForPowerline10x20.psf";
+    keyMap = "uk";
+    packages = with pkgs; [ tamzen ];
+  };
+
   i18n = {
     defaultLocale = "en_GB.utf8";
     extraLocaleSettings = {
@@ -58,7 +81,6 @@
       gitMinimal
       home-manager
       vim
-      rsync
     ];
     systemPackages = with pkgs; [
       unzip
@@ -67,6 +89,7 @@
       wpa_supplicant_gui
       rebuild-host
       rebuild-home
+      rebuild-iso-console
     ];
     variables = {
       EDITOR = "vim";
