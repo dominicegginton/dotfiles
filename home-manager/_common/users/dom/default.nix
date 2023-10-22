@@ -6,6 +6,8 @@ let
 in
 
 {
+  sops.secrets."dom.github_token" = { };
+
   imports = [
     ./console
     ./sources
@@ -19,7 +21,10 @@ in
       discord
     ];
 
-    sessionVariables = { };
+    sessionVariables = {
+      EDITOR = "nvim";
+      GITHUB_TOKEN = config.sops.secrets."dom.github_token".path;
+    };
   };
 
   systemd.user.tmpfiles.rules = mkIf stdenv.isLinux [

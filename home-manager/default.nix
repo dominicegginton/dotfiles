@@ -16,11 +16,15 @@ in
 
 {
   imports = [
+    <sops-nix/modules/home-manager/sops.nix>
     ./_common/console
   ]
   ++ lib.optional (builtins.isPath (./. + "/_common/users/${username}")) ./_common/users/${username}
   ++ lib.optional (builtins.pathExists (./. + "/_common/users/${username}/hosts/${hostname}.nix")) ./_common/users/${username}/hosts/${hostname}.nix
   ++ lib.optional (desktop != null) ./_common/desktop;
+
+  sops.defaultSopsFile = ../secrets/secrets.yaml;
+  sops.gnupg.home = "$HOME/.gnupg";
 
   home = {
     activation.report-changes = config.lib.dag.entryAnywhere ''
