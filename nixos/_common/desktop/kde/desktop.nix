@@ -7,6 +7,7 @@
   services.xserver.displayManager.defaultSession = "plasmawayland";
 
   programs.dconf.enable = true;
+
   environment.plasma5.excludePackages = with pkgs.libsForQt5; [
     elisa
     gwenview
@@ -15,6 +16,5 @@
     khelpcenter
     konsole
     plasma-browser-integration
-    print-manager
   ];
 }

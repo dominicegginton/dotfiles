@@ -16,21 +16,19 @@ in
   };
 
   programs = {
-    home-manager.enable = true;
     info.enable = true;
     git.enable = true;
     gpg.enable = true;
+    hstr.enable = true;
+
     zsh = {
       enable = true;
       enableCompletion = true;
       enableAutosuggestions = true;
       autocd = true;
       defaultKeymap = "viins";
-      oh-my-zsh = {
-        enable = true;
-        theme = "eastwood";
-      };
     };
+
     neovim = {
       enable = true;
       package = pkgs.neovim-nightly;
@@ -65,15 +63,19 @@ in
         swift
       ];
     };
+
     gh = {
       enable = true;
-      extensions = with pkgs; [ gh-markdown-preview ];
+      extensions = with pkgs; [
+        gh-markdown-preview
+      ];
       settings = {
         editor = "nvim";
         git_protocol = "https";
         prompt = "enabled";
       };
     };
+
     tmux = {
       enable = true;
       shortcut = "a";
@@ -159,6 +161,7 @@ in
     gpg-agent = mkIf stdenv.isLinux {
       enable = true;
       enableSshSupport = true;
+      enableZshIntegration = true;
       pinentryFlavor = "curses";
     };
   };
@@ -167,17 +170,13 @@ in
 
   home.packages = with pkgs; [
     twm
-
     neofetch
-
     htop-vim
-
     tailscale
-
+    git
     gnupg
     pinentry
     gpg-import-keys
-
     rebuild-home
   ];
 }

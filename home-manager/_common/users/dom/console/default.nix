@@ -2,6 +2,13 @@
 
 {
   programs = {
+    zsh = {
+      oh-my-zsh = {
+        enable = true;
+        theme = "eastwood";
+      };
+    };
+
     tmux = {
       enable = true;
       shortcut = "a";
@@ -92,6 +99,5 @@
         bind-key -r space if-shell -F '#{==:#{session_name},scratchpad}' { detach-client } { if-shell -F '#{==:#{session_name},popup}' { detach-client } { display-popup -d "#{pane_current_path}" -xC -yC -w 80% -h 75% -E 'tmux attach-session -t scratchpad || tmux new-session -s scratchpad nvim ~/.SCRATCHPAD.md\; set status off' } }
       '';
     };
-
   };
 }
