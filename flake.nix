@@ -87,7 +87,7 @@
         latitude-7390 = libx.mkHost {
           hostname = "latitude-7390";
           username = "dom";
-          desktop = "kde";
+          desktop = "sway";
         };
       };
 
@@ -95,7 +95,7 @@
         "dom@latitude-7390" = libx.mkHome {
           hostname = "latitude-7390";
           username = "dom";
-          desktop = "kde";
+          desktop = "sway";
         };
 
         "dom@burbage" = libx.mkHome {

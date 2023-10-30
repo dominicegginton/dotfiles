@@ -174,9 +174,15 @@ in
     htop-vim
     tailscale
     git
+    git-lfs
     gnupg
     pinentry
     gpg-import-keys
     rebuild-home
+
+    podman
+    podman-compose
+    podman-tui
+    docker
   ];
 }

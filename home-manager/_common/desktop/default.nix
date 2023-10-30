@@ -39,6 +39,9 @@ in
     noto-fonts-emoji
     font-awesome
     jetbrains-mono
+
+    podman-desktop
+    vscode
   ];
 
 
