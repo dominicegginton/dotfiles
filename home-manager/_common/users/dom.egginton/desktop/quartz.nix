@@ -10,9 +10,9 @@
   homebrew.global.brewfile = true;
   homebrew.global.lockfiles = false;
 
-  homebrew.taps = [];
+  homebrew.taps = [ ];
 
-  homebrew.brews = [];
+  homebrew.brews = [ ];
 
   homebrew.casks = [
     "figma"
