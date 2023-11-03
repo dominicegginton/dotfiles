@@ -14,8 +14,6 @@
     '';
   };
 
-  programs.waybar.enable = true;
-
   environment.systemPackages = with pkgs; [
     wayland
     xdg-utils
