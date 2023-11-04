@@ -72,41 +72,41 @@ in {
       bars = [{command = "waybar";}];
       colors = {
         focused = {
-          background = "#3192AA";
+          background = "#0366D6";
           border = "#0366D6";
           childBorder = "#0366D6";
-          indicator = "#FFFFFF";
+          indicator = "#0366D6";
           text = "#FFFFFF";
         };
         focusedInactive = {
           background = "#3192AA";
-          border = "#0366D6";
-          childBorder = "#0366D6";
-          indicator = "#FFFFFF";
+          border = "#3192AA";
+          childBorder = "#3192AA";
+          indicator = "#3192AA";
           text = "#FFFFFF";
         };
         unfocused = {
-          background = "#3192AA";
-          border = "#24292E";
-          childBorder = "#24292E";
-          indicator = "#FFFFFF";
-          text = "#0366D6";
+          background = "#000000";
+          border = "#000000";
+          childBorder = "#000000";
+          indicator = "#000000";
+          text = "#FFFFFF";
         };
         urgent = {
-          background = "#3192AA";
-          border = "#0366D6";
+          background = "#DBAB09";
+          border = "#DBAB09";
           childBorder = "#DBAB09";
-          indicator = "#FFFFFF";
+          indicator = "#DBAB09";
           text = "#FFFFFF";
         };
         placeholder = {
-          background = "#3192AA";
-          border = "#0366D6";
-          childBorder = "#0366D6";
-          indicator = "#FFFFFF";
-          text = "#24292E";
+          background = "#000000";
+          border = "#000000";
+          childBorder = "#000000";
+          indicator = "#000000";
+          text = "#FFFFFF";
         };
-        background = "#3192AA";
+        background = "#000000";
       };
     };
     extraSessionCommands = ''
@@ -261,7 +261,6 @@ in {
 
        window#waybar {
          background: #000000;
-         color: #6A737D;
        }
 
        #workspaces button {
@@ -269,15 +268,17 @@ in {
        }
 
        #workspaces button.focused {
-         background: #24292f;
+         color: #FFFFFF;
+         background: #0366D6;
        }
 
        #workspaces button.urgent {
-         background-color: #bf616a;
+         color: #000000;
+         background-color: #DBAB09;
        }
 
        #mode {
-         background: #64727D;
+         background: #000000;
          border-bottom: none;
        }
 
@@ -314,7 +315,7 @@ in {
 
        #idle_inhibitor.activated {
          background-color: #FFFFFF;
-         color: #24292E;
+         color: #000000;
        }
     '';
   };
