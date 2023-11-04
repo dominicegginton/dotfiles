@@ -148,7 +148,6 @@ in {
         ];
         modules-center = [];
         modules-right = [
-          "mpd"
           "pulseaudio"
           "network"
           "backlight"
@@ -170,32 +169,6 @@ in {
             focused = "";
             default = "";
           };
-        };
-        mpd = {
-          format = "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ";
-          "format-disconnected" = "Disconnected ";
-          "format-stopped" = "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ";
-          "unknown-tag" = "N/A";
-          interval = 2;
-          "consume-icons" = {
-            on = " ";
-          };
-          "random-icons" = {
-            off = "<span color=\"#f53c3c\"></span> ";
-            on = " ";
-          };
-          "repeat-icons" = {
-            on = " ";
-          };
-          "single-icons" = {
-            on = "1 ";
-          };
-          "state-icons" = {
-            paused = "";
-            playing = "";
-          };
-          "tooltip-format" = "MPD (connected)";
-          "tooltip-format-disconnected" = "MPD (disconnected)";
         };
         "tray" = {
           "icon-size" = 21;
@@ -225,7 +198,6 @@ in {
             car = "";
             default = ["" "" ""];
           };
-          "on-click" = "pavucontrol";
         };
         battery = {
           states = {
