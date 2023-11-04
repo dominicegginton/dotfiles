@@ -24,14 +24,6 @@
 
   programs.dconf.enable = true;
 
-  systemd.services.disable-wifi-powersave = {
-    wantedBy = [ "multi-user.target" ];
-    path = [ pkgs.iw ];
-    script = ''
-      iw dev wlan0 set power_save off
-    '';
-  };
-
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;

@@ -6,8 +6,6 @@ let
 in
 
 {
-  sops.secrets."dom.github_token" = { };
-
   imports = [
     ./console
     ./sources
@@ -17,13 +15,8 @@ in
     file.".face".source = ./face.jpg;
     file.".ssh/config".text = "";
 
-    packages = with pkgs; [
-      discord
-    ];
-
     sessionVariables = {
       EDITOR = "nvim";
-      GITHUB_TOKEN = config.sops.secrets."dom.github_token".path;
     };
   };
 
