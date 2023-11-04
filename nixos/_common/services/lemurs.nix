@@ -27,11 +27,11 @@ in
       restartIfChanged = false;
 
       serviceConfig = {
-          ExecStart="/usr/bin/lemurs";
-          Restart = "always";
-          RestartSec = "200ms";
-          SyslogIdentifier = "display-manager";
-        };
+        ExecStart = "/usr/bin/lemurs";
+        Restart = "always";
+        RestartSec = "200ms";
+        SyslogIdentifier = "display-manager";
+      };
     };
   };
 }
