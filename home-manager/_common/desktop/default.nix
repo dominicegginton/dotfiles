@@ -40,7 +40,6 @@ in
     font-awesome
     jetbrains-mono
 
-    podman-desktop
     vscode
   ];
 
