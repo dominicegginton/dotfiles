@@ -19,6 +19,7 @@
       sops-import-keys-hook
       ssh-to-pgp
       sops-init-gpg-key
+      rebuild-darwin
       rebuild-host
       rebuild-home
       rebuild-iso-console

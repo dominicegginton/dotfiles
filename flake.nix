@@ -32,12 +32,13 @@
     firefox-darwin-overlay.url = "github:bandithedoge/nixpkgs-firefox-darwin";
   };
 
-  outputs = { self, nixpkgs, nix-formatter-pack, ... }:
+  outputs = inputs@{ self, nixpkgs, nix-formatter-pack, nix-darwin, ... }:
 
     let
       inherit (self) inputs outputs;
       stateVersion = "23.05";
-      libx = import ./lib { inherit inputs outputs stateVersion; };
+      darwinStateVersion = 4;
+      libx = import ./lib { inherit inputs outputs stateVersion darwinStateVersion; };
     in
 
     {
@@ -88,6 +89,12 @@
           hostname = "latitude-7390";
           username = "dom";
           desktop = "sway";
+        };
+      };
+
+      darwinConfigurations = {
+        MCCML44WMD6T = libx.mkDarwinHost {
+          hostname = "MCCML44WMD6T";
         };
       };
 

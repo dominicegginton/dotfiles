@@ -1,4 +1,4 @@
-{ inputs, outputs, stateVersion, ... }:
+{ inputs, outputs, stateVersion, darwinStateVersion, ... }:
 
 {
   mkHome =
@@ -26,8 +26,19 @@
       };
       modules = [
         ../nixos
-        inputs.agenix.nixosModules.default
       ] ++ (inputs.nixpkgs.lib.optionals (installer != null) [ installer ]);
+    };
+
+  mkDarwinHost =
+    { hostname
+    , platform ? "x86_64-darwin"
+    }: inputs.nix-darwin.lib.darwinSystem {
+      specialArgs = {
+        inherit inputs outputs hostname platform darwinStateVersion;
+      };
+      modules = [
+        ../darwin
+      ];
     };
 
   forAllSystems = inputs.nixpkgs.lib.genAttrs [
