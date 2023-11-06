@@ -8,7 +8,7 @@
 | :-------------: | :---: | :-----------------------: | :----: | :-------------------------: |
 | `latitude-7390` | DELL  | latitude 7390 Two in One  | NixOS  |     Workstation - Laptop    |
 |    `burbage`    | DIY   |        Intel i3-21        | Debian |           Server            |
-| `MCCLTDNGRLN3`  | Apple | Macbook Pro 16-inch, 2019 | MacOS  | Workstation - Laptop (Work) |
+| `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS  | Workstation - Laptop (Work) |
 
 ## Installing NixOS
 
