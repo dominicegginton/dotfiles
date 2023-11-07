@@ -46,7 +46,7 @@
 
   environment.systemPackages = with pkgs; [
     git
-    pinentry
+    pinentry_mac
     rebuild-darwin
     network-filters-disable
     network-filters-enable
