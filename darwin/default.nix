@@ -35,6 +35,11 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    rebuild-darwin
+    network-filters-disable
+    network-filters-enable
+  ];
 
   services.nix-daemon.enable = true;
 
