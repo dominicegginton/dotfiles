@@ -1,7 +1,5 @@
-{ config, ... }:
-
-{
-  sops.secrets."wireless.env" = { };
+{config, ...}: {
+  sops.secrets."wireless.env" = {};
 
   networking.wireless = {
     enable = true;

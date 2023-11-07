@@ -1,6 +1,9 @@
-{ desktop, lib, pkgs, ... }:
-
 {
+  desktop,
+  lib,
+  pkgs,
+  ...
+}: {
   environment.systemPackages = with pkgs; [
     nvme-cli
     smartmontools

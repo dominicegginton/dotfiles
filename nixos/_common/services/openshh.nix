@@ -1,6 +1,4 @@
-{ lib, ... }:
-
-{
+{lib, ...}: {
   services = {
     openssh = {
       enable = true;
@@ -11,9 +9,9 @@
     };
     sshguard = {
       enable = true;
-      whitelist = [ ];
+      whitelist = [];
     };
   };
   programs.ssh.startAgent = true;
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [22];
 }

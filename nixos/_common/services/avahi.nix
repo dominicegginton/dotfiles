@@ -1,6 +1,4 @@
-{ desktop, ... }:
-
-{
+{desktop, ...}: {
   services = {
     avahi = {
       enable = true;
@@ -9,7 +7,10 @@
       publish = {
         addresses = true;
         enable = true;
-        workstation = if (builtins.isString desktop) then true else false;
+        workstation =
+          if (builtins.isString desktop)
+          then true
+          else false;
       };
     };
   };

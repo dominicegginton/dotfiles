@@ -1,11 +1,14 @@
-{ config, lib, hostname, pkgs, username, ... }:
-
-let
+{
+  config,
+  lib,
+  hostname,
+  pkgs,
+  username,
+  ...
+}: let
   inherit (pkgs) stdenv;
   inherit (lib) mkIf;
-in
-
-{
+in {
   imports = [
     ./console
     ./sources

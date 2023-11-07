@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   imports = [
     ../dom
   ];
@@ -11,8 +9,8 @@
       network-filters-disable
     ];
 
-    sessionVariables = { };
+    sessionVariables = {};
   };
 
-  programs = { };
+  programs = {};
 }

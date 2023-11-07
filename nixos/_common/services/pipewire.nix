@@ -1,15 +1,18 @@
-{ desktop, lib, pkgs, ... }:
-
 {
-  environment.systemPackages = with pkgs; [
-    alsa-utils
-    pulseaudio
-    pulsemixer
-  ]
-  ++
-  lib.optionals (desktop != null) [
-    pavucontrol
-  ];
+  desktop,
+  lib,
+  pkgs,
+  ...
+}: {
+  environment.systemPackages = with pkgs;
+    [
+      alsa-utils
+      pulseaudio
+      pulsemixer
+    ]
+    ++ lib.optionals (desktop != null) [
+      pavucontrol
+    ];
 
   hardware.pulseaudio.enable = lib.mkForce false;
   security.rtkit.enable = true;

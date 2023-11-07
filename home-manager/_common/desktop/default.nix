@@ -1,12 +1,15 @@
-{ desktop, pkgs, lib, username, ... }:
-
-let
+{
+  desktop,
+  pkgs,
+  lib,
+  username,
+  ...
+}: let
   inherit (pkgs) stdenv;
   inherit (lib) mkIf;
-in
-
-{
-  imports = [ ]
+in {
+  imports =
+    []
     ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix
     ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop/${desktop}.nix")) ../users/${username}/desktop/${desktop}.nix;
 
@@ -43,11 +46,13 @@ in
     vscode
   ];
 
-
   programs = {
     firefox = {
       enable = true;
-      package = if stdenv.isLinux then pkgs.firefox-devedition else pkgs.firefox-devedition-bin;
+      package =
+        if stdenv.isLinux
+        then pkgs.firefox-devedition
+        else pkgs.firefox-devedition-bin;
     };
   };
 }

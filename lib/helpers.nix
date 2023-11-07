@@ -1,44 +1,52 @@
-{ inputs, outputs, stateVersion, darwinStateVersion, ... }:
-
 {
-  mkHome =
-    { hostname
-    , username
-    , desktop ? null
-    , platform ? "x86_64-linux"
-    }: inputs.home-manager.lib.homeManagerConfiguration {
+  inputs,
+  outputs,
+  stateVersion,
+  darwinStateVersion,
+  ...
+}: {
+  mkHome = {
+    hostname,
+    username,
+    desktop ? null,
+    platform ? "x86_64-linux",
+  }:
+    inputs.home-manager.lib.homeManagerConfiguration {
       pkgs = inputs.nixpkgs.legacyPackages.${platform};
       extraSpecialArgs = {
         inherit inputs outputs desktop hostname platform username stateVersion;
       };
-      modules = [ ../home-manager ];
+      modules = [../home-manager];
     };
 
-  mkHost =
-    { hostname
-    , username
-    , desktop ? null
-    , installer ? null
-    , platform ? "x86_64-linux"
-    }: inputs.nixpkgs.lib.nixosSystem {
+  mkHost = {
+    hostname,
+    username,
+    desktop ? null,
+    installer ? null,
+    platform ? "x86_64-linux",
+  }:
+    inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
         inherit inputs outputs desktop hostname platform username stateVersion;
       };
-      modules = [
-        ../nixos
-      ] ++ (inputs.nixpkgs.lib.optionals (installer != null) [ installer ]);
+      modules =
+        [
+          ../nixos
+        ]
+        ++ (inputs.nixpkgs.lib.optionals (installer != null) [installer]);
     };
 
-  mkDarwinHost =
-    { hostname
-    , platform ? "x86_64-darwin"
-    }: inputs.nix-darwin.lib.darwinSystem {
+  mkDarwinHost = {
+    hostname,
+    username,
+    platform ? "x86_64-darwin",
+  }:
+    inputs.nix-darwin.lib.darwinSystem {
       specialArgs = {
         inherit inputs outputs hostname platform darwinStateVersion;
       };
-      modules = [
-        ../darwin
-      ];
+      modules = [../darwin];
     };
 
   forAllSystems = inputs.nixpkgs.lib.genAttrs [

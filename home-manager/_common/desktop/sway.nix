@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   dbus-sway-environment = pkgs.writeTextFile {
     name = "dbus-sway-environment";
     destination = "/bin/dbus-sway-environment";
@@ -17,20 +19,16 @@ let
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
-    text =
-      let
-        schema = pkgs.gsettings-desktop-schemas;
-        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-      in
-      ''
-        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-        gnome_schema=org.gnome.desktop.interface
-        gsettings set $gnome_schema gtk-theme 'Dracula'
-      '';
+    text = let
+      schema = pkgs.gsettings-desktop-schemas;
+      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+    in ''
+      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+      gnome_schema=org.gnome.desktop.interface
+      gsettings set $gnome_schema gtk-theme 'Dracula'
+    '';
   };
-in
-
-{
+in {
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = 1;
     MOZ_USE_XINPUT2 = "1";
@@ -71,7 +69,7 @@ in
         size = 11.0;
       };
       menu = "bemenu-run -n";
-      bars = [{ command = "waybar"; }];
+      bars = [{command = "waybar";}];
       colors = {
         focused = {
           background = "#3192AA";
@@ -148,7 +146,7 @@ in
           "sway/mode"
           "sway/scratchpad"
         ];
-        modules-center = [ ];
+        modules-center = [];
         modules-right = [
           "mpd"
           "pulseaudio"
@@ -209,7 +207,7 @@ in
         };
         "backlight" = {
           "format" = "{percent}% {icon}";
-          "format-icons" = [ "" "" "" "" "" "" "" "" "" ];
+          "format-icons" = ["" "" "" "" "" "" "" "" ""];
         };
         "pulseaudio" = {
           format = "{volume}% {icon} {format_source}";
@@ -225,7 +223,7 @@ in
             phone = "";
             portable = "";
             car = "";
-            default = [ "" "" "" ];
+            default = ["" "" ""];
           };
           "on-click" = "pavucontrol";
         };
@@ -239,7 +237,7 @@ in
           "format-charging" = "{capacity}% ";
           "format-plugged" = "{capacity}% ";
           "format-alt" = "{time} {icon}";
-          "format-icons" = [ "" "" "" "" "" ];
+          "format-icons" = ["" "" "" "" ""];
         };
         network = {
           "format-wifi" = "{essid} ({signalStrength}%) ";

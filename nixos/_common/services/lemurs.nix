@@ -1,10 +1,11 @@
-{ config, lib, pkgs, ... }:
-
-let
-  cfg = config.services.lemurs;
-in
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.services.lemurs;
+in {
   options.services.lemurs = {
     enable = lib.mkEnableOption "Enable lemurs service";
 
@@ -17,12 +18,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    services.dbus.packages = [ cfg.package ];
+    services.dbus.packages = [cfg.package];
 
     systemd.services.lemurs = {
       description = "lemurs server daemon.";
 
-      after = [ "systemd-udev-settle.service" "local-fs.target" "acpid.service" "systemd-logind.service" ];
+      after = ["systemd-udev-settle.service" "local-fs.target" "acpid.service" "systemd-logind.service"];
 
       restartIfChanged = false;
 

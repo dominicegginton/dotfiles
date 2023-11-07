@@ -1,18 +1,23 @@
-{ config, desktop, lib, pkgs, ... }:
-
 {
-  environment.systemPackages = with pkgs; [
-    unstable.distrobox
-    fuse-overlayfs
-    podman-compose
-    podman-tui
-    unstable.podman
-  ]
-  ++ lib.optionals (desktop != null) [
-    unstable.pods
-    unstable.quickemu
-    xorg.xhost
-  ];
+  config,
+  desktop,
+  lib,
+  pkgs,
+  ...
+}: {
+  environment.systemPackages = with pkgs;
+    [
+      unstable.distrobox
+      fuse-overlayfs
+      podman-compose
+      podman-tui
+      unstable.podman
+    ]
+    ++ lib.optionals (desktop != null) [
+      unstable.pods
+      unstable.quickemu
+      xorg.xhost
+    ];
 
   virtualisation = {
     podman = {
