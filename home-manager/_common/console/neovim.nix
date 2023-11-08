@@ -1,10 +1,8 @@
 {pkgs, ...}: {
-  home = {
-    sessionVariables = {
-      EDITOR = "nvim";
-      SYSTEMD_EDITOR = "nvim";
-      VISUAL = "nvim";
-    };
+  home.sessionVariables = {
+    EDITOR = "nvim";
+    SYSTEMD_EDITOR = "nvim";
+    VISUAL = "nvim";
   };
 
   programs.neovim = {
