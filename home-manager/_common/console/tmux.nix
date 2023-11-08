@@ -80,7 +80,5 @@
     '';
   };
 
-  home.packages = with pkgs; [
-    twm
-  ];
+  home.packages = with pkgs; [twm];
 }
