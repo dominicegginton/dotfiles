@@ -26,7 +26,6 @@
     };
   };
 
-
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
@@ -35,6 +34,6 @@
   programs.dconf.enable = true;
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox-devedition-unwrapped;
+    package = pkgs.firefox;
   };
 }
