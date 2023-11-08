@@ -1,7 +1,12 @@
-{lib, desktop, ...}: let
+{
+  lib,
+  desktop,
+  ...
+}: let
   inherit (lib) optional;
   inherit (builtins) pathExists;
 in {
-  imports = []
+  imports =
+    []
     ++ optional (pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix;
 }
