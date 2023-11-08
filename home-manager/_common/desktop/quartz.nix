@@ -32,8 +32,4 @@ in {
         fi
       ''
   );
-
-  home.packages = with pkgs; [
-    alacritty
-  ];
 }

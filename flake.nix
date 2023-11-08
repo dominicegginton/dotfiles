@@ -20,8 +20,7 @@
     home-manager.url = "github:nix-community/home-manager/release-23.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly-overlay.url = "github:pegasust/neovim-darwin-overlay/neovim-fix"; # Temporary fix for neovim nightly overlay
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nixneovimplugins.url = "github:jooooscha/nixpkgs-vim-extra-plugins";
     firefox-darwin-overlay.url = "github:bandithedoge/nixpkgs-firefox-darwin";
   };
@@ -34,8 +33,7 @@
   }: let
     inherit (self) inputs outputs;
     stateVersion = "23.05";
-    darwinStateVersion = 4;
-    libx = import ./lib {inherit inputs outputs stateVersion darwinStateVersion;};
+    libx = import ./lib {inherit inputs outputs stateVersion;};
   in {
     formatter = libx.forAllSystems (system: alejandra.defaultPackage.${system});
 

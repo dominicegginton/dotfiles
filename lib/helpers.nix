@@ -2,7 +2,6 @@
   inputs,
   outputs,
   stateVersion,
-  darwinStateVersion,
   ...
 }: {
   mkHome = {
@@ -31,20 +30,19 @@
         inherit inputs outputs desktop hostname platform username stateVersion;
       };
       modules =
-        [
-          ../nixos
-        ]
+        [../nixos]
         ++ (inputs.nixpkgs.lib.optionals (installer != null) [installer]);
     };
 
   mkDarwinHost = {
     hostname,
     username,
+    desktop ? null,
     platform ? "x86_64-darwin",
   }:
     inputs.nix-darwin.lib.darwinSystem {
       specialArgs = {
-        inherit inputs outputs hostname platform darwinStateVersion;
+        inherit inputs outputs desktop hostname platform username stateVersion;
       };
       modules = [../darwin];
     };

@@ -5,15 +5,14 @@
   username,
   ...
 }: let
-  inherit (pkgs) stdenv;
+  inherit (pkgs.stdenv) isLinux;
   inherit (lib) mkIf;
 in {
   imports =
     []
-    ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix
-    ++ lib.optional (builtins.pathExists (./. + "/../users/${username}/desktop/${desktop}.nix")) ../users/${username}/desktop/${desktop}.nix;
+    ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix;
 
-  services.mpris-proxy.enable = mkIf stdenv.isLinux true;
+  services.mpris-proxy.enable = mkIf isLinux true;
 
   xresources.properties = {
     "*color0" = "#141417";
@@ -35,24 +34,12 @@ in {
   };
 
   fonts.fontconfig.enable = true;
-
   home.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
     font-awesome
     jetbrains-mono
-
-    vscode
+    alacritty
   ];
-
-  programs = {
-    firefox = {
-      enable = true;
-      package =
-        if stdenv.isLinux
-        then pkgs.firefox-devedition
-        else pkgs.firefox-devedition-bin;
-    };
-  };
 }

@@ -2,10 +2,9 @@
   inputs,
   outputs,
   stateVersion,
-  darwinStateVersion,
   ...
 }: let
-  helpers = import ./helpers.nix {inherit inputs outputs stateVersion darwinStateVersion;};
+  helpers = import ./helpers.nix {inherit inputs outputs stateVersion;};
 in {
   inherit (helpers) mkHome;
   inherit (helpers) mkHost;

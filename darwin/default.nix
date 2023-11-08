@@ -3,14 +3,13 @@
   outputs,
   hostname,
   platform,
-  darwinStateVersion,
-  lib,
-  config,
   pkgs,
   ...
 }: {
   imports = [
     ./${hostname}/default.nix
+    ./_common/console
+    ./_common/services/tailscale.nix
     ./_common/services/homebrew.nix
   ];
 
@@ -44,15 +43,5 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    pinentry_mac
-    rebuild-darwin
-    network-filters-disable
-    network-filters-enable
-  ];
-
   services.nix-daemon.enable = true;
-
-  system.stateVersion = darwinStateVersion;
 }

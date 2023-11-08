@@ -1,24 +1,30 @@
 {
-  config,
-  desktop,
-  hostname,
   inputs,
-  lib,
   outputs,
+  lib,
+  config,
+  hostname,
+  username,
+  desktop,
   pkgs,
   stateVersion,
-  username,
   ...
 }: let
   inherit (pkgs.stdenv) isDarwin;
+  inherit (lib) optional;
+  inherit (builtins) pathExists;
 in {
   imports =
     [
       ./_common/console
+      ./_common/services/gpg.nix
     ]
-    ++ lib.optional (builtins.isPath (./. + "/_common/users/${username}")) ./_common/users/${username}
-    ++ lib.optional (builtins.pathExists (./. + "/_common/users/${username}/hosts/${hostname}.nix")) ./_common/users/${username}/hosts/${hostname}.nix
-    ++ lib.optional (desktop != null) ./_common/desktop;
+    ++ optional (pathExists (./. + "/hosts/${hostname}.nix")) ./hosts/${hostname}.nix
+    ++ optional (pathExists (./. + "/users/${username}")) ./users/${username}
+    ++ optional (pathExists (./. + "/users/${username}/console")) ./users/${username}/console
+    ++ optional (desktop != null && pathExists (./. + /users/${username}/desktop)) ./users/${username}/desktop
+    ++ optional (pathExists (./. + "/users/${username}/sources")) ./users/${username}/sources
+    ++ optional (desktop != null) ./_common/desktop;
 
   home = {
     activation.report-changes = config.lib.dag.entryAnywhere ''
@@ -61,4 +67,6 @@ in {
   };
 
   programs.home-manager.enable = true;
+
+  home.packages = with pkgs; [rebuild-home];
 }
