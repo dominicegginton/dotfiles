@@ -1,11 +1,11 @@
 {pkgs, ...}: {
-  programs = {
-    zsh.enable = true;
-    bash.enable = true;
-  };
+  imports = [./zsh.nix];
+
+  programs.bash.enable = true;
 
   environment.systemPackages = with pkgs; [
     git
+    git-lfs
     pinentry_mac
     rebuild-darwin
     network-filters-disable

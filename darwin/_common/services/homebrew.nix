@@ -7,10 +7,7 @@
   homebrew.taps = ["homebrew/cask-versions"];
   homebrew.brews = [];
   homebrew.casks = [
-    # "figma"
+    "docker"
     "firefox-developer-edition"
-    # "google-chrome-dev"
-    # "grammarly-desktop"
-    # "slack"
   ];
 }
