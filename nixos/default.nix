@@ -87,10 +87,6 @@
       unzip
       usbutils
       wget
-      wpa_supplicant_gui
-      rebuild-host
-      rebuild-home
-      rebuild-iso-console
     ];
     variables = {
       EDITOR = "vim";
@@ -189,6 +185,13 @@
     "d /nix/var/nix/profiles/per-user/${username} 0755 ${username} root"
     "d /mnt/snapshot/${username} 0755 ${username} users"
   ];
+
+  system.activationScripts.diff = {
+    supportsDryActivation = true;
+    text = ''
+      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+    '';
+  };
 
   system.stateVersion = stateVersion;
 }
