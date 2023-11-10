@@ -6,5 +6,6 @@
     enableFzfGit = true;
     enableFzfHistory = true;
     enableSyntaxHighlighting = true;
+    promptInit = "autoload -U promptinit && promptinit";
   };
 }
