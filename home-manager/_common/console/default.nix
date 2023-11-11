@@ -15,5 +15,6 @@
     rebuild-home
     neofetch
     htop-vim
+    bottom
   ];
 }
