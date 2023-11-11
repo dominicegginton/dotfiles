@@ -22,7 +22,6 @@
 
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nixneovimplugins.url = "github:jooooscha/nixpkgs-vim-extra-plugins";
-    firefox-darwin-overlay.url = "github:bandithedoge/nixpkgs-firefox-darwin";
   };
 
   outputs = inputs @ {
