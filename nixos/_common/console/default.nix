@@ -1,3 +1,10 @@
-{...}: {
-  programs.zsh.enable = true;
+{pkgs, ...}: {
+  imports = [./zsh.nix];
+
+  environment.systemPackages = with pkgs; [
+    git
+    git-lfs
+    pinentry
+    rebuild-host
+  ];
 }
