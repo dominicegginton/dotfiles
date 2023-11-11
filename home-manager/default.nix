@@ -16,6 +16,7 @@
 in {
   imports =
     [
+      inputs.nixvim.homeManagerModules.nixvim
       ./_common/console
       ./_common/services/gpg.nix
     ]

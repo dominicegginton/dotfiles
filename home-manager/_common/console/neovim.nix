@@ -5,13 +5,11 @@
     VISUAL = "nvim";
   };
 
-  programs.neovim = {
+  programs.nixvim = {
     enable = true;
     package = pkgs.neovim-nightly;
-    defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-    plugins = with pkgs.vimExtraPlugins; [];
     extraPackages = with pkgs; [
       fzf
       ripgrep

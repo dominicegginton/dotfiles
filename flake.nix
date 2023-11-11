@@ -20,7 +20,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     alejandra.url = "github:kamadorueda/alejandra/3.0.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.url = "github:nix-community/nixvim";
+    nixvim.url = "github:nix-community/nixvim/nixos-23.05";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     #######################################
