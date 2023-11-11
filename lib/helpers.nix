@@ -4,21 +4,15 @@
   stateVersion,
   ...
 }: {
-  mkHome = {
-    hostname,
-    username,
-    desktop ? null,
-    platform ? "x86_64-linux",
-  }:
-    inputs.home-manager.lib.homeManagerConfiguration {
-      pkgs = inputs.nixpkgs.legacyPackages.${platform};
-      extraSpecialArgs = {
-        inherit inputs outputs desktop hostname platform username stateVersion;
-      };
-      modules = [../home-manager];
-    };
+  forAllSystems = inputs.nixpkgs.lib.genAttrs [
+    "aarch64-linux"
+    "i686-linux"
+    "x86_64-linux"
+    "aarch64-darwin"
+    "x86_64-darwin"
+  ];
 
-  mkHost = {
+  mkNixosConfiguration = {
     hostname,
     username,
     desktop ? null,
@@ -34,7 +28,7 @@
         ++ (inputs.nixpkgs.lib.optionals (installer != null) [installer]);
     };
 
-  mkDarwinHost = {
+  mkDarwinConfiguration = {
     hostname,
     username,
     desktop ? null,
@@ -47,11 +41,17 @@
       modules = [../darwin];
     };
 
-  forAllSystems = inputs.nixpkgs.lib.genAttrs [
-    "aarch64-linux"
-    "i686-linux"
-    "x86_64-linux"
-    "aarch64-darwin"
-    "x86_64-darwin"
-  ];
+  mkHomeConfiguration = {
+    hostname,
+    username,
+    desktop ? null,
+    platform ? "x86_64-linux",
+  }:
+    inputs.home-manager.lib.homeManagerConfiguration {
+      pkgs = inputs.nixpkgs.legacyPackages.${platform};
+      extraSpecialArgs = {
+        inherit inputs outputs desktop hostname platform username stateVersion;
+      };
+      modules = [../home-manager];
+    };
 }
