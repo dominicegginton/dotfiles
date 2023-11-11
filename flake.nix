@@ -41,6 +41,9 @@
     #######################################
     ############# FORMATTER ###############
     #######################################
+
+    # Execute `nix fmt` to format this
+    # configuration.
     formatter = libx.forAllSystems (system: alejandra.defaultPackage.${system});
 
     #######################################
@@ -71,6 +74,10 @@
     #######################################
     ############# SHELLS ##################
     #######################################
+
+    # Execute `nix develop` to enter a
+    # development shell for this
+    # configuration.
     devShells = libx.forAllSystems (
       system: let
         pkgs = import nixpkgs {
@@ -96,6 +103,9 @@
     #######################################
     ############# HOSTS ###################
     #######################################
+
+    # Execute `rebuild-host` to rebuild the
+    # configuration for the current host.
     nixosConfigurations.iso-console = libx.mkNixosConfiguration {
       hostname = "iso-console";
       username = "nixos";
@@ -114,6 +124,10 @@
     #######################################
     ######## HOME CONFIGURATIONS ##########
     #######################################
+
+    # Execute `rebuild-home` to rebuild the
+    # home configuration for the currentuser
+    # user.
     homeConfigurations."dom@latitude-7390" = libx.mkHomeConfiguration {
       hostname = "latitude-7390";
       username = "dom";

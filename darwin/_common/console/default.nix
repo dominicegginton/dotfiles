@@ -7,7 +7,8 @@
     git
     git-lfs
     pinentry_mac
-    rebuild-darwin
+    rebuild-host
+    rebuild-home
     network-filters-disable
     network-filters-enable
   ];

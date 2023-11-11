@@ -2,9 +2,7 @@
 pkgs.writeShellApplication {
   name = "rebuild-iso-console";
 
-  runtimeInputs = with pkgs; [
-    nix
-  ];
+  runtimeInputs = with pkgs; [nix];
 
   text = ''
     pushd "$HOME"/.dotfiles
