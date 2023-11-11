@@ -44,7 +44,8 @@
   };
 
   system.defaults = {
-    NSGlobalDomain.AppleFontSmoothing = 2;
+    NSGlobalDomain.AppleFontSmoothing = 1;
+    NSGlobalDomain.NSTableViewDefaultSizeMode = 1;
     NSGlobalDomain.AppleICUForce24HourTime = true;
     NSGlobalDomain.AppleInterfaceStyle = "Dark";
     NSGlobalDomain.AppleInterfaceStyleSwitchesAutomatically = false;
@@ -78,7 +79,7 @@
     dock.show-process-indicators = true;
     dock.showhidden = true;
     dock.static-only = true;
-    dock.tilesize = 64;
+    dock.tilesize = 48;
     dock.wvous-bl-corner = 1;
     dock.wvous-br-corner = 1;
     dock.wvous-tl-corner = 1;
