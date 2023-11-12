@@ -29,11 +29,11 @@
       set -g status-justify left
       set -g status-left-length 100
       set -g status-right-length 100
-      set -g status-style fg=brightwhite,bg=blue
+      set -g status-style fg=black,bg=blue
       set -g status-left " #S "
       set -g status-right " %d-%m %H:%M #h "
-      set -g message-style fg=brightwhite,bg=red
-      set -g message-command-style fg=brightwhite,bg=red
+      set -g message-style fg=black,bg=red
+      set -g message-command-style fg=black,bg=red
       set -g pane-border-style fg=black,bg=default
       set -g pane-active-border-style fg=blue,bg=default
       set -g window-status-style fg=default,bg=default
