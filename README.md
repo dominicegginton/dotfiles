@@ -42,6 +42,17 @@ rebuild-host  # Rebuild and switch to the new NixOS configuration
 rebuild-home  # Rebuild and switch to the new Home Manager configuration
 ```
 
+## Upgrading 
+
+Upgrade this flake and rebuild the host and home configurations:
+
+```sh
+cd ~/.dotfiles
+nix flake update
+rebuild-host
+rebuils-home
+```
+
 ## Creating a NixOS .iso image
 
 Use the provided `rebuild-iso-console` script to create a NixOS .iso image with the flake included. A live image will be created in the `~/$HOME/.dotfiles/result/iso/` directory.
