@@ -33,11 +33,11 @@ The following host are managed by this flake:
 
 ## Users
 
-| Username       |           Hosts            |   Description   |
-| :------------- | :------------------------: | :-------------: |
-| `dom`          | `latitude-7390`, `burbage` |  Primary user   |
-| `dom.egginton` |       `MCCML44WMD6T`       |    Work user    |
-| 'nixos'        |       `iso-console`        | NixOS .iso user |
+| Username       |      Aviable on Hosts       |        Description        |
+| :------------- | :-------------------------: | :-----------------------: |
+| `dom`          | `latitude-7390` - `burbage` |       Primary user        |
+| `dom.egginton` |       `MCCML44WMD6T`        | Work user - extends `dom` |
+| `nixos`        |        `iso-console`        |      NixOS .iso user      |
 
 ## Installing NixOS
 
