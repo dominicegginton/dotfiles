@@ -9,5 +9,6 @@
   homebrew.casks = [
     "docker"
     "firefox-developer-edition"
+    "google-chrome"
   ];
 }
