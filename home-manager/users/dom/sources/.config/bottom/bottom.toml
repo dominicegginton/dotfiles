@@ -1,0 +1,17 @@
+[flags]
+dot_marker = true
+rate = 1000
+left_legend = true
+current_usage = false
+group_processes = false
+case_sensitive = false
+whole_word = false
+regex = true
+temperature_type = "c"
+default_widget_type = "cpu"
+default_widget_count = 1
+hide_table_gap = true
+network_use_log = true
+enable_gpu_memory = true
+enable_cache_memory = true
+retention = "10m"
