@@ -11,9 +11,18 @@
     viAlias = true;
     vimAlias = true;
     extraPackages = with pkgs; [
+      # native dependencies
       fzf
       ripgrep
       tree-sitter
+      # compilers and interpreters
+      gcc
+      gnumake
+      nodejs-slim
+      rustc
+      python3
+      swift
+      # language servers
       rnix-lsp
       terraform-lsp
       lua-language-server
@@ -26,14 +35,13 @@
       nodePackages.vscode-langservers-extracted
       nodePackages."@angular/cli"
       nodePackages.pyright
+      my.nodePackages.custom-elements-languageserver
+      # formatters
       nodePackages.prettier
+      # language specific formatters
       nodePackages.eslint_d
       rust-analyzer
       stylua
-      gcc
-      gnumake
-      nodejs-slim
-      swift
     ];
   };
 }
