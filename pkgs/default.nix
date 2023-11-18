@@ -3,6 +3,8 @@
 in {
   # system utils
   workspace.rebuild-host = callPackage ./rebuild-host.nix {};
+  # iso utils
+  workspace.create-iso-usb = callPackage ./create-iso-usb.nix {};
   workspace.rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};
   # user utils
   workspace.rebuild-home = callPackage ./rebuild-home.nix {};
