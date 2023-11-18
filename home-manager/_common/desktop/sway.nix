@@ -2,61 +2,17 @@
   config,
   pkgs,
   ...
-}: let
-  dbus-sway-environment = pkgs.writeTextFile {
-    name = "dbus-sway-environment";
-    destination = "/bin/dbus-sway-environment";
-    executable = true;
-
-    text = ''
-      dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
-      systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-      systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
-    '';
-  };
-
-  configure-gtk = pkgs.writeTextFile {
-    name = "configure-gtk";
-    destination = "/bin/configure-gtk";
-    executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme 'Dracula'
-    '';
-  };
-in {
+}: {
   home.sessionVariables = {
     MOZ_ENABLE_WAYLAND = 1;
     MOZ_USE_XINPUT2 = "1";
     XDG_CURRENT_DESKTOP = "sway";
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
   };
-
-  home.packages = with pkgs; [
-    dbus-sway-environment
-    configure-gtk
-    alacritty
-    wayland
-    xdg-utils
-    glib
-    dracula-theme
-    gnome3.adwaita-icon-theme
-    swaylock
-    swayidle
-    grim # screenshot functionality
-    wl-clipboard
-    bemenu
-    mako
-    wdisplays
-    pulseaudioFull
-  ];
 
   wayland.windowManager.sway = {
     enable = true;
-    wrapperFeatures.gtk = true;
     config = rec {
       modifier = "Mod4";
       terminal = "alacritty";
@@ -109,17 +65,16 @@ in {
         background = "#000000";
       };
     };
-    extraSessionCommands = ''
-      export QT_QPA_PLATFORM=wayland
-      export QT_WAYLAND_DISABLE_WINDOWDECORATION="1"
-      export MOZ_ENABLE_WAYLAND=1
-    '';
     extraConfig = ''
+      exec dbus-sway-environment
+      exec configure-gtk
+      exec sleep 5; systemctl --user start kanshi.service
       output * bg ~/background.jpg fill
+      bindsym Mod4+c exec grim  -g "$(slurp)" /tmp/$(date +'%H:%M:%S.png')
       bindsym XF86MonBrightnessDown exec light -U 10
       bindsym XF86MonBrightnessUp exec light -A 10
-      bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +1%'
-      bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -1%'
+      bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%'
+      bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%'
       bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
     '';
   };
