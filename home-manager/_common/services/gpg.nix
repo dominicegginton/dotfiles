@@ -18,6 +18,6 @@ in {
 
   home.packages = with pkgs; [
     gnupg
-    gpg-import-keys
+    workspace.gpg-import-keys
   ];
 }

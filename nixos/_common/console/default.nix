@@ -5,6 +5,6 @@
     git
     git-lfs
     pinentry
-    rebuild-host
+    workspace.rebuild-host
   ];
 }

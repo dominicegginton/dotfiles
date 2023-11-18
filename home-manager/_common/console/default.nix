@@ -12,7 +12,7 @@
   programs.hstr.enable = true;
 
   home.packages = with pkgs; [
-    rebuild-home
+    workspace.rebuild-home
     neofetch
     htop-vim
     bottom

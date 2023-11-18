@@ -35,7 +35,7 @@
       nodePackages.vscode-langservers-extracted
       nodePackages."@angular/cli"
       nodePackages.pyright
-      my.nodePackages.custom-elements-languageserver
+      workspace.nodePackages.custom-elements-languageserver
       # formatters
       nodePackages.prettier
       # language specific formatters

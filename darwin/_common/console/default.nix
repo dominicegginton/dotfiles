@@ -7,9 +7,9 @@
     git
     git-lfs
     pinentry_mac
-    rebuild-host
-    rebuild-home
-    network-filters-disable
-    network-filters-enable
+    workspace.rebuild-host
+    workspace.rebuild-home
+    workspace.network-filters-disable
+    workspace.network-filters-enable
   ];
 }

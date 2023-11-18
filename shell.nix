@@ -18,9 +18,10 @@
       sops-import-keys-hook
       ssh-to-pgp
       sops-init-gpg-key
-      rebuild-host
-      rebuild-home
-      rebuild-iso-console
+      workspace.rebuild-host
+      workspace.rebuild-home
+      workspace.rebuild-iso-console
+      workspace.gpg-import-keys
     ];
   };
 }
