@@ -1,6 +1,6 @@
-# Dom's dotfiles
+# There's no place like ~
 
-> There's no place like ~
+> Declarative system configurations using NixOS, NixDarwin, and Home Manager. 
 
 ## Workspace
 
