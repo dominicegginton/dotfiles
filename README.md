@@ -1,6 +1,6 @@
 # There's no place like ~
 
-> Declarative system configurations using NixOS, NixDarwin, and Home Manager. 
+> Declarative system configurations using NixOS, NixDarwin, and Home Manager.
 
 ## Workspace
 
@@ -41,7 +41,9 @@ The following host are managed by this flake:
 
 ## Installing NixOS
 
-1. Create a bootable .iso image using the `rebuild-iso-console` script, this will leave a live image in the `~/.dotfiles/result/iso/` directory.
+1. Create a bootable .iso image using the `rebuild-iso-console` script, this
+   will leave a live image in the `~/.dotfiles/result/iso/` directory.
+
 2. Burn the .iso image to a USB drive using the `dd` command:
 
 ```sh
@@ -49,31 +51,62 @@ dd if=~/.dotfiles/result/iso/nixos.iso of=/dev/sdX status=progress oflag=sync bs
 ```
 
 3. Boot the target computer from the USB drive.
+
 4. Run `install-system <hostname> <username>` from a terminal. The install
    script uses [Disko] to automatically partition and format the disks, then
    uses my flake via `nixos-install` to complete a full-system installation.
    This flake is copied to the target user's home directory as `~/.dotfiles`.
+
 5. Reboot
+
 6. Login and run `rebuild-home` from a terminal to apply the home configuration.
 
-If the target system is booted from something other than the .iso image created by this flake, you can still install the system using the following:
+If the target system is booted from something other than the .iso image created
+by this flake, you can still install the system using the following:
 
 ```sh
 curl -sL https://raw.githubusercontent.com/dominicegginton/dotfiles/main/scripts/install.sh | bash -s <hostname> <username>
 ```
 
-## Applying Chanages
+## Installing NixDarwin
 
-Use the following commands to apply changes:
+1. Install the [Nix package manager](https://nixos.org/download#nix-install-macos).
 
 ```sh
-rebuild-host  # Rebuild and switch to the new NixOS configuration
+sh <(curl -L https://nixos.org/nix/install)
+```
+
+2. Clone this repository to `~/.dotfiles`:
+
+```sh
+git clone https://github.com/dominicegginton/dotfiles.git ~/.dotfiles
+```
+
+3. Enter the development shell:
+
+```sh
+cd ~/.dotfiles && nix develop
+```
+
+4. Apply both host and home configurations with the following:
+
+```sh
+rebuild-home
+rebuild-host
+```
+
+## Applying Chanages
+
+Update the configuration and use the following to apply changes:
+
+```sh
+rebuild-host  # Rebuild and switch to the new NixOS or NixDarwin configuration
 rebuild-home  # Rebuild and switch to the new Home Manager configuration
 ```
 
 ## Upgrading
 
-Upgrade this flake and rebuild the host and home configurations:
+Upgrade this flake then rebuild the host and home configurations:
 
 ```sh
 cd ~/.dotfiles
@@ -81,7 +114,3 @@ nix flake update
 rebuild-host
 rebuils-home
 ```
-
-## Creating a NixOS .iso image
-
-Use the provided `rebuild-iso-console` script to create a NixOS .iso image with the flake included. A live image will be created in the `~/$HOME/.dotfiles/result/iso/` directory.
