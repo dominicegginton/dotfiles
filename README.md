@@ -39,7 +39,7 @@ The following host are managed by this flake:
 | `dom.egginton` |       `MCCML44WMD6T`        | Work user - extends `dom` |
 | `nixos`        |        `iso-console`        |      NixOS .iso user      |
 
-## Installing NixOS
+## Installing NixOS Hosts
 
 1. Create a bootable .iso image using the `rebuild-iso-console` script, this
    will leave a live image in the `~/.dotfiles/result/iso/` directory.
@@ -68,7 +68,7 @@ by this flake, you can still install the system using the following:
 curl -sL https://raw.githubusercontent.com/dominicegginton/dotfiles/main/scripts/install.sh | bash -s <hostname> <username>
 ```
 
-## Installing NixDarwin
+## Installing NixDarwin Hosts
 
 1. Install the [Nix package manager](https://nixos.org/download#nix-install-macos).
 
