@@ -22,8 +22,6 @@ in {
     ]
     ++ optional (pathExists (./. + "/hosts/${hostname}.nix")) ./hosts/${hostname}.nix
     ++ optional (pathExists (./. + "/users/${username}")) ./users/${username}
-    ++ optional (pathExists (./. + "/users/${username}/console")) ./users/${username}/console
-    ++ optional (desktop != null && pathExists (./. + /users/${username}/desktop)) ./users/${username}/desktop
     ++ optional (pathExists (./. + "/users/${username}/sources")) ./users/${username}/sources
     ++ optional (desktop != null) ./_common/desktop;
 
