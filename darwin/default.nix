@@ -35,10 +35,13 @@
     };
     package = pkgs.unstable.nix;
     settings = {
-      auto-optimise-store = true;
       experimental-features = ["nix-command" "flakes"];
-      keep-outputs = true;
-      keep-derivations = true;
+      # see https://github.com/NixOS/nix/issues/7273
+      auto-optimise-store = false;
+      keep-outputs = false;
+      keep-derivations = false;
+      keep-failed = false;
+      keep-going = true;
       warn-dirty = false;
     };
   };
