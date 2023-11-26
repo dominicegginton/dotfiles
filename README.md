@@ -4,7 +4,7 @@
 
 ## Workspace
 
-This workspace follow the folling structure:
+This workspace follows the following structure:
 
 ```
 ├── darwin          # Darwin host configurations
@@ -95,7 +95,7 @@ rebuild-home
 rebuild-host
 ```
 
-## Applying Chanages
+## Applying Changes
 
 Update the configuration and use the following to apply changes:
 
@@ -112,5 +112,5 @@ Upgrade this flake then rebuild the host and home configurations:
 cd ~/.dotfiles
 nix flake update
 rebuild-host
-rebuils-home
+rebuild-home
 ```
