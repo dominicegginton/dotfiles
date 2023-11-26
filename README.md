@@ -1,4 +1,4 @@
-# There's no place like ~
+# There's no place like ~ [<img src="https://nixos.org/logo/nixos-logo-only-hires.png" width="125" align="right" alt="NixOS">](https://nixos.org)
 
 > Declarative system configurations using NixOS, NixDarwin, and Home Manager.
 
