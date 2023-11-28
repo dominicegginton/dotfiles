@@ -11,5 +11,6 @@
     workspace.rebuild-home
     workspace.network-filters-disable
     workspace.network-filters-enable
+    workspace.shutdown-host
   ];
 }
