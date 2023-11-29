@@ -24,18 +24,18 @@ This workspace follows the following structure:
 
 The following hosts are managed by this flake:
 
-|    HOSTNAME     |  OEM  |           MODEL           |      OS     |    ROLE     |
-| :-------------- | :---- | :------------------------ | :---------- | :---------- |
-| `latitude-7390` | DELL  | Latitude 7390 Two in One  | NixOS       | Workstation |
-| `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS       | Workstation |
-|    `burbage`    |  DIY  | Intel i3-21               | Debian      | Server      |
-|  `iso-console`  |  N/A  | N/A                       | NixOS .iso  | NixOS .iso  |
+| HOSTNAME        | OEM   | MODEL                     | OS         | ROLE        |
+| :-------------- | :---- | :------------------------ | :--------- | :---------- |
+| `latitude-7390` | DELL  | Latitude 7390 Two in One  | NixOS      | Workstation |
+| `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS      | Workstation |
+| `burbage`       | DIY   | Intel i3-21               | Debian     | Server      |
+| `iso-console`   | N/A   | N/A                       | NixOS .iso | NixOS .iso  |
 
 ## Users
 
 The following user configurations are managed by this flake and are available across the above hosts:
 
-| Username       |      Aviable on Hosts       |                                         Description                                    |
+| Username       | Aviable on Hosts            | Description                                                                            |
 | :------------- | :-------------------------- | :------------------------------------------------------------------------------------- |
 | `dom`          | `latitude-7390` - `burbage` | [Doms](https://dominicegginton.dev) user account configuration                         |
 | `dom.egginton` | `MCCML44WMD6T`              | [Doms](https://dominicegginton.dev) work user account configuration that extends `dom` |
@@ -45,17 +45,17 @@ The following user configurations are managed by this flake and are available ac
 
 The following derivations are defined by this flake:
 
-| Package          |                                        Description                                     |
-| :--------------- | :------------------------------------------------------------------------------------- |
-| `create-iso-usb` | Creates an bootable nixos iso usb from a build nixos iso configuration.     |
-| `rebuild-host`   | Rebuilds the host configuration. |
-| `rebuild-iso-console` | Rebuilds the nixos iso configuration from this flake. |
-| `shutdown-host` | Shutdown the current host. |
-| `rebuild-home` | Rebuilds the home manager configuration. |
-| `gpg-import-keys` | Imports private gpg keys. |
-| `network-filters-disable` | Disables Cisco network filters on darwin hosts. |
-| `network-filters-enable` | Enable Cisco network filterson darwin hosts. |
-| [`nodePackages.custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components. |
+| Package                                                                                                     | Description                                                             |
+| :---------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
+| `create-iso-usb`                                                                                            | Creates an bootable nixos iso usb from a build nixos iso configuration. |
+| `rebuild-host`                                                                                              | Rebuilds the host configuration.                                        |
+| `rebuild-iso-console`                                                                                       | Rebuilds the nixos iso configuration from this flake.                   |
+| `shutdown-host`                                                                                             | Shutdown the current host.                                              |
+| `rebuild-home`                                                                                              | Rebuilds the home manager configuration.                                |
+| `gpg-import-keys`                                                                                           | Imports private gpg keys.                                               |
+| `network-filters-disable`                                                                                   | Disables Cisco network filters on darwin hosts.                         |
+| `network-filters-enable`                                                                                    | Enable Cisco network filterson darwin hosts.                            |
+| [`nodePackages.custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components.                   |
 
 ## Installing NixOS Hosts
 
