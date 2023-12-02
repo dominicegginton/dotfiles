@@ -7,6 +7,7 @@
     git
     git-lfs
     pinentry_mac
+    workspace.rebuild
     workspace.rebuild-host
     workspace.rebuild-home
     workspace.network-filters-disable
