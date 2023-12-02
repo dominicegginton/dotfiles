@@ -48,6 +48,7 @@ The following derivations are defined by this flake:
 | Package                                                                                                     | Description                                                             |
 | :---------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
 | `create-iso-usb`                                                                                            | Creates an bootable nixos iso usb from a build nixos iso configuration. |
+| `rebuild`                                                                                                   | Rebuilds the host and home configurations.                              |
 | `rebuild-host`                                                                                              | Rebuilds the host configuration.                                        |
 | `rebuild-iso-console`                                                                                       | Rebuilds the nixos iso configuration from this flake.                   |
 | `shutdown-host`                                                                                             | Shutdown the current host.                                              |
