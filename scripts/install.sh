@@ -19,23 +19,23 @@ pushd "$HOME/.dotfiles"
 if [[ -z "$TARGET_HOST" ]]; then
   echo "ERROR! $(basename "$0") requires a hostname as the first argument"
   echo "       The following hosts are available"
-  ls -1 nixos/*/default.nix | cut -d'/' -f2 | grep -v iso
+  ls -1 nixos/hosts/*/default.nix | cut -d'/' -f2 | grep -v iso
   exit 1
 fi
 
 if [[ -z "$TARGET_USER" ]]; then
   echo "ERROR! $(basename "$0") requires a username as the second argument"
   echo "       The following users are available"
-  ls -1 nixos/_mixins/users/ | grep -v -E "nixos|root"
+  ls -1 nixos/users/ | grep -v -E "nixos|root"
   exit 1
 fi
 
 if [ ! -e "nixos/$TARGET_HOST/disks.nix" ]; then
-  echo "ERROR! $(basename "$0") could not find the required nixos/$TARGET_HOST/disks.nix"
+  echo "ERROR! $(basename "$0") could not find the required nixos/hosts/$TARGET_HOST/disks.nix"
   exit 1
 fi
 
-if grep -q "data.keyfile" "nixos/$TARGET_HOST/disks.nix"; then
+if grep -q "data.keyfile" "nixos/hosts/$TARGET_HOST/disks.nix"; then
   echo -n "$(head -c32 /dev/random | base64)" > /tmp/data.keyfile
 fi
 
@@ -53,7 +53,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     --no-write-lock-file \
     -- \
     --mode zap_create_mount \
-    "nixos/$TARGET_HOST/disks.nix"
+    "nixos/hosts/$TARGET_HOST/disks.nix"
 
   sudo nixos-install --no-root-password --flake ".#$TARGET_HOST"
 
