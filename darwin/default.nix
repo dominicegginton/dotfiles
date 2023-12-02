@@ -46,6 +46,13 @@
     };
   };
 
+  fonts = {
+    fontDir.enable = true;
+    fonts = with pkgs; [
+      ibm-plex
+    ];
+  };
+
   system.defaults = {
     NSGlobalDomain.AppleFontSmoothing = 1;
     NSGlobalDomain.NSTableViewDefaultSizeMode = 1;
