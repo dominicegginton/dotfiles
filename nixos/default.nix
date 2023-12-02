@@ -119,6 +119,7 @@
       ubuntu_font_family
       work-sans
       jetbrains-mono
+      ibm-plex
     ];
 
     enableDefaultPackages = false;
