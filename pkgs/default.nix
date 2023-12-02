@@ -2,6 +2,8 @@
   inherit (pkgs) callPackage;
 in {
   # host utils
+  workspace.rebuild = callPackage ./rebuild.nix {};
+  workspace.rebuild-host = callPackage ./rebuild-host.nix {};
   workspace.create-iso-usb = callPackage ./create-iso-usb.nix {};
   workspace.rebuild-host = callPackage ./rebuild-host.nix {};
   workspace.rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};
