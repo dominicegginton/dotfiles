@@ -17,13 +17,13 @@ in {
   imports =
     [
       inputs.nixvim.homeManagerModules.nixvim
-      ./_common/console
-      ./_common/services/gpg.nix
+      ./console
+      ./services/gpg.nix
     ]
     ++ optional (pathExists (./. + "/hosts/${hostname}.nix")) ./hosts/${hostname}.nix
     ++ optional (pathExists (./. + "/users/${username}")) ./users/${username}
     ++ optional (pathExists (./. + "/users/${username}/sources")) ./users/${username}/sources
-    ++ optional (desktop != null) ./_common/desktop;
+    ++ optional (desktop != null) ./desktop;
 
   home = {
     activation.report-changes = config.lib.dag.entryAnywhere ''
