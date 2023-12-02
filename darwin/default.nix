@@ -7,10 +7,10 @@
   ...
 }: {
   imports = [
-    ./${hostname}/default.nix
-    ./_common/console
-    ./_common/services/tailscale.nix
-    ./_common/services/homebrew.nix
+    ./hosts/${hostname}/default.nix
+    ./console
+    ./services/tailscale.nix
+    ./services/homebrew.nix
   ];
 
   nixpkgs = {
