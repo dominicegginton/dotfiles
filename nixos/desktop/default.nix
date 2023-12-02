@@ -6,6 +6,7 @@
 }: {
   imports =
     [
+      ../hardware/opengl.nix
       ../services/cups.nix
       ../services/pipewire.nix
     ]
@@ -19,19 +20,13 @@
     };
   };
 
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-    };
-  };
-
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
   };
 
   programs.dconf.enable = true;
+
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;

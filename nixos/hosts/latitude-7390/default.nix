@@ -11,7 +11,7 @@
     inputs.nixos-hardware.nixosModules.common-pc
     inputs.nixos-hardware.nixosModules.common-pc-laptop
     inputs.nixos-hardware.nixosModules.common-pc-ssd
-    ../_common/services/wireless.nix
+    ../../services/wireless.nix
     (import ./disks.nix {})
   ];
 

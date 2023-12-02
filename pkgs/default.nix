@@ -5,7 +5,6 @@ in {
   workspace.rebuild = callPackage ./rebuild.nix {};
   workspace.rebuild-host = callPackage ./rebuild-host.nix {};
   workspace.create-iso-usb = callPackage ./create-iso-usb.nix {};
-  workspace.rebuild-host = callPackage ./rebuild-host.nix {};
   workspace.rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};
   workspace.shutdown-host = callPackage ./shutdown-host.nix {};
   # user utils

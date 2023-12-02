@@ -17,16 +17,16 @@
       inputs.disko.nixosModules.disko
       inputs.sops-nix.nixosModules.sops
       (modulesPath + "/installer/scan/not-detected.nix")
-      ./${hostname}
-      ./_common/console
-      ./_common/services/firewall.nix
-      ./_common/services/tailescale.nix
-      ./_common/services/ssh.nix
-      ./_common/services/smartmon.nix
-      ./_common/users/root
+      ./hosts/${hostname}
+      ./services/firewall.nix
+      ./services/ssh.nix
+      ./services/tailescale.nix
+      ./services/smartmon.nix
+      ./console
+      ./users/root
     ]
-    ++ lib.optional (builtins.pathExists ./_common/users/${username}) (import ./_common/users/${username})
-    ++ lib.optional (desktop != null) ./_common/desktop;
+    ++ lib.optional (desktop != null) ./desktop
+    ++ lib.optional (builtins.pathExists ./users/${username}) (import ./users/${username});
 
   sops.defaultSopsFile = ../secrets/secrets.yaml;
 

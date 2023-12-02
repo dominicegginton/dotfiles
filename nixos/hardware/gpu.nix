@@ -13,11 +13,7 @@
     ]
     ++ (
       if lib.elem "nvidia" config.services.xserver.videoDrivers
-      then [
-        nvtop
-      ]
-      else [
-        nvtop-amd
-      ]
+      then [nvtop]
+      else [nvtop-amd]
     );
 }
