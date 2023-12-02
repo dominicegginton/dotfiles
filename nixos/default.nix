@@ -47,6 +47,14 @@
     };
   };
 
+  virtualisation.vmVariant = {
+    # following configuration is added only when building VM with build-vm
+    virtualisation = {
+      memorySize = 2048; # Use 2048MiB memory.
+      cores = 3;
+      graphics = false;
+    };
+  };
   console = {
     font = "${pkgs.tamzen}/share/consolefonts/TamzenForPowerline10x20.psf";
     keyMap = "uk";
@@ -97,7 +105,7 @@
 
   fonts = {
     fontDir.enable = true;
-    fonts = with pkgs; [
+    packages = with pkgs; [
       (nerdfonts.override {fonts = ["FiraCode" "SourceCodePro" "UbuntuMono"];})
       fira
       fira-go
@@ -110,7 +118,7 @@
       jetbrains-mono
     ];
 
-    enableDefaultFonts = false;
+    enableDefaultPackages = false;
 
     fontconfig = {
       antialias = true;
@@ -124,7 +132,7 @@
       hinting = {
         autohint = false;
         enable = true;
-        style = "hintslight";
+        style = "full";
       };
       subpixel = {
         rgba = "rgb";

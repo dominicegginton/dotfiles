@@ -3,7 +3,7 @@
     #######################################
     ############# NIXOS PKGS ##############
     #######################################
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     #######################################
@@ -16,11 +16,11 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     alejandra.url = "github:kamadorueda/alejandra/3.0.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.url = "github:nix-community/nixvim/nixos-23.05";
+    nixvim.url = "github:nix-community/nixvim/nixos-23.11";
     nixvim.inputs.nixpkgs.follows = "nixpkgs";
 
     #######################################
@@ -37,7 +37,7 @@
     ...
   }: let
     inherit (self) inputs outputs;
-    stateVersion = "23.05";
+    stateVersion = "23.11";
     libx = import ./lib {inherit inputs outputs stateVersion;};
   in {
     #######################################

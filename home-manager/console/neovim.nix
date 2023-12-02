@@ -21,7 +21,6 @@
       nodejs-slim
       rustc
       python3
-      swift
       # language servers
       rnix-lsp
       terraform-lsp
