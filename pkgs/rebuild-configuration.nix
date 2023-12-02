@@ -1,6 +1,6 @@
 {pkgs, ...}:
 pkgs.writeShellApplication {
-  name = "rebuild";
+  name = "rebuild-configuration";
 
   runtimeInputs = with pkgs; [
     workspace.rebuild-host

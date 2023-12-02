@@ -95,6 +95,9 @@
       unzip
       usbutils
       wget
+      workspace.rebuild-host
+      workspace.rebuild-home
+      workspace.rebuild-configuration
     ];
     variables = {
       EDITOR = "vim";
