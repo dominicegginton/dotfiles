@@ -133,3 +133,6 @@ nix flake update
 rebuild-host
 rebuild-home
 ```
+## Eye Candy
+
+![screenshot_2023-12-09-211721](https://github.com/dominicegginton/dotfiles/assets/28626241/23eb9977-9625-40d4-95f2-56afa61d10cd)
