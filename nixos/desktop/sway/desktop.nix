@@ -69,6 +69,7 @@ in {
     swaylock
     swayidle
     swayosd
+    grim
     slurp
     wl-clipboard
     bemenu

@@ -63,7 +63,7 @@
       exec sleep 5; systemctl --user start kanshi.service
       output * bg ~/background.jpg fill
       exec swayosd-server
-      bindsym Mod4+c exec grim  -g "$(slurp)" /tmp/$(date +'%H:%M:%S.png')
+      bindsym Mod4+c exec grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%Y-%m-%d-%H%M%S).png 
       bindsym XF86MonBrightnessDown exec light -U 10 exec swayosd --brightness lower
       bindsym XF86MonBrightnessUp exec light -A 10 exec swayosd --brightness raise
       bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%' exec swayosd --output-volume raise
