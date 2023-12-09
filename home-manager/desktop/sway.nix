@@ -350,6 +350,7 @@
       }
       #pulseaudio {
         color: #000000;
+      }
       #pulseaudio.muted {
         color: #5e5C64;
       }
