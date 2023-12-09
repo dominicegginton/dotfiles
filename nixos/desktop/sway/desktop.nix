@@ -68,6 +68,7 @@ in {
     gnome3.adwaita-icon-theme
     swaylock
     swayidle
+    swayosd
     slurp
     wl-clipboard
     bemenu

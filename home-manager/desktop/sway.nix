@@ -18,51 +18,43 @@
       terminal = "alacritty";
       fonts = {
         names = [
-          "Noto Sans Mono"
+          "JetBrainsMono Nerd Font"
           "FontAwesome5Free"
         ];
-        style = "Bold Semi-Condensed";
         size = 11.0;
       };
       menu = "bemenu-run -nb -l 10 -H 22 -W 0.4 --fn 'Ubuntu' --tb '#000000' --tf '#ffffff' --fb '#000000' --ff '#ffffff' --nb '#000000' --nf '#ffffff' --hb '#000000' --hf '#ffffff'";
       bars = [{command = "waybar";}];
       colors = {
         focused = {
-          background = "#0366D6";
-          border = "#0366D6";
-          childBorder = "#0366D6";
-          indicator = "#0366D6";
-          text = "#FFFFFF";
+          background = "#58f785";
+          border = "#58f785";
+          childBorder = "#0366d6";
+          indicator = "#58f785";
+          text = "#ffffff";
         };
         focusedInactive = {
-          background = "#3192AA";
-          border = "#3192AA";
-          childBorder = "#3192AA";
-          indicator = "#3192AA";
-          text = "#FFFFFF";
+          background = "#24292e";
+          border = "#24292e";
+          childBorder = "#0366d6";
+          indicator = "#ffffff";
+          text = "#666666";
         };
         unfocused = {
-          background = "#000000";
-          border = "#000000";
-          childBorder = "#000000";
-          indicator = "#000000";
-          text = "#FFFFFF";
+          background = "#24292e";
+          border = "#24292e";
+          childBorder = "#0366d6";
+          indicator = "#ffffff";
+          text = "#666666";
         };
         urgent = {
-          background = "#DBAB09";
-          border = "#DBAB09";
-          childBorder = "#DBAB09";
-          indicator = "#DBAB09";
-          text = "#FFFFFF";
+          background = "#f95a99";
+          border = "#f95a99";
+          childBorder = "#0366d6";
+          indicator = "#f95a99";
+          text = "#24292e";
         };
-        placeholder = {
-          background = "#000000";
-          border = "#000000";
-          childBorder = "#000000";
-          indicator = "#000000";
-          text = "#FFFFFF";
-        };
-        background = "#000000";
+        background = "#666666";
       };
     };
     extraConfig = ''
@@ -70,12 +62,20 @@
       exec configure-gtk
       exec sleep 5; systemctl --user start kanshi.service
       output * bg ~/background.jpg fill
+      exec swayosd-server
       bindsym Mod4+c exec grim  -g "$(slurp)" /tmp/$(date +'%H:%M:%S.png')
-      bindsym XF86MonBrightnessDown exec light -U 10
-      bindsym XF86MonBrightnessUp exec light -A 10
-      bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%'
-      bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%'
-      bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
+      bindsym XF86MonBrightnessDown exec light -U 10 exec swayosd --brightness lower
+      bindsym XF86MonBrightnessUp exec light -A 10 exec swayosd --brightness raise
+      bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%' exec swayosd --output-volume raise
+      bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%' exec swayosd --output-volume lower
+      bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle' exec swayosd --output-volume mute-toggle
+      bindsym XF86AudioMicMute exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle' exec swayosd --input-volume mute-toggle
+      bindsym --release Caps_Lock exec swayosd --caps-lock
+      default_border pixel 2
+      default_floating_border normal
+      titlebar_border_thickness 0
+      hide_edge_borders both
+      smart_borders on
     '';
   };
 
@@ -93,34 +93,35 @@
     enable = true;
     settings = {
       mainBar = {
-        layer = "top";
+        layer = "bottom";
         position = "top";
-        height = 25;
         modules-left = [
           "sway/workspaces"
           "sway/mode"
           "sway/scratchpad"
-          "sway/window"
+          "idle_inhibitor"
         ];
         modules-center = [];
         modules-right = [
-          "pulseaudio"
+          "cpu"
+          "memory"
           "network"
+          "pulseaudio"
           "backlight"
           "clock"
-          "tray"
           "battery"
+          "temperature"
+          "tray"
         ];
         "sway/workspaces" = {
           disable-scroll = true;
           all-outputs = true;
           format = "{name} {icon}";
-          "format-icons" = {
+          format-icons = {
+            "0" = "";
             "1" = "";
-            "2" = "";
-            "3" = "";
-            "4" = "";
-            "5" = "";
+            "2" = "";
+            "3" = "";
             urgent = "";
             focused = "";
             default = "";
@@ -146,19 +147,27 @@
             default = "";
           };
         };
-        "tray" = {
+        tray = {
           "icon-size" = 21;
-          "spacing" = 10;
+          spacing = 10;
         };
-        "clock" = {
+        memory = {
+          interval = 5;
+          format = " {}%";
+        };
+        cpu = {
+          interval = 1;
+          format = "🖳 {usage:2}%";
+        };
+        clock = {
           "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
           "format-alt" = "{:%d-%m-%y}";
         };
-        "backlight" = {
+        backlight = {
           "format" = "{percent}% {icon}";
           "format-icons" = ["" "" "" "" "" "" "" "" ""];
         };
-        "pulseaudio" = {
+        pulseaudio = {
           format = "{volume}% {icon} {format_source}";
           "format-bluetooth" = "{volume}% {icon} {format_source}";
           "format-bluetooth-muted" = " {icon} {format_source}";
@@ -175,18 +184,15 @@
             default = ["" "" ""];
           };
         };
-        battery = {
-          states = {
-            good = 95;
-            warning = 30;
-            critical = 15;
-          };
-          format = "{capacity}% {icon}";
-          "format-charging" = "{capacity}% ";
-          "format-plugged" = "{capacity}% ";
-          "format-alt" = "{time} {icon}";
-          "format-icons" = ["" "" "" "" ""];
-        };
+       	battery = {
+		      states = {
+			      good = 95;
+			      warning = 30;
+			      critical = 15;
+		      };
+		      format = "{icon}  {capacity}%";
+		      "format-icons" = ["" "" "" "" ""];
+	      };    
         network = {
           "format-wifi" = "{essid} ({signalStrength}%) ";
           "format-ethernet" = "{ipaddr}/{cidr} ";
@@ -195,188 +201,144 @@
           "format-disconnected" = "Disconnected ⚠";
           "format-alt" = "{ifname}= {ipaddr}/{cidr}";
         };
+        temperature = {
+          "critical-threshold" = 75;
+          "format-critical" = "{temperatureC}°C ";
+          format = "{temperatureC}°C ";
+          tooltip = true;
+        };
+        "idle_inhibitor" = {
+          format = "{icon}";
+          "format-icons" = {
+            activated = "";
+            deactivated = "";
+          };
+        };
       };
     };
     style = ''
       * {
-        border: none;
-        border-radius: 0px;
-        font-family: Ubuntu Nerd Font;
-        font-size: 16px;
-        font-weight: bold;
-        min-height: 25px;
+        color: #24292e;
+        border: 0;
+        border-radius: 0;
+        padding: 0 0;
+        font-family: JetBrainsMono Nerd Font;
+        font-size: 15px;
+        margin-right: 5px;
+        margin-left: 5px;
+        padding-bottom:3px;
       }
       window#waybar {
-        background-color: rgba(242, 242, 242, 1.0);
-        border-bottom: 0px solid rgba(100, 114, 125, 0.5);
-        color: #595959;
-        transition-property: background-color;
-        transition-duration: .5s;
-        border-radius: 0px;
+        background: #ffffff;
       }
-
-      window#waybar.hidden {
-        opacity: 0;
-      }
-
-      window#waybar.empty #window {
-        background: none;
-      }
-
       #workspaces button {
-        padding: 2px 10px;
-        margin-right: 5px;
-        background-color: transparent;
-        color: #595959;
-        box-shadow: inset 0px -0px transparent;
-        border-radius: 0px;
-      }
-      #workspaces button:hover {
-        padding: 2px 10px;
-        margin-right: 5px;
-        background: rgba(196, 196, 196, 0.7);
-        color: #000000;
-        box-shadow: inset 0px -0px #ffffff;
-        outline-style: none;
-        text-shadow: none;
+        padding: 2px 0px;
+        border-bottom: 2px;
+        color: #eceff4;
+        border-color: #d8dee9;
+        border-style: solid;
+        margin-top:2px;
       }
       #workspaces button.focused {
-        padding: 2px 10px;
-        margin-right: 5px;
-        background-color: #c4c4c4;
-        color: #000000;
-        box-shadow: inset 0px -0px #000000;
-        outline-style: none;
-        text-shadow: none;
+        border-color: #a3be8c;
+      }
+      #workspaces button.visible {
+        border-color: #81a1c1;
       }
       #workspaces button.urgent {
-        padding: 2px 10px;
-        margin-right: 5px;
-        background-color: #ff8f88;
-        color: #ffffff;
-        outline-style: none;
-        text-shadow: none;
-      }
-      #battery,
-      #cpu,
-      #memory,
-      #temperature,
-      #backlight,
-      #network,
-      #pulseaudio,
-      #custom-media,
-      #tray,
-      #mode,
-      #custom-date,
-      #custom-usbdrive,
-      #custom-power,
-      #custom-emacsd,
-      #scratchpad,
-      #window,
-      #mpd,
-      #idle_inhibitor {
-        padding: 2px 10px;
-        margin: 0px 5px;
-        color: #000000;
-        border-radius: 5px
+        border-color: #b48ead;
       }
       #mode {
-        background-color: #ff8f88;
-        color: #ffffff;
+        color: #ebcb8b;
       }
-      #scratchpad {
-        background-color: #c4c4c4;
-        border-radius: 0px;
-        color: #000000;
+      #clock, #cpu, #memory,#idle_inhibitor, #temperature,#custom-keyboard-layout, #backlight, #network, #pulseaudio, #mode, #tray, #window,#custom-launcher,#custom-power,#custom-pacman {
+        padding: 0 3px;
+        border-bottom: 2px;
+        border-style: solid;
       }
-      #scratchpad.empty {
-        background-color: transparent;
-        border-radius: 0px;
-        color: #595959;
+      #clock {
+        color:#a3be8c;
       }
-      #window {
-        border-radius: 0px;
-        background-color: #c4c4c4;
-        font-family: Ubuntu;
-        font-size: 16px;
-        font-weight: normal;
-      }
-      .modules-left > widget:first-child > #workspaces {
-        margin-left: 0;
-      }
-      .modules-right > widget:last-child > #workspaces {
-        margin-right: 0;
+      #backlight {
+        color: #ebcb8b;
       }
       #battery {
-        color: #000000;
+        color: #384e59;
       }
       #battery.charging {
-        background-color: #ffffff;
-        color: #000000;
+        color: #81a1c1;
       }
       @keyframes blink {
         to {
-          background-color: #ffffff;
-          color: #eee8d5;
+          color: #4c566a;
+          background-color: #eceff4;
         }
       }
       #battery.critical:not(.charging) {
-        background-color: #ff8f88;
-        color: #ffffff;
+        background: #bf616a;
+        color: #eceff4;
         animation-name: blink;
         animation-duration: 0.5s;
         animation-timing-function: linear;
         animation-iteration-count: infinite;
         animation-direction: alternate;
       }
-      label:focus {
-        background-color: #595959;
-      }
       #cpu {
-        color: #000000;
+        color:#a3be8c ;
       }
       #memory {
-        color: #000000;
+        color: #d3869b;
       }
-      #backlight {
-        color: #000000;
+      #network.disabled {
+        color:#bf616a;
       }
-      #network {
-        color: #000000;
+      #network{
+        color:#a3be8c;
       }
       #network.disconnected {
-        color: #ffffff;
-        background-color: #ff8f88;
+        color: #bf616a;
       }
       #pulseaudio {
-        color: #000000;
+        color: #b48ead;
       }
       #pulseaudio.muted {
-        color: #5e5C64;
+        color: #3b4252;
       }
       #temperature {
-        color: #000000;
+        color: #8fbcbb;
       }
       #temperature.critical {
-        color: #ffffff;
-        background-color: #ff8f88;
-      }
-      #tray {
-        background-color: #000000;
+        color: #bf616a;
       }
       #idle_inhibitor {
-        color: #595959;
+        color: #ebcb8b;
       }
-      #idle_inhibitor.activated {
-        color: #000000;
-        margin: 0px 5px;
-        box-shadow: inset 0px 0px #ecF0F1;
+      #tray {}
+      #custom-launcher,#custom-power{
+        border-style: hidden;
+        margin-top:2px;
       }
-      #mpd {
-        color: #000000;
+      #window{
+        border-style: hidden;
+        margin-top:1px;
       }
-      #mpd.stopped {
-        color: #595959;
+      #mode{
+        margin-bottom:3px;
+      }
+      #custom-keyboard-layout{
+        color:#d08770;
+      }
+      tooltip {
+        color: black;
+        background-color: white;
+        text-shadow: none;
+        border-style: solid;
+        border-color: black;
+        border-width: 2px;
+      }
+      tooltip * {
+        color: black;
+        text-shadow: none;
       }
     '';
   };
