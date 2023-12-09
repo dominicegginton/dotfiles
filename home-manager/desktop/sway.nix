@@ -218,7 +218,7 @@
     };
     style = ''
       * {
-        color: #24292e;
+        color: #ffffff;
         border: 0;
         border-radius: 0;
         padding: 0 0;
@@ -229,7 +229,7 @@
         padding-bottom:3px;
       }
       window#waybar {
-        background: #ffffff;
+        background-color: #30363d;
       }
       #workspaces button {
         padding: 2px 0px;
@@ -251,7 +251,7 @@
       #mode {
         color: #ebcb8b;
       }
-      #clock, #cpu, #memory,#idle_inhibitor, #temperature,#custom-keyboard-layout, #backlight, #network, #pulseaudio, #mode, #tray, #window,#custom-launcher,#custom-power,#custom-pacman {
+      #clock, #cpu, #memory,#idle_inhibitor, #temperature,#battery, #backlight, #network, #pulseaudio, #mode, #tray, #window {
         padding: 0 3px;
         border-bottom: 2px;
         border-style: solid;
@@ -263,7 +263,7 @@
         color: #ebcb8b;
       }
       #battery {
-        color: #384e59;
+        color: #ebcb8b;
       }
       #battery.charging {
         color: #81a1c1;
@@ -314,19 +314,12 @@
         color: #ebcb8b;
       }
       #tray {}
-      #custom-launcher,#custom-power{
-        border-style: hidden;
-        margin-top:2px;
-      }
       #window{
         border-style: hidden;
         margin-top:1px;
       }
       #mode{
         margin-bottom:3px;
-      }
-      #custom-keyboard-layout{
-        color:#d08770;
       }
       tooltip {
         color: black;
