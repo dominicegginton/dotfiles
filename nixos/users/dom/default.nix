@@ -13,7 +13,7 @@ in {
 
   environment.systemPackages = with pkgs;
     []
-    ++ lib.optionals (desktop != null) [];
+    ++ lib.optionals (desktop != null) [discord];
 
   users.users.dom = {
     description = "Dominic Egginton";
