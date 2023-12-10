@@ -28,7 +28,7 @@ The following hosts are managed by this flake:
 | :-------------- | :---- | :------------------------ | :--------- | :---------- |
 | `latitude-7390` | DELL  | Latitude 7390 Two in One  | NixOS      | Workstation |
 | `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS      | Workstation |
-| `burbage`       | DIY   | Intel i3-21               | Debian     | Server      |
+| `burbage`       | DIY   | Intel i3-2100             | Debian     | Server      |
 | `iso-console`   | N/A   | N/A                       | NixOS .iso | NixOS .iso  |
 
 ## Users
