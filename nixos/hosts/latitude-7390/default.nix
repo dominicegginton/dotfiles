@@ -12,6 +12,7 @@
     inputs.nixos-hardware.nixosModules.common-pc-laptop
     inputs.nixos-hardware.nixosModules.common-pc-ssd
     ../../services/wireless.nix
+    ../../services/bluetooth.nix
     (import ./disks.nix {})
   ];
 
