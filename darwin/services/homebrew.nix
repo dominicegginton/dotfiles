@@ -10,6 +10,7 @@
     "docker"
     "firefox-developer-edition"
     "google-chrome"
+    "postman"
   ];
   homebrew.masApps = {
     "Afinity Photo" = 824183456;
