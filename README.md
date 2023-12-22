@@ -1,4 +1,6 @@
-# There's no place like ~ [<img src="https://nixos.org/logo/nixos-logo-only-hires.png" width="100" align="right" alt="NixOS">](https://nixos.org)
+[<img src="https://nixos.org/logo/nixos-logo-only-hires.png" width="100" alt="NixOS">](https://nixos.org)
+
+# There's no place like ~
 
 ```ocaml
 Declarative System Configuration 
