@@ -106,6 +106,8 @@
             sops-init-gpg-key
             workspace.rebuild-host
             workspace.rebuild-home
+            workspace.rebuild-configuration
+            workspace.upgrade-configuration
             workspace.rebuild-iso-console
             workspace.gpg-import-keys
           ];

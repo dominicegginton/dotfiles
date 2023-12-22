@@ -52,16 +52,17 @@ The following derivations are defined by this flake:
 
 | Package                                                                                        | Description                                                             |
 | :--------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
-| `create-iso-usb`                                                                               | Creates an bootable nixos iso usb from a build nixos iso configuration. |
-| `rebuild-configuration`                                                                        | Rebuilds the host and home configurations.                              |
-| `rebuild-host`                                                                                 | Rebuilds the host configuration.                                        |
-| `rebuild-iso-console`                                                                          | Rebuilds the nixos iso configuration from this flake.                   |
-| `shutdown-host`                                                                                | Shutdown the current host.                                              |
-| `rebuild-home`                                                                                 | Rebuilds the home manager configuration.                                |
-| `gpg-import-keys`                                                                              | Imports private gpg keys.                                               |
-| `network-filters-disable`                                                                      | Disables Cisco network filters on darwin hosts.                         |
-| `network-filters-enable`                                                                       | Enable Cisco network filterson darwin hosts.                            |
-| [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components.                   |
+| `create-iso-usb`                                                                               | Creates an bootable nixos iso usb from a build nixos iso configuration  |
+| `rebuild-configuration`                                                                        | Runs `rebuild-host` then `rebuild-home`                                 |
+| `upgrade-configuration`                                                                        | Upgrades the flake then runs `rebuild-configuration`                    |
+| `rebuild-host`                                                                                 | Rebuilds then switchs to the NixOs or NixDarwin configuration           |
+| `rebuild-home`                                                                                 | Rebuilds then switches to the home manager configuration                |
+| `rebuild-iso-console`                                                                          | Rebuilds the nixos iso configuration                                    |
+| `shutdown-host`                                                                                | Shutdown the current host                                               |
+| `gpg-import-keys`                                                                              | Imports private gpg keys                                                |
+| `network-filters-disable`                                                                      | Disables Cisco network filters                                          |
+| `network-filters-enable`                                                                       | Enable Cisco network filters                                            |
+| [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components                    |
 
 ## Installing NixOS Hosts
 
@@ -115,28 +116,27 @@ cd ~/.dotfiles && nix develop
 4. Apply both host and home configurations with the following:
 
 ```sh
-rebuild-home
-rebuild-host
+rebuild-configuration
 ```
 
 ## Applying Changes
 
-Update the configuration and use the following to apply changes:
+Apply changes to the configuration then use one of the following to commands to
+rebuild and switch to the new configuration:
 
 ```sh
-rebuild-host  # Rebuild and switch to the new NixOS or NixDarwin configuration
-rebuild-home  # Rebuild and switch to the new Home Manager configuration
+rebuild-host
+rebuild-home
+rebuild-configuration
 ```
 
 ## Upgrading
 
-Upgrade this flake then rebuild the host and home configurations:
+Upgrade this flake then rebuild the host and home configurations using the
+following command:
 
 ```sh
-cd ~/.dotfiles
-nix flake update
-rebuild-host
-rebuild-home
+upgrade-configuration # Upgrade the flake then run rebuild-configuration 
 ```
 
 ## Eye Candy

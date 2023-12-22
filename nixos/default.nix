@@ -98,6 +98,7 @@
       workspace.rebuild-host
       workspace.rebuild-home
       workspace.rebuild-configuration
+      workspace.upgrade-configuration
     ];
     variables = {
       EDITOR = "vim";
