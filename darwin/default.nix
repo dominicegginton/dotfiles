@@ -125,4 +125,13 @@
   };
 
   services.nix-daemon.enable = true;
+
+  evironment.systemPackages = with pkgs; [
+    workspace.rebuild-host
+    workspace.rebuild-home
+    workspace.rebuild-configuration
+    workspace.upgrade-configuration
+    workspace.shutdown-host
+    workspace.reboot-host
+  ];
 }

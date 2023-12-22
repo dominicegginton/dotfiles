@@ -59,6 +59,7 @@ The following derivations are defined by this flake:
 | `rebuild-home`                                                                                 | Rebuilds then switches to the home manager configuration                |
 | `rebuild-iso-console`                                                                          | Rebuilds the nixos iso configuration                                    |
 | `shutdown-host`                                                                                | Shutdown the current host                                               |
+| `reboot-host`                                                                                  | Reboot the current host                                                 |
 | `gpg-import-keys`                                                                              | Imports private gpg keys                                                |
 | `network-filters-disable`                                                                      | Disables Cisco network filters                                          |
 | `network-filters-enable`                                                                       | Enable Cisco network filters                                            |

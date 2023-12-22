@@ -1,15 +1,18 @@
 {pkgs ? (import ../nixpkgs.nix) {}}: let
   inherit (pkgs) callPackage;
 in {
-  # host utils
+  # configuration utils
   workspace.rebuild-host = callPackage ./rebuild-host.nix {};
+  workspace.rebuild-home = callPackage ./rebuild-home.nix {};
   workspace.rebuild-configuration = callPackage ./rebuild-configuration.nix {};
   workspace.upgrade-configuration = callPackage ./upgrade-configuration.nix {};
+  # iso utils
   workspace.create-iso-usb = callPackage ./create-iso-usb.nix {};
   workspace.rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};
+  # host utils
   workspace.shutdown-host = callPackage ./shutdown-host.nix {};
+  workspace.reboot-host = callPackage ./reboot-host.nix {};
   # user utils
-  workspace.rebuild-home = callPackage ./rebuild-home.nix {};
   workspace.gpg-import-keys = callPackage ./gpg-import-keys.nix {};
   # network utils
   workspace.network-filters-disable = callPackage ./network-filters-disable.nix {};

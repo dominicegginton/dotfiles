@@ -5,7 +5,5 @@
     git
     git-lfs
     pinentry
-    workspace.rebuild-host
-    workspace.shutdown-host
   ];
 }
