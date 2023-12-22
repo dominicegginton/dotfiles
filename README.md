@@ -1,6 +1,9 @@
-# There's no place like ~ [<img src="https://nixos.org/logo/nixos-logo-only-hires.png" width="125" align="right" alt="NixOS">](https://nixos.org)
+# There's no place like ~ [<img src="https://nixos.org/logo/nixos-logo-only-hires.png" width="100" align="right" alt="NixOS">](https://nixos.org)
 
-> Declarative system configurations using NixOS, NixDarwin, and Home Manager.
+```ocaml
+Declarative System Configuration 
+NixOS / NixDarwin / Home Manager
+```
 
 ## Workspace
 
@@ -29,7 +32,7 @@ The following hosts are managed by this flake:
 | `latitude-7390` | DELL  | Latitude 7390 Two in One  | NixOS      | Workstation |
 | `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS      | Workstation |
 | `burbage`       | DIY   | Intel i3-2100             | Debian     | Server      |
-| `iso-console`   | N/A   | N/A                       | NixOS .iso | NixOS .iso  |
+| `iso-console`   | N/A   | N/A                       | NixOS.iso  | NixOS.iso   |
 
 ## Users
 
@@ -45,18 +48,18 @@ The following user configurations are managed by this flake and are available ac
 
 The following derivations are defined by this flake:
 
-| Package                                                                                                     | Description                                                             |
-| :---------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
-| `create-iso-usb`                                                                                            | Creates an bootable nixos iso usb from a build nixos iso configuration. |
-| `rebuild-configuration`                                                                                     | Rebuilds the host and home configurations.                              |
-| `rebuild-host`                                                                                              | Rebuilds the host configuration.                                        |
-| `rebuild-iso-console`                                                                                       | Rebuilds the nixos iso configuration from this flake.                   |
-| `shutdown-host`                                                                                             | Shutdown the current host.                                              |
-| `rebuild-home`                                                                                              | Rebuilds the home manager configuration.                                |
-| `gpg-import-keys`                                                                                           | Imports private gpg keys.                                               |
-| `network-filters-disable`                                                                                   | Disables Cisco network filters on darwin hosts.                         |
-| `network-filters-enable`                                                                                    | Enable Cisco network filterson darwin hosts.                            |
-| [`nodePackages.custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components.                   |
+| Package                                                                                        | Description                                                             |
+| :--------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
+| `create-iso-usb`                                                                               | Creates an bootable nixos iso usb from a build nixos iso configuration. |
+| `rebuild-configuration`                                                                        | Rebuilds the host and home configurations.                              |
+| `rebuild-host`                                                                                 | Rebuilds the host configuration.                                        |
+| `rebuild-iso-console`                                                                          | Rebuilds the nixos iso configuration from this flake.                   |
+| `shutdown-host`                                                                                | Shutdown the current host.                                              |
+| `rebuild-home`                                                                                 | Rebuilds the home manager configuration.                                |
+| `gpg-import-keys`                                                                              | Imports private gpg keys.                                               |
+| `network-filters-disable`                                                                      | Disables Cisco network filters on darwin hosts.                         |
+| `network-filters-enable`                                                                       | Enable Cisco network filterson darwin hosts.                            |
+| [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components.                   |
 
 ## Installing NixOS Hosts
 
@@ -133,6 +136,7 @@ nix flake update
 rebuild-host
 rebuild-home
 ```
+
 ## Eye Candy
 
 ![screenshot_2023-12-09-211721](https://github.com/dominicegginton/dotfiles/assets/28626241/23eb9977-9625-40d4-95f2-56afa61d10cd)
