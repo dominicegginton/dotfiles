@@ -4,7 +4,7 @@
 
 ```ocaml
 Declarative System Configuration 
-NixOS / NixDarwin / Home Manager
+NixOS / NixDarwin / Home Manager / Sops Nix
 ```
 
 ## Workspace
@@ -14,20 +14,19 @@ This workspace follows the following structure:
 ```
 ├── darwin          # Darwin host configurations
 ├── home-manager    # Home Manager configurations
-├── lib             # Local library helpers
+├── lib             # Local nix library helpers
 ├── nixos           # NixOS host configurations
 ├── overlays        # Nix overlays
 ├── pkgs            # Nix packages
 ├── scripts         # Scripts
 ├── secrets         # Encrypted secrets
-├── .sops.yaml      # SOPS configuration
-├── flake.nix       # Flake inputs and outputs
-└── shell.nix       # Nix development shell
+├── .sops.yaml      # Sops configuration
+└── flake.nix       # Nix Flake inputs and outputs
 ```
 
 ## Hosts
 
-The following hosts are managed by this flake:
+This workspace defines the following hosts:
 
 | HOSTNAME        | OEM   | MODEL                     | OS         | ROLE        |
 | :-------------- | :---- | :------------------------ | :--------- | :---------- |
@@ -38,7 +37,7 @@ The following hosts are managed by this flake:
 
 ## Users
 
-The following user configurations are managed by this flake and are available across the above hosts:
+The following user configurations are also defined by this workspace:
 
 | Username       | Aviable on Hosts            | Description                                                                            |
 | :------------- | :-------------------------- | :------------------------------------------------------------------------------------- |
@@ -48,7 +47,7 @@ The following user configurations are managed by this flake and are available ac
 
 ## Packages
 
-The following derivations are defined by this flake:
+The worksapce includes definitions for the following packages:
 
 | Package                                                                                        | Description                                                             |
 | :--------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
@@ -65,7 +64,14 @@ The following derivations are defined by this flake:
 | `network-filters-enable`                                                                       | Enable Cisco network filters                                            |
 | [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components                    |
 
-## Installing NixOS Hosts
+## Eye Candy
+
+![screenshot_2023-12-09-211721](https://github.com/dominicegginton/dotfiles/assets/28626241/23eb9977-9625-40d4-95f2-56afa61d10cd)
+![screenshot_2023-12-09-212003](https://github.com/dominicegginton/dotfiles/assets/28626241/62d9ee95-bff5-4448-a9b5-cbb612a5e408)
+
+## Documentation
+
+### Installing NixOS Hosts
 
 1. Create a bootable .iso image using the `rebuild-iso-console` script, this
    will leave a live image in the `~/.dotfiles/result/iso/` directory.
@@ -94,7 +100,7 @@ by this flake, you can still install the system using the following:
 curl -sL https://raw.githubusercontent.com/dominicegginton/dotfiles/main/scripts/install.sh | bash -s <hostname> <username>
 ```
 
-## Installing NixDarwin Hosts
+### Installing NixDarwin Hosts
 
 1. Install the [Nix package manager](https://nixos.org/download#nix-install-macos).
 
@@ -120,7 +126,7 @@ cd ~/.dotfiles && nix develop
 rebuild-configuration
 ```
 
-## Applying Changes
+### Applying Changes
 
 Apply changes to the configuration then use one of the following to commands to
 rebuild and switch to the new configuration:
@@ -131,7 +137,7 @@ rebuild-home
 rebuild-configuration
 ```
 
-## Upgrading
+### Upgrading
 
 Upgrade this flake then rebuild the host and home configurations using the
 following command:
@@ -139,8 +145,3 @@ following command:
 ```sh
 upgrade-configuration # Upgrade the flake then run rebuild-configuration 
 ```
-
-## Eye Candy
-
-![screenshot_2023-12-09-211721](https://github.com/dominicegginton/dotfiles/assets/28626241/23eb9977-9625-40d4-95f2-56afa61d10cd)
-![screenshot_2023-12-09-212003](https://github.com/dominicegginton/dotfiles/assets/28626241/62d9ee95-bff5-4448-a9b5-cbb612a5e408)
