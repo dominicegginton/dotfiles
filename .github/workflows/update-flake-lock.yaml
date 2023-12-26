@@ -1,0 +1,19 @@
+on:
+  workflow_dispatch: 
+  schedule:
+    - cron: '0 0 * * 0' # Sunday at midnight 
+
+jobs:
+  update-lockfile:
+    runs-on: ubuntu-latest
+    permissions: 
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/update-flake-lock@main
+        with:
+          pr-title: "chore(worksapce): update flake.lock" 
+          pr-labels: |
+            dependencies
