@@ -41,5 +41,29 @@ in {
     font-awesome
     jetbrains-mono
     alacritty
+    mpv
   ];
+
+  xdg.mimeApps.defaultApplications = {
+    "text/html" = "firefox.desktop";
+    "x-scheme-handler/http" = "firefox.desktop";
+    "x-scheme-handler/https" = "firefox.desktop";
+    "x-scheme-handler/about" = "firefox.desktop";
+    "x-scheme-handler/unknown" = "firefox.desktop";
+    "x-scheme-handler/mailto" = "firefox.desktop";
+    "text/calendar" = "firefox.desktop";
+    "x-scheme-handler/irc" = "firefox.desktop";
+    "audio/mpeg" = "mpv.desktop";
+    "audio/x-flac" = "mpv.desktop";
+    "audio/x-vorbis+ogg" = "mpv.desktop";
+    "audio/x-wav" = "mpv.desktop";
+    "audio/x-ms-wma" = "mpv.desktop";
+    "audio/x-musepack" = "mpv.desktop";
+    "audio/x-opus+ogg" = "mpv.desktop";
+    "audio/x-speex+ogg" = "mpv.desktop";
+    "video/mp4" = "mpv.desktop";
+    "video/mpeg" = "mpv.desktop";
+    "video/ogg" = "mpv.desktop";
+    "video/quicktime" = "mpv.desktop";
+  };
 }

@@ -10,8 +10,7 @@
       ../services/cups.nix
       ../services/pipewire.nix
     ]
-    ++ lib.optional (builtins.pathExists (./. + "/${desktop}/desktop.nix")) ./${desktop}/desktop.nix
-    ++ lib.optional (builtins.pathExists (./. + "/${desktop}/apps.nix")) ./${desktop}/apps.nix;
+    ++ lib.optional (builtins.pathExists (./. + "/${desktop}.nix")) ./${desktop}.nix;
 
   boot = {
     plymouth = {
@@ -31,4 +30,9 @@
     enable = true;
     package = pkgs.firefox;
   };
+
+  environment.systemPackages = with pkgs; [
+    alacritty
+    firefox
+  ];
 }

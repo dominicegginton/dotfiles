@@ -28,7 +28,7 @@
     '';
   };
 in {
-  imports = [../../services/dbus.nix];
+  imports = [../services/dbus.nix];
 
   programs.sway = {
     enable = true;
