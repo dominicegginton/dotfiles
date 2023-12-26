@@ -16,5 +16,6 @@
     neofetch
     htop-vim
     bottom
+    btop
   ];
 }
