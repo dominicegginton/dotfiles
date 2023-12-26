@@ -148,11 +148,13 @@ upgrade-configuration # Upgrade the flake then run rebuild-configuration
 
 ## Usefull Resources
 
-- [https://nixos.org/manual/nixos/stable/](https://nixos.org/manual/nixos/stable/) - NixOS manual for the current stable release.
-- [https://daiderd.com/nix-darwin/manual/index.html](https://github.com/LnL7/nix-darwin) - The NixDarwin manual for the current stable release.
-- [https://nix-community.github.io/home-manager/](https://nix-community.github.io/home-manager/) - Home Manager manual for the current stable release.
-- [https://github.com/Mic92/sops-nix](https://github.com/Mic92/sops-nix) - Sop Nix GitHub repository.
-- [https://search.nixos.org/options](https://search.nixos.org/options) - NixOS option search.
-- [https://search.nixos.org/packages](https://search.nixos.org/packages) - NixOS package search.
-- [https://mipmip.github.io/home-manager-option-search/](https://mipmip.github.io/home-manager-option-search/) - Home Manager option search.
-- [https://search.nixos.org/flakes?)[https://search.nixos.org/flakes?] - Public Nix flakes search.
+| Resrouce                    | URL                                                                                                          | Description                                          |
+| :-------------------------- | :----------------------------------------------------------------------------------------------------------- | :--------------------------------------------------- |
+| NixOs Manual                | [https://nixos.org/manual/nixos/stable/](https://nixos.org/manual/nixos/stable/)                             | NixOS manual for the current stable release.         |
+| NixDarwin Manual            | [https://daiderd.com/nix-darwin/manual/index.html](https://nixos.org/manual/nixos/stable/)                   | The NixDarwin manual for the current stable release. |
+| Home Manager Manual         | [https://nix-community.github.io/home-manager/](https://nix-community.github.io/home-manager/)               | Home Manager manual for the current stable release.  |
+| Sop Nix Resporsitory        | [https://github.com/Mic92/sops-nix](https://github.com/Mic92/sops-nix)                                       | Sop Nix GitHub repository.                           |
+| Nix Packages Search         | [https://search.nixos.org/packages](https://search.nixos.org/packages)                                       | Web interface for searching the NixOS packages list  |
+| Nix Options Search          | [https://search.nixos.org/options](https://search.nixos.org/options)                                         | Web interface for searching the NixOS options list   |
+| Home Manager Options Search | [https://mipmip.github.io/home-manager-option-search/](https://mipmip.github.io/home-manager-option-search/) | Web interface for searching Home Manager options     |
+| Public Nix Flakes Search    | [https://search.nixos.org/flakes?](https://search.nixos.org/flakes?)                                         | Web interface for searching public Nix flakes        |
