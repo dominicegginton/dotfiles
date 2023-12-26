@@ -14,6 +14,7 @@ in {
   workspace.reboot-host = callPackage ./reboot-host.nix {};
   # user utils
   workspace.gpg-import-keys = callPackage ./gpg-import-keys.nix {};
+  workspace.twx = callPackage ./twx.nix {};
   # network utils
   workspace.network-filters-disable = callPackage ./network-filters-disable.nix {};
   workspace.network-filters-enable = callPackage ./network-filters-enable.nix {};
