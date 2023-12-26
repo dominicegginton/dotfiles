@@ -143,7 +143,7 @@ Upgrade this flake then rebuild the host and home configurations using the
 following command:
 
 ```sh
-upgrade-configuration # Upgrade the flake then run rebuild-configuration
+upgrade-configuration
 ```
 
 ## Usefull Resources
