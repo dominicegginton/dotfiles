@@ -3,7 +3,7 @@
 # There's no place like ~
 
 ```ocaml
-Declarative System Configuration 
+Declarative System Configuration
 NixOS / NixDarwin / Home Manager / Sops Nix
 ```
 
@@ -28,12 +28,12 @@ This workspace follows the following structure:
 
 This workspace defines the following hosts:
 
-| HOSTNAME        | OEM   | MODEL                     | OS         | ROLE        |
-| :-------------- | :---- | :------------------------ | :--------- | :---------- |
-| `latitude-7390` | DELL  | Latitude 7390 Two in One  | NixOS      | Workstation |
-| `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS      | Workstation |
-| `burbage`       | DIY   | Intel i3-2100             | Debian     | Server      |
-| `iso-console`   | N/A   | N/A                       | NixOS.iso  | NixOS.iso   |
+| HOSTNAME        | OEM   | MODEL                     | OS        | ROLE        |
+| :-------------- | :---- | :------------------------ | :-------- | :---------- |
+| `latitude-7390` | DELL  | Latitude 7390 Two in One  | NixOS     | Workstation |
+| `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS     | Workstation |
+| `burbage`       | DIY   | Intel i3-2100             | Debian    | Server      |
+| `iso-console`   | N/A   | N/A                       | NixOS.iso | NixOS.iso   |
 
 ## Users
 
@@ -49,20 +49,20 @@ The following user configurations are also defined by this workspace:
 
 The worksapce includes definitions for the following packages:
 
-| Package                                                                                        | Description                                                             |
-| :--------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------- |
-| `create-iso-usb`                                                                               | Creates an bootable nixos iso usb from a build nixos iso configuration  |
-| `rebuild-configuration`                                                                        | Runs `rebuild-host` then `rebuild-home`                                 |
-| `upgrade-configuration`                                                                        | Upgrades the flake then runs `rebuild-configuration`                    |
-| `rebuild-host`                                                                                 | Rebuilds then switchs to the NixOs or NixDarwin configuration           |
-| `rebuild-home`                                                                                 | Rebuilds then switches to the home manager configuration                |
-| `rebuild-iso-console`                                                                          | Rebuilds the nixos iso configuration                                    |
-| `shutdown-host`                                                                                | Shutdown the current host                                               |
-| `reboot-host`                                                                                  | Reboot the current host                                                 |
-| `gpg-import-keys`                                                                              | Imports private gpg keys                                                |
-| `network-filters-disable`                                                                      | Disables Cisco network filters                                          |
-| `network-filters-enable`                                                                       | Enable Cisco network filters                                            |
-| [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components                    |
+| Package                                                                                        | Description                                                            |
+| :--------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
+| `create-iso-usb`                                                                               | Creates an bootable nixos iso usb from a build nixos iso configuration |
+| `rebuild-configuration`                                                                        | Runs `rebuild-host` then `rebuild-home`                                |
+| `upgrade-configuration`                                                                        | Upgrades the flake then runs `rebuild-configuration`                   |
+| `rebuild-host`                                                                                 | Rebuilds then switchs to the NixOs or NixDarwin configuration          |
+| `rebuild-home`                                                                                 | Rebuilds then switches to the home manager configuration               |
+| `rebuild-iso-console`                                                                          | Rebuilds the nixos iso configuration                                   |
+| `shutdown-host`                                                                                | Shutdown the current host                                              |
+| `reboot-host`                                                                                  | Reboot the current host                                                |
+| `gpg-import-keys`                                                                              | Imports private gpg keys                                               |
+| `network-filters-disable`                                                                      | Disables Cisco network filters                                         |
+| `network-filters-enable`                                                                       | Enable Cisco network filters                                           |
+| [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components                   |
 
 ## Eye Candy
 
@@ -143,5 +143,5 @@ Upgrade this flake then rebuild the host and home configurations using the
 following command:
 
 ```sh
-upgrade-configuration # Upgrade the flake then run rebuild-configuration 
+upgrade-configuration # Upgrade the flake then run rebuild-configuration
 ```

@@ -11,3 +11,4 @@ jobs:
     - uses: DeterminateSystems/nix-installer-action@main
     - uses: DeterminateSystems/flake-checker-action@main
     - run: nix develop
+    - run: nix fmt && git diff --exit-code

@@ -46,7 +46,23 @@
 
     # Execute `nix fmt` to format this
     # configuration.
-    formatter = libx.forAllSystems (system: alejandra.defaultPackage.${system});
+    formatter = libx.forAllSystems (
+      system: let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+        pkgs.writeShellApplication {
+          name = "format-workspace";
+          runtimeInputs = with pkgs; [
+            alejandra.defaultPackage.${system}
+            nodePackages.prettier
+          ];
+
+          text = ''
+            alejandra ./
+            prettier --write README.md
+          '';
+        }
+    );
 
     #######################################
     ############# OVERLAYS ################
