@@ -145,3 +145,14 @@ following command:
 ```sh
 upgrade-configuration # Upgrade the flake then run rebuild-configuration
 ```
+
+## Usefull Resources
+
+- [https://nixos.org/manual/nixos/stable/](https://nixos.org/manual/nixos/stable/) - NixOS manual for the current stable release.
+- [https://daiderd.com/nix-darwin/manual/index.html](https://github.com/LnL7/nix-darwin) - The NixDarwin manual for the current stable release.
+- [https://nix-community.github.io/home-manager/](https://nix-community.github.io/home-manager/) - Home Manager manual for the current stable release.
+- [https://github.com/Mic92/sops-nix](https://github.com/Mic92/sops-nix) - Sop Nix GitHub repository.
+- [https://search.nixos.org/options](https://search.nixos.org/options) - NixOS option search.
+- [https://search.nixos.org/packages](https://search.nixos.org/packages) - NixOS package search.
+- [https://mipmip.github.io/home-manager-option-search/](https://mipmip.github.io/home-manager-option-search/) - Home Manager option search.
+- [https://search.nixos.org/flakes?)[https://search.nixos.org/flakes?] - Public Nix flakes search.
