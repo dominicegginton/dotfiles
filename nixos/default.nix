@@ -171,6 +171,7 @@
   nix = {
     gc = {
       automatic = true;
+      dates = "weekly";
       options = "--delete-older-than 10d";
     };
     registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
