@@ -64,12 +64,12 @@
       output * bg ~/background.jpg fill
       exec swayosd-server
       bindsym Mod4+c exec grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%Y-%m-%d-%H%M%S).png
-      bindsym XF86MonBrightnessDown exec light -U 10 exec swayosd --brightness lower
-      bindsym XF86MonBrightnessUp exec light -A 10 exec swayosd --brightness raise
-      bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%' exec swayosd --output-volume raise
-      bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%' exec swayosd --output-volume lower
-      bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle' exec swayosd --output-volume mute-toggle
-      bindsym XF86AudioMicMute exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle' exec swayosd --input-volume mute-toggle
+      bindsym XF86MonBrightnessDown exec light -U 10
+      bindsym XF86MonBrightnessUp exec light -A 10
+      bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%'
+      bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%'
+      bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
+      bindsym XF86AudioMicMute exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle'
       bindsym --release Caps_Lock exec swayosd --caps-lock
       default_border pixel 2
       default_floating_border normal

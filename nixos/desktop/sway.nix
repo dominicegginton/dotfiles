@@ -57,9 +57,12 @@ in {
     };
   };
 
+  programs.light.enable = true;
+
   environment.systemPackages = with pkgs; [
     wayland
     wdisplays
+    dbus
     dbus-sway-environment
     configure-gtk
     xdg-utils
@@ -74,5 +77,6 @@ in {
     wl-clipboard
     bemenu
     mako
+    light
   ];
 }
