@@ -74,7 +74,7 @@
       bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%'
       bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
       bindsym XF86AudioMicMute exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle'
-      
+
       bindsym Mod4+Ctrl+greater move workspace to output right
       bindsym Mod4+Ctrl+less move workspace to output left
       bindsym --release Caps_Lock exec swayosd --caps-lock
