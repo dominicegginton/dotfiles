@@ -9,12 +9,13 @@
     XDG_CURRENT_DESKTOP = "sway";
     QT_QPA_PLATFORM = "wayland";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    BEMENU_BACKEND = "wayland";
   };
 
   wayland.windowManager.sway = {
     enable = true;
     config = rec {
-      modifier = "Mod4";
+      modifier = "Mod4"; # super key
       terminal = "alacritty";
       fonts = {
         names = [
@@ -23,7 +24,7 @@
         ];
         size = 11.0;
       };
-      menu = "bemenu-run -nb -l 10 -H 22 -W 0.4 --fn 'Ubuntu' --tb '#000000' --tf '#ffffff' --fb '#000000' --ff '#ffffff' --nb '#000000' --nf '#ffffff' --hb '#000000' --hf '#ffffff'";
+      menu = "${pkgs.bemenu}/bin/bemenu-run";
       bars = [{command = "waybar";}];
       colors = {
         focused = {
@@ -58,27 +59,40 @@
       };
     };
     extraConfig = ''
-      exec dbus-sway-environment
-      exec configure-gtk
-      exec sleep 5; systemctl --user start kanshi.service
+      # background
       output * bg ~/background.jpg fill
-      exec swayosd-server
+
+      # screenshots
       bindsym Mod4+c exec grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%Y-%m-%d-%H%M%S).png
+
+      # brightness
       bindsym XF86MonBrightnessDown exec light -U 10
       bindsym XF86MonBrightnessUp exec light -A 10
+
+      # volume
       bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%'
       bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%'
       bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
       bindsym XF86AudioMicMute exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle'
+      
+      bindsym Mod4+Ctrl+greater move workspace to output right
+      bindsym Mod4+Ctrl+less move workspace to output left
       bindsym --release Caps_Lock exec swayosd --caps-lock
       default_border pixel 2
       default_floating_border normal
       titlebar_border_thickness 0
       hide_edge_borders both
       smart_borders on
+
+      # exec
+      exec dbus-sway-environmen
+      exec configure-gtk
+      exec swayosd-server
+      exec sleep 5; systemctl --user start kanshi.service
     '';
   };
 
+  # cursor configuration for hiDPI displays
   home.pointerCursor = {
     name = "Adwaita";
     package = pkgs.gnome.adwaita-icon-theme;

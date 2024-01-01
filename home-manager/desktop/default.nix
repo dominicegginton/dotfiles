@@ -33,15 +33,20 @@ in {
     "*color15" = "#e9e9e9";
   };
 
+  # enable desktop font configuration
   fonts.fontconfig.enable = true;
+
+  # desktop packages
   home.packages = with pkgs; [
+    # fonts
     noto-fonts
     noto-fonts-cjk
     noto-fonts-emoji
     font-awesome
     jetbrains-mono
-    alacritty
-    mpv
+    # applications
+    alacritty # terminal
+    mpv # media player
   ];
 
   xdg.mimeApps.defaultApplications = {
