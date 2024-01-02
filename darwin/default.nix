@@ -126,7 +126,7 @@
 
   services.nix-daemon.enable = true;
 
-  evironment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     workspace.rebuild-host
     workspace.rebuild-home
     workspace.rebuild-configuration
