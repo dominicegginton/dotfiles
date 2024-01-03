@@ -10,13 +10,16 @@
   excludesfile = ~/.gitignore
   autocrlf = input
 [alias]
-  status = status -sb
   graph = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all
+[init]
+  defaultBranch = main
 [gpg]
   program = gpg
 [commit]
   gpgsign = true
   template = ~/.gitmessage
+[tag]
+  gpgsign = true
 [pull]
   ff = only
 [push]
@@ -27,21 +30,6 @@
   helper = store
 [color]
   ui = auto
-[filter "lfs"]
-  clean = git-lfs clean -- %f
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
-[lfs]
-  pruneverifyremotealways = true
-[init]
-  defaultBranch = main
-[includeIf "gitdir:~/dev/arup-group/**"]
-  path = .arup.gitconfig
-[tag]
-  gpgsign = true
-[difftool]
-  prompt = false
 [merge]
   tool = nvimdiff
 [mergetool]
@@ -50,7 +38,18 @@
   cmd = nvim -d $LOCAL $REMOTE $BASE
 [diff]
   tool = nvimdiff
+[difftool]
+  prompt = false
 [difftool "nvimdiff"]
   cmd = nvim -d $LOCAL $REMOTE
 [http]
   postBuffer = 524288000
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[lfs]
+  pruneverifyremotealways = true
+[includeIf "gitdir:~/dev/arup-group/**"]
+  path = .arup.gitconfig
