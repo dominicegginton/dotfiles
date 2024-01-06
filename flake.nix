@@ -9,6 +9,7 @@
     #######################################
     ############### MODULES ###############
     #######################################
+    srvos.url = "github:nix-community/srvos";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:dominicegginton/nixos-hardware/master";

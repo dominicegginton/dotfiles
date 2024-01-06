@@ -439,6 +439,22 @@
         "type": "github"
       }
     },
+    "nixos-stable": {
+      "locked": {
+        "lastModified": 1703992652,
+        "narHash": "sha256-C0o8AUyu8xYgJ36kOxJfXIroy9if/G6aJbNOpA5W0+M=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "32f63574c85fbc80e4ba1fbb932cde9619bad25e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-23.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1702539185,
@@ -531,6 +547,22 @@
       "original": {
         "owner": "nixos",
         "ref": "nixos-23.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_4": {
+      "locked": {
+        "lastModified": 1704177376,
+        "narHash": "sha256-6AV8TWX/juwV8delRDtlbUzi1X8irrtCfrtcYByVhCs=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "e2e36d8af3b7c465311f11913b7dedd209633c84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable-small",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -649,7 +681,8 @@
         "nixpkgs": "nixpkgs_3",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "srvos": "srvos"
       }
     },
     "rust-analyzer-src": {
@@ -687,6 +720,25 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "srvos": {
+      "inputs": {
+        "nixos-stable": "nixos-stable",
+        "nixpkgs": "nixpkgs_4"
+      },
+      "locked": {
+        "lastModified": 1704457903,
+        "narHash": "sha256-GVEIP5xRnofVlGzfxmBXgfmHfddS7eWZ3kcchBb8TMY=",
+        "owner": "nix-community",
+        "repo": "srvos",
+        "rev": "c80e971a097b78fc6a6415fbacda6b9865651273",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "srvos",
         "type": "github"
       }
     },
