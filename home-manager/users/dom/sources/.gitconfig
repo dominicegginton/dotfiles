@@ -4,6 +4,8 @@
   signingKey = 4C79CE4F82847A9F
 [github]
   user = dominicegginton
+[credential]
+  helper = store
 [core]
   editor = nvim
   hooksPath = .githooks
