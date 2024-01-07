@@ -21,7 +21,7 @@
         inherit inputs outputs desktop hostname platform username stateVersion;
       };
       modules =
-        [../nixos]
+        [../hosts/nixos]
         ++ (inputs.nixpkgs.lib.optionals (installer != null) [installer]);
     };
 
@@ -35,7 +35,7 @@
       specialArgs = {
         inherit inputs outputs desktop hostname platform username stateVersion;
       };
-      modules = [../darwin];
+      modules = [../hosts/darwin];
     };
 
   mkHomeConfiguration = {

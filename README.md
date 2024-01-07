@@ -12,10 +12,9 @@ NixOS / NixDarwin / Home Manager / Sops Nix
 This workspace follows the following structure:
 
 ```
-├── darwin          # Darwin host configurations
-├── home            # Home Manager configurations
-├── lib             # Local nix library helpers
-├── nixos           # NixOS host configurations
+├── home            # Home configurations
+├── home            # Host configurations
+├── lib             # Workspace library helpers
 ├── overlays        # Nix overlays
 ├── pkgs            # Nix packages
 ├── scripts         # Scripts

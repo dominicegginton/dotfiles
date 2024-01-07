@@ -57,9 +57,26 @@
     );
   in {
     #######################################
-    ############## OVERLAYS ###############
+    ############# OVERLAYS ################
     #######################################
     overlays = overlays;
+
+    #######################################
+    ############# packages ################
+    #######################################
+    packages = libx.forAllSystems (
+      system: let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            overlays.additions
+            overlays.modifications
+            overlays.unstable-packages
+          ];
+        };
+      in
+        pkgs
+    );
 
     #######################################
     ############# FORMATTER ###############

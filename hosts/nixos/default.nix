@@ -28,7 +28,7 @@
     ++ lib.optional (desktop != null) ./desktop
     ++ lib.optional (builtins.pathExists ./users/${username}) (import ./users/${username});
 
-  sops.defaultSopsFile = ../secrets/secrets.yaml;
+  sops.defaultSopsFile = ../../secrets/secrets.yaml;
 
   boot = {
     consoleLogLevel = 0;
