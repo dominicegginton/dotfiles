@@ -20,6 +20,7 @@ This workspace follows the following structure:
 ├── pkgs            # Nix packages
 ├── scripts         # Scripts
 ├── secrets         # Encrypted secrets
+├── shells          # Nix shells
 ├── .sops.yaml      # Sops configuration
 └── flake.nix       # Nix Flake inputs and outputs
 ```
