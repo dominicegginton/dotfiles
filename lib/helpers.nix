@@ -4,7 +4,8 @@
   stateVersion,
   ...
 }: {
-  forAllSystems = inputs.nixpkgs.lib.genAttrs [
+  # Generate attributes for all listed systems.
+  forAllPlatforms = inputs.nixpkgs.lib.genAttrs [
     "x86_64-linux"
     "x86_64-darwin"
   ];
@@ -18,7 +19,7 @@
   }:
     inputs.nixpkgs.lib.nixosSystem {
       specialArgs = {
-        inherit inputs outputs desktop hostname platform username stateVersion;
+        inherit inputs outputs hostname platform desktop username stateVersion;
       };
       modules =
         [../hosts/nixos]
@@ -33,7 +34,7 @@
   }:
     inputs.nix-darwin.lib.darwinSystem {
       specialArgs = {
-        inherit inputs outputs desktop hostname platform username stateVersion;
+        inherit inputs outputs hostname username desktop platform stateVersion;
       };
       modules = [../hosts/darwin];
     };

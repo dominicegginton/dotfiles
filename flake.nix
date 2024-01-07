@@ -41,15 +41,17 @@
     stateVersion = "23.11";
     libx = import ./lib {inherit inputs outputs stateVersion;};
     overlays = import ./overlays {inherit inputs;};
-
-    pkgs = libx.forAllSystems (
-      system: let
+    pkgs = libx.forAllPlatforms (
+      platform: let
         pkgs = import nixpkgs {
-          inherit system;
+          system = platform;
+          config.allowUnfree = true;
           overlays = [
             overlays.additions
             overlays.modifications
             overlays.unstable-packages
+            inputs.neovim-nightly-overlay.overlay
+            inputs.nixneovimplugins.overlays.default
           ];
         };
       in
@@ -64,34 +66,21 @@
     #######################################
     ############# packages ################
     #######################################
-    packages = libx.forAllSystems (
-      system: let
-        pkgs = import nixpkgs {
-          inherit system;
-          config = {allowUnfree = true;};
-          overlays = [
-            overlays.additions
-            overlays.modifications
-            overlays.unstable-packages
-          ];
-        };
-      in
-        pkgs
-    );
+    packages = pkgs;
 
     #######################################
     ############# FORMATTER ###############
     #######################################
     formatter =
-      libx.forAllSystems (system:
-        pkgs.${system}.workspace.format-configuration);
+      libx.forAllPlatforms (platform:
+        pkgs.${platform}.workspace.format-configuration);
 
     #######################################
     ############# SHELLS ##################
     #######################################
-    devShells = libx.forAllSystems (
-      system: let
-      in {default = import ./shells/dotfiles.nix {inherit inputs pkgs system;};}
+    devShells = libx.forAllPlatforms (
+      platform: let
+      in {default = import ./shells/dotfiles.nix {inherit inputs pkgs platform;};}
     );
 
     #######################################

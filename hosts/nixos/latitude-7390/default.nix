@@ -8,9 +8,9 @@
 }: {
   imports = [
     inputs.nixos-hardware.nixosModules.dell-latitude-7390
-    ../../services/wireless.nix
-    ../../services/bluetooth.nix
-    (import ./disks.nix {})
+    ../modules/wireless.nix
+    ../modules/bluetooth.nix
+    ./disks.nix
   ];
 
   swapDevices = [

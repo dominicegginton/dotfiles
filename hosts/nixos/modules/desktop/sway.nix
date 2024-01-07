@@ -42,7 +42,7 @@
   };
 in {
   imports = [
-    ../services/dbus.nix # dbus service is needed for xdg-desktop-portal
+    ../dbus.nix # dbus service is needed for xdg-desktop-portal
   ];
 
   environment.systemPackages = with pkgs; [

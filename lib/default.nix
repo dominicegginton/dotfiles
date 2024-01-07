@@ -6,8 +6,5 @@
 }: let
   helpers = import ./helpers.nix {inherit inputs outputs stateVersion;};
 in {
-  inherit (helpers) mkNixosConfiguration;
-  inherit (helpers) mkDarwinConfiguration;
-  inherit (helpers) mkHomeConfiguration;
-  inherit (helpers) forAllSystems;
+  inherit (helpers) forAllPlatforms mkNixosConfiguration mkDarwinConfiguration mkHomeConfiguration;
 }

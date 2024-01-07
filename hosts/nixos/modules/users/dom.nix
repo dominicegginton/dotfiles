@@ -5,16 +5,8 @@
   pkgs,
   ...
 }: let
-  ifExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
+  ifGroupsExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in {
-  imports =
-    []
-    ++ lib.optionals (desktop != null) [];
-
-  environment.systemPackages = with pkgs;
-    []
-    ++ lib.optionals (desktop != null) [discord];
-
   users.users.dom = {
     description = "Dominic Egginton";
     extraGroups =
@@ -25,14 +17,12 @@ in {
         "video"
         "wheel"
       ]
-      ++ ifExists [
+      ++ ifGroupsExists [
         "docker"
         "podman"
       ];
-
     homeMode = "0755";
     isNormalUser = true;
-    packages = with pkgs; [home-manager];
     shell = pkgs.zsh;
   };
 }
