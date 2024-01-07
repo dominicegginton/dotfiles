@@ -8,7 +8,6 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    pushd ~/.dotfiles
     alejandra ./
     prettier --write README.md
   '';
