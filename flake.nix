@@ -68,6 +68,7 @@
       system: let
         pkgs = import nixpkgs {
           inherit system;
+          config = {allowUnfree = true;};
           overlays = [
             overlays.additions
             overlays.modifications

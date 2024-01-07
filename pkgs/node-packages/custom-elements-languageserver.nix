@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{pkgs}:
 pkgs.buildNpmPackage rec {
   pname = "custom-elements-languageserver";
   version = "1.0.4";
