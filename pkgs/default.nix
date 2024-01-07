@@ -1,4 +1,4 @@
-{pkgs ? (import ../nixpkgs.nix) {}}: let
+{pkgs}: let
   inherit (pkgs) callPackage;
 in {
   # configuration utils
@@ -6,6 +6,7 @@ in {
   workspace.rebuild-home = callPackage ./rebuild-home.nix {};
   workspace.rebuild-configuration = callPackage ./rebuild-configuration.nix {};
   workspace.upgrade-configuration = callPackage ./upgrade-configuration.nix {};
+  workspace.format-configuration = callPackage ./format-configuration.nix {};
   # iso utils
   workspace.create-iso-usb = callPackage ./create-iso-usb.nix {};
   workspace.rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};

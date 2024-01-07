@@ -40,96 +40,35 @@
     inherit (self) inputs outputs;
     stateVersion = "23.11";
     libx = import ./lib {inherit inputs outputs stateVersion;};
+    overlays = import ./overlays {inherit inputs;};
+
+    pkgs = libx.forAllSystems (
+      system: let
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [
+            overlays.additions
+            overlays.modifications
+            overlays.unstable-packages
+          ];
+        };
+      in
+        pkgs
+    );
   in {
     #######################################
     ############# FORMATTER ###############
     #######################################
-
-    # Execute `nix fmt` to format this
-    # configuration.
-    formatter = libx.forAllSystems (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-        pkgs.writeShellApplication {
-          name = "format-workspace";
-          runtimeInputs = with pkgs; [
-            alejandra.defaultPackage.${system}
-            nodePackages.prettier
-          ];
-
-          text = ''
-            alejandra ./
-            prettier --write README.md
-          '';
-        }
-    );
-
-    #######################################
-    ############# OVERLAYS ################
-    #######################################
-    overlays = import ./overlays {inherit inputs;};
-
-    #######################################
-    ############ PACKAGES #################
-    #######################################
-    packages = libx.forAllSystems (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-        import ./pkgs {inherit pkgs;}
-    );
-
-    #######################################
-    ############# MODULES #################
-    #######################################
-    modules = libx.forAllSystems (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-        import ./modules {inherit pkgs;}
-    );
+    formatter =
+      libx.forAllSystems (system:
+        pkgs.${system}.workspace.format-configuration);
 
     #######################################
     ############# SHELLS ##################
     #######################################
     devShells = libx.forAllSystems (
       system: let
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [
-            outputs.overlays.additions
-            outputs.overlays.modifications
-            outputs.overlays.unstable-packages
-          ];
-        };
-      in {
-        default = pkgs.mkShell rec {
-          inherit
-            (inputs.sops-nix.packages."${system}")
-            sops-import-keys-hook
-            ssh-to-pgp
-            sops-init-gpg-key
-            ;
-          NIX_CONFIG = "experimental-features = nix-command flakes";
-          sopsPGPKeyDirs = ["./secrets/keys"];
-          nativeBuildInputs = with pkgs; [
-            nix
-            home-manager
-            ssh-to-pgp
-            sops
-            sops-import-keys-hook
-            ssh-to-pgp
-            sops-init-gpg-key
-            workspace.rebuild-host
-            workspace.rebuild-home
-            workspace.rebuild-configuration
-            workspace.upgrade-configuration
-            workspace.rebuild-iso-console
-            workspace.gpg-import-keys
-          ];
-        };
-      }
+      in {default = import ./shells/dotfiles.nix {inherit inputs pkgs system;};}
     );
 
     #######################################
