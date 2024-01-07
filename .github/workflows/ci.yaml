@@ -13,6 +13,18 @@ jobs:
     - uses: DeterminateSystems/flake-checker-action@main
     - run: nix develop
     - run: nix fmt && git diff --exit-code
+    - run: nix build .#packages.x86_64-linux.workspace.rebuild-host
+    - run: nix build .#packages.x86_64-linux.workspace.rebuild-home
+    - run: nix build .#packages.x86_64-linux.workspace.rebuild-configuration
+    - run: nix build .#packages.x86_64-linux.workspace.upgrade-configuration
+    - run: nix build .#packages.x86_64-linux.workspace.format-configuration
+    - run: nix build .#packages.x86_64-linux.workspace.create-iso-usb
+    - run: nix build .#packages.x86_64-linux.workspace.rebuild-iso-console
+    - run: nix build .#packages.x86_64-linux.workspace.shutdown-host
+    - run: nix build .#packages.x86_64-linux.workspace.reboot-host
+    - run: nix build .#packages.x86_64-linux.workspace.gpg-import-keys
+    - run: nix build .#packages.x86_64-linux.workspace.twx
+    - run: nix build .#packages.x86_64-linux.workspace.nodePackages.custom-elements-languageserver
     - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
     - run: nix build .#nixosConfigurations.iso-console.config.system.build.toplevel
 
