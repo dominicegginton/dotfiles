@@ -13,7 +13,7 @@ This workspace follows the following structure:
 
 ```
 ├── darwin          # Darwin host configurations
-├── home-manager    # Home Manager configurations
+├── home            # Home Manager configurations
 ├── lib             # Local nix library helpers
 ├── nixos           # NixOS host configurations
 ├── overlays        # Nix overlays

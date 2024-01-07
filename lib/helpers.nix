@@ -49,6 +49,6 @@
       extraSpecialArgs = {
         inherit inputs outputs desktop hostname platform username stateVersion;
       };
-      modules = [../home-manager];
+      modules = [../home];
     };
 }
