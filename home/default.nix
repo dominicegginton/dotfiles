@@ -19,6 +19,7 @@ in {
       inputs.nixvim.homeManagerModules.nixvim
       ./console
       ./services/gpg.nix
+      ./services/bitwarden.nix
     ]
     ++ optional (pathExists (./. + "/hosts/${hostname}.nix")) ./hosts/${hostname}.nix
     ++ optional (pathExists (./. + "/users/${username}")) ./users/${username}
