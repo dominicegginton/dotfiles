@@ -14,6 +14,7 @@ in {
   workspace.shutdown-host = callPackage ./shutdown-host.nix {};
   workspace.reboot-host = callPackage ./reboot-host.nix {};
   # user utils
+  workspace.git-sync = callPackage ./git-sync.nix {};
   workspace.gpg-import-keys = callPackage ./gpg-import-keys.nix {};
   workspace.twx = callPackage ./twx.nix {};
   # network utils
