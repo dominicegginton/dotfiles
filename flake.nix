@@ -79,8 +79,10 @@
     ############# SHELLS ##################
     #######################################
     devShells = libx.forAllPlatforms (
-      platform: let
-      in {default = import ./shells/dotfiles.nix {inherit inputs pkgs platform;};}
+      platform: {
+        default = import ./shells/dotfiles.nix {inherit inputs pkgs platform;};
+        ng = import ./shells/ng.nix {inherit inputs pkgs platform;};
+      }
     );
 
     #######################################
