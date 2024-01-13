@@ -7,25 +7,24 @@ jobs:
   checks:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - uses: DeterminateSystems/nix-installer-action@main
-    - uses: DeterminateSystems/magic-nix-cache-action@main
-    - uses: DeterminateSystems/flake-checker-action@main
-    - run: nix develop
-    - run: nix fmt && git diff --exit-code
-    - run: nix build .#workspace.rebuild-host
-    - run: nix build .#workspace.rebuild-home
-    - run: nix build .#workspace.rebuild-configuration
-    - run: nix build .#workspace.upgrade-configuration
-    - run: nix build .#workspace.format-configuration
-    - run: nix build .#workspace.create-iso-usb
-    - run: nix build .#workspace.rebuild-iso-console
-    - run: nix build .#workspace.shutdown-host
-    - run: nix build .#workspace.reboot-host
-    - run: nix build .#workspace.git-sync
-    - run: nix build .#workspace.gpg-import-keys
-    - run: nix build .#workspace.twx
-    - run: nix build .#workspace.nodePackages.custom-elements-languageserver
-    - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
-    - run: nix build .#nixosConfigurations.iso-console.config.system.build.toplevel
-
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: DeterminateSystems/flake-checker-action@main
+      - run: nix develop
+      - run: nix fmt && git diff --exit-code
+      - run: nix build .#workspace.rebuild-host
+      - run: nix build .#workspace.rebuild-home
+      - run: nix build .#workspace.rebuild-configuration
+      - run: nix build .#workspace.upgrade-configuration
+      - run: nix build .#workspace.format-configuration
+      - run: nix build .#workspace.create-iso-usb
+      - run: nix build .#workspace.rebuild-iso-console
+      - run: nix build .#workspace.shutdown-host
+      - run: nix build .#workspace.reboot-host
+      - run: nix build .#workspace.git-sync
+      - run: nix build .#workspace.gpg-import-keys
+      - run: nix build .#workspace.twx
+      - run: nix build .#workspace.nodePackages.custom-elements-languageserver
+      - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
+      - run: nix build .#nixosConfigurations.iso-console.config.system.build.toplevel
