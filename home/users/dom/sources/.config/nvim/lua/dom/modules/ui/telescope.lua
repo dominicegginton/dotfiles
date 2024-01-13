@@ -1,6 +1,4 @@
 local telescope = require('telescope')
-local themes = require('telescope.themes')
-local actions = require('telescope.actions')
 local previewers = require('telescope.previewers')
 local sorters = require('telescope.sorters')
 
@@ -54,15 +52,6 @@ telescope.setup({
       '--column',
     },
   },
-  extentions = {
-    fzf = {
-      fuzzy = true,
-      override_generic_sorter = true,
-      override_file_sorter = true,
-      case_mode = 'smart_case',
-    },
-  },
 })
 
-telescope.load_extension('fzf')
 telescope.load_extension('harpoon')

@@ -1,27 +1,31 @@
-{pkgs, ...}: {
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    SYSTEMD_EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
+# Neovim.
+#
+# Neovim configuration.
+{
+  pkgs,
+  config,
+  ...
+}: {
+  # Session vairbales for neovim.
+  home.sessionVariables.EDITOR = "nvim";
+  home.sessionVariables.SYSTEMD_EDITOR = "nvim";
+  home.sessionVariables.VISUAL = "nvim";
 
+  # Enable neovim.
   programs.neovim = {
     enable = true;
+
+    # Use nightly version of neovim.
     package = pkgs.neovim-nightly;
+
+    # Set alias for vi and vim.
     viAlias = true;
     vimAlias = true;
+
     extraPackages = with pkgs; [
-      # native dependencies
-      fzf
+      nodejs-slim
       ripgrep
       tree-sitter
-      # compilers and interpreters
-      gcc
-      gnumake
-      nodejs-slim
-      rustc
-      python3
-      # language servers
       rnix-lsp
       terraform-lsp
       lua-language-server
@@ -35,10 +39,8 @@
       nodePackages."@angular/cli"
       nodePackages.pyright
       workspace.nodePackages.custom-elements-languageserver
-      # formatters
-      nodePackages.prettier
-      # language specific formatters
-      nodePackages.eslint_d
+      prettierd
+      eslint_d
       rust-analyzer
       stylua
     ];
