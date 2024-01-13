@@ -1,24 +1,30 @@
-# A default nixos configuration that applies to all hosts
+# NixOS.
+#
+# Default configuration applies to all NixOS hosts.
 {
+  inputs,
+  outputs,
   hostname,
   username,
   desktop,
-  installer,
   platform,
-  inputs,
-  outputs,
   stateVersion,
-  pkgs,
-  lib,
-  config,
   modulesPath,
+  pkgs,
+  config,
+  lib,
   ...
 }: {
+  # Modules
   imports =
     [
       inputs.disko.nixosModules.disko
       inputs.sops-nix.nixosModules.sops
       (modulesPath + "/installer/scan/not-detected.nix")
+      ./modules/boot.nix
+      ./modules/system.nix
+      ./modules/documentation.nix
+
       ./${hostname}
       ./modules/firewall.nix
       ./modules/ssh.nix
@@ -28,42 +34,11 @@
       ./modules/users/root.nix
       ./modules/users/${username}.nix
     ]
+    # Optional modules
     ++ lib.optional (desktop != null) ./modules/desktop;
 
-  # Set the default sops secrets configuration file
+  # Default sops configuration
   sops.defaultSopsFile = ../../secrets/secrets.yaml;
-
-  # Enable man documentation for all packages
-  documentation = {
-    enable = true;
-    man.enable = lib.mkDefault true;
-    nixos.enable = lib.mkDefault false;
-    info.enable = lib.mkDefault false;
-    doc.enable = lib.mkDefault false;
-  };
-
-  boot = {
-    consoleLogLevel = 0;
-    initrd.verbose = false;
-    kernelModules = ["vhost_vsock"];
-    kernelParams = [
-      "boot.shell_on_fail"
-      "loglevel=3"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
-    ];
-
-    kernel.sysctl = {
-      # Enable ipv4 and ipv6 forwarding
-      "net.ipv4.ip_forward" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
-
-      # Enable BBR congestion control and fq queueing
-      "net.core.default_qdisc" = "fq";
-      "net.ipv4.tcp_congestion_control" = "bbr";
-    };
-  };
 
   virtualisation.vmVariant.virtualisation = {
     memorySize = 2048;
@@ -170,15 +145,4 @@
     "d /nix/var/nix/profiles/per-user/${username} 0755 ${username} root"
     "d /mnt/snapshot/${username} 0755 ${username} users"
   ];
-
-  system = {
-    activationScripts.diff = {
-      supportsDryActivation = true;
-      text = ''
-        ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
-      '';
-    };
-
-    stateVersion = stateVersion;
-  };
 }
