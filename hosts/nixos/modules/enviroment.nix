@@ -18,6 +18,7 @@
       workspace.upgrade-configuration
       workspace.shutdown-host
       workspace.reboot-host
+      workspace.hibernate-host
     ];
 
     # Set vim as default editor.

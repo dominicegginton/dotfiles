@@ -132,5 +132,6 @@
     workspace.upgrade-configuration
     workspace.shutdown-host
     workspace.reboot-host
+    workspace.hibernate-host
   ];
 }
