@@ -4,7 +4,7 @@
 
 ```ocaml
 Declarative System Configuration
-NixOS / NixDarwin / Home Manager / Sops Nix
+NixOS / NixDarwin / HomeManager / SopsNix
 ```
 
 ## Workspace
@@ -13,16 +13,23 @@ This workspace follows the following structure:
 
 ```
 ├── home            # Home configurations
-├── home            # Host configurations
-├── lib             # Workspace library helpers
+├── hosts           # Host configurations
+├── lib             # Nix helpers
 ├── overlays        # Nix overlays
 ├── pkgs            # Nix packages
 ├── scripts         # Scripts
-├── secrets         # Encrypted secrets
 ├── shells          # Nix shells
-├── .sops.yaml      # Sops configuration
 └── flake.nix       # Nix Flake inputs and outputs
 ```
+
+## Features
+
+- **Nix Flakes** - 100% Nix Flakes based configuration, no Nix channels.
+- **Disk Management** - Declerative disk management using Disko.
+- **Encrypted Secrets** - Stored configuration secrets are encrypted using SopsNix.
+- **User Home Environments** - Reproducible user home environments using HomeManager.
+- **MacOS Hosts** - NixDarwin provides support for MacOS hosts.
+- **Continuous Integration** - Baced by continuous integration using GitHub Actions.
 
 ## Hosts
 
@@ -101,6 +108,9 @@ curl -sL https://raw.githubusercontent.com/dominicegginton/dotfiles/main/scripts
 ```
 
 ### Installing NixDarwin Hosts
+
+> [!NOTE]
+> Note: Installing Nix on MacOS will create an seperate volume that will exceed many gigabytes in size.
 
 1. Install the [Nix package manager](https://nixos.org/download#nix-install-macos).
 
