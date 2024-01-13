@@ -29,7 +29,7 @@ This workspace follows the following structure:
 - **Encrypted Secrets** - Stored configuration secrets are encrypted using SopsNix.
 - **User Home Environments** - Reproducible user home environments using HomeManager.
 - **MacOS Hosts** - NixDarwin provides support for MacOS hosts.
-- **Continuous Integration** - Baced by continuous integration using GitHub Actions.
+- **Continuous Integration** - Backed by continuous integration workflows on GitHub Actions runners.
 
 ## Hosts
 
