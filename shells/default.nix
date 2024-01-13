@@ -1,3 +1,7 @@
+# Dotfiles
+#
+# Provides a shell with all the tools needed
+# to manage this this configuration.
 {
   inputs,
   pkgs,
@@ -9,12 +13,11 @@
     ssh-to-pgp
     sops-init-gpg-key
     ;
-  packages = pkgs.${platform};
 in
-  pkgs.${platform}.mkShell rec {
+  pkgs.mkShell rec {
     NIX_CONFIG = "experimental-features = nix-command flakes";
     sopsPGPKeyDirs = ["./secrets/keys"];
-    nativeBuildInputs = with packages; [
+    nativeBuildInputs = with pkgs; [
       nix
       home-manager
       ssh-to-pgp
