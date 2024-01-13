@@ -16,7 +16,6 @@
 in {
   imports =
     [
-      inputs.nixvim.homeManagerModules.nixvim
       ./console
       ./services/gpg.nix
       ./services/bitwarden.nix
@@ -45,7 +44,6 @@ in {
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
       inputs.neovim-nightly-overlay.overlay
-      inputs.nixneovimplugins.overlays.default
     ];
     config = {
       allowUnfree = true;

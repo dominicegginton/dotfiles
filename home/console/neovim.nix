@@ -5,7 +5,7 @@
     VISUAL = "nvim";
   };
 
-  programs.nixvim = {
+  programs.neovim = {
     enable = true;
     package = pkgs.neovim-nightly;
     viAlias = true;

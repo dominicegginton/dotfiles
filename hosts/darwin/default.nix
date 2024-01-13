@@ -20,7 +20,6 @@
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
       inputs.neovim-nightly-overlay.overlay
-      inputs.nixneovimplugins.overlays.default
     ];
     config = {
       allowUnfree = true;

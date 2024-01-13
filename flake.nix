@@ -21,14 +21,7 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     alejandra.url = "github:kamadorueda/alejandra/3.0.0";
     alejandra.inputs.nixpkgs.follows = "nixpkgs";
-    nixvim.url = "github:nix-community/nixvim/nixos-23.11";
-    nixvim.inputs.nixpkgs.follows = "nixpkgs";
-
-    #######################################
-    ############### OVERLAYS ##############
-    #######################################
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
-    nixneovimplugins.url = "github:jooooscha/nixpkgs-vim-extra-plugins";
   };
 
   outputs = inputs @ {
@@ -60,7 +53,6 @@
             overlays.modifications
             overlays.unstable-packages
             inputs.neovim-nightly-overlay.overlay
-            inputs.nixneovimplugins.overlays.default
           ];
         }
     );
