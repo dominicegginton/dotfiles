@@ -38,7 +38,7 @@
     ++ lib.optional (desktop != null) ./modules/desktop;
 
   # Default sops configuration
-  sops.defaultSopsFile = ../../secrets/secrets.yaml;
+  sops.defaultSopsFile = ../../secrets.yaml;
 
   virtualisation.vmVariant.virtualisation = {
     memorySize = 2048;
