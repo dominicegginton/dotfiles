@@ -70,9 +70,15 @@
     devShells = libx.forAllPlatforms (
       platform: let
         pkgs = self.packages.${platform};
+        baseDevPkgs = with pkgs; [
+          git
+          gitAndTools.git-crypt
+          gitAndTools.git-lfs
+          gh
+        ];
       in {
-        default = import ./shells/default.nix {inherit inputs pkgs platform;};
-        web = import ./shells/web.nix {inherit inputs pkgs platform;};
+        default = import ./shells/default.nix {inherit inputs pkgs baseDevPkgs platform;};
+        web = import ./shells/web.nix {inherit inputs pkgs baseDevPkgs platform;};
       }
     );
 
