@@ -134,5 +134,8 @@
     workspace.reboot-host
     workspace.suspend-host
     workspace.hibernate-host
+
+    htop-vim
+    btop
   ];
 }

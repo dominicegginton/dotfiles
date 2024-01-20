@@ -12,6 +12,8 @@
       unzip
       usbutils
       wget
+      htop-vim
+      btop
       workspace.rebuild-host
       workspace.rebuild-home
       workspace.rebuild-configuration

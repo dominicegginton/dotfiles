@@ -11,11 +11,5 @@
   programs.info.enable = true;
   programs.hstr.enable = true;
 
-  home.packages = with pkgs; [
-    workspace.rebuild-home
-    neofetch
-    htop-vim
-    bottom
-    btop
-  ];
+  home.packages = with pkgs; [workspace.rebuild-home];
 }
