@@ -13,6 +13,7 @@ in {
   # host utils
   workspace.shutdown-host = callPackage ./shutdown-host.nix {};
   workspace.reboot-host = callPackage ./reboot-host.nix {};
+  workspace.suspend-host = callPackage ./suspend-host.nix {};
   workspace.hibernate-host = callPackage ./hibernate-host.nix {};
   # user utils
   workspace.git-sync = callPackage ./git-sync.nix {};
