@@ -108,11 +108,16 @@ in {
   ];
 
   # kanshi systemd service
+  # kanshi has no options for specifying a config file
+  # so we just run it as a service and let it read the config
+  # from the default location (~/.config/kanshi/config)
   systemd.user.services.kanshi = {
     description = "kanshi daemon";
     serviceConfig = {
       Type = "simple";
-      ExecStart = ''${pkgs.kanshi}/bin/kanshi -c kanshi_config_file'';
+      ExecStart = ''${pkgs.kanshi}/bin/kanshi'';
+      Restart = "always";
+      RestartSec = 5;
     };
   };
 }
