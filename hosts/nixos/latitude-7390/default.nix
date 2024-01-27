@@ -28,6 +28,11 @@
     };
   };
 
+  services.logind = {
+    extraConfig = "HandlePowerKey=suspend";
+    lidSwitch = "suspend";
+  };
+
   hardware = {
     mwProCapture.enable = true;
   };
