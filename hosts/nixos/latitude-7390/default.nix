@@ -13,6 +13,8 @@
     ./disks.nix
   ];
 
+  modules.wireless.enable = true;
+
   swapDevices = [
     {
       device = "/dev/disk/by-uuid/4e74fa9d-47d7-4a43-9cec-01d4fdd1a1a2";
