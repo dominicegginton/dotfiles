@@ -15,14 +15,13 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: DeterminateSystems/flake-checker-action@main
         if: matrix.os == 'ubuntu-latest'
-      - run: nix fmt && git diff --exit-code
+      - run: nix run .#workspace.workspace-linter
         if: matrix.os == 'ubuntu-latest'
       - run: nix develop
       - run: nix build .#workspace.rebuild-host
       - run: nix build .#workspace.rebuild-home
       - run: nix build .#workspace.rebuild-configuration
       - run: nix build .#workspace.upgrade-configuration
-      - run: nix build .#workspace.format-configuration
       - run: nix build .#workspace.create-iso-usb
       - run: nix build .#workspace.rebuild-iso-console
       - run: nix build .#workspace.shutdown-host

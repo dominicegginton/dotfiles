@@ -62,7 +62,7 @@
     #######################################
     formatter =
       libx.forAllPlatforms (platform:
-        self.packages.${platform}.workspace.format-configuration);
+        self.packages.${platform}.workspace.workspace-formatter);
 
     #######################################
     ############# SHELLS ##################

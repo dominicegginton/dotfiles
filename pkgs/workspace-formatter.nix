@@ -1,6 +1,6 @@
 {pkgs, ...}:
 pkgs.writeShellApplication {
-  name = "format-configuration";
+  name = "workspace-formatter";
 
   runtimeInputs = with pkgs; [
     alejandra
@@ -8,7 +8,7 @@ pkgs.writeShellApplication {
   ];
 
   text = ''
-    alejandra ./
+    alejandra .
     prettier --write README.md
   '';
 }

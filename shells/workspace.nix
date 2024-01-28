@@ -28,7 +28,8 @@ in
         workspace.rebuild-home
         workspace.rebuild-configuration
         workspace.upgrade-configuration
-        workspace.format-configuration
+        workspace.workspace-formatter
+        workspace.workspace-linter
         workspace.rebuild-iso-console
         workspace.gpg-import-keys
       ];
