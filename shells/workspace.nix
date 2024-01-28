@@ -1,7 +1,3 @@
-# Dotfiles
-#
-# Provides a shell with all the tools needed
-# to manage this this configuration.
 {
   inputs,
   pkgs,

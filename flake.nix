@@ -77,10 +77,21 @@
           gh
         ];
       in {
-        default = import ./shells/default.nix {inherit inputs pkgs baseDevPkgs platform;};
+        default = import ./shells/workspace.nix {inherit inputs pkgs baseDevPkgs platform;};
+        workspace = import ./shells/workspace.nix {inherit inputs pkgs baseDevPkgs platform;};
         web = import ./shells/web.nix {inherit inputs pkgs baseDevPkgs platform;};
       }
     );
+
+    #######################################
+    ############# TEMPLATES ###############
+    #######################################
+    templates = {
+      minimal = {
+        path = ./templates/minimal;
+        description = "Minimal boilerplate";
+      };
+    };
 
     #######################################
     ############# HOSTS ###################

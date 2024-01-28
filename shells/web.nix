@@ -1,6 +1,3 @@
-# Web
-#
-# Prvodies a development shell for web devlopment.
 {
   inputs,
   pkgs,

@@ -19,6 +19,7 @@ This workspace follows the following structure:
 ├── pkgs            # Nix packages
 ├── scripts         # Scripts
 ├── shells          # Nix shells
+├── templates       # Flake templates
 └── flake.nix       # Nix Flake inputs and outputs
 ```
 
@@ -30,6 +31,8 @@ This workspace follows the following structure:
 - **User Home Environments** - Reproducible user home environments using HomeManager.
 - **MacOS Hosts** - NixDarwin provides support for MacOS hosts.
 - **Continuous Integration** - Backed by continuous integration workflows on GitHub Actions runners.
+- **Nix Dev Shells** - Reproducible environments for common tools and tasks.
+- **Flake Templates** - Easily create new Nix Flakes using templtes for common cases.
 
 ## Hosts
 
@@ -70,6 +73,16 @@ The worksapce includes definitions for the following packages:
 | `network-filters-disable`                                                                      | Disables Cisco network filters                                         |
 | `network-filters-enable`                                                                       | Enable Cisco network filters                                           |
 | [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components                   |
+
+## Development Shells
+
+Reproducible development environments are provided for the following common tools and tasks:
+
+| Shell Name   | Description                                       |
+| :----------- | :------------------------------------------------ |
+| `dev`        | Development shell for general purpose development |
+| `dev.node`   | Development shell for Node.js development         |
+| `dev.python` | Development shell for Python development          |
 
 ## Eye Candy
 
