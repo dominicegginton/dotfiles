@@ -5,6 +5,7 @@
   };
 
   outputs = {
+    self,
     nixpkgs,
     systems,
     flake-utils,
