@@ -17,7 +17,6 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
       - run: nix run .#workspace.workspace-linter
         if: matrix.os == 'ubuntu-latest'
-      - run: nix develop
       - run: nix build .#workspace.rebuild-host
       - run: nix build .#workspace.rebuild-home
       - run: nix build .#workspace.rebuild-configuration
