@@ -75,8 +75,10 @@
       bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
       bindsym XF86AudioMicMute exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle'
 
-      bindsym Mod4+Ctrl+greater move workspace to output right
-      bindsym Mod4+Ctrl+less move workspace to output left
+      bindsym Mod4+Control+Shift+Right move workspace to output right
+      bindsym Mod4+Control+Shift+Left move workspace to output left
+      bindsym Mod4+Control+Shift+Down move workspace to output down
+      bindsym Mod4+Control+Shift+Up move workspace to output up
       bindsym --release Caps_Lock exec swayosd --caps-lock
       default_border pixel 2
       default_floating_border normal
