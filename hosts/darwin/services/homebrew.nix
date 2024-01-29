@@ -11,6 +11,7 @@
     "firefox-developer-edition"
     "google-chrome"
     "postman"
+    "barrier"
   ];
   homebrew.masApps = {
     "Afinity Photo" = 824183456;
