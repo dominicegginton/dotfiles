@@ -63,7 +63,7 @@
 
   programs.firefox = {
     enable = true;
-    package = pkgs.firefox;
+    package = pkgs.firefox-devedition;
   };
 
   environment.systemPackages = with pkgs; [
