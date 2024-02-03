@@ -63,7 +63,7 @@
       output * bg ~/background.jpg fill
 
       # screenshots
-      bindsym Mod4+c exec grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%Y-%m-%d-%H%M%S).png
+      bindsym Mod4+c exec flameshot gui
 
       # brightness
       bindsym XF86MonBrightnessDown exec light -U 10
@@ -91,6 +91,7 @@
       exec configure-gtk
       exec swayosd-server
       exec sleep 5; systemctl --user start kanshi.service
+      exec eww daemon -c ~/.config/eww
     '';
   };
 

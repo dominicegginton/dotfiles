@@ -54,10 +54,8 @@ in {
     glib # gsettings
     orchis-theme # gtk theme
     gnome3.adwaita-icon-theme # default gnome cursor theme
-    swaylock # lockscreen
-    swayidle # idle management
-    grim # screenshot functionality
-    slurp # screenshot functionality
+    flameshot # screenshot functionality
+    eww-wayland # eww wayland client
     wl-clipboard # clipboard functionality
     bemenu # wayland clone of dmenu
     swayosd # on screen display
