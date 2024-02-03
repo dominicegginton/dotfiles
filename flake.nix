@@ -12,7 +12,7 @@
     srvos.url = "github:nix-community/srvos";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-hardware.url = "github:dominicegginton/nixos-hardware/master";
+    nixos-hardware.url = "github:nixos/nixos-hardware/master";
     nix-darwin.url = "github:lnl7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
