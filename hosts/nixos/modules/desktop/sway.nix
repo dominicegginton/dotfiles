@@ -56,6 +56,7 @@ in {
     gnome3.adwaita-icon-theme # default gnome cursor theme
     flameshot # screenshot functionality
     eww-wayland # eww wayland client
+    wlogout # logout functionality
     wl-clipboard # clipboard functionality
     bemenu # wayland clone of dmenu
     swayosd # on screen display
