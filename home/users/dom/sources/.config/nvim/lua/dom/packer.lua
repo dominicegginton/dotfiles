@@ -15,97 +15,79 @@ local H = {}
 
 require('packer').startup(function(use)
   -- Packer & Utils & Helpers
-  use('wbthomason/packer.nvim')
-  use('nvim-lua/plenary.nvim')
-  use('kevinhwang91/promise-async')
-  use('muniftanjim/nui.nvim')
+  use('wbthomason/packer.nvim')                  -- Plugin Manager
+  use('nvim-lua/plenary.nvim')                   -- Lua functions
+  use('kevinhwang91/promise-async')              -- Promise-based async functions
+  use('echasnovski/mini.misc')                   -- Miscellaneous functions
+  use('echasnovski/mini.extra')                  -- Extra 'mini.nvim' functionality
+  use({ 'ray-x/guihua.lua', run = H.runguihua }) -- GUI for FZF
+  use('muniftanjim/nui.nvim')                    -- UI components
+  use('stevearc/dressing.nvim')                  -- UI components
 
-  -- LSP
-  use('neovim/nvim-lspconfig')
-  use('hrsh7th/cmp-nvim-lsp')
-  use('hrsh7th/nvim-cmp')
-  use('hrsh7th/cmp-buffer')
-  use('hrsh7th/cmp-path')
-  use('hrsh7th/cmp-cmdline')
-  use('hrsh7th/cmp-calc')
-  use('hrsh7th/cmp-copilot')
-  use({ 'l3mon4d3/luasnip', run = H.run_luasnip })
-  use('saadparwaiz1/cmp_luasnip')
-  use('lukas-reineke/cmp-under-comparator')
-  use({ 'nvim-treesitter/nvim-treesitter', run = H.run_treesitter })
+  -- Language Server Protocol and Syntax Highlighting
+  use('neovim/nvim-lspconfig')                                       -- LSP configuration
+  use({ 'nvim-treesitter/nvim-treesitter', run = H.run_treesitter }) -- Treesitter configurations
+  use('filipdutescu/renamer.nvim')                                   -- Rename LSP symbols
+  use('aznhe21/actions-preview.nvim')                                -- Preview LSP code actions
 
-  -- DAP
-  use('mfussenegger/nvim-dap')
-  use('mfussenegger/nvim-dap-python')
-  use('mxsdev/nvim-dap-vscode-js')
-  use({
-    'microsoft/vscode-js-debug',
-    opt = true,
-    run = H.run_vscode_js_debug,
-  })
+  -- GitHub Copilot
+  use('github/copilot.vim') -- GitHub Copilot integration
 
-  -- DADBOB
-  use('tpope/vim-dadbod')
-  use('kristijanhusak/vim-dadbod-ui')
-  use('kristijanhusak/vim-dadbod-completion')
+  -- Completion
+  use('echasnovski/mini.completion') -- Completion and signature help
 
-  -- UI
-  use('stevearc/dressing.nvim')
-  use('rcarriga/nvim-notify')
-  use('VonHeikemen/fine-cmdline.nvim')
-  use('j-hui/fidget.nvim')
-  use('nvim-focus/focus.nvim')
-  use('projekt0n/github-nvim-theme')
-  use('lewis6991/gitsigns.nvim')
-  use('echasnovski/mini.starter')
-  use('echasnovski/mini.statusline')
-  use('echasnovski/mini.tabline')
-  use('neogitorg/neogit')
-  use('rcarriga/nvim-dap-ui')
-  use('thehamsta/nvim-dap-virtual-text')
-  use('nvim-tree/nvim-tree.lua')
-  use('nvim-tree/nvim-web-devicons')
-  use('nvim-telescope/telescope.nvim')
-  use('burntsushi/ripgrep')
-  use({ 'nvim-telescope/telescope-fzf-native.nvim', run = H.run_telescope_fzf_native })
-  use('folke/which-key.nvim')
-  use('sindrets/diffview.nvim')
-  use('weilbith/nvim-code-action-menu')
-  use('folke/trouble.nvim')
-  use('bekaboo/dropbar.nvim')
-  use('pocco81/true-zen.nvim')
+  -- Picker
+  use('echasnovski/mini.pick') -- Pick anything
 
-  -- Editor
-  use('echasnovski/mini.comment')
-  use('echasnovski/mini.cursorword')
-  use('echasnovski/mini.hipatterns')
-  use('echasnovski/mini.indentscope')
-  use('echasnovski/mini.move')
-  use('echasnovski/mini.trailspace')
-  use('tveskag/nvim-blame-line')
-  use('kevinhwang91/nvim-ufo')
-  use('filipdutescu/renamer.nvim')
-  use('nullchilly/fsread.nvim')
+  -- Git
+  use('neogitorg/neogit')        -- Git interface and tools
+  use('sindrets/diffview.nvim')  -- Git diff interface
+  use('lewis6991/gitsigns.nvim') -- Git signs
+  use('tveskag/nvim-blame-line') -- GitBlame
 
-  -- Extra
-  use('github/copilot.vim')
-  use('theprimeagen/harpoon')
-  use('axkirillov/hbac.nvim')
-  use('jghauser/mkdir.nvim')
-  use('christoomey/vim-tmux-navigator')
-  use('mhartington/formatter.nvim')
-  use('editorconfig/editorconfig-vim')
-  use({
-    'iamcco/markdown-preview.nvim',
-    run = H.run_markdown_preview,
-    setup = H.setup_markdown_preview,
-    ft = { 'markdown' },
-  })
-  use('echasnovski/mini.sessions')
-  use('vuki656/package-info.nvim')
+  -- User Interface
+  use('projekt0n/github-nvim-theme')  -- Github theme
+  use('nvim-tree/nvim-web-devicons')  -- Icons
+  use('echasnovski/mini.starter')     -- Start screen
+  use('echasnovski/mini.statusline')  -- Statusline
+  use('echasnovski/mini.tabline')     -- Tabline
+  use('bekaboo/dropbar.nvim')         -- IDE-like breadcrumbs
+  use('nvim-tree/nvim-tree.lua')      -- File explorer
+  use('echasnovski/mini.files')       -- Navigate and manipulate file system
+  use('echasnovski/mini.notify')      -- Show notifications
+  use('j-hui/fidget.nvim')            -- Notifications and LSP progress messages
+  use('echasnovski/mini.clue')        -- Show next key clues
+  use('folke/trouble.nvim')           -- A pretty diagnostics, references, telescope results, quickfix and location list
+  use('echasnovski/mini.cursorword')  -- Autohighlight word under cursor
+  use('echasnovski/mini.hipatterns')  -- Highlight patterns in text
+  use('echasnovski/mini.indentscope') -- Visualize and work with indent scope
+
+  -- Utilities
+  use('jghauser/mkdir.nvim')            -- Create directories when writing a file
+  use('christoomey/vim-tmux-navigator') -- Navigate between vim and tmux panes
+  use('editorconfig/editorconfig-vim')  -- Editorconfig integration
+  use('echasnovski/mini.sessions')      -- Session management
+  use('echasnovski/mini.visits')        -- Track and reuse file system visits
+  use('echasnovski/mini.fuzzy')         -- Fuzzy matching
+  use('kevinhwang91/nvim-ufo')          -- Editor folds
+  use('nvim-focus/focus.nvim')          -- Auto-focusing and auto-resizing splits
+  use('mhartington/formatter.nvim')     -- File formatting
+  use('vuki656/package-info.nvim')      -- Show package.json dependencies information
+  use('nullchilly/fsread.nvim')         -- Flow state reading
+  use('echasnovski/mini.comment')       -- Comment lines
+  use('echasnovski/mini.move')          -- Move any selection in any direction
+  use('echasnovski/mini.trailspace')    -- Trailspace (highlight and remove)
+  use('echasnovski/mini.jump')          -- Jump to next/previous single character
+  use('echasnovski/mini.jump2d')        -- Jump within visible lines
+  use('echasnovski/mini.bracketed')     -- Go forward/backward with square brackets
+  use('echasnovski/mini.surround')      -- Surround actions
+
+  use('ray-x/navigator.lua')            -- Code analysis & navigation
 
   if packer_bootstrap then require('packer').sync() end
 end)
+
+H.runguihua = 'cd lua/fzy && make'
 
 H.run_treesitter = function()
   local ts_install = require('nvim-treesitter.install')
@@ -116,9 +98,3 @@ end
 H.run_luasnip = 'make'
 
 H.run_telescope_fzf_native = 'make'
-
-H.run_markdown_preview = 'cd app && npm install'
-
-H.setup_markdown_preview = function() vim.g.mkdp_filetypes = { 'markdown' } end
-
-H.run_vscode_js_debug = 'npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out'
