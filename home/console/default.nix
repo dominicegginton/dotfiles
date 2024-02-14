@@ -5,6 +5,7 @@
     ./git.nix
     ./neovim.nix
     ./gh.nix
+    ./lf.nix
   ];
 
   programs.bash.enable = true;
