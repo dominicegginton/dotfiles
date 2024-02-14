@@ -25,7 +25,7 @@
         size = 11.0;
       };
       menu = "${pkgs.bemenu}/bin/bemenu-run";
-      bars = [{command = "waybar";}];
+      bars = [];
       colors = {
         focused = {
           background = "#58f785";
@@ -89,12 +89,19 @@
       hide_edge_borders both
       smart_borders on
 
+      # Allow switching between workspaces with left and right swipes
+      bindgesture swipe:right workspace prev
+      bindgesture swipe:left workspace next
+
       # exec
       exec dbus-sway-environmen
       exec configure-gtk
       exec swayosd-server
       exec sleep 5; systemctl --user start kanshi.service
       exec eww daemon -c ~/.config/eww
+
+      # eww bar
+      bindsym Mod4+Shift+b exec eww open bar --config ~/.config/eww
     '';
   };
 
@@ -107,252 +114,5 @@
       enable = true;
       defaultCursor = "Adwaita";
     };
-  };
-
-  programs.waybar = {
-    enable = true;
-    settings = {
-      mainBar = {
-        layer = "bottom";
-        position = "top";
-        modules-left = [
-          "sway/workspaces"
-          "sway/mode"
-          "sway/scratchpad"
-          "idle_inhibitor"
-        ];
-        modules-center = [];
-        modules-right = [
-          "cpu"
-          "memory"
-          "network"
-          "pulseaudio"
-          "backlight"
-          "clock"
-          "battery"
-          "temperature"
-          "tray"
-        ];
-        "sway/workspaces" = {
-          disable-scroll = true;
-          all-outputs = true;
-          format = "{name} {icon}";
-          format-icons = {
-            "0" = "";
-            "1" = "";
-            "2" = "";
-            "3" = "";
-            urgent = "";
-            focused = "";
-            default = "";
-          };
-        };
-        "sway/mode" = {
-          "format" = "{mode}";
-          "format-icons" = {
-            default = "";
-            resize = "";
-            move = "";
-          };
-        };
-        "sway/scratchpad" = {
-          "format" = "{count}";
-          "format-icons" = {
-            default = "";
-          };
-        };
-        "sway/window" = {
-          "format" = "{title}";
-          "format-icons" = {
-            default = "";
-          };
-        };
-        tray = {
-          "icon-size" = 21;
-          spacing = 10;
-        };
-        memory = {
-          interval = 5;
-          format = " {}%";
-        };
-        cpu = {
-          interval = 1;
-          format = "🖳 {usage:2}%";
-        };
-        clock = {
-          "tooltip-format" = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
-          "format-alt" = "{:%d-%m-%y}";
-        };
-        backlight = {
-          "format" = "{percent}% {icon}";
-          "format-icons" = ["" "" "" "" "" "" "" "" ""];
-        };
-        pulseaudio = {
-          format = "{volume}% {icon} {format_source}";
-          "format-bluetooth" = "{volume}% {icon} {format_source}";
-          "format-bluetooth-muted" = " {icon} {format_source}";
-          "format-muted" = " {format_source}";
-          "format-source" = "{volume}% ";
-          "format-source-muted" = "";
-          "format-icons" = {
-            headphone = "";
-            "hands-free" = "";
-            headset = "";
-            phone = "";
-            portable = "";
-            car = "";
-            default = ["" "" ""];
-          };
-        };
-        battery = {
-          states = {
-            good = 95;
-            warning = 30;
-            critical = 15;
-          };
-          format = "{icon}  {capacity}%";
-          "format-icons" = ["" "" "" "" ""];
-        };
-        network = {
-          "format-wifi" = "{essid} ({signalStrength}%) ";
-          "format-ethernet" = "{ipaddr}/{cidr} ";
-          "tooltip-format" = "{ifname} via {gwaddr} ";
-          "format-linked" = "{ifname} (No IP) ";
-          "format-disconnected" = "Disconnected ⚠";
-          "format-alt" = "{ifname}= {ipaddr}/{cidr}";
-        };
-        temperature = {
-          "critical-threshold" = 75;
-          "format-critical" = "{temperatureC}°C ";
-          format = "{temperatureC}°C ";
-          tooltip = true;
-        };
-        "idle_inhibitor" = {
-          format = "{icon}";
-          "format-icons" = {
-            activated = "";
-            deactivated = "";
-          };
-        };
-      };
-    };
-    style = ''
-      * {
-        color: #ffffff;
-        border: 0;
-        border-radius: 0;
-        padding: 0 0;
-        font-family: JetBrainsMono Nerd Font;
-        font-size: 15px;
-        margin-right: 5px;
-        margin-left: 5px;
-        padding-bottom:3px;
-      }
-      window#waybar {
-        background-color: #30363d;
-      }
-      #workspaces button {
-        padding: 2px 0px;
-        border-bottom: 2px;
-        color: #eceff4;
-        border-color: #d8dee9;
-        border-style: solid;
-        margin-top:2px;
-      }
-      #workspaces button.focused {
-        border-color: #a3be8c;
-      }
-      #workspaces button.visible {
-        border-color: #81a1c1;
-      }
-      #workspaces button.urgent {
-        border-color: #b48ead;
-      }
-      #mode {
-        color: #ebcb8b;
-      }
-      #clock, #cpu, #memory,#idle_inhibitor, #temperature,#battery, #backlight, #network, #pulseaudio, #mode, #tray, #window {
-        padding: 0 3px;
-        border-bottom: 2px;
-        border-style: solid;
-      }
-      #clock {
-        color:#a3be8c;
-      }
-      #backlight {
-        color: #ebcb8b;
-      }
-      #battery {
-        color: #ebcb8b;
-      }
-      #battery.charging {
-        color: #81a1c1;
-      }
-      @keyframes blink {
-        to {
-          color: #4c566a;
-          background-color: #eceff4;
-        }
-      }
-      #battery.critical:not(.charging) {
-        background: #bf616a;
-        color: #eceff4;
-        animation-name: blink;
-        animation-duration: 0.5s;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-        animation-direction: alternate;
-      }
-      #cpu {
-        color:#a3be8c ;
-      }
-      #memory {
-        color: #d3869b;
-      }
-      #network.disabled {
-        color:#bf616a;
-      }
-      #network{
-        color:#a3be8c;
-      }
-      #network.disconnected {
-        color: #bf616a;
-      }
-      #pulseaudio {
-        color: #b48ead;
-      }
-      #pulseaudio.muted {
-        color: #3b4252;
-      }
-      #temperature {
-        color: #8fbcbb;
-      }
-      #temperature.critical {
-        color: #bf616a;
-      }
-      #idle_inhibitor {
-        color: #ebcb8b;
-      }
-      #tray {}
-      #window{
-        border-style: hidden;
-        margin-top:1px;
-      }
-      #mode{
-        margin-bottom:3px;
-      }
-      tooltip {
-        color: black;
-        background-color: white;
-        text-shadow: none;
-        border-style: solid;
-        border-color: black;
-        border-width: 2px;
-      }
-      tooltip * {
-        color: black;
-        text-shadow: none;
-      }
-    '';
   };
 }

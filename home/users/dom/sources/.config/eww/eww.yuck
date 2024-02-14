@@ -23,7 +23,6 @@
          :space-evenly false
       (notifications)
       (github)
-      (noisetorch)
       (microphone)
       (speaker)
       (ping)
@@ -38,7 +37,6 @@
 ; Variables foldstart
 (defpoll time_poll :interval "1s" "date +%H:%M")
 (defpoll date_poll :interval "1m" "date +%d/%m/%Y")
-(defpoll noisetorch_poll :initial "" :interval "10s" "./modules/noisetorch.sh")
 (defpoll github_poll :initial "" :interval "1m" "./modules/github.sh")
 (defpoll ping_poll :interval "10s" "./modules/ping.sh")
 
