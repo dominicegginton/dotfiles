@@ -24,6 +24,8 @@
 
     extraPackages = with pkgs; [
       nodejs-slim
+      gcc
+      zig
       ripgrep
       tree-sitter
       rnix-lsp
