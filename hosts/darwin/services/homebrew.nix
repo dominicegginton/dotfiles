@@ -12,6 +12,7 @@
     "google-chrome"
     "postman"
     "barrier"
+    "zed"
   ];
   homebrew.masApps = {
     "Afinity Photo" = 824183456;
