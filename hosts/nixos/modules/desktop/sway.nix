@@ -37,7 +37,7 @@
     in ''
       export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
       gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme 'Orchis'
+      gsettings set $gnome_schema gtk-theme 'Colloid'
     '';
   };
 in {
@@ -52,7 +52,8 @@ in {
     configure-gtk
     xdg-utils # for opening default programs when clicking links
     glib # gsettings
-    orchis-theme # gtk theme
+    colloid-gtk-theme # gtk theme
+    colloid-icon-theme # icon theme
     gnome3.adwaita-icon-theme # default gnome cursor theme
     flameshot # screenshot functionality
     eww-wayland # eww wayland client
