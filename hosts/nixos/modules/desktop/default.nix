@@ -68,5 +68,8 @@
 
   environment.systemPackages = with pkgs; [
     alacritty
+
+    thunderbird
+    teams-for-linux
   ];
 }
