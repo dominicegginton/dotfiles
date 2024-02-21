@@ -15,7 +15,7 @@
   wayland.windowManager.sway = {
     enable = true;
     config = rec {
-      modifier = "Mod4"; # super key
+      modifier = "Mod4";
       terminal = "alacritty";
       fonts = {
         names = [
@@ -78,30 +78,33 @@
       bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
       bindsym XF86AudioMicMute exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle'
 
-      bindsym Mod4+Control+Shift+Right move workspace to output right
+      # move workspace
+      bindsym Mod4+Control+Shift+Right move workspace to output right;
       bindsym Mod4+Control+Shift+Left move workspace to output left
       bindsym Mod4+Control+Shift+Down move workspace to output down
       bindsym Mod4+Control+Shift+Up move workspace to output up
+
+      # swayosd
       bindsym --release Caps_Lock exec swayosd --caps-lock
+
+      # touchpad gestures
+      bindgesture swipe:right workspace prev
+      bindgesture swipe:left workspace next
+
+      # borders
       default_border pixel 2
       default_floating_border normal
       titlebar_border_thickness 0
       hide_edge_borders both
       smart_borders on
-
-      # Allow switching between workspaces with left and right swipes
-      bindgesture swipe:right workspace prev
-      bindgesture swipe:left workspace next
+      gaps top 15
 
       # exec
       exec dbus-sway-environmen
       exec configure-gtk
       exec swayosd-server
+      exec eww open-many --config ~/.config/eww bar bar-1 bar-2
       exec sleep 5; systemctl --user start kanshi.service
-      exec eww daemon -c ~/.config/eww
-
-      # eww bar
-      bindsym Mod4+Shift+b exec eww open bar --config ~/.config/eww
     '';
   };
 

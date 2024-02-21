@@ -1,14 +1,30 @@
-; Windows foldstart
 (defwindow bar
   :monitor 0
   :hexpand false
   :vexpand false
+  :stacking "fg"
   :geometry (geometry :anchor "top left" :x 0 :y 0 :width "100%")
   :reserve (struts :distance "10px" :side "top")
   (bar :screen 0))
-; foldend
 
-; Bar foldstart
+(defwindow bar-1
+  :monitor 1
+  :hexpand false
+  :vexpand false
+  :stacking "fg"
+  :geometry (geometry :anchor "top left" :x 0 :y 0 :width "100%")
+  :reserve (struts :distance "10px" :side "top")
+  (bar :screen 1))
+
+(defwindow bar-2
+  :monitor 2
+  :hexpand false
+  :vexpand false
+  :stacking "fg"
+  :geometry (geometry :anchor "top left" :x 0 :y 0 :width "100%")
+  :reserve (struts :distance "10px" :side "top")
+  (bar :screen 2))
+
 (defwidget bar [screen]
   (box :orientation "h"
        :space-evenly false
@@ -32,37 +48,26 @@
       (cpu)
       (date)
       (time))))
-; foldend
 
-; Variables foldstart
 (defpoll time_poll :interval "1s" "date +%H:%M")
 (defpoll date_poll :interval "1m" "date +%d/%m/%Y")
 (defpoll github_poll :initial "" :interval "1m" "./modules/github.sh")
 (defpoll ping_poll :interval "10s" "./modules/ping.sh")
-
 (deflisten workspaces_listen "./modules/workspaces.sh")
 (deflisten player_listen :initial '{"show": "no", "content": ""}' "./modules/player.sh")
-(deflisten nvidia_listen "./modules/nvidia.sh")
 (deflisten notifications_listen :initial '{"show": "no", "content": ""}' "./modules/notifications.sh")
-
-; Make this cleaner at some point
 (defpoll microphone_poll :interval "999h" "./modules/microphone.sh")
 (defpoll speaker_poll :interval "999h" "./modules/speaker.sh")
-; foldend
 
-; Modules foldstart
-; Generic icon module foldstart
 (defwidget icon-module [icon ?class ?visible]
   (box :class "${class} icon-module"
        :orientation "h"
        :halign "end"
        :space-evenly false
-       :visible {visible ?: true} ; because the argument is optional
+       :visible {visible ?: true}
     (label :class "icon-module__icon" :text "${icon}")
     (children)))
-; foldend
 
-; Polybar-Style modules foldstart
 (defwidget workspaces []
   (literal :content workspaces_listen))
 
@@ -119,6 +124,3 @@
     (eventbox :onscroll `eww update microphone_poll="$(./modules/microphone.sh {})"`
       (button :onclick `eww update microphone_poll="$(./modules/microphone.sh toogle)"`
         (label :text {microphone_poll.content})))))
-; foldend
-
-; vim:foldmarker=foldstart,foldend
