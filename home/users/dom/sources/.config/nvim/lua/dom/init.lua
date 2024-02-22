@@ -10,6 +10,7 @@ require('dom.modules.mini-extra')
 -- Language Server Protocol and Syntax Highlighting
 require('dom.modules.lspconfig')
 require('dom.modules.treesitter')
+require('dom.modules.lsp-lens')
 require('dom.modules.navigator')
 
 -- Completion
