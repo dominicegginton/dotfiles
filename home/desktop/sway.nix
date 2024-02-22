@@ -24,7 +24,7 @@
         ];
         size = 11.0;
       };
-      menu = "${pkgs.bemenu}/bin/bemenu-run";
+      menu = "${pkgs.bemenu}/bin/bemenu-run -in --bottom";
       bars = [];
       colors = {
         focused = {
@@ -97,7 +97,7 @@
       titlebar_border_thickness 0
       hide_edge_borders both
       smart_borders on
-      gaps top 15
+      gaps top 18
 
       # exec
       exec dbus-sway-environmen

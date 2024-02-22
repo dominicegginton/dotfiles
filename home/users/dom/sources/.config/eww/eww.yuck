@@ -4,7 +4,7 @@
   :vexpand false
   :stacking "fg"
   :geometry (geometry :anchor "top left" :x 0 :y 0 :width "100%")
-  :reserve (struts :distance "10px" :side "top")
+  :reserve (struts :distance "15px" :side "top")
   (bar :screen 0))
 
 (defwindow bar-1
@@ -13,7 +13,7 @@
   :vexpand false
   :stacking "fg"
   :geometry (geometry :anchor "top left" :x 0 :y 0 :width "100%")
-  :reserve (struts :distance "10px" :side "top")
+  :reserve (struts :distance "15px" :side "top")
   (bar :screen 1))
 
 (defwindow bar-2
@@ -22,7 +22,7 @@
   :vexpand false
   :stacking "fg"
   :geometry (geometry :anchor "top left" :x 0 :y 0 :width "100%")
-  :reserve (struts :distance "10px" :side "top")
+  :reserve (struts :distance "15px" :side "top")
   (bar :screen 2))
 
 (defwidget bar [screen]
