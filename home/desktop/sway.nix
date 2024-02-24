@@ -97,13 +97,12 @@
       titlebar_border_thickness 0
       hide_edge_borders both
       smart_borders on
-      gaps top 18
 
       # exec
       exec dbus-sway-environmen
       exec configure-gtk
       exec swayosd-server
-      exec eww open-many --config ~/.config/eww bar bar-1 bar-2
+      exec eww d
       exec sleep 5; systemctl --user start kanshi.service
     '';
   };
