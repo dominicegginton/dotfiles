@@ -86,8 +86,7 @@ Reproducible development environments are provided for the following common tool
 
 ## Eye Candy
 
-![screenshot_2023-12-09-211721](https://github.com/dominicegginton/dotfiles/assets/28626241/23eb9977-9625-40d4-95f2-56afa61d10cd)
-![screenshot_2023-12-09-212003](https://github.com/dominicegginton/dotfiles/assets/28626241/62d9ee95-bff5-4448-a9b5-cbb612a5e408)
+![2024-02-24_09-50](https://github.com/dominicegginton/dotfiles/assets/28626241/658cfb6d-96aa-4692-ad0e-891c7a081a60)
 
 ## Documentation
 
