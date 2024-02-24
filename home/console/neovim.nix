@@ -40,7 +40,6 @@
       nodePackages.vscode-langservers-extracted
       nodePackages."@angular/cli"
       nodePackages.pyright
-      workspace.nodePackages.custom-elements-languageserver
       prettierd
       eslint_d
       rust-analyzer

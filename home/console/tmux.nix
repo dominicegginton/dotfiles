@@ -79,8 +79,5 @@
     '';
   };
 
-  home.packages = with pkgs; [
-    twm
-    workspace.twx
-  ];
+  home.packages = with pkgs; [twm twx];
 }

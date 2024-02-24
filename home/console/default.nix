@@ -12,5 +12,5 @@
   programs.info.enable = true;
   programs.hstr.enable = true;
 
-  home.packages = with pkgs; [workspace.rebuild-home];
+  home.packages = with pkgs; [rebuild-home];
 }

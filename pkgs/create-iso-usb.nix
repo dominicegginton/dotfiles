@@ -4,7 +4,7 @@ pkgs.writeShellApplication rec {
 
   runtimeInputs = with pkgs; [
     nix
-    workspace.rebuild-iso-console
+    rebuild-iso-console
   ];
 
   text = ''

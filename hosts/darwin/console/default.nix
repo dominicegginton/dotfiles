@@ -7,7 +7,7 @@
     git
     git-lfs
     pinentry_mac
-    workspace.network-filters-disable
-    workspace.network-filters-enable
+    network-filters-disable
+    network-filters-enable
   ];
 }

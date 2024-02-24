@@ -65,5 +65,5 @@ in {
 
   programs.home-manager.enable = true;
 
-  home.packages = with pkgs; [workspace.rebuild-home];
+  home.packages = with pkgs; [rebuild-home];
 }

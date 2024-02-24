@@ -24,13 +24,11 @@ in
         sops-import-keys-hook
         ssh-to-pgp
         sops-init-gpg-key
-        workspace.rebuild-host
-        workspace.rebuild-home
-        workspace.rebuild-configuration
-        workspace.upgrade-configuration
-        workspace.workspace-formatter
-        workspace.workspace-linter
-        workspace.rebuild-iso-console
-        workspace.gpg-import-keys
+        rebuild-host
+        rebuild-home
+        rebuild-configuration
+        upgrade-configuration
+        rebuild-iso-console
+        gpg-import-keys
       ];
   }

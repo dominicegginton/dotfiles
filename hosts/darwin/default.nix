@@ -126,14 +126,14 @@
   services.nix-daemon.enable = true;
 
   environment.systemPackages = with pkgs; [
-    workspace.rebuild-host
-    workspace.rebuild-home
-    workspace.rebuild-configuration
-    workspace.upgrade-configuration
-    workspace.shutdown-host
-    workspace.reboot-host
-    workspace.suspend-host
-    workspace.hibernate-host
+    rebuild-host
+    rebuild-home
+    rebuild-configuration
+    upgrade-configuration
+    shutdown-host
+    reboot-host
+    suspend-host
+    hibernate-host
 
     htop-vim
     btop

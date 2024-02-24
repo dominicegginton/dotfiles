@@ -1,28 +1,19 @@
 {pkgs}: let
   inherit (pkgs) callPackage;
 in {
-  # configuration utils
-  workspace.rebuild-host = callPackage ./rebuild-host.nix {};
-  workspace.rebuild-home = callPackage ./rebuild-home.nix {};
-  workspace.rebuild-configuration = callPackage ./rebuild-configuration.nix {};
-  workspace.upgrade-configuration = callPackage ./upgrade-configuration.nix {};
-  workspace.workspace-formatter = callPackage ./workspace-formatter.nix {};
-  workspace.workspace-linter = callPackage ./workspace-linter.nix {};
-  # iso utils
-  workspace.create-iso-usb = callPackage ./create-iso-usb.nix {};
-  workspace.rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};
-  # host utils
-  workspace.shutdown-host = callPackage ./shutdown-host.nix {};
-  workspace.reboot-host = callPackage ./reboot-host.nix {};
-  workspace.suspend-host = callPackage ./suspend-host.nix {};
-  workspace.hibernate-host = callPackage ./hibernate-host.nix {};
-  # user utils
-  workspace.git-sync = callPackage ./git-sync.nix {};
-  workspace.gpg-import-keys = callPackage ./gpg-import-keys.nix {};
-  workspace.twx = callPackage ./twx.nix {};
-  # network utils
-  workspace.network-filters-disable = callPackage ./network-filters-disable.nix {};
-  workspace.network-filters-enable = callPackage ./network-filters-enable.nix {};
-  # node packages
-  workspace.nodePackages.custom-elements-languageserver = callPackage ./node-packages/custom-elements-languageserver.nix {};
+  rebuild-host = callPackage ./rebuild-host.nix {};
+  rebuild-home = callPackage ./rebuild-home.nix {};
+  rebuild-configuration = callPackage ./rebuild-configuration.nix {};
+  upgrade-configuration = callPackage ./upgrade-configuration.nix {};
+  create-iso-usb = callPackage ./create-iso-usb.nix {};
+  rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};
+  shutdown-host = callPackage ./shutdown-host.nix {};
+  reboot-host = callPackage ./reboot-host.nix {};
+  suspend-host = callPackage ./suspend-host.nix {};
+  hibernate-host = callPackage ./hibernate-host.nix {};
+  git-sync = callPackage ./git-sync.nix {};
+  gpg-import-keys = callPackage ./gpg-import-keys.nix {};
+  twx = callPackage ./twx.nix {};
+  network-filters-disable = callPackage ./network-filters-disable.nix {};
+  network-filters-enable = callPackage ./network-filters-enable.nix {};
 }

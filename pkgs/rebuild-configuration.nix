@@ -3,8 +3,8 @@ pkgs.writeShellApplication {
   name = "rebuild-configuration";
 
   runtimeInputs = with pkgs; [
-    workspace.rebuild-host
-    workspace.rebuild-home
+    rebuild-host
+    rebuild-home
   ];
 
   text = ''

@@ -5,7 +5,7 @@ pkgs.writeShellApplication {
   runtimeInputs = with pkgs; [
     nix
     home-manager
-    workspace.rebuild-configuration
+    rebuild-configuration
   ];
 
   text = ''
