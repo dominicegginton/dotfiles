@@ -186,39 +186,21 @@ To reinstall an existing NixDarwin host, use the following steps:
 3. Enter the development shell using `nix develop`.
 4. Apply the NixDarwin and HomeManager configurations using `rebuild-configuration`.
 
-#### Updating the Configuration
+#### Updating the Host Configuration
 
-Update the configuration as required. It it advisable to test the new
-configuration by building and running a virtual machine for the host.
-
-On NixOS, use the following command to build and run a virtual machine:
-
-```sh
-nixos-rebuild build-vm
+```ocaml
+Coming Soon
 ```
 
-On NixDarwin, use the following command to build the top level configuration for
-the host as a there is no virtual machine support for NixDarwin:
+#### Updating the Home Manager Configuration
 
-```sh
-nix build .#darwinConfigurations.<hostname>.system.config.system.build.toplevel
+```ocaml
+Coming Soon
 ```
 
-If the new configuration build and runs successfully, apply the configuration to
-the host using the following command:
+#### Upgrading this Flake
 
-```sh
-rebuild-configuration
-```
-
-You can roll back the configuration on a host using the following command:
-
-```sh
-nixos-rebuild switch --rollback
-```
-
-On NixDarwin, use the following command to roll back the configuration:
-
-```sh
-darwin-rebuild switch --rollback
-```
+GitHub Actions workflows are used to automatically update the flake inputs
+weekly. A pull request is made and the CI workflow will build a virual machine
+or top level configuration to ensure that upgraded flake inputs result in
+successful builds.
