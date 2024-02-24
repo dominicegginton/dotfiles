@@ -96,11 +96,13 @@
     nixosConfigurations.iso-console = libx.mkNixosConfiguration {
       hostname = "iso-console";
       username = "nixos";
+      role = "iso";
       installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
     };
     nixosConfigurations.latitude-7390 = libx.mkNixosConfiguration {
       hostname = "latitude-7390";
       username = "dom";
+      role = "workstation";
       desktop = "sway";
     };
     darwinConfigurations.MCCML44WMD6T = libx.mkDarwinConfiguration {
