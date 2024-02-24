@@ -7,82 +7,144 @@ Declarative System Configuration
 NixOS / NixDarwin / HomeManager / SopsNix
 ```
 
+## Features
+
+- **Nix Flakes** 100% Nix Flakes based configuration, no Nix channels.
+- **Disk Management** Declerative disk management using Disko.
+- **Encrypted Secrets** Stored configuration secrets are encrypted using SopsNix.
+- **User Home Environments** Reproducible user home environments using HomeManager.
+- **MacOS Hosts** NixDarwin provides support for MacOS hosts.
+- **Continuous Integration** Backed by continuous integration workflows on GitHub Actions runners.
+- **Nix Dev Shells** Reproducible environments for common tools and tasks.
+- **Flake Templates** Easily create new Nix Flakes using templtes for common cases.
+
 ## Workspace
 
 This workspace follows the following structure:
 
 ```
-├── home            # Home configurations
-├── hosts           # Host configurations
-├── lib             # Nix helpers
-├── overlays        # Nix overlays
+├── home            # Home manager configurations
+├── hosts           # Host NixOS and NixDarwin configurations
+├── lib             # Nix module helpers
+├── overlays        # Nix package overlays
 ├── pkgs            # Nix packages
 ├── scripts         # Scripts
-├── shells          # Nix shells
+├── shells          # Nix development shells
 ├── templates       # Flake templates
 └── flake.nix       # Nix Flake inputs and outputs
 ```
-
-## Features
-
-- **Nix Flakes** - 100% Nix Flakes based configuration, no Nix channels.
-- **Disk Management** - Declerative disk management using Disko.
-- **Encrypted Secrets** - Stored configuration secrets are encrypted using SopsNix.
-- **User Home Environments** - Reproducible user home environments using HomeManager.
-- **MacOS Hosts** - NixDarwin provides support for MacOS hosts.
-- **Continuous Integration** - Backed by continuous integration workflows on GitHub Actions runners.
-- **Nix Dev Shells** - Reproducible environments for common tools and tasks.
-- **Flake Templates** - Easily create new Nix Flakes using templtes for common cases.
 
 ## Hosts
 
 This workspace defines the following hosts:
 
-| HOSTNAME        | OEM   | MODEL                     | OS        | ROLE        |
-| :-------------- | :---- | :------------------------ | :-------- | :---------- |
-| `latitude-7390` | DELL  | Latitude 7390 Two in One  | NixOS     | Workstation |
-| `MCCML44WMD6T`  | Apple | Macbook Pro 16-inch, 2019 | MacOS     | Workstation |
-| `burbage`       | DIY   | Intel i3-2100             | Debian    | Server      |
-| `iso-console`   | N/A   | N/A                       | NixOS.iso | NixOS.iso   |
-
-## Users
-
-The following user configurations are also defined by this workspace:
-
-| Username       | Aviable on Hosts            | Description                                                                            |
-| :------------- | :-------------------------- | :------------------------------------------------------------------------------------- |
-| `dom`          | `latitude-7390` - `burbage` | [Doms](https://dominicegginton.dev) user account configuration                         |
-| `dom.egginton` | `MCCML44WMD6T`              | [Doms](https://dominicegginton.dev) work user account configuration that extends `dom` |
-| `nixos`        | `iso-console`               | NixOS .iso user account configuration                                                  |
+<table>
+    <tr>
+        <th width="100" align="left">HOSTNAME</th>
+        <th width="100" align="left">OEM</th>
+        <th width="482" align="left">MODEL</th>
+        <th width="100" align="left">OS</th>
+        <th width="100" align="left">ROLE</th>
+    </tr>
+    <tr>
+        <td>latitude-7390</td>
+        <td>DELL</td>
+        <td>Latitude 7390 Two in One</td>
+        <td>NixOS</td>
+        <td>Workstation</td>
+    </tr>
+    <tr>
+        <td>MCCML44WMD6T</td>
+        <td>Apple</td>
+        <td>Macbook Pro 16-inch, 2019</td>
+        <td>MacOS</td>
+        <td>Workstation</td>
+    </tr>
+    <tr>
+        <td>burbage</td>
+        <td>DIY</td>
+        <td>Intel i3-2100</td>
+        <td>Debian</td>
+        <td>Server</td>
+    </tr>
+    <tr>
+        <td>iso-console</td>
+        <td>N/A</td>
+        <td>N/A</td>
+        <td>NixOS.iso</td>
+        <td>NixOS.iso</td>
+    </tr>
+</table>
 
 ## Packages
 
 The worksapce includes definitions for the following packages:
 
-| Package                                                                                        | Description                                                            |
-| :--------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------- |
-| `create-iso-usb`                                                                               | Creates an bootable nixos iso usb from a build nixos iso configuration |
-| `rebuild-configuration`                                                                        | Runs `rebuild-host` then `rebuild-home`                                |
-| `upgrade-configuration`                                                                        | Upgrades the flake then runs `rebuild-configuration`                   |
-| `rebuild-host`                                                                                 | Rebuilds then switchs to the NixOs or NixDarwin configuration          |
-| `rebuild-home`                                                                                 | Rebuilds then switches to the home manager configuration               |
-| `rebuild-iso-console`                                                                          | Rebuilds the nixos iso configuration                                   |
-| `shutdown-host`                                                                                | Shutdown the current host                                              |
-| `reboot-host`                                                                                  | Reboot the current host                                                |
-| `gpg-import-keys`                                                                              | Imports private gpg keys                                               |
-| `network-filters-disable`                                                                      | Disables Cisco network filters                                         |
-| `network-filters-enable`                                                                       | Enable Cisco network filters                                           |
-| [`custom-elements-languageserver`](https://github.com/Matsuuu/custom-elements-language-server) | Provides useful language features for Web Components                   |
+<table>
+    <tr>
+        <th width="200" align="left">Package</th>
+        <th width="682" align="left">Description</th>
+    </tr>
+    <tr>
+        <td>create-iso-usb</td>
+        <td>Builds an iso image and burns it to a USB drive</td>
+    </tr>
+    <tr>
+        <td>rebuild-configuration</td>
+        <td>Rebuilds then switches to the current configuration</td>
+    </tr>
+    <tr>
+        <td>rebuild-host</td>
+        <td>Rebuilds then switches to the home manager configuration</td>
+    </tr>
+    <tr>
+        <td>rebuild-home</td>
+        <td>Rebuilds then switches to the home manager configuration</td>
+    </tr>
+    <tr>
+        <td>rebuild-iso-console</td>
+        <td>Rebuilds the nixos iso configuration</td>
+    </tr>
+    <tr>
+        <td>shutdown-host</td>
+        <td>Shutdown the current host</td>
+    </tr>
+    <tr>
+        <td>reboot-host</td>
+        <td>Reboot the current host</td>
+    </tr>
+    <tr>
+        <td>gpg-import-keys</td>
+        <td>Copies GPG keys from google cloud storage then imports them</td>
+    </tr>
+    <tr>
+        <td>network-filters-disable</td>
+        <td>Disables Cisco network filters on MacOS</td>
+    </tr>
+    <tr>
+        <td>network-filters-enable</td>
+        <td>Enable Cisco network filters on MacOS</td>
+    </tr>
+</table>
 
 ## Development Shells
 
-Reproducible development environments are provided for the following common tools and tasks:
+Reproducible development shell environments are provided for the following common tools and tasks:
 
-| Shell Name   | Description                                       |
-| :----------- | :------------------------------------------------ |
-| `dev`        | Development shell for general purpose development |
-| `dev.node`   | Development shell for Node.js development         |
-| `dev.python` | Development shell for Python development          |
+<table>
+    <tr>
+        <th width="200" align="left">Dev Shell</th>
+        <th width="682" align="left">Description</th>
+    </tr>
+    <tr>
+        <td>workspace</td>
+        <td>Development shell</td>
+    </tr>
+    <tr>
+        <td>web</td>
+        <td>Development shell for web development</td>
+    </tr>
+</table>
 
 ## Eye Candy
 
@@ -90,80 +152,73 @@ Reproducible development environments are provided for the following common tool
 
 ## Documentation
 
-### Installing NixOS Hosts
+#### Creating a new NixOS Host
 
-1. Create a bootable .iso image using the `rebuild-iso-console` script, this
-   will leave a live image in the `~/.dotfiles/result/iso/` directory.
-
-2. Burn the .iso image to a USB drive using the `dd` command:
-
-```sh
-dd if=~/.dotfiles/result/iso/nixos.iso of=/dev/sdX status=progress oflag=sync bs=4M
+```ocaml
+Coming Soon
 ```
 
-3. Boot the target computer from the USB drive.
+#### Creating a new NixDarwin Host
 
-4. Run `install-system <hostname> <username>` from a terminal. The install
-   script uses [Disko] to automatically partition and format the disks, then
-   uses my flake via `nixos-install` to complete a full-system installation.
-   This flake is copied to the target user's home directory as `~/.dotfiles`.
-
-5. Reboot
-
-6. Login and run `rebuild-home` from a terminal to apply the home configuration.
-
-If the target system is booted from something other than the .iso image created
-by this flake, you can still install the system using the following:
-
-```sh
-curl -sL https://raw.githubusercontent.com/dominicegginton/dotfiles/main/scripts/install.sh | bash -s <hostname> <username>
+```ocaml
+Coming Soon
 ```
 
-### Installing NixDarwin Hosts
+#### Reinstalling an existing NixOS Host
+
+To reinstall an existing NixOS host on a new target computer, use the following steps:
+
+1. Create a bootable .iso image using the **create-iso-usb** package.
+2. Boot the target computer from the USB drive.
+3. Run `install-system <hostname> <username>` from a terminal.
+4. Reboot the target computer.
+5. Login and run `rebuild-home` from a terminal to apply the home manager configuration.
+
+#### Reinstalling an existing NixDarwin Host
+
+To reinstall an existing NixDarwin host, use the following steps:
 
 > [!NOTE]
-> Note: Installing Nix on MacOS will create an seperate volume that will exceed many gigabytes in size.
+> Installing Nix on MacOS will create an seperate volume that will exceed many gigabytes in size.
 
 1. Install the [Nix package manager](https://nixos.org/download#nix-install-macos).
+2. Clone this repository to `~/.dotfiles`.
+3. Enter the development shell using `nix develop`.
+4. Apply the NixDarwin and HomeManager configurations using `rebuild-configuration`.
+
+#### Updating the Configuration
+
+Update the configuration as required. It it advisable to test the new
+configuration by building and running a virtual machine for the host.
+
+On NixOS, use the following command to build and run a virtual machine:
 
 ```sh
-sh <(curl -L https://nixos.org/nix/install)
+nixos-rebuild build-vm
 ```
 
-2. Clone this repository to `~/.dotfiles`:
+On NixDarwin, use the following command to build the top level configuration for
+the host as a there is no virtual machine support for NixDarwin:
 
 ```sh
-git clone https://github.com/dominicegginton/dotfiles.git ~/.dotfiles
+nix build .#darwinConfigurations.<hostname>.system.config.system.build.toplevel
 ```
 
-3. Enter the development shell:
-
-```sh
-cd ~/.dotfiles && nix develop
-```
-
-4. Apply both host and home configurations with the following:
+If the new configuration build and runs successfully, apply the configuration to
+the host using the following command:
 
 ```sh
 rebuild-configuration
 ```
 
-### Applying Changes
-
-Apply changes to the configuration then use one of the following to commands to
-rebuild and switch to the new configuration:
+You can roll back the configuration on a host using the following command:
 
 ```sh
-rebuild-host
-rebuild-home
-rebuild-configuration
+nixos-rebuild switch --rollback
 ```
 
-### Upgrading
-
-Upgrade this flake then rebuild the host and home configurations using the
-following command:
+On NixDarwin, use the following command to roll back the configuration:
 
 ```sh
-upgrade-configuration
+darwin-rebuild switch --rollback
 ```
