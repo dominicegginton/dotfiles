@@ -16,6 +16,7 @@
 in {
   imports =
     [
+      inputs.nix-colors.homeManagerModules.default
       ./console
       ./services/gpg.nix
       ./services/bitwarden.nix

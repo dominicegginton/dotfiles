@@ -28,7 +28,8 @@ in {
           role
           desktop
           stateVersion
-          platform;
+          platform
+          ;
       };
 
       modules =
@@ -47,7 +48,8 @@ in {
           outputs
           hostname
           username
-          stateVersion;
+          stateVersion
+          ;
 
         desktop = "quartz";
         platform = "x86_64-darwin";
