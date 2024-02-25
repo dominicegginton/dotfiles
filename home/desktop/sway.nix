@@ -9,22 +9,17 @@
     XDG_CURRENT_DESKTOP = "sway";
     QT_QPA_PLATFORM = "wayland";
     QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    BEMENU_BACKEND = "wayland";
   };
 
   wayland.windowManager.sway = {
     enable = true;
     config = rec {
       modifier = "Mod4";
-      terminal = "alacritty";
+      terminal = "${pkgs.alacritty}/bin/alacritty";
       fonts = {
-        names = [
-          "JetBrainsMono Nerd Font"
-          "FontAwesome5Free"
-        ];
+        names = ["JetBrainsMono Nerd Font" "FontAwesome5Free"];
         size = 11.0;
       };
-      menu = "${pkgs.bemenu}/bin/bemenu-run -in --bottom";
       bars = [];
       colors = {
         focused = {
