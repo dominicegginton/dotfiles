@@ -13,7 +13,6 @@ in {
     ".gitconfig".source = ../sources/.gitconfig;
     ".gitignore".source = ../sources/.gitignore;
     ".gitmessage".source = ../sources/.gitmessage;
-    ".npmrc".source = ../sources/.npmrc;
     "background.jpg".source = ../sources/background.jpg;
   };
 }
