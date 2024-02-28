@@ -77,6 +77,7 @@
         default = import ./shells/workspace.nix {inherit inputs pkgs baseDevPkgs platform;};
         workspace = import ./shells/workspace.nix {inherit inputs pkgs baseDevPkgs platform;};
         web = import ./shells/web.nix {inherit inputs pkgs baseDevPkgs platform;};
+        python = import ./shells/python.nix {inherit inputs pkgs baseDevPkgs platform;};
       }
     );
 

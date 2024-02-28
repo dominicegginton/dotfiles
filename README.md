@@ -144,6 +144,10 @@ Reproducible development shell environments are provided for the following commo
         <td>web</td>
         <td>Development shell for web development</td>
     </tr>
+    <tr>
+        <td>python</td>
+        <td>Development shell for python and virtualenv</td>
+    </tr>
 </table>
 
 ## Eye Candy
