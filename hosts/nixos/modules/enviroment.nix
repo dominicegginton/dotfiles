@@ -18,6 +18,7 @@
       rebuild-home
       rebuild-configuration
       upgrade-configuration
+      cleanup-trash
       shutdown-host
       reboot-host
       suspend-host
