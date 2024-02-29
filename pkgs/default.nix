@@ -7,6 +7,7 @@ in {
   upgrade-configuration = callPackage ./upgrade-configuration.nix {};
   create-iso-usb = callPackage ./create-iso-usb.nix {};
   rebuild-iso-console = callPackage ./rebuild-iso-console.nix {};
+  cleanup-trash = callPackage ./cleanup-trash.nix {};
   shutdown-host = callPackage ./shutdown-host.nix {};
   reboot-host = callPackage ./reboot-host.nix {};
   suspend-host = callPackage ./suspend-host.nix {};
