@@ -4,20 +4,32 @@ on:
     branches: [main]
 
 jobs:
-  checks:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+  check-flake:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: DeterminateSystems/flake-checker-action@main
-        if: matrix.os == 'ubuntu-latest'
+  checks:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        fail-fast: [false]
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
         if: matrix.os == 'ubuntu-latest'
       - run: nix build .#nixosConfigurations.iso-console.config.system.build.toplevel
         if: matrix.os == 'ubuntu-latest'
       - run: nix build .#darwinConfigurations.MCCML44WMD6T.config.system.build.toplevel
+        if: matrix.os == 'macos-latest'
+      - run: nix build .#homeConfigurations."dom@latitude-7390".config.activationPackage
+        if: matrix.os == 'ubuntu-latest'
+      - run: nix build .#homeConfigurations."dom@burbage".config.activationPackage
+        if: matrix.os == 'ubuntu-latest'
+      - run: nix build .#homeConfigurations."dom.egginton@MMCL44WMD6T".config.activationPackage
         if: matrix.os == 'macos-latest'
