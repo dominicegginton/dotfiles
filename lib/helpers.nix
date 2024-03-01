@@ -27,8 +27,8 @@ in {
           username
           role
           desktop
-          stateVersion
           platform
+          stateVersion
           ;
       };
 
@@ -50,7 +50,6 @@ in {
           username
           stateVersion
           ;
-
         desktop = "quartz";
         platform = "x86_64-darwin";
       };
