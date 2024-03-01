@@ -1,49 +1,51 @@
 local focus = require('focus')
 local quickfix_list = require('dom.plugins.quickfix-list')
 local package_info = require('package-info')
-local renamer = require('renamer')
+local mini_extra = require('mini.extra')
+local mini_files = require('mini.files')
+local mini_pick = require('mini.pick')
 
+-- Leader
 vim.leader = ' '
 vim.g.mapleader = ' '
 
 -- Picker
-local pick = require('mini.pick')
-vim.keymap.set('n', '<leader>/', function() pick.pickers.buf_lines() end, { desc = 'Find In Buffer' })
-vim.keymap.set('n', '<leader>fo', function() pick.builtin.files() end, { desc = 'Find File' })
-vim.keymap.set('n', '<leader>fg', function() pick.builtin.grep_live() end, { desc = 'Find In Files (live grep)' })
-vim.keymap.set('n', '<leader>fG', function() pick.builtin.grep() end, { desc = 'Find In Files (grep)' })
-vim.keymap.set('n', '<leader>fh', function() pick.builtin.help() end, { desc = 'Find Help' })
-vim.keymap.set('n', '<leader>fr', function() pick.builtin.resume() end, { desc = 'Resume Picker' })
--- TODO - Add a keymap to pick local files for current buffer
+vim.keymap.set('n', '<leader>/', mini_pick.builtin.grep, { desc = 'Find In Buffer' })
+vim.keymap.set('n', '<leader>fo', mini_pick.builtin.files, { desc = 'Find File' })
+vim.keymap.set('n', '<leader>fg', mini_pick.builtin.grep_live, { desc = 'Find In Files (live grep)' })
+vim.keymap.set('n', '<leader>fG', mini_pick.builtin.grep, { desc = 'Find In Files (grep)' })
+vim.keymap.set('n', '<leader>fh', mini_pick.builtin.help, { desc = 'Find Help' })
+vim.keymap.set('n', '<leader>fr', mini_pick.builtin.resume, { desc = 'Resume Picker' })
 
 -- User Interface
-local files = require('mini.files')
-vim.keymap.set('n', '<leader>te', function() vim.cmd('NvimTreeToggle') end, { desc = 'Toggle File Explorer' })
-vim.keymap.set('n', '<leader>tE', function()
-  if not files.close() then files.open(vim.api.nvim_buf_get_name(0)) end
-end, { desc = 'Open File Explorer' })
-vim.keymap.set('n', '<leader>td', function() vim.cmd('TroubleToggle') end, { desc = 'Toggle Diagnostics' })
-vim.keymap.set('n', '<leader>tq', function() quickfix_list.toggle() end, { desc = 'Toggle Quickfix' })
-vim.keymap.set('n', '<leader>tb', function() vim.cmd('ToggleBlameLine') end, { desc = 'Toggle Git Blame' })
-vim.keymap.set('n', '<leader>tr', function() vim.cmd('FSToggle') end, { desc = 'Toggle Read' })
-vim.keymap.set('n', '<leader>tp', function() vim.cmd('CmdPalette') end, { desc = 'Open Command Palette' })
-vim.keymap.set('n', '<C-w>o', function() vim.cmd('FocusMaximise') end, { desc = 'Maximise Focus' })
-vim.keymap.set('n', '<C-w>=', function() vim.cmd('FocusEqualise') end, { desc = 'Equalize Focus' })
+local toggle_nvim_tree = function() vim.cmd('NvimTreeToggle') end
+local toggle_mini_file_explorer = function() if not mini_files.close() then mini_files.open(vim.api.nvim_buf_get_name(0)) end end
+local toggle_diagnostic_pannel = function() vim.cmd('TroubleToggle') end
+local toggle_lsp_lens = function() vim.cmd('LspLensToggle') end
+local toggle_git_blame = function() vim.cmd('ToggleBlameLine') end
+local toggle_read = function() vim.cmd('FSToggle') end
+local open_command_palette = function() vim.cmd('CmdPalette') end
+
+vim.keymap.set('n', '<leader>te', toggle_nvim_tree, { desc = 'Toggle File Explorer Pannel' })
+vim.keymap.set('n', '<leader>tE', toggle_mini_file_explorer, { desc = 'Toggle Mini File Explorer' })
+vim.keymap.set('n', '<leader>td', toggle_diagnostic_pannel, { desc = 'Toggle Diagnostics Pannel' })
+vim.keymap.set('n', '<leader>tq', quickfix_list.toggle, { desc = 'Toggle Quickfix' })
+vim.keymap.set('n', '<leader>tb', toggle_git_blame, { desc = 'Toggle Git Blame' })
+vim.keymap.set('n', '<leader>tl', toggle_lsp_lens, { desc = 'Toggle LSP Lens' })
+vim.keymap.set('n', '<leader>tr', toggle_read, { desc = 'Toggle Reading Mode' })
+vim.keymap.set('n', '<leader>tp', open_command_palette, { desc = 'Open Command Palette' })
 
 -- Utilities
-vim.api.nvim_create_autocmd('BufEnter', {
-  pattern = 'package.json',
-  callback = function()
-    vim.keymap.set(
-      'n',
-      '<leader>tp',
-      package_info.toggle,
-      { silent = true, noremap = true, desc = 'Toggle Package Info' }
-    )
-  end,
-})
-vim.keymap.set('n', '<leader><leader>f', function() vim.cmd('Format') end, { desc = 'Format' })
-vim.api.nvim_create_autocmd(
-  'BufWritePost',
-  { group = vim.api.nvim_create_augroup('UserFormat', {}), callback = function() vim.cmd('FormatWrite') end }
-)
+local auto_format_group = vim.api.nvim_create_augroup('AutoFormat', {})
+local format = function() vim.cmd('Format') end
+local format_write_callback = function() vim.cmd('FormatWrite') end
+local clear_highlighting = function() vim.cmd('noh') end
+local toggle_package_json_info_callback = function()
+  vim.keymap.set('n', '<leader>tP', package_info.toggle, { silent = true, noremap = true, desc = 'Toggle Package Info' })
+end
+
+
+vim.keymap.set('n', '<leader><leader>f', format, { desc = 'Format' })
+vim.keymap.set('n', '<leader><leader>n', clear_highlighting, { desc = 'Clear Highlight' })
+vim.api.nvim_create_autocmd('BufEnter', { pattern = 'package.json', callback = toggle_package_json_info_callback })
+vim.api.nvim_create_autocmd('BufWritePost', { group = auto_format_group, callback = format_write_callback })

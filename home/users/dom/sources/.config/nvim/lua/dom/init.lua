@@ -1,4 +1,4 @@
-require('dom.packer')
+require('dom.mini-deps')
 require('dom.settings')
 require('dom.keymaps')
 
@@ -53,4 +53,5 @@ require('dom.modules.mini-jump')
 require('dom.modules.mini-jump2d')
 require('dom.modules.mini-bracketed')
 require('dom.modules.mini-surround')
+require('dom.modules.mini-visits')
 require('dom.modules.cmd-palette')

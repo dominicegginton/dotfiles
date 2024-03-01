@@ -1,5 +1,4 @@
 {
   "diagnostics.globals": ["vim"],
-  "diagnostics.disable": ["different-requires",
-        "unused-local"]
+  "diagnostics.disable": ["different-requires", "unused-local"]
 }
