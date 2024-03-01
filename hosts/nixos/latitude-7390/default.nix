@@ -1,6 +1,6 @@
 {
-  config,
   inputs,
+  config,
   lib,
   pkgs,
   hostname,
@@ -13,21 +13,8 @@
     ./disks.nix
   ];
 
-  modules.system.stateVersion = stateVersion;
-  modules.nixpkgs.allowUnfree = true;
-  modules.sops.enable = true;
-  modules.networking.enable = true;
-  modules.networking.hostname = hostname;
-  modules.networking.wireless = true;
-  modules.virtualisation.enable = true;
-  modules.virtualisation.vmVariant = true;
-  modules.virtualisation.desktop = true;
-  modules.bluetooth.enable = true;
-
   swapDevices = [
-    {
-      device = "/dev/disk/by-uuid/4e74fa9d-47d7-4a43-9cec-01d4fdd1a1a2";
-    }
+    { device = "/dev/disk/by-uuid/4e74fa9d-47d7-4a43-9cec-01d4fdd1a1a2"; }
   ];
 
   boot = {
@@ -44,11 +31,28 @@
     lidSwitch = "suspend";
   };
 
-  hardware = {
-    mwProCapture.enable = true;
-  };
+  hardware.mwProCapture.enable = true;
 
-  services.thermald.enable = lib.mkDefault true;
-
-  nixpkgs.hostPlatform = lib.mkDefault "${platform}";
+  # Nix modules config for the system
+  modules.system.stateVersion = stateVersion;
+  modules.system.nixpkgs.hostPlatform = platform;
+  modules.system.nixpkgs.allowUnfree = true;
+  modules.sops.enable = true;
+  modules.networking.enable = true;
+  modules.networking.hostname = hostname;
+  modules.networking.ssh = true;
+  modules.networking.tailscale = true;
+  modules.networking.wireless = true;
+  modules.virtualisation.enable = true;
+  modules.virtualisation.vmVariant = true;
+  modules.virtualisation.desktop = true;
+  modules.bluetooth.enable = true;
+  modules.users.users = ["dom"];
+  modules.desktop.enable = true;
+  modules.desktop.environment = "sway";
+  modules.desktop.firefox = true;
+  modules.desktop.packages = with pkgs; [
+    thunderbird
+    teams-for-linux
+  ];
 }
