@@ -5,6 +5,7 @@
   pkgs,
   hostname,
   platform,
+  stateVersion,
   ...
 }: {
   imports = [
@@ -12,9 +13,15 @@
     ./disks.nix
   ];
 
+  modules.system.stateVersion = stateVersion;
+  modules.nixpkgs.allowUnfree = true;
+  modules.sops.enable = true;
   modules.networking.enable = true;
   modules.networking.hostname = hostname;
   modules.networking.wireless = true;
+  modules.virtualisation.enable = true;
+  modules.virtualisation.vmVariant = true;
+  modules.virtualisation.desktop = true;
   modules.bluetooth.enable = true;
 
   swapDevices = [

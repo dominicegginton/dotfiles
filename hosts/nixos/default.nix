@@ -18,28 +18,26 @@
       inputs.sops-nix.nixosModules.sops # Sops secrets module
       (modulesPath + "/installer/scan/not-detected.nix") # Nix installer module
 
+      ../_modules/system.nix # System configuration
+      ../_modules/boot.nix # System boot configuration
+      ../_modules/documentation.nix # Documentation configuration
+      ../_modules/i18n.nix # Internationalization configuration
+      ../_modules/nix.nix # Nix configuration
+      ../_modules/nixpkgs.nix # Nixpkgs configuration
+      ../_modules/sops.nix # Sops secrets configuration
+
       ../_modules/environment.nix # System environment
-      ../_modules/networking.nix # Networking configuration
-      ../_modules/bluetooth.nix  # Bluetooth
+      ../_modules/networking.nix # Networking
+      ../_modules/tailescale.nix # Tailscale
+      ../_modules/virtualisation.nix # Virtualisation
+      ../_modules/bluetooth.nix # Bluetooth
 
-      ./modules/boot.nix
-      ./modules/system.nix
-      ./modules/documentation.nix
-      ./modules/i18n.nix
-
-      ./modules/nix.nix
-      ./modules/nixpkgs.nix
-      ./modules/sops.nix
-
-
-      ./modules/virtualisation.nix
       ./modules/systemd.nix
       ./modules/security.nix
 
       ./${hostname}
       ./modules/firewall.nix
       ./modules/ssh.nix
-      ./modules/tailescale.nix
       ./modules/smartmon.nix
       ./modules/console
       ./modules/users/root.nix
