@@ -13,7 +13,7 @@
 in
   pkgs.mkShell rec {
     NIX_CONFIG = "experimental-features = nix-command flakes";
-    sopsPGPKeyDirs = ["./"];
+    sopsPGPKeyDirs = [".keys"];
     nativeBuildInputs = with pkgs;
       baseDevPkgs
       ++ [

@@ -6,7 +6,6 @@
   stateVersion,
   ...
 }: {
-  # Nix modules config for the system
   modules.system.stateVersion = stateVersion;
   modules.system.nixpkgs.hostPlatform = platform;
   modules.system.nixpkgs.allowUnfree = false;

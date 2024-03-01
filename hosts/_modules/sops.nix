@@ -11,6 +11,6 @@ in {
   };
 
   config = mkIf cfg.enable {
-    sops.defaultSopsFile = ../../secrets.yaml;
+    sops.defaultSopsFile = mkIf cfg.enable ../../secrets.yaml;
   };
 }
