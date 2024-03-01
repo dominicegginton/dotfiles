@@ -3,17 +3,19 @@
   inputs,
   lib,
   pkgs,
+  hostname,
   platform,
   ...
 }: {
   imports = [
     inputs.nixos-hardware.nixosModules.dell-latitude-7390
-    ../modules/wireless.nix
-    ../modules/bluetooth.nix
     ./disks.nix
   ];
 
-  modules.wireless.enable = true;
+  modules.networking.enable = true;
+  modules.networking.hostname = hostname;
+  modules.networking.wireless = true;
+  modules.bluetooth.enable = true;
 
   swapDevices = [
     {

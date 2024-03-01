@@ -1,6 +1,3 @@
-# NixOS.
-#
-# Default configuration applies to all NixOS hosts.
 {
   inputs,
   outputs,
@@ -15,12 +12,15 @@
   lib,
   ...
 }: {
-  # Modules
   imports =
     [
-      inputs.disko.nixosModules.disko
-      inputs.sops-nix.nixosModules.sops
-      (modulesPath + "/installer/scan/not-detected.nix")
+      inputs.disko.nixosModules.disko # Disko module
+      inputs.sops-nix.nixosModules.sops # Sops secrets module
+      (modulesPath + "/installer/scan/not-detected.nix") # Nix installer module
+
+      ../_modules/environment.nix # System environment
+      ../_modules/networking.nix # Networking configuration
+      ../_modules/bluetooth.nix  # Bluetooth
 
       ./modules/boot.nix
       ./modules/system.nix
@@ -30,12 +30,11 @@
       ./modules/nix.nix
       ./modules/nixpkgs.nix
       ./modules/sops.nix
-      ./modules/networking.nix
+
 
       ./modules/virtualisation.nix
       ./modules/systemd.nix
       ./modules/security.nix
-      ./modules/enviroment.nix
 
       ./${hostname}
       ./modules/firewall.nix
