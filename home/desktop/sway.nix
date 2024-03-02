@@ -21,6 +21,7 @@
         size = 11.0;
       };
       bars = [];
+      menu = "${pkgs.alacritty}/bin/alacritty --class=launcher -e ${pkgs.sway-launcher-desktop}/bin/sway-launcher-desktop";
       colors = {
         focused = {
           background = "#58f785";
@@ -92,6 +93,13 @@
       titlebar_border_thickness 0
       hide_edge_borders both
       smart_borders on
+
+      # window configuration
+      for_window [app_id="^launcher$"] floating enable
+      for_window [app_id="^firefox$"] move window to workspace 2, focus
+      for_window [app_id="^teams-for-linux$"] move window to workspace 9, focus
+      for_window [app_id="^thunderbird$"] move window to workspace 9, focus
+      for_window [app_id="^pavucontrol$"] floating enable, resize set 800 600, move position center
 
       # exec
       exec dbus-sway-environmen

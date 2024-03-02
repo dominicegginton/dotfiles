@@ -50,30 +50,32 @@ in {
   };
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [
-      wdisplays # display configuration
-      dbus # make dbus-update-activation-environment available in the path
-      dbus-sway-environment
-      configure-gtk
-      xdg-utils # for opening default programs when clicking links
-      glib # gsettings
-      colloid-gtk-theme # gtk theme
-      colloid-icon-theme # icon theme
-      gnome3.adwaita-icon-theme # default gnome cursor theme
-      flameshot # screenshot functionality
-      eww-wayland # eww wayland client
-      wlogout # logout functionality
-      wl-clipboard # clipboard functionality
-      bemenu # wayland clone of dmenu
-      swayosd # on screen display
-      mako # notification daemon
-    ];
-
     # enable sway window manager
     programs.sway = {
       enable = true;
       wrapperFeatures.base = true;
       wrapperFeatures.gtk = true;
+
+      extraPackages = with pkgs; [
+        wdisplays # display configuration
+        kanshi # display configuration
+        dbus # make dbus-update-activation-environment available in the path
+        dbus-sway-environment
+        configure-gtk
+        xdg-utils # for opening default programs when clicking links
+        glib # gsettings
+        colloid-gtk-theme # gtk theme
+        colloid-icon-theme # icon theme
+        gnome3.adwaita-icon-theme # default gnome cursor theme
+        flameshot # screenshot functionality
+        eww-wayland # eww wayland client
+        wlogout # logout functionality
+        wl-clipboard # clipboard functionality
+        wlrctl # wayland command line utility for wlroots compositors
+        bemenu # wayland clone of dmenu
+        swayosd # on screen display
+        mako # notification daemon
+      ];
     };
 
     # xdg-desktop-portal works by exposing a series of D-Bus interfaces
