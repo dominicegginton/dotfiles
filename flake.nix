@@ -2,9 +2,10 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11"; # The stable Nixpkgs channel
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # The unstable Nixpkgs channel
-    srvos.url = "github:nix-community/srvos"; # Nix profiles for servers
     disko.url = "github:nix-community/disko"; # Declarative disk partitioning
+    impermanence.url = "github:nix-community/impermanence"; # Modules to help handle persistant state with ephemeral root store
     nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Collection of NixOS modules covering hardware quirks
+    srvos.url = "github:nix-community/srvos"; # Nix profiles for servers
     nix-darwin.url = "github:lnl7/nix-darwin"; # Nix modules of darwin
     sops-nix.url = "github:Mic92/sops-nix"; # Atomic secrets management
     home-manager.url = "github:nix-community/home-manager/release-23.11"; # Manage user environment using Nix
