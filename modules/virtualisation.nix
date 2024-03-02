@@ -25,10 +25,11 @@ in {
 
       vmVariant = mkIf cfg.vmVariant {
         users.groups.nixosvmtest = {};
-        users.users.nixvmtest = {
-          description = "NixOS Test User";
+
+        users.users.nix = {
+          description = "NixOS VM Test User";
           isNormalUser = true;
-          initialPassword = "test";
+          initialPassword = "";
           group = "nixosvmtest";
         };
 
