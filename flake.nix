@@ -1,24 +1,16 @@
 {
   inputs = {
-    #######################################
-    ############# NIXOS PKGS ##############
-    #######################################
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-
-    #######################################
-    ############### MODULES ###############
-    #######################################
-    srvos.url = "github:nix-community/srvos";
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-hardware.url = "github:nixos/nixos-hardware/master";
-    nix-darwin.url = "github:lnl7/nix-darwin";
-    sops-nix.url = "github:Mic92/sops-nix";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
-    alejandra.url = "github:kamadorueda/alejandra/3.0.0";
-    nix-colors.url = "github:misterio77/nix-colors";
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11"; # The stable Nixpkgs channel
+    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable"; # The unstable Nixpkgs channel
+    srvos.url = "github:nix-community/srvos"; # Nix profiles for servers
+    disko.url = "github:nix-community/disko"; # Declarative disk partitioning
+    nixos-hardware.url = "github:nixos/nixos-hardware/master"; # Collection of NixOS modules covering hardware quirks
+    nix-darwin.url = "github:lnl7/nix-darwin"; # Nix modules of darwin
+    sops-nix.url = "github:Mic92/sops-nix"; # Atomic secrets management
+    home-manager.url = "github:nix-community/home-manager/release-23.11"; # Manage user environment using Nix
+    nix-colors.url = "github:misterio77/nix-colors"; # Modules and schemes to for themeing with Nix
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay"; # Neovim nightly builds overlay
+    alejandra.url = "github:kamadorueda/alejandra/3.0.0"; # Nix code formatter
   };
 
   outputs = inputs @ {
@@ -28,18 +20,14 @@
     ...
   }: let
     inherit (self) inputs outputs;
+
+    # State version.
+    # This is used to ensure that the state is compatible with the current version of the configuration.
+    # SEE: https://search.nixos.org/options?channel=unstable&show=system.stateVersion&from=0&size=50&sort=relevance&type=packages&query=stateVersion
     stateVersion = "23.11";
+
     libx = import ./lib {inherit inputs outputs stateVersion;};
     overlays = import ./overlays {inherit inputs;};
-  in {
-    #######################################
-    ############# overlays ################
-    #######################################
-    overlays = overlays;
-
-    #######################################
-    ############# packages ################
-    #######################################
     packages = libx.forAllPlatforms (
       platform:
         import nixpkgs {
@@ -53,17 +41,83 @@
           ];
         }
     );
+  in {
+    # Overlays.
+    overlays = overlays;
 
-    #######################################
-    ############# FORMATTER ###############
-    #######################################
+    # Packages with overlays applied.
+    #
+    # - `nix run .#<package>` run a package (locally from flake directory).
+    # - `nix run github:dominicegginton/dotfiles#<package>` run a package.
+    # - `nix build github:dominicegginton/dotfiles#<package>` build a package.
+    # - `nix shell github:dominicegginton/dotfiles#<package>` enter a shell with a package.
+    packages = packages;
+
+    # Nix code formatter.
+    #
+    # - `nix fmt` run the formatter on this workspace (locally from flake directory).
     formatter =
       libx.forAllPlatforms (platform:
         self.packages.${platform}.alejandra);
 
-    #######################################
-    ############# SHELLS ##################
-    #######################################
+    # Nix flake templates.
+    #
+    # - `nix flake new -t github:dominicegginton/dotfiles#<template>` create a new flake from a template.
+    templates = {
+      minimal = {
+        path = ./templates/minimal;
+        description = "Minimal boilerplate";
+      };
+    };
+
+    # NixOS host configurations.
+    nixosConfigurations = {
+      iso-console = libx.mkNixosConfiguration {
+        hostname = "iso-console";
+        username = "nixos";
+        role = "iso";
+        installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
+      };
+
+      latitude-7390 = libx.mkNixosConfiguration {
+        hostname = "latitude-7390";
+        username = "dom";
+        role = "workstation";
+        desktop = "sway";
+      };
+    };
+
+    # NixDarwin host configurations.
+    darwinConfigurations = {
+      MCCML44WMD6T = libx.mkDarwinConfiguration {
+        hostname = "MCCML44WMD6T";
+        username = "dom.egginton";
+      };
+    };
+
+    # Home configurations.
+    homeConfigurations = {
+      "dom@latitude-7390" = libx.mkHomeConfiguration {
+        hostname = "latitude-7390";
+        username = "dom";
+        desktop = "sway";
+      };
+      "dom@burbage" = libx.mkHomeConfiguration {
+        hostname = "burbage";
+        username = "dom";
+      };
+      "dom.egginton@MCCML44WMD6T" = libx.mkHomeConfiguration {
+        hostname = "MCCML44WMD6T";
+        username = "dom.egginton";
+        platform = "x86_64-darwin";
+      };
+    };
+
+    # Dev shells.
+    #
+    # - `nix develop` enter the default development shell for this workspace (locally from flake directory).
+    # - `nix develop .#<shell>` enter a development shell (locally from flake directory).
+    # - `nix develop github:dominicegginton/dotfiles#<shell>` enter a development shell.
     devShells = libx.forAllPlatforms (
       platform: let
         pkgs = self.packages.${platform};
@@ -73,61 +127,36 @@
           gitAndTools.git-lfs
           gh
         ];
+
+        workspace = import ./shells/workspace.nix {
+          inherit
+            inputs
+            pkgs
+            baseDevPkgs
+            platform
+            ;
+        };
       in {
-        default = import ./shells/workspace.nix {inherit inputs pkgs baseDevPkgs platform;};
-        workspace = import ./shells/workspace.nix {inherit inputs pkgs baseDevPkgs platform;};
-        web = import ./shells/web.nix {inherit inputs pkgs baseDevPkgs platform;};
-        python = import ./shells/python.nix {inherit inputs pkgs baseDevPkgs platform;};
+        inherit workspace;
+
+        default = workspace;
+        web = import ./shells/web.nix {
+          inherit
+            inputs
+            pkgs
+            baseDevPkgs
+            platform
+            ;
+        };
+        python = import ./shells/python.nix {
+          inherit
+            inputs
+            pkgs
+            baseDevPkgs
+            platform
+            ;
+        };
       }
     );
-
-    #######################################
-    ############# TEMPLATES ###############
-    #######################################
-    templates = {
-      minimal = {
-        path = ./templates/minimal;
-        description = "Minimal boilerplate";
-      };
-    };
-
-    #######################################
-    ############# HOSTS ###################
-    #######################################
-    nixosConfigurations.iso-console = libx.mkNixosConfiguration {
-      hostname = "iso-console";
-      username = "nixos";
-      role = "iso";
-      installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
-    };
-    nixosConfigurations.latitude-7390 = libx.mkNixosConfiguration {
-      hostname = "latitude-7390";
-      username = "dom";
-      role = "workstation";
-      desktop = "sway";
-    };
-    darwinConfigurations.MCCML44WMD6T = libx.mkDarwinConfiguration {
-      hostname = "MCCML44WMD6T";
-      username = "dom.egginton";
-    };
-
-    #######################################
-    ######## HOME CONFIGURATIONS ##########
-    #######################################
-    homeConfigurations."dom@latitude-7390" = libx.mkHomeConfiguration {
-      hostname = "latitude-7390";
-      username = "dom";
-      desktop = "sway";
-    };
-    homeConfigurations."dom@burbage" = libx.mkHomeConfiguration {
-      hostname = "burbage";
-      username = "dom";
-    };
-    homeConfigurations."dom.egginton@MCCML44WMD6T" = libx.mkHomeConfiguration {
-      hostname = "MCCML44WMD6T";
-      username = "dom.egginton";
-      desktop = "quartz";
-      platform = "x86_64-darwin";
-    };
   };
 }
