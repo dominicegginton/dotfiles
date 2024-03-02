@@ -11,6 +11,7 @@ NixOS / NixDarwin / HomeManager / SopsNix
 
 - **Nix Flakes** 100% Nix Flakes based configuration, no Nix channels.
 - **Disk Management** Declerative disk management using Disko.
+- **System Impermenace** Ephemeral root file systems with decarative persistant state.
 - **Encrypted Secrets** Stored configuration secrets are encrypted using SopsNix.
 - **User Home Environments** Reproducible user home environments using HomeManager.
 - **MacOS Hosts** NixDarwin provides support for MacOS hosts.
