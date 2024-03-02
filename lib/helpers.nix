@@ -33,7 +33,7 @@ in {
       };
 
       modules =
-        [../hosts/nixos]
+        [../hosts/nixos.nix]
         ++ (inputs.nixpkgs.lib.optionals (installer != null) [installer]);
     };
 
@@ -50,10 +50,9 @@ in {
           username
           stateVersion
           ;
-        desktop = "quartz";
         platform = "x86_64-darwin";
       };
-      modules = [../hosts/darwin];
+      modules = [../hosts/darwin.nix];
     };
 
   mkHomeConfiguration = {

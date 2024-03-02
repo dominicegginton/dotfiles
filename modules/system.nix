@@ -7,6 +7,7 @@
   ...
 }:
 with lib; let
+  inherit (pkgs.stdenv) isLinux isDarwin;
   cfg = config.modules.system;
 in {
   options.modules.system = {
@@ -57,10 +58,20 @@ in {
       optimise.automatic = true;
       package = pkgs.nix;
       settings = {
-        auto-optimise-store = true;
+        # Set auto optimise store to false on darwin
+        # to avoid the issue with the store being locked
+        # and causing nix to hang when trying to build
+        # a derivation. This is a temporary fix until
+        # the issue is resolved in nix.
+        # SEE: https://github.com/NixOS/nix/issues/7273
+        auto-optimise-store =
+          if isDarwin
+          then false
+          else true;
         experimental-features = ["nix-command" "flakes"];
         keep-outputs = true;
         keep-derivations = true;
+        keep-going = true;
         warn-dirty = true;
       };
     };
@@ -78,7 +89,7 @@ in {
       ];
     };
 
-    boot = {
+    boot = mkIf isLinux {
       consoleLogLevel = 0;
       initrd.verbose = false;
       kernelModules = ["vhost_vsock"];
@@ -101,8 +112,8 @@ in {
       };
     };
 
-    i18n.defaultLocale = cfg.location;
-    i18n.extraLocaleSettings = {
+    i18n.defaultLocale = mkIf isLinux cfg.location;
+    i18n.extraLocaleSettings = mkIf isLinux {
       LC_ADDRESS = cfg.location;
       LC_IDENTIFICATION = cfg.location;
       LC_MEASUREMENT = cfg.location;
@@ -113,7 +124,7 @@ in {
       LC_TELEPHONE = cfg.location;
       LC_TIME = cfg.location;
     };
-    time.timeZone = cfg.timezone;
+    time.timeZone = mkIf isLinux cfg.timezone;
 
     documentation = {
       enable = true;
@@ -123,18 +134,18 @@ in {
       doc.enable = lib.mkDefault false;
     };
 
-    security = {
+    security = mkIf isLinux {
       sudo.enable = true;
       polkit.enable = true;
       rtkit.enable = true;
     };
 
-    services.xserver.layout = cfg.keyboardLayout;
-    services.dbus.enable = true;
-    services.smartd.enable = true;
-    services.thermald.enable = true;
+    services.xserver.layout = mkIf isLinux cfg.keyboardLayout;
+    services.dbus.enable = mkIf isLinux true;
+    services.smartd.enable = mkIf isLinux true;
+    services.thermald.enable = mkIf isLinux true;
 
-    system.stateVersion = cfg.stateVersion;
+    system.activationScripts.enebale = mkIf isDarwin true;
     system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
@@ -142,32 +153,37 @@ in {
       '';
     };
 
-    environment = {
-      systemPackages = with pkgs; [
-        gitMinimal # git
-        vim # vim
-        home-manager # home-manager
-        unzip # unzip utility
-        usbutils # usb utilities
-        wget # http client
-        htop-vim # system monitor
-        btop # better system monitor
-        nvme-cli # nvme command line interface
-        smartmontools # control and monitor stroage systems
-        rebuild-host
-        rebuild-home
-        rebuild-configuration
-        upgrade-configuration
-        cleanup-trash
-        shutdown-host
-        reboot-host
-        suspend-host
-        hibernate-host
-      ];
+    system.stateVersion = cfg.stateVersion;
 
+    environment = {
       variables.EDITOR = "vim";
       variables.SYSTEMD_EDITOR = "vim";
       variables.VISUAL = "vim";
+
+      systemPackages = with pkgs;
+        [
+          gitMinimal # git
+          vim # vim
+          home-manager # home-manager
+          unzip # unzip utility
+          wget # http client
+          htop-vim # system monitor
+          btop # better system monitor
+          rebuild-host
+          rebuild-home
+          rebuild-configuration
+          upgrade-configuration
+          cleanup-trash
+          shutdown-host
+          reboot-host
+          suspend-host
+          hibernate-host
+        ]
+        ++ optionals isLinux [
+          usbutils # usb utilities
+          nvme-cli # nvme command line interface
+          smartmontools # control and monitor stroage systems
+        ];
     };
   };
 }

@@ -26,6 +26,7 @@ This workspace follows the following structure:
 ├── home            # Home manager configurations
 ├── hosts           # Host NixOS and NixDarwin configurations
 ├── lib             # Nix module helpers
+├── modules         # Nix modules
 ├── overlays        # Nix package overlays
 ├── pkgs            # Nix packages
 ├── scripts         # Scripts
