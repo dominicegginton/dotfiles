@@ -36,6 +36,10 @@
   modules.system.stateVersion = stateVersion;
   modules.system.nixpkgs.hostPlatform = platform;
   modules.system.nixpkgs.allowUnfree = true;
+  modules.system.nixpkgs.permittedInsecurePackages = [
+    "libav-11.12" # for mmfm
+    "mupdf-1.17.0" # for mmfm
+  ];
   modules.sops.enable = true;
   modules.networking.enable = true;
   modules.networking.hostname = hostname;

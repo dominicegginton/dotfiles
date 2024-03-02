@@ -75,6 +75,7 @@ in {
         bemenu # wayland clone of dmenu
         swayosd # on screen display
         mako # notification daemon
+        mmfm # file manager
       ];
     };
 

@@ -29,6 +29,12 @@ in {
       description = "Allow unfree packages to be installed";
     };
 
+    nixpkgs.permittedInsecurePackages = mkOption {
+      type = types.listOf types.str;
+      default = [];
+      description = "Permitted insecure packages to be installed";
+    };
+
     location = mkOption {
       type = types.str;
       default = "en_GB.utf8";
@@ -81,6 +87,7 @@ in {
       config.allowUnfree = cfg.nixpkgs.allowUnfree;
       config.allowUnfreePredicate = cfg.nixpkgs.allowUnfree;
       config.joypixels.acceptLicense = cfg.nixpkgs.allowUnfree;
+      config.permittedInsecurePackages = cfg.nixpkgs.permittedInsecurePackages;
       overlays = [
         outputs.overlays.additions
         outputs.overlays.modifications
