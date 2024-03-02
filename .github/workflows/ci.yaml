@@ -4,26 +4,25 @@ on:
     branches: [main]
 
 jobs:
-  check-flake:
+  flake-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: DeterminateSystems/flake-checker-action@main
-  checks:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        fail-fast: [false]
-        os: [ubuntu-latest, macos-latest]
+  linux-checks:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
-        if: matrix.os == 'ubuntu-latest'
       - run: nix build .#nixosConfigurations.iso-console.config.system.build.toplevel
-        if: matrix.os == 'ubuntu-latest'
+  darwin-checks:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: nix build .#darwinConfigurations.MCCML44WMD6T.config.system.build.toplevel
-        if: matrix.os == 'macos-latest'
