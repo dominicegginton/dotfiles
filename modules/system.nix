@@ -172,6 +172,7 @@ in {
           gitMinimal # git
           vim # vim
           home-manager # home-manager
+          killall # killall processes utility
           unzip # unzip utility
           wget # http client
           htop-vim # system monitor
