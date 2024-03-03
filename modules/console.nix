@@ -36,6 +36,7 @@ in {
     environment.systemPackages = with pkgs;
       [
         git # Source control
+        fzf # Fuzzy finder
       ]
       ++ optionals isLinux [
         pinentry # GPG passphrase prompt

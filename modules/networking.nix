@@ -5,8 +5,9 @@
   ...
 }:
 with lib; let
-  cfg = config.modules.networking;
   inherit (pkgs.stdenv) isLinux;
+
+  cfg = config.modules.networking;
 in {
   options.modules.networking = {
     enable = mkEnableOption "networking";
@@ -66,6 +67,13 @@ in {
     };
 
     services.tailscale.enable = mkIf cfg.tailscale true;
-    environment.systemPackages = mkIf cfg.tailscale [pkgs.tailscale];
+    environment.systemPackages =
+      []
+      ++ optionals cfg.tailscale [
+        pkgs.tailscale # Tailscale CLI
+      ]
+      ++ optionals (cfg.wireless && config.modules.desktop.enable) [
+        pkgs.wpa_supplicant_gui # GUI for WPA supplicant
+      ];
   };
 }

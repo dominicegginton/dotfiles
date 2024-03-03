@@ -13,6 +13,5 @@ in {
     ".gitconfig".source = ../sources/.gitconfig;
     ".gitignore".source = ../sources/.gitignore;
     ".gitmessage".source = ../sources/.gitmessage;
-    "background.jpg".source = ../sources/background.jpg;
   };
 }
