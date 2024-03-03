@@ -57,7 +57,7 @@ in {
       wrapperFeatures.gtk = true;
 
       extraPackages = with pkgs; [
-        wdisplays # display configuration
+        nwg-displays # display configuration
         kanshi # display configuration
         dbus # make dbus-update-activation-environment available in the path
         dbus-sway-environment
@@ -72,10 +72,10 @@ in {
         wlogout # logout functionality
         wl-clipboard # clipboard functionality
         wlrctl # wayland command line utility for wlroots compositors
-        bemenu # wayland clone of dmenu
-        swayosd # on screen display
         mako # notification daemon
         mmfm # file manager
+        swayimg # image viewer
+        mpvpaper # video wallpaper
       ];
     };
 
