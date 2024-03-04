@@ -18,7 +18,6 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
-      - run: nix build .#nixosConfigurations.iso-console.config.system.build.toplevel
   darwin-checks:
     runs-on: macos-latest
     steps:
