@@ -113,7 +113,7 @@ in {
         "net.core.default_qdisc" = "fq";
         "net.ipv4.tcp_congestion_control" = "bbr";
       };
-      plymouth = mkIf config.modules.desktop.enable {
+      plymouth = mkIf (isLinux && config.modules.desktop.enable) {
         enable = true;
         theme = "spinner";
       };
