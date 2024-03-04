@@ -10,13 +10,13 @@ NixOS / NixDarwin / HomeManager / SopsNix
 ## Features
 
 - **Nix Flakes** 100% Nix Flakes based configuration, no Nix channels.
-- **Disk Management** Declerative disk management using Disko.
+- **Disk Management** Declarative disk management using Disko.
 - **Encrypted Secrets** Stored configuration secrets are encrypted using SopsNix.
 - **User Home Environments** Reproducible user home environments using HomeManager.
 - **MacOS Hosts** NixDarwin provides support for MacOS hosts.
 - **Continuous Integration** Backed by continuous integration workflows on GitHub Actions runners.
 - **Nix Dev Shells** Reproducible environments for common tools and tasks.
-- **Flake Templates** Easily create new Nix Flakes using templtes for common cases.
+- **Flake Templates** Easily create new Nix Flakes using templates for common cases.
 
 ## Workspace
 
@@ -79,7 +79,7 @@ This workspace defines the following hosts:
 
 ## Packages
 
-The worksapce includes definitions for the following packages:
+The workspace includes definitions for the following packages:
 
 <table>
     <tr>
@@ -104,7 +104,7 @@ The worksapce includes definitions for the following packages:
     </tr>
     <tr>
         <td>rebuild-iso-console</td>
-        <td>Rebuilds the nixos iso configuration</td>
+        <td>Rebuilds the NixOS ISO configuration</td>
     </tr>
     <tr>
         <td>shutdown-host</td>
@@ -155,6 +155,10 @@ Reproducible development shell environments are provided for the following commo
 
 ![2024-02-24_09-50](https://github.com/dominicegginton/dotfiles/assets/28626241/658cfb6d-96aa-4692-ad0e-891c7a081a60)
 
+<p align="center">
+    <sub>Last Updated: 2024-02-24</sub>
+</p>
+
 ## Documentation
 
 #### Creating a new NixOS Host
@@ -184,7 +188,7 @@ To reinstall an existing NixOS host on a new target computer, use the following 
 To reinstall an existing NixDarwin host, use the following steps:
 
 > [!NOTE]
-> Installing Nix on MacOS will create an seperate volume that will exceed many gigabytes in size.
+> Installing Nix on MacOS will create a separate volume exceeding many gigabytes in size.
 
 1. Install the [Nix package manager](https://nixos.org/download#nix-install-macos).
 2. Clone this repository to `~/.dotfiles`.
@@ -206,6 +210,6 @@ Coming Soon
 #### Upgrading this Flake
 
 GitHub Actions workflows are used to automatically update the flake inputs
-weekly. A pull request is made and the CI workflow will build a virual machine
-or top level configuration to ensure that upgraded flake inputs result in
+weekly. A pull request is made and the CI workflow will build a virtual machine
+or top-level configuration to ensure that upgraded flake inputs result in
 successful builds.
