@@ -40,7 +40,7 @@ in {
     };
   };
 
-  congig = mkIf cfg.enable {
+  config = mkIf cfg.enable {
     homebrew.enable = true;
     homebrew.onActivation.autoUpdate = mkIf cfg.autoUpdate true;
     homebrew.onActivation.cleanup = "zap";
