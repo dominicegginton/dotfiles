@@ -14,6 +14,7 @@ vim.keymap.set('n', '<leader>/', mini_pick.builtin.grep, { desc = 'Find In Buffe
 vim.keymap.set('n', '<leader>fo', mini_pick.builtin.files, { desc = 'Find File' })
 vim.keymap.set('n', '<leader>fg', mini_pick.builtin.grep_live, { desc = 'Find In Files (live grep)' })
 vim.keymap.set('n', '<leader>fG', mini_pick.builtin.grep, { desc = 'Find In Files (grep)' })
+vim.keymap.set('n', '<leader>fb', mini_pick.builtin.buffers, { desc = 'Find Buffer' })
 vim.keymap.set('n', '<leader>fh', mini_pick.builtin.help, { desc = 'Find Help' })
 vim.keymap.set('n', '<leader>fr', mini_pick.builtin.resume, { desc = 'Resume Picker' })
 
