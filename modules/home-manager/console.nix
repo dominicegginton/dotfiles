@@ -117,27 +117,31 @@ in {
         viAlias = true;
         vimAlias = true;
         extraPackages = with pkgs; [
-          nodejs-slim
-          gcc
-          zig
-          ripgrep
-          tree-sitter
-          rnix-lsp
-          terraform-lsp
-          lua-language-server
-          nodePackages.vim-language-server
-          nodePackages.bash-language-server
-          nodePackages.yaml-language-server
-          nodePackages.dockerfile-language-server-nodejs
+          ripgrep # Fast search tool
+          fd # Fast search tool
+          fzf # Fuzzy finder
+          nodejs-slim # Node.js runtime
           nodePackages.typescript
-          nodePackages.typescript-language-server
-          nodePackages.vscode-langservers-extracted
-          nodePackages."@angular/cli"
-          nodePackages.pyright
-          prettierd
-          eslint_d
-          rust-analyzer
-          stylua
+          gcc # C compiler
+          rustc # Rust compiler
+          cargo # Rust package manager
+          zig # Zig programming language
+          tree-sitter # Parser generator tool and incremental parsing library
+          rnix-lsp # Nix language server
+          rust-analyzer # Rust language server
+          terraform-lsp # Terraform language server
+          lua-language-server # Lua language server
+          nodePackages.vim-language-server # Vim language server
+          nodePackages.bash-language-server # Bash language server
+          nodePackages.yaml-language-server # YAML language server
+          nodePackages.dockerfile-language-server-nodejs # Dockerfile language server
+          nodePackages.typescript-language-server # TypeScript language server
+          nodePackages.vscode-langservers-extracted # VSCode language servers (HTML, CSS, JSON, etc.)
+          nodePackages."@angular/cli" # Angular CLI (including language server)
+          nodePackages.pyright # Python language server
+          prettierd # Prettier
+          eslint_d # ESLint
+          stylua # Lua formatter
         ];
       };
 
