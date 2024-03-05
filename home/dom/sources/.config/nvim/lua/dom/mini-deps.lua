@@ -26,12 +26,16 @@ add('echasnovski/mini.extra') -- Extra 'mini.nvim' functionality
 add('ray-x/guihua.lua') -- GUI for FZF
 add('muniftanjim/nui.nvim') -- UI components
 add('stevearc/dressing.nvim') -- UI components
+add('ibhagwan/fzf-lua') -- FZF
 
 -- Language Server Protocol and Syntax Highlighting
 add('neovim/nvim-lspconfig') -- LSP configuration
-add({ source = 'nvim-treesitter/nvim-treesitter', hooks = {
-  post_checkout = function() vim.cmd('TSUpdate') end,
-} }) -- Treesitter configurations
+add({
+  source = 'nvim-treesitter/nvim-treesitter',
+  hooks = {
+    post_checkout = function() vim.cmd('TSUpdate') end,
+  },
+}) -- Treesitter configurations
 add('ray-x/navigator.lua') -- Code analysis & navigation
 add('VidocqH/lsp-lens.nvim') -- Render references and document symbols
 
@@ -87,3 +91,5 @@ add('echasnovski/mini.jump2d') -- Jump within visible lines
 add('echasnovski/mini.bracketed') -- Go forward/backward with square brackets
 add('echasnovski/mini.surround') -- Surround actions
 add('echasnovski/mini.visits') -- Track and reuse file system visits
+add('pwntester/octo.nvim') -- GitHub integration
+add('AckslD/nvim-neoclip.lua') -- Clipboard manager
