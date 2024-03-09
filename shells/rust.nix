@@ -6,9 +6,10 @@
 pkgs.mkShell rec {
   inherit NIX_CONFIG;
 
-  nativeBuildInputs = with pkgs; [
-    rustc # Rust compiler
-    cargo # Rust package manager
-  ]
-  ++ developmentPkgs;
+  nativeBuildInputs = with pkgs;
+    [
+      rustc # Rust compiler
+      cargo # Rust package manager
+    ]
+    ++ developmentPkgs;
 }
