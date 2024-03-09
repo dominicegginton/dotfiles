@@ -19,6 +19,7 @@ with lib; let
     executable = true;
 
     text = ''
+      systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
       dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=sway
       systemctl --user stop pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
       systemctl --user start pipewire pipewire-media-session xdg-desktop-portal xdg-desktop-portal-wlr
@@ -68,10 +69,10 @@ in {
         colloid-icon-theme # icon theme
         gnome3.adwaita-icon-theme # default gnome cursor theme
         flameshot # screenshot functionality
-        eww-wayland # eww wayland client
-        wlogout # logout functionality
+        slurp # select a region of the screen
         wl-clipboard # clipboard functionality
         wlrctl # wayland command line utility for wlroots compositors
+        libnotify # notification daemon
         mako # notification daemon
         mmfm # file manager
         swayimg # image viewer
@@ -91,6 +92,7 @@ in {
       extraPortals = with pkgs; [
         xdg-desktop-portal-wlr
         xdg-desktop-portal-gtk
+        xdg-desktop-portal
       ];
     };
 

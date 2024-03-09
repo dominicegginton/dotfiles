@@ -48,15 +48,15 @@ in {
           "${super}+Shift+e" = "exit";
           "${super}+Shift+c" = "reload";
           "${super}+Shift+q" = "kill";
-          "${super}+Shift+Escape" = "exec wlogout";
+          "${super}+Shift+Escape" = "exec ${pkgs.wlogout}/bin/wlogout";
           "${super}+Return" = "exec ${pkgs.alacritty}/bin/alacritty";
           "${super}+d" = "exec ${pkgs.kickoff}/bin/kickoff";
-          "XF86MonBrightnessDown" = "exec light -U 10";
-          "XF86MonBrightnessUp" = "exec light -A 10";
-          "XF86AudioRaiseVolume" = "exec 'pactl set-sink-volume @DEFAULT_SINK@ +5%'";
-          "XF86AudioLowerVolume" = "exec 'pactl set-sink-volume @DEFAULT_SINK@ -5%'";
-          "XF86AudioMute" = "exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'";
-          "XF86AudioMicMute" = "exec 'pactl set-source-mute @DEFAULT_SOURCE@ toggle'";
+          "XF86MonBrightnessDown" = "exec ${pkgs.light}/bin/light -U 10";
+          "XF86MonBrightnessUp" = "exec ${pkgs.light}/bin/light -A 10";
+          "XF86AudioRaiseVolume" = "exec '${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%'";
+          "XF86AudioLowerVolume" = "exec '${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%'";
+          "XF86AudioMute" = "exec '${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle'";
+          "XF86AudioMicMute" = "exec '${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle'";
           "Print" = "exec ${pkgs.flameshot}/bin/flameshot gui";
           "${super}+m" = "bar mode toggle";
           "${super}+n" = "exec '[ \"$(swaymsg -t get_bar_config bar-0 | ${pkgs.jq}/bin/jq -r \".mode\")\" = \"dock\" ] && swaymsg bar mode invisible || swaymsg bar mode dock'";
@@ -65,30 +65,30 @@ in {
           "${super}+Control+Shift+Down" = "move workspace to output down";
           "${super}+Control+Shift+Up" = "move workspace to output up";
         };
-        window = {
+        window = mkOptionDefault {
           border = 2;
           titlebar = false;
           hideEdgeBorders = "smart";
         };
         startup = [
-          {command = "dbus-sway-environment";}
-          {command = "configure-gtk";}
-          {command = "${pkgs.mako}/bin/mako";}
-          {command = "${pkgs.swaynag-battery}/bin/swaynag-battery --treshold 20";}
-          {command = "systemctl --user start kanshi.service";}
-          {command = "systemctl --user start mako.service";}
-          {command = "blueman-applet";}
-          {command = "${pkgs.swaybg}/bin/swaybg --image ${./background.jpg} --mode 'fill' --output '*'";}
+          {command = "dbus-sway-environment";} # Set environment variables and start dbus
+          {command = "configure-gtk";} # Set and configure GTK theme
+          {command = "${pkgs.swaynag-battery}/bin/swaynag-battery --treshold 20";} # Start battery notification daemon
+          {command = "systemctl --user start kanshi.service";} # Start display configuration daemon
+          {command = "systemctl --user start mako.service";} # Start notification daemon
+          {command = "blueman-applet";} # Start bluetooth applet for system tray
+          {command = "${pkgs.wl-clipboard}/bin/wl-copy -t text --watch clipman store --no-persist";} # Start clipboard manager
+          {command = "${pkgs.swaybg}/bin/swaybg --image ${./background.jpg} --mode 'fill' --output '*'";} # Set background image
           # {command = "${pkgs.mpvpaper}/bin/mpvpaper --fork -o 'no-audio loop script-opts=ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp' -l background '*' 'https://www.youtube.com/watch?v='";}
         ];
-        floating = {
+        floating = mkOptionDefault {
           titlebar = true;
           criteria = [
             {class = "Pavucontrol";}
             {class = "Blueman-manager";}
           ];
         };
-        colors = {
+        colors = mkOptionDefault {
           focused = {
             background = "#58f785";
             border = "#58f785";
@@ -120,9 +120,6 @@ in {
           background = "#666666";
         };
       };
-      extraConfig = ''
-        # output * bg ~/background.jpg fill
-      '';
     };
 
     # I3status-rust configuration.
@@ -147,6 +144,9 @@ in {
       };
     };
 
+    # Swaylock configuration.
+    # `swaylock` is a screen locker for Wayland.
+    # It is called by `wlogout` to lock the screen.
     programs.swaylock = {
       enable = true;
       settings = {

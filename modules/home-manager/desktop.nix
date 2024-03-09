@@ -50,6 +50,68 @@ in {
       "*color15" = "#e9e9e9";
     };
 
+    programs.alacritty = {
+      enable = true;
+      settings = {
+        window = {
+          dynamic_padding = false;
+          padding = {
+            x = 0;
+            y = 0;
+          };
+          decoration_theme_variant = "Dark";
+        };
+        scrolling = {
+          history = 10000;
+          multiplier = 3;
+        };
+        font = let
+          family = "JetBrains Mono";
+        in {
+          normal = {
+            inherit family;
+            style = "Regular";
+          };
+          bold = {
+            inherit family;
+            style = "Bold";
+          };
+          italic = {
+            inherit family;
+            style = "Italic";
+          };
+          bold_italic = {
+            inherit family;
+            style = "Bold Italic";
+          };
+          size = 12;
+        };
+        selection = {save_to_clipboard = true;};
+        key_bindings = [
+          {
+            key = "H";
+            mods = ["Alt"];
+            chars = "\x1bh";
+          }
+          {
+            key = "J";
+            mods = ["Alt"];
+            chars = "\x1bj";
+          }
+          {
+            key = "K";
+            mods = ["Alt"];
+            chars = "\x1bk";
+          }
+          {
+            key = "L";
+            mods = ["Alt"];
+            chars = "\x1bl";
+          }
+        ];
+      };
+    };
+
     fonts.fontconfig.enable = true;
 
     xdg.mimeApps.defaultApplications = mkIf cfg.firefox {
