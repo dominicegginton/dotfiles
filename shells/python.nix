@@ -1,18 +1,18 @@
 {
-  inputs,
+  NIX_CONFIG,
   pkgs,
-  baseDevPkgs,
-  platform,
+  developmentPkgs ? [],
 }:
 pkgs.mkShell rec {
-  NIX_CONFIG = "experimental-features = nix-command flakes";
+  inherit NIX_CONFIG;
+
   nativeBuildInputs = with pkgs;
-    baseDevPkgs
-    ++ [
+    [
       python39
       python39Packages.pip
       python39Packages.virtualenv
-    ];
+    ]
+    ++ developmentPkgs;
 
   # Shell hook to create a virtual environment if one does not exist
   # and activate it upon entering the shell.

@@ -78,7 +78,6 @@
     # `nixos-rebuild switch --flake .#<configuration>` build the configuration, make it the default boot grub entry and activate it
     # `nixos-rebuild build-vm --flake .#<configuration>` build the configuration as a virtual machine
     nixosConfigurations = {
-
       # ISO Console.
       # Used for installing NixOS.
       iso-console = libx.mkNixosConfiguration {
@@ -106,7 +105,6 @@
     # `darwin-rebuild test --flake .#<configuration>` build and activate the configuration
     # `darwin-rebuild switch --flake .#<configuration>` build the configuration and activate it
     darwinConfigurations = {
-
       # MCCML44WMD6T.
       # Work provided system.
       MCCML44WMD6T = libx.mkDarwinConfiguration {
@@ -121,7 +119,6 @@
     # Usage:
     # `home-manager switch --flake .#<configuration>` build the configuration and activate it
     homeConfigurations = {
-
       # dom#latitude-7390.
       # Personal user account configuration for latitude-7390.
       "dom@latitude-7390" = libx.mkHomeConfiguration {
@@ -160,36 +157,12 @@
     # Usage: `nix develop github:dominicegginton/dotfiles#<shell>`
     devShells = libx.forAllPlatforms (
       platform: let
+        # Packages.
+        # All the packages that are available in this workspace
+        # for the current platform.
         pkgs = self.packages.${platform};
-        baseDevPkgs = with pkgs; [
-          git
-          gitAndTools.git-crypt
-          gitAndTools.git-lfs
-          gh
-        ];
-
-        workspace = import ./shells/workspace.nix {
-          inherit
-            inputs
-            pkgs
-            baseDevPkgs
-            platform
-            ;
-        };
-      in {
-        inherit workspace;
-
-        default = workspace;
-        web = libx.mkShell {shell = "web";};
-        python = import ./shells/python.nix {
-          inherit
-            inputs
-            pkgs
-            baseDevPkgs
-            platform
-            ;
-        };
-      }
+      in
+        import ./shells {inherit inputs pkgs platform;}
     );
   };
 }

@@ -1,7 +1,8 @@
 {
   inputs,
+  NIX_CONFIG,
   pkgs,
-  baseDevPkgs,
+  developmentPkgs ? [],
   platform,
 }: let
   inherit
@@ -12,23 +13,21 @@
     ;
 in
   pkgs.mkShell rec {
-    NIX_CONFIG = "experimental-features = nix-command flakes";
+    inherit NIX_CONFIG;
+
+    # Set the default PGP key directory to
+    # be used by sops. This is the directory
+    # where the public PGP keys are stored.
     sopsPGPKeyDirs = [".keys"];
+
     nativeBuildInputs = with pkgs;
-      baseDevPkgs
-      ++ [
-        nix
-        home-manager
-        ssh-to-pgp
-        sops
-        sops-import-keys-hook
-        ssh-to-pgp
-        sops-init-gpg-key
-        rebuild-host
-        rebuild-home
-        rebuild-configuration
-        upgrade-configuration
-        rebuild-iso-console
-        gpg-import-keys
-      ];
+      [
+        nix # Nix package manager
+        home-manager # Home manager
+        ssh-to-pgp # Script to import SSH keys to GPG
+        sops # Sops secret management tool
+        sops-import-keys-hook # Sops hook to import PGP keys
+        sops-init-gpg-key # Sops hook to initialize GPG key
+      ]
+      ++ developmentPkgs;
   }
