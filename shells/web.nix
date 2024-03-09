@@ -1,13 +1,12 @@
 {
-  inputs,
+  NIX_CONFIG,
   pkgs,
   developmentPkgs ? [],
 }:
 pkgs.mkShell rec {
-  NIX_CONFIG = "experimental-features = nix-command flakes";
+  inherit NIX_CONFIG;
 
-  nativeBuildInputs = with pkgs;
-    [
+  nativeBuildInputs = with pkgs; [
       nodejs # NodeJS runtime and NPM package manager
       typescript # TypeScript compiler
       nodePackages.typescript-language-server # TypeScript language server

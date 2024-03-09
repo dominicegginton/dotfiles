@@ -22,6 +22,10 @@
   # Generic Python development environment.
   python = import ./python.nix {inherit NIX_CONFIG pkgs developmentPkgs;};
 
+  # Rust.
+  # Generic Rust development environment.
+  rust = import ./rust.nix {inherit NIX_CONFIG pkgs developmentPkgs;};
+
   # Web.
   # Generic Web development environment.
   web = import ./web.nix {inherit NIX_CONFIG pkgs developmentPkgs;};
@@ -30,7 +34,7 @@
   # Development shell for this workspace.
   workspace = import ./workspace.nix {inherit inputs NIX_CONFIG pkgs developmentPkgs platform;};
 in {
-  inherit python web workspace;
+  inherit python rust web workspace;
 
   # Set the default development shell to the workspace shell.
   default = workspace;
