@@ -27,9 +27,16 @@
     # SEE: https://search.nixos.org/options?channel=unstable&show=system.stateVersion&from=0&size=50&sort=relevance&type=packages&query=stateVersion
     stateVersion = "23.11";
 
+    # Internal Nix functions.
     libx = import ./lib {inherit inputs outputs stateVersion;};
+
+    # Workspace overlays.
     overlays = import ./overlays {inherit inputs;};
-    packages = libx.forAllPlatforms (
+
+    # Workspace packages.
+    # These are the packages that are available in this workspace.
+    # Worksapce overlays are applied to these packages.
+    pkgs = libx.forAllPlatforms (
       platform:
         import nixpkgs {
           system = platform;
@@ -42,37 +49,38 @@
           ];
         }
     );
+
+    templates = import ./templates {};
   in {
-    # Overlays.
+    # Worksapce overlays.
     overlays = overlays;
 
-    # Packages with overlays applied.
+    # Workspace packages.
+    # These packages are available in this workspace.
+    # Workspace overlays are applied to these packages.
     #
-    # - `nix run .#<package>` run a package (locally from flake directory).
-    # - `nix run github:dominicegginton/dotfiles#<package>` run a package.
-    # - `nix build github:dominicegginton/dotfiles#<package>` build a package.
-    # - `nix shell github:dominicegginton/dotfiles#<package>` enter a shell with a package.
-    packages = packages;
-
-    # Nix code formatter.
-    #
-    # - `nix fmt` run the formatter on this workspace (locally from flake directory).
-    formatter =
-      libx.forAllPlatforms (platform:
-        self.packages.${platform}.alejandra);
+    # Usegae: `nix run .#<package>` or `nix run github:dominicegginton/dotfiles#<package>`
+    packages = pkgs;
 
     # Nix flake templates.
+    # These templates are available via this workspace flake.
     #
-    # - `nix flake new -t github:dominicegginton/dotfiles#<template>` create a new flake from a template.
-    templates = {
-      minimal = {
-        path = ./templates/minimal;
-        description = "Minimal boilerplate";
-      };
-    };
+    # Usegae: `nix flake init -t github:dominicegginton/dotfiles#<template>`
+    templates = templates;
 
     # NixOS host configurations.
+    # Avaiable NixOS host configurations.
+    #
+    # Usage:
+    # `nixos-rebuild build --flake .#<configuration>` build the configuration
+    # `nixos-rebuild test --flake .#<configuration>` build and activate the configuration
+    # `nixos-rebuild boot --flake .#<configuration>` build the configuration, make it the default boot grub entry but do not activate it
+    # `nixos-rebuild switch --flake .#<configuration>` build the configuration, make it the default boot grub entry and activate it
+    # `nixos-rebuild build-vm --flake .#<configuration>` build the configuration as a virtual machine
     nixosConfigurations = {
+
+      # ISO Console.
+      # Used for installing NixOS.
       iso-console = libx.mkNixosConfiguration {
         hostname = "iso-console";
         username = "nixos";
@@ -80,6 +88,8 @@
         installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
       };
 
+      # Latitude 7390.
+      # Personal workstation.
       latitude-7390 = libx.mkNixosConfiguration {
         hostname = "latitude-7390";
         username = "dom";
@@ -89,7 +99,16 @@
     };
 
     # NixDarwin host configurations.
+    # Avaiable NixDarwin host configurations.
+    #
+    # Usage:
+    # `darwin-rebuild build --flake .#<configuration>` build the configuration
+    # `darwin-rebuild test --flake .#<configuration>` build and activate the configuration
+    # `darwin-rebuild switch --flake .#<configuration>` build the configuration and activate it
     darwinConfigurations = {
+
+      # MCCML44WMD6T.
+      # Work provided system.
       MCCML44WMD6T = libx.mkDarwinConfiguration {
         hostname = "MCCML44WMD6T";
         username = "dom.egginton";
@@ -97,16 +116,29 @@
     };
 
     # Home configurations.
+    # Avaiable home configurations.
+    #
+    # Usage:
+    # `home-manager switch --flake .#<configuration>` build the configuration and activate it
     homeConfigurations = {
+
+      # dom#latitude-7390.
+      # Personal user account configuration for latitude-7390.
       "dom@latitude-7390" = libx.mkHomeConfiguration {
         hostname = "latitude-7390";
         username = "dom";
         desktop = "sway";
       };
+
+      # dom#burbage.
+      # Personal user account configuration for burbage.
       "dom@burbage" = libx.mkHomeConfiguration {
         hostname = "burbage";
         username = "dom";
       };
+
+      # dom.egginton#MCCML44WMD6T.
+      # Work managed user account configuration for MCCML44WMD6T.
       "dom.egginton@MCCML44WMD6T" = libx.mkHomeConfiguration {
         hostname = "MCCML44WMD6T";
         username = "dom.egginton";
@@ -114,11 +146,18 @@
       };
     };
 
-    # Dev shells.
+    # Workspace formatter.
+    # Formats the worksapce using the `alejandra` package.
     #
-    # - `nix develop` enter the default development shell for this workspace (locally from flake directory).
-    # - `nix develop .#<shell>` enter a development shell (locally from flake directory).
-    # - `nix develop github:dominicegginton/dotfiles#<shell>` enter a development shell.
+    # Usage: `nix fmt`
+    formatter =
+      libx.forAllPlatforms (platform:
+        self.packages.${platform}.alejandra);
+
+    # Dev shells.
+    # Avaiable development shells.
+    #
+    # Usage: `nix develop github:dominicegginton/dotfiles#<shell>`
     devShells = libx.forAllPlatforms (
       platform: let
         pkgs = self.packages.${platform};
@@ -141,14 +180,7 @@
         inherit workspace;
 
         default = workspace;
-        web = import ./shells/web.nix {
-          inherit
-            inputs
-            pkgs
-            baseDevPkgs
-            platform
-            ;
-        };
+        web = libx.mkShell {shell = "web";};
         python = import ./shells/python.nix {
           inherit
             inputs
