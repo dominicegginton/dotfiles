@@ -130,32 +130,48 @@ in {
       enable = true;
       bars = {
         bar-0 = {
+          theme = "native";
+          icons = "awesome6";
           blocks = [
+            {
+              block = "battery";
+              format = " $percentage ";
+              interval = 10;
+            }
             {
               block = "sound";
             }
             {
               block = "time";
               format = " $timestamp.datetime(f:'%a %d/%m %R') ";
-              interval = 60;
+              interval = 10;
             }
           ];
         };
       };
     };
 
+    # Wlogout configuration.
+    programs.wlogout.enable = true;
+
     # Swaylock configuration.
     # `swaylock` is a screen locker for Wayland.
     # It is called by `wlogout` to lock the screen.
     programs.swaylock = {
       enable = true;
+      package = pkgs.swaylock-effects;
       settings = {
-        color = "808080";
-        font-size = 24;
-        indicator-idle-visible = false;
+        screenshots = true;
+        clock = true;
+        effect-blur = "7x5";
         indicator-radius = 100;
-        line-color = "ffffff";
-        show-failed-attempts = true;
+        indicator-thickness = 7;
+        ring-color = "bb00cc";
+        key-hl-color = "880033";
+        line-color = "000000";
+        inside-color = "000000";
+        separator-color = "000000";
+        grace = 0;
       };
     };
 
