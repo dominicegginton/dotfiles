@@ -68,6 +68,7 @@ in {
         colloid-gtk-theme # gtk theme
         colloid-icon-theme # icon theme
         gnome3.adwaita-icon-theme # default gnome cursor theme
+        wl-gammactl # gamma control
         flameshot # screenshot functionality
         slurp # select a region of the screen
         wl-clipboard # clipboard functionality

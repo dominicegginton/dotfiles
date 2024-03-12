@@ -30,6 +30,7 @@ in {
 
     wayland.windowManager.sway = {
       enable = true;
+      swaynag.enable = true;
       config = rec {
         modifier = super;
         fonts.names = ["JetBrainsMono Nerd Font" "FontAwesome5Free"];
@@ -173,6 +174,18 @@ in {
         separator-color = "000000";
         grace = 0;
       };
+    };
+
+    services.swayosd.enable = true;
+    services.avizo.enable = true;
+    services.swayidle = {
+      enable = true;
+      timeouts = [
+        # {
+        #   timeout = 300;
+        #   command = "${pkgs.swaylock-effects}/bin/swaylock";
+        # }
+      ];
     };
 
     # Pointer Cursor configuration.
