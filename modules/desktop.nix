@@ -77,10 +77,6 @@ in {
     };
 
     programs.dconf.enable = true;
-    programs.firefox = mkIf cfg.firefox {
-      enable = true;
-      package = pkgs.firefox-devedition;
-    };
 
     hardware.opengl.enable = true;
     hardware.opengl.driSupport = true;

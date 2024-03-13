@@ -19,7 +19,7 @@ in {
     enable = mkEnableOption "sway";
   };
 
-  config = {
+  config = mkIf cfg.enable {
     home.sessionVariables = {
       MOZ_ENABLE_WAYLAND = 1;
       MOZ_USE_XINPUT2 = "1";

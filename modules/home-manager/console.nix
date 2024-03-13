@@ -231,6 +231,7 @@ in {
       gnupg # GPG tool suite for encryption and signing
       tmux # Terminal multiplexer
       twm # Tmux window manager
+      jq # JSON processor
       twx
       rebuild-home
     ];

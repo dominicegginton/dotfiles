@@ -5,6 +5,8 @@
   ...
 }:
 with lib; let
+  inherit (pkgs.stdenv) isLinux;
+
   cfg = config.modules.desktop;
 in {
   imports = [./sway.nix];
@@ -12,10 +14,10 @@ in {
   options.modules.desktop = {
     enable = mkEnableOption "desktop";
     firefox = mkEnableOption "firefox";
-    media = mkEnableOption "media";
 
     environment = mkOption {
       type = types.str;
+      default = "sway";
       description = "Environment configuration";
     };
 
@@ -27,10 +29,18 @@ in {
   };
 
   config = mkIf cfg.enable {
+    # Enable the desktop environment of choice.
     modules.sway.enable = mkIf (cfg.environment == "sway") true;
 
+    # Enable the mpris proxy service for media player control
+    # only available on linux systems for now (dbus).
     services.mpris-proxy.enable = mkIf isLinux true;
 
+    # Enable home manager font configuration.
+    fonts.fontconfig.enable = true;
+
+    # Set the global x resrouces theme properties for applications
+    # that use the xresources theme (alacritty, firefox, etc).
     xresources.properties = {
       "*color0" = "#141417";
       "*color8" = "#434345";
@@ -50,6 +60,7 @@ in {
       "*color15" = "#e9e9e9";
     };
 
+    # Alacritty terminal emulator configuration.
     programs.alacritty = {
       enable = true;
       settings = {
@@ -84,50 +95,30 @@ in {
             inherit family;
             style = "Bold Italic";
           };
-          size = 12;
+          size = 11;
         };
         selection = {save_to_clipboard = true;};
-        key_bindings = [
-          {
-            key = "H";
-            mods = ["Alt"];
-            chars = "\x1bh";
-          }
-          {
-            key = "J";
-            mods = ["Alt"];
-            chars = "\x1bj";
-          }
-          {
-            key = "K";
-            mods = ["Alt"];
-            chars = "\x1bk";
-          }
-          {
-            key = "L";
-            mods = ["Alt"];
-            chars = "\x1bl";
-          }
-        ];
       };
     };
 
-    fonts.fontconfig.enable = true;
-
-    xdg.mimeApps.defaultApplications = mkIf cfg.firefox {
-      "text/html" = "firefox.desktop";
-      "x-scheme-handler/http" = "firefox.desktop";
-      "x-scheme-handler/https" = "firefox.desktop";
+    # Firefox configuration.
+    # Uses the firefox developer edition package.
+    programs.firefox = mkIf cfg.firefox {
+      enable = true;
+      package = pkgs.firefox-devedition;
     };
 
+    # Default packages to be installed across all desktop environments.
+    # Includes the packages specified in the module configuration.
     home.packages = with pkgs;
       [
+        # Font packages
         noto-fonts # Google noto-fonts
         noto-fonts-cjk # Google noto-fonts-cjk
         noto-fonts-emoji # Google noto-fonts-emoji
         font-awesome # Font awesome
         jetbrains-mono # JetBrains Mono fontface
-        alacritty # Alacritty terminal emulator
+        # Media packages
         mpv # Media player
       ]
       ++ cfg.packages;

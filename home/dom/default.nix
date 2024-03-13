@@ -13,6 +13,9 @@ in {
 
   modules.system.stateVersion = stateVersion;
   modules.system.username = username;
+  modules.desktop.enable = true;
+  modules.desktop.firefox = true;
+  modules.desktop.environment = "sway";
 
   home = {
     file.".face".source = ./face.jpg;
