@@ -17,6 +17,7 @@
   outputs = inputs @ {
     self,
     nixpkgs,
+    nixpkgs-unstable,
     alejandra,
     ...
   }: let
@@ -46,6 +47,18 @@
             overlays.modifications
             overlays.unstable-packages
             inputs.neovim-nightly-overlay.overlay
+          ];
+        }
+    );
+
+    pkgs-unstable = libx.forAllPlatforms (
+      platform:
+        import nixpkgs-unstable {
+          system = platform;
+          overlays = [
+            overlays.additions
+            overlays.modifications
+            overlays.unstable-packages
           ];
         }
     );

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 with lib; let
@@ -58,7 +59,7 @@ in {
           "XF86AudioLowerVolume" = "exec '${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%'";
           "XF86AudioMute" = "exec '${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle'";
           "XF86AudioMicMute" = "exec '${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle'";
-          "Print" = "exec ${pkgs.flameshot}/bin/flameshot gui";
+          "${super}+p" = "exec ${pkgs.shotman}/bin/shotman --capture region --image-editor ${pkgs.gimp}/bin/gimp";
           "${super}+m" = "bar mode toggle";
           "${super}+n" = "exec '[ \"$(swaymsg -t get_bar_config bar-0 | ${pkgs.jq}/bin/jq -r \".mode\")\" = \"dock\" ] && swaymsg bar mode invisible || swaymsg bar mode dock'";
           "${super}+Control+Shift+Right" = "move workspace to output right";
