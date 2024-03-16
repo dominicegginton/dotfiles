@@ -496,6 +496,22 @@
         "type": "github"
       }
     },
+    "nixpkgs_9": {
+      "locked": {
+        "lastModified": 1710377395,
+        "narHash": "sha256-KMubsUWtVr7L55pXMBibBDBdmk3xrjbBPduc0E8z28c=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "db001797591bf76f7b8d4c4ed3b49233391e0c97",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "alejandra": "alejandra",
@@ -509,7 +525,8 @@
         "nixpkgs": "nixpkgs_6",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "sops-nix": "sops-nix",
-        "srvos": "srvos"
+        "srvos": "srvos",
+        "todo": "todo"
       }
     },
     "rust-analyzer-src": {
@@ -578,6 +595,24 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "todo": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_9"
+      },
+      "locked": {
+        "lastModified": 1710607385,
+        "narHash": "sha256-gjMwWCMVgzM05FQX6QI7NbGsSLocncgkXQGhg6mu3fU=",
+        "owner": "dominicegginton",
+        "repo": "todo",
+        "rev": "81f55297b00395de3ddef506fe7330e42d2978a4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dominicegginton",
+        "repo": "todo",
         "type": "github"
       }
     }

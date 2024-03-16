@@ -12,6 +12,8 @@
     nix-colors.url = "github:misterio77/nix-colors"; # Modules and schemes to for themeing with Nix
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay"; # Neovim nightly builds overlay
     alejandra.url = "github:kamadorueda/alejandra/3.0.0"; # Nix code formatter
+
+    todo.url = "github:dominicegginton/todo";
   };
 
   outputs = inputs @ {
@@ -19,6 +21,7 @@
     nixpkgs,
     nixpkgs-unstable,
     alejandra,
+    todo,
     ...
   }: let
     inherit (self) inputs outputs;
@@ -47,6 +50,7 @@
             overlays.modifications
             overlays.unstable-packages
             inputs.neovim-nightly-overlay.overlay
+            inputs.todo.overlays.default
           ];
         }
     );

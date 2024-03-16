@@ -234,6 +234,7 @@ in {
       jq # JSON processor
       twx
       rebuild-home
+      todo
     ];
   };
 }
