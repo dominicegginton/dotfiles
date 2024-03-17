@@ -36,20 +36,6 @@ in {
       '';
     };
 
-    # TODO move nixpkgs config into shared module
-    nixpkgs = {
-      overlays = [
-        outputs.overlays.additions
-        outputs.overlays.modifications
-        outputs.overlays.unstable-packages
-        inputs.neovim-nightly-overlay.overlay
-      ];
-      config = {
-        allowUnfree = true;
-        allowUnfreePredicate = _: true;
-      };
-    };
-
     # TODO move nix config into shared module
     nix = {
       registry = lib.mapAttrs (_: value: {flake = value;}) inputs;

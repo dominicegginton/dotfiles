@@ -43,7 +43,9 @@
       platform:
         import nixpkgs {
           system = platform;
+          hostPlatform = platform;
           config.allowUnfree = true;
+          config.permittedInsecurePackages = ["nix-2.15.3"];
           overlays = [
             overlays.additions
             overlays.modifications
@@ -58,6 +60,7 @@
       platform:
         import nixpkgs-unstable {
           system = platform;
+          hostPlatform = platform;
           overlays = [
             overlays.additions
             overlays.modifications
