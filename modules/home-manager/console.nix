@@ -233,6 +233,9 @@ in {
       twm # Tmux window manager
       jq # JSON processor
       fx # JSON processor
+      nix-output-monitor # Nix output monitor
+      nix-tree # Browser dependency graphs of Nix derivations
+      nix-melt # Flake lock viewer
       twx
       rebuild-home
       todo
