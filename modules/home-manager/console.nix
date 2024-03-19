@@ -232,6 +232,7 @@ in {
       tmux # Terminal multiplexer
       twm # Tmux window manager
       jq # JSON processor
+      fx # JSON processor
       twx
       rebuild-home
       todo
