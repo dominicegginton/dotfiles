@@ -179,6 +179,7 @@ in {
       nix-tree # Browser dependency graphs of Nix derivations
       nix-melt # Flake lock viewer
       deadnix # Scan for dead Nix code
+      nix-alien # Run unpatched binaries on Nix/NixOS
       yazi # File manager
       twx
       rebuild-home
