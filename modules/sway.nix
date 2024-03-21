@@ -76,6 +76,7 @@ in {
         libnotify # notification daemon
         mako # notification daemon
         mmfm # file manager
+        pcmanfm # file manager
         swayimg # image viewer
         mpvpaper # video wallpaper
       ];

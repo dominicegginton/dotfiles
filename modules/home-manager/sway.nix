@@ -86,8 +86,9 @@ in {
         floating = mkOptionDefault {
           titlebar = true;
           criteria = [
-            {class = "Pavucontrol";}
-            {class = "Blueman-manager";}
+            {app_id = "pcmanfm";}
+            {app_id = ".blueman-manager-wrapped";}
+            {app_id = "pavucontrol";}
           ];
         };
         colors = mkOptionDefault {
