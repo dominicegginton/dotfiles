@@ -157,6 +157,8 @@ in {
         };
       };
 
+      programs.nix-index-database.comma.enable = true;
+
       lf = {
         enable = true;
         commands = {
@@ -236,6 +238,7 @@ in {
       nix-output-monitor # Nix output monitor
       nix-tree # Browser dependency graphs of Nix derivations
       nix-melt # Flake lock viewer
+      deadnix # Scan for dead Nix code
       twx
       rebuild-home
       todo

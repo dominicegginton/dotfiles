@@ -13,6 +13,9 @@
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay"; # Neovim nightly builds overlay
     alejandra.url = "github:kamadorueda/alejandra/3.0.0"; # Nix code formatter
     todo.url = "github:dominicegginton/todo"; # Suckless todo manager
+
+    nix-index-database.url = "github:nix-community/nix-index-database";
+
   };
 
   outputs = inputs @ {
