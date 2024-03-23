@@ -121,6 +121,8 @@ in {
         jetbrains-mono # JetBrains Mono fontface
         # Media packages
         mpv # Media player
+        # Othero
+        chromium # Chromium web browser
       ]
       ++ cfg.packages;
   };
