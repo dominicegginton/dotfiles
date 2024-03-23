@@ -89,6 +89,7 @@ in {
             {app_id = "pcmanfm";}
             {app_id = ".blueman-manager-wrapped";}
             {app_id = "pavucontrol";}
+            {app_id = "nwg-displays";}
           ];
         };
         colors = mkOptionDefault {
