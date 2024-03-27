@@ -15,6 +15,7 @@ in {
   options.modules.desktop = {
     enable = mkEnableOption "desktop";
     firefox = mkEnableOption "firefox";
+    vscode = mkEnableOption "vscode";
 
     environment = mkOption {
       type = types.str;
@@ -109,6 +110,19 @@ in {
       package = pkgs.firefox-devedition;
     };
 
+    programs.vscode = mkIf cfg.vscode {
+      enable = true;
+      enableExtensionUpdateCheck = true;
+      enableUpdateCheck = true;
+      package = pkgs.vscode;
+      extensions = with pkgs; [
+        vscode-extensions.vscodevim.vim
+        vscode-extensions.github.github-vscode-theme
+        vscode-extensions.github.copilot
+        vscode-extensions.yzhang.markdown-all-in-one
+      ];
+    };
+
     # Default packages to be installed across all desktop environments.
     # Includes the packages specified in the module configuration.
     home.packages = with pkgs;
@@ -121,8 +135,6 @@ in {
         jetbrains-mono # JetBrains Mono fontface
         # Media packages
         mpv # Media player
-        # Othero
-        chromium # Chromium web browser
       ]
       ++ cfg.packages;
   };

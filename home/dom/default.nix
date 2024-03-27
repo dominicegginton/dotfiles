@@ -15,7 +15,13 @@ in {
   modules.system.username = username;
   modules.desktop.enable = true;
   modules.desktop.firefox = true;
+  modules.desktop.vscode = true;
   modules.desktop.environment = "sway";
+  modules.desktop.packages = with pkgs; [
+    thunderbird
+    teams-for-linux
+    chromium
+  ];
 
   home = {
     file.".face".source = ./face.jpg;

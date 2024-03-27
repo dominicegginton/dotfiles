@@ -11,7 +11,6 @@ in {
 
   options.modules.desktop = {
     enable = mkEnableOption "desktop";
-    firefox = mkEnableOption "firefox";
     printing = mkEnableOption "printing";
 
     environment = mkOption {

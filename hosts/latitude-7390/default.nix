@@ -53,9 +53,9 @@
   modules.users.users = ["dom"];
   modules.desktop.enable = true;
   modules.desktop.environment = "sway";
-  modules.desktop.firefox = true;
   modules.desktop.packages = with pkgs; [
     thunderbird
     teams-for-linux
+    chromium
   ];
 }
