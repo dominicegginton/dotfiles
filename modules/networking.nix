@@ -55,7 +55,13 @@ in {
       networks."@burbage_uuid@".psk = "@burbage_psk@";
     };
 
-    programs.ssh.startAgent = mkIf (isLinux && cfg.ssh) true;
+    programs.ssh = mkIf (isLinux && cfg.ssh) {
+      startAgent = true;
+      extraConfig = ''
+        host i-* mi-*
+        ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
+      '';
+    };
     services.openssh = mkIf (isLinux && cfg.ssh) {
       enable = true;
       settings.PasswordAuthentication = false;

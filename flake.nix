@@ -15,6 +15,7 @@
     todo.url = "github:dominicegginton/todo"; # Suckless todo manager
     nix-index-database.url = "github:nix-community/nix-index-database"; # Nix index database
     nix-alien.url = "github:thiagokokada/nix-alien"; # Run unpatched binaries on Nix/NixOS
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
   outputs = inputs @ {
