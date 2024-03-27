@@ -181,6 +181,8 @@ in {
       deadnix # Scan for dead Nix code
       nix-alien # Run unpatched binaries on Nix/NixOS
       nix-init # Generate Nix packages from URLs with hash prefetching
+      manix # Nix documentation searcher
+      nix-du # Disk usage of Nix store
       yazi # File manager
       twx
       rebuild-home
