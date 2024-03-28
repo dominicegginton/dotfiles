@@ -175,6 +175,7 @@ in {
       twm # Tmux window manager
       jq # JSON processor
       fx # JSON processor
+      glow # Markdown reader
       nix-output-monitor # Nix output monitor
       nix-tree # Browser dependency graphs of Nix derivations
       nix-melt # Flake lock viewer
