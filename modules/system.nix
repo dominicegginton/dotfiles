@@ -56,13 +56,11 @@ in {
 
   config = {
     nix = {
+      package = pkgs.nix;
       gc.automatic = true;
-      gc.dates = "weekly";
-      gc.options = "--delete-older-than 10d";
+      optimise.automatic = true;
       registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-      optimise.automatic = true;
-      package = pkgs.nix;
       settings = {
         # Set auto optimise store to false on darwin
         # to avoid the issue with the store being locked
@@ -75,10 +73,6 @@ in {
           then false
           else true;
         experimental-features = ["nix-command" "flakes"];
-        keep-outputs = true;
-        keep-derivations = true;
-        keep-going = true;
-        warn-dirty = true;
       };
     };
 
