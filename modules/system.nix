@@ -62,6 +62,8 @@ in {
       registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
+        experimental-features = ["nix-command" "flakes"];
+
         # Set auto optimise store to false on darwin
         # to avoid the issue with the store being locked
         # and causing nix to hang when trying to build
@@ -72,7 +74,6 @@ in {
           if isDarwin
           then false
           else true;
-        experimental-features = ["nix-command" "flakes"];
       };
     };
 
