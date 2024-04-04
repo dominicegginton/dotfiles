@@ -43,12 +43,8 @@
   modules.sops.enable = true;
   modules.networking.enable = true;
   modules.networking.hostname = hostname;
-  modules.networking.ssh = true;
-  modules.networking.tailscale = true;
   modules.networking.wireless = true;
   modules.virtualisation.enable = true;
-  modules.virtualisation.vmVariant = true;
-  modules.virtualisation.desktop = true;
   modules.bluetooth.enable = true;
   modules.users.users = ["dom"];
   modules.desktop.enable = true;

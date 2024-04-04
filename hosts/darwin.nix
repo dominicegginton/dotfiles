@@ -9,13 +9,13 @@
   ...
 }: {
   imports = [
-    ../modules/darwin.nix # NixDarwin system and environment configuration
-    ../modules/homebrew.nix # Homebrew managed packages
-    ../modules/system.nix # Nix system and environment configuration
-    ../modules/networking.nix # Networking, firewall and tailscale configuration
-    ../modules/console.nix # Console environment
-    ../modules/desktop.nix # Desktop environment
-    ./${hostname} # Host specific configuration
+    ../modules/darwin/system.nix
+    ../modules/darwin/homebrew.nix
+    ../modules/nixos/system.nix
+    ../modules/nixos/networking.nix
+    ../modules/nixos/console.nix
+    ../modules/nixos/desktop.nix
+    ./${hostname}
   ];
 
   modules.system.platform = platform;

@@ -11,7 +11,6 @@ in {
 
   options.modules.desktop = {
     enable = mkEnableOption "desktop";
-    printing = mkEnableOption "printing";
 
     environment = mkOption {
       type = types.str;
@@ -89,7 +88,7 @@ in {
       wireplumber.enable = true;
     };
 
-    services.printing.enable = mkIf cfg.printing true;
+    services.printing.enable = true;
 
     environment.systemPackages = with pkgs;
       [

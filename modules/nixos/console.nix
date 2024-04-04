@@ -35,14 +35,14 @@ in {
 
     environment.systemPackages = with pkgs;
       [
-        git # Source control
-        fzf # Fuzzy finder
+        git
+        fzf
       ]
       ++ optionals isLinux [
-        pinentry # GPG passphrase prompt
+        pinentry
       ]
       ++ optionals isDarwin [
-        pinentry_mac # GPG passphrase for macOS
+        pinentry_mac
         network-filters-disable
         network-filters-enable
       ];

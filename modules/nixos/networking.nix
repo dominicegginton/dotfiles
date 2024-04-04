@@ -11,8 +11,6 @@ with lib; let
 in {
   options.modules.networking = {
     enable = mkEnableOption "networking";
-    ssh = mkEnableOption "ssh";
-    tailscale = mkEnableOption "tailscale";
     wireless = mkEnableOption "wireless";
 
     hostname = mkOption {
@@ -29,21 +27,9 @@ in {
     networking.useDHCP = mkDefault true;
     networking.firewall = mkIf isLinux {
       enable = true;
-      checkReversePath = mkIf cfg.tailscale true;
-      trustedInterfaces =
-        []
-        ++ (
-          if cfg.tailscale
-          then ["tailscale0"]
-          else []
-        );
-      allowedTCPPorts =
-        []
-        ++ (
-          if cfg.ssh
-          then [22]
-          else []
-        );
+      checkReversePath = true;
+      trustedInterfaces = ["tailscale0"];
+      allowedTCPPorts = [22];
     };
     networking.wireless = mkIf (isLinux && cfg.wireless) {
       enable = true;
@@ -55,31 +41,28 @@ in {
       networks."@burbage_uuid@".psk = "@burbage_psk@";
     };
 
-    programs.ssh = mkIf (isLinux && cfg.ssh) {
+    programs.ssh = mkIf isLinux {
       startAgent = true;
       extraConfig = ''
         host i-* mi-*
         ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
       '';
     };
-    services.openssh = mkIf (isLinux && cfg.ssh) {
+    services.openssh = mkIf isLinux {
       enable = true;
       settings.PasswordAuthentication = false;
       settings.PermitRootLogin = mkDefault "no";
     };
-    services.sshguard = mkIf (isLinux && cfg.ssh) {
+    services.sshguard = mkIf isLinux {
       enable = true;
       whitelist = [];
     };
 
-    services.tailscale.enable = mkIf cfg.tailscale true;
-    environment.systemPackages =
-      []
-      ++ optionals cfg.tailscale [
-        pkgs.tailscale # Tailscale CLI
-      ]
+    services.tailscale.enable = true;
+    environment.systemPackages = with pkgs;
+      [tailscale]
       ++ optionals (cfg.wireless && config.modules.desktop.enable) [
-        pkgs.wpa_supplicant_gui # GUI for WPA supplicant
+        pkgs.wpa_supplicant_gui
       ];
   };
 }

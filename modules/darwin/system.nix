@@ -4,7 +4,7 @@
   ...
 }:
 with lib; let
-  cfg = config.modules.darwin;
+  cfg = config.modules.system;
 in {
   config = {
     system.defaults = {
@@ -68,8 +68,6 @@ in {
       spaces.spans-displays = false;
     };
 
-    # Enable the Nix daemon on macOS
-    # https://nixos.wiki/wiki/Nix-daemon
     services.nix-deamon.enable = true;
   };
 }

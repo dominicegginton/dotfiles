@@ -9,8 +9,6 @@ with lib; let
 in {
   options.modules.virtualisation = {
     enable = mkEnableOption "Enable virtualisation support";
-    vmVariant = mkEnableOption "Enable VM Variant";
-    desktop = mkEnableOption "Enable desktop virtualisation tools";
   };
 
   config = mkIf cfg.enable {
@@ -23,7 +21,7 @@ in {
         enableNvidia = lib.elem "nvidia" config.services.xserver.videoDrivers;
       };
 
-      vmVariant = mkIf cfg.vmVariant {
+      vmVariant = {
         users.groups.nixosvmtest = {};
 
         users.users.nix = {

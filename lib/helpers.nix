@@ -3,11 +3,7 @@
   outputs,
   stateVersion,
   ...
-}: let
-  platforms = ["x86_64-linux" "x86_64-darwin"];
-  roles = ["workstation" "server" "iso"];
-  desktops = ["sway"];
-in {
+}: {
   forAllPlatforms = inputs.nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin"];
 
   mkNixosConfiguration = {
@@ -74,6 +70,6 @@ in {
           stateVersion
           ;
       };
-      modules = [../home];
+      modules = [../home/home.nix];
     };
 }
