@@ -39,13 +39,14 @@ in {
     # TODO move nix config into shared module
     nix = {
       registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-      package = pkgs.nix;
+      package = pkgs.unstable.nix;
       settings = {
         auto-optimise-store = true;
         experimental-features = ["nix-command" "flakes"];
         keep-outputs = true;
         keep-derivations = true;
         warn-dirty = false;
+        trusted-users = ["root" "@wheel"];
       };
     };
 

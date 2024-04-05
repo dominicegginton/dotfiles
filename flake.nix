@@ -69,6 +69,9 @@
             overlays.additions
             overlays.modifications
             overlays.unstable-packages
+            inputs.neovim-nightly-overlay.overlay
+            inputs.todo.overlays.default
+            inputs.nix-alien.overlays.default
           ];
         }
     );

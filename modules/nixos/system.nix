@@ -4,6 +4,7 @@
   config,
   lib,
   pkgs,
+  pkgs-unstable,
   ...
 }:
 with lib; let
@@ -56,13 +57,14 @@ in {
 
   config = {
     nix = {
-      package = pkgs.nix;
+      package = pkgs.unstable.nix;
       gc.automatic = true;
       optimise.automatic = true;
       registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
         experimental-features = ["nix-command" "flakes"];
+        trusted-users = ["root" "@wheel"];
 
         # Set auto optimise store to false on darwin
         # to avoid the issue with the store being locked
