@@ -1,6 +1,7 @@
 {pkgs}: let
   inherit (pkgs) callPackage;
 in {
+  de = callPackage ./de.nix {};
   screensaver = callPackage ./screensaver.nix {};
   mmfm = callPackage ./mmfm.nix {};
   rebuild-host = callPackage ./rebuild-host.nix {};

@@ -92,6 +92,7 @@ in {
 
     environment.systemPackages = with pkgs;
       [
+        de # Desktop environment starter script
         pipewire # low-latency audio/video router
         alsa-utils # collection of common audio utilities
         pulseaudio # sound server
