@@ -21,6 +21,8 @@ in {
     thunderbird
     teams-for-linux
     chromium
+    whatsapp-for-linux
+    telegram-desktop
   ];
 
   home = {
