@@ -3,9 +3,7 @@
   lib,
   ...
 }:
-with lib; let
-  cfg = config.modules.system;
-in {
+with lib; {
   config = {
     system.defaults = {
       NSGlobalDomain.AppleFontSmoothing = 1;

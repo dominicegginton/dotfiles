@@ -1,15 +1,7 @@
 {
   inputs,
-  outputs,
   hostname,
-  username,
-  desktop,
-  platform,
-  stateVersion,
   modulesPath,
-  pkgs,
-  config,
-  lib,
   ...
 }: {
   imports = [

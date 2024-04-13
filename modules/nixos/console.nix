@@ -6,7 +6,6 @@
 }:
 with lib; let
   inherit (pkgs.stdenv) isLinux isDarwin;
-  cfg = config.modules.console;
 in {
   config = {
     console = mkIf isLinux {

@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  pkgs-unstable,
   ...
 }:
 with lib; let
@@ -11,10 +10,8 @@ with lib; let
   # Super key is the Windows key on most keyboards
   # and the Command key on Apple keyboards (MacBooks)
   super = "Mod4";
-
   # Alt key is the Alt key on most keyboards
   # and the Option key on Apple keyboards (MacBooks)
-  alt = "Mod1";
 in {
   options.modules.sway = {
     enable = mkEnableOption "sway";
@@ -120,6 +117,9 @@ in {
             {app_id = ".blueman-manager-wrapped";}
             {app_id = "pavucontrol";}
             {app_id = "nwg-displays";}
+            {app_id = "teams-for-linux";}
+            {app_id = "whatsapp-for-linux";}
+            {app_id = "org.telegram.desktop";}
           ];
         };
         colors = mkOptionDefault {
@@ -232,12 +232,7 @@ in {
     services.avizo.enable = true;
     services.swayidle = {
       enable = true;
-      timeouts = [
-        # {
-        #   timeout = 300;
-        #   command = "${pkgs.swaylock-effects}/bin/swaylock";
-        # }
-      ];
+      timeouts = [];
     };
 
     # Pointer Cursor configuration.
@@ -254,5 +249,9 @@ in {
         defaultCursor = "Adwaita";
       };
     };
+
+    home.packages = [
+      pkgs.unstable.libdrm
+    ];
   };
 }

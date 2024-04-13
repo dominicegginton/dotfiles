@@ -2,7 +2,7 @@
 pkgs.writeShellApplication rec {
   name = "cleanup-trash";
 
-  runtimeInputs = with pkgs; [nix];
+  runtimeInputs = with pkgs; [nix docker];
 
   text = ''
     set -euo pipefail
@@ -19,5 +19,8 @@ pkgs.writeShellApplication rec {
     nix-collect-garbage
     nix-collect-garbage -d
     nix-store --gc --print-dead
+
+    docker system prune -a
+    docker volume prune --volumes
   '';
 }

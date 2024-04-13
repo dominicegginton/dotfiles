@@ -18,7 +18,7 @@
       });
   in {
     overlays = {
-      default = final: prev: let
+      default = final: _prev: let
         pkgs = final.pkgs;
       in {
         hello-world = import ./default.nix {inherit pkgs;};

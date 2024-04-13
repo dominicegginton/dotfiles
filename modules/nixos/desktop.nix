@@ -34,6 +34,7 @@ in {
     fonts = {
       fontDir.enable = true;
       packages = with pkgs; [
+        font-manager # Font manager
         # Nerd fonts
         # Overriden to include FiraCode, SourceCodePro, and UbuntuMono
         (nerdfonts.override {

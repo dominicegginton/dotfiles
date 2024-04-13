@@ -1,6 +1,4 @@
-{pkgs, ...}: let
-  inherit (pkgs.stdenv) isDarwin;
-in {
+{...}: {
   home.file = {
     ".config".source = ../sources/.config;
     ".config".recursive = true;

@@ -1,9 +1,6 @@
 {
   inputs,
-  outputs,
-  config,
   lib,
-  pkgs,
   username,
   ...
 }:

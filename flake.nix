@@ -11,17 +11,15 @@
     home-manager.url = "github:nix-community/home-manager/release-23.11"; # Manage user environment using Nix
     nix-colors.url = "github:misterio77/nix-colors"; # Modules and schemes to for themeing with Nix
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay"; # Neovim nightly builds overlay
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland"; # Bleading edge wayland packages
     alejandra.url = "github:kamadorueda/alejandra/3.0.0"; # Nix code formatter
     todo.url = "github:dominicegginton/todo"; # Suckless todo manager
     nix-index-database.url = "github:nix-community/nix-index-database"; # Nix index database
-    nix-alien.url = "github:thiagokokada/nix-alien"; # Run unpatched binaries on Nix/NixOS
-    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
   };
 
-  outputs = inputs @ {
+  outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
     alejandra,
     todo,
     ...
@@ -55,23 +53,7 @@
             overlays.unstable-packages
             inputs.neovim-nightly-overlay.overlay
             inputs.todo.overlays.default
-            inputs.nix-alien.overlays.default
-          ];
-        }
-    );
-
-    pkgs-unstable = libx.forAllPlatforms (
-      platform:
-        import nixpkgs-unstable {
-          system = platform;
-          hostPlatform = platform;
-          overlays = [
-            overlays.additions
-            overlays.modifications
-            overlays.unstable-packages
-            inputs.neovim-nightly-overlay.overlay
-            inputs.todo.overlays.default
-            inputs.nix-alien.overlays.default
+            # inputs.nixpkgs-wayland.overlay
           ];
         }
     );

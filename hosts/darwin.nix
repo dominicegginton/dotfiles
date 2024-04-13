@@ -1,8 +1,5 @@
 {
-  inputs,
-  outputs,
   hostname,
-  username,
   platform,
   stateVersion,
   pkgs,

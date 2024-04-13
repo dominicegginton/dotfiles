@@ -4,7 +4,6 @@
   config,
   lib,
   pkgs,
-  pkgs-unstable,
   ...
 }:
 with lib; let
@@ -64,7 +63,21 @@ in {
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
         experimental-features = ["nix-command" "flakes"];
+        keep-outputs = true;
+        keep-derivations = true;
+        warn-dirty = false;
         trusted-users = ["root" "@wheel"];
+
+        trusted-public-keys = [
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+          "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+        ];
+        substituters = [
+          "https://cache.nixos.org"
+          "https://nix-community.cachix.org"
+          "https://nixpkgs-wayland.cachix.org"
+        ];
 
         # Set auto optimise store to false on darwin
         # to avoid the issue with the store being locked
