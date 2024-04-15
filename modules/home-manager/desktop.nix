@@ -106,7 +106,7 @@ in {
     # Uses the firefox developer edition package.
     programs.firefox = mkIf cfg.firefox {
       enable = true;
-      package = pkgs.firefox-devedition-bin;
+      package = pkgs.unstable.firefox-devedition-bin;
     };
 
     programs.vscode = mkIf cfg.vscode {

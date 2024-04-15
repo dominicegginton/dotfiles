@@ -19,10 +19,10 @@ in {
   modules.desktop.environment = "sway";
   modules.desktop.packages = with pkgs; [
     thunderbird
-    teams-for-linux
-    chromium
-    whatsapp-for-linux
-    telegram-desktop
+    unstable.teams-for-linux
+    unstable.chromium
+    unstable.whatsapp-for-linux
+    unstable.telegram-desktop
   ];
 
   home = {
