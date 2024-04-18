@@ -1,7 +1,4 @@
-{
-  lib,
-  python3Packages,
-}:
+{python3Packages}:
 with python3Packages;
   buildPythonApplication {
     pname = "hello-world";

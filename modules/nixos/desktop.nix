@@ -32,6 +32,7 @@ in {
     xdg.portal.config.common.default = "*";
 
     fonts = {
+      enableDefaultPackages = false;
       fontDir.enable = true;
       packages = with pkgs; [
         font-manager # Font manager
@@ -51,8 +52,6 @@ in {
         jetbrains-mono # JetBrains Mono font
         ibm-plex # IBM Plex font family
       ];
-
-      enableDefaultPackages = false;
 
       fontconfig = {
         antialias = true;
@@ -76,11 +75,10 @@ in {
     };
 
     programs.dconf.enable = true;
-
     hardware.opengl.enable = true;
     hardware.opengl.driSupport = true;
-
-    hardware.pulseaudio.enable = lib.mkForce false;
+    hardware.pulseaudio.enable = false;
+    services.printing.enable = true;
     services.pipewire = {
       enable = true;
       alsa.enable = true;
@@ -88,8 +86,6 @@ in {
       pulse.enable = true;
       wireplumber.enable = true;
     };
-
-    services.printing.enable = true;
 
     environment.systemPackages = with pkgs;
       [

@@ -7,7 +7,6 @@
   ...
 }:
 with lib; let
-  inherit (pkgs.stdenv) isLinux isDarwin;
   cfg = config.modules.system;
 in {
   options.modules.system = {
@@ -66,6 +65,7 @@ in {
         keep-outputs = true;
         keep-derivations = true;
         warn-dirty = false;
+        auto-optimise-store = true;
         trusted-users = ["root" "@wheel"];
 
         trusted-public-keys = [
@@ -78,17 +78,6 @@ in {
           "https://nix-community.cachix.org"
           "https://nixpkgs-wayland.cachix.org"
         ];
-
-        # Set auto optimise store to false on darwin
-        # to avoid the issue with the store being locked
-        # and causing nix to hang when trying to build
-        # a derivation. This is a temporary fix until
-        # the issue is resolved in nix.
-        # SEE: https://github.com/NixOS/nix/issues/7273
-        auto-optimise-store =
-          if isDarwin
-          then false
-          else true;
       };
     };
 
@@ -107,7 +96,7 @@ in {
       ];
     };
 
-    boot = mkIf isLinux {
+    boot = {
       consoleLogLevel = 0;
       initrd.verbose = false;
       kernelModules = ["vhost_vsock"];
@@ -124,14 +113,15 @@ in {
         "net.core.default_qdisc" = "fq";
         "net.ipv4.tcp_congestion_control" = "bbr";
       };
-      plymouth = mkIf (isLinux && config.modules.desktop.enable) {
+      plymouth = mkIf config.modules.desktop.enable {
         enable = true;
         theme = "spinner";
       };
     };
 
-    i18n.defaultLocale = mkIf isLinux cfg.location;
-    i18n.extraLocaleSettings = mkIf isLinux {
+    time.timeZone = cfg.timezone;
+    i18n.defaultLocale = cfg.location;
+    i18n.extraLocaleSettings = {
       LC_ADDRESS = cfg.location;
       LC_IDENTIFICATION = cfg.location;
       LC_MEASUREMENT = cfg.location;
@@ -142,28 +132,26 @@ in {
       LC_TELEPHONE = cfg.location;
       LC_TIME = cfg.location;
     };
-    time.timeZone = mkIf isLinux cfg.timezone;
 
     documentation = {
       enable = true;
-      man.enable = lib.mkDefault true;
-      nixos.enable = lib.mkDefault false;
-      info.enable = lib.mkDefault false;
-      doc.enable = lib.mkDefault false;
+      man.enable = true;
+      nixos.enable = true;
+      info.enable = true;
+      doc.enable = true;
     };
 
-    security = mkIf isLinux {
+    security = {
       sudo.enable = true;
       polkit.enable = true;
       rtkit.enable = true;
     };
 
-    services.xserver.layout = mkIf isLinux cfg.keyboardLayout;
-    services.dbus.enable = mkIf isLinux true;
-    services.smartd.enable = mkIf isLinux true;
-    services.thermald.enable = mkIf isLinux true;
+    services.xserver.layout = cfg.keyboardLayout;
+    services.dbus.enable = true;
+    services.smartd.enable = true;
+    services.thermald.enable = true;
 
-    system.activationScripts.enebale = mkIf isDarwin true;
     system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
@@ -177,32 +165,36 @@ in {
       variables.EDITOR = "vim";
       variables.SYSTEMD_EDITOR = "vim";
       variables.VISUAL = "vim";
+      variables.FLAKE = "~/.dotfiles";
 
-      systemPackages = with pkgs;
-        [
-          gitMinimal # git
-          vim # vim
-          home-manager # home-manager
-          killall # killall processes utility
-          unzip # unzip utility
-          wget # http client
-          htop-vim # system monitor
-          btop # better system monitor
-          rebuild-host
-          rebuild-home
-          rebuild-configuration
-          upgrade-configuration
-          cleanup-trash
-          shutdown-host
-          reboot-host
-          suspend-host
-          hibernate-host
-        ]
-        ++ optionals isLinux [
-          usbutils # usb utilities
-          nvme-cli # nvme command line interface
-          smartmontools # control and monitor stroage systems
-        ];
+      systemPackages = with pkgs; [
+        unstable.nh
+        nvd
+        home-manager # home-manager
+
+        file # file utility
+        gitMinimal # git
+        vim # vim
+        killall # killall processes utility
+        unzip # unzip utility
+        wget # http client
+        htop-vim # system monitor
+        btop # better system monitor
+
+        usbutils # usb utilities
+        nvme-cli # nvme command line interface
+        smartmontools # control and monitor stroage systems
+
+        rebuild-host
+        rebuild-home
+        rebuild-configuration
+        upgrade-configuration
+        cleanup-trash
+        shutdown-host
+        reboot-host
+        suspend-host
+        hibernate-host
+      ];
     };
   };
 }

@@ -6,12 +6,6 @@
 }:
 with lib; {
   config = {
-    console = {
-      font = "${pkgs.tamzen}/share/consolefonts/TamzenForPowerline10x20.psf";
-      keyMap = "uk";
-      packages = with pkgs; [tamzen];
-    };
-
     programs.zsh = {
       enable = true;
       enableCompletion = true;
@@ -26,7 +20,7 @@ with lib; {
     environment.systemPackages = with pkgs; [
       git
       fzf
-      pinentry
+      pinentry-mac
     ];
   };
 }
