@@ -12,7 +12,7 @@
   ];
 
   swapDevices = [
-    {device = "/dev/disk/by-uuid/4e74fa9d-47d7-4a43-9cec-01d4fdd1a1a2";}
+    {device = "";}
   ];
 
   boot = {
@@ -42,21 +42,12 @@
   modules.system.stateVersion = stateVersion;
   modules.system.nixpkgs.hostPlatform = platform;
   modules.system.nixpkgs.allowUnfree = true;
-  modules.system.nixpkgs.permittedInsecurePackages = [
-    "libav-11.12" # for mmfm
-    "mupdf-1.17.0" # for mmfm
-  ];
   modules.networking.enable = true;
   modules.networking.hostname = hostname;
   modules.networking.wireless = true;
-  modules.virtualisation.enable = true;
   modules.bluetooth.enable = true;
   modules.users.users = ["dom"];
-  modules.desktop.enable = true;
-  modules.desktop.environment = "sway";
-  modules.desktop.packages = with pkgs; [
-    thunderbird
-    teams-for-linux
-    chromium
-  ];
+  modules.desktop.enable = false;
+  modules.desktop.environment = "";
+  modules.desktop.packages = with pkgs; [];
 }

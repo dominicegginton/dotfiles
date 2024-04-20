@@ -103,6 +103,15 @@
         role = "workstation";
         desktop = "sway";
       };
+
+      # Ghost GS60
+      # Personal gamestation.
+      ghost-gs60 = libx.mkNixosConfiguration {
+        hostname = "ghost-gs60";
+        username = "dom";
+        role = "gamestation";
+        desktop = "sway";
+      };
     };
 
     # NixDarwin host configurations.
@@ -133,6 +142,13 @@
         hostname = "latitude-7390";
         username = "dom";
         desktop = "sway";
+      };
+
+      # dom#ghost-gs60.
+      # Personal user account configuration for ghost-gs60.
+      "dom@ghost-gs60" = libx.mkHomeConfiguration {
+        hostname = "ghost-gs60";
+        username = "dom";
       };
 
       # dom#burbage.
