@@ -112,7 +112,7 @@
         hostname = "ghost-gs60";
         username = "dom";
         role = "gamestation";
-        desktop = "sway";
+        desktop = "gamescope";
       };
     };
 
@@ -151,6 +151,7 @@
       "dom@ghost-gs60" = libx.mkHomeConfiguration {
         hostname = "ghost-gs60";
         username = "dom";
+        desktop = "gamescope";
       };
 
       # dom#burbage.

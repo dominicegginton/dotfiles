@@ -25,6 +25,7 @@ in {
 
   config = mkIf cfg.enable {
     modules.sway.enable = mkIf (cfg.environment == "sway") true;
+    modules.gamescope.enable = mkIf (cfg.environment == "gamescope") true;
 
     xdg.portal.enable = true;
     xdg.portal.xdgOpenUsePortal = true;
