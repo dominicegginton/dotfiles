@@ -14,6 +14,7 @@
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland"; # Bleading edge wayland packages
     alejandra.url = "github:kamadorueda/alejandra/3.0.0"; # Nix code formatter
     todo.url = "github:dominicegginton/todo"; # Suckless todo manager
+    nsm.url = "github:dominicegginton/nsm"; # Nix system manager
     nix-index-database.url = "github:nix-community/nix-index-database"; # Nix index database
   };
 
@@ -53,6 +54,7 @@
             overlays.unstable-packages
             inputs.neovim-nightly-overlay.overlay
             inputs.todo.overlays.default
+            # inputs.nsm.overlays.default
             # inputs.nixpkgs-wayland.overlay
           ];
         }
