@@ -15,11 +15,6 @@ in
   pkgs.mkShell rec {
     inherit NIX_CONFIG;
 
-    # Set the default PGP key directory to
-    # be used by sops. This is the directory
-    # where the public PGP keys are stored.
-    sopsPGPKeyDirs = [".keys"];
-
     nativeBuildInputs = with pkgs;
       [
         nix # Nix package manager
