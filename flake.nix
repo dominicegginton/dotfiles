@@ -27,20 +27,10 @@
   }: let
     inherit (self) inputs outputs;
 
-    # State version.
-    # This is used to ensure that the state is compatible with the current version of the configuration.
-    # SEE: https://search.nixos.org/options?channel=unstable&show=system.stateVersion&from=0&size=50&sort=relevance&type=packages&query=stateVersion
     stateVersion = "23.11";
-
-    # Internal Nix functions.
     libx = import ./lib {inherit inputs outputs stateVersion;};
-
-    # Workspace overlays.
     overlays = import ./overlays {inherit inputs;};
-
-    # Workspace packages.
-    # These are the packages that are available in this workspace.
-    # Worksapce overlays are applied to these packages.
+    templates = import ./templates {};
     pkgs = libx.forAllPlatforms (
       platform:
         import nixpkgs {
@@ -59,137 +49,70 @@
           ];
         }
     );
-
-    templates = import ./templates {};
   in {
-    # Worksapce overlays.
     overlays = overlays;
-
-    # Workspace packages.
-    # These packages are available in this workspace.
-    # Workspace overlays are applied to these packages.
-    #
-    # Usegae: `nix run .#<package>` or `nix run github:dominicegginton/dotfiles#<package>`
     packages = pkgs;
-
-    # Nix flake templates.
-    # These templates are available via this workspace flake.
-    #
-    # Usegae: `nix flake init -t github:dominicegginton/dotfiles#<template>`
     templates = templates;
+    formatter =
+      libx.forAllPlatforms (platform:
+        self.packages.${platform}.alejandra);
 
-    # NixOS host configurations.
-    # Avaiable NixOS host configurations.
-    #
-    # Usage:
-    # `nixos-rebuild build --flake .#<configuration>` build the configuration
-    # `nixos-rebuild test --flake .#<configuration>` build and activate the configuration
-    # `nixos-rebuild boot --flake .#<configuration>` build the configuration, make it the default boot grub entry but do not activate it
-    # `nixos-rebuild switch --flake .#<configuration>` build the configuration, make it the default boot grub entry and activate it
-    # `nixos-rebuild build-vm --flake .#<configuration>` build the configuration as a virtual machine
-    nixosConfigurations = {
-      # ISO Console.
-      # Used for installing NixOS.
-      iso-console = libx.mkNixosConfiguration {
-        hostname = "iso-console";
-        username = "nixos";
-        role = "iso";
-        installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
-      };
+    devShells = libx.forAllPlatforms (
+      platform: let
+        pkgs = self.packages.${platform};
+      in
+        import ./shells {inherit inputs pkgs platform;}
+    );
 
-      # Latitude 7390.
-      # Personal workstation.
-      latitude-7390 = libx.mkNixosConfiguration {
-        hostname = "latitude-7390";
-        username = "dom";
-        role = "workstation";
-        desktop = "sway";
-      };
-
-      # Ghost GS60
-      # Personal gamestation.
-      ghost-gs60 = libx.mkNixosConfiguration {
-        hostname = "ghost-gs60";
-        username = "dom";
-        role = "gamestation";
-        desktop = "gamescope";
-      };
+    nixosConfigurations.iso-console = libx.mkNixosConfiguration {
+      hostname = "iso-console";
+      username = "nixos";
+      role = "iso";
+      installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
     };
 
-    # NixDarwin host configurations.
-    # Avaiable NixDarwin host configurations.
-    #
-    # Usage:
-    # `darwin-rebuild build --flake .#<configuration>` build the configuration
-    # `darwin-rebuild test --flake .#<configuration>` build and activate the configuration
-    # `darwin-rebuild switch --flake .#<configuration>` build the configuration and activate it
+    nixosConfigurations.latitude-7390 = libx.mkNixosConfiguration {
+      hostname = "latitude-7390";
+      username = "dom";
+      role = "workstation";
+      desktop = "sway";
+    };
+
+    nixosConfigurations.ghost-gs60 = libx.mkNixosConfiguration {
+      hostname = "ghost-gs60";
+      username = "dom";
+      role = "gamestation";
+      desktop = "gamescope";
+    };
+
     darwinConfigurations = {
-      # MCCML44WMD6T.
-      # Work provided system.
       MCCML44WMD6T = libx.mkDarwinConfiguration {
         hostname = "MCCML44WMD6T";
         username = "dom.egginton";
       };
     };
 
-    # Home configurations.
-    # Avaiable home configurations.
-    #
-    # Usage:
-    # `home-manager switch --flake .#<configuration>` build the configuration and activate it
-    homeConfigurations = {
-      # dom#latitude-7390.
-      # Personal user account configuration for latitude-7390.
-      "dom@latitude-7390" = libx.mkHomeConfiguration {
-        hostname = "latitude-7390";
-        username = "dom";
-        desktop = "sway";
-      };
-
-      # dom#ghost-gs60.
-      # Personal user account configuration for ghost-gs60.
-      "dom@ghost-gs60" = libx.mkHomeConfiguration {
-        hostname = "ghost-gs60";
-        username = "dom";
-        desktop = "gamescope";
-      };
-
-      # dom#burbage.
-      # Personal user account configuration for burbage.
-      "dom@burbage" = libx.mkHomeConfiguration {
-        hostname = "burbage";
-        username = "dom";
-      };
-
-      # dom.egginton#MCCML44WMD6T.
-      # Work managed user account configuration for MCCML44WMD6T.
-      "dom.egginton@MCCML44WMD6T" = libx.mkHomeConfiguration {
-        hostname = "MCCML44WMD6T";
-        username = "dom.egginton";
-        platform = "x86_64-darwin";
-      };
+    homeConfigurations."dom@latitude-7390" = libx.mkHomeConfiguration {
+      hostname = "latitude-7390";
+      username = "dom";
+      desktop = "sway";
     };
 
-    # Workspace formatter.
-    # Formats the worksapce using the `alejandra` package.
-    #
-    # Usage: `nix fmt`
-    formatter =
-      libx.forAllPlatforms (platform:
-        self.packages.${platform}.alejandra);
+    homeConfigurations."dom@ghost-gs60" = libx.mkHomeConfiguration {
+      hostname = "ghost-gs60";
+      username = "dom";
+      desktop = "gamescope";
+    };
 
-    # Dev shells.
-    # Avaiable development shells.
-    #
-    # Usage: `nix develop github:dominicegginton/dotfiles#<shell>`
-    devShells = libx.forAllPlatforms (
-      platform: let
-        # Packages.
-        # All the packages that are available in this workspace
-        # for the current platform.
-        pkgs = self.packages.${platform};
-      in
-        import ./shells {inherit inputs pkgs platform;}
-    );
+    homeConfigurations."dom@burbage" = libx.mkHomeConfiguration {
+      hostname = "burbage";
+      username = "dom";
+    };
+
+    homeConfigurations."dom.egginton@MCCML44WMD6T" = libx.mkHomeConfiguration {
+      hostname = "MCCML44WMD6T";
+      username = "dom.egginton";
+      platform = "x86_64-darwin";
+    };
   };
 }
