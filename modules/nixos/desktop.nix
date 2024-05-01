@@ -7,7 +7,10 @@
 with lib; let
   cfg = config.modules.desktop;
 in {
-  imports = [./sway.nix];
+  imports = [
+    ./sway.nix
+    ./gamescope.nix
+  ];
 
   options.modules.desktop = {
     enable = mkEnableOption "desktop";
