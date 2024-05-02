@@ -5,33 +5,30 @@
   ...
 }:
 with lib; let
-  inherit (pkgs.stdenv) isLinux;
-
   cfg = config.modules.networking;
+  desktopCfg = config.modules.desktop;
 in {
   options.modules.networking = {
     enable = mkEnableOption "networking";
     wireless = mkEnableOption "wireless";
-
-    hostname = mkOption {
-      type = types.str;
-      default = "nixos";
-      description = "The hostname of the system";
-    };
+    hostname = mkOption {type = types.str;};
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable rec {
     sops.secrets."wireless.env" = {};
 
     networking.hostName = cfg.hostname;
     networking.useDHCP = mkDefault true;
-    networking.firewall = mkIf isLinux {
+    services.tailscale.enable = true;
+
+    networking.firewall = rec {
       enable = true;
       checkReversePath = true;
       trustedInterfaces = ["tailscale0"];
       allowedTCPPorts = [22];
     };
-    networking.wireless = mkIf (isLinux && cfg.wireless) {
+
+    networking.wireless = mkIf cfg.wireless rec {
       enable = true;
       userControlled.enable = true;
       userControlled.group = "wheel";
@@ -41,28 +38,26 @@ in {
       networks."@burbage_uuid@".psk = "@burbage_psk@";
     };
 
-    programs.ssh = mkIf isLinux {
+    programs.ssh = rec {
       startAgent = true;
       extraConfig = ''
         host i-* mi-*
         ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
       '';
     };
-    services.openssh = mkIf isLinux {
+
+    services.openssh = rec {
       enable = true;
-      settings.PasswordAuthentication = false;
+      settings.PasswordAuthentication = mkDefault false;
       settings.PermitRootLogin = mkDefault "no";
     };
-    services.sshguard = mkIf isLinux {
+    services.sshguard = rec {
       enable = true;
       whitelist = [];
     };
 
-    services.tailscale.enable = true;
     environment.systemPackages = with pkgs;
       [tailscale]
-      ++ optionals (cfg.wireless && config.modules.desktop.enable) [
-        pkgs.wpa_supplicant_gui
-      ];
+      ++ optionals (cfg.wireless && desktopCfg.sway.enable) [wpa_supplicant_gui];
   };
 }

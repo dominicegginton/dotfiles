@@ -8,9 +8,6 @@
 
   mkNixosConfiguration = {
     hostname,
-    username,
-    role,
-    desktop ? null,
     installer ? null,
     platform ? "x86_64-linux",
   }:
@@ -20,9 +17,6 @@
           inputs
           outputs
           hostname
-          username
-          role
-          desktop
           platform
           stateVersion
           ;

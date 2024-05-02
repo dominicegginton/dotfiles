@@ -7,9 +7,7 @@
 with lib; let
   cfg = config.modules.virtualisation;
 in {
-  options.modules.virtualisation = {
-    enable = mkEnableOption "Enable virtualisation support";
-  };
+  options.modules.virtualisation.enable = mkEnableOption "virtualisation";
 
   config = mkIf cfg.enable {
     virtualisation = {
@@ -30,13 +28,9 @@ in {
           initialPassword = "";
           group = "nixosvmtest";
         };
-
-        virtualisation.graphics = mkIf cfg.desktop true;
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      qemu # Virtualisation platform
-    ];
+    environment.systemPackages = with pkgs; [qemu];
   };
 }

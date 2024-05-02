@@ -6,51 +6,43 @@
 }:
 with lib; let
   cfg = config.modules.users;
-
-  ifGroupsExists = groups: builtins.filter (group: builtins.hasAttr group config.users.groups) groups;
 in {
   options.modules.users = {
-    users = mkOption {
-      type = types.listOf types.str;
-      description = "List of users for the system";
-    };
+    dom.enable = mkEnableOption "Dominic Egginton";
+    nixos.enable = mkEnableOption "NixOS";
   };
 
-  config = {
+  config = rec {
     sops.secrets."dom.password".neededForUsers = true;
 
-    users = {
-      users.dom = mkIf (cfg.users != [] && builtins.elem "dom" cfg.users) {
+    users.users = rec {
+      dom = mkIf cfg.dom.enable rec {
         description = "Dominic Egginton";
         isNormalUser = true;
         hashedPasswordFile = config.sops.secrets."dom.password".path;
-        extraGroups =
-          [
-            "audio"
-            "input"
-            "users"
-            "video"
-            "wheel"
-          ]
-          ++ ifGroupsExists [
-            "docker"
-            "podman"
-          ];
         homeMode = "0755";
         shell = pkgs.zsh;
+        extraGroups = [
+          "wheel"
+          "audio"
+          "input"
+          "users"
+          "video"
+          "docker"
+        ];
       };
 
-      users.nixos = mkIf (cfg.users != [] && builtins.elem "nixos" cfg.users) {
+      nixos = mkIf cfg.nixos.enable rec {
         description = "NixOS";
-        isNormalUser = true;
-        home = "/var/empty";
-        createHome = false;
+        isNormalUser = mkDefault true;
+        home = mkDefault "/var/empty";
+        createHome = mkDefault false;
       };
 
-      users.root = {
+      root = rec {
         description = "System administrator";
-        isNormalUser = false;
-        hashedPassword = null;
+        isNormalUser = mkDefault false;
+        hashedPassword = mkDefault null;
       };
     };
   };

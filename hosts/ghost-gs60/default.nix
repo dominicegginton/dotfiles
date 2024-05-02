@@ -6,10 +6,7 @@
   stateVersion,
   ...
 }: {
-  imports = [
-    inputs.nixos-hardware.nixosModules.dell-latitude-7390
-    ./disks.nix
-  ];
+  imports = [];
 
   swapDevices = [
     {device = "";}
@@ -32,22 +29,25 @@
     };
   };
 
-  services.logind = {
-    extraConfig = "HandlePowerKey=suspend";
-    lidSwitch = "suspend";
-  };
-
   hardware.mwProCapture.enable = true;
+  services.logind.extraConfig = "HandlePowerKey=suspend";
+  services.logind.lidSwitch = "suspend";
 
-  modules.system.stateVersion = stateVersion;
-  modules.system.nixpkgs.hostPlatform = platform;
-  modules.system.nixpkgs.allowUnfree = true;
-  modules.networking.enable = true;
-  modules.networking.hostname = hostname;
-  modules.networking.wireless = true;
-  modules.bluetooth.enable = true;
-  modules.users.users = ["dom"];
-  modules.desktop.enable = false;
-  modules.desktop.environment = "";
-  modules.desktop.packages = with pkgs; [];
+  modules = rec {
+    nixos.stateVersion = stateVersion;
+    nixos.nixpkgs.hostPlatform = platform;
+    nixos.nixpkgs.allowUnfree = true;
+    nixos.nixpkgs.permittedInsecurePackages = [
+      "libav-11.12" # for mmfm
+      "mupdf-1.17.0" # for mmfm
+    ];
+    networking.enable = true;
+    networking.hostname = "ghost-gs60";
+    networking.wireless = true;
+    virtualisation.enable = true;
+    bluetooth.enable = true;
+    users.dom.enable = true;
+    desktop.sway.enable = true;
+    desktop.packages = with pkgs; [];
+  };
 }

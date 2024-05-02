@@ -6,16 +6,23 @@
   stateVersion,
   ...
 }: {
-  imports = [
-    inputs.nixos-hardware.nixosModules.dell-latitude-7390
-    ./disks.nix
-  ];
+  imports = [inputs.nixos-hardware.nixosModules.dell-latitude-7390];
 
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/2d59d3c7-44f3-4fd3-9c7a-64b2ec9f21a0";
+    fsType = "ext4";
+  };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/8543-16DB";
+    fsType = "vfat";
+  };
   swapDevices = [
     {device = "/dev/disk/by-uuid/4e74fa9d-47d7-4a43-9cec-01d4fdd1a1a2";}
   ];
 
-  boot = {
+  boot = rec {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
     initrd.availableKernelModules = ["xhci_pci" "ahci" "usb_storage" "sd_mod"];
     kernelModules = ["kvm-intel"];
     binfmt.emulatedSystems = [
@@ -26,37 +33,31 @@
       "riscv32-linux"
       "riscv64-linux"
     ];
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-  };
-
-  services.logind = {
-    extraConfig = "HandlePowerKey=suspend";
-    lidSwitch = "suspend";
   };
 
   hardware.mwProCapture.enable = true;
+  services.logind.extraConfig = "HandlePowerKey=suspend";
+  services.logind.lidSwitch = "suspend";
 
-  modules.system.stateVersion = stateVersion;
-  modules.system.nixpkgs.hostPlatform = platform;
-  modules.system.nixpkgs.allowUnfree = true;
-  modules.system.nixpkgs.permittedInsecurePackages = [
-    "libav-11.12" # for mmfm
-    "mupdf-1.17.0" # for mmfm
-  ];
-  modules.networking.enable = true;
-  modules.networking.hostname = hostname;
-  modules.networking.wireless = true;
-  modules.virtualisation.enable = true;
-  modules.bluetooth.enable = true;
-  modules.users.users = ["dom"];
-  modules.desktop.enable = true;
-  modules.desktop.environment = "sway";
-  modules.desktop.packages = with pkgs; [
-    thunderbird
-    teams-for-linux
-    chromium
-  ];
+  modules = rec {
+    nixos.stateVersion = stateVersion;
+    nixos.nixpkgs.hostPlatform = platform;
+    nixos.nixpkgs.allowUnfree = true;
+    nixos.nixpkgs.permittedInsecurePackages = [
+      "libav-11.12" # for mmfm
+      "mupdf-1.17.0" # for mmfm
+    ];
+    networking.enable = true;
+    networking.hostname = "latitude-8390";
+    networking.wireless = true;
+    virtualisation.enable = true;
+    bluetooth.enable = true;
+    users.dom.enable = true;
+    desktop.sway.enable = true;
+    desktop.packages = with pkgs; [
+      thunderbird
+      teams-for-linux
+      chromium
+    ];
+  };
 }

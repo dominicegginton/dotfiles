@@ -6,23 +6,11 @@
 }:
 with lib; {
   config = {
-    console = {
-      font = "${pkgs.tamzen}/share/consolefonts/TamzenForPowerline10x20.psf";
-      keyMap = "uk";
-      packages = with pkgs; [tamzen];
-    };
-
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
-      promptInit = "autoload -U promptinit && promptinit";
-    };
-
-    environment.sessionVariables = {
-      FLAKE = "~/.dotfiles";
-    };
-
+    console.keyMap = "uk";
+    programs.zsh.enable = true;
+    programs.zsh.enableCompletion = true;
+    programs.zsh.syntaxHighlighting.enable = true;
+    programs.zsh.promptInit = "autoload -U promptinit && promptinit";
     environment.systemPackages = with pkgs; [
       git
       fzf
