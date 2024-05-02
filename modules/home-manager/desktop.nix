@@ -9,7 +9,10 @@ with lib; let
 
   cfg = config.modules.desktop;
 in {
-  imports = [./sway.nix];
+  imports = [
+    ./sway.nix
+    ./gamescope.nix
+  ];
 
   options.modules.desktop = {
     enable = mkEnableOption "desktop";
@@ -32,6 +35,7 @@ in {
   config = mkIf cfg.enable {
     # Enable the desktop environment of choice.
     modules.sway.enable = mkIf (cfg.environment == "sway") true;
+    # modules.gamescope.enable = mkIf (cfg.environment == "gamescope") true;
 
     # Enable the mpris proxy service for media player control
     # only available on linux systems for now (dbus).

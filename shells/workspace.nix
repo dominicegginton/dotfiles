@@ -14,7 +14,6 @@
 in
   pkgs.mkShell rec {
     inherit NIX_CONFIG;
-
     nativeBuildInputs = with pkgs;
       [
         nix # Nix package manager

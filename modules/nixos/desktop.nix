@@ -6,14 +6,8 @@
 }:
 with lib; let
   cfg = config.modules.desktop;
-in {
-  options.modules.desktop = rec {
-    sway.enable = mkEnableOption "sway";
-    gamescope.enable = mkEnableOption "gamescope";
-    packages = mkOption {type = types.listOf types.package;};
-  };
 
-  config = let
+  sway = let
     dbus-sway-environment = pkgs.writeTextFile rec {
       name = "dbus-sway-environment";
       destination = "/bin/dbus-sway-environment";
@@ -162,4 +156,34 @@ in {
         ]
         ++ cfg.packages;
     };
+
+
+  gamescope = let in rec {
+      services.xserver.enable = true;
+      services.xserver.desktopManager.plasma5.enable = true;
+      services.xserver.displayManager.sddm.enable = true;
+      xdg.portal.enable = true;
+      xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
+      programs.steam.enable = true;
+      programs.steam.gamescopeSession.enable = true;
+      programs.gamemode.enable = true;
+      environment.systemPackages = with pkgs;
+        [
+          mangohud
+          protonup
+          lutris
+          heroic
+          bottles
+        ]
+        ++ cfg.packages;
+    };
+
+in {
+  options.modules.desktop = rec {
+    sway.enable = mkEnableOption "sway";
+    gamescope.enable = mkEnableOption "gamescope";
+    packages = mkOption {type = types.listOf types.package;};
+  };
+
+  config = mkIf cfg.sway.enable sway // mkIf cfg.gamescope.enable gamescope;
 }

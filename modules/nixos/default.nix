@@ -65,6 +65,7 @@ in {
       config.allowUnfree = cfg.nixpkgs.allowUnfree;
       config.allowUnfreePredicate = cfg.nixpkgs.allowUnfree;
       config.joypixels.acceptLicense = cfg.nixpkgs.allowUnfree;
+      config.nvidia.acceptLicense = cfg.nixpkgs.allowUnfree;
       config.permittedInsecurePackages = cfg.nixpkgs.permittedInsecurePackages;
       overlays = [
         outputs.overlays.additions

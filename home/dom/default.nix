@@ -3,6 +3,7 @@
   lib,
   pkgs,
   username,
+  desktop,
   stateVersion,
   ...
 }: let
@@ -16,7 +17,7 @@ in {
   modules.desktop.enable = true;
   modules.desktop.firefox = true;
   modules.desktop.vscode = true;
-  modules.desktop.environment = "sway";
+  modules.desktop.environment = desktop;
   modules.desktop.packages = with pkgs; [
     thunderbird
     unstable.teams-for-linux
