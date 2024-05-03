@@ -11,21 +11,11 @@
         pkgs = nixpkgs.legacyPackages.${system};
       in {
         formatter = pkgs.alejandra;
-
-        packages = rec {
-          hello-world = import ./default.nix {
-            lib = pkgs.lib;
-            python3Packages = pkgs.python3Packages;
-          };
-
-          default = hello-world;
+        packages.default = import ./default.nix {
+          lib = pkgs.lib;
+          python3Packages = pkgs.python3Packages;
         };
-
-        devShells = {
-          default = import ./shell.nix {
-            inherit pkgs;
-          };
-        };
+        devShells.default = import ./shell.nix {inherit pkgs;};
       }
     );
 }
