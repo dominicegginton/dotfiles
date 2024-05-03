@@ -16,12 +16,13 @@ in
     inherit NIX_CONFIG;
     nativeBuildInputs = with pkgs;
       [
-        nix # Nix package manager
-        home-manager # Home manager
-        ssh-to-pgp # Script to import SSH keys to GPG
-        sops # Sops secret management tool
-        sops-import-keys-hook # Sops hook to import PGP keys
-        sops-init-gpg-key # Sops hook to initialize GPG key
+        nix
+        home-manager
+        ssh-to-pgp
+        sops
+        sops-import-keys-hook
+        sops-init-gpg-key
+        pinentry
       ]
       ++ developmentPkgs;
   }

@@ -43,12 +43,8 @@
     nixos.stateVersion = stateVersion;
     nixos.nixpkgs.hostPlatform = platform;
     nixos.nixpkgs.allowUnfree = true;
-    nixos.nixpkgs.permittedInsecurePackages = [
-      "libav-11.12" # for mmfm
-      "mupdf-1.17.0" # for mmfm
-    ];
     networking.enable = true;
-    networking.hostname = "latitude-8390";
+    networking.hostname = "latitude-7390";
     networking.wireless = true;
     virtualisation.enable = true;
     bluetooth.enable = true;

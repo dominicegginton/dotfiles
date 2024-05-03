@@ -8,7 +8,6 @@
 }:
 with lib; let
   cfg = config.modules.nixos;
-  desktopCfg = config.modules.desktop;
 in {
   imports = [
     ./networking.nix
@@ -16,7 +15,7 @@ in {
     ./bluetooth.nix
     ./users.nix
     ./console.nix
-    ./desktop.nix
+    ./desktop
   ];
 
   options.modules.nixos = {
@@ -143,15 +142,6 @@ in {
         usbutils
         nvme-cli
         smartmontools
-        rebuild-host
-        rebuild-home
-        rebuild-configuration
-        upgrade-configuration
-        cleanup-trash
-        shutdown-host
-        reboot-host
-        suspend-host
-        hibernate-host
       ];
     };
   };

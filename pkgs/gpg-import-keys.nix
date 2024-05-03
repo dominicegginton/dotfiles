@@ -1,13 +1,11 @@
-{pkgs, ...}:
-pkgs.writeShellApplication {
+{pkgs}:
+pkgs.writeShellApplication rec {
   name = "gpg-import-keys";
-
   runtimeInputs = with pkgs; [
     pinentry
     gnupg
     google-cloud-sdk
   ];
-
   text = ''
     gcloud auth login
     if [ ! -d "$HOME"/.gnupg ]; then

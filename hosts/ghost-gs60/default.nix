@@ -7,7 +7,8 @@
   config,
   lib,
   ...
-}: with lib; {
+}:
+with lib; {
   imports = [
     inputs.nixos-hardware.nixosModules.msi-gs60
   ];
@@ -77,17 +78,13 @@
     nixos.stateVersion = stateVersion;
     nixos.nixpkgs.hostPlatform = platform;
     nixos.nixpkgs.allowUnfree = true;
-    nixos.nixpkgs.permittedInsecurePackages = [
-      "libav-11.12" # for mmfm
-      "mupdf-1.17.0" # for mmfm
-    ];
     networking.enable = true;
     networking.hostname = "ghost-gs60";
     networking.wireless = true;
     virtualisation.enable = true;
     bluetooth.enable = true;
     users.dom.enable = true;
-    desktop.sway.enable = true;
+    desktop.sway.enable = false;
     desktop.gamescope.enable = true;
     desktop.packages = with pkgs; [];
   };

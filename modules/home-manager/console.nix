@@ -12,14 +12,15 @@ in {
     home.sessionVariables.SYSTEMD_EDITOR = "nvim";
     home.sessionVariables.VISUAL = "nvim";
 
-    programs = {
+    programs = rec {
       bash.enable = true;
       git.enable = true;
       info.enable = true;
       hstr.enable = true;
       gpg.enable = true;
+      nix-index-database.comma.enable = true;
 
-      zsh = {
+      zsh = rec {
         enable = true;
         enableCompletion = true;
         enableAutosuggestions = true;
@@ -29,7 +30,7 @@ in {
         oh-my-zsh.theme = "eastwood";
       };
 
-      tmux = {
+      tmux = rec {
         enable = true;
         shortcut = "a";
         keyMode = "vi";
@@ -109,82 +110,75 @@ in {
         '';
       };
 
-      neovim = {
+      neovim = rec {
         enable = true;
         package = pkgs.neovim-nightly;
         viAlias = true;
         vimAlias = true;
         extraPackages = with pkgs; [
-          ripgrep # Fast search tool
-          fd # Fast search tool
-          fzf # Fuzzy finder
-          nodejs-slim # Node.js runtime
+          ripgrep
+          fd
+          fzf
+          nodejs-slim
           nodePackages.typescript
-          gcc # C compiler
-          rustc # Rust compiler
-          cargo # Rust package manager
-          zig # Zig programming language
-          tree-sitter # Parser generator tool and incremental parsing library
-          rnix-lsp # Nix language server
-          rust-analyzer # Rust language server
-          terraform-lsp # Terraform language server
-          lua-language-server # Lua language server
-          nodePackages.vim-language-server # Vim language server
-          nodePackages.bash-language-server # Bash language server
-          nodePackages.yaml-language-server # YAML language server
-          nodePackages.dockerfile-language-server-nodejs # Dockerfile language server
-          nodePackages.typescript-language-server # TypeScript language server
-          nodePackages.vscode-langservers-extracted # VSCode language servers (HTML, CSS, JSON, etc.)
-          nodePackages."@angular/cli" # Angular CLI (including language server)
-          nodePackages.pyright # Python language server
-          prettierd # Prettier
-          eslint_d # ESLint
-          stylua # Lua formatter
+          gcc
+          rustc
+          cargo
+          zig
+          tree-sitter
+          rnix-lsp
+          rust-analyzer
+          terraform-lsp
+          lua-language-server
+          nodePackages.vim-language-server
+          nodePackages.bash-language-server
+          nodePackages.yaml-language-server
+          nodePackages.dockerfile-language-server-nodejs
+          nodePackages.typescript-language-server
+          nodePackages.vscode-langservers-extracted
+          nodePackages."@angular/cli"
+          nodePackages.pyright
+          prettierd
+          eslint_d
+          stylua
         ];
       };
 
-      gh = {
+      gh = rec {
         enable = true;
-        extensions = with pkgs; [
-          gh-markdown-preview # Markdown preview in browser
-        ];
-        settings = {
-          editor = "nvim";
-          git_protocol = "https";
-          prompt = "enabled";
-        };
+        extensions = with pkgs; [gh-markdown-preview];
+        settings.editor = "nvim";
+        settings.git_protocol = "https";
+        settings.prompt = "enabled";
       };
-
-      nix-index-database.comma.enable = true;
     };
 
-    services.gpg-agent = mkIf isLinux {
+    services.gpg-agent = mkIf isLinux rec {
       enable = true;
       enableSshSupport = true;
       enableZshIntegration = true;
     };
 
     home.packages = with pkgs; [
-      git # Srouce control
-      git-lfs # Git large file storage
+      git
+      git-lfs
       git-sync
-      gnupg # GPG tool suite for encryption and signing
-      tmux # Terminal multiplexer
-      twm # Tmux window manager
-      jq # JSON processor
-      fx # JSON processor
-      glow # Markdown reader
-      nix-output-monitor # Nix output monitor
-      nix-tree # Browser dependency graphs of Nix derivations
-      nix-melt # Flake lock viewer
-      deadnix # Scan for dead Nix code
-      nix-init # Generate Nix packages from URLs with hash prefetching
-      manix # Nix documentation searcher
-      nix-du # Disk usage of Nix store
-      yazi # File manager
-      ncdu # Disk usage analyzer:
+      gnupg
+      tmux
+      twm
+      jq
+      fx
+      glow
+      nix-output-monitor
+      nix-tree
+      nix-melt
+      deadnix
+      nix-init
+      manix
+      nix-du
+      yazi
+      ncdu
       twx
-      rebuild-home
       todo
     ];
   };

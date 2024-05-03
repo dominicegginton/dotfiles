@@ -5,7 +5,6 @@
 }:
 pkgs.mkShell rec {
   inherit NIX_CONFIG;
-
   nativeBuildInputs = with pkgs;
     [
       python39
@@ -13,9 +12,6 @@ pkgs.mkShell rec {
       python39Packages.virtualenv
     ]
     ++ developmentPkgs;
-
-  # Shell hook to create a virtual environment if one does not exist
-  # and activate it upon entering the shell.
   shellHook = ''
     if [ ! -d .venv ]; then
       echo "No virtual environment found."
@@ -25,7 +21,6 @@ pkgs.mkShell rec {
         python3.9 -m venv .venv
       fi
     fi
-
     if [ -d .venv ]; then
       echo "Activating virtual environment."
       source .venv/bin/activate

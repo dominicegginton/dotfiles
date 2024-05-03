@@ -6,19 +6,12 @@
 }:
 with lib; let
   cfg = config.modules.sway;
-
-  # Super key is the Windows key on most keyboards
-  # and the Command key on Apple keyboards (MacBooks)
   super = "Mod4";
-  # Alt key is the Alt key on most keyboards
-  # and the Option key on Apple keyboards (MacBooks)
 in {
-  options.modules.sway = {
-    enable = mkEnableOption "sway";
-  };
+  options.modules.sway.enable = mkEnableOption "sway";
 
-  config = mkIf cfg.enable {
-    home.sessionVariables = {
+  config = mkIf cfg.enable rec {
+    home.sessionVariables = rec {
       MOZ_ENABLE_WAYLAND = 1;
       MOZ_USE_XINPUT2 = "1";
       XDG_CURRENT_DESKTOP = "sway";
@@ -26,7 +19,7 @@ in {
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     };
 
-    wayland.windowManager.sway = {
+    wayland.windowManager.sway = rec {
       enable = true;
       swaynag.enable = true;
       config = rec {
@@ -35,7 +28,7 @@ in {
         fonts.size = 11.0;
         focus.followMouse = true;
         bars = [
-          {
+          rec {
             id = "bar-0";
             position = "top";
             mode = "hide";
@@ -73,7 +66,7 @@ in {
           }
         ];
         terminal = "${pkgs.alacritty}/bin/alacritty";
-        keybindings = mkOptionDefault {
+        keybindings = mkOptionDefault rec {
           "${super}+Shift+e" = "exit";
           "${super}+Shift+c" = "reload";
           "${super}+Shift+q" = "kill";
@@ -94,20 +87,20 @@ in {
           "${super}+Control+Shift+Down" = "move workspace to output down";
           "${super}+Control+Shift+Up" = "move workspace to output up";
         };
-        window = mkOptionDefault {
+        window = mkOptionDefault rec {
           border = 2;
           titlebar = false;
           hideEdgeBorders = "smart";
         };
         startup = [
-          {command = "dbus-sway-environment";} # Set environment variables and start dbus
-          {command = "configure-gtk";} # Set and configure GTK theme
-          {command = "${pkgs.swaynag-battery}/bin/swaynag-battery --treshold 20";} # Start battery notification daemon
-          {command = "systemctl --user start kanshi.service";} # Start display configuration daemon
-          {command = "systemctl --user start mako.service";} # Start notification daemon
-          {command = "blueman-applet";} # Start bluetooth applet for system tray
-          {command = "${pkgs.wl-clipboard}/bin/wl-copy -t text --watch clipman store --no-persist";} # Start clipboard manager
-          {command = "${pkgs.swaybg}/bin/swaybg --image ${./background.jpg} --mode 'fill' --output '*'";} # Set background image
+          {command = "dbus-sway-environment";}
+          {command = "configure-gtk";}
+          {command = "systemctl --user start kanshi.service";}
+          {command = "systemctl --user start mako.service";}
+          {command = "blueman-applet";}
+          {command = "${pkgs.swaynag-battery}/bin/swaynag-battery --treshold 20";}
+          {command = "${pkgs.wl-clipboard}/bin/wl-copy -t text --watch clipman store --no-persist";}
+          {command = "${pkgs.swaybg}/bin/swaybg --image ${./background.jpg} --mode 'fill' --output '*'";}
           # {command = "${pkgs.mpvpaper}/bin/mpvpaper --fork -o 'no-audio loop script-opts=ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp' -l background '*' 'https://www.youtube.com/watch?v='";}
         ];
         floating = mkOptionDefault {
@@ -156,14 +149,10 @@ in {
       };
     };
 
-    # I3status-rust configuration.
-    # `i3status-rust` is a replacement for i3status and
-    # is called by `swaybar` to display the status bar
-    # information.
-    programs.i3status-rust = {
+    programs.i3status-rust = rec {
       enable = true;
-      bars = {
-        bar-0 = {
+      bars = rec {
+        bar-0 = rec {
           theme = "native";
           icons = "awesome6";
           blocks = [
@@ -204,16 +193,15 @@ in {
       };
     };
 
-    # Wlogout configuration.
+    services.swayosd.enable = true;
+    services.avizo.enable = true;
+    services.swayidle.enable = true;
+    services.swayidle.timeouts = [];
     programs.wlogout.enable = true;
-
-    # Swaylock configuration.
-    # `swaylock` is a screen locker for Wayland.
-    # It is called by `wlogout` to lock the screen.
-    programs.swaylock = {
+    programs.swaylock = rec {
       enable = true;
       package = pkgs.swaylock-effects;
-      settings = {
+      settings = rec {
         screenshots = true;
         clock = true;
         effect-blur = "7x5";
@@ -227,31 +215,13 @@ in {
         grace = 0;
       };
     };
-
-    services.swayosd.enable = true;
-    services.avizo.enable = true;
-    services.swayidle = {
-      enable = true;
-      timeouts = [];
-    };
-
-    # Pointer Cursor configuration.
-    # Requied for hiDPI displays to have a proper cursor size.
-    # The cursor size is set to 24 pixels.
-    home.pointerCursor = {
+    home.pointerCursor = rec {
       name = "Adwaita";
       package = pkgs.gnome.adwaita-icon-theme;
       size = 24;
-
-      # Set for X11 and xwayland applications.
-      x11 = {
-        enable = true;
-        defaultCursor = "Adwaita";
-      };
+      x11.enable = true;
+      x11.defaultCursor = "Adwaita";
     };
-
-    home.packages = [
-      pkgs.unstable.libdrm
-    ];
+    home.packages = [pkgs.unstable.libdrm];
   };
 }

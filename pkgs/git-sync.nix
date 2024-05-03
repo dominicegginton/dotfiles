@@ -1,5 +1,5 @@
-{pkgs, ...}:
-pkgs.writeShellApplication {
+{pkgs}:
+pkgs.writeShellApplication rec {
   name = "git-sync";
   runtimeInputs = with pkgs; [git];
   text = ''
