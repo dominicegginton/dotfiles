@@ -6,49 +6,37 @@
 with lib; let
   cfg = config.modules.homebrew;
 in {
-  options.modules.homebrew = {
-    enable = mkEnableOption "Homebrew";
+  options.modules.homebrew.enable = mkEnableOption "Homebrew";
 
-    autoUpdate = mkOption {
-      type = types.bool;
-      default = true;
-      description = "Automatically update Homebrew and its packages";
-    };
-
-    taps = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Homebrew taps to add";
-    };
-
-    brews = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Homebrew packages to install";
-    };
-
-    casks = mkOption {
-      type = types.listOf types.str;
-      default = [];
-      description = "Homebrew casks to install";
-    };
-
-    masApps = mkOption {
-      type = types.attrs;
-      default = {};
-      description = "macOS App Store apps to install";
-    };
+  options.modules.homebrew.taps = mkOption rec {
+    type = types.listOf types.str;
+    default = [];
   };
 
-  config = mkIf cfg.enable {
+  options.modules.homebrew.brews = mkOption rec {
+    type = types.listOf types.str;
+    default = [];
+  };
+
+  options.modules.homebrew.casks = mkOption rec {
+    type = types.listOf types.str;
+    default = [];
+  };
+
+  options.modules.homebrew. masApps = mkOption rec {
+    type = types.attrs;
+    default = {};
+  };
+
+  config = mkIf cfg.enable rec {
     homebrew.enable = true;
-    homebrew.onActivation.autoUpdate = mkIf cfg.autoUpdate true;
+    homebrew.onActivation.autoUpdate = true;
     homebrew.onActivation.cleanup = "zap";
     homebrew.global.brewfile = true;
     homebrew.global.lockfiles = false;
     homebrew.taps = ["homebrew/cask-versions"] ++ cfg.taps;
-    homebrew.brews = [] ++ cfg.brews;
-    homebrew.casks = [] ++ cfg.casks;
-    homebrew.masApps = {} ++ cfg.masApps;
+    homebrew.brews = cfg.brews;
+    homebrew.casks = cfg.casks;
+    homebrew.masApps = cfg.masApps;
   };
 }

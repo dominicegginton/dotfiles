@@ -4,9 +4,9 @@
   stateVersion,
   ...
 }: {
-  forAllPlatforms = inputs.nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin"];
+  forSystems = inputs.nixpkgs.lib.genAttrs ["x86_64-linux" "x86_64-darwin"];
 
-  mkNixosConfiguration = {
+  mkNixosHost = {
     hostname,
     installer ? null,
     platform ? "x86_64-linux",
@@ -21,13 +21,12 @@
           stateVersion
           ;
       };
-
       modules =
         [../hosts/nixos.nix]
         ++ (inputs.nixpkgs.lib.optionals (installer != null) [installer]);
     };
 
-  mkDarwinConfiguration = {
+  mkDarwinHost = {
     hostname,
     username,
   }:
@@ -45,7 +44,7 @@
       modules = [../hosts/darwin.nix];
     };
 
-  mkHomeConfiguration = {
+  mkHome = {
     hostname,
     username,
     desktop ? null,

@@ -62,6 +62,18 @@ in {
       xdg-desktop-portal-gtk
       xdg-desktop-portal
     ];
+    programs.dconf.enable = true;
+    hardware.opengl.enable = true;
+    hardware.opengl.driSupport = true;
+    hardware.pulseaudio.enable = false;
+    services.printing.enable = true;
+    services.pipewire = rec {
+      enable = true;
+      alsa.enable = true;
+      jack.enable = true;
+      pulse.enable = true;
+      wireplumber.enable = true;
+    };
 
     programs.sway = rec {
       enable = true;
@@ -87,6 +99,11 @@ in {
         kanshi
         pcmanfm
         swayimg
+        pipewire
+        alsa-utils
+        pulseaudio
+        pulsemixer
+        pavucontrol
       ];
     };
 
@@ -122,12 +139,5 @@ in {
     systemd.user.services.kanshi = kanshi-deamon;
     security.pam.services.swaylock = {};
     security.pam.loginLimits = [login-limits];
-    environment.systemPackages = with pkgs; [
-      pipewire
-      alsa-utils
-      pulseaudio
-      pulsemixer
-      pavucontrol
-    ];
   };
 }

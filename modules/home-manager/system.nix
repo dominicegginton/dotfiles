@@ -7,19 +7,11 @@
 }:
 with lib; let
   inherit (pkgs.stdenv) isDarwin;
-
   cfg = config.modules.system;
 in {
   options.modules.system = {
-    stateVersion = mkOption {
-      type = types.str;
-      description = "The state version to use for the system";
-    };
-
-    username = mkOption {
-      type = types.str;
-      description = "The username to use for the system";
-    };
+    stateVersion = mkOption {type = types.str;};
+    username = mkOption {type = types.str;};
   };
 
   config = {
@@ -39,9 +31,9 @@ in {
     };
 
     nix = {
-      registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
       package = pkgs.unstable.nix;
-      settings = {
+      registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+      settings = rec {
         experimental-features = ["nix-command" "flakes"];
         keep-outputs = true;
         keep-derivations = true;

@@ -1,14 +1,7 @@
-{
-  NIX_CONFIG,
-  pkgs,
-  developmentPkgs ? [],
-}:
+{pkgs ? import <nixpkgs> {}}:
 pkgs.mkShell rec {
-  inherit NIX_CONFIG;
-  nativeBuildInputs = with pkgs;
-    [
-      rustc
-      cargo
-    ]
-    ++ developmentPkgs;
+  nativeBuildInputs = with pkgs; [
+    rustc
+    cargo
+  ];
 }

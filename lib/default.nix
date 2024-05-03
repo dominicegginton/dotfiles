@@ -14,9 +14,9 @@
 in {
   inherit
     (helpers)
-    forAllPlatforms
-    mkNixosConfiguration
-    mkDarwinConfiguration
-    mkHomeConfiguration
+    forSystems
+    mkNixosHost
+    mkDarwinHost
+    mkHome
     ;
 }

@@ -43,6 +43,7 @@
     nixos.stateVersion = stateVersion;
     nixos.nixpkgs.hostPlatform = platform;
     nixos.nixpkgs.allowUnfree = true;
+    nixos.nixpkgs.permittedInsecurePackages = [];
     networking.enable = true;
     networking.hostname = "latitude-7390";
     networking.wireless = true;

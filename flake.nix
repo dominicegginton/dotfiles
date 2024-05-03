@@ -2,6 +2,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
     disko.url = "github:nix-community/disko";
     impermanence.url = "github:nix-community/impermanence";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
@@ -20,6 +21,7 @@
   outputs = {
     self,
     nixpkgs,
+    flake-utils,
     todo,
     ...
   }: let
@@ -28,11 +30,12 @@
     libx = import ./lib {inherit inputs outputs stateVersion;};
     overlays = import ./overlays {inherit inputs;};
     templates = import ./templates {};
-    pkgs = libx.forAllPlatforms (
-      platform:
+    shells = import ./shells {};
+    pkgs = libx.forSystems (
+      system:
         import nixpkgs {
-          system = platform;
-          hostPlatform = platform;
+          inherit system;
+          hostPlatform = system;
           config.allowUnfree = true;
           config.permittedInsecurePackages = ["nix-2.15.3"];
           overlays = [
@@ -45,56 +48,43 @@
         }
     );
   in {
-    overlays = overlays;
+    inherit templates overlays;
     packages = pkgs;
-    templates = templates;
-    formatter =
-      libx.forAllPlatforms (platform:
-        self.packages.${platform}.alejandra);
-
-    devShells = libx.forAllPlatforms (
-      platform: let
-        pkgs = self.packages.${platform};
-      in
-        import ./shells {inherit inputs pkgs platform;}
-    );
-
-    nixosConfigurations.iso-console = libx.mkNixosConfiguration {
+    formatter = libx.forSystems (system: pkgs.${system}.alejandra);
+    devShells = libx.forSystems (system: let
+      pkgs = pkgs.${system};
+    in {
+      python = import ./shells/python.nix {inherit pkgs;};
+      web = import ./shells/web.nix {inherit pkgs;};
+      rust = import ./shells/rust.nix {inherit pkgs;};
+      default = import ./shell.nix {inherit inputs pkgs system;};
+    });
+    nixosConfigurations.latitude-7390 = libx.mkNixosHost rec {hostname = "latitude-7390";};
+    nixosConfigurations.ghost-gs60 = libx.mkNisosHost rec {hostname = "ghost-gs60";};
+    nixosConfigurations.burbage = libx.mkNixosHost rec {hostname = "burbage";};
+    nixosConfigurations.iso-console = libx.mkNixosHost rec {
       hostname = "iso-console";
       installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
     };
-
-    nixosConfigurations.latitude-7390 = libx.mkNixosConfiguration {
-      hostname = "latitude-7390";
-    };
-
-    nixosConfigurations.ghost-gs60 = libx.mkNixosConfiguration {
-      hostname = "ghost-gs60";
-    };
-
-    darwinConfigurations.MCCML44WMD6T = libx.mkDarwinConfiguration {
+    darwinConfigurations.MCCML44WMD6T = libx.mkDarwinHost rec {
       hostname = "MCCML44WMD6T";
       username = "dom.egginton";
     };
-
-    homeConfigurations."dom@latitude-7390" = libx.mkHomeConfiguration {
+    homeConfigurations."dom@latitude-7390" = libx.mkHome rec {
       hostname = "latitude-7390";
       username = "dom";
       desktop = "sway";
     };
-
-    homeConfigurations."dom@ghost-gs60" = libx.mkHomeConfiguration {
+    homeConfigurations."dom@ghost-gs60" = libx.mkHome rec {
       hostname = "ghost-gs60";
       username = "dom";
       desktop = "gamescope";
     };
-
-    homeConfigurations."dom@burbage" = libx.mkHomeConfiguration {
+    homeConfigurations."dom@burbage" = libx.mkHome rec {
       hostname = "burbage";
       username = "dom";
     };
-
-    homeConfigurations."dom.egginton@MCCML44WMD6T" = libx.mkHomeConfiguration {
+    homeConfigurations."dom.egginton@MCCML44WMD6T" = libx.mkHome rec {
       hostname = "MCCML44WMD6T";
       username = "dom.egginton";
       platform = "x86_64-darwin";

@@ -1,17 +1,10 @@
-{
-  NIX_CONFIG,
-  pkgs,
-  developmentPkgs ? [],
-}:
+{pkgs ? import <nixpkgs> {}}:
 pkgs.mkShell rec {
-  inherit NIX_CONFIG;
-  nativeBuildInputs = with pkgs;
-    [
-      python39
-      python39Packages.pip
-      python39Packages.virtualenv
-    ]
-    ++ developmentPkgs;
+  nativeBuildInputs = with pkgs; [
+    python39
+    python39Packages.pip
+    python39Packages.virtualenv
+  ];
   shellHook = ''
     if [ ! -d .venv ]; then
       echo "No virtual environment found."

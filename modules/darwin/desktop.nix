@@ -7,16 +7,16 @@
 with lib; let
   cfg = config.modules.desktop;
 in {
-  options.modules.desktop = {};
+  options.modules.desktop.packages = mkOption {
+    type = types.listOf types.package;
+    default = [];
+  };
 
-  config = {
-    environment.systemPackages = with pkgs; [] ++ cfg.packages;
-
-    fonts = {
-      fontDir.enable = true;
-      fonts = with pkgs; [
-        ibm-plex
-      ];
-    };
+  config = rec {
+    fonts.fontDir.enable = true;
+    fonts.fonts = with pkgs; [
+      ibm-plex
+    ];
+    environment.systemPackages = cfg.packages;
   };
 }

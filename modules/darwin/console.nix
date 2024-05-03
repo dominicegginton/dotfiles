@@ -5,18 +5,11 @@
   ...
 }:
 with lib; {
-  config = {
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      syntaxHighlighting.enable = true;
-      promptInit = "autoload -U promptinit && promptinit";
-    };
-
-    environment.sessionVariables = {
-      FLAKE = "~/.dotfiles";
-    };
-
+  config = rec {
+    programs.zsh.enable = true;
+    programs.zsh.enableCompletion = true;
+    programs.zsh.syntaxHighlighting.enable = true;
+    programs.zsh.promptInit = "autoload -U promptinit && promptinit";
     environment.systemPackages = with pkgs; [
       git
       fzf

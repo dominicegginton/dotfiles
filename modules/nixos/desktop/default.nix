@@ -7,8 +7,9 @@ with lib; let
   cfg = config.modules.desktop;
 in {
   imports = [
-    ./sway.nix
     ./gamescope.nix
+    ./plasma.nix
+    ./sway.nix
   ];
 
   options.modules.desktop.packages = mkOption {

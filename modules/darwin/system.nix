@@ -12,25 +12,21 @@ in {
     stateVersion = mkOption {
       type = types.str;
       default = "20.09";
-      description = "The state version to use for the system";
     };
 
     nixpkgs.hostPlatform = mkOption {
       type = types.str;
       default = "x86_64-linux";
-      description = "The host platform to use for the system";
     };
 
     nixpkgs.allowUnfree = mkOption {
       type = types.bool;
       default = false;
-      description = "Allow unfree packages to be installed";
     };
 
     nixpkgs.permittedInsecurePackages = mkOption {
       type = types.listOf types.str;
       default = [];
-      description = "Permitted insecure packages to be installed";
     };
   };
 
