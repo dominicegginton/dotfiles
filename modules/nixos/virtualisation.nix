@@ -9,9 +9,9 @@ with lib; let
 in {
   options.modules.virtualisation.enable = mkEnableOption "virtualisation";
 
-  config = mkIf cfg.enable {
-    virtualisation = {
-      podman = {
+  config = mkIf cfg.enable rec {
+    virtualisation = rec {
+      podman = rec {
         defaultNetwork.settings.dns_enabled = true;
         dockerCompat = true;
         dockerSocket.enable = true;
@@ -19,10 +19,9 @@ in {
         enableNvidia = lib.elem "nvidia" config.services.xserver.videoDrivers;
       };
 
-      vmVariant = {
-        users.groups.nixosvmtest = {};
-
-        users.users.nix = {
+      vmVariant = rec {
+        users.groups.nixosvmtest = rec {};
+        users.users.nix = rec {
           description = "NixOS VM Test User";
           isNormalUser = true;
           initialPassword = "";
