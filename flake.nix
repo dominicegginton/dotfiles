@@ -62,10 +62,6 @@
     nixosConfigurations.latitude-7390 = libx.mkNixosHost rec {hostname = "latitude-7390";};
     nixosConfigurations.ghost-gs60 = libx.mkNisosHost rec {hostname = "ghost-gs60";};
     nixosConfigurations.burbage = libx.mkNixosHost rec {hostname = "burbage";};
-    nixosConfigurations.iso-console = libx.mkNixosHost rec {
-      hostname = "iso-console";
-      installer = nixpkgs + "/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix";
-    };
     darwinConfigurations.MCCML44WMD6T = libx.mkDarwinHost rec {
       hostname = "MCCML44WMD6T";
       username = "dom.egginton";
