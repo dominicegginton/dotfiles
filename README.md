@@ -4,7 +4,7 @@
 
 ```ocaml
 Declarative System Configuration
-NixOS / NixDarwin / HomeManager / SopsNix
+NixOS / NixDarwin / HomeManager / SopsNix / NSM
 ```
 
 ## Features
