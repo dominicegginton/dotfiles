@@ -714,11 +714,11 @@
         "nixpkgs": "nixpkgs_9"
       },
       "locked": {
-        "lastModified": 1714857107,
-        "narHash": "sha256-CpVvSV84Lbgp/g6HGzAE3iVF21lM6pNLaCG1jy+3LE0=",
+        "lastModified": 1714860974,
+        "narHash": "sha256-Vng53X3uOUGcGEpYfLmI++9JtEpRLfK2lABv+uABfKs=",
         "owner": "dominicegginton",
         "repo": "nsm",
-        "rev": "61f89679dfd7a5caf0acdd4dcab9b6c443a9575e",
+        "rev": "607f984aa4bd0b98f52ae8e911c882eec2f38d71",
         "type": "github"
       },
       "original": {

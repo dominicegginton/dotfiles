@@ -37,6 +37,7 @@
           config.allowUnfreePredicate = with nixpkgs.lib;
           with builtins;
             pkg: elem (getName pkg) ["mwprocapture" "joypixels"];
+          config.permittedInsecurePackages = ["nix-2.15.3"];
           overlays = [
             overlays.additions
             overlays.modifications

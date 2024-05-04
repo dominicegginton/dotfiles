@@ -109,7 +109,7 @@ in {
         pulseaudio
         pulsemixer
         pavucontrol
-        wpa_gui
+        wpa_supplicant_gui
       ];
     };
 
