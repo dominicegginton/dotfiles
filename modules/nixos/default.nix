@@ -58,20 +58,6 @@ in {
       };
     };
 
-    # nixpkgs = rec {
-    #   hostPlatform = cfg.nixpkgs.hostPlatform;
-    #   config.allowUnfree = cfg.nixpkgs.allowUnfree;
-    #   config.allowUnfreePredicate = cfg.nixpkgs.allowUnfree;
-    #   config.joypixels.acceptLicense = cfg.nixpkgs.allowUnfree;
-    #   config.permittedInsecurePackages = cfg.nixpkgs.permittedInsecurePackages;
-    #   overlays = [
-    #     outputs.overlays.additions
-    #     outputs.overlays.modifications
-    #     outputs.overlays.unstable-packages
-    #     inputs.neovim-nightly-overlay.overlay
-    #   ];
-    # };
-
     boot = rec {
       consoleLogLevel = 0;
       initrd.verbose = false;
@@ -83,12 +69,6 @@ in {
         "rd.udev.log_level=3"
         "udev.log_priority=3"
       ];
-      kernel.sysctl = rec {
-        "net.ipv4.ip_forward" = 1;
-        "net.ipv6.conf.all.forwarding" = 1;
-        "net.core.default_qdisc" = "fq";
-        "net.ipv4.tcp_congestion_control" = "bbr";
-      };
     };
 
     documentation = rec {
