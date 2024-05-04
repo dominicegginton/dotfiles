@@ -14,8 +14,8 @@ in {
     username = mkOption {type = types.str;};
   };
 
-  config = {
-    home = {
+  config = rec {
+    home = rec {
       stateVersion = cfg.stateVersion;
       username = cfg.username;
       homeDirectory =
