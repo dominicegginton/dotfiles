@@ -1,6 +1,5 @@
 {
   inputs,
-  outputs,
   config,
   lib,
   pkgs,
@@ -59,20 +58,19 @@ in {
       };
     };
 
-    nixpkgs = rec {
-      hostPlatform = cfg.nixpkgs.hostPlatform;
-      config.allowUnfree = cfg.nixpkgs.allowUnfree;
-      config.allowUnfreePredicate = cfg.nixpkgs.allowUnfree;
-      config.joypixels.acceptLicense = cfg.nixpkgs.allowUnfree;
-      config.permittedInsecurePackages = cfg.nixpkgs.permittedInsecurePackages;
-      overlays = [
-        outputs.overlays.additions
-        outputs.overlays.modifications
-        outputs.overlays.unstable-packages
-        inputs.neovim-nightly-overlay.overlay
-        inputs.todo.overlays.default
-      ];
-    };
+    # nixpkgs = rec {
+    #   hostPlatform = cfg.nixpkgs.hostPlatform;
+    #   config.allowUnfree = cfg.nixpkgs.allowUnfree;
+    #   config.allowUnfreePredicate = cfg.nixpkgs.allowUnfree;
+    #   config.joypixels.acceptLicense = cfg.nixpkgs.allowUnfree;
+    #   config.permittedInsecurePackages = cfg.nixpkgs.permittedInsecurePackages;
+    #   overlays = [
+    #     outputs.overlays.additions
+    #     outputs.overlays.modifications
+    #     outputs.overlays.unstable-packages
+    #     inputs.neovim-nightly-overlay.overlay
+    #   ];
+    # };
 
     boot = rec {
       consoleLogLevel = 0;
@@ -125,8 +123,9 @@ in {
       variables.EDITOR = "vim";
       variables.SYSTEMD_EDITOR = "vim";
       variables.VISUAL = "vim";
-      variables.FLAKE = "~/.dotfiles";
+      variables.NSM_FLAKE = "$HOME/.dotfiles";
       systemPackages = with pkgs; [
+        nsm
         unstable.nh
         nvd
         home-manager

@@ -21,7 +21,6 @@
   outputs = {
     self,
     nixpkgs,
-    todo,
     ...
   }: let
     inherit (self) inputs outputs;
@@ -34,18 +33,15 @@
         import nixpkgs {
           inherit system;
           hostPlatform = system;
-          config.allowUnfree = self.lib.mkDefault true;
-    config.allowUnfreePredicate = pkg:
-      builtins.elem (self.lib.getName pkg) [
-        "vscode"
-"vscode-extension-github-copilot"
-      ];
+          config.joypixels.acceptLicense = true;
+          config.allowUnfreePredicate = with nixpkgs.lib;
+          with builtins;
+            pkg: elem (getName pkg) ["mwprocapture" "joypixels"];
           overlays = [
             overlays.additions
             overlays.modifications
             overlays.unstable-packages
             inputs.neovim-nightly-overlay.overlay
-            inputs.todo.overlays.default
           ];
         }
     );

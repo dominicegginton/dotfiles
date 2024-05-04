@@ -17,6 +17,7 @@ NixOS / NixDarwin / HomeManager / SopsNix
 - **Continuous Integration** Backed by continuous integration workflows on GitHub Actions runners.
 - **Nix Dev Shells** Reproducible environments for common tools and tasks.
 - **Flake Templates** Easily create new Nix Flakes using templates for common cases.
+- **Nix Systems Manager** Manage nix system configurations with a single command.
 
 ## Workspace
 

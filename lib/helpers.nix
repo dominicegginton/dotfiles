@@ -12,6 +12,7 @@
     platform ? "x86_64-linux",
   }:
     inputs.nixpkgs.lib.nixosSystem {
+      pkgs = outputs.packages.${platform};
       specialArgs = {
         inherit
           inputs
@@ -31,6 +32,7 @@
     username,
   }:
     inputs.nix-darwin.lib.darwinSystem {
+      pkgs = outputs.packages."x86_64-darwin";
       specialArgs = {
         inherit
           inputs
