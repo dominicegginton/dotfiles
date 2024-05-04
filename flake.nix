@@ -21,7 +21,6 @@
   outputs = {
     self,
     nixpkgs,
-    flake-utils,
     todo,
     ...
   }: let
@@ -30,14 +29,17 @@
     libx = import ./lib {inherit inputs outputs stateVersion;};
     overlays = import ./overlays {inherit inputs;};
     templates = import ./templates {};
-    shells = import ./shells {};
     pkgs = libx.forSystems (
       system:
         import nixpkgs {
           inherit system;
           hostPlatform = system;
-          config.allowUnfree = true;
-          config.permittedInsecurePackages = ["nix-2.15.3"];
+          config.allowUnfree = self.lib.mkDefault true;
+    config.allowUnfreePredicate = pkg:
+      builtins.elem (self.lib.getName pkg) [
+        "vscode"
+"vscode-extension-github-copilot"
+      ];
           overlays = [
             overlays.additions
             overlays.modifications

@@ -113,19 +113,6 @@ in {
       package = pkgs.firefox-devedition-bin;
     };
 
-    programs.vscode = mkIf cfg.vscode {
-      enable = true;
-      enableExtensionUpdateCheck = true;
-      enableUpdateCheck = true;
-      package = pkgs.vscode;
-      extensions = with pkgs; [
-        vscode-extensions.vscodevim.vim
-        vscode-extensions.github.github-vscode-theme
-        vscode-extensions.github.copilot
-        vscode-extensions.yzhang.markdown-all-in-one
-      ];
-    };
-
     # Default packages to be installed across all desktop environments.
     # Includes the packages specified in the module configuration.
     home.packages = with pkgs;

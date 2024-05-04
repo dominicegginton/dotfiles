@@ -66,6 +66,11 @@ in {
     hardware.opengl.enable = true;
     hardware.opengl.driSupport = true;
     hardware.pulseaudio.enable = false;
+    services.xserver.enable = true;
+    services.xserver.displayManager.sddm.enable = true;
+    services.xserver.displayManager.sddm.wayland.enable = true;
+    services.xserver.displayManager.sddm.enableHidpi = true;
+    services.xserver.displayManager.sddm.theme = "breeze";
     services.printing.enable = true;
     services.pipewire = rec {
       enable = true;

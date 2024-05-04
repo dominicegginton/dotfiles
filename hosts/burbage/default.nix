@@ -4,7 +4,7 @@
   stateVersion,
   ...
 }: {
-  imports = [];
+  imports = [inputs.srvos.nixosModules.server];
 
   modules = rec {
     nixos.stateVersion = stateVersion;
