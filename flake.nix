@@ -59,7 +59,7 @@
       default = import ./shell.nix {inherit inputs pkgs system;};
     });
     nixosConfigurations.latitude-7390 = libx.mkNixosHost rec {hostname = "latitude-7390";};
-    nixosConfigurations.ghost-gs60 = libx.mkNisosHost rec {hostname = "ghost-gs60";};
+    nixosConfigurations.ghost-gs60 = libx.mkNixosHost rec {hostname = "ghost-gs60";};
     nixosConfigurations.burbage = libx.mkNixosHost rec {hostname = "burbage";};
     darwinConfigurations.MCCML44WMD6T = libx.mkDarwinHost rec {
       hostname = "MCCML44WMD6T";
