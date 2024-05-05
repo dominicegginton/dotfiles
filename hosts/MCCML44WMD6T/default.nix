@@ -1,7 +1,4 @@
 {pkgs, ...}: {
-  modules.networking.enable = true;
-  modules.networking.tailscale = true;
-  modules.homebrew.enable = true;
   modules.homebrew.casks = [
     "docker"
     "firefox-developer-edition"

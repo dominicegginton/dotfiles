@@ -37,13 +37,9 @@
           config.allowUnfreePredicate = with nixpkgs.lib;
           with builtins;
             pkg:
-              elem (getName pkg) [
-                "mwprocapture"
-                "joypixels"
-                "steam"
-                "steam-original"
-              ];
-          config.permittedInsecurePackages = ["nix-2.15.3"];
+              elem (getName pkg)
+              libx.constraints.unfreePackges;
+          config.permittedInsecurePackages = libx.constraints.permittedInsecurePackages;
           overlays = [
             overlays.additions
             overlays.modifications

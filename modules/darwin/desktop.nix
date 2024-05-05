@@ -7,7 +7,7 @@
 with lib; let
   cfg = config.modules.desktop;
 in {
-  options.modules.desktop.packages = mkOption {
+  options.modules.desktop.packages = mkOption rec {
     type = types.listOf types.package;
     default = [];
   };

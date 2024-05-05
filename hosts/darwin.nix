@@ -15,14 +15,5 @@
   ];
 
   modules.system.platform = platform;
-  modules.system.allowUnfree = true;
   modules.system.stateVersion = stateVersion;
-  modules.desktop.enable = false;
-
-  fonts = {
-    fontDir.enable = true;
-    fonts = with pkgs; [
-      ibm-plex
-    ];
-  };
 }

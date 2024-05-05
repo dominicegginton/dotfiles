@@ -7,7 +7,7 @@
 with lib; let
   inherit (pkgs.stdenv) isLinux;
 in {
-  config = {
+  config = rec {
     home.sessionVariables.EDITOR = "nvim";
     home.sessionVariables.SYSTEMD_EDITOR = "nvim";
     home.sessionVariables.VISUAL = "nvim";

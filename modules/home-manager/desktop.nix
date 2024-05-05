@@ -14,39 +14,25 @@ in {
     ./gamescope.nix
   ];
 
-  options.modules.desktop = {
-    enable = mkEnableOption "desktop";
-    firefox = mkEnableOption "firefox";
-    vscode = mkEnableOption "vscode";
-
-    environment = mkOption {
-      type = types.str;
-      default = "sway";
-      description = "Environment configuration";
-    };
-
-    packages = mkOption {
-      type = types.listOf types.package;
-      default = [];
-      description = "Packages to be installed";
-    };
+  options.modules.desktop.enable = mkEnableOption "desktop";
+  options.modules.desktop.firefox = mkEnableOption "firefox";
+  options.modules.desktop.vscode = mkEnableOption "vscode";
+  options.modules.desktop.environment = mkOption rec {
+    type = types.str;
+    default = "sway";
+    description = "Environment configuration";
+  };
+  options.modules.desktop.packages = mkOption rec {
+    type = types.listOf types.package;
+    default = [];
+    description = "Packages to be installed";
   };
 
   config = mkIf cfg.enable {
-    # Enable the desktop environment of choice.
     modules.sway.enable = mkIf (cfg.environment == "sway") true;
-    # modules.gamescope.enable = mkIf (cfg.environment == "gamescope") true;
-
-    # Enable the mpris proxy service for media player control
-    # only available on linux systems for now (dbus).
     services.mpris-proxy.enable = mkIf isLinux true;
-
-    # Enable home manager font configuration.
     fonts.fontconfig.enable = true;
-
-    # Set the global x resrouces theme properties for applications
-    # that use the xresources theme (alacritty, firefox, etc).
-    xresources.properties = {
+    xresources.properties = rec {
       "*color0" = "#141417";
       "*color8" = "#434345";
       "*color1" = "#D62C2C";
@@ -65,66 +51,55 @@ in {
       "*color15" = "#e9e9e9";
     };
 
-    # Alacritty terminal emulator configuration.
-    programs.alacritty = {
+    programs.alacritty = rec {
       enable = true;
-      settings = {
-        window = {
-          dynamic_padding = false;
-          padding = {
-            x = 0;
-            y = 0;
-          };
-          decoration_theme_variant = "Dark";
+      settings = rec {
+        window.dynamic_padding = false;
+        window.padding = rec {
+          x = 0;
+          y = 0;
         };
-        scrolling = {
-          history = 10000;
-          multiplier = 3;
-        };
+        window.decoration_theme_variant = "Dark";
+        scrolling.history = 10000;
+        scrolling.multiplier = 3;
+        selection.save_to_clipboard = true;
         font = let
           family = "JetBrains Mono";
-        in {
-          normal = {
+        in rec {
+          normal = rec {
             inherit family;
             style = "Regular";
           };
-          bold = {
+          bold = rec {
             inherit family;
             style = "Bold";
           };
-          italic = {
+          italic = rec {
             inherit family;
             style = "Italic";
           };
-          bold_italic = {
+          bold_italic = rec {
             inherit family;
             style = "Bold Italic";
           };
           size = 11;
         };
-        selection = {save_to_clipboard = true;};
       };
     };
 
-    # Firefox configuration.
-    # Uses the firefox developer edition package.
     programs.firefox = mkIf cfg.firefox {
       enable = true;
       package = pkgs.firefox-devedition-bin;
     };
 
-    # Default packages to be installed across all desktop environments.
-    # Includes the packages specified in the module configuration.
     home.packages = with pkgs;
       [
-        # Font packages
-        noto-fonts # Google noto-fonts
-        noto-fonts-cjk # Google noto-fonts-cjk
-        noto-fonts-emoji # Google noto-fonts-emoji
-        font-awesome # Font awesome
-        jetbrains-mono # JetBrains Mono fontface
-        # Media packages
-        mpv # Media player
+        noto-fonts
+        noto-fonts-cjk
+        noto-fonts-emoji
+        font-awesome
+        jetbrains-mono
+        mpv
       ]
       ++ cfg.packages;
   };

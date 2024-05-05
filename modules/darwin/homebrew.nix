@@ -6,8 +6,6 @@
 with lib; let
   cfg = config.modules.homebrew;
 in {
-  options.modules.homebrew.enable = mkEnableOption "Homebrew";
-
   options.modules.homebrew.taps = mkOption rec {
     type = types.listOf types.str;
     default = [];
@@ -29,7 +27,6 @@ in {
   };
 
   config = mkIf cfg.enable rec {
-    homebrew.enable = true;
     homebrew.onActivation.autoUpdate = true;
     homebrew.onActivation.cleanup = "zap";
     homebrew.global.brewfile = true;

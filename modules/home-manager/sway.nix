@@ -33,31 +33,31 @@ in {
             position = "top";
             mode = "hide";
             statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-bar-0.toml";
-            colors = {
+            colors = rec {
               background = "#94D4FF";
               statusline = "#434345";
               separator = "#434345";
-              focusedWorkspace = {
+              focusedWorkspace = rec {
                 text = "#24292e";
                 background = "#e9e9e9";
                 border = "#e9e9e9";
               };
-              activeWorkspace = {
+              activeWorkspace = rec {
                 text = "#434345";
                 background = "#94D4FF";
                 border = "#94D4FF";
               };
-              inactiveWorkspace = {
+              inactiveWorkspace = rec {
                 text = "#434345";
                 background = "#94D4FF";
                 border = "#94D4FF";
               };
-              urgentWorkspace = {
+              urgentWorkspace = rec {
                 text = "#434345";
                 background = "#DE5656";
                 border = "#DE5656";
               };
-              bindingMode = {
+              bindingMode = rec {
                 text = "#434345";
                 background = "#FFC560";
                 border = "#FFC560";
@@ -115,29 +115,29 @@ in {
             {app_id = "org.telegram.desktop";}
           ];
         };
-        colors = mkOptionDefault {
-          focused = {
+        colors = mkOptionDefault rec {
+          focused = rec {
             background = "#58f785";
             border = "#58f785";
             childBorder = "#0366d6";
             indicator = "#58f785";
             text = "#ffffff";
           };
-          focusedInactive = {
+          focusedInactive = rec {
             background = "#24292e";
             border = "#24292e";
             childBorder = "#0366d6";
             indicator = "#ffffff";
             text = "#666666";
           };
-          unfocused = {
+          unfocused = rec {
             background = "#24292e";
             border = "#24292e";
             childBorder = "#24292e";
             indicator = "#ffffff";
             text = "#666666";
           };
-          urgent = {
+          urgent = rec {
             background = "#f95a99";
             border = "#f95a99";
             childBorder = "#f95a99";

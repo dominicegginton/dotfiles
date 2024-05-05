@@ -11,6 +11,8 @@
       stateVersion
       ;
   };
+
+  constraints = import ./constraints.nix {};
 in {
   inherit
     (helpers)
@@ -19,4 +21,5 @@ in {
     mkDarwinHost
     mkHome
     ;
+  inherit constraints;
 }

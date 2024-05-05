@@ -5,8 +5,6 @@
   ...
 }:
 with lib; {
-  options.modules.networking = {};
-
   config = rec {
     services.tailscale.enable = true;
     environment.systemPackages = with pkgs; [tailscale];

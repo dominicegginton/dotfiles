@@ -1,9 +1,9 @@
 {
-  dark = {
+  dark = rec {
     slug = "dark";
     name = "dark-theme";
     author = "Dom";
-    palette = {
+    palette = rec {
       base00 = "#24292e";
       base01 = "#586069";
       base02 = "#6a737d";
