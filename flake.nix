@@ -36,7 +36,13 @@
           config.joypixels.acceptLicense = true;
           config.allowUnfreePredicate = with nixpkgs.lib;
           with builtins;
-            pkg: elem (getName pkg) ["mwprocapture" "joypixels" "steam"];
+            pkg:
+              elem (getName pkg) [
+                "mwprocapture"
+                "joypixels"
+                "steam"
+                "steam-original"
+              ];
           config.permittedInsecurePackages = ["nix-2.15.3"];
           overlays = [
             overlays.additions
