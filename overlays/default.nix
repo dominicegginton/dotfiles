@@ -1,4 +1,7 @@
-{inputs}: {
+{
+  inputs,
+  pkgConfig,
+}: {
   additions = final: _prev: let
     inherit (final) callPackage;
   in {
@@ -18,6 +21,10 @@
     mmfm = callPackage ../pkgs/mmfm.nix {};
   };
   unstable-packages = final: _prev: {
-    unstable = import inputs.nixpkgs-unstable {inherit (final) system;};
+    unstable = import inputs.nixpkgs-unstable {
+      inherit (final) system;
+      hostPlatform = final.system;
+      config = pkgConfig;
+    };
   };
 }

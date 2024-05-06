@@ -25,21 +25,20 @@
   }: let
     inherit (self) inputs outputs;
     stateVersion = "23.11";
+    pkgConfig = rec {
+      joypixels.acceptLicense = true;
+      allowUnfree = true;
+      permittedInsecurePackages = ["nix-2.15.3"];
+    };
     libx = import ./lib {inherit inputs outputs stateVersion;};
-    overlays = import ./overlays {inherit inputs;};
+    overlays = import ./overlays {inherit inputs pkgConfig;};
     templates = import ./templates {};
     pkgs = libx.forSystems (
       system:
         import nixpkgs {
           inherit system;
           hostPlatform = system;
-          config.joypixels.acceptLicense = true;
-          config.allowUnfreePredicate = with nixpkgs.lib;
-          with builtins;
-            pkg:
-              elem (getName pkg)
-              libx.constraints.unfreePackges;
-          config.permittedInsecurePackages = libx.constraints.permittedInsecurePackages;
+          config = pkgConfig;
           overlays = [
             overlays.additions
             overlays.modifications

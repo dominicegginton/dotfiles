@@ -30,7 +30,6 @@
       "x86_64-windows"
       "aarch64-linux"
       "armv7l-linux"
-      "riscv32-linux"
       "riscv64-linux"
     ];
   };
@@ -53,7 +52,7 @@
     desktop.sway.enable = true;
     desktop.packages = with pkgs; [
       thunderbird
-      teams-for-linux
+      unstable.teams-for-linux
       chromium
     ];
   };
