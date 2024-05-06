@@ -27,6 +27,7 @@
     stateVersion = "23.11";
     pkgConfig = rec {
       joypixels.acceptLicense = true;
+      nvidia.acceptLicense = true;
       allowUnfree = true;
       permittedInsecurePackages = ["nix-2.15.3"];
     };
