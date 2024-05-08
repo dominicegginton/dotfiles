@@ -25,21 +25,21 @@
   }: let
     inherit (self) inputs outputs;
     stateVersion = "23.11";
-    pkgConfig = rec {
-      joypixels.acceptLicense = true;
-      nvidia.acceptLicense = true;
-      allowUnfree = true;
-      permittedInsecurePackages = ["nix-2.15.3"];
-    };
     libx = import ./lib {inherit inputs outputs stateVersion;};
-    overlays = import ./overlays {inherit inputs pkgConfig;};
+    overlays = import ./overlays {inherit inputs;};
     templates = import ./templates {};
     pkgs = libx.forSystems (
-      system:
+      system: let
+        hostPlatform = system;
+        config = rec {
+          joypixels.acceptLicense = true;
+          nvidia.acceptLicense = true;
+          allowUnfree = true;
+          permittedInsecurePackages = ["nix-2.15.3"];
+        };
+      in
         import nixpkgs {
-          inherit system;
-          hostPlatform = system;
-          config = pkgConfig;
+          inherit system hostPlatform config;
           overlays = [
             overlays.additions
             overlays.modifications
@@ -53,12 +53,12 @@
     packages = pkgs;
     formatter = libx.forSystems (system: pkgs.${system}.alejandra);
     devShells = libx.forSystems (system: let
-      pkgs = pkgs.${system};
+      pkgs = self.packages.${system};
     in {
       python = import ./shells/python.nix {inherit pkgs;};
       web = import ./shells/web.nix {inherit pkgs;};
       rust = import ./shells/rust.nix {inherit pkgs;};
-      default = import ./shell.nix {inherit inputs pkgs system;};
+      default = import ./shell.nix {inherit pkgs;};
     });
     nixosConfigurations.latitude-7390 = libx.mkNixosHost rec {hostname = "latitude-7390";};
     nixosConfigurations.ghost-gs60 = libx.mkNixosHost rec {hostname = "ghost-gs60";};

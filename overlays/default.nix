@@ -1,10 +1,12 @@
-{
-  inputs,
-  pkgConfig,
-}: {
+{inputs}: {
   additions = final: _prev: let
     inherit (final) callPackage;
   in {
+    inherit
+      (inputs.sops-nix.packages.${final.system})
+      sops-import-keys-hook
+      sops-init-gpg-key
+      ;
     nsm = inputs.nsm.packages.${final.system}.default;
     todo = inputs.todo.packages.${final.system}.todo;
     screensaver = callPackage ../pkgs/screensaver.nix {};
@@ -14,17 +16,12 @@
     twx = callPackage ../pkgs/twx.nix {};
     network-filters-disable = callPackage ../pkgs/network-filters-disable.nix {};
     network-filters-enable = callPackage ../pkgs/network-filters-enable.nix {};
-  };
-  modifications = final: _prev: let
-    inherit (final) callPackage;
-  in {
     mmfm = callPackage ../pkgs/mmfm.nix {};
   };
+  modifications = final: _prev: {};
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
-      inherit (final) system;
-      hostPlatform = final.system;
-      config = pkgConfig;
+      inherit (final) system hostPlatform config;
     };
   };
 }
