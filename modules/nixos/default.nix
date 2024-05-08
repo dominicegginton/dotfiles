@@ -92,6 +92,8 @@ in {
     services.dbus.enable = true;
     services.smartd.enable = true;
     services.thermald.enable = true;
+    programs.gnupg.agent.enable = true;
+    programs.gnupg.agent.pinentryFlavor = "curses";
     system.activationScripts.diff = rec {
       supportsDryActivation = true;
       text = ''
@@ -120,6 +122,7 @@ in {
         usbutils
         nvme-cli
         smartmontools
+        pinentry-curses
       ];
     };
   };
