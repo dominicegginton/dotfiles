@@ -1,13 +1,12 @@
 {
   inputs,
+  stateVersion,
   config,
   lib,
   pkgs,
   ...
 }:
-with lib; let
-  cfg = config.modules.nixos;
-in {
+with lib; {
   imports = [
     ./networking.nix
     ./virtualisation.nix
@@ -15,42 +14,33 @@ in {
     ./users.nix
     ./console.nix
     ./desktop
+    ./services
   ];
 
-  options.modules.nixos = {
-    stateVersion = mkOption {type = types.str;};
-    nixpkgs.hostPlatform = mkOption {type = types.str;};
-    nixpkgs.allowUnfree = mkOption {type = types.bool;};
-    nixpkgs.permittedInsecurePackages = mkOption {
-      type = types.listOf types.str;
-      default = [];
-    };
-    location = mkOption {
-      type = types.str;
-      default = "en_GB.utf8";
-    };
+  options.modules.nixos.role = mkOption rec {
+    type = with types; string;
   };
 
   config = rec {
     nix = rec {
       package = pkgs.unstable.nix;
-      gc.automatic = true;
-      optimise.automatic = true;
-      registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-      nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-      settings = {
-        experimental-features = ["nix-command" "flakes"];
-        keep-outputs = true;
-        keep-derivations = true;
-        warn-dirty = false;
-        auto-optimise-store = true;
-        trusted-users = ["root" "@wheel"];
-        trusted-public-keys = [
+      gc.automatic = mkForce true;
+      optimise.automatic = mkForce true;
+      registry = mapAttrs (_: value: {flake = value;}) inputs;
+      nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+      settings = rec {
+        experimental-features = mkForce ["nix-command" "flakes"];
+        keep-outputs = mkForce true;
+        keep-derivations = mkForce true;
+        warn-dirty = mkForce false;
+        auto-optimise-store = mkForce true;
+        trusted-users = mkForce ["root" "@wheel"];
+        trusted-public-keys = mkForce [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
         ];
-        substituters = [
+        substituters = mkForce [
           "https://cache.nixos.org"
           "https://nix-community.cachix.org"
           "https://nixpkgs-wayland.cachix.org"
@@ -59,16 +49,8 @@ in {
     };
 
     boot = rec {
-      consoleLogLevel = 0;
-      initrd.verbose = false;
-      kernelModules = ["vhost_vsock"];
-      kernelParams = [
-        "boot.shell_on_fail"
-        "loglevel=3"
-        "rd.systemd.show_status=false"
-        "rd.udev.log_level=3"
-        "udev.log_priority=3"
-      ];
+      consoleLogLevel = mkForce 0;
+      initrd.verbose = mkForce false;
     };
 
     documentation = rec {
@@ -85,7 +67,7 @@ in {
       rtkit.enable = true;
     };
 
-    system.stateVersion = cfg.stateVersion;
+    system.stateVersion = stateVersion;
     sops.defaultSopsFile = ../../secrets.yaml;
     time.timeZone = "Europe/London";
     i18n.defaultLocale = "en_GB.UTF-8";

@@ -1,7 +1,9 @@
 keys:
   - &dominic-egginton C11BEB9007709C34FABBB5314C79CE4F82847A9F
+  - &latitude-7390 6950afb09db6de78a00d83f61a99b41e26cad84d
 creation_rules:
   - path_regex: secrets.yaml$
     key_groups:
     - pgp:
       - *dominic-egginton
+      - *latitude-7390

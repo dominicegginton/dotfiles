@@ -15,41 +15,30 @@ in {
 
   config = mkIf cfg.enable rec {
     sops.secrets."wireless.env" = {};
-    boot.kernel.sysctl = rec {
-      "net.ipv4.ip_forward" = 1;
-      "net.ipv6.conf.all.forwarding" = 1;
-      "net.ipv4.tcp_congestion_control" = "bbr";
+
+    networking = rec {
+      hostName = mkDefault cfg.hostname;
+      useDHCP = mkDefault true;
+      firewall = rec {
+        enable = mkDefault true;
+        checkReversePath = mkDefault true;
+        trustedInterfaces = mkDefault ["tailscale0"];
+        allowedTCPPorts = mkDefault [22];
+      };
+      wireless = mkIf cfg.wireless rec {
+        enable = mkDefault true;
+        fallbackToWPA2 = mkDefault true;
+        userControlled.enable = mkDefault true;
+        userControlled.group = "wheel";
+        environmentFile = config.sops.secrets."wireless.env".path;
+        networks."@home_uuid@".psk = "@home_psk@";
+        networks."@burbage_uuid@".psk = "@burbage_psk@";
+      };
     };
-    networking.hostName = cfg.hostname;
-    networking.useDHCP = mkDefault true;
-    services.tailscale.enable = true;
-    networking.firewall = rec {
-      enable = true;
-      checkReversePath = true;
-      trustedInterfaces = ["tailscale0"];
-      allowedTCPPorts = [22];
-    };
-    networking.wireless = mkIf cfg.wireless rec {
-      enable = true;
-      userControlled.enable = true;
-      userControlled.group = "wheel";
-      fallbackToWPA2 = true;
-      environmentFile = config.sops.secrets."wireless.env".path;
-      networks."@home_uuid@".psk = "@home_psk@";
-      networks."@burbage_uuid@".psk = "@burbage_psk@";
-    };
-    programs.ssh = rec {
-      startAgent = true;
-      extraConfig = ''
-        host i-* mi-*
-        ProxyCommand sh -c "aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters portNumber=%p"
-      '';
-    };
-    services.openssh = rec {
-      enable = true;
-      settings.PasswordAuthentication = mkDefault false;
-      settings.PermitRootLogin = mkDefault "no";
-    };
+
+    programs.ssh.startAgent = mkDefault true;
+    services.tailscale.enable = mkDefault true;
+    services.openssh.enable = mkDefault true;
     environment.systemPackages = with pkgs; [tailscale];
   };
 }
