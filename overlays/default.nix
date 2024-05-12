@@ -8,7 +8,7 @@
       sops-init-gpg-key
       ;
     nsm = inputs.nsm.packages.${final.system}.default;
-    todo = inputs.todo.packages.${final.system}.todo;
+    todo = inputs.todo.packages.${final.system}.default;
     screensaver = callPackage ../pkgs/screensaver.nix {};
     cleanup-trash = callPackage ../pkgs/cleanup-trash.nix {};
     git-sync = callPackage ../pkgs/git-sync.nix {};
