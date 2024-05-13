@@ -92,6 +92,24 @@ in {
       package = pkgs.firefox-devedition-bin;
     };
 
+    programs.vscode = mkIf cfg.vscode rec {
+      enable = true;
+      enableUpdateCheck = false;
+      enableExtensionUpdateCheck = false;
+      extensions = with pkgs.vscode-extensions; [
+        github.github-vscode-theme
+        github.copilot
+        github.copilot-chat
+        github.vscode-github-actions
+        github.vscode-pull-request-github
+        github.codespaces
+        vscodevim.vim
+      ];
+      userSettings = rec {
+        "workbench.colorTheme" = "GitHub Dark Default";
+      };
+    };
+
     home.packages = with pkgs;
       [
         noto-fonts
