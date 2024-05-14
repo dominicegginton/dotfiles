@@ -97,6 +97,7 @@ in {
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
       extensions = with pkgs.vscode-extensions; [
+        bbenoist.nix
         github.github-vscode-theme
         github.copilot
         github.copilot-chat
@@ -104,10 +105,17 @@ in {
         github.vscode-pull-request-github
         github.codespaces
         vscodevim.vim
+        bierner.markdown-mermaid
+        bierner.markdown-emoji
+        bierner.markdown-checkbox
+        bierner.emojisense
+        bierner.docs-view
       ];
       userSettings = rec {
         "workbench.colorTheme" = "GitHub Dark Default";
         "workbench.startupEditor" = "none";
+        "workbench.sideBar.location" = "right";
+        "editor.minimap.enabled" = "false";
       };
     };
 
