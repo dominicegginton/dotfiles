@@ -107,6 +107,7 @@ in {
       ];
       userSettings = rec {
         "workbench.colorTheme" = "GitHub Dark Default";
+        "workbench.startupEditor" = "none";
       };
     };
 
