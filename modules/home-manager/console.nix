@@ -23,12 +23,6 @@ in {
       ssh = rec {
         enable = mkDefault true;
         extraConfig = ''
-          Host *
-            AddKeysToAgent yes
-            UseKeychain yes
-            IdentityFile ~/.ssh/id_rsa
-
-
           Host i-* mi-*
             User ec2-user
             ProxyCommand sh -c "${pkgs.awscli}/bin/aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
