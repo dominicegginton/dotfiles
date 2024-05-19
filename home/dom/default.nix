@@ -19,11 +19,6 @@ in {
   modules.desktop.vscode = true;
   modules.desktop.environment = desktop;
 
-  home = {
-    file.".face".source = ./face.jpg;
-    file.".ssh/config".text = "";
-  };
-
   systemd.user.tmpfiles.rules = mkIf isLinux [
     "d ${config.home.homeDirectory}/dev/ 0755 ${username} users - -"
     "d ${config.home.homeDirectory}/playgrounds/ 0755 ${username} users - -"

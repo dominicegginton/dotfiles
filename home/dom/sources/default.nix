@@ -1,5 +1,6 @@
 {...}: {
   home.file = {
+    ".face".source = ../face.jpg;
     ".config".source = ../sources/.config;
     ".config".recursive = true;
     ".arup.gitconfig".source = ../sources/.arup.gitconfig;

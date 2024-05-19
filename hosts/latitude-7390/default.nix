@@ -23,8 +23,9 @@
     desktop.sway.enable = true;
     desktop.packages = with pkgs; [
       thunderbird
+      archi
       unstable.teams-for-linux
-      chromium
+      unstable.chromium
     ];
   };
 }

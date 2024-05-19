@@ -17,6 +17,7 @@
     network-filters-disable = callPackage ../pkgs/network-filters-disable.nix {};
     network-filters-enable = callPackage ../pkgs/network-filters-enable.nix {};
     mmfm = callPackage ../pkgs/mmfm.nix {};
+    beyond-all-reason = callPackage ../pkgs/beyond-all-reason.nix {};
   };
   modifications = final: _prev: {};
   unstable-packages = final: _prev: {
