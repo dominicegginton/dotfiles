@@ -97,7 +97,7 @@ in {
           bind % split-window -h -c "#{pane_current_path}"
           bind '"' split-window -v -c "#{pane_current_path}"
           bind-key -r f run-shell "tmux neww twm"
-          bind-key -r F run-shell "tmux neww twm -l"
+          bind-key -r F run-shell "tmux neww twm -g"
           bind-key -r e run-shell "tmux neww twm -n shell -p $HOME"
           bind-key -T copy-mode-vi v send-keys -X begin-selection
           bind-key -T copy-mode-vi V send-keys -X select-line

@@ -11,6 +11,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
     home-manager.url = "github:nix-community/home-manager/release-23.11";
     nix-colors.url = "github:misterio77/nix-colors";
+    twm.url = "github:vinnymeller/twm";
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
     nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
     todo.url = "github:dominicegginton/todo";

@@ -17,9 +17,10 @@
     network-filters-disable = callPackage ../pkgs/network-filters-disable.nix {};
     network-filters-enable = callPackage ../pkgs/network-filters-enable.nix {};
     mmfm = callPackage ../pkgs/mmfm.nix {};
-    beyond-all-reason = callPackage ../pkgs/beyond-all-reason.nix {};
   };
-  modifications = final: _prev: {};
+  modifications = final: _prev: {
+    twm = inputs.twm.packages.${final.system}.default;
+  };
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
       inherit (final) system hostPlatform config;
