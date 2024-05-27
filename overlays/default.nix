@@ -20,6 +20,7 @@
   };
   modifications = final: _prev: {
     twm = inputs.twm.packages.${final.system}.default;
+    neovim = inputs.neovim-nightly.packages.${final.system}.neovim;
   };
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs-unstable {
