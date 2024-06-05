@@ -51,37 +51,27 @@ in {
       "*color15" = "#e9e9e9";
     };
 
-    programs.alacritty = rec {
+    programs.alacritty = {
       enable = true;
-      settings = rec {
+      settings = {
         window.dynamic_padding = false;
-        window.padding = rec {
+        window.padding = {
           x = 0;
           y = 0;
         };
-        window.decoration_theme_variant = "Dark";
         scrolling.history = 10000;
         scrolling.multiplier = 3;
         selection.save_to_clipboard = true;
         font = let
-          family = "JetBrains Mono";
-        in rec {
-          normal = rec {
-            inherit family;
-            style = "Regular";
+          style = style: {
+            family = "JetBrains Mono";
+            style = style;
           };
-          bold = rec {
-            inherit family;
-            style = "Bold";
-          };
-          italic = rec {
-            inherit family;
-            style = "Italic";
-          };
-          bold_italic = rec {
-            inherit family;
-            style = "Bold Italic";
-          };
+        in {
+          normal = style "Regular";
+          bold = style "Bold";
+          italic = style "Italic";
+          bold_italic = style "Bold Italic";
           size = 11;
         };
       };
@@ -92,7 +82,7 @@ in {
       package = pkgs.firefox-devedition-bin;
     };
 
-    programs.vscode = mkIf cfg.vscode rec {
+    programs.vscode = mkIf cfg.vscode {
       enable = true;
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = false;
@@ -111,7 +101,7 @@ in {
         bierner.emojisense
         bierner.docs-view
       ];
-      userSettings = rec {
+      userSettings = {
         "workbench.colorTheme" = "GitHub Dark Default";
         "workbench.startupEditor" = "none";
         "workbench.sideBar.location" = "right";

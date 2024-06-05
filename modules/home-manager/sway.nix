@@ -10,8 +10,8 @@ with lib; let
 in {
   options.modules.sway.enable = mkEnableOption "sway";
 
-  config = mkIf cfg.enable rec {
-    home.sessionVariables = rec {
+  config = mkIf cfg.enable {
+    home.sessionVariables = {
       MOZ_ENABLE_WAYLAND = 1;
       MOZ_USE_XINPUT2 = "1";
       XDG_CURRENT_DESKTOP = "sway";
@@ -19,21 +19,21 @@ in {
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
     };
 
-    wayland.windowManager.sway = rec {
+    wayland.windowManager.sway = {
       enable = true;
       swaynag.enable = true;
-      config = rec {
+      config = {
         modifier = super;
         fonts.names = ["JetBrainsMono Nerd Font" "FontAwesome5Free"];
         fonts.size = 11.0;
         focus.followMouse = true;
         bars = [
-          rec {
+          {
             id = "bar-0";
             position = "top";
             mode = "hide";
             statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-bar-0.toml";
-            colors = rec {
+            colors = {
               background = "#94D4FF";
               statusline = "#434345";
               separator = "#434345";
@@ -66,7 +66,7 @@ in {
           }
         ];
         terminal = "${pkgs.alacritty}/bin/alacritty";
-        keybindings = mkOptionDefault rec {
+        keybindings = mkOptionDefault {
           "${super}+Shift+e" = "exit";
           "${super}+Shift+c" = "reload";
           "${super}+Shift+q" = "kill";
@@ -87,7 +87,7 @@ in {
           "${super}+Control+Shift+Down" = "move workspace to output down";
           "${super}+Control+Shift+Up" = "move workspace to output up";
         };
-        window = mkOptionDefault rec {
+        window = mkOptionDefault {
           border = 2;
           titlebar = false;
           hideEdgeBorders = "smart";
@@ -115,29 +115,29 @@ in {
             {app_id = "org.telegram.desktop";}
           ];
         };
-        colors = mkOptionDefault rec {
-          focused = rec {
+        colors = {
+          focused = {
             background = "#58f785";
             border = "#58f785";
             childBorder = "#0366d6";
             indicator = "#58f785";
             text = "#ffffff";
           };
-          focusedInactive = rec {
+          focusedInactive = {
             background = "#24292e";
             border = "#24292e";
             childBorder = "#0366d6";
             indicator = "#ffffff";
             text = "#666666";
           };
-          unfocused = rec {
+          unfocused = {
             background = "#24292e";
             border = "#24292e";
             childBorder = "#24292e";
             indicator = "#ffffff";
             text = "#666666";
           };
-          urgent = rec {
+          urgent = {
             background = "#f95a99";
             border = "#f95a99";
             childBorder = "#f95a99";
@@ -149,10 +149,10 @@ in {
       };
     };
 
-    programs.i3status-rust = rec {
+    programs.i3status-rust = {
       enable = true;
-      bars = rec {
-        bar-0 = rec {
+      bars = {
+        bar-0 = {
           theme = "native";
           icons = "awesome6";
           blocks = [
@@ -163,20 +163,6 @@ in {
               interval = 60;
               warning = 20.0;
               alert = 10.0;
-            }
-            {
-              block = "memory";
-              format_mem = " $icon $mem_used_percents ";
-              format_swap = " $icon $swap_used_percents ";
-            }
-            {
-              block = "cpu";
-              interval = 1;
-            }
-            {
-              block = "load";
-              interval = 1;
-              format = " $icon $1m ";
             }
             {
               block = "battery";
@@ -198,10 +184,10 @@ in {
     services.swayidle.enable = true;
     services.swayidle.timeouts = [];
     programs.wlogout.enable = true;
-    programs.swaylock = rec {
+    programs.swaylock = {
       enable = true;
       package = pkgs.swaylock-effects;
-      settings = rec {
+      settings = {
         screenshots = true;
         clock = true;
         effect-blur = "7x5";
@@ -215,7 +201,7 @@ in {
         grace = 0;
       };
     };
-    home.pointerCursor = rec {
+    home.pointerCursor = {
       name = "Adwaita";
       package = pkgs.gnome.adwaita-icon-theme;
       size = 24;

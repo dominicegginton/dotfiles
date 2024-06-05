@@ -67,12 +67,12 @@ in {
     hardware.opengl.driSupport = true;
     hardware.pulseaudio.enable = false;
     services.xserver.enable = true;
-    services.xserver.displayManager.sddm.enable = true;
-    services.xserver.displayManager.sddm.wayland.enable = true;
-    services.xserver.displayManager.sddm.enableHidpi = true;
-    services.xserver.displayManager.sddm.theme = "breeze";
+    services.displayManager.sddm.enable = true;
+    services.displayManager.sddm.wayland.enable = true;
+    services.displayManager.sddm.enableHidpi = true;
+    services.displayManager.sddm.theme = "breeze";
     services.printing.enable = true;
-    services.pipewire = rec {
+    services.pipewire = {
       enable = true;
       alsa.enable = true;
       jack.enable = true;

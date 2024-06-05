@@ -75,8 +75,8 @@ with lib; {
     services.smartd.enable = true;
     services.thermald.enable = true;
     programs.gnupg.agent.enable = true;
-    programs.gnupg.agent.pinentryFlavor = "curses";
-    system.activationScripts.diff = rec {
+    programs.gnupg.agent.pinentryPackage = pkgs.pinentry;
+    system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
         ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"

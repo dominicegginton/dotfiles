@@ -7,12 +7,12 @@
 with lib; let
   inherit (pkgs.stdenv) isLinux;
 in {
-  config = rec {
+  config = {
     home.sessionVariables.EDITOR = "nvim";
     home.sessionVariables.SYSTEMD_EDITOR = "nvim";
     home.sessionVariables.VISUAL = "nvim";
 
-    programs = rec {
+    programs = {
       bash.enable = true;
       git.enable = true;
       info.enable = true;
@@ -20,7 +20,7 @@ in {
       gpg.enable = true;
       nix-index-database.comma.enable = true;
 
-      ssh = rec {
+      ssh = {
         enable = mkDefault true;
         extraConfig = ''
           Host i-* mi-*
@@ -29,17 +29,17 @@ in {
         '';
       };
 
-      zsh = rec {
+      zsh = {
         enable = true;
         enableCompletion = true;
-        enableAutosuggestions = true;
+        autosuggestion.enable = true;
         autocd = true;
         defaultKeymap = "viins";
         oh-my-zsh.enable = true;
         oh-my-zsh.theme = "eastwood";
       };
 
-      tmux = rec {
+      tmux = {
         enable = true;
         shortcut = "a";
         keyMode = "vi";
@@ -119,7 +119,7 @@ in {
         '';
       };
 
-      neovim = rec {
+      neovim = {
         enable = true;
         package = pkgs.neovim;
         viAlias = true;
@@ -128,14 +128,14 @@ in {
           ripgrep
           fd
           fzf
-          nodejs-slim
+          nodejs
           nodePackages.typescript
           gcc
           rustc
           cargo
           zig
           tree-sitter
-          rnix-lsp
+          nil
           rust-analyzer
           terraform-lsp
           lua-language-server
@@ -153,7 +153,7 @@ in {
         ];
       };
 
-      gh = rec {
+      gh = {
         enable = true;
         extensions = with pkgs; [gh-markdown-preview];
         settings.editor = "nvim";
@@ -162,7 +162,7 @@ in {
       };
     };
 
-    services.gpg-agent = mkIf isLinux rec {
+    services.gpg-agent = mkIf isLinux {
       enable = true;
       enableSshSupport = true;
       enableZshIntegration = true;

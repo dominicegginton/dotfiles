@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     disko.url = "github:nix-community/disko";
@@ -9,7 +9,7 @@
     srvos.url = "github:nix-community/srvos";
     nix-darwin.url = "github:lnl7/nix-darwin";
     sops-nix.url = "github:Mic92/sops-nix";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
     nix-colors.url = "github:misterio77/nix-colors";
     twm.url = "github:vinnymeller/twm";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
