@@ -24,7 +24,6 @@ in {
     nsm = defaultPackageFrom nsm {inherit system;};
     todo = defaultPackageFrom todo {inherit system;};
     screensaver = callPackage ../pkgs/screensaver.nix {};
-    cleanup-trash = callPackage ../pkgs/cleanup-trash.nix {};
     git-sync = callPackage ../pkgs/git-sync.nix {};
     gpg-import-keys = callPackage ../pkgs/gpg-import-keys.nix {};
     twx = callPackage ../pkgs/twx.nix {};
