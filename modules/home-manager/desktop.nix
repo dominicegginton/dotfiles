@@ -14,25 +14,30 @@ in {
     ./gamescope.nix
   ];
 
-  options.modules.desktop.enable = mkEnableOption "desktop";
-  options.modules.desktop.firefox = mkEnableOption "firefox";
-  options.modules.desktop.vscode = mkEnableOption "vscode";
-  options.modules.desktop.environment = mkOption rec {
-    type = types.str;
-    default = "sway";
-    description = "Environment configuration";
-  };
-  options.modules.desktop.packages = mkOption rec {
-    type = types.listOf types.package;
-    default = [];
-    description = "Packages to be installed";
+  options.modules.desktop = {
+    enable = mkEnableOption "desktop";
+    firefox = mkEnableOption "firefox";
+    vscode = mkEnableOption "vscode";
+
+    environment = mkOption {
+      type = types.str;
+      default = "sway";
+      description = "Environment configuration";
+    };
+
+    packages = mkOption {
+      type = types.listOf types.package;
+      default = [];
+      description = "Packages to be installed";
+    };
   };
 
   config = mkIf cfg.enable {
     modules.sway.enable = mkIf (cfg.environment == "sway") true;
     services.mpris-proxy.enable = mkIf isLinux true;
     fonts.fontconfig.enable = true;
-    xresources.properties = rec {
+
+    xresources.properties = {
       "*color0" = "#141417";
       "*color8" = "#434345";
       "*color1" = "#D62C2C";

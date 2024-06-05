@@ -17,7 +17,7 @@ in {
     default = [];
   };
 
-  config = rec {
+  config = {
     boot.plymouth.enable = true;
     boot.plymouth.theme = "spinner";
     fonts.enableDefaultPackages = false;

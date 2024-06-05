@@ -17,18 +17,18 @@ with lib; {
     ./services
   ];
 
-  options.modules.nixos.role = mkOption rec {
+  options.modules.nixos.role = mkOption {
     type = with types; string;
   };
 
-  config = rec {
-    nix = rec {
+  config = {
+    nix = {
       package = pkgs.unstable.nix;
       gc.automatic = mkForce true;
       optimise.automatic = mkForce true;
       registry = mapAttrs (_: value: {flake = value;}) inputs;
       nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-      settings = rec {
+      settings = {
         experimental-features = mkForce ["nix-command" "flakes"];
         keep-outputs = mkForce true;
         keep-derivations = mkForce true;
@@ -48,12 +48,12 @@ with lib; {
       };
     };
 
-    boot = rec {
+    boot = {
       consoleLogLevel = mkForce 0;
       initrd.verbose = mkForce false;
     };
 
-    documentation = rec {
+    documentation = {
       enable = true;
       man.enable = true;
       nixos.enable = true;
@@ -61,7 +61,7 @@ with lib; {
       doc.enable = true;
     };
 
-    security = rec {
+    security = {
       sudo.enable = true;
       polkit.enable = true;
       rtkit.enable = true;

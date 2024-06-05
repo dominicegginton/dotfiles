@@ -9,7 +9,7 @@ with lib; let
 in {
   options.modules.services.samba.enable = mkEnableOption "samba";
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     services.samba.enable = true;
   };
 }

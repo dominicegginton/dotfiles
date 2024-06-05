@@ -8,22 +8,22 @@
 with lib; let
   cfg = config.modules.system;
 in {
-  options.modules.system.stateVersion = mkOption rec {
+  options.modules.system.stateVersion = mkOption {
     type = types.str;
     default = "20.09";
   };
 
-  options.modules.system.nixpkgs.hostPlatform = mkOption rec {
+  options.modules.system.nixpkgs.hostPlatform = mkOption {
     type = types.str;
     default = "x86_64-darwin";
   };
 
-  options.modules.system.nixpkgs.allowUnfree = mkOption rec {
+  options.modules.system.nixpkgs.allowUnfree = mkOption {
     type = types.bool;
     default = false;
   };
 
-  options.modules.system.nixpkgs.permittedInsecurePackages = mkOption rec {
+  options.modules.system.nixpkgs.permittedInsecurePackages = mkOption {
     type = types.listOf types.str;
     default = [];
   };

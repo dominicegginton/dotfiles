@@ -13,19 +13,19 @@ in {
     hostname = mkOption {type = types.str;};
   };
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     sops.secrets."wireless.env" = {};
 
-    networking = rec {
+    networking = {
       hostName = mkDefault cfg.hostname;
       useDHCP = mkDefault true;
-      firewall = rec {
+      firewall = {
         enable = mkDefault true;
         checkReversePath = mkDefault true;
         trustedInterfaces = mkDefault ["tailscale0"];
         allowedTCPPorts = mkDefault [22];
       };
-      wireless = mkIf cfg.wireless rec {
+      wireless = mkIf cfg.wireless {
         enable = mkDefault true;
         fallbackToWPA2 = mkDefault true;
         userControlled.enable = mkDefault true;

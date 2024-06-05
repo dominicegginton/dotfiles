@@ -5,7 +5,7 @@
   ...
 }:
 with lib; {
-  config = rec {
+  config = {
     services.tailscale.enable = true;
     environment.systemPackages = with pkgs; [tailscale];
   };

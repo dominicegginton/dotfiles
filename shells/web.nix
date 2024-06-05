@@ -1,5 +1,5 @@
 {pkgs ? import <nixpkgs> {}}:
-pkgs.mkShell rec {
+pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     nodejs
     typescript

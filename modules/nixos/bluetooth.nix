@@ -9,7 +9,7 @@ with lib; let
 in {
   options.modules.bluetooth.enable = mkEnableOption "bluetooth";
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     hardware.bluetooth.enable = true;
     hardware.bluetooth.package = pkgs.bluez;
     services.blueman.enable = true;

@@ -12,11 +12,11 @@ in {
     nixos.enable = mkEnableOption "NixOS";
   };
 
-  config = rec {
+  config = {
     sops.secrets."dom.password".neededForUsers = true;
 
-    users.users = rec {
-      dom = mkIf cfg.dom.enable rec {
+    users.users = {
+      dom = mkIf cfg.dom.enable {
         description = "Dominic Egginton";
         isNormalUser = true;
         hashedPasswordFile = config.sops.secrets."dom.password".path;
@@ -32,14 +32,14 @@ in {
         ];
       };
 
-      nixos = mkIf cfg.nixos.enable rec {
+      nixos = mkIf cfg.nixos.enable {
         description = "NixOS";
         isNormalUser = mkDefault true;
         home = mkDefault "/var/empty";
         createHome = mkDefault false;
       };
 
-      root = rec {
+      root = {
         description = "System administrator";
         isNormalUser = mkDefault false;
         hashedPassword = mkDefault null;

@@ -9,7 +9,7 @@ with lib; let
 in {
   options.modules.services.plex.enable = mkEnableOption "plex media server";
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     services.plex.enable = true;
   };
 }

@@ -1,10 +1,11 @@
 {pkgs ? import <nixpkgs> {}}:
-pkgs.mkShell rec {
+pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     python39
     python39Packages.pip
     python39Packages.virtualenv
   ];
+
   shellHook = ''
     if [ ! -d .venv ]; then
       echo "No virtual environment found."

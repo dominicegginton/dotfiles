@@ -9,7 +9,7 @@ with lib; let
 in {
   options.modules.services.unifi.enable = mkEnableOption "unifi";
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     services.unifi.enable = true;
   };
 }

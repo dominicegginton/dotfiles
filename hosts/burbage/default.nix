@@ -10,7 +10,7 @@
     ./boot.nix
   ];
 
-  modules = rec {
+  modules = {
     nixos.stateVersion = stateVersion;
     nixos.nixpkgs.hostPlatform = platform;
     nixos.role = "server";

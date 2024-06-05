@@ -37,27 +37,27 @@ in {
               background = "#94D4FF";
               statusline = "#434345";
               separator = "#434345";
-              focusedWorkspace = rec {
+              focusedWorkspace = {
                 text = "#24292e";
                 background = "#e9e9e9";
                 border = "#e9e9e9";
               };
-              activeWorkspace = rec {
+              activeWorkspace = {
                 text = "#434345";
                 background = "#94D4FF";
                 border = "#94D4FF";
               };
-              inactiveWorkspace = rec {
+              inactiveWorkspace = {
                 text = "#434345";
                 background = "#94D4FF";
                 border = "#94D4FF";
               };
-              urgentWorkspace = rec {
+              urgentWorkspace = {
                 text = "#434345";
                 background = "#DE5656";
                 border = "#DE5656";
               };
-              bindingMode = rec {
+              bindingMode = {
                 text = "#434345";
                 background = "#FFC560";
                 border = "#FFC560";

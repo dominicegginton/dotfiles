@@ -6,27 +6,27 @@
 with lib; let
   cfg = config.modules.homebrew;
 in {
-  options.modules.homebrew.taps = mkOption rec {
+  options.modules.homebrew.taps = mkOption {
     type = types.listOf types.str;
     default = [];
   };
 
-  options.modules.homebrew.brews = mkOption rec {
+  options.modules.homebrew.brews = mkOption {
     type = types.listOf types.str;
     default = [];
   };
 
-  options.modules.homebrew.casks = mkOption rec {
+  options.modules.homebrew.casks = mkOption {
     type = types.listOf types.str;
     default = [];
   };
 
-  options.modules.homebrew. masApps = mkOption rec {
+  options.modules.homebrew. masApps = mkOption {
     type = types.attrs;
     default = {};
   };
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     homebrew.onActivation.autoUpdate = true;
     homebrew.onActivation.cleanup = "zap";
     homebrew.global.brewfile = true;

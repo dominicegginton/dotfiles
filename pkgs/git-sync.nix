@@ -1,7 +1,9 @@
 {pkgs}:
-pkgs.writeShellApplication rec {
+pkgs.writeShellApplication {
   name = "git-sync";
+
   runtimeInputs = with pkgs; [git];
+
   text = ''
     git fetch --all --prune --tags --progress --verbose
     git lfs fetch --all --prune

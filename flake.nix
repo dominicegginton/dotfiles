@@ -32,7 +32,7 @@
     pkgs = libx.forSystems (
       system: let
         hostPlatform = system;
-        config = rec {
+        config = {
           joypixels.acceptLicense = true;
           nvidia.acceptLicense = true;
           allowUnfree = true;
@@ -50,8 +50,10 @@
     );
   in {
     inherit templates overlays;
+
     packages = pkgs;
     formatter = libx.forSystems (system: pkgs.${system}.alejandra);
+
     devShells = libx.forSystems (system: let
       pkgs = self.packages.${system};
     in {
@@ -60,31 +62,43 @@
       rust = import ./shells/rust.nix {inherit pkgs;};
       default = import ./shell.nix {inherit pkgs;};
     });
-    nixosConfigurations.latitude-7390 = libx.mkNixosHost rec {hostname = "latitude-7390";};
-    nixosConfigurations.ghost-gs60 = libx.mkNixosHost rec {hostname = "ghost-gs60";};
-    nixosConfigurations.burbage = libx.mkNixosHost rec {hostname = "burbage";};
-    darwinConfigurations.MCCML44WMD6T = libx.mkDarwinHost rec {
-      hostname = "MCCML44WMD6T";
-      username = "dom.egginton";
+
+    nixosConfigurations = {
+      latitude-7390 = libx.mkNixosHost {hostname = "latitude-7390";};
+      ghost-gs60 = libx.mkNixosHost {hostname = "ghost-gs60";};
+      burbage = libx.mkNixosHost {hostname = "burbage";};
     };
-    homeConfigurations."dom@latitude-7390" = libx.mkHome rec {
-      hostname = "latitude-7390";
-      username = "dom";
-      desktop = "sway";
+
+    darwinConfigurations = {
+      MCCML44WMD6T = libx.mkDarwinHost {
+        hostname = "MCCML44WMD6T";
+        username = "dom.egginton";
+      };
     };
-    homeConfigurations."dom@ghost-gs60" = libx.mkHome rec {
-      hostname = "ghost-gs60";
-      username = "dom";
-      desktop = "gamescope";
-    };
-    homeConfigurations."dom@burbage" = libx.mkHome rec {
-      hostname = "burbage";
-      username = "dom";
-    };
-    homeConfigurations."dom.egginton@MCCML44WMD6T" = libx.mkHome rec {
-      hostname = "MCCML44WMD6T";
-      username = "dom.egginton";
-      platform = "x86_64-darwin";
+
+    homeConfigurations = {
+      "dom@latitude-7390" = libx.mkHome {
+        hostname = "latitude-7390";
+        username = "dom";
+        desktop = "sway";
+      };
+
+      "dom@ghost-gs60" = libx.mkHome {
+        hostname = "ghost-gs60";
+        username = "dom";
+        desktop = "gamescope";
+      };
+
+      "dom@burbage" = libx.mkHome {
+        hostname = "burbage";
+        username = "dom";
+      };
+
+      "dom.egginton@MCCML44WMD6T" = libx.mkHome {
+        hostname = "MCCML44WMD6T";
+        username = "dom.egginton";
+        platform = "x86_64-darwin";
+      };
     };
   };
 }

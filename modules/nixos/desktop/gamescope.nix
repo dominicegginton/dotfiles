@@ -9,7 +9,7 @@ with lib; let
 in {
   options.modules.desktop.gamescope.enable = mkEnableOption "gamescope";
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     services.xserver.enable = true;
     services.xserver.displayManager.sddm.enable = true;
     hardware.opengl.enable = true;
@@ -17,7 +17,7 @@ in {
     hardware.opengl.driSupport32Bit = true;
     hardware.pulseaudio.enable = false;
     services.printing.enable = true;
-    services.pipewire = rec {
+    services.pipewire = {
       enable = true;
       alsa.enable = true;
       jack.enable = true;

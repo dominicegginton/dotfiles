@@ -7,7 +7,7 @@
 with lib; let
   cfg = config.modules.desktop.sway;
 
-  dbus-sway-environment = pkgs.writeTextFile rec {
+  dbus-sway-environment = pkgs.writeTextFile {
     name = "dbus-sway-environment";
     destination = "/bin/dbus-sway-environment";
     executable = true;
@@ -19,7 +19,7 @@ with lib; let
     '';
   };
 
-  configure-gtk = pkgs.writeTextFile rec {
+  configure-gtk = pkgs.writeTextFile {
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
@@ -33,7 +33,7 @@ with lib; let
     '';
   };
 
-  kanshi-deamon = rec {
+  kanshi-deamon = {
     description = "kanshi daemon";
     serviceConfig = {
       Type = "simple";
@@ -43,7 +43,7 @@ with lib; let
     };
   };
 
-  login-limits = rec {
+  login-limits = {
     domain = "@users";
     item = "rtprio";
     type = "-";
@@ -80,7 +80,7 @@ in {
       wireplumber.enable = true;
     };
 
-    programs.sway = rec {
+    programs.sway = {
       enable = true;
       wrapperFeatures.base = true;
       wrapperFeatures.gtk = true;
@@ -113,7 +113,7 @@ in {
       ];
     };
 
-    fonts.fontconfig = rec {
+    fonts.fontconfig = {
       enable = true;
       antialias = true;
       defaultFonts.serif = ["Source Serif"];

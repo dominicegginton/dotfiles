@@ -7,12 +7,12 @@
 with lib; let
   cfg = config.modules.desktop;
 in {
-  options.modules.desktop.packages = mkOption rec {
+  options.modules.desktop.packages = mkOption {
     type = types.listOf types.package;
     default = [];
   };
 
-  config = rec {
+  config = {
     fonts.fontDir.enable = true;
     fonts.fonts = with pkgs; [
       ibm-plex

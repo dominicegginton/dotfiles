@@ -13,7 +13,7 @@
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
 
-  modules = rec {
+  modules = {
     networking.enable = true;
     networking.hostname = "latitude-7390";
     networking.wireless = true;

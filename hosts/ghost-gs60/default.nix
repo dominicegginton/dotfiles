@@ -12,7 +12,7 @@
   ];
 
   services.xserver.videoDrivers = ["nvidia"];
-  hardware.opengl = rec {
+  hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
@@ -27,14 +27,14 @@
     ];
   };
 
-  hardware.nvidia = rec {
+  hardware.nvidia = {
     modesetting.enable = true;
     powerManagement.enable = false;
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    prime = rec {
+    prime = {
       offload.enable = true;
       offload.enableOffloadCmd = true;
       intelBusId = "PCI:0:2:0";
@@ -42,10 +42,10 @@
     };
   };
 
-  boot = rec {
+  boot = {
     initrd.availableKernelModules = ["xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod"];
     kernelModules = ["kvm-intel"];
-    loader = rec {
+    loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
@@ -55,7 +55,7 @@
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
 
-  modules = rec {
+  modules = {
     nixos.stateVersion = stateVersion;
     nixos.role = "server";
     services.deluge.enable = true;

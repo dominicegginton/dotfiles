@@ -1,5 +1,5 @@
 {pkgs}:
-pkgs.stdenv.mkDerivation rec {
+pkgs.stdenv.mkDerivation {
   name = "hello";
   src = builtins.fetchTarball {
     url = "https://ftp.gnu.org/gnu/hello/hello-2.10.tar.gz";
