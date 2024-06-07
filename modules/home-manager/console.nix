@@ -128,15 +128,14 @@ in {
           ripgrep
           fd
           fzf
-          nodejs
-          nodePackages.typescript
+          tree-sitter
+          nil
           gcc
           rustc
           cargo
-          zig
-          tree-sitter
-          nil
           rust-analyzer
+          nodejs
+          nodePackages.typescript
           terraform-lsp
           lua-language-server
           nodePackages.vim-language-server
@@ -145,7 +144,6 @@ in {
           nodePackages.dockerfile-language-server-nodejs
           nodePackages.typescript-language-server
           nodePackages.vscode-langservers-extracted
-          nodePackages."@angular/cli"
           nodePackages.pyright
           prettierd
           eslint_d

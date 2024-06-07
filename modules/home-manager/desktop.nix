@@ -89,17 +89,17 @@ in {
 
     programs.vscode = mkIf cfg.vscode {
       enable = true;
-      enableUpdateCheck = false;
-      enableExtensionUpdateCheck = false;
-      extensions = with pkgs.vscode-extensions; [
+      package = pkgs.unstable.vscode;
+      enableUpdateCheck = true;
+      enableExtensionUpdateCheck = true;
+      extensions = with pkgs.unstable.vscode-extensions; [
         bbenoist.nix
+        vscodevim.vim
         github.github-vscode-theme
         github.copilot
-        github.copilot-chat
         github.vscode-github-actions
         github.vscode-pull-request-github
         github.codespaces
-        vscodevim.vim
         bierner.markdown-mermaid
         bierner.markdown-emoji
         bierner.markdown-checkbox
@@ -110,7 +110,7 @@ in {
         "workbench.colorTheme" = "GitHub Dark Default";
         "workbench.startupEditor" = "none";
         "workbench.sideBar.location" = "right";
-        "editor.minimap.enabled" = "false";
+        "editor.minimap.enabled" = false;
       };
     };
 
