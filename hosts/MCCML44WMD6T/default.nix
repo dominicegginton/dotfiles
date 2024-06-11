@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{ pkgs, ... }: {
   modules = {
     homebrew.casks = [
       "docker"
@@ -15,5 +15,5 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [vscode];
+  environment.systemPackages = with pkgs; [ vscode ];
 }

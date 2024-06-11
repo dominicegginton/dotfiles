@@ -1,8 +1,7 @@
-{
-  inputs,
-  hostname,
-  modulesPath,
-  ...
+{ inputs
+, hostname
+, modulesPath
+, ...
 }: {
   imports = [
     inputs.disko.nixosModules.disko

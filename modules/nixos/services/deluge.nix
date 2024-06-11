@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.services.deluge;
-in {
+in
+{
   options.modules.services.deluge.enable = mkEnableOption "deluge";
 
   config = mkIf cfg.enable {

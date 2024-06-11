@@ -1,11 +1,11 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 with lib; let
   cfg = config.modules.desktop;
-in {
+in
+{
   imports = [
     ./gamescope.nix
     ./plasma.nix
@@ -14,7 +14,7 @@ in {
 
   options.modules.desktop.packages = mkOption {
     type = types.listOf types.package;
-    default = [];
+    default = [ ];
   };
 
   config = {

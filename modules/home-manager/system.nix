@@ -1,17 +1,17 @@
-{
-  inputs,
-  config,
-  lib,
-  pkgs,
-  ...
+{ inputs
+, config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   inherit (pkgs.stdenv) isDarwin;
   cfg = config.modules.system;
-in {
+in
+{
   options.modules.system = {
-    stateVersion = mkOption {type = types.str;};
-    username = mkOption {type = types.str;};
+    stateVersion = mkOption { type = types.str; };
+    username = mkOption { type = types.str; };
   };
 
   config = {
@@ -22,7 +22,7 @@ in {
         if isDarwin
         then "/Users/${cfg.username}"
         else "/home/${cfg.username}";
-      sessionPath = ["$HOME/.local/bin"];
+      sessionPath = [ "$HOME/.local/bin" ];
       activation.report-changes = config.lib.dag.entryAnywhere ''
         ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
       '';

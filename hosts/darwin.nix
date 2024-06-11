@@ -1,9 +1,8 @@
-{
-  hostname,
-  platform,
-  stateVersion,
-  pkgs,
-  ...
+{ hostname
+, platform
+, stateVersion
+, pkgs
+, ...
 }: {
   imports = [
     ../modules/darwin/system.nix

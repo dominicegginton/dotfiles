@@ -1,4 +1,4 @@
-{...}: {
+_: {
   home.file = {
     ".face".source = ../face.jpg;
     ".config".source = ../sources/.config;

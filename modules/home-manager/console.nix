@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   inherit (pkgs.stdenv) isLinux;
-in {
+in
+{
   config = {
     home.sessionVariables.EDITOR = "nvim";
     home.sessionVariables.SYSTEMD_EDITOR = "nvim";
@@ -153,7 +153,7 @@ in {
 
       gh = {
         enable = true;
-        extensions = with pkgs; [gh-markdown-preview];
+        extensions = with pkgs; [ gh-markdown-preview ];
         settings.editor = "nvim";
         settings.git_protocol = "https";
         settings.prompt = "enabled";

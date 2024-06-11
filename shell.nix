@@ -1,4 +1,4 @@
-{pkgs}:
+{ pkgs }:
 pkgs.mkShell rec {
   nativeBuildInputs = with pkgs; [
     nix

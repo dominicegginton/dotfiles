@@ -1,8 +1,7 @@
-{
-  inputs,
-  lib,
-  username,
-  ...
+{ inputs
+, lib
+, username
+, ...
 }:
 with lib; {
   imports =

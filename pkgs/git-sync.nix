@@ -1,8 +1,8 @@
-{pkgs}:
+{ pkgs }:
 pkgs.writeShellApplication {
   name = "git-sync";
 
-  runtimeInputs = with pkgs; [git];
+  runtimeInputs = with pkgs; [ git ];
 
   text = ''
     git fetch --all --prune --tags --progress --verbose

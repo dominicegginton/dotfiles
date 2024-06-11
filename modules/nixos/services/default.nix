@@ -1,11 +1,11 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 with lib; let
   cfg = config.modules.services;
-in {
+in
+{
   imports = [
     ./deluge.nix
     ./plex.nix

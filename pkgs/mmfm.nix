@@ -1,7 +1,7 @@
-{
-  pkgs,
-  fetchFromGitHub,
-  stdenv,
+{ pkgs
+, fetchFromGitHub
+, stdenv
+,
 }:
 stdenv.mkDerivation rec {
   pname = "mmfm";

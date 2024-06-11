@@ -1,20 +1,20 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.networking;
-in {
+in
+{
   options.modules.networking = {
     enable = mkEnableOption "networking";
     wireless = mkEnableOption "wireless";
-    hostname = mkOption {type = types.str;};
+    hostname = mkOption { type = types.str; };
   };
 
   config = mkIf cfg.enable {
-    sops.secrets."wireless.env" = {};
+    sops.secrets."wireless.env" = { };
 
     networking = {
       hostName = mkDefault cfg.hostname;
@@ -22,8 +22,8 @@ in {
       firewall = {
         enable = mkDefault true;
         checkReversePath = mkDefault true;
-        trustedInterfaces = mkDefault ["tailscale0"];
-        allowedTCPPorts = mkDefault [22];
+        trustedInterfaces = mkDefault [ "tailscale0" ];
+        allowedTCPPorts = mkDefault [ 22 ];
       };
       wireless = mkIf cfg.wireless {
         enable = mkDefault true;
@@ -40,6 +40,6 @@ in {
     programs.ssh.startAgent = mkDefault true;
     services.tailscale.enable = mkDefault true;
     services.openssh.enable = mkDefault true;
-    environment.systemPackages = with pkgs; [tailscale];
+    environment.systemPackages = with pkgs; [ tailscale ];
   };
 }

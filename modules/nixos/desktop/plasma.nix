@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.desktop.plasma;
-in {
+in
+{
   options.modules.desktop.plasma.enable = mkEnableOption "plasma";
 
   config = mkIf cfg.enable {
@@ -16,7 +16,7 @@ in {
     hardware.opengl.enable = true;
     hardware.opengl.driSupport = true;
     xdg.portal.enable = true;
-    xdg.portal.extraPortals = with pkgs; [xdg-desktop-portal-gtk];
+    xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
     hardware.pulseaudio.enable = false;
     services.printing.enable = true;
     services.pipewire = {

@@ -1,14 +1,14 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   inherit (pkgs.stdenv) isLinux;
 
   cfg = config.modules.desktop;
-in {
+in
+{
   imports = [
     ./sway.nix
     ./gamescope.nix
@@ -27,7 +27,7 @@ in {
 
     packages = mkOption {
       type = types.listOf types.package;
-      default = [];
+      default = [ ];
       description = "Packages to be installed";
     };
   };
@@ -67,18 +67,20 @@ in {
         scrolling.history = 10000;
         scrolling.multiplier = 3;
         selection.save_to_clipboard = true;
-        font = let
-          style = style: {
-            family = "JetBrains Mono";
-            style = style;
+        font =
+          let
+            style = style: {
+              family = "JetBrains Mono";
+              style = style;
+            };
+          in
+          {
+            normal = style "Regular";
+            bold = style "Bold";
+            italic = style "Italic";
+            bold_italic = style "Bold Italic";
+            size = 11;
           };
-        in {
-          normal = style "Regular";
-          bold = style "Bold";
-          italic = style "Italic";
-          bold_italic = style "Bold Italic";
-          size = 11;
-        };
       };
     };
 

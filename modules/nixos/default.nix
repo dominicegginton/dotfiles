@@ -1,10 +1,9 @@
-{
-  inputs,
-  stateVersion,
-  config,
-  lib,
-  pkgs,
-  ...
+{ inputs
+, stateVersion
+, config
+, lib
+, pkgs
+, ...
 }:
 with lib; {
   imports = [
@@ -26,15 +25,15 @@ with lib; {
       package = pkgs.unstable.nix;
       gc.automatic = mkForce true;
       optimise.automatic = mkForce true;
-      registry = mapAttrs (_: value: {flake = value;}) inputs;
+      registry = mapAttrs (_: value: { flake = value; }) inputs;
       nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
-        experimental-features = mkForce ["nix-command" "flakes"];
+        experimental-features = mkForce [ "nix-command" "flakes" ];
         keep-outputs = mkForce true;
         keep-derivations = mkForce true;
         warn-dirty = mkForce false;
         auto-optimise-store = mkForce true;
-        trusted-users = mkForce ["root" "@wheel"];
+        trusted-users = mkForce [ "root" "@wheel" ];
         trusted-public-keys = mkForce [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

@@ -1,9 +1,8 @@
-{
-  inputs,
-  pkgs,
-  config,
-  lib,
-  ...
+{ inputs
+, pkgs
+, config
+, lib
+, ...
 }: {
   imports = [
     inputs.nixos-hardware.nixosModules.msi-gs60
@@ -11,7 +10,7 @@
     ./boot.nix
   ];
 
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl = {
     enable = true;
     driSupport = true;
@@ -43,8 +42,8 @@
   };
 
   boot = {
-    initrd.availableKernelModules = ["xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod"];
-    kernelModules = ["kvm-intel"];
+    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" ];
+    kernelModules = [ "kvm-intel" ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -65,6 +64,6 @@
     networking.hostname = "ghost-gs60";
     virtualisation.enable = true;
     users.dom.enable = true;
-    desktop.packages = with pkgs; [];
+    desktop.packages = with pkgs; [ ];
   };
 }

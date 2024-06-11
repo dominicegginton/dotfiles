@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.virtualisation;
-in {
+in
+{
   options.modules.virtualisation.enable = mkEnableOption "virtualisation";
 
   config = mkIf cfg.enable {
@@ -20,7 +20,7 @@ in {
       };
 
       vmVariant = {
-        users.groups.nixosvmtest = {};
+        users.groups.nixosvmtest = { };
         users.users.nix = {
           description = "NixOS VM Test User";
           isNormalUser = true;
@@ -30,6 +30,6 @@ in {
       };
     };
 
-    environment.systemPackages = with pkgs; [qemu];
+    environment.systemPackages = with pkgs; [ qemu ];
   };
 }

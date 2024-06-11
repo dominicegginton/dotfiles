@@ -1,8 +1,6 @@
-{
-  hostname,
-  platform,
-  stateVersion,
-  ...
+{ hostname
+, platform
+, stateVersion
 }: {
   imports = [
     inputs.srvos.nixosModules.server

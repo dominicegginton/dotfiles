@@ -1,13 +1,13 @@
-{
-  inputs,
-  outputs,
-  config,
-  lib,
-  ...
+{ inputs
+, outputs
+, config
+, lib
+, ...
 }:
 with lib; let
   cfg = config.modules.system;
-in {
+in
+{
   options.modules.system.stateVersion = mkOption {
     type = types.str;
     default = "20.09";
@@ -25,7 +25,7 @@ in {
 
   options.modules.system.nixpkgs.permittedInsecurePackages = mkOption {
     type = types.listOf types.str;
-    default = [];
+    default = [ ];
   };
 
   config = {
@@ -33,10 +33,10 @@ in {
       package = pkgs.unstable.nix;
       gc.automatic = true;
       optimise.automatic = true;
-      registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
+      registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
       nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
-        experimental-features = ["nix-command" "flakes"];
+        experimental-features = [ "nix-command" "flakes" ];
         keep-outputs = true;
         keep-derivations = true;
         warn-dirty = false;
@@ -50,7 +50,7 @@ in {
           if isDarwin
           then false
           else true;
-        trusted-users = ["root" "@wheel"];
+        trusted-users = [ "root" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

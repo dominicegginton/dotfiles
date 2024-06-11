@@ -1,8 +1,8 @@
-{pkgs}:
+{ pkgs }:
 pkgs.writeShellApplication {
   name = "twx";
 
-  runtimeInputs = with pkgs; [tmux];
+  runtimeInputs = with pkgs; [ tmux ];
 
   text = ''
     echo "Killing tmux server..."

@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.desktop.gamescope;
-in {
+in
+{
   options.modules.desktop.gamescope.enable = mkEnableOption "gamescope";
 
   config = mkIf cfg.enable {

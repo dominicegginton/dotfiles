@@ -1,15 +1,15 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.desktop;
-in {
+in
+{
   options.modules.desktop.packages = mkOption {
     type = types.listOf types.package;
-    default = [];
+    default = [ ];
   };
 
   config = {

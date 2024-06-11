@@ -1,8 +1,8 @@
-{pkgs}:
+{ pkgs }:
 pkgs.writeShellApplication {
   name = "screensaver";
 
-  runtimeInputs = with pkgs; [mpvpaper yt-dlp];
+  runtimeInputs = with pkgs; [ mpvpaper yt-dlp ];
 
   text = ''
     ${pkgs.mpvpaper}/bin/mpvpaper --fork -o 'no-audio loop script-opts=ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp' -l background '*' 'https://www.youtube.com/watch?v=wLd3dfix2B8'

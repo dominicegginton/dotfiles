@@ -1,16 +1,17 @@
-{
-  config,
-  lib,
-  pkgs,
-  username,
-  desktop,
-  stateVersion,
-  ...
-}: let
+{ config
+, lib
+, pkgs
+, username
+, desktop
+, stateVersion
+, ...
+}:
+let
   inherit (pkgs.stdenv) isLinux;
   inherit (lib) mkIf;
-in {
-  imports = [./sources];
+in
+{
+  imports = [ ./sources ];
 
   modules.system.stateVersion = stateVersion;
   modules.system.username = username;

@@ -1,13 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.sway;
   super = "Mod4";
-in {
+in
+{
   options.modules.sway.enable = mkEnableOption "sway";
 
   config = mkIf cfg.enable {
@@ -24,7 +24,7 @@ in {
       swaynag.enable = true;
       config = {
         modifier = super;
-        fonts.names = ["JetBrainsMono Nerd Font" "FontAwesome5Free"];
+        fonts.names = [ "JetBrainsMono Nerd Font" "FontAwesome5Free" ];
         fonts.size = 11.0;
         focus.followMouse = true;
         bars = [
@@ -93,26 +93,26 @@ in {
           hideEdgeBorders = "smart";
         };
         startup = [
-          {command = "dbus-sway-environment";}
-          {command = "configure-gtk";}
-          {command = "systemctl --user start kanshi.service";}
-          {command = "systemctl --user start mako.service";}
-          {command = "blueman-applet";}
-          {command = "${pkgs.swaynag-battery}/bin/swaynag-battery --treshold 20";}
-          {command = "${pkgs.wl-clipboard}/bin/wl-copy -t text --watch clipman store --no-persist";}
-          {command = "${pkgs.swaybg}/bin/swaybg --image ${./background.jpg} --mode 'fill' --output '*'";}
+          { command = "dbus-sway-environment"; }
+          { command = "configure-gtk"; }
+          { command = "systemctl --user start kanshi.service"; }
+          { command = "systemctl --user start mako.service"; }
+          { command = "blueman-applet"; }
+          { command = "${pkgs.swaynag-battery}/bin/swaynag-battery --treshold 20"; }
+          { command = "${pkgs.wl-clipboard}/bin/wl-copy -t text --watch clipman store --no-persist"; }
+          { command = "${pkgs.swaybg}/bin/swaybg --image ${./background.jpg} --mode 'fill' --output '*'"; }
           # {command = "${pkgs.mpvpaper}/bin/mpvpaper --fork -o 'no-audio loop script-opts=ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp' -l background '*' 'https://www.youtube.com/watch?v='";}
         ];
         floating = mkOptionDefault {
           titlebar = true;
           criteria = [
-            {app_id = "pcmanfm";}
-            {app_id = ".blueman-manager-wrapped";}
-            {app_id = "pavucontrol";}
-            {app_id = "nwg-displays";}
-            {app_id = "teams-for-linux";}
-            {app_id = "whatsapp-for-linux";}
-            {app_id = "org.telegram.desktop";}
+            { app_id = "pcmanfm"; }
+            { app_id = ".blueman-manager-wrapped"; }
+            { app_id = "pavucontrol"; }
+            { app_id = "nwg-displays"; }
+            { app_id = "teams-for-linux"; }
+            { app_id = "whatsapp-for-linux"; }
+            { app_id = "org.telegram.desktop"; }
           ];
         };
         colors = {
@@ -182,7 +182,7 @@ in {
     services.swayosd.enable = true;
     services.avizo.enable = true;
     services.swayidle.enable = true;
-    services.swayidle.timeouts = [];
+    services.swayidle.timeouts = [ ];
     programs.wlogout.enable = true;
     programs.swaylock = {
       enable = true;
@@ -208,6 +208,6 @@ in {
       x11.enable = true;
       x11.defaultCursor = "Adwaita";
     };
-    home.packages = [pkgs.unstable.libdrm];
+    home.packages = [ pkgs.unstable.libdrm ];
   };
 }

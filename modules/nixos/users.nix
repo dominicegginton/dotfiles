@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.users;
-in {
+in
+{
   options.modules.users = {
     dom.enable = mkEnableOption "Dominic Egginton";
     nixos.enable = mkEnableOption "NixOS";

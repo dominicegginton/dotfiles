@@ -3,5 +3,5 @@ _: {
   fileSystems."/".fsType = "ext4";
   fileSystems."/boot".device = "/dev/disk/by-uuid/714A-640B";
   fileSystems."/boot".fsType = "vfat";
-  swapDevices = [{device = "/dev/disk/by-uuid/8edf9107-5ea5-427a-803a-c34731886c52";}];
+  swapDevices = [{ device = "/dev/disk/by-uuid/8edf9107-5ea5-427a-803a-c34731886c52"; }];
 }

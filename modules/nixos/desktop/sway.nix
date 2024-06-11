@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 with lib; let
   cfg = config.modules.desktop.sway;
@@ -23,14 +22,16 @@ with lib; let
     name = "configure-gtk";
     destination = "/bin/configure-gtk";
     executable = true;
-    text = let
-      schema = pkgs.gsettings-desktop-schemas;
-      datadir = "${schema}/share/gsettings-schemas/${schema.name}";
-    in ''
-      export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
-      gnome_schema=org.gnome.desktop.interface
-      gsettings set $gnome_schema gtk-theme 'Colloid'
-    '';
+    text =
+      let
+        schema = pkgs.gsettings-desktop-schemas;
+        datadir = "${schema}/share/gsettings-schemas/${schema.name}";
+      in
+      ''
+        export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
+        gnome_schema=org.gnome.desktop.interface
+        gsettings set $gnome_schema gtk-theme 'Colloid'
+      '';
   };
 
   kanshi-deamon = {
@@ -49,7 +50,8 @@ with lib; let
     type = "-";
     value = 1;
   };
-in {
+in
+{
   options.modules.desktop.sway.enable = mkEnableOption "sway";
 
   config = mkIf cfg.enable {
@@ -116,10 +118,10 @@ in {
     fonts.fontconfig = {
       enable = true;
       antialias = true;
-      defaultFonts.serif = ["Source Serif"];
-      defaultFonts.sansSerif = ["Work Sans" "Fira Sans" "FiraGO"];
-      defaultFonts.monospace = ["FiraCode Nerd Font Mono" "SauceCodePro Nerd Font Mono"];
-      defaultFonts.emoji = ["Noto Color Emoji"];
+      defaultFonts.serif = [ "Source Serif" ];
+      defaultFonts.sansSerif = [ "Work Sans" "Fira Sans" "FiraGO" ];
+      defaultFonts.monospace = [ "FiraCode Nerd Font Mono" "SauceCodePro Nerd Font Mono" ];
+      defaultFonts.emoji = [ "Noto Color Emoji" ];
       hinting.autohint = false;
       hinting.enable = true;
       hinting.style = "full";
@@ -127,10 +129,11 @@ in {
       subpixel.lcdfilter = "light";
     };
     fonts.packages = with pkgs; let
-      nerd-fonts = ["FiraCode" "SourceCodePro" "UbuntuMono"];
-    in [
+      nerd-fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ];
+    in
+    [
       font-manager
-      (nerdfonts.override {fonts = nerd-fonts;})
+      (nerdfonts.override { fonts = nerd-fonts; })
       fira
       fira-go
       joypixels
@@ -143,7 +146,7 @@ in {
       ibm-plex
     ];
     systemd.user.services.kanshi = kanshi-deamon;
-    security.pam.services.swaylock = {};
-    security.pam.loginLimits = [login-limits];
+    security.pam.services.swaylock = { };
+    security.pam.loginLimits = [ login-limits ];
   };
 }

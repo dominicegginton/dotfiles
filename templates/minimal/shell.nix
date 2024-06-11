@@ -1,2 +1,2 @@
-{pkgs}:
-pkgs.mkShell {}
+{ pkgs }:
+pkgs.mkShell { }
