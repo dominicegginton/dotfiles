@@ -36,6 +36,7 @@ in
     modules.sway.enable = mkIf (cfg.environment == "sway") true;
     services.mpris-proxy.enable = mkIf isLinux true;
     fonts.fontconfig.enable = true;
+    xdg.enable = true;
 
     xresources.properties = {
       "*color0" = "#141417";
@@ -87,6 +88,13 @@ in
     programs.firefox = mkIf cfg.firefox {
       enable = true;
       package = pkgs.firefox-devedition-bin;
+    };
+
+    xdg.mimeApps.defaultApplications = mkIf cfg.firefox (xdg.miniApps.defaultApplications or { }) // {
+      "x-scheme-handler/http" = [ "firefox.desktop" ];
+      "x-scheme-handler/https" = [ "firefox.desktop" ];
+      "text/html" = [ "firefox.desktop" ];
+      "application/pdf" = [ "firefox.desktop" ];
     };
 
     programs.vscode = mkIf cfg.vscode {

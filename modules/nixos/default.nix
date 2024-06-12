@@ -11,7 +11,7 @@ with lib; {
     ./virtualisation.nix
     ./bluetooth.nix
     ./users.nix
-    ./console.nix
+    ./console
     ./desktop
     ./services
   ];

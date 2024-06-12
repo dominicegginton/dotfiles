@@ -26,14 +26,13 @@ This workspace follows the following structure:
 ```
 ├── home            # Home manager configurations
 ├── hosts           # Host NixOS and NixDarwin configurations
-├── lib             # Nix module helpers
 ├── modules         # Nix modules
-├── overlays        # Nix package overlays
 ├── pkgs            # Nix packages
-├── scripts         # Scripts
 ├── shells          # Nix development shells
 ├── templates       # Flake templates
-└── flake.nix       # Nix Flake inputs and outputs
+├── flake.nix       # Nix Flake inputs and outputs
+├── overlays.nix    # Nix package overlays
+└── lib.nix         # Nix utility functions
 ```
 
 ## Eye Candy
@@ -43,9 +42,3 @@ This workspace follows the following structure:
 <p align="center">
     <sub>Last Updated: 2024-02-24</sub>
 </p>
-
-## Documentation
-
-```ocaml
-Coming Soon
-```

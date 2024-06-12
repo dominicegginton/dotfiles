@@ -10,5 +10,6 @@ in
     ./deluge.nix
     ./plex.nix
     ./unifi.nix
+    ./samba.nix
   ];
 }

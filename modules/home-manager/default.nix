@@ -9,6 +9,11 @@ with lib; let
   cfg = config.modules.system;
 in
 {
+  imports = [
+    ./console
+    ./desktop
+  ];
+
   options.modules.system = {
     stateVersion = mkOption { type = types.str; };
     username = mkOption { type = types.str; };
