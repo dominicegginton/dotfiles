@@ -33,12 +33,10 @@ in
       package = pkgs.unstable.nix;
       gc.automatic = true;
       optimise.automatic = true;
-      registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
-      nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+      registry = mapAttrs (_: value: { flake = value; }) inputs;
+      nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
         experimental-features = [ "nix-command" "flakes" ];
-        keep-outputs = true;
-        keep-derivations = true;
         warn-dirty = false;
         # Set auto optimise store to false on darwin
         # to avoid the issue with the store being locked
@@ -46,10 +44,7 @@ in
         # a derivation. This is a temporary fix until
         # the issue is resolved in nix.
         # SEE: https://github.com/NixOS/nix/issues/7273
-        auto-optimise-store =
-          if isDarwin
-          then false
-          else true;
+        auto-optimise-store = false;
         trusted-users = [ "root" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="

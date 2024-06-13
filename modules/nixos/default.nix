@@ -23,23 +23,21 @@ with lib; {
   config = {
     nix = {
       package = pkgs.unstable.nix;
-      gc.automatic = mkForce true;
-      optimise.automatic = mkForce true;
+      gc.automatic = true;
+      optimise.automatic = true;
       registry = mapAttrs (_: value: { flake = value; }) inputs;
       nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
-        experimental-features = mkForce [ "nix-command" "flakes" ];
-        keep-outputs = mkForce true;
-        keep-derivations = mkForce true;
-        warn-dirty = mkForce false;
-        auto-optimise-store = mkForce true;
-        trusted-users = mkForce [ "root" "@wheel" ];
-        trusted-public-keys = mkForce [
+        experimental-features = [ "nix-command" "flakes" ];
+        warn-dirty = false;
+        auto-optimise-store = false;
+        trusted-users = [ "root" "@wheel" ];
+        trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
           "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
         ];
-        substituters = mkForce [
+        substituters = [
           "https://cache.nixos.org"
           "https://nix-community.cachix.org"
           "https://nixpkgs-wayland.cachix.org"
@@ -48,8 +46,8 @@ with lib; {
     };
 
     boot = {
-      consoleLogLevel = mkForce 0;
-      initrd.verbose = mkForce false;
+      consoleLogLevel = 0;
+      initrd.verbose = false;
     };
 
     documentation = {
