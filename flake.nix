@@ -24,101 +24,101 @@
     , flake-utils
     , ...
     }:
+
     let
       inherit (self) inputs outputs;
 
-      lib = import ./lib.nix {
-        inherit inputs outputs;
+      # state version
+      stateVersion = "24.05";
 
-        stateVersion = "23.11";
-      };
+      # my lib and overlays
+      myLib = import ./lib.nix { inherit inputs outputs stateVersion; };
+      myOverlays = import ./overlays.nix { inherit inputs; };
     in
-    flake-utils.lib.eachDefaultSystem
-      (system:
-      let
-        overlays = import ./overlays.nix {
-          inherit inputs;
-        };
-        templates = import ./templates { };
 
+    with myLib;
+    with flake-utils.lib;
+
+    {
+      # flake templates
+      templates = import ./templates { };
+
+      # configurations for nixos hosts
+      nixosConfigurations = {
+        latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
+        ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
+        burbage = mkNixosHost { hostname = "burbage"; };
+      };
+
+      # configurations for darwin hosts
+      darwinConfigurations = {
+        MCCML44WMD6T = mkDarwinHost {
+          hostname = "MCCML44WMD6T";
+          username = "dom.egginton";
+        };
+      };
+
+      # home configurations for users available across hosts
+      homeConfigurations = {
+        "dom@latitude-7390" = mkHome {
+          hostname = "latitude-7390";
+          username = "dom";
+          desktop = "sway";
+        };
+        "dom@ghost-gs60" = mkHome {
+          hostname = "ghost-gs60";
+          username = "dom";
+          desktop = "gamescope";
+        };
+        "dom@burbage" = mkHome {
+          hostname = "burbage";
+          username = "dom";
+        };
+        "dom.egginton@MCCML44WMD6T" = mkHome {
+          hostname = "MCCML44WMD6T";
+          username = "dom.egginton";
+          platform = "x86_64-darwin";
+        };
+      };
+    }
+
+    //
+
+    eachDefaultSystem
+      (system:
+
+      let
+        # nixpkgs
         pkgs = import nixpkgs {
           inherit system;
-
           hostPlatform = system;
-
           config = {
             joypixels.acceptLicense = true;
             nvidia.acceptLicense = true;
             allowUnfree = true;
             permittedInsecurePackages = [ "nix-2.15.3" ];
           };
-
-          overlays = with overlays; [
+          overlays = with myOverlays; [
             additions
             modifications
             unstable-packages
           ];
         };
       in
+
       {
+        # nixpkgs
         packages = pkgs;
+
+        # formatter for this flake
         formatter = pkgs.nixpkgs-fmt;
 
+        # development shells
         devShells = {
           python = import ./shells/python.nix { inherit pkgs; };
           web = import ./shells/web.nix { inherit pkgs; };
           rust = import ./shells/rust.nix { inherit pkgs; };
           default = import ./shell.nix { inherit pkgs; };
         };
-      })
-    //
-    {
-      templates = import ./templates { };
-
-      nixosConfigurations = {
-        latitude-7390 = lib.mkNixosHost {
-          hostname = "latitude-7390";
-        };
-
-        ghost-gs60 = lib.mkNixosHost {
-          hostname = "ghost-gs60";
-        };
-
-        burbage = lib.mkNixosHost {
-          hostname = "burbage";
-        };
-      };
-
-      darwinConfigurations = {
-        MCCML44WMD6T = lib.mkDarwinHost {
-          hostname = "MCCML44WMD6T";
-          username = "dom.egginton";
-        };
-      };
-
-      homeConfigurations = {
-        "dom@latitude-7390" = lib.mkHome {
-          hostname = "latitude-7390";
-          username = "dom";
-          desktop = "sway";
-        };
-
-        "dom@ghost-gs60" = lib.mkHome {
-          hostname = "ghost-gs60";
-          username = "dom";
-          desktop = "gamescope";
-        };
-
-        "dom@burbage" = lib.mkHome {
-          hostname = "burbage";
-          username = "dom";
-        };
-
-        "dom.egginton@MCCML44WMD6T" = lib.mkHome {
-          hostname = "MCCML44WMD6T";
-          username = "dom.egginton";
-          platform = "x86_64-darwin";
-        };
-      };
-    };
+      });
 }

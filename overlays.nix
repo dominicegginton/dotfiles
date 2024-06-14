@@ -1,22 +1,39 @@
 { inputs }:
+
 let
+  inherit (inputs)
+    nixpkgs-unstable
+    sops-nix
+    nsm
+    todo
+    twm
+    neovim-nightly;
+
+  # get packages from module
+  packagesFrom = module: attrs @ { system }:
+    module.packages.${system};
+
+  # get default package from module
   defaultPackageFrom = module: attrs @ { system }:
-    module.packages.${system}.default;
+    (packagesFrom module attrs).default;
 in
+
 {
   additions = final: _prev:
+
     let
       inherit (final) callPackage system;
     in
+
     {
       inherit
-        (inputs.sops-nix.packages.${system})
+        (packagesFrom sops-nix { inherit system; })
         sops-import-keys-hook
         sops-init-gpg-key
         ;
 
-      nsm = defaultPackageFrom inputs.nsm { inherit system; };
-      todo = defaultPackageFrom inputs.todo { inherit system; };
+      nsm = defaultPackageFrom nsm { inherit system; };
+      todo = defaultPackageFrom todo { inherit system; };
       screensaver = callPackage ./pkgs/screensaver.nix { };
       git-sync = callPackage ./pkgs/git-sync.nix { };
       gpg-import-keys = callPackage ./pkgs/gpg-import-keys.nix { };
@@ -28,21 +45,19 @@ in
     };
 
   modifications = final: _prev:
+
     let
       inherit (final) system;
     in
+
     {
-      twm = defaultPackageFrom inputs.twm { inherit system; };
-      neovim = defaultPackageFrom inputs.neovim-nightly { inherit system; };
+      twm = defaultPackageFrom twm { inherit system; };
+      neovim = defaultPackageFrom neovim-nightly { inherit system; };
     };
 
-  unstable-packages = final: _prev:
-    let
-      pkgs = import inputs.nixpkgs-unstable {
-        inherit (final) system hostPlatform config;
-      };
-    in
-    {
-      unstable = pkgs;
+  unstable-packages = final: _prev: {
+    unstable = import nixpkgs-unstable {
+      inherit (final) system hostPlatform config;
     };
+  };
 }
