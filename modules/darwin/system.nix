@@ -59,21 +59,6 @@ in
       };
     };
 
-    nixpkgs = {
-      hostPlatform = cfg.nixpkgs.hostPlatform;
-      config.allowUnfree = cfg.nixpkgs.allowUnfree;
-      config.allowUnfreePredicate = cfg.nixpkgs.allowUnfree;
-      config.joypixels.acceptLicense = cfg.nixpkgs.allowUnfree;
-      config.permittedInsecurePackages = cfg.nixpkgs.permittedInsecurePackages;
-      overlays = [
-        outputs.overlays.additions
-        outputs.overlays.modifications
-        outputs.overlays.unstable-packages
-        inputs.neovim-nightly-overlay.overlay
-        inputs.todo.overlays.default
-      ];
-    };
-
     system.defaults = {
       NSGlobalDomain.AppleFontSmoothing = 1;
       NSGlobalDomain.NSTableViewDefaultSizeMode = 1;
