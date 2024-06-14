@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.services.unifi;
 in
+
+with lib;
+
 {
   options.modules.services.unifi.enable = mkEnableOption "unifi";
 

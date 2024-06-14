@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.desktop.gamescope;
 in
+
+with lib;
+
 {
   options.modules.desktop.gamescope.enable = mkEnableOption "gamescope";
 

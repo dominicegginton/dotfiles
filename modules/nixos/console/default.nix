@@ -3,7 +3,10 @@
 , pkgs
 , ...
 }:
-with lib; {
+
+with lib;
+
+{
   config = {
     console.keyMap = "uk";
     programs.zsh.enable = true;

@@ -3,10 +3,6 @@
 , stateVersion
 }:
 
-with inputs.nixpkgs.lib;
-with inputs.nix-darwin.lib;
-with inputs.home-manager.lib;
-
 let
   # the platform specific packages
   pkgsFor = platform: outputs.packages.${platform};
@@ -24,6 +20,10 @@ let
         ;
     };
 in
+
+with inputs.nixpkgs.lib;
+with inputs.nix-darwin.lib;
+with inputs.home-manager.lib;
 
 {
   # create a nixos host system

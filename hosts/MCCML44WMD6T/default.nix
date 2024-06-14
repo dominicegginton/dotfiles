@@ -1,4 +1,6 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+
+{
   modules = {
     homebrew.casks = [
       "docker"

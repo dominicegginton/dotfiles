@@ -1,5 +1,6 @@
 { pkgs }:
-pkgs.mkShell rec {
+
+pkgs.mkShell {
   nativeBuildInputs = with pkgs; [
     nix
     home-manager

@@ -2,9 +2,13 @@
 , lib
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.desktop;
 in
+
+with lib;
+
 {
   imports = [
     ./gamescope.nix

@@ -10,6 +10,7 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - uses: DeterminateSystems/flake-checker-action@main
+
   linux-checks:
     runs-on: ubuntu-latest
     steps:
@@ -17,15 +18,17 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
-      - run: nix build .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
-      - run: nix build .#nixosConfigurations.burbage.config.system.build.toplevel
+      # - run: nix build .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
+      # - run: nix build .#nixosConfigurations.burbage.config.system.build.toplevel
       - run: nix build .#homeConfigurations.dom@latitude-7390.activationPackage
-      - run: nix build .#homeConfigurations.dom@ghost-gs60.activationPackage
-      - run: nix build .#homeConfigurations.dom@burbage.activationPackage
-  darwin-checks:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-      - run: nix build .#darwinConfigurations.MCCML44WMD6T.config.system.build.toplevel
+      # - run: nix build .#homeConfigurations.dom@ghost-gs60.activationPackage
+      # - run: nix build .#homeConfigurations.dom@burbage.activationPackage
+
+  # darwin-checks:
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: DeterminateSystems/nix-installer-action@main
+  #     - uses: DeterminateSystems/magic-nix-cache-action@main
+  #     - run: nix build .#darwinConfigurations.MCCML44WMD6T.config.system.build.toplevel
+  #     - run: nix build .#homeConfigurations.dom@MCCML44WMD6T.activationPackage

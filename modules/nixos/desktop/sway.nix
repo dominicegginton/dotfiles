@@ -3,7 +3,8 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.desktop.sway;
 
   dbus-sway-environment = pkgs.writeTextFile {
@@ -51,6 +52,9 @@ with lib; let
     value = 1;
   };
 in
+
+with lib;
+
 {
   options.modules.desktop.sway.enable = mkEnableOption "sway";
 

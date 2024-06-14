@@ -3,11 +3,15 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   inherit (pkgs.stdenv) isLinux;
 
   cfg = config.modules.desktop;
 in
+
+with lib;
+
 {
   imports = [
     ./sway.nix

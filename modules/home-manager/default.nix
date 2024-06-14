@@ -4,10 +4,15 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   inherit (pkgs.stdenv) isDarwin;
+
   cfg = config.modules.system;
 in
+
+with lib;
+
 {
   imports = [
     ./console

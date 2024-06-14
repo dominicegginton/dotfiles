@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   inherit (pkgs.stdenv) isLinux;
 in
+
+with lib;
+
 {
   config = {
     home.sessionVariables.EDITOR = "nvim";

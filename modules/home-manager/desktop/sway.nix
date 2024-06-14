@@ -3,10 +3,14 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.sway;
   super = "Mod4";
 in
+
+with lib;
+
 {
   options.modules.sway.enable = mkEnableOption "sway";
 

@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.services.deluge;
 in
+
+with lib;
+
 {
   options.modules.services.deluge.enable = mkEnableOption "deluge";
 

@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.virtualisation;
 in
+
+with lib;
+
 {
   options.modules.virtualisation.enable = mkEnableOption "virtualisation";
 

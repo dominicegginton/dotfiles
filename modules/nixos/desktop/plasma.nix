@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.desktop.plasma;
 in
+
+with lib;
+
 {
   options.modules.desktop.plasma.enable = mkEnableOption "plasma";
 

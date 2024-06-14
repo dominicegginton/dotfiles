@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.services.plex;
 in
+
+with lib;
+
 {
   options.modules.services.plex.enable = mkEnableOption "plex media server";
 

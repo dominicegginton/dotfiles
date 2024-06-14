@@ -10,14 +10,11 @@
     flake-utils.lib.eachDefaultSystem (
       system:
       let
-        pkgs = nixpkgs.legacyPackages.${system};
+        pkgs = import nixpkgs { inherit system; };
       in
       {
         formatter = pkgs.alejandra;
-        packages.default = import ./default.nix {
-          lib = pkgs.lib;
-          python3Packages = pkgs.python3Packages;
-        };
+        packages.default = pkgs.callPackage ./default.nix { };
         devShells.default = import ./shell.nix { inherit pkgs; };
       }
     );

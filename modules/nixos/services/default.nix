@@ -1,10 +1,9 @@
-{ config
-, lib
-, ...
-}:
-with lib; let
+{ config, ... }:
+
+let
   cfg = config.modules.services;
 in
+
 {
   imports = [
     ./deluge.nix

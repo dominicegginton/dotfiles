@@ -2,9 +2,13 @@
 , lib
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.homebrew;
 in
+
+with lib;
+
 {
   options.modules.homebrew.taps = mkOption {
     type = types.listOf types.str;

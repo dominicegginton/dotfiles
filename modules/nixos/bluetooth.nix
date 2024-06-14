@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.bluetooth;
 in
+
+with lib;
+
 {
   options.modules.bluetooth.enable = mkEnableOption "bluetooth";
 

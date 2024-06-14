@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.networking;
 in
+
+with lib;
+
 {
   options.modules.networking = {
     enable = mkEnableOption "networking";

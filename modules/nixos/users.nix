@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.users;
 in
+
+with lib;
+
 {
   options.modules.users = {
     dom.enable = mkEnableOption "Dominic Egginton";

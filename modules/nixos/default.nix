@@ -5,7 +5,10 @@
 , pkgs
 , ...
 }:
-with lib; {
+
+with lib;
+
+{
   imports = [
     ./networking.nix
     ./virtualisation.nix

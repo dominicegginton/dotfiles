@@ -4,9 +4,13 @@
 , lib
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.system;
 in
+
+with lib;
+
 {
   options.modules.system.stateVersion = mkOption {
     type = types.str;

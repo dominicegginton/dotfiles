@@ -104,6 +104,8 @@
             unstable-packages
           ];
         };
+
+        inherit (pkgs) callPackage;
       in
 
       {
@@ -115,10 +117,10 @@
 
         # development shells
         devShells = {
-          python = import ./shells/python.nix { inherit pkgs; };
+          python = callPackage ./shells/python.nix { };
           web = import ./shells/web.nix { inherit pkgs; };
           rust = import ./shells/rust.nix { inherit pkgs; };
-          default = import ./shell.nix { inherit pkgs; };
+          default = callPackage ./shell.nix { };
         };
       });
 }

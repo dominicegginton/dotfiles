@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.desktop;
 in
+
+with lib;
+
 {
   options.modules.desktop.packages = mkOption {
     type = types.listOf types.package;

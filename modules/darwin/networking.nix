@@ -3,7 +3,10 @@
 , pkgs
 , ...
 }:
-with lib; {
+
+with lib;
+
+{
   config = {
     services.tailscale.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];

@@ -22,18 +22,18 @@ in
   additions = final: _prev:
 
     let
-      inherit (final) callPackage system;
+      inherit (final) callPackage;
     in
 
     {
       inherit
-        (packagesFrom sops-nix { inherit system; })
+        (packagesFrom sops-nix { inherit (final) system; })
         sops-import-keys-hook
         sops-init-gpg-key
         ;
 
-      nsm = defaultPackageFrom nsm { inherit system; };
-      todo = defaultPackageFrom todo { inherit system; };
+      nsm = callPackage (defaultPackageFrom nsm) { };
+      todo = callPackage (defaultPackageFrom todo) { };
       screensaver = callPackage ./pkgs/screensaver.nix { };
       git-sync = callPackage ./pkgs/git-sync.nix { };
       gpg-import-keys = callPackage ./pkgs/gpg-import-keys.nix { };
@@ -47,12 +47,12 @@ in
   modifications = final: _prev:
 
     let
-      inherit (final) system;
+      inherit (final) callPackage;
     in
 
     {
-      twm = defaultPackageFrom twm { inherit system; };
-      neovim = defaultPackageFrom neovim-nightly { inherit system; };
+      twm = callPackage (defaultPackageFrom twm) { };
+      neovim = callPackage (defaultPackageFrom neovim-nightly) { };
     };
 
   unstable-packages = final: _prev: {

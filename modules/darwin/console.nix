@@ -3,7 +3,10 @@
 , pkgs
 , ...
 }:
-with lib; {
+
+with lib;
+
+{
   config = {
     programs.zsh.enable = true;
     programs.zsh.enableCompletion = true;

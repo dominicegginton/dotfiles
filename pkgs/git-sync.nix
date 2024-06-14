@@ -1,4 +1,5 @@
 { pkgs }:
+
 pkgs.writeShellApplication {
   name = "git-sync";
 

@@ -3,9 +3,13 @@
 , pkgs
 , ...
 }:
-with lib; let
+
+let
   cfg = config.modules.services.samba;
 in
+
+with lib;
+
 {
   options.modules.services.samba.enable = mkEnableOption "samba";
 
