@@ -5,13 +5,13 @@
 }:
 
 let
-  cfg = config.modules.virtualisation;
+  cfg = config.modules.serbices.virtualisation;
 in
 
 with lib;
 
 {
-  options.modules.virtualisation.enable = mkEnableOption "virtualisation";
+  options.modules.services.virtualisation.enable = mkEnableOption "virtualisation";
 
   config = mkIf cfg.enable {
     virtualisation = {

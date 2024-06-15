@@ -1,3 +1,4 @@
+# TODO: tidy this file
 { inputs
 , pkgs
 , ...
@@ -15,18 +16,27 @@
   services.logind.lidSwitch = "suspend";
 
   modules = {
-    networking.enable = true;
-    networking.hostname = "latitude-7390";
-    networking.wireless = true;
-    virtualisation.enable = true;
-    bluetooth.enable = true;
     users.dom.enable = true;
-    desktop.sway.enable = true;
-    desktop.packages = with pkgs; [
-      thunderbird
-      archi
-      unstable.teams-for-linux
-      unstable.chromium
-    ];
+
+    services = {
+      virtualisation.enable = true;
+      bluetooth.enable = true;
+
+      networking = {
+        enable = true;
+        hostname = "latitude-7390";
+        wireless = true;
+      };
+    };
+
+    desktop = {
+      sway.enable = true;
+      packages = with pkgs; [
+        thunderbird
+        archi
+        unstable.teams-for-linux
+        unstable.chromium
+      ];
+    };
   };
 }

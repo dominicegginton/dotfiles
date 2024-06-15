@@ -5,13 +5,13 @@
 }:
 
 let
-  cfg = config.modules.networking;
+  cfg = config.modules.services.networking;
 in
 
 with lib;
 
 {
-  options.modules.networking = {
+  options.modules.services.networking = {
     enable = mkEnableOption "networking";
     wireless = mkEnableOption "wireless";
     hostname = mkOption { type = types.str; };

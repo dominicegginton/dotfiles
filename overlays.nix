@@ -34,7 +34,6 @@ in
 
       nsm = callPackage (defaultPackageFrom nsm) { };
       todo = callPackage (defaultPackageFrom todo) { };
-      screensaver = callPackage ./pkgs/screensaver.nix { };
       git-sync = callPackage ./pkgs/git-sync.nix { };
       gpg-import-keys = callPackage ./pkgs/gpg-import-keys.nix { };
       twx = callPackage ./pkgs/twx.nix { };
