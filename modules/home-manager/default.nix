@@ -1,6 +1,8 @@
 { config
 , lib
 , pkgs
+, stateVersion
+, username
 , ...
 }:
 
@@ -24,19 +26,13 @@ with lib;
     ./services
   ];
 
-  options.modules.system = {
-    stateVersion = mkOption { type = types.str; };
-    username = mkOption { type = types.str; };
-  };
-
   config = {
     home = {
-      stateVersion = cfg.stateVersion;
-      username = cfg.username;
+      inherit stateVersion username;
       homeDirectory =
         if isDarwin
-        then "/Users/${cfg.username}"
-        else "/home/${cfg.username}";
+        then "/Users/${username}"
+        else "/home/${username}";
       sessionPath = [ "$HOME/.local/bin" ];
       activation.report-changes = reportChanges;
     };

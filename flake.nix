@@ -1,3 +1,6 @@
+# github:dominicegginton/dotfiles
+# there's no place like ~/
+
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
@@ -29,6 +32,8 @@
       inherit (self) inputs outputs;
 
       # state version
+      # see: https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
+      # see: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/misc/version.nix
       stateVersion = "24.05";
 
       # my lib and overlays
@@ -40,10 +45,14 @@
     with flake-utils.lib;
 
     {
-      # flake templates
+      # overlays consumed by other flakes
+      overlays = myOverlays;
+
+      # templates used by `nix flake init -t <flake>#<template>`
       templates = import ./templates { };
 
       # configurations for nixos hosts
+      # used by `nixos-rebuild switch --flake <flake>#<hostname>`
       nixosConfigurations = {
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
         ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
@@ -51,6 +60,7 @@
       };
 
       # configurations for darwin hosts
+      # used by `nixos-rebuild switch --flake <flake>#<hostname>`
       darwinConfigurations = {
         MCCML44WMD6T = mkDarwinHost {
           hostname = "MCCML44WMD6T";
@@ -59,6 +69,7 @@
       };
 
       # home configurations for users available across hosts
+      # used by `home-manager switch --flake <flake>`
       homeConfigurations = {
         "dom@latitude-7390" = mkHome {
           hostname = "latitude-7390";
@@ -88,7 +99,7 @@
       (system:
 
       let
-        # nixpkgs
+        # nixpkgs with configuration and overlays
         pkgs = import nixpkgs {
           inherit system;
           hostPlatform = system;
@@ -96,6 +107,7 @@
             joypixels.acceptLicense = true;
             nvidia.acceptLicense = true;
             allowUnfree = true;
+            # TODO: short this out
             permittedInsecurePackages = [ "nix-2.15.3" ];
           };
           overlays = with myOverlays; [
@@ -109,17 +121,18 @@
       in
 
       {
-        # nixpkgs
-        packages = pkgs;
-
         # formatter for this flake
         formatter = pkgs.nixpkgs-fmt;
 
-        # development shells
+        # packages to be exercuted by `nix build <flake>#<name>`
+        # or consumed by other flakes
+        packages = pkgs;
+
+        # development shells used by `nix develop <flake>#<name>`
         devShells = {
           python = callPackage ./shells/python.nix { };
-          web = import ./shells/web.nix { inherit pkgs; };
-          rust = import ./shells/rust.nix { inherit pkgs; };
+          web = callPackage { };
+          rust = callPackage { };
           default = callPackage ./shell.nix { };
         };
       });

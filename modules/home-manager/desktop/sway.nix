@@ -6,15 +6,24 @@
 
 let
   cfg = config.modules.desktop.sway;
+  kanshiCfg = config.modules.desktop.kanshi;
+
   super = "Mod4";
 in
 
 with lib;
 
 {
-  options.modules.desktop.sway.enable = mkEnableOption {
-    default = true;
-    description = "Sway window manager";
+  options.modules.desktop = {
+    sway.enable = mkEnableOption {
+      default = true;
+      description = "Sway window manager";
+    };
+
+    kanshi.config = mkOption {
+      description = "Configuration for the Kanshi display manager";
+      type = types.str;
+    };
   };
 
   config = mkIf cfg.enable {
@@ -216,5 +225,7 @@ with lib;
       x11.defaultCursor = "Adwaita";
     };
     home.packages = [ pkgs.unstable.libdrm ];
+
+    home.file.".config/kanshi/config".text = kanshiCfg.config or '''';
   };
 }
