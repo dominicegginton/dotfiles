@@ -5,14 +5,17 @@
 }:
 
 let
-  cfg = config.modules.sway;
+  cfg = config.modules.desktop.sway;
   super = "Mod4";
 in
 
 with lib;
 
 {
-  options.modules.sway.enable = mkEnableOption "sway";
+  options.modules.desktop.sway.enable = mkEnableOption {
+    default = true;
+    description = "Sway window manager";
+  };
 
   config = mkIf cfg.enable {
     home.sessionVariables = {

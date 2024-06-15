@@ -1,5 +1,4 @@
-{ inputs
-, config
+{ config
 , lib
 , pkgs
 , ...
@@ -9,6 +8,11 @@ let
   inherit (pkgs.stdenv) isDarwin;
 
   cfg = config.modules.system;
+
+  # diff the old - new generations
+  reportChanges = config.lib.dag.entryAnywhere ''
+    ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
+  '';
 in
 
 with lib;
@@ -17,6 +21,7 @@ with lib;
   imports = [
     ./console
     ./desktop
+    ./services
   ];
 
   options.modules.system = {
@@ -33,9 +38,7 @@ with lib;
         then "/Users/${cfg.username}"
         else "/home/${cfg.username}";
       sessionPath = [ "$HOME/.local/bin" ];
-      activation.report-changes = config.lib.dag.entryAnywhere ''
-        ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
-      '';
+      activation.report-changes = reportChanges;
     };
   };
 }

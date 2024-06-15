@@ -14,34 +14,28 @@ with lib;
 
 {
   imports = [
+    ./applications
     ./sway.nix
     ./gamescope.nix
   ];
 
   options.modules.desktop = {
-    enable = mkEnableOption "desktop";
-    firefox = mkEnableOption "firefox";
-    vscode = mkEnableOption "vscode";
-
-    environment = mkOption {
-      type = types.str;
-      default = "sway";
-      description = "Environment configuration";
+    enable = mkEnableOption "Enable graphical desktop environment";
+    background = mkOption {
+      type = types.path;
+      default = ./background.jpg;
+      description = "Path to the background image";
     };
-
-    packages = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-      description = "Packages to be installed";
+    defaultApplication = mkOption {
+      type = types.attrsOf types.str;
+      default = { };
+      description = "Default applications for xdg";
     };
   };
 
   config = mkIf cfg.enable {
-    modules.sway.enable = mkIf (cfg.environment == "sway") true;
     services.mpris-proxy.enable = mkIf isLinux true;
     fonts.fontconfig.enable = true;
-    xdg.enable = true;
-
     xresources.properties = {
       "*color0" = "#141417";
       "*color8" = "#434345";
@@ -60,83 +54,17 @@ with lib;
       "*color7" = "#c8c8c8";
       "*color15" = "#e9e9e9";
     };
-
-    programs.alacritty = {
+    xdg = {
       enable = true;
-      settings = {
-        window.dynamic_padding = false;
-        window.padding = {
-          x = 0;
-          y = 0;
-        };
-        scrolling.history = 10000;
-        scrolling.multiplier = 3;
-        selection.save_to_clipboard = true;
-        font =
-          let
-            style = style: {
-              family = "JetBrains Mono";
-              style = style;
-            };
-          in
-          {
-            normal = style "Regular";
-            bold = style "Bold";
-            italic = style "Italic";
-            bold_italic = style "Bold Italic";
-            size = 11;
-          };
-      };
+      mimeApps.defaultApplications = cfg.defaultApplications;
     };
-
-    programs.firefox = mkIf cfg.firefox {
-      enable = true;
-      package = pkgs.firefox-devedition-bin;
-    };
-
-    xdg.mimeApps.defaultApplications = mkIf cfg.firefox (xdg.miniApps.defaultApplications or { }) // {
-      "x-scheme-handler/http" = [ "firefox.desktop" ];
-      "x-scheme-handler/https" = [ "firefox.desktop" ];
-      "text/html" = [ "firefox.desktop" ];
-      "application/pdf" = [ "firefox.desktop" ];
-    };
-
-    programs.vscode = mkIf cfg.vscode {
-      enable = true;
-      package = pkgs.unstable.vscode;
-      enableUpdateCheck = true;
-      enableExtensionUpdateCheck = true;
-      extensions = with pkgs.unstable.vscode-extensions; [
-        bbenoist.nix
-        vscodevim.vim
-        github.github-vscode-theme
-        github.copilot
-        github.vscode-github-actions
-        github.vscode-pull-request-github
-        github.codespaces
-        bierner.markdown-mermaid
-        bierner.markdown-emoji
-        bierner.markdown-checkbox
-        bierner.emojisense
-        bierner.docs-view
-      ];
-      userSettings = {
-        "workbench.colorTheme" = "GitHub Dark Default";
-        "workbench.startupEditor" = "none";
-        "workbench.sideBar.location" = "right";
-        "editor.minimap.enabled" = false;
-      };
-    };
-
-    home.packages = with pkgs;
-      [
-        noto-fonts
-        noto-fonts-cjk
-        noto-fonts-emoji
-        font-awesome
-        jetbrains-mono
-        mpv
-      ]
-      ++ cfg.packages;
+    home.packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk
+      noto-fonts-emoji
+      font-awesome
+      jetbrains-mono
+      mpv
+    ];
   };
 }
