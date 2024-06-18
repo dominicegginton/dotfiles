@@ -3,21 +3,21 @@
 # There's no place like ~
 
 ```ocaml
-Declarative System Configuration
-NixOS / NixDarwin / HomeManager / SopsNix / NSM
+Declarative System & Package Configurations
+NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 ```
 
 ## Features
 
-- **Nix Flakes** 100% Nix Flakes based configuration, no Nix channels.
-- **Disk Management** Declarative disk management using Disko.
-- **Encrypted Secrets** Stored configuration secrets are encrypted using SopsNix.
-- **User Home Environments** Reproducible user home environments using HomeManager.
-- **MacOS Hosts** NixDarwin provides support for MacOS hosts.
-- **Continuous Integration** Backed by continuous integration workflows on GitHub Actions runners.
-- **Nix Dev Shells** Reproducible environments for common tools and tasks.
-- **Flake Templates** Easily create new Nix Flakes using templates for common cases.
-- **Nix Systems Manager** Manage nix system configurations with a single command.
+- **Nix Flakes** - 100% Nix Flakes based configuration, no Nix channels.
+- **Disk Management** - Declarative disk management using Disko.
+- **Encrypted Secrets** - Stored configuration secrets are encrypted using SopsNix.
+- **User Home Environments** - Reproducible user home environments using HomeManager.
+- **MacOS Hosts** - NixDarwin provides support for MacOS hosts.
+- **Continuous Integration** - Backed by continuous integration workflows on GitHub Actions runners.
+- **Base16 Themes** - Base16 theming throughout system and package configurations.
+- **Nix Dev Shells** - Reproducible environments for common tools and tasks.
+- **Flake Templates** - Easily create new Nix Flakes using templates for common cases.
 
 ## Workspace
 

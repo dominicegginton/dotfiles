@@ -9,8 +9,9 @@ with lib;
 
 {
   imports = [
-    nix-colors.homeManagerModules.default
     nix-index-database.hmModules.nix-index
+    inputs.base16.nixosModule
+    { scheme = "${inputs.tt-schemes}/base16/windows-10.yaml"; }
     ../modules/home-manager
   ]
   ++ optional (pathExists (./. + "/${username}")) ./${username};

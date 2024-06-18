@@ -25,7 +25,7 @@ with inputs.nixpkgs.lib;
 with inputs.nix-darwin.lib;
 with inputs.home-manager.lib;
 
-{
+rec {
   # create a nixos host system
   mkNixosHost =
     { hostname
@@ -62,4 +62,12 @@ with inputs.home-manager.lib;
       modules = [ ./home/home.nix ];
       extraSpecialArgs = { inherit username desktop; } // specialArgsFor { inherit hostname platform; };
     };
+
+  # get packages from module
+  packagesFrom = module: attrs @ { system }:
+    module.packages.${system};
+
+  # get default package from module
+  defaultPackageFrom = module: attrs @ { system }:
+    (packagesFrom module attrs).default;
 }

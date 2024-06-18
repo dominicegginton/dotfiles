@@ -14,7 +14,11 @@
     nix-darwin.url = "github:lnl7/nix-darwin";
     sops-nix.url = "github:Mic92/sops-nix";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
-    nix-colors.url = "github:misterio77/nix-colors";
+    base16.url = "github:SenchoPens/base16.nix";
+    tt-schemes.url = "github:tinted-theming/schemes";
+    tt-schemes.flake = false;
+    base16-vim.url = "github:tinted-theming/base16-vim";
+    base16-vim.flake = false;
     twm.url = "github:vinnymeller/twm";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     todo.url = "github:dominicegginton/todo";
@@ -38,7 +42,7 @@
 
       # my lib and overlays
       myLib = import ./lib.nix { inherit inputs outputs stateVersion; };
-      myOverlays = import ./overlays.nix { inherit inputs; };
+      myOverlays = import ./overlays.nix { inherit inputs myLib; };
     in
 
     with myLib;

@@ -1,4 +1,4 @@
-{ inputs }:
+{ inputs, myLib }:
 
 let
   inherit (inputs)
@@ -8,18 +8,12 @@ let
     todo
     twm
     neovim-nightly;
-
-  # get packages from module
-  packagesFrom = module: attrs @ { system }:
-    module.packages.${system};
-
-  # get default package from module
-  defaultPackageFrom = module: attrs @ { system }:
-    (packagesFrom module attrs).default;
 in
 
+with myLib;
+
 {
-  additions = final: _prev:
+  additions = final: prev:
 
     let
       inherit (final) callPackage;
@@ -43,7 +37,7 @@ in
       collect-garbage = callPackage ./pkgs/collect-garbage.nix { };
     };
 
-  modifications = final: _prev:
+  modifications = final: prev:
 
     let
       inherit (final) callPackage;

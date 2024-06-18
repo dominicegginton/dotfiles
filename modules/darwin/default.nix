@@ -9,5 +9,5 @@ _:
     ./system.nix
   ];
 
-  config = {};
+  config = { };
 }
