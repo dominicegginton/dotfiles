@@ -5,7 +5,7 @@
 }:
 
 let
-  cfg = config.modules.serbices.virtualisation;
+  cfg = config.modules.services.virtualisation;
 in
 
 with lib;

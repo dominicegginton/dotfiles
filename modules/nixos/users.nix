@@ -1,3 +1,6 @@
+# TODO: tidy this and move to another module
+#       location
+
 { config
 , lib
 , pkgs

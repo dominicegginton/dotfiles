@@ -1,4 +1,9 @@
-# TODO: tidy this file
+# TODO: tidy this file:
+#        default.nix
+#        disks.nix
+#        boot.nix
+#        harkware.nix
+
 { inputs
 , pkgs
 , ...
@@ -17,6 +22,7 @@
 
   modules = {
     users.dom.enable = true;
+    desktop.sway.enable = true;
 
     services = {
       virtualisation.enable = true;
@@ -29,14 +35,5 @@
       };
     };
 
-    desktop = {
-      sway.enable = true;
-      packages = with pkgs; [
-        thunderbird
-        archi
-        unstable.teams-for-linux
-        unstable.chromium
-      ];
-    };
   };
 }

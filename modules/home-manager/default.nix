@@ -1,3 +1,5 @@
+# TODO: tidy this
+
 { config
 , lib
 , pkgs
@@ -25,6 +27,12 @@ with lib;
     ./desktop
     ./services
   ];
+
+  options.modules.theme = mkOption {
+    type = types.enum [ "light" "dark" ];
+    default = "default";
+    description = "The theme to use";
+  };
 
   config = {
     home = {

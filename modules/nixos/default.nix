@@ -10,9 +10,6 @@ with lib;
 
 {
   imports = [
-    ./networking.nix
-    ./virtualisation.nix
-    ./bluetooth.nix
     ./users.nix
     ./console
     ./desktop

@@ -33,6 +33,7 @@ with lib;
       XDG_CURRENT_DESKTOP = "sway";
       QT_QPA_PLATFORM = "wayland";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+      GTK_THEME = "Adwaita:${config.modules.theme}";
     };
 
     wayland.windowManager.sway = {
@@ -49,6 +50,7 @@ with lib;
             position = "top";
             mode = "hide";
             statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-bar-0.toml";
+            # TODO: apply colors from theme
             colors = {
               background = "#94D4FF";
               statusline = "#434345";
@@ -131,6 +133,7 @@ with lib;
             { app_id = "org.telegram.desktop"; }
           ];
         };
+        # TODO: apply theme colors
         colors = {
           focused = {
             background = "#58f785";
@@ -209,6 +212,7 @@ with lib;
         effect-blur = "7x5";
         indicator-radius = 100;
         indicator-thickness = 7;
+        # TODO: apply theme colors
         ring-color = "bb00cc";
         key-hl-color = "880033";
         line-color = "000000";
