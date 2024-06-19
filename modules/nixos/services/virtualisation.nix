@@ -14,15 +14,9 @@ with lib;
   options.modules.services.virtualisation.enable = mkEnableOption "virtualisation";
 
   config = mkIf cfg.enable {
-    virtualisation = {
-      podman = {
-        defaultNetwork.settings.dns_enabled = true;
-        dockerCompat = true;
-        dockerSocket.enable = true;
-        enable = true;
-        enableNvidia = lib.elem "nvidia" config.services.xserver.videoDrivers;
-      };
+    virtualisation.docker.enable = true;
 
+    virtualisation = {
       vmVariant = {
         users.groups.nixosvmtest = { };
         users.users.nix = {
