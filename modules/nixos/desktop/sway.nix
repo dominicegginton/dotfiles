@@ -31,7 +31,9 @@ let
       ''
         export XDG_DATA_DIRS=${datadir}:$XDG_DATA_DIRS
         gnome_schema=org.gnome.desktop.interface
-        gsettings set $gnome_schema gtk-theme 'Colloid'
+        gsettings set $gnome_schema gtk-theme 'Redmond97'
+        gsettings set $gnome_schema icon-theme 'Redmond97'
+        gsettings set $gnome_schema cursor-theme 'Adwaita'
       '';
   };
 
@@ -77,6 +79,7 @@ with lib;
     services.displayManager.sddm.wayland.enable = true;
     services.displayManager.sddm.enableHidpi = true;
     services.displayManager.sddm.theme = "breeze";
+    services.gnome.gnome-keyring.enable = true;
     services.printing.enable = true;
     services.pipewire = {
       enable = true;

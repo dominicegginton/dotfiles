@@ -33,11 +33,12 @@ with lib;
       XDG_CURRENT_DESKTOP = "sway";
       QT_QPA_PLATFORM = "wayland";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-      GTK_THEME = "Adwaita:${config.modules.theme}";
+      GTK_THEME = "Colloid:${config.modules.theme}";
     };
 
     wayland.windowManager.sway = {
       enable = true;
+      package = null;
       swaynag.enable = true;
       config = {
         modifier = super;
