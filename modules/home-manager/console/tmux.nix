@@ -42,7 +42,7 @@ with lib;
       extraConfig = cfg.extraConfig or '''';
     };
 
-    home.packages = with pkgs; [ twm ];
+    home.packages = with pkgs; [ twm twx ];
     home.file.".config/twm/twm.yaml".text = twmCfg.config or '''';
   };
 }

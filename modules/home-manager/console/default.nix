@@ -37,7 +37,6 @@
       nix-du
       yazi
       ncdu
-      twx
       todo
     ];
   };

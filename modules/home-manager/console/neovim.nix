@@ -1,7 +1,11 @@
+# TODO: add configuration options for this module
+
 { pkgs, ... }:
 
 {
   config = {
+    # move neovim config into plugin
+    # see: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/vim.section.md
     programs.neovim = {
       enable = true;
       package = pkgs.neovim;
