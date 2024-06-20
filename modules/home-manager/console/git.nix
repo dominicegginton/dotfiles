@@ -14,5 +14,7 @@
         };
       };
     };
+
+    home.packages = with pkgs; [ gitu ];
   };
 }
