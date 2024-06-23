@@ -28,13 +28,14 @@ with myLib;
 
       nsm = callPackage (defaultPackageFrom nsm) { };
       todo = callPackage (defaultPackageFrom todo) { };
+      collect-garbage = callPackage ./pkgs/collect-garbage.nix { };
+      download-nixpkgs-cache-index = callPackage ./pkgs/download-nixpkgs-cache-index.nix { };
       git-sync = callPackage ./pkgs/git-sync.nix { };
       gpg-import-keys = callPackage ./pkgs/gpg-import-keys.nix { };
-      twx = callPackage ./pkgs/twx.nix { };
+      mmfm = callPackage ./pkgs/mmfm.nix { };
       network-filters-disable = callPackage ./pkgs/network-filters-disable.nix { };
       network-filters-enable = callPackage ./pkgs/network-filters-enable.nix { };
-      mmfm = callPackage ./pkgs/mmfm.nix { };
-      collect-garbage = callPackage ./pkgs/collect-garbage.nix { };
+      twx = callPackage ./pkgs/twx.nix { };
     };
 
   modifications = final: prev:
