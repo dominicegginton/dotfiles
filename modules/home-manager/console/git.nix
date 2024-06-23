@@ -1,3 +1,6 @@
+# TODO: add configuration to this module
+#       enable user to define configuration
+
 { pkgs, ... }:
 
 {

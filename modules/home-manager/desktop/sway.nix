@@ -51,37 +51,21 @@ with lib;
             position = "top";
             mode = "hide";
             statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-bar-0.toml";
-            # TODO: apply colors from theme
-            colors = {
-              background = "#94D4FF";
-              statusline = "#434345";
-              separator = "#434345";
-              focusedWorkspace = {
-                text = "#24292e";
-                background = "#e9e9e9";
-                border = "#e9e9e9";
+            colors =
+              with config.scheme.withHashtag;
+              let
+                c = color: { text = base00; background = color; border = color; };
+              in
+              {
+                background = blue;
+                statusline = base00;
+                separator = base00;
+                focusedWorkspace = c base06;
+                activeWorkspace = c blue;
+                inactiveWorkspace = c blue;
+                urgentWorkspace = c red;
+                bindingMode = c yellow;
               };
-              activeWorkspace = {
-                text = "#434345";
-                background = "#94D4FF";
-                border = "#94D4FF";
-              };
-              inactiveWorkspace = {
-                text = "#434345";
-                background = "#94D4FF";
-                border = "#94D4FF";
-              };
-              urgentWorkspace = {
-                text = "#434345";
-                background = "#DE5656";
-                border = "#DE5656";
-              };
-              bindingMode = {
-                text = "#434345";
-                background = "#FFC560";
-                border = "#FFC560";
-              };
-            };
           }
         ];
         terminal = "${pkgs.alacritty}/bin/alacritty";
@@ -134,38 +118,39 @@ with lib;
             { app_id = "org.telegram.desktop"; }
           ];
         };
-        # TODO: apply theme colors
-        colors = {
-          focused = {
-            background = "#58f785";
-            border = "#58f785";
-            childBorder = "#0366d6";
-            indicator = "#58f785";
-            text = "#ffffff";
+        colors =
+          with config.scheme.withHashtag;
+          {
+            focused = {
+              background = green;
+              border = green;
+              childBorder = blue;
+              indicator = base00;
+              text = base00;
+            };
+            focusedInactive = {
+              background = base06;
+              border = base06;
+              childBorder = blue;
+              indicator = base00;
+              text = base06;
+            };
+            unfocused = {
+              background = base06;
+              border = base06;
+              childBorder = base06;
+              indicator = base00;
+              text = base06;
+            };
+            urgent = {
+              background = red;
+              border = red;
+              childBorder = red;
+              indicator = base00;
+              text = base06;
+            };
+            background = base00;
           };
-          focusedInactive = {
-            background = "#24292e";
-            border = "#24292e";
-            childBorder = "#0366d6";
-            indicator = "#ffffff";
-            text = "#666666";
-          };
-          unfocused = {
-            background = "#24292e";
-            border = "#24292e";
-            childBorder = "#24292e";
-            indicator = "#ffffff";
-            text = "#666666";
-          };
-          urgent = {
-            background = "#f95a99";
-            border = "#f95a99";
-            childBorder = "#f95a99";
-            indicator = "#f95a99";
-            text = "#24292e";
-          };
-          background = "#666666";
-        };
       };
     };
 

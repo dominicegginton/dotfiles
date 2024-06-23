@@ -36,6 +36,7 @@ with lib;
   config = mkIf cfg.enable {
     services.mpris-proxy.enable = mkIf isLinux true;
     fonts.fontconfig.enable = true;
+    # TODO: use color scheme
     xresources.properties = {
       "*color0" = "#141417";
       "*color8" = "#434345";
