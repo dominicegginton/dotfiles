@@ -130,6 +130,7 @@ in
 
       applications = {
         firefox.enable = true;
+        firefox.package = pkgs.firefox-devedition-bin;
 
         alacritty = {
           enable = true;

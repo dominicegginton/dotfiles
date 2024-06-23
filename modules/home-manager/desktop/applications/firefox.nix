@@ -13,12 +13,17 @@ with lib;
 {
   options.modules.desktop.applications.firefox = {
     enable = mkEnableOption "Firefox Developer Edition";
+    package = mkOption {
+      type = types.package;
+      default = pkgs.firefox-bin;
+      description = "The package to use for Firefox Developer Edition";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox-devedition-bin;
+      package = cfg.package;
     };
   };
 }
