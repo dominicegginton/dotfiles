@@ -135,8 +135,8 @@
         # development shells used by `nix develop <flake>#<name>`
         devShells = {
           python = callPackage ./shells/python.nix { };
-          web = callPackage { };
-          rust = callPackage { };
+          web = callPackage ./shells/web.nix { };
+          rust = callPackage ./shells/rust.nix { };
           default = callPackage ./shell.nix { };
         };
       });
