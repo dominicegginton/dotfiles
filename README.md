@@ -9,7 +9,7 @@ NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 
 ## Features
 
-- **Nix Flakes** - 100% Nix Flakes based configuration, no Nix channels.
+- **Nix Flakes** - 100% Nix Flakes-based configuration, no Nix channels.
 - **Disk Management** - Declarative disk management using Disko.
 - **Encrypted Secrets** - Stored configuration secrets are encrypted using SopsNix.
 - **User Home Environments** - Reproducible user home environments using HomeManager.
@@ -18,6 +18,14 @@ NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 - **Base16 Themes** - Base16 theming throughout system and package configurations.
 - **Nix Dev Shells** - Reproducible environments for common tools and tasks.
 - **Flake Templates** - Easily create new Nix Flakes using templates for common cases.
+
+> [!CAUTION]
+> 
+> Most host configurations within this repository contain encrypted secrets,
+> which means that they **cannot** be built and replicated successfully without
+> the necessary decryption keys. This is not a community framework, but you are
+> invited to explore the modules and countless lines of Nix I have written, _at
+> my expense, for the community's convenience_.
 
 ## Workspace
 
@@ -28,7 +36,7 @@ This workspace follows the following structure:
 ├── hosts           # Host NixOS and NixDarwin configurations
 ├── modules         # Nix modules
 ├── pkgs            # Nix packages
-├── shells          # Nix development shells
+├── shells          # Nix shells
 ├── templates       # Flake templates
 ├── flake.nix       # Nix Flake inputs and outputs
 ├── overlays.nix    # Nix package overlays
