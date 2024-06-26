@@ -19,6 +19,7 @@
     tt-schemes.flake = false;
     base16-vim.url = "github:tinted-theming/base16-vim";
     base16-vim.flake = false;
+    nur.url = "github:nix-community/nur";
     twm.url = "github:vinnymeller/twm";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     todo.url = "github:dominicegginton/todo";
@@ -28,6 +29,7 @@
   outputs =
     { self
     , nixpkgs
+    , nur
     , flake-utils
     , ...
     }:
@@ -118,6 +120,9 @@
             additions
             modifications
             unstable-packages
+            # the nur does not check the repository for malicious content
+            # check all expressions before installing them
+            nur.overlay
           ];
         };
 
