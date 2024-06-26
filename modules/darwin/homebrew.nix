@@ -30,7 +30,7 @@ with lib;
     default = { };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     homebrew.onActivation.autoUpdate = true;
     homebrew.onActivation.cleanup = "zap";
     homebrew.global.brewfile = true;

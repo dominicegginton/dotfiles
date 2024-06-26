@@ -14,7 +14,7 @@ with lib;
 {
   config = {
     nix = {
-      package = pkgs.unstable.nix;
+      useDaemon = true;
       gc.automatic = true;
       optimise.automatic = true;
       registry = mapAttrs (_: value: { flake = value; }) inputs;
@@ -104,6 +104,5 @@ with lib;
       spaces.spans-displays = false;
     };
 
-    services.nix-deamon.enable = true;
   };
 }

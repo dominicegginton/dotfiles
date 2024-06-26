@@ -17,10 +17,6 @@ with lib;
   };
 
   config = {
-    fonts.fontDir.enable = true;
-    fonts.fonts = with pkgs; [
-      ibm-plex
-    ];
     environment.systemPackages = cfg.packages;
   };
 }
