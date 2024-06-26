@@ -222,6 +222,8 @@ in
             "editor.minimap.enabled" = false;
           };
         };
+
+        zed-editor.enable = true;
       };
     };
 
