@@ -35,6 +35,7 @@ with myLib;
       mmfm = callPackage ./pkgs/mmfm.nix { };
       network-filters-disable = callPackage ./pkgs/network-filters-disable.nix { };
       network-filters-enable = callPackage ./pkgs/network-filters-enable.nix { };
+      prune-docker = callPackage ./pkgs/prune-docker.nix { };
       twx = callPackage ./pkgs/twx.nix { };
     };
 
