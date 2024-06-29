@@ -2,6 +2,7 @@
 
 pkgs.writeShellApplication {
   name = "collect-garbage";
+  runtimeInputs = with pkgs; [ nix ];
 
   text = ''
     nix-env --delete-generations old

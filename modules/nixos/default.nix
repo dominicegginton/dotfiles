@@ -87,7 +87,6 @@ with lib;
       variables.NSM_FLAKE = "$HOME/.dotfiles";
       systemPackages = with pkgs; [
         nsm
-        unstable.nh
         nvd
         home-manager
         file
