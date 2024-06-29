@@ -15,5 +15,6 @@ with lib;
 
   config = mkIf cfg.enable {
     services.plex.enable = true;
+    services.plex.openFirewall = true;
   };
 }

@@ -11,10 +11,6 @@
   modules = {
     nixos.stateVersion = stateVersion;
     nixos.nixpkgs.hostPlatform = platform;
-    nixos.role = "server";
-    services.deluge.enable = true;
-    services.plex.enable = true;
-    services.unifi.enable = true;
     networking.enable = true;
     networking.hostname = "burbage";
     virtualisation.enable = true;

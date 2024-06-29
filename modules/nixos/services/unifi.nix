@@ -15,5 +15,6 @@ with lib;
 
   config = mkIf cfg.enable {
     services.unifi.enable = true;
+    services.unifi.openFirewall = true;
   };
 }

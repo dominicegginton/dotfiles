@@ -55,15 +55,9 @@
   services.logind.lidSwitch = "suspend";
 
   modules = {
-    nixos.stateVersion = stateVersion;
-    nixos.role = "server";
-    services.deluge.enable = true;
-    services.plex.enable = true;
-    services.unifi.enable = true;
-    networking.enable = true;
-    networking.hostname = "ghost-gs60";
-    virtualisation.enable = true;
+    services.networking.enable = true;
+    services.networking.hostname = "ghost-gs60";
+    services.virtualisation.enable = true;
     users.dom.enable = true;
-    desktop.packages = with pkgs; [ ];
   };
 }
