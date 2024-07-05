@@ -1,7 +1,4 @@
-{ config
-, lib
-, ...
-}:
+{ config, lib, ... }:
 
 let
   cfg = config.modules.desktop;
@@ -10,22 +7,51 @@ in
 with lib;
 
 {
-  imports = [
-    ./gamescope.nix
-    ./plasma.nix
-    ./sway.nix
-  ];
+  imports = [ ./sway.nix ];
 
-  options.modules.desktop.packages = mkOption {
-    type = types.listOf types.package;
-    default = [ ];
+  options.modules.desktop = {
+    enable = mkEnableOption "desktop";
+
+    packages = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+    };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     boot.plymouth.enable = true;
     boot.plymouth.theme = "spinner";
-    fonts.enableDefaultPackages = false;
-    fonts.fontDir.enable = true;
+    fonts = {
+      enableDefaultPackages = false;
+      fontDir.enable = true;
+      fontconfig = {
+        enable = true;
+        antialias = true;
+        defaultFonts.serif = [ "Source Serif" ];
+        defaultFonts.sansSerif = [ "Work Sans" "Fira Sans" "FiraGO" ];
+        defaultFonts.monospace = [ "FiraCode Nerd Font Mono" "SauceCodePro Nerd Font Mono" ];
+        defaultFonts.emoji = [ "Noto Color Emoji" ];
+        hinting.autohint = false;
+        hinting.enable = true;
+        hinting.style = "full";
+        subpixel.rgba = "rgb";
+        subpixel.lcdfilter = "light";
+      };
+      packages = with pkgs; [
+        font-manager
+        (nerdfonts.override { fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ]; })
+        fira
+        fira-go
+        joypixels
+        liberation_ttf
+        noto-fonts-emoji
+        source-serif
+        ubuntu_font_family
+        work-sans
+        jetbrains-mono
+        ibm-plex
+      ];
+    };
     environment.systemPackages = cfg.packages;
   };
 }

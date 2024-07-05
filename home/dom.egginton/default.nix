@@ -1,6 +1,7 @@
+# alias for dom
+
 _:
 
-# alias for dom
 {
   imports = [ ../dom ];
 }

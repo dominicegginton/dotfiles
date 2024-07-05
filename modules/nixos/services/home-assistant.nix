@@ -1,12 +1,12 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-with lib; let
+{ config, lib, pkgs, ... }:
+
+with lib;
+
+let
   cfg = config.modules.services.home-assistant;
-in {
+in
+
+{
   options.modules.services.home-assistant.enable = mkEnableOption "home assistant";
 
   config = mkIf cfg.enable rec {
@@ -24,8 +24,8 @@ in {
       frontend = {
         themes = "!include_dir_merge_named themes";
       };
-      http = {};
-      feedreader.urls = ["https://nixos.org/blogs.xml"];
+      http = { };
+      feedreader.urls = [ "https://nixos.org/blogs.xml" ];
     };
   };
 }

@@ -23,6 +23,7 @@ with lib;
     networking = {
       hostName = mkDefault cfg.hostname;
       useDHCP = mkDefault true;
+      nftables.enable = mkDefault true;
       firewall = {
         enable = mkDefault true;
         checkReversePath = mkDefault true;
@@ -42,7 +43,26 @@ with lib;
     };
 
     programs.ssh.startAgent = mkDefault true;
-    services.tailscale.enable = mkDefault true;
+    services.tailscale = mkIf cfg.enable {
+      enable = mkDefault true;
+      useRoutingFeatures = "both";
+      interfaceName = mkDefault "userspace-networking";
+    };
+    systemd.services.tailscale-autoconnect = {
+      description = "Automatic connection to Tailscale";
+      after = [ "network-pre.target" "tailscale.service" ];
+      wants = [ "network-pre.target" "tailscale.service" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig.Type = "oneshot";
+      script = with pkgs; ''
+        sleep 2
+        status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
+        if [ $status = "Running" ]; then
+          exit 0
+        fi
+        ${tailscale}/bin/tailscale up
+      '';
+    };
     services.openssh.enable = mkDefault true;
     environment.systemPackages = with pkgs; [ tailscale ];
   };

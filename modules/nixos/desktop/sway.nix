@@ -1,8 +1,6 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
+
+with lib;
 
 let
   cfg = config.modules.desktop.sway;
@@ -36,58 +34,61 @@ let
         gsettings set $gnome_schema cursor-theme 'Adwaita'
       '';
   };
-
-  kanshi-deamon = {
-    description = "kanshi daemon";
-    serviceConfig = {
-      Type = "simple";
-      ExecStart = ''${pkgs.kanshi}/bin/kanshi'';
-      Restart = "always";
-      RestartSec = 5;
-    };
-  };
-
-  login-limits = {
-    domain = "@users";
-    item = "rtprio";
-    type = "-";
-    value = 1;
-  };
 in
-
-with lib;
 
 {
   options.modules.desktop.sway.enable = mkEnableOption "sway";
 
   config = mkIf cfg.enable {
-    xdg.portal.enable = true;
-    xdg.portal.xdgOpenUsePortal = true;
-    xdg.portal.wlr.enable = true;
-    xdg.portal.config.common.default = "*";
-    xdg.portal.extraPortals = with pkgs; [
-      xdg-desktop-portal-wlr
-      xdg-desktop-portal-gtk
-      xdg-desktop-portal
-    ];
-    programs.dconf.enable = true;
+    xdg.portal = {
+      enable = true;
+      xdgOpenUsePortal = true;
+      wlr.enable = true;
+      config.common.default = "*";
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-wlr
+        xdg-desktop-portal-gtk
+        xdg-desktop-portal
+      ];
+    };
     hardware.opengl.enable = true;
     hardware.opengl.driSupport = true;
     hardware.pulseaudio.enable = false;
-    services.xserver.enable = true;
-    services.displayManager.sddm.enable = true;
-    services.displayManager.sddm.wayland.enable = true;
-    services.displayManager.sddm.enableHidpi = true;
-    services.displayManager.sddm.theme = "breeze";
-    services.gnome.gnome-keyring.enable = true;
-    services.printing.enable = true;
-    services.pipewire = {
-      enable = true;
-      alsa.enable = true;
-      jack.enable = true;
-      pulse.enable = true;
-      wireplumber.enable = true;
+    services = {
+      xserver.enable = true;
+      displayManager.sddm.enable = true;
+      displayManager.sddm.wayland.enable = true;
+      displayManager.sddm.enableHidpi = true;
+      displayManager.sddm.theme = "breeze";
+      printing.enable = true;
+      pipewire = {
+        enable = true;
+        alsa.enable = true;
+        jack.enable = true;
+        pulse.enable = true;
+        wireplumber.enable = true;
+      };
     };
+
+    systemd.user.services.kanshi = {
+      description = "kanshi daemon";
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = ''${pkgs.kanshi}/bin/kanshi'';
+        Restart = "always";
+        RestartSec = 5;
+      };
+    };
+    programs.dconf.enable = true;
+
+    services.gnome.gnome-keyring.enable = true;
+    security.pam.services.swaylock = { };
+    security.pam.loginLimits = [{
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }];
 
     programs.sway = {
       enable = true;
@@ -135,12 +136,9 @@ with lib;
       subpixel.rgba = "rgb";
       subpixel.lcdfilter = "light";
     };
-    fonts.packages = with pkgs; let
-      nerd-fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ];
-    in
-    [
+    fonts.packages = with pkgs; [
       font-manager
-      (nerdfonts.override { fonts = nerd-fonts; })
+      (nerdfonts.override { fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ]; })
       fira
       fira-go
       joypixels
@@ -152,8 +150,5 @@ with lib;
       jetbrains-mono
       ibm-plex
     ];
-    systemd.user.services.kanshi = kanshi-deamon;
-    security.pam.services.swaylock = { };
-    security.pam.loginLimits = [ login-limits ];
   };
 }
