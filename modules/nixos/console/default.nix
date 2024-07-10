@@ -13,6 +13,7 @@ with lib;
       git
       fzf
       pinentry
+      cachix
     ];
   };
 }

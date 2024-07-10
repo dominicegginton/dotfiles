@@ -35,12 +35,12 @@ with lib;
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-          "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+          "dominicegginton.cachix.org-1:P8AQ3itMEVevMqAzCKiPyvJ6l1a9NVaFPAXJqb9mAaY="
         ];
         substituters = [
           "https://cache.nixos.org"
           "https://nix-community.cachix.org"
-          "https://nixpkgs-wayland.cachix.org"
+          "https://dominicegginton.cachix.org"
         ];
       };
     };
