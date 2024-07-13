@@ -236,6 +236,7 @@ in
     home.packages = with pkgs; [
       bitwarden-cli
       discord
+      nodePackages_latest.webtorrent-cli
       whatsapp-for-linux
       telegram-desktop
       thunderbird
