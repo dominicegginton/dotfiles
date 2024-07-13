@@ -8,31 +8,33 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
     srvos.url = "github:nix-community/srvos";
-    nix-index-database.url = "github:nix-community/nix-index-database";
+    srvos.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:lnl7/nix-darwin";
-    sops-nix.url = "github:Mic92/sops-nix";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
+    nix-index-database.url = "github:nix-community/nix-index-database";
     tt-schemes.url = "github:tinted-theming/schemes";
     tt-schemes.flake = false;
     base16-vim.url = "github:tinted-theming/base16-vim";
     base16-vim.flake = false;
     nur.url = "github:nix-community/nur";
-    twm.url = "github:vinnymeller/twm";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    twm.url = "github:vinnymeller/twm";
+    twm.inputs.nixpkgs.follows = "nixpkgs";
     todo.url = "github:dominicegginton/todo";
+    todo.inputs.nixpkgs.follows = "nixpkgs";
     nsm.url = "github:dominicegginton/nsm";
+    nsm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs =
-    { self
-    , nixpkgs
-    , nur
-    , flake-utils
-    , ...
-    }:
+  outputs = { self, nixpkgs, flake-utils, ... }:
 
     let
       inherit (self) inputs outputs;
@@ -42,7 +44,6 @@
       # see: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/misc/version.nix
       stateVersion = "24.05";
 
-      # my lib and overlays
       myLib = import ./lib.nix { inherit inputs outputs stateVersion; };
       myOverlays = import ./overlays.nix { inherit inputs myLib; };
     in
@@ -113,8 +114,6 @@
             joypixels.acceptLicense = true;
             nvidia.acceptLicense = true;
             allowUnfree = true;
-            # TODO: short this out
-            permittedInsecurePackages = [ "nix-2.15.3" ];
           };
           overlays = with myOverlays; [
             additions
@@ -122,11 +121,9 @@
             unstable-packages
             # the nur does not check the repository for malicious content
             # check all expressions before installing them
-            nur.overlay
+            inputs.nur.overlay
           ];
         };
-
-        inherit (pkgs) callPackage;
       in
 
       {
@@ -139,10 +136,10 @@
 
         # development shells used by `nix develop <flake>#<name>`
         devShells = {
-          python = callPackage ./shells/python.nix { };
-          web = callPackage ./shells/web.nix { };
-          rust = callPackage ./shells/rust.nix { };
-          default = callPackage ./shell.nix { };
+          python = pkgs.callPackage ./shells/python.nix { };
+          web = pkgs.callPackage ./shells/web.nix { };
+          rust = pkgs.callPackage ./shells/rust.nix { };
+          default = pkgs.callPackage ./shell.nix { };
         };
       });
 }

@@ -10,17 +10,17 @@ NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 ## Features
 
 - **Nix Flakes** - 100% Nix Flakes-based configuration, no Nix channels.
-- **Disk Management** - Declarative disk management using Disko.
-- **Encrypted Secrets** - Stored configuration secrets are encrypted using SopsNix.
-- **User Home Environments** - Reproducible user home environments using HomeManager.
-- **MacOS Hosts** - NixDarwin provides support for MacOS hosts.
-- **Continuous Integration** - Backed by continuous integration workflows on GitHub Actions runners.
+- **Disk Management** - Declarative disk management using _Disko_.
+- **Encrypted Secrets** - Stored configuration secrets are encrypted with _SopsNix_.
+- **User Home Environments** - Reproducible user home environments using _HomeManager_.
+- **MacOS Hosts** - _NixDarwin_ provides support for MacOS hosts.
+- **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Base16 Themes** - Base16 theming throughout system and package configurations.
-- **Nix Dev Shells** - Reproducible environments for common tools and tasks.
-- **Flake Templates** - Easily create new Nix Flakes using templates for common cases.
+- **Nix Dev Shells** - Reproducible shell environments for common tools and tasks.
+- **Flake Templates** - Flake templates included for easy project bootstrapping.
 
 > [!CAUTION]
-> 
+>
 > Most host configurations within this repository contain encrypted secrets,
 > which means that they **cannot** be built and replicated successfully without
 > the necessary decryption keys. This is not a community framework, but you are
@@ -32,7 +32,7 @@ NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 This workspace follows the following structure:
 
 ```
-├── home            # Home manager configurations
+├── home            # User HomeManager configurations
 ├── hosts           # Host NixOS and NixDarwin configurations
 ├── modules         # Nix modules
 ├── pkgs            # Nix packages
