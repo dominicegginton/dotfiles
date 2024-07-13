@@ -3,7 +3,7 @@
 # There's no place like ~
 
 ```ocaml
-Declarative System & Package Configurations
+Declarative System & Package Configurations - WIP Always
 NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 ```
 
