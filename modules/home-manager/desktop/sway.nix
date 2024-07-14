@@ -1,8 +1,4 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.modules.desktop.sway;
@@ -106,13 +102,14 @@ with lib;
           { command = "${pkgs.swaybg}/bin/swaybg --image ${./background.jpg} --mode 'fill' --output '*'"; }
           # {command = "${pkgs.mpvpaper}/bin/mpvpaper --fork -o 'no-audio loop script-opts=ytdl_hook-ytdl_path=${pkgs.yt-dlp}/bin/yt-dlp' -l background '*' 'https://www.youtube.com/watch?v='";}
         ];
-        floating = mkOptionDefault {
+        floating = {
           titlebar = true;
           criteria = [
             { app_id = "pcmanfm"; }
             { app_id = ".blueman-manager-wrapped"; }
             { app_id = "pavucontrol"; }
             { app_id = "nwg-displays"; }
+            { app_id = "wpa_gui"; }
             { app_id = "teams-for-linux"; }
             { app_id = "whatsapp-for-linux"; }
             { app_id = "org.telegram.desktop"; }

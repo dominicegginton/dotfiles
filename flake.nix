@@ -105,41 +105,41 @@
     eachDefaultSystem
       (system:
 
-      let
-        # nixpkgs with configuration and overlays
-        pkgs = import nixpkgs {
-          inherit system;
-          hostPlatform = system;
-          config = {
-            joypixels.acceptLicense = true;
-            nvidia.acceptLicense = true;
-            allowUnfree = true;
+        let
+          # nixpkgs with configuration and overlays
+          pkgs = import nixpkgs {
+            inherit system;
+            hostPlatform = system;
+            config = {
+              joypixels.acceptLicense = true;
+              nvidia.acceptLicense = true;
+              allowUnfree = true;
+            };
+            overlays = with myOverlays; [
+              additions
+              modifications
+              unstable-packages
+              # the nur does not check the repository for malicious content
+              # check all expressions before installing them
+              inputs.nur.overlay
+            ];
           };
-          overlays = with myOverlays; [
-            additions
-            modifications
-            unstable-packages
-            # the nur does not check the repository for malicious content
-            # check all expressions before installing them
-            inputs.nur.overlay
-          ];
-        };
-      in
+        in
 
-      {
-        # formatter for this flake
-        formatter = pkgs.nixpkgs-fmt;
+        {
+          # formatter for this flake
+          formatter = pkgs.nixpkgs-fmt;
 
-        # packages to be exercuted by `nix build <flake>#<name>`
-        # or consumed by other flakes
-        packages = pkgs;
+          # packages to be exercuted by `nix build <flake>#<name>`
+          # or consumed by other flakes
+          packages = pkgs;
 
-        # development shells used by `nix develop <flake>#<name>`
-        devShells = {
-          python = pkgs.callPackage ./shells/python.nix { };
-          web = pkgs.callPackage ./shells/web.nix { };
-          rust = pkgs.callPackage ./shells/rust.nix { };
-          default = pkgs.callPackage ./shell.nix { };
-        };
-      });
+          # development shells used by `nix develop <flake>#<name>`
+          devShells = {
+            python = pkgs.callPackage ./shells/python.nix { };
+            web = pkgs.callPackage ./shells/web.nix { };
+            rust = pkgs.callPackage ./shells/rust.nix { };
+            default = pkgs.callPackage ./shell.nix { };
+          };
+        });
 }
