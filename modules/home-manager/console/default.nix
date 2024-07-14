@@ -33,7 +33,7 @@
       nix-init
       manix
       nix-du
-      yazi
+      ranger
       ncdu
       todo
     ];
