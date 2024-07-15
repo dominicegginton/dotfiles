@@ -27,6 +27,7 @@
     services = {
       virtualisation.enable = true;
       bluetooth.enable = true;
+      syncthing.enable = true;
 
       networking = {
         enable = true;

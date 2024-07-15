@@ -10,6 +10,7 @@ in
     ./deluge.nix
     ./networking.nix
     ./plex.nix
+    ./syncthing.nix
     ./unifi.nix
     ./samba.nix
     ./virtualisation.nix

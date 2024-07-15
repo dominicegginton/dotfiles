@@ -30,6 +30,8 @@ in
           User ec2-user
           ProxyCommand sh -c "${pkgs.awscli}/bin/aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
       '';
+
+      syncthing.enable = true;
     };
 
     modules.console = {
