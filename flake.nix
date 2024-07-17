@@ -114,6 +114,7 @@
               joypixels.acceptLicense = true;
               nvidia.acceptLicense = true;
               allowUnfree = true;
+              allowBroken = true;
             };
             overlays = with myOverlays; [
               additions

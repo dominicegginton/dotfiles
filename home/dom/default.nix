@@ -31,7 +31,7 @@ in
           ProxyCommand sh -c "${pkgs.awscli}/bin/aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
       '';
 
-      syncthing.enable = true;
+      syncthing.enable = mkIf isLinux true;
     };
 
     modules.console = {
@@ -141,7 +141,7 @@ in
 
     modules.desktop = {
       enable = true;
-      sway.enable = true;
+      sway.enable = mkIf isLinux true;
 
       # TODO: provide unique config per host
       kanshi.config = ''
@@ -157,8 +157,10 @@ in
       '';
 
       applications = {
-        firefox.enable = true;
-        firefox.package = pkgs.firefox-devedition-bin;
+        firefox = mkIf isLinux {
+          enable = true;
+          package = pkgs.firefox-devedition-bin;
+        };
 
         alacritty = {
           enable = true;
@@ -239,10 +241,11 @@ in
       bitwarden-cli
       discord
       nodePackages_latest.webtorrent-cli
+      archi
+    ] ++ lib.optional isLinux [
       whatsapp-for-linux
       telegram-desktop
       thunderbird
-      archi
       unstable.teams-for-linux
       unstable.chromium
     ];

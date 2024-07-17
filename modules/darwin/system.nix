@@ -1,5 +1,6 @@
 { inputs
 , outputs
+, pkgs
 , config
 , lib
 , ...
@@ -47,7 +48,7 @@ with lib;
       NSGlobalDomain.AppleFontSmoothing = 1;
       NSGlobalDomain.NSTableViewDefaultSizeMode = 1;
       NSGlobalDomain.AppleICUForce24HourTime = true;
-      NSGlobalDomain.AppleInterfaceStyle = "Dark";
+      # NSGlobalDomain.AppleInterfaceStyle = "Dark";
       NSGlobalDomain.AppleInterfaceStyleSwitchesAutomatically = false;
       NSGlobalDomain.AppleKeyboardUIMode = 3;
       NSGlobalDomain.AppleMeasurementUnits = "Centimeters";
@@ -103,6 +104,8 @@ with lib;
       screensaver.askForPasswordDelay = 0;
       spaces.spans-displays = false;
     };
+
+    environment.systemPackages = with pkgs; [ home-manager ];
 
   };
 }
