@@ -13,6 +13,7 @@ in
     ./syncthing.nix
     ./unifi.nix
     ./samba.nix
+    ./steam.nix
     ./virtualisation.nix
   ];
 }

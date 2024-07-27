@@ -59,6 +59,7 @@
     services.networking.hostname = "ghost-gs60";
     services.virtualisation.enable = true;
     services.syncthing.enable = true;
+    services.steam.enable = true;
     users.dom.enable = true;
     desktop.plasma.enable = true;
   };
