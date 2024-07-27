@@ -60,5 +60,6 @@
     services.virtualisation.enable = true;
     services.syncthing.enable = true;
     users.dom.enable = true;
+    desktop.plasma.enable = true;
   };
 }
