@@ -7,7 +7,7 @@ in
 with lib;
 
 {
-  imports = [ ./sway.nix ];
+  imports = [ ./sway.nix ./plasma.nix ];
 
   options.modules.desktop = {
     enable = mkEnableOption "desktop";
