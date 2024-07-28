@@ -57,7 +57,10 @@
   modules = {
     services.networking.enable = true;
     services.networking.hostname = "ghost-gs60";
+
+    services.networking.wireless = true;
     services.virtualisation.enable = true;
+    services.bluetooth.enable = true;
     services.syncthing.enable = true;
     services.steam.enable = true;
     users.dom.enable = true;
