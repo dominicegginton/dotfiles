@@ -14,7 +14,7 @@
 }:
 
 let
-  inherit (pkgs.stdenv) isLinux;
+  inherit (pkgs.stdenv) isLinux isDarwin;
   inherit (lib) mkIf;
 in
 
@@ -141,7 +141,7 @@ in
 
     modules.desktop = {
       enable = true;
-      sway.enable = mkIf isLinux true;
+      plasma.enable = mkIf isLinux true;
 
       # TODO: provide unique config per host
       kanshi.config = ''
@@ -242,13 +242,13 @@ in
       discord
       nodePackages_latest.webtorrent-cli
       archi
-    ] ++ lib.optional isLinux [
+    ] ++ (if isLinux then [
       whatsapp-for-linux
       telegram-desktop
       thunderbird
       unstable.teams-for-linux
       unstable.chromium
-    ];
+    ] else [ ]) ++ (if isDarwin then [ ] else [ ]);
   };
 
 }

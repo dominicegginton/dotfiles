@@ -4,10 +4,7 @@
 #        boot.nix
 #        harkware.nix
 
-{ inputs
-, pkgs
-, ...
-}:
+{ inputs, pkgs, ... }:
 
 {
   imports = [
@@ -22,7 +19,7 @@
 
   modules = {
     users.dom.enable = true;
-    desktop.sway.enable = true;
+    desktop.plasma.enable = true;
 
     services = {
       virtualisation.enable = true;
@@ -35,6 +32,5 @@
         wireless = true;
       };
     };
-
   };
 }

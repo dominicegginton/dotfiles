@@ -12,7 +12,6 @@ with lib;
 {
   options.modules.desktop = {
     sway.enable = mkEnableOption {
-      default = true;
       description = "Sway window manager";
     };
 

@@ -15,17 +15,13 @@ with lib;
 {
   imports = [
     ./applications
-    ./sway.nix
     ./gamescope.nix
+    ./plasma.nix
+    ./sway.nix
   ];
 
   options.modules.desktop = {
     enable = mkEnableOption "Enable graphical desktop environment";
-    background = mkOption {
-      type = types.path;
-      default = ./background.jpg;
-      description = "Path to the background image";
-    };
     defaultApplication = mkOption {
       type = types.attrsOf types.str;
       default = { };
@@ -60,11 +56,6 @@ with lib;
       mimeApps.defaultApplications = cfg.defaultApplications;
     };
     home.packages = with pkgs; [
-      noto-fonts
-      noto-fonts-cjk
-      noto-fonts-emoji
-      font-awesome
-      jetbrains-mono
       mpv
     ];
   };

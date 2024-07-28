@@ -11,8 +11,8 @@ with lib;
 
   config = mkIf cfg.enable {
     services.syncthing = {
-      enable = cfg.enable;
-      tray = true;
+      enable = true;
+      tray.enable = true;
     };
   };
 }

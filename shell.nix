@@ -1,6 +1,6 @@
-{ pkgs }:
+{ pkgs, mkShell }:
 
-pkgs.mkShell {
+mkShell {
   sopsPGPKeyDirs = [ "./keys" ];
   nativeBuildInputs = with pkgs; [
     nix
