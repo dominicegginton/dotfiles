@@ -17,22 +17,10 @@ with lib;
 
     programs.plasma = {
       enable = true;
-      workspace = {
-        wallpaper = ./background.jpg;
-      };
+      workspace = { };
       panels = [ ];
       window-rules = [ ];
-      powerdevil = {
-        powerButtonAction = "lockScreen";
-        autoSuspend = {
-          action = "shutDown";
-          idleTimeout = 1000;
-        };
-        turnOffDisplay = {
-          idleTimeout = 1000;
-          idleTimeoutWhenLocked = "immediately";
-        };
-      };
+      powerdevil = { };
       shortcuts = { };
       configFile = { };
     };

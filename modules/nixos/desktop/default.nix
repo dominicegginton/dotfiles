@@ -24,7 +24,7 @@ with lib;
     fonts = {
       enableDefaultPackages = false;
       fontDir.enable = true;
-      fonts.fontconfig = {
+      fontconfig = {
         enable = true;
         antialias = true;
         defaultFonts.serif = [ "Source Serif" ];
@@ -37,7 +37,7 @@ with lib;
         subpixel.rgba = "rgb";
         subpixel.lcdfilter = "light";
       };
-      fonts.packages = with pkgs; [
+      packages = with pkgs; [
         font-manager
         (nerdfonts.override { fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ]; })
         fira

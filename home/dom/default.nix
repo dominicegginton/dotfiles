@@ -23,7 +23,6 @@ in
   imports = [ ./sources ];
 
   config = {
-    modules.theme = "light";
     modules.services = {
       ssh.extraConfig = ''
         Host i-* mi-*
@@ -176,7 +175,7 @@ in
             font =
               let
                 style = style: {
-                  family = "JetBrains Mono";
+                  family = "monospace";
                   style = style;
                 };
               in
