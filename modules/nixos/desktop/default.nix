@@ -52,6 +52,6 @@ with lib;
         ibm-plex
       ];
     };
-    environment.systemPackages = cfg.packages;
+    environment.systemPackages = with pkgs; [ wpa_supplicant_gui ];
   };
 }

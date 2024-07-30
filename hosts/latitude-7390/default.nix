@@ -19,6 +19,16 @@
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
 
+  nix.distributedBuilds = true;
+  nix.buildMachines = [{
+    hostName = "ghost-gs60";
+    system = "x86_64-linux";
+    protocol = "ssh-ng";
+    maxJobs = 1;
+    speedFactor = 2;
+    supportedFeatures = [ "nixos-test" "big-parallel" "kvm" ];
+  }];
+
   modules = {
     users.dom.enable = true;
     desktop.plasma.enable = true;
