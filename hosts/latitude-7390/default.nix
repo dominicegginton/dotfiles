@@ -4,7 +4,7 @@
 #        boot.nix
 #        harkware.nix
 
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, config, ... }:
 
 {
   imports = [
@@ -24,10 +24,28 @@
     hostName = "ghost-gs60";
     system = "x86_64-linux";
     protocol = "ssh-ng";
+    # sshKey = config.sops.secrets.ssh-remote-builder.path;
     maxJobs = 1;
     speedFactor = 2;
-    supportedFeatures = [ "nixos-test" "big-parallel" "kvm" ];
+    systems = [
+      "x86_64-linux"
+      "i686-linux"
+    ];
+    maxJobs = 64;
+    supportedFeatures = [
+      "big-parallel"
+      "kvm"
+      "nixos-test"
+    ];
   }];
+
+  # programs.ssh.extraConfig = ''
+  #   Host ghost-gs60
+  #     User nix
+  #     ProxyJump login-tum
+  #     HostName ghost-gs60
+  #     IdentityFile ${config.sops.secrets.ssh-remote-builder.path}
+  # '';
 
   modules = {
     users.dom.enable = true;
