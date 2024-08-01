@@ -8,6 +8,7 @@ in
   imports = [
     ./bluetooth.nix
     ./deluge.nix
+    ./distributed-builds.nix
     ./networking.nix
     ./plex.nix
     ./syncthing.nix
