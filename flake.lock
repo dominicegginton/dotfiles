@@ -128,6 +128,21 @@
         "type": "indirect"
       }
     },
+    "flake-schemas": {
+      "locked": {
+        "lastModified": 1721999734,
+        "narHash": "sha256-G5CxYeJVm4lcEtaO87LKzOsVnWeTcHGKbKxNamNWgOw=",
+        "owner": "determinatesystems",
+        "repo": "flake-schemas",
+        "rev": "0a5c42297d870156d9c57d8f99e476b738dcd982",
+        "type": "github"
+      },
+      "original": {
+        "owner": "determinatesystems",
+        "repo": "flake-schemas",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -626,6 +641,7 @@
         "base16": "base16",
         "base16-vim": "base16-vim",
         "disko": "disko",
+        "flake-schemas": "flake-schemas",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "impermanence": "impermanence",

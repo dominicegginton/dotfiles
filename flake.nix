@@ -6,6 +6,7 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    flake-schemas.url = "github:determinatesystems/flake-schemas";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -37,40 +38,30 @@
     nsm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
+  outputs = { self, nixpkgs, flake-utils, flake-schemas, nur, ... }:
 
     let
       inherit (self) inputs outputs;
-
-      # state version
-      # see: https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-      # see: https://github.com/NixOS/nixpkgs/blob/master/nixos/modules/misc/version.nix
       stateVersion = "24.05";
-
       myLib = import ./lib.nix { inherit inputs outputs stateVersion; };
-      myOverlays = import ./overlays.nix { inherit inputs myLib; };
+      overlays = import ./overlays.nix { inherit inputs myLib; };
+      templates = import ./templates { };
     in
 
     with myLib;
     with flake-utils.lib;
 
     {
-      # overlays consumed by other flakes
-      overlays = myOverlays;
+      inherit overlays templates;
 
-      # templates used by `nix flake init -t <flake>#<template>`
-      templates = import ./templates { };
+      schemas = flake-schemas.schemas;
 
-      # configurations for nixos hosts
-      # used by `nixos-rebuild switch --flake <flake>#<hostname>`
       nixosConfigurations = {
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
         ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
         burbage = mkNixosHost { hostname = "burbage"; };
       };
 
-      # configurations for darwin hosts
-      # used by `nixos-rebuild switch --flake <flake>#<hostname>`
       darwinConfigurations = {
         MCCML44WMD6T = mkDarwinHost {
           hostname = "MCCML44WMD6T";
@@ -78,8 +69,6 @@
         };
       };
 
-      # home configurations for users available across hosts
-      # used by `home-manager switch --flake <flake>`
       homeConfigurations = {
         "dom@latitude-7390" = mkHome {
           hostname = "latitude-7390";
@@ -109,7 +98,6 @@
       (system:
 
         let
-          # nixpkgs with configuration and overlays
           pkgs = import nixpkgs {
             inherit system;
             hostPlatform = system;
@@ -119,26 +107,18 @@
               allowUnfree = true;
               allowBroken = true;
             };
-            overlays = with myOverlays; [
+            overlays = with overlays; [
               additions
               modifications
               unstable-packages
-              # the nur does not check the repository for malicious content
-              # check all expressions before installing them
-              inputs.nur.overlay
+              nur.overlay
             ];
           };
         in
 
         {
-          # formatter for this flake
           formatter = pkgs.nixpkgs-fmt;
-
-          # packages to be exercuted by `nix build <flake>#<name>`
-          # or consumed by other flakes
-          packages = pkgs;
-
-          # development shells used by `nix develop <flake>#<name>`
+          legacyPackages = pkgs;
           devShells = {
             python = pkgs.callPackage ./shells/python.nix { };
             web = pkgs.callPackage ./shells/web.nix { };
