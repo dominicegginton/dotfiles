@@ -1,7 +1,7 @@
 { inputs, outputs, stateVersion }:
 
 let
-  pkgsFor = platform: outputs.packages.${platform};
+  pkgsFor = platform: outputs.legacyPackages.${platform};
 
   specialArgsFor =
     { hostname
