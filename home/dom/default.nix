@@ -173,12 +173,14 @@ in
             scrolling.multiplier = 3;
             selection.save_to_clipboard = true;
             font =
+
               let
                 style = style: {
                   family = "monospace";
                   style = style;
                 };
               in
+
               {
                 normal = style "Regular";
                 bold = style "Bold";
@@ -187,13 +189,16 @@ in
                 size = 11;
               };
             colors =
-              with config.scheme.withHashtag; let
+              with config.scheme.withHashtag;
+
+              let
                 default = {
                   black = base00;
                   white = base07;
                   inherit red green yellow blue cyan magenta;
                 };
               in
+
               {
                 primary = { background = base00; foreground = base07; };
                 cursor = { text = base02; cursor = base07; };
@@ -225,8 +230,6 @@ in
             "editor.minimap.enabled" = false;
           };
         };
-
-        zed-editor.enable = true;
       };
     };
 
@@ -236,18 +239,28 @@ in
       "d ${config.home.homeDirectory}/.dotfiles 0755 ${username} users - -"
     ];
 
-    home.packages = with pkgs; [
-      bitwarden-cli
-      discord
-      nodePackages_latest.webtorrent-cli
-      archi
-    ] ++ (if isLinux then [
-      whatsapp-for-linux
-      telegram-desktop
-      thunderbird
-      unstable.teams-for-linux
-      unstable.chromium
-    ] else [ ]) ++ (if isDarwin then [ ] else [ ]);
+    home.packages =
+      with pkgs;
+      [
+        bitwarden-cli
+        discord
+        nodePackages_latest.webtorrent-cli
+        archi
+      ]
+      ++ (if isLinux
+      then [
+        whatsapp-for-linux
+        telegram-desktop
+        thunderbird
+        unstable.teams-for-linux
+        unstable.chromium
+      ]
+      else [ ]
+      )
+      ++ (if isDarwin
+      then [ ]
+      else [ ]
+      );
   };
 
 }

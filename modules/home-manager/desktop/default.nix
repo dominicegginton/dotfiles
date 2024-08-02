@@ -1,11 +1,7 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 
 let
-  inherit (pkgs.stdenv) isLinux;
+  inherit (pkgs.stdenv) isLinux isDarwin;
 
   cfg = config.modules.desktop;
 in
@@ -30,10 +26,10 @@ with lib;
   };
 
   config = mkIf cfg.enable {
-    services.mpris-proxy.enable = mkIf isLinux true;
     fonts.fontconfig.enable = true;
+    services.mpris-proxy.enable = mkIf isLinux true;
     # TODO: use color scheme
-    xresources.properties = {
+    xresources.properties = mkIf isLinux {
       "*color0" = "#141417";
       "*color8" = "#434345";
       "*color1" = "#D62C2C";
@@ -51,12 +47,13 @@ with lib;
       "*color7" = "#c8c8c8";
       "*color15" = "#e9e9e9";
     };
-    xdg = {
+    xdg = mkIf isLinux {
       enable = true;
       mimeApps.defaultApplications = cfg.defaultApplications;
     };
-    home.packages = with pkgs; [
-      mpv
-    ];
+    home.packages =
+      with pkgs; [ ]
+        ++ (if isLinux then [ ] else [ ])
+        ++ (if isDarwin then [ ] else [ ]);
   };
 }
