@@ -23,6 +23,7 @@ with myLib;
     todo = final.callPackage (defaultPackageFrom todo) { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
     download-nixpkgs-cache-index = final.callPackage ./pkgs/download-nixpkgs-cache-index.nix { };
+    export-aws-credentials = final.callPackage ./pkgs/export-aws-credentials.nix { };
     git-sync = final.callPackage ./pkgs/git-sync.nix { };
     gpg-import-keys = final.callPackage ./pkgs/gpg-import-keys.nix { };
     mmfm = final.callPackage ./pkgs/mmfm.nix { };
@@ -30,6 +31,7 @@ with myLib;
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     prune-docker = final.callPackage ./pkgs/prune-docker.nix { };
     twx = final.callPackage ./pkgs/twx.nix { };
+
   };
 
   modifications = final: prev: {
