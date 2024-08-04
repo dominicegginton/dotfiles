@@ -1,18 +1,15 @@
-{ pkgs
-, config
-, lib
-, ...
-}:
+{ pkgs, config, lib, ... }:
 
 let
-  cfg = config.modules.desktop.applications.alacritty;
+  cfg = config.modules.display.applications.alacritty;
+
   jsonType = (pkgs.formats.json { }).type;
 in
 
 with lib;
 
 {
-  options.modules.desktop.applications.alacritty = {
+  options.modules.display.applications.alacritty = {
     enable = mkEnableOption "Alacritty terminal emulator";
     settings = mkOption {
       type = jsonType;

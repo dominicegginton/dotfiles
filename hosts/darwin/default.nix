@@ -8,6 +8,6 @@
 {
   imports = [
     ./${hostname}
-    ../modules/darwin
+    ../../modules/darwin
   ];
 }

@@ -28,7 +28,7 @@ rec {
     }:
     nixosSystem {
       pkgs = pkgsFor platform;
-      modules = [ ./hosts/nixos.nix ] ++ (optionals (installer != null) [ installer ]);
+      modules = [ ./hosts/nixos ] ++ (optionals (installer != null) [ installer ]);
       specialArgs = specialArgsFor { inherit hostname platform; };
     };
 
@@ -39,7 +39,7 @@ rec {
     }:
     darwinSystem {
       pkgs = pkgsFor platform;
-      modules = [ ./hosts/darwin.nix ];
+      modules = [ ./hosts/darwin ];
       specialArgs = { inherit username; } // specialArgsFor { inherit hostname platform; };
     };
 
@@ -51,7 +51,7 @@ rec {
     }:
     homeManagerConfiguration {
       pkgs = pkgsFor platform;
-      modules = [ ./home/home.nix ];
+      modules = [ ./home ];
       extraSpecialArgs = { inherit username desktop; } // specialArgsFor { inherit hostname platform; };
     };
 

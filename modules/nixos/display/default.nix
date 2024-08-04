@@ -1,22 +1,18 @@
 { config, lib, ... }:
 
 let
-  cfg = config.modules.desktop;
+  cfg = config.modules.display;
 in
 
 with lib;
 
 {
-  imports = [ ./sway.nix ./plasma.nix ];
+  imports = [
+    ./sway.nix
+    ./plasma.nix
+  ];
 
-  options.modules.desktop = {
-    enable = mkEnableOption "desktop";
-
-    packages = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-    };
-  };
+  options.modules.display.enable = mkEnableOption "desktop";
 
   config = mkIf cfg.enable {
     boot.plymouth.enable = true;

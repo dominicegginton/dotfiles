@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.modules.desktop.sway;
+  cfg = config.modules.display.sway;
 
   dbus-sway-environment = pkgs.writeTextFile {
     name = "dbus-sway-environment";
@@ -37,7 +37,7 @@ let
 in
 
 {
-  options.modules.desktop.sway.enable = mkEnableOption "sway";
+  options.modules.display.sway.enable = mkEnableOption "sway";
 
   config = mkIf cfg.enable {
     xdg.portal = {

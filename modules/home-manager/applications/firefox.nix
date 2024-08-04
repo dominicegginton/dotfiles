@@ -1,17 +1,13 @@
-{ pkgs
-, config
-, lib
-, ...
-}:
+{ pkgs, config, lib, ... }:
 
 let
-  cfg = config.modules.desktop.applications.firefox;
+  cfg = config.modules.display.applications.firefox;
 in
 
 with lib;
 
 {
-  options.modules.desktop.applications.firefox = {
+  options.modules.display.applications.firefox = {
     enable = mkEnableOption "Firefox Developer Edition";
     package = mkOption {
       type = types.package;

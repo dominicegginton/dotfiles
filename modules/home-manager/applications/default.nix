@@ -5,6 +5,5 @@ _:
     ./alacritty.nix
     ./firefox.nix
     ./vscode.nix
-    ./zed.nix
   ];
 }

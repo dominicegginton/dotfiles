@@ -138,7 +138,7 @@ in
       ];
     };
 
-    modules.desktop = {
+    modules.display = {
       enable = true;
       plasma.enable = mkIf isLinux true;
 

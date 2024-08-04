@@ -12,7 +12,7 @@ with lib;
   imports = [
     ./users.nix
     ./console
-    ./desktop
+    ./display
     ./services
   ];
 

@@ -1,8 +1,8 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.desktop.sway;
-  kanshiCfg = config.modules.desktop.kanshi;
+  cfg = config.modules.display.sway;
+  kanshiCfg = config.modules.display.kanshi;
 
   super = "Mod4";
 in
@@ -10,7 +10,7 @@ in
 with lib;
 
 {
-  options.modules.desktop = {
+  options.modules.display = {
     sway.enable = mkEnableOption {
       description = "Sway window manager";
     };

@@ -1,18 +1,14 @@
-{ pkgs
-, config
-, lib
-, ...
-}:
+{ pkgs, config, lib, ... }:
 
 let
-  cfg = config.modules.desktop.applications.vscode;
+  cfg = config.modules.display.applications.vscode;
   jsonType = (pkgs.formats.json { }).type;
 in
 
 with lib;
 
 {
-  options.modules.desktop.applications.vscode = {
+  options.modules.display.applications.vscode = {
     enable = mkEnableOption "Enable Visual Studio Code";
 
     extensions = mkOption {

@@ -3,11 +3,11 @@
 with lib;
 
 let
-  cfg = config.modules.desktop.plasma;
+  cfg = config.modules.display.plasma;
 in
 
 {
-  options.modules.desktop.plasma.enable = mkEnableOption "sway";
+  options.modules.display.plasma.enable = mkEnableOption "sway";
 
   config = mkIf cfg.enable {
     services.xserver.enable = true;

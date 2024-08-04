@@ -3,27 +3,18 @@
 let
   inherit (pkgs.stdenv) isLinux isDarwin;
 
-  cfg = config.modules.desktop;
+  cfg = config.modules.display;
 in
 
 with lib;
 
 {
   imports = [
-    ./applications
-    ./gamescope.nix
     ./plasma.nix
     ./sway.nix
   ];
 
-  options.modules.desktop = {
-    enable = mkEnableOption "Enable graphical desktop environment";
-    defaultApplication = mkOption {
-      type = types.attrsOf types.str;
-      default = { };
-      description = "Default applications for xdg";
-    };
-  };
+  options.modules.display.enable = mkEnableOption "Enable graphical desktop environment";
 
   config = mkIf cfg.enable {
     fonts.fontconfig.enable = true;
@@ -47,10 +38,7 @@ with lib;
       "*color7" = "#c8c8c8";
       "*color15" = "#e9e9e9";
     };
-    xdg = mkIf isLinux {
-      enable = true;
-      mimeApps.defaultApplications = cfg.defaultApplications;
-    };
+    xdg.enable = mkIf isLinux true;
     home.packages =
       with pkgs; [ ]
         ++ (if isLinux then [ ] else [ ])

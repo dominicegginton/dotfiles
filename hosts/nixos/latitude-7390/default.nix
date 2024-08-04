@@ -21,7 +21,7 @@
 
   modules = {
     users.dom.enable = true;
-    desktop.plasma.enable = true;
+    display.plasma.enable = true;
 
     services = {
       distributedBuilds.enable = true;

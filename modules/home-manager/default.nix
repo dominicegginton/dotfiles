@@ -23,8 +23,9 @@ with lib;
 
 {
   imports = [
+    ./applications
     ./console
-    ./desktop
+    ./display
     ./services
   ];
 
