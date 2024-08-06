@@ -1,4 +1,4 @@
-{ inputs, myLib }:
+{ inputs, lib }:
 
 let
   inherit (inputs)
@@ -10,15 +10,18 @@ let
     neovim-nightly;
 in
 
-with myLib;
+with lib;
 
 {
-  additions = final: prev: {
+  default = final: prev: {
     inherit
       (packagesFrom sops-nix { inherit (final) system; })
       sops-import-keys-hook
       sops-init-gpg-key;
+    lib = prev.lib // lib;
+  };
 
+  additions = final: prev: {
     nsm = final.callPackage (defaultPackageFrom nsm) { };
     todo = final.callPackage (defaultPackageFrom todo) { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
@@ -31,12 +34,13 @@ with myLib;
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     prune-docker = final.callPackage ./pkgs/prune-docker.nix { };
     twx = final.callPackage ./pkgs/twx.nix { };
-
+    lib = prev.lib // lib;
   };
 
   modifications = final: prev: {
     twm = final.callPackage (defaultPackageFrom twm) { };
     neovim = final.callPackage (defaultPackageFrom neovim-nightly) { };
+    lib = prev.lib // lib;
   };
 
   unstable-packages = final: _prev: {

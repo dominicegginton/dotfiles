@@ -43,13 +43,49 @@
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
-      myLib = import ./lib.nix { inherit inputs outputs stateVersion; };
-      overlays = import ./overlays.nix { inherit inputs myLib; };
+      lib = import ./lib.nix { inherit inputs outputs stateVersion; };
+      overlays = import ./overlays.nix { inherit inputs lib; };
       templates = import ./templates { };
     in
 
-    with myLib;
+    with lib;
     with flake-utils.lib;
+
+    eachDefaultSystem
+      (system:
+
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            hostPlatform = system;
+            config = {
+              joypixels.acceptLicense = true;
+              nvidia.acceptLicense = true;
+              allowUnfree = true;
+              allowBroken = true;
+            };
+            overlays = with overlays; [
+              default
+              additions
+              modifications
+              unstable-packages
+              nur.overlay
+            ];
+          };
+        in
+
+        {
+          formatter = pkgs.nixpkgs-fmt;
+          legacyPackages = pkgs;
+          devShells = {
+            python = pkgs.callPackage ./shells/python.nix { };
+            web = pkgs.callPackage ./shells/web.nix { };
+            rust = pkgs.callPackage ./shells/rust.nix { };
+            default = pkgs.callPackage ./shell.nix { };
+          };
+        })
+
+    //
 
     {
       inherit overlays templates;
@@ -90,40 +126,5 @@
           platform = "x86_64-darwin";
         };
       };
-    }
-
-    //
-
-    eachDefaultSystem
-      (system:
-
-        let
-          pkgs = import nixpkgs {
-            inherit system;
-            hostPlatform = system;
-            config = {
-              joypixels.acceptLicense = true;
-              nvidia.acceptLicense = true;
-              allowUnfree = true;
-              allowBroken = true;
-            };
-            overlays = with overlays; [
-              additions
-              modifications
-              unstable-packages
-              nur.overlay
-            ];
-          };
-        in
-
-        {
-          formatter = pkgs.nixpkgs-fmt;
-          legacyPackages = pkgs;
-          devShells = {
-            python = pkgs.callPackage ./shells/python.nix { };
-            web = pkgs.callPackage ./shells/web.nix { };
-            rust = pkgs.callPackage ./shells/rust.nix { };
-            default = pkgs.callPackage ./shell.nix { };
-          };
-        });
+    };
 }

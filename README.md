@@ -16,7 +16,7 @@ NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 - **MacOS Hosts** - _NixDarwin_ provides support for MacOS hosts.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Base16 Themes** - Base16 theming throughout system and package configurations.
-- **Nix Dev Shells** - Reproducible shell environments for common tools and tasks.
+- **Ad-hoc Shell Environments** - Reproducible ad-hoc shell environments for common tools and tasks.
 - **Flake Templates** - Flake templates included for easy project bootstrapping.
 
 > [!CAUTION]
@@ -35,12 +35,12 @@ This workspace follows the following structure:
 ├── home            # User HomeManager configurations
 ├── hosts           # Host NixOS and NixDarwin configurations
 ├── modules         # Nix modules
-├── pkgs            # Nix packages
-├── shells          # Nix shells
+├── pkgs            # Packages
+├── shells          # Ad-hoc shells enviroments
 ├── templates       # Flake templates
-├── flake.nix       # Nix Flake inputs and outputs
-├── overlays.nix    # Nix package overlays
-└── lib.nix         # Nix utility functions
+├── flake.nix       # Flake inputs and outputs
+├── overlays.nix    # Nix overlays
+└── lib.nix         # Libary untils
 ```
 
 ## Eye Candy
