@@ -1,8 +1,4 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, ... }:
 
 let
   cfg = config.modules.services.deluge;

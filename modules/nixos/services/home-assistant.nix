@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -9,7 +9,7 @@ in
 {
   options.modules.services.home-assistant.enable = mkEnableOption "home assistant";
 
-  config = mkIf cfg.enable rec {
+  config = mkIf cfg.enable {
     services.home-assistant.enable = true;
     services.home-assistant.openFirewall = true;
     services.home-assistant.config = {

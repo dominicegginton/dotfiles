@@ -4,7 +4,7 @@
 #        boot.nix
 #        harkware.nix
 
-{ inputs, pkgs, config, ... }:
+{ inputs, ... }:
 
 {
   imports = [

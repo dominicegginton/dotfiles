@@ -1,14 +1,9 @@
 { inputs
-, outputs
 , pkgs
 , config
 , lib
 , ...
 }:
-
-let
-  cfg = config.modules.system;
-in
 
 with lib;
 

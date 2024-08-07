@@ -1,8 +1,4 @@
-{ config, ... }:
-
-let
-  cfg = config.modules.services;
-in
+{ ... }:
 
 {
   imports = [

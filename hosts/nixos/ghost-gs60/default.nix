@@ -1,9 +1,6 @@
-{ inputs
-, pkgs
-, config
-, lib
-, ...
-}: {
+{ inputs, config, pkgs, ... }:
+
+{
   imports = [
     inputs.nixos-hardware.nixosModules.msi-gs60
     ./disks.nix
@@ -55,7 +52,6 @@
   modules = {
     services.networking.enable = true;
     services.networking.hostname = "ghost-gs60";
-
     services.networking.wireless = true;
     services.virtualisation.enable = true;
     services.bluetooth.enable = true;

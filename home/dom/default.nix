@@ -5,13 +5,7 @@
 #       /desktop/applications
 #       /services
 
-{ config
-, lib
-, pkgs
-, username
-, desktop
-, ...
-}:
+{ config, lib, pkgs, username, ... }:
 
 let
   inherit (pkgs.stdenv) isLinux isDarwin;

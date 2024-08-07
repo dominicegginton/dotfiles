@@ -1,9 +1,4 @@
-{ pkgs
-, lib
-, config
-, username
-, ...
-}:
+{ pkgs, lib, config, ... }:
 
 let
   cfg = config.modules.console.tmux;

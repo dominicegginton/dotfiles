@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 let
   cfg = config.modules.services.distributedBuilds;
@@ -7,7 +7,7 @@ in
 with lib;
 
 {
-  options.modules.services.distributedBuilds.enable = mkEnableOption "deluge";
+  options.modules.services.distributedBuilds.enable = mkEnableOption "distributed build";
 
   config = mkIf cfg.enable {
     nix.distributedBuilds = true;
