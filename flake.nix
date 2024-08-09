@@ -78,10 +78,9 @@
           formatter = pkgs.nixpkgs-fmt;
           packages = pkgs;
           devShells = {
-            python = pkgs.callPackage ./shells/python.nix { };
-            web = pkgs.callPackage ./shells/web.nix { };
-            rust = pkgs.callPackage ./shells/rust.nix { };
             default = pkgs.callPackage ./shell.nix { };
+            nodejs = pkgs.callPackage ./shells/web.nix { };
+            python = pkgs.callPackage ./shells/python.nix { };
           };
         })
 

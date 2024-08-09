@@ -6,5 +6,5 @@ setup(
     name='hello-world',
     version='0.1.0',
     packages=find_packages(),
-    scripts=["main.py"],
+    scripts=["hello-world"],
 )

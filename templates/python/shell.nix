@@ -1,11 +1,5 @@
 { pkgs }:
 
-with pkgs;
-
-mkShell {
-  packages = with pkgs; [
-    (python3.withPackages (python-pkgs: [
-      python-pkgs.flask
-    ]))
-  ];
+pkgs.mkShell {
+  packages = with pkgs; [ (python3.withPackages (python-pkgs: [ ])) ];
 }
