@@ -4,20 +4,19 @@
 
 ```ocaml
 Declarative System & Package Configurations - WIP Always
-NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
+NixOS | NixDarwin | NixOS-WSL | HomeManager | SopsNix |
 ```
 
 ## Features
 
 - **Nix Flakes** - 100% Nix Flakes-based configuration, no Nix channels.
-- **Disk Management** - Declarative disk management using _Disko_.
-- **Encrypted Secrets** - Stored configuration secrets are encrypted with _SopsNix_.
 - **User Home Environments** - Reproducible user home environments using _HomeManager_.
-- **MacOS Hosts** - _NixDarwin_ provides support for MacOS hosts.
+- **NixOS, Darwin and WSL Hosts** - Resproducible hosts configurations for _NixOS_, _Darwin_ and _WSL_ based platforms.
+- **Encrypted Secrets** - Stored configuration secrets are encrypted with _SopsNix_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Base16 Themes** - Base16 theming throughout system and package configurations.
 - **Ad-hoc Shell Environments** - Reproducible ad-hoc shell environments for common tools and tasks.
-- **Flake Templates** - Flake templates included for easy project bootstrapping.
+- **Flake Templates** - Flake templates included for bootstrapping workspaces.
 
 > [!CAUTION]
 >
