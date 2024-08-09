@@ -11,7 +11,7 @@ NixOS | NixDarwin | NixOS-WSL | HomeManager | SopsNix |
 
 - **Nix Flakes** - 100% Nix Flakes-based configuration, no Nix channels.
 - **User Home Environments** - Reproducible user home environments using _HomeManager_.
-- **NixOS, Darwin and WSL Hosts** - Resproducible hosts configurations for _NixOS_, _Darwin_ and _WSL_ based platforms.
+- **NixOS, Darwin and NixOS-WSL Hosts** - Resproducible configurations for _NixOS_, _Darwin_ & _NixOS-WSL_ hosts.
 - **Encrypted Secrets** - Stored configuration secrets are encrypted with _SopsNix_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Base16 Themes** - Base16 theming throughout system and package configurations.
