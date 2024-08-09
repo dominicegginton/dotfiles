@@ -1,11 +1,6 @@
-# TODO: tidy this and move to another module
-#       location
+# TODO: tidy this
 
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.modules.users;

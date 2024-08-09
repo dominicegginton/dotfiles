@@ -7,6 +7,7 @@ with lib;
 
 {
   imports = [
+    inputs.sops-nix.homeManagerModules.sops
     inputs.plasma-manager.homeManagerModules.plasma-manager
     inputs.nix-index-database.hmModules.nix-index
     inputs.base16.nixosModule

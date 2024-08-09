@@ -15,6 +15,7 @@ with lib;
   ];
 
   config = {
+    sops.defaultSopsFile = ../../secrets.yaml;
     home = {
       inherit stateVersion username;
       homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";

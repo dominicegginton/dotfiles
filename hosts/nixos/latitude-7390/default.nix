@@ -1,8 +1,4 @@
 # TODO: tidy this file:
-#        default.nix
-#        disks.nix
-#        boot.nix
-#        harkware.nix
 
 { inputs, ... }:
 
@@ -28,6 +24,7 @@
       virtualisation.enable = true;
       bluetooth.enable = true;
       syncthing.enable = true;
+      ssh.enable = true;
 
       networking = {
         enable = true;

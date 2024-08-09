@@ -54,6 +54,7 @@
     services.networking.hostname = "ghost-gs60";
     services.networking.wireless = true;
     services.virtualisation.enable = true;
+    services.ssh.enable = true;
     services.bluetooth.enable = true;
     services.syncthing.enable = true;
     services.steam.enable = true;

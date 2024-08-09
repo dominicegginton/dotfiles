@@ -4,7 +4,7 @@
 #       refactor it to work as a plugin, build
 #       it with nix and install it in this flake
 
-_:
+{ config, ... }:
 
 {
   home.file = {

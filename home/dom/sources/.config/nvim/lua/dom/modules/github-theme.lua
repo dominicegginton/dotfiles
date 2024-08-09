@@ -5,15 +5,15 @@ github_theme.setup({
   options = {
     hide_end_of_buffer = true,
     hide_nc_statusline = true,
-    transparent = false,
+    transparent = true,
     dim_inactive = true,
     darken = {
       floats = true,
       sidebars = {
-        enabled = true,
+        enable = true,
       },
     },
   },
 })
 
-cmd('colorscheme github_light')
+cmd('colorscheme github_light_default')

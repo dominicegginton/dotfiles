@@ -1,10 +1,4 @@
-{ inputs
-, stateVersion
-, config
-, lib
-, pkgs
-, ...
-}:
+{ inputs, config, lib, pkgs, stateVersion, ... }:
 
 with lib;
 
@@ -15,10 +9,6 @@ with lib;
     ./display
     ./services
   ];
-
-  options.modules.nixos.role = mkOption {
-    type = with types; string;
-  };
 
   config = {
     nix = {

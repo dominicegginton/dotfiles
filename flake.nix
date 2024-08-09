@@ -76,7 +76,7 @@
 
         {
           formatter = pkgs.nixpkgs-fmt;
-          legacyPackages = pkgs;
+          packages = pkgs;
           devShells = {
             python = pkgs.callPackage ./shells/python.nix { };
             web = pkgs.callPackage ./shells/web.nix { };
@@ -109,12 +109,10 @@
         "dom@latitude-7390" = mkHome {
           hostname = "latitude-7390";
           username = "dom";
-          desktop = "sway";
         };
         "dom@ghost-gs60" = mkHome {
           hostname = "ghost-gs60";
           username = "dom";
-          desktop = "gamescope";
         };
         "dom@burbage" = mkHome {
           hostname = "burbage";
