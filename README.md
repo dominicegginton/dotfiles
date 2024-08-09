@@ -42,11 +42,3 @@ This workspace follows the following structure:
 ├── overlays.nix    # Nix overlays
 └── shell.nix       # Workspace development shell
 ```
-
-## Eye Candy
-
-![2024-02-24_09-50](https://github.com/dominicegginton/dotfiles/assets/28626241/658cfb6d-96aa-4692-ad0e-891c7a081a60)
-
-<p align="center">
-    <sub>Last Updated: 2024-02-24</sub>
-</p>
