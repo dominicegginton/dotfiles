@@ -21,7 +21,7 @@ NixOS | NixDarwin | HomeManager | SopsNix | NSM | Base16
 
 > [!CAUTION]
 >
-> Most host configurations within this repository contain encrypted secrets,
+> Most host & home configurations within this workspace contain encrypted secrets,
 > which means that they **cannot** be built and replicated successfully without
 > the necessary decryption keys. This is not a community framework, but you are
 > invited to explore the modules and countless lines of Nix I have written, _at
@@ -39,8 +39,9 @@ This workspace follows the following structure:
 ├── shells          # Ad-hoc shells enviroments
 ├── templates       # Flake templates
 ├── flake.nix       # Flake inputs and outputs
+├── lib.nix         # Libary untils
 ├── overlays.nix    # Nix overlays
-└── lib.nix         # Libary untils
+└── shell.nix       # Workspace development shell
 ```
 
 ## Eye Candy
