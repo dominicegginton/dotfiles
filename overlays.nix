@@ -48,4 +48,6 @@ with lib;
       inherit (final) system hostPlatform config;
     };
   };
+
+  nur = inputs.nur.overlay;
 }

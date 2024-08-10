@@ -38,7 +38,7 @@
     nsm.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, flake-schemas, nur, ... }:
+  outputs = { self, nixpkgs, flake-utils, flake-schemas, ... }:
 
     let
       inherit (self) inputs outputs;
@@ -69,7 +69,7 @@
               additions
               modifications
               unstable-packages
-              nur.overlay
+              nur
             ];
           };
         in
