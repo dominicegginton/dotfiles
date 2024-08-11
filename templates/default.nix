@@ -7,4 +7,6 @@ _:
   nodejs-typescript.description = "Minimal NodeJS Typescript package";
   python.path = ./python;
   python.description = "Minimal Python script";
+  rust.path = ./rust;
+  rust.description = "Minimal Cargo package";
 }
