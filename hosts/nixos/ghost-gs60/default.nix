@@ -30,7 +30,6 @@
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     prime = {
-      offload.enable = true;
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:01:00:0";
     };
