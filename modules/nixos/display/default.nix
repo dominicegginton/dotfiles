@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ pkgs, config, lib, ... }:
 
 let
   cfg = config.modules.display;
@@ -12,7 +12,7 @@ with lib;
     ./plasma.nix
   ];
 
-  options.modules.display.enable = mkEnableOption "desktop";
+  options.modules.display.enable = mkEnableOption "display";
 
   config = mkIf cfg.enable {
     boot.plymouth.enable = true;

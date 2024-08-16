@@ -51,6 +51,7 @@
     services.syncthing.enable = true;
     services.steam.enable = true;
     users.dom.enable = true;
+    display.enable = true;
     display.plasma.enable = true;
   };
 }

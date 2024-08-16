@@ -17,6 +17,7 @@
 
   modules = {
     users.dom.enable = true;
+    display.enable = true;
     display.plasma.enable = true;
 
     services = {
