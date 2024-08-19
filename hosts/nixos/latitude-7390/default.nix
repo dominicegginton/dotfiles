@@ -19,14 +19,12 @@
     users.dom.enable = true;
     display.enable = true;
     display.plasma.enable = true;
-
     services = {
       distributedBuilds.enable = true;
       virtualisation.enable = true;
       bluetooth.enable = true;
       syncthing.enable = true;
       ssh.enable = true;
-
       networking = {
         enable = true;
         hostname = "latitude-7390";
