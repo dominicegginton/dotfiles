@@ -63,9 +63,6 @@
               nvidia.acceptLicense = true;
               allowUnfree = true;
               allowBroken = true;
-              packageOverrides = pkgs: {
-                intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
-              };
             };
             overlays = with overlays; [
               default

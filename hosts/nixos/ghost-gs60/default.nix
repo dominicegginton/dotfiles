@@ -3,35 +3,43 @@
 {
   imports = [
     inputs.nixos-hardware.nixosModules.msi-gs60
+    inputs.nixos-hardware.nixosModules.common-pc-laptop
+    inputs.nixos-hardware.nixosModules.common-pc-laptop-ssd
+    inputs.nixos-hardware.nixosModules.common-pc-laptop-hdd
     inputs.nixos-hardware.nixosModules.common-gpu-nvidia
     ./disks.nix
     ./boot.nix
   ];
 
-  environment.sessionVariables = {
-    LIBVA_DRIVER_NAME = "nvidia";
-    VDPAU_DRIVER = lib.mkIf config.hardware.opengl.enable (lib.mkDefault "nvidia");
-  };
-  services.xserver.videoDrivers = [ "nvidia" "modesetting" ];
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
+  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
     extraPackages = with pkgs; [
-      intel-media-driver # LIBVA_DRIVER_NAME = "iHD"
-      intel-vaapi-driver # LIBVA_DRIVER_NAME = "i965"
+      vdpauinfo
+      vulkan-tools
+      vulkan-validation-layers
+      libvdpau-va-gl
+      egl-wayland
+      wgpu-utils
+      mesa
+      libglvnd
+      nvtopPackages.full
+      nvitop
+      libGL
       nvidia-vaapi-driver
-      intel-ocl
-      vaapiIntel
       vaapiVdpau
       libvdpau-va-gl
     ];
   };
+  hardware.graphics.enable = true;
+  hardware.graphics.enable32Bit = true;
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     prime = {
       offload = {
@@ -39,15 +47,15 @@
         enableOffloadCmd = true;
       };
       sync.enable = false;
-      reverseSync.enable = true;
+      reverseSync.enable = false;
       intelBusId = "PCI:0:2:0";
       nvidiaBusId = "PCI:01:00:0";
     };
   };
 
   boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "nvidia" "i915" "nvidia_modeset" "nvidia_uvm" ];
-    kernelModules = [ "nvidia" "i915" "nvidia_modeset" "nvidia_uvm" ];
+    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "nvidia" "i915" ];
+    kernelModules = [ "nvidia" "i915" ];
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
