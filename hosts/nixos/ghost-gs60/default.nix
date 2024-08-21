@@ -23,7 +23,6 @@
     "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
     "nvidia_drm.modeset=1"
   ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
   # hardware.opengl = {
   #   enable = true;
   #   driSupport = true;
@@ -59,9 +58,9 @@
     powerManagement.enable = false;
     powerManagement.finegrained = false;
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    prime.sync.enable = true;
-    prime.offload.enable = false;
-    prime.offload.enableOffloadCmd = false;
+    prime.sync.enable = false;
+    prime.offload.enable = true;
+    prime.offload.enableOffloadCmd = true;
     prime.intelBusId = "PCI:0:2:0";
     prime.nvidiaBusId = "PCI:01:00:0";
   };
