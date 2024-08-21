@@ -1,4 +1,4 @@
-{ inputs, pkgs, config, lib, ... }:
+{ inputs, pkgs, config, ... }:
 
 {
   imports = [
@@ -52,17 +52,9 @@
       nvidiaBusId = "PCI:01:00:0";
     };
   };
-
-  boot = {
-    initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "nvidia" "i915" ];
-    kernelModules = [ "nvidia" "i915" ];
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-  };
-
   hardware.mwProCapture.enable = true;
+  hardware.logitech.wireless.enable = true;
+  hardware.logitech.wireless.enableGraphical = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
 
