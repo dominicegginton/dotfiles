@@ -65,6 +65,7 @@
     prime.intelBusId = "PCI:0:2:0";
     prime.nvidiaBusId = "PCI:01:00:0";
   };
+
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
