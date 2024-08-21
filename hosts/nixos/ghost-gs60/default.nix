@@ -12,27 +12,45 @@
   ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-    extraPackages = with pkgs; [
-      vdpauinfo
-      vulkan-tools
-      vulkan-validation-layers
-      libvdpau-va-gl
-      egl-wayland
-      wgpu-utils
-      mesa
-      libglvnd
-      nvtopPackages.full
-      nvitop
-      libGL
-      nvidia-vaapi-driver
-      vaapiVdpau
-      libvdpau-va-gl
-    ];
-  };
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_uvm"
+    "nvidia_drm"
+  ];
+  boot.blacklistedKernelModules = [ "nouveau" ];
+  boot.kernelParams = [
+    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+    "nvidia_drm.modeset=1"
+  ];
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  # hardware.opengl = {
+  #   enable = true;
+  #   driSupport = true;
+  #   driSupport32Bit = true;
+  #   extraPackages = with pkgs; [
+  #     vdpauinfo
+  #     vulkan-tools
+  #     vulkan-validation-layers
+  #     libvdpau-va-gl
+  #     egl-wayland
+  #     wgpu-utils
+  #     mesa
+  #     libglvnd
+  #     nvtopPackages.full
+  #     nvitop
+  #     libGL
+  #     nvidia-vaapi-driver
+  #     vaapiVdpau
+  #     libvdpau-va-gl
+  #   ];
+  # };
+  environment.systemPackages = with pkgs; [
+    nvidia-vaapi-driver
+    nvtopPackages.full
+    egl-wayland
+    libva-utils
+  ];
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
   hardware.nvidia = {
@@ -41,16 +59,11 @@
     powerManagement.enable = false;
     powerManagement.finegrained = false;
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-    prime = {
-      offload = {
-        enable = true;
-        enableOffloadCmd = true;
-      };
-      sync.enable = false;
-      reverseSync.enable = false;
-      intelBusId = "PCI:0:2:0";
-      nvidiaBusId = "PCI:01:00:0";
-    };
+    prime.sync.enable = true;
+    prime.offload.enable = false;
+    prime.offload.enableOffloadCmd = false;
+    prime.intelBusId = "PCI:0:2:0";
+    prime.nvidiaBusId = "PCI:01:00:0";
   };
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
