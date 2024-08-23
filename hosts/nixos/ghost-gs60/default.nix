@@ -12,46 +12,12 @@
   ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  boot.initrd.kernelModules = [
-    "nvidia"
-    "nvidia_modeset"
-    "nvidia_uvm"
-    "nvidia_drm"
-  ];
+  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   boot.blacklistedKernelModules = [ "nouveau" ];
-  boot.kernelParams = [
-    "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-    "nvidia_drm.modeset=1"
-  ];
-  # hardware.opengl = {
-  #   enable = true;
-  #   driSupport = true;
-  #   driSupport32Bit = true;
-  #   extraPackages = with pkgs; [
-  #     vdpauinfo
-  #     vulkan-tools
-  #     vulkan-validation-layers
-  #     libvdpau-va-gl
-  #     egl-wayland
-  #     wgpu-utils
-  #     mesa
-  #     libglvnd
-  #     nvtopPackages.full
-  #     nvitop
-  #     libGL
-  #     nvidia-vaapi-driver
-  #     vaapiVdpau
-  #     libvdpau-va-gl
-  #   ];
-  # };
-  environment.systemPackages = with pkgs; [
-    nvidia-vaapi-driver
-    nvtopPackages.full
-    egl-wayland
-    libva-utils
-  ];
+  boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "nvidia_drm.modeset=1" ];
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
+  environment.systemPackages = with pkgs; [ nvidia-vaapi-driver nvtopPackages.full egl-wayland libva-utils ];
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
