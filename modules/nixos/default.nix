@@ -11,6 +11,10 @@ with lib;
   ];
 
   config = {
+    home-manager.useGlobalPkgs = true;
+    home-manager.useUserPackages = true;
+    home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+
     nix = {
       package = pkgs.unstable.nix;
       gc.automatic = true;
@@ -79,6 +83,7 @@ with lib;
         nsm
         nvd
         home-manager
+        cachix
         file
         gitMinimal
         vim
@@ -90,6 +95,13 @@ with lib;
         usbutils
         nvme-cli
         smartmontools
+        fzf
+        ripgrep
+        fd
+        bat
+        git
+        git-lfs
+        pinentry
         pinentry-curses
       ];
     };

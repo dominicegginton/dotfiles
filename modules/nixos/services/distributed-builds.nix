@@ -1,5 +1,3 @@
-# https://nixos.wiki/wiki/Distributed_build
-
 { config, lib, ... }:
 
 let
@@ -29,7 +27,7 @@ with lib;
         system = "x86_64-linux";
         protocol = "ssh-ng";
         maxJobs = 1;
-        speedFactor = 3;
+        speedFactor = 2;
         systems = [ "x86_64-linux" "i686-linux" ];
         supportedFeatures = [ "big-parallel" "kvm" "nixos-test" ];
       }

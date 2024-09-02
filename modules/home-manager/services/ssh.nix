@@ -7,12 +7,9 @@ in
 with lib;
 
 {
-  options.modules.services.ssh = {
-    extraConfig = mkOption {
-      type = types.str;
-      default = "";
-      description = "Extra configuration to be appended to the SSH configuration file";
-    };
+  options.modules.services.ssh.extraConfig = mkOption {
+    type = types.str;
+    default = "";
   };
 
   config = {

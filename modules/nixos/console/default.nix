@@ -9,11 +9,5 @@ with lib;
     programs.zsh.enableCompletion = true;
     programs.zsh.syntaxHighlighting.enable = true;
     programs.zsh.promptInit = "autoload -U promptinit && promptinit";
-    environment.systemPackages = with pkgs; [
-      git
-      fzf
-      pinentry
-      cachix
-    ];
   };
 }

@@ -30,6 +30,8 @@ with lib;
         gnupg
         tmux
         twm
+        fzf
+        ripgrep
         jq
         fx
         glow
