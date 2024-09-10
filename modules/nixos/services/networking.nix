@@ -17,19 +17,12 @@ with lib;
     sops.secrets."wireless.env" = { };
 
     networking = {
-      hostName = mkDefault cfg.hostname;
-      useDHCP = mkDefault true;
-      nftables.enable = mkDefault true;
-      firewall = {
-        enable = mkDefault true;
-        checkReversePath = mkDefault true;
-        trustedInterfaces = mkDefault [ "tailscale0" ];
-        allowedTCPPorts = mkDefault [ 22 ];
-      };
+      hostName = cfg.hostname;
+      useDHCP = true;
       wireless = mkIf cfg.wireless {
-        enable = mkDefault true;
-        fallbackToWPA2 = mkDefault true;
-        userControlled.enable = mkDefault true;
+        enable = true;
+        fallbackToWPA2 = true;
+        userControlled.enable = true;
         userControlled.group = "wheel";
         environmentFile = config.sops.secrets."wireless.env".path;
         networks."@home_uuid@".psk = "@home_psk@";
@@ -38,11 +31,11 @@ with lib;
       };
     };
 
-    programs.ssh.startAgent = mkDefault true;
-    services.tailscale = mkIf cfg.enable {
-      enable = mkDefault true;
+    programs.ssh.startAgent = true;
+    services.tailscale = {
+      enable = true;
       useRoutingFeatures = "both";
-      interfaceName = mkDefault "userspace-networking";
+      interfaceName = "userspace-networking";
     };
     systemd.services.tailscale-autoconnect = {
       description = "Automatic connection to Tailscale";
@@ -59,7 +52,7 @@ with lib;
         ${tailscale}/bin/tailscale up
       '';
     };
-    services.openssh.enable = mkDefault true;
+    services.openssh.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
   };
 }
