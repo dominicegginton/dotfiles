@@ -1,6 +1,8 @@
 _:
 
 {
+  dotnet-core.path = ./dotnet-core;
+  dotnet-core.description = "Minimal .NET Core package";
   minimal.path = ./minimal;
   minimal.description = "Minimal Nix Flake workspace";
   nodejs-angular.path = ./nodejs-angular;
