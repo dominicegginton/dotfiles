@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, stdenv }:
 
 if (!stdenv.isDarwin)
 then throw "This script can only be run on darwin hosts"
