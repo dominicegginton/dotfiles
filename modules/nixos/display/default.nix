@@ -48,6 +48,6 @@ with lib;
         ibm-plex
       ];
     };
-    environment.systemPackages = with pkgs; [ wpa_supplicant_gui mpv vlc ];
+    environment.systemPackages = with pkgs; [ wpa_supplicant_gui mpv vlc transmission_4-gtk ];
   };
 }

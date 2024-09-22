@@ -600,7 +600,7 @@ in
 
     home.packages =
       with pkgs;
-      [ bitwarden-cli discord webtorrent_desktop nodePackages_latest.webtorrent-cli ]
+      [ bitwarden-cli discord ]
       ++ (if isLinux then [ whatsapp-for-linux telegram-desktop thunderbird unstable.teams-for-linux unstable.chromium unstable.zed-editor unstable.gh-copilot ]
       else [ ])
       ++ (if isDarwin then [ ]
