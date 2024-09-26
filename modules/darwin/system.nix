@@ -9,12 +9,11 @@ with lib;
 
 {
   config = {
+    system.stateVersion = 5;
     nix = {
       useDaemon = true;
       gc.automatic = true;
       optimise.automatic = true;
-      registry = mapAttrs (_: value: { flake = value; }) inputs;
-      nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
         experimental-features = [ "nix-command" "flakes" ];
         warn-dirty = false;
