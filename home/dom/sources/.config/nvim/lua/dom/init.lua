@@ -21,10 +21,11 @@ require('dom.modules.mini-pick')
 
 -- Git
 require('dom.modules.neogit')
-require('dom.modules.gitsigns')
+require('dom.modules.mini-diff')
 
 -- User Interface
 require('dom.modules.github-theme')
+require('dom.modules.mini-icons')
 require('dom.modules.mini-starter')
 require('dom.modules.mini-statusline')
 require('dom.modules.mini-tabline')

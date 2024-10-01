@@ -51,12 +51,13 @@ add('echasnovski/mini.pick') -- Pick anything
 -- Git
 add('neogitorg/neogit') -- Git interface and tools
 add('sindrets/diffview.nvim') -- Git diff interface
-add('lewis6991/gitsigns.nvim') -- Git signs
+add('echasnovski/mini.diff') -- Git diff hunks
 add('tveskag/nvim-blame-line') -- GitBlame
 
 -- User Interface
 add('projekt0n/github-nvim-theme') -- Github theme
 add('nvim-tree/nvim-web-devicons') -- Icons
+add('echasnovski/mini.icons') -- Icons
 add('echasnovski/mini.starter') -- Start screen
 add('echasnovski/mini.statusline') -- Statusline
 add('echasnovski/mini.tabline') -- Tabline

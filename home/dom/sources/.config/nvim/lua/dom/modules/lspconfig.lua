@@ -19,7 +19,7 @@ lspconfig['bashls'].setup(default_config)
 lspconfig['yamlls'].setup(default_config)
 lspconfig['dockerls'].setup(default_config)
 lspconfig['docker_compose_language_service'].setup(default_config)
-lspconfig['tsserver'].setup(default_config)
+lspconfig['ts_ls'].setup(default_config)
 lspconfig['eslint'].setup({
   capabilities = capabilities,
   on_attach = eslint_on_attach,
