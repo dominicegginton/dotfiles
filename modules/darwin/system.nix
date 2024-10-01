@@ -1,9 +1,4 @@
-{ inputs
-, pkgs
-, config
-, lib
-, ...
-}:
+{ pkgs, config, lib, ... }:
 
 with lib;
 
@@ -24,7 +19,7 @@ with lib;
         # the issue is resolved in nix.
         # SEE: https://github.com/NixOS/nix/issues/7273
         auto-optimise-store = false;
-        trusted-users = [ "root" "@wheel" ];
+        trusted-users = [ "root" "nixremote" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

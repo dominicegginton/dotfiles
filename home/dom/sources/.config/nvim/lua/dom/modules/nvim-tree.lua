@@ -55,8 +55,7 @@ nvim_tree.setup({
     highlight_modified = 'all',
   },
   diagnostics = {
-    enable = true,
-    show_on_dirs = true,
+    enable = false,
   },
   git = {
     enable = true,

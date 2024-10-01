@@ -36,7 +36,6 @@ add({
     post_checkout = function() vim.cmd('TSUpdate') end,
   },
 }) -- Treesitter configurations
-add('ray-x/navigator.lua') -- Code analysis & navigation
 add('VidocqH/lsp-lens.nvim') -- Render references and document symbols
 
 -- GitHub Copilot
@@ -82,7 +81,6 @@ add('echasnovski/mini.visits') -- Track and reuse file system visits
 add('echasnovski/mini.fuzzy') -- Fuzzy matching
 add('nvim-focus/focus.nvim') -- Auto-focusing and auto-resizing splits
 add('mhartington/formatter.nvim') -- File formatting
-add('vuki656/package-info.nvim') -- Show package.json dependencies information
 add('nullchilly/fsread.nvim') -- Flow state reading
 add('echasnovski/mini.comment') -- Comment lines
 add('echasnovski/mini.move') -- Move any selection in any direction
@@ -92,5 +90,4 @@ add('echasnovski/mini.jump2d') -- Jump within visible lines
 add('echasnovski/mini.bracketed') -- Go forward/backward with square brackets
 add('echasnovski/mini.surround') -- Surround actions
 add('echasnovski/mini.visits') -- Track and reuse file system visits
-add('pwntester/octo.nvim') -- GitHub integration
 add('AckslD/nvim-neoclip.lua') -- Clipboard manager

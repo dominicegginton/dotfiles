@@ -1,4 +1,4 @@
-{ pkgs, nodejs, prefetch-npm-deps }:
+{ pkgs, prefetch-npm-deps }:
 
 pkgs.mkShell {
   inputsFrom = [ pkgs.nodejs-typescript ];

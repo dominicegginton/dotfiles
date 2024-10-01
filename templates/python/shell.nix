@@ -1,5 +1,5 @@
 { pkgs }:
 
 pkgs.mkShell {
-  packages = with pkgs; [ (python3.withPackages (python-pkgs: [ ])) ];
+  packages = with pkgs; [ (python3.withPackages (_: [ ])) ];
 }
