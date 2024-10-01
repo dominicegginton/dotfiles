@@ -11,6 +11,7 @@ with lib;
 {
   options.modules.users = {
     dom.enable = mkEnableOption "Dominic Egginton";
+    nixremote.enable = mkEnableOption "Nix Remote";
     nixos.enable = mkEnableOption "NixOS";
   };
 
@@ -32,6 +33,14 @@ with lib;
           "video"
           "docker"
         ];
+      };
+
+      nixremote = mkIf cfg.nixremote.enable {
+        description = "Nix Remote";
+        isNormalUser = mkDefault true;
+        group = mkDefault "nixremote";
+        home = mkDefault "/var/empty";
+        createHome = mkDefault false;
       };
 
       nixos = mkIf cfg.nixos.enable {

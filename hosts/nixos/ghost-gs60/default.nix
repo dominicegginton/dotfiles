@@ -108,6 +108,7 @@ in
     services.syncthing.enable = true;
     services.steam.enable = true;
     users.dom.enable = true;
+    users.nixremote.enable = true;
     display.enable = true;
     display.plasma.enable = true;
   };
