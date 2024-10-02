@@ -67,17 +67,30 @@ in
     prime.nvidiaBusId = "PCI:01:00:0";
   };
 
-
-  services.frigate.enable = true;
-  services.frigate.hostname = "ghost-gs60";
-  services.frigate.settings = {
-    cameras = { };
-  };
-
-  services.home-assistant.enable = true;
-  services.home-assistant.openFirewall = true;
-  services.home-assistant.config = {
-    homeassistant.name = "Home";
+  services.home-assistant = {
+    enable = true;
+    openFirewall = true;
+    configDir = "/var/lib/hass";
+    config = {
+      homeassistant = {
+        name = "Home";
+      };
+      config = { };
+      lovelace = { mode = "yaml"; };
+      logger = { default = "debug"; };
+      http = { server_port = 8123; };
+    };
+    configWritable = true;
+    lovelaceConfigWritable = true;
+    lovelaceConfig = {
+      title = "My Awesome Home";
+      views = [
+        {
+          title = "Example";
+          cards = [ ];
+        }
+      ];
+    };
   };
 
   services.unifi = {
@@ -90,6 +103,7 @@ in
     enable = true;
     package = pkgs.mongodb-6_0;
   };
+  networking.firewall.allowedTCPPorts = [ 8443 ];
 
 
   hardware.mwProCapture.enable = true;
