@@ -12,19 +12,30 @@ with lib;
   config = mkIf cfg.enable {
     services.syncthing = {
       enable = true;
+      user = "dom";
+      dataDir = "/home/dom/Documents";
+      configDir = "/home/dom/Documents/.config/syncthing";
+      overrideDevices = true;
+      overrideFolders = true;
       settings = {
+        devices = {
+          "device1" = { id = "DEVICE-ID-GOES-HERE"; };
+          "device2" = { id = "DEVICE-ID-GOES-HERE"; };
+        };
         folders = {
           "Documents" = {
-            id = "documents";
             path = "/home/dom/Documents";
-            rescanIntervalS = 60;
-            ignorePerms = false;
+            devices = [ "device1" "device2" ];
           };
+        };
+        gui = {
+          user = "dom";
+          password = "password";
         };
       };
     };
 
-    networking.firewall.allowedTCPPorts = [ 22000 ];
+    networking.firewall.allowedTCPPorts = [ 8384 22000 ];
     networking.firewall.allowedUDPPorts = [ 22000 21027 ];
   };
 }
