@@ -25,8 +25,6 @@ in
   boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   boot.blacklistedKernelModules = [ "nouveau" ];
   boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "nvidia_drm.modeset=1" "nouveau.modeset=0" ];
-  # hardware.graphics.enable = true;
-  # hardware.graphics.enable32Bit = true;
   hardware = {
     opengl = {
       enable = true;
@@ -92,19 +90,6 @@ in
       ];
     };
   };
-
-  services.unifi = {
-    enable = true;
-    openFirewall = true;
-    unifiPackage = pkgs.unifi8;
-    mongodbPackage = pkgs.mongodb-6_0;
-  };
-  services.mongodb = {
-    enable = true;
-    package = pkgs.mongodb-6_0;
-  };
-  networking.firewall.allowedTCPPorts = [ 8443 ];
-
 
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
