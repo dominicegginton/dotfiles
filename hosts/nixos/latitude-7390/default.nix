@@ -1,5 +1,3 @@
-# TODO: tidy this file:
-
 { inputs, ... }:
 
 {
@@ -16,7 +14,6 @@
   services.logind.lidSwitch = "suspend";
 
   modules = {
-    users.dom.enable = true;
     display.enable = true;
     display.plasma.enable = true;
     services.distributedBuilds.enable = true;

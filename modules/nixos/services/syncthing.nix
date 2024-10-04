@@ -12,11 +12,19 @@ with lib;
   config = mkIf cfg.enable {
     services.syncthing = {
       enable = true;
-      group = "users";
-      guiAddress = "0.0.0.0:8384";
+      settings = {
+        folders = {
+          "Documents" = {
+            id = "documents";
+            path = "/home/dom/Documents";
+            rescanIntervalS = 60;
+            ignorePerms = false;
+          };
+        };
+      };
     };
 
-    networking.firewall.allowedTCPPorts = [ 22000 ]; # tcp
-    networking.firewall.allowedUDPPorts = [ 22000 ]; # quic
+    networking.firewall.allowedTCPPorts = [ 22000 ];
+    networking.firewall.allowedUDPPorts = [ 22000 21027 ];
   };
 }

@@ -1,25 +1,13 @@
-# TODO: tidy this
-
 { config, lib, pkgs, ... }:
-
-let
-  cfg = config.modules.users;
-in
 
 with lib;
 
 {
-  options.modules.users = {
-    dom.enable = mkEnableOption "Dominic Egginton";
-    nixremote.enable = mkEnableOption "Nix Remote";
-    nixos.enable = mkEnableOption "NixOS";
-  };
-
   config = {
     sops.secrets."dom.password".neededForUsers = true;
 
     users.users = {
-      dom = mkIf cfg.dom.enable {
+      dom = {
         description = "Dominic Egginton";
         isNormalUser = true;
         hashedPasswordFile = config.sops.secrets."dom.password".path;
@@ -35,19 +23,17 @@ with lib;
         ];
       };
 
-      nixremote = mkIf cfg.nixremote.enable {
+      nixremote = {
         description = "Nix Remote";
         isNormalUser = mkDefault true;
-        group = mkDefault "nixremote";
-        home = mkDefault "/var/empty";
-        createHome = mkDefault false;
+        home = mkForce "/var/empty";
+        extraGroups = [ "nixremote" ];
       };
 
-      nixos = mkIf cfg.nixos.enable {
+      nixos = {
         description = "NixOS";
         isNormalUser = mkDefault true;
-        home = mkDefault "/var/empty";
-        createHome = mkDefault false;
+        home = mkForce "/var/empty";
       };
 
       root = {
