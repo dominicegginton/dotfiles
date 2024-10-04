@@ -1,9 +1,6 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.modules.display.sway;
-  kanshiCfg = config.modules.display.kanshi;
-
   super = "Mod4";
 in
 
@@ -13,11 +10,6 @@ with lib;
   options.modules.display = {
     sway.enable = mkEnableOption {
       description = "Sway window manager";
-    };
-
-    kanshi.config = mkOption {
-      description = "Configuration for the Kanshi display manager";
-      type = types.str;
     };
   };
 
@@ -212,6 +204,16 @@ with lib;
     };
     home.packages = [ pkgs.unstable.libdrm ];
 
-    home.file.".config/kanshi/config".text = kanshiCfg.config or '''';
+    home.file.".config/kanshi/config".text = ''
+      profile latitude-7390 {
+        output "AU Optronics 0x462D" enable mode 1920x1080 scale 1 position 0,0
+      }
+
+      profile latitude-7390-docked {
+        output "AU Optronics 0x462D" disable
+        output "Dell Inc. DELL 2520D 6LD5923" enable mode 2560x1440 position 0,0
+        output "Dell Inc. DELL 2520D DGD5923" enable mode 2560x1440 position 2560,0
+      }
+    '';
   };
 }

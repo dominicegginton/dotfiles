@@ -1,26 +1,10 @@
 { pkgs, config, lib, ... }:
 
-let
-  cfg = config.modules.display.applications.vscode;
-  jsonType = (pkgs.formats.json { }).type;
-in
-
 with lib;
 
 {
   options.modules.display.applications.vscode = {
     enable = mkEnableOption "Enable Visual Studio Code";
-
-    extensions = mkOption {
-      description = "List of Visual Studio Code extensions to install";
-      type = types.listOf types.package;
-    };
-
-    userSettings = mkOption {
-      description = "Configuration written to Visual Studio Code's 'sttings.json'";
-      type = jsonType;
-      default = { };
-    };
   };
 
   config = mkIf cfg.enable {
@@ -32,8 +16,23 @@ with lib;
       extensions = with pkgs.unstable.vscode-extensions; [
         bbenoist.nix
         vscodevim.vim
-      ] ++ cfg.extensions;
-      userSettings = cfg.userSettings;
+        github.github-vscode-theme
+        github.copilot
+        github.vscode-github-actions
+        github.vscode-pull-request-github
+        github.codespaces
+        bierner.markdown-mermaid
+        bierner.markdown-emoji
+        bierner.markdown-checkbox
+        bierner.emojisense
+        bierner.docs-view
+      ];
+      userSettings = {
+        "workbench.colorTheme" = "GitHub Dark Default";
+        "workbench.startupEditor" = "none";
+        "workbench.sideBar.location" = "right";
+        "editor.minimap.enabled" = false;
+      };
     };
 
   };

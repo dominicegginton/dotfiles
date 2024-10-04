@@ -1,36 +1,39 @@
-# TODO: add configuration options for this module
-
-{ pkgs
-, lib
-, config
-, ...
-}:
-
-let
-  cfg = config.modules.console.neovim;
-
-in
+{ pkgs, lib, config, ... }:
 
 with lib;
 
 {
-  options.modules.console.neovim = {
-    extraPackages = mkOption {
-      type = types.listOf types.package;
-      default = [ ];
-      description = "Extra packages to install for neovim";
-    };
-  };
-
   config = {
-    # TODO: move neovim config into plugin
-    # see: https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/vim.section.md
     programs.neovim = {
       enable = true;
       package = pkgs.neovim;
       viAlias = true;
       vimAlias = true;
-      extraPackages = cfg.extraPackages;
+      extraPackages = with pkgs; [
+        ripgrep
+        fd
+        fzf
+        tree-sitter
+        nil
+        gcc
+        rustc
+        cargo
+        rust-analyzer
+        nodejs
+        nodePackages.typescript
+        terraform-lsp
+        lua-language-server
+        nodePackages.vim-language-server
+        nodePackages.bash-language-server
+        nodePackages.yaml-language-server
+        nodePackages.dockerfile-language-server-nodejs
+        nodePackages.typescript-language-server
+        nodePackages.vscode-langservers-extracted
+        nodePackages.pyright
+        prettierd
+        eslint_d
+        stylua
+      ];
     };
 
     home.sessionVariables = {
