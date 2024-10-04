@@ -23,9 +23,11 @@ with lib;
       nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {
         experimental-features = [ "nix-command" "flakes" ];
-        warn-dirty = false;
-        auto-optimise-store = false;
-        trusted-users = [ "nixremote" "root" "@wheel" ];
+        warn-dirty = true;
+        auto-optimise-store = true;
+        keep-outputs = true;
+        keep-derivations = true;
+        trusted-users = [ "dom" "nixremote" "root" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
