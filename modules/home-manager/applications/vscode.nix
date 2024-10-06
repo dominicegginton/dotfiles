@@ -2,10 +2,12 @@
 
 with lib;
 
+let
+  cfg = config.modules.display.applications.vscode;
+in
+
 {
-  options.modules.display.applications.vscode = {
-    enable = mkEnableOption "Enable Visual Studio Code";
-  };
+  options.modules.display.applications.vscode.enable = mkEnableOption "Enable Visual Studio Code";
 
   config = mkIf cfg.enable {
     programs.vscode = {

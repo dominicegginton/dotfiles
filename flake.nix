@@ -36,9 +36,13 @@
     todo.inputs.nixpkgs.follows = "nixpkgs";
     nsm.url = "github:dominicegginton/nsm";
     nsm.inputs.nixpkgs.follows = "nixpkgs";
+    flip.url = "github:dominicegginton/flip";
+    flip.inputs.nixpkgs.follows = "nixpkgs";
+    roll.url = "github:dominicegginton/roll";
+    roll.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, flake-schemas, ... }:
+  outputs = { self, nixpkgs, flake-utils, flake-schemas, flip, roll, ... }:
 
     let
       inherit (self) inputs outputs;
@@ -70,6 +74,8 @@
               modifications
               unstable-packages
               nur
+              flip.overlays.default
+              roll.overlays.default
             ];
           };
         in

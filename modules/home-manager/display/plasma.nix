@@ -11,8 +11,6 @@ with lib;
 
   config = mkIf cfg.enable {
     programs.plasma.enable = true;
-    programs.plasma.shortcuts = cfg.shortcuts;
-    programs.plasma.configFile = cfg.configFile;
     programs.plasma.shortcuts = {
       "ActivityManager"."switch-to-activity-bad12a74-aaab-4185-ba10-ad68fedc3f10" = [ ];
       "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";

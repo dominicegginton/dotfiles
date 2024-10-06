@@ -1,18 +1,14 @@
 { config, lib, pkgs, ... }:
 
 let
+  cfg = config.modules.display.sway;
   super = "Mod4";
 in
 
 with lib;
 
 {
-  options.modules.display = {
-    sway.enable = mkEnableOption {
-      description = "Sway window manager";
-    };
-  };
-
+  options.modules.display.sway.enable = mkEnableOption "Enable sway window manager";
   config = mkIf cfg.enable {
     home.sessionVariables = {
       MOZ_ENABLE_WAYLAND = 1;

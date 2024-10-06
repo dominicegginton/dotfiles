@@ -2,11 +2,11 @@
 
 with lib;
 
-{
-  options.modules.display.applications.alacritty = {
-    enable = mkEnableOption "Alacritty terminal emulator";
-  };
+let
+  cfg = config.modules.display;
+in
 
+{
   config = mkIf cfg.enable {
     programs.alacritty = {
       enable = true;

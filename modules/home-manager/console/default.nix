@@ -44,6 +44,8 @@ with lib;
         nix-du
         ranger
         todo
+        flip
+        roll
       ]
       ++ (if isLinux then [ ncdu ] else [ ])
       ++ (if isDarwin then [ ] else [ ]);

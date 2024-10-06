@@ -1,9 +1,4 @@
 # TODO: clean up this entrie file
-#       default.nix
-#       /console
-#       /desktop
-#       /desktop/applications
-#       /services
 
 { config, lib, pkgs, username, ... }:
 
@@ -27,7 +22,6 @@ in
           enable = true;
           package = pkgs.firefox-devedition-bin;
         };
-        alacritty.enable = true;
         vscode.enable = true;
       };
     };
