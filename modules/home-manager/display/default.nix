@@ -40,7 +40,7 @@ with lib;
     };
     xdg.enable = mkIf isLinux true;
     home.packages =
-      with pkgs; [ ]
+      with pkgs; [ archi ]
         ++ (if isLinux then [ ] else [ ])
         ++ (if isDarwin then [ ] else [ ]);
   };
