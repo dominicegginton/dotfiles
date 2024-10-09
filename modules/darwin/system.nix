@@ -12,6 +12,13 @@ with lib;
       settings = {
         experimental-features = [ "nix-command" "flakes" ];
         warn-dirty = false;
+        log-lines = 100;
+        connect-timeout = 30;
+        fallback = true;
+        warn-dirty = true;
+        keep-going = true;
+        keep-outputs = true;
+        keep-derivations = true;
         # Set auto optimise store to false on darwin
         # to avoid the issue with the store being locked
         # and causing nix to hang when trying to build
@@ -19,6 +26,9 @@ with lib;
         # the issue is resolved in nix.
         # SEE: https://github.com/NixOS/nix/issues/7273
         auto-optimise-store = false;
+        min-free = 10000000000;
+        max-free = 20000000000;
+        trusted-users = [ "dom" "nixremote" "root" "@wheel" ];
         trusted-users = [ "root" "nixremote" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
