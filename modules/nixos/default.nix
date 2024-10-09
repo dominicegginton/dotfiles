@@ -27,6 +27,10 @@ with lib;
         auto-optimise-store = true;
         keep-outputs = true;
         keep-derivations = true;
+        keep-going = true;
+        max-jobs = "auto";
+        min-free = "1G";
+        max-free = "2G";
         trusted-users = [ "dom" "nixremote" "root" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
