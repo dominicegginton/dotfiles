@@ -8,6 +8,6 @@ mkShell {
     ssh-to-pgp
     sops
     pinentry-curses
-    archimate
+    archi
   ];
 }
