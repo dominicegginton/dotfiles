@@ -48,6 +48,14 @@ with lib;
         ibm-plex
       ];
     };
-    environment.systemPackages = with pkgs; [ wpa_supplicant_gui mpv vlc transmission_4-gtk ];
+    environment.systemPackages = with pkgs; [
+      wpa_supplicant_gui
+      mpv
+      vlc
+      transmission_4-gtk
+      darktable
+      libreoffice-fresh
+      archi
+    ];
   };
 }
