@@ -49,6 +49,7 @@ with lib;
       ];
     };
     environment.systemPackages = with pkgs; [
+      waypipe
       wpa_supplicant_gui
       mpv
       vlc
