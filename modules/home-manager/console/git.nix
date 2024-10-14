@@ -18,6 +18,6 @@
       };
     };
 
-    home.packages = with pkgs; [ gitu ];
+    home.packages = with pkgs; [ gitu onefetch ];
   };
 }
