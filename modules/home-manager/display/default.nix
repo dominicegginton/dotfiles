@@ -39,9 +39,14 @@ with lib;
       "*color15" = "#e9e9e9";
     };
     xdg.enable = mkIf isLinux true;
-    home.packages =
-      with pkgs; [ archi ]
-        ++ (if isLinux then [ ] else [ ])
-        ++ (if isDarwin then [ ] else [ ]);
+    home.packages = with pkgs; [
+      archi
+      gimp
+      inkscape
+      darktable
+      libreoffice-fresh
+    ]
+    ++ (if isLinux then [ ] else [ ])
+    ++ (if isDarwin then [ ] else [ ]);
   };
 }

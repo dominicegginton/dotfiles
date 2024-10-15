@@ -54,9 +54,6 @@ with lib;
       mpv
       vlc
       transmission_4-gtk
-      darktable
-      libreoffice-fresh
-      archi
     ];
   };
 }
