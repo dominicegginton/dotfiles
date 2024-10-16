@@ -11,7 +11,6 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-
           overlays = [ (final: _: { hello-world = final.callPackage ./default.nix { }; }) ];
         };
       in
@@ -19,7 +18,7 @@
       {
         formatter = pkgs.nixpkgs-fmt;
         packages.hello-world = pkgs.hello-world;
-        packages.default = pkgs.hello-world;
+        packages.default = pkgs.hello-world.pkg;
         devShells.default = pkgs.callPackage ./shell.nix { };
       }
     );

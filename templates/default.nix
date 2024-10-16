@@ -11,6 +11,10 @@ _:
   nodejs-typescript.description = "Minimal NodeJS Typescript package";
   python.path = ./python;
   python.description = "Minimal Python script";
+  python-fastapi.path = ./python-fastapi;
+  python-fastapi.description = "Minimal Python FastAPI package and OCI image";
   rust.path = ./rust;
   rust.description = "Minimal Cargo package";
+  swift-vapor.path = ./swift-vapor;
+  swift-vapor.description = "Minimal Swift Vapor package";
 }

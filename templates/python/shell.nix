@@ -1,5 +1,5 @@
-{ pkgs }:
+{ pkgs, mkShell }:
 
-pkgs.mkShell {
-  packages = with pkgs; [ (python3.withPackages (_: [ ])) ];
+mkShell {
+  inputsFrom = [ pkgs.hello-world ];
 }

@@ -1,6 +1,6 @@
 { pkgs, mkShell, prefetch-npm-deps }:
 
 mkShell {
-  inputsFrom = [ pkgs.nodejs-angular ];
+  inputsFrom = [ pkgs.hello-world ];
   packages = [ prefetch-npm-deps ];
 }

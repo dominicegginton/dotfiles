@@ -9,12 +9,16 @@
     eachDefaultSystem (system:
 
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ (final: _: { hello-world = final.callPackage ./default.nix { }; }) ];
+        };
       in
 
       {
         formatter = pkgs.nixpkgs-fmt;
-        packages.default = pkgs.callPackage ./default.nix { };
+        packages.hello-world = pkgs.hello-world;
+        packages.default = pkgs.hello-world;
         devShells.default = pkgs.callPackage ./shell.nix { };
       }
     );

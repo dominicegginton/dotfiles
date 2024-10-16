@@ -1,10 +1,7 @@
 { pkgs, lib }:
 
-with pkgs.python3Packages;
-
-buildPythonApplication {
+pkgs.python3Packages.buildPythonApplication {
   pname = "hello-world";
-  version = "0.1.0";
-  propagatedBuildInputs = [ ];
+  version = "0.0.0";
   src = lib.sources.cleanSource ./.;
 }
