@@ -1,5 +1,5 @@
 { pkgs, mkShell }:
 
 mkShell {
-  inputsFrom = [ pkgs.python-fastapi.pkg ];
+  inputsFrom = [ pkgs.hello-world.pkg ];
 }
