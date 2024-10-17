@@ -3,4 +3,4 @@
 import uvicorn
 from src.app import app
 
-uvicorn.run(app)
+uvicorn.run(app, server_header=False)
