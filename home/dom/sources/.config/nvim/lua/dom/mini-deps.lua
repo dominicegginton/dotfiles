@@ -54,6 +54,7 @@ add('echasnovski/mini.diff') -- Git diff hunks
 add('tveskag/nvim-blame-line') -- GitBlame
 
 -- User Interface
+add('maxmx03/solarized.nvim') -- Solarized theme
 add('projekt0n/github-nvim-theme') -- Github theme
 add('nvim-tree/nvim-web-devicons') -- Icons
 add('echasnovski/mini.icons') -- Icons

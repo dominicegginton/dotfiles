@@ -23,6 +23,7 @@ require('dom.modules.neogit')
 require('dom.modules.mini-diff')
 
 -- User Interface
+require('dom.modules.solarized')
 require('dom.modules.github-theme')
 require('dom.modules.mini-icons')
 require('dom.modules.mini-starter')

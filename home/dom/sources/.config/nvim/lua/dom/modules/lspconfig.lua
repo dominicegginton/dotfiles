@@ -39,18 +39,30 @@ lspconfig['lua_ls'].setup({
       if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then return end
     end
     client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
-      runtime = {
-        version = 'LuaJIT',
-      },
+      runtime = { version = 'LuaJIT' },
       workspace = {
         checkThirdParty = false,
-        library = {
-          vim.env.VIMRUNTIME,
-        },
+        library = { vim.env.VIMRUNTIME },
       },
     })
   end,
   settings = {
     Lua = {},
+  },
+})
+lspconfig.lua_ls.setup({
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      hint = { enable = true },
+      runtime = { version = 'LuaJIT' },
+      workspace = {
+        checkThirdParty = true,
+        library = {
+          vim.env.VIMRUNTIME,
+          '~/.local/share/nvim/lazy/solarized.nvim',
+        },
+      },
+    },
   },
 })

@@ -16,4 +16,4 @@ github_theme.setup({
   },
 })
 
-cmd('colorscheme github_light_default')
+-- cmd('colorscheme github_light_default')
