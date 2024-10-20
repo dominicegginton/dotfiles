@@ -7,7 +7,7 @@ in
 with lib;
 
 {
-  options.modules.services.plex.enable = mkEnableOption "plex media server";
+  options.modules.services.plex.enable = mkEnableOption "plex";
 
   config = mkIf cfg.enable {
     services.plex.enable = true;

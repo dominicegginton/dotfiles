@@ -17,16 +17,22 @@ rec {
 
     nixosSystem {
       pkgs = pkgsFor platform;
-      modules = [ ./hosts/nixos ];
       specialArgs = specialArgsFor hostname;
+      modules = [
+        ./hosts/nixos
+        ./hosts/nixos/${hostname}
+      ];
     };
 
   mkDarwinHost = { hostname, username, platform ? "x86_64-darwin" }:
 
     darwinSystem {
       pkgs = pkgsFor platform;
-      modules = [ ./hosts/darwin ];
       specialArgs = specialArgsFor hostname // { inherit username; };
+      modules = [
+        ./hosts/darwin
+        ./hosts/darwin/${hostname}
+      ];
     };
 
   mkHome = { hostname, username, platform ? "x86_64-linux" }:

@@ -7,7 +7,7 @@ let
 in
 
 {
-  options.modules.display.plasma.enable = mkEnableOption "sway";
+  options.modules.display.plasma.enable = mkEnableOption "plasma";
 
   config = mkIf cfg.enable {
     services.xserver.enable = true;

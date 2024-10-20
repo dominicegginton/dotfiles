@@ -11,9 +11,10 @@ with lib;
   ];
 
   config = {
-    home-manager.useGlobalPkgs = true;
-    home-manager.useUserPackages = true;
-    home-manager.sharedModules = [ inputs.plasma-manager.homeManagerModules.plasma-manager ];
+    system.stateVersion = stateVersion;
+    sops.defaultSopsFile = ../../secrets.yaml;
+    time.timeZone = "Europe/London";
+    i18n.defaultLocale = "en_GB.UTF-8";
 
     nix = {
       package = pkgs.unstable.nix;
@@ -47,10 +48,8 @@ with lib;
       };
     };
 
-    boot = {
-      consoleLogLevel = 0;
-      initrd.verbose = false;
-    };
+    boot.consoleLogLevel = 0;
+    boot.initrd.verbose = false;
 
     documentation = {
       enable = true;
@@ -60,21 +59,17 @@ with lib;
       doc.enable = true;
     };
 
-    security = {
-      sudo.enable = true;
-      polkit.enable = true;
-      rtkit.enable = true;
-    };
+    security.sudo.enable = true;
+    security.polkit.enable = true;
+    security.rtkit.enable = true;
 
-    system.stateVersion = stateVersion;
-    sops.defaultSopsFile = ../../secrets.yaml;
-    time.timeZone = "Europe/London";
-    i18n.defaultLocale = "en_GB.UTF-8";
     services.dbus.enable = true;
     services.smartd.enable = true;
     services.thermald.enable = true;
+
     programs.gnupg.agent.enable = true;
     programs.gnupg.agent.pinentryPackage = pkgs.pinentry;
+
     system.activationScripts.diff = {
       supportsDryActivation = true;
       text = ''
@@ -82,36 +77,27 @@ with lib;
       '';
     };
 
-    environment = {
-      variables.EDITOR = "vim";
-      variables.SYSTEMD_EDITOR = "vim";
-      variables.VISUAL = "vim";
-      variables.NSM_FLAKE = "$HOME/.dotfiles";
-      systemPackages = with pkgs; [
-        nsm
-        nvd
-        home-manager
-        cachix
-        file
-        gitMinimal
-        vim
-        killall
-        unzip
-        wget
-        htop-vim
-        btop
-        usbutils
-        nvme-cli
-        smartmontools
-        fzf
-        ripgrep
-        fd
-        bat
-        git
-        git-lfs
-        pinentry
-        pinentry-curses
-      ];
-    };
+    environment.systemPackages = with pkgs; [
+      cachix
+      file
+      gitMinimal
+      vim
+      killall
+      unzip
+      wget
+      htop-vim
+      btop
+      usbutils
+      nvme-cli
+      smartmontools
+      fzf
+      ripgrep
+      fd
+      bat
+      git
+      git-lfs
+      pinentry
+      pinentry-curses
+    ];
   };
 }

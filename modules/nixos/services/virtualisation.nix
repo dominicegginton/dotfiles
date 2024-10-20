@@ -1,8 +1,4 @@
-{ config
-, lib
-, pkgs
-, ...
-}:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.modules.services.virtualisation;
@@ -14,9 +10,8 @@ with lib;
   options.modules.services.virtualisation.enable = mkEnableOption "virtualisation";
 
   config = mkIf cfg.enable {
-    virtualisation.docker.enable = true;
-
     virtualisation = {
+      docker.enable = true;
       vmVariant = {
         users.groups.nixosvmtest = { };
         users.users.nix = {
@@ -28,6 +23,6 @@ with lib;
       };
     };
 
-    environment.systemPackages = with pkgs; [ qemu ];
+    environment.systemPackages = with pkgs; [ qemu docker ];
   };
 }

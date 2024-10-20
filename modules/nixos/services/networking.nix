@@ -16,6 +16,7 @@ with lib;
   config = mkIf cfg.enable {
     sops.secrets."wireless.env" = { };
 
+
     networking = {
       hostName = cfg.hostname;
       useDHCP = true;
@@ -31,7 +32,9 @@ with lib;
       };
     };
 
+    services.openssh.enable = true;
     programs.ssh.startAgent = true;
+
     services.tailscale = {
       enable = true;
       useRoutingFeatures = "both";
@@ -52,7 +55,6 @@ with lib;
         ${tailscale}/bin/tailscale up
       '';
     };
-    services.openssh.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
   };
 }

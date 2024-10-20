@@ -12,7 +12,6 @@
     services.networking.enable = true;
     services.networking.hostname = "burbage";
     services.virtualisation.enable = true;
-    services.ssh.enable = true;
     services.syncthing.enable = true;
     services.steam.enable = true;
     users.dom.enable = true;
