@@ -86,7 +86,7 @@ with lib;
       unzip
       wget
       htop-vim
-      btop
+      bottom
       usbutils
       nvme-cli
       smartmontools

@@ -34,8 +34,8 @@ in
 
     home.packages =
       with pkgs;
-      [ bitwarden-cli discord ]
-      ++ (if isLinux then [ whatsapp-for-linux telegram-desktop thunderbird unstable.teams-for-linux unstable.chromium unstable.zed-editor unstable.gh-copilot ]
+      [ bitwarden-cli discord unstable.jetbrains.webstorm unstable.jetbrains.rust-rover ]
+      ++ (if isLinux then [ whatsapp-for-linux telegram-desktop thunderbird unstable.teams-for-linux unstable.chromium unstable.microsoft-edge ]
       else [ ])
       ++ (if isDarwin then [ ]
       else [ ]);
