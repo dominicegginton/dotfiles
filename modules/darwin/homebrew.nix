@@ -1,7 +1,4 @@
-{ config
-, lib
-, ...
-}:
+{ config, lib, ... }:
 
 let
   cfg = config.modules.homebrew;
@@ -10,24 +7,11 @@ in
 with lib;
 
 {
-  options.modules.homebrew.taps = mkOption {
-    type = types.listOf types.str;
-    default = [ ];
-  };
-
-  options.modules.homebrew.brews = mkOption {
-    type = types.listOf types.str;
-    default = [ ];
-  };
-
-  options.modules.homebrew.casks = mkOption {
-    type = types.listOf types.str;
-    default = [ ];
-  };
-
-  options.modules.homebrew. masApps = mkOption {
-    type = types.attrs;
-    default = { };
+  options.modules.homebrew = {
+    taps = mkStringsOption [ ];
+    brews = mkStringsOption [ ];
+    casks = mkStringsOption [ ];
+    masApps = mkAttrsOption { };
   };
 
   config = {
