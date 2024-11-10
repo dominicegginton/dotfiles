@@ -101,6 +101,7 @@
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
         ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
         burbage = mkNixosHost { hostname = "burbage"; };
+        minimal-iso = mkNixosIso { hostname = "minimal-iso"; };
       };
 
       darwinConfigurations = {

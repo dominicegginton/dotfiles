@@ -15,6 +15,15 @@ rec {
   packagesFrom = module: { system }: module.packages.${system};
   defaultPackageFrom = module: attrs @ { system }: (packagesFrom module attrs // { inherit system; }).default;
 
+  mkNixosIso = { hostname, platform ? "x86_64-linux" }:
+
+    nixosSystem {
+      pkgs = pkgsFor platform;
+      specialArgs = specialArgsFor hostname;
+      modules = [
+        ./hosts/nixos/minimal-iso
+      ];
+    };
   mkNixosHost = { hostname, platform ? "x86_64-linux" }:
 
     nixosSystem {
