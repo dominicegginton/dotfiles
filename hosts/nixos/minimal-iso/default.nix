@@ -1,5 +1,6 @@
 # nix run nixpkgs\#nixos-generators -- --flake .#minimal-iso --format iso -o result
 # dd if=result/iso/*.iso of=/dev/sdX bs=4M status=progress oflag=sync
+# sync
 
 { pkgs, modulesPath, ... }:
 
