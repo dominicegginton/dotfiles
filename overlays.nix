@@ -22,6 +22,10 @@ with lib;
   };
 
   additions = final: prev: {
+    ## temp
+    install-nixos = final.callPackage ./pkgs/install-nixos.nix { };
+    bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
+
     nsm = final.callPackage (defaultPackageFrom nsm) { };
     todo = final.callPackage (defaultPackageFrom todo) { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
