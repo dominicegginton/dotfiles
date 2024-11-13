@@ -87,6 +87,7 @@
             default = pkgs.callPackage ./shell.nix { };
             nodejs = pkgs.callPackage ./shells/web.nix { };
             python = pkgs.callPackage ./shells/python.nix { };
+            python-notebook = pkgs.callPackage ./shells/python-notebook.nix { };
           };
         })
 
@@ -98,6 +99,7 @@
       schemas = flake-schemas.schemas;
 
       nixosConfigurations = {
+        latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
         ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
         burbage = mkNixosHost { hostname = "burbage"; };

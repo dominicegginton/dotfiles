@@ -1,15 +1,7 @@
-{ pkgs, writeShellApplication }:
+{ pkgs, writers }:
 
-writeShellApplication {
-  name = "export-aws-credentials";
-  runtimeInputs = with pkgs; [ fzf awscli2 ];
-
-  text = ''
-    profile=$(aws configure list-profiles | fzf)
-    if [ -z "$profile" ]; then
-      echo "No profile selected"
-      exit 1
-    fi
-    eval "$(aws configure export-credentials --profile "$profile" --format env)"
-  '';
-}
+writers.writeBashBin "export-aws-credientials" ''
+  profile=$(${pkgs.awscli2}/bin/aws configure list-profiles | ${pkgs.fzf}/bin/fzf)
+  ${pkgs.awscli2}/bin/aws sso login --profile $profile
+  eval $(${pkgs.awscli2}/bin/aws sso env --profile $profile --shell env)"
+''

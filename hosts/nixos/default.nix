@@ -7,6 +7,7 @@
     inputs.home-manager.nixosModules.home-manager
     inputs.base16.nixosModule
     "${modulesPath}/installer/scan/not-detected.nix"
+    "${modulesPath}/profiles/qemu-guest.nix"
     ./${hostname}
     ../../modules/nixos
   ];

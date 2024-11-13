@@ -21,7 +21,6 @@
     services.bluetooth.enable = true;
     services.syncthing.enable = true;
     services.networking.enable = true;
-    services.networking.hostname = "latitude-7390";
     services.networking.wireless = true;
   };
 }

@@ -30,12 +30,6 @@ with lib;
         extraGroups = [ "nixremote" ];
       };
 
-      nixos = {
-        description = "NixOS";
-        isNormalUser = mkDefault true;
-        home = mkForce "/var/empty";
-      };
-
       root = {
         description = "System administrator";
         isNormalUser = mkDefault false;

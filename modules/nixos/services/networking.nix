@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hostname, ... }:
 
 let
   cfg = config.modules.services.networking;
@@ -10,7 +10,6 @@ with lib;
   options.modules.services.networking = {
     enable = mkEnableOption "networking";
     wireless = mkEnableOption "wireless";
-    hostname = mkOption { type = types.str; };
   };
 
   config = mkIf cfg.enable {
@@ -18,7 +17,7 @@ with lib;
 
 
     networking = {
-      hostName = cfg.hostname;
+      hostName = hostname;
       useDHCP = true;
       wireless = mkIf cfg.wireless {
         enable = true;
