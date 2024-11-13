@@ -1,12 +1,12 @@
-{ pkgs ? import <nixpkgs> { config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [ "vscode" "vscode-with-extensions" ]; } }:
+{ pkgs, mkShell, vscode-extensions, vscode-with-extensions }:
 
-pkgs.mkShell {
+mkShell {
   nativeBuildInputs = with pkgs; [
     (python3.withPackages (pythonPkgs: with pythonPkgs; [
-      pyright
       jupyterlab
       notebook
     ]))
+    pyright
     (vscode-with-extensions.override {
       vscodeExtensions = with vscode-extensions; [
         bbenoist.nix

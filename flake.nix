@@ -85,7 +85,7 @@
           packages = pkgs;
           devShells = {
             default = pkgs.callPackage ./shell.nix { };
-            nodejs = pkgs.callPackage ./shells/web.nix { };
+            nodejs = pkgs.callPackage ./shells/nodejs.nix { };
             python = pkgs.callPackage ./shells/python.nix { };
             python-notebook = pkgs.callPackage ./shells/python-notebook.nix { };
           };
@@ -114,6 +114,10 @@
       };
 
       homeConfigurations = {
+        "dom@latitude-5290" = mkHome {
+          hostname = "latitude-5290";
+          username = "dom";
+        };
         "dom@latitude-7390" = mkHome {
           hostname = "latitude-7390";
           username = "dom";

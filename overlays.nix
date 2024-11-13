@@ -39,6 +39,8 @@ with lib;
     prune-docker = final.callPackage ./pkgs/prune-docker.nix { };
     twx = final.callPackage ./pkgs/twx.nix { };
     lib = prev.lib // lib;
+
+    nodejs-shell-setup-hook = final.callPackage ./pkgs/nodejs-shell-setup-hook.nix { };
   };
 
   modifications = final: prev: {

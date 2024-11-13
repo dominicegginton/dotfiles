@@ -1,9 +1,8 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs, mkShell }:
 
-pkgs.mkShell {
-  buildInputs = with pkgs; [
-    python3
-    python3Packages.pip-tools
-    python3Packages.virtualenv
+mkShell {
+  nativeBuildInputs = with pkgs; [
+    (python3.withPackages (pythonPkgs: with pythonPkgs; [ ]))
+    pyright
   ];
 }

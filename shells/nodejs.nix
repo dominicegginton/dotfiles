@@ -1,9 +1,5 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ mkShell, nodejs, nodejs-shell-setup-hook }:
 
-pkgs.mkShell {
-  buildInputs = with pkgs; [
-    nodejs
-    typescript
-    nodePackages.typescript-language-server
-  ];
+mkShell {
+  nativeBuildInputs= [ nodejs nodejs-shell-setup-hook ];
 }
