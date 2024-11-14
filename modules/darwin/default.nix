@@ -1,4 +1,4 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 
 {
   imports = [
@@ -16,7 +16,6 @@
       optimise.automatic = true;
       settings = {
         experimental-features = [ "nix-command" "flakes" ];
-        warn-dirty = false;
         log-lines = 100;
         connect-timeout = 30;
         fallback = true;
@@ -33,7 +32,6 @@
         auto-optimise-store = false;
         min-free = 10000000000;
         max-free = 20000000000;
-        trusted-users = [ "dom" "nixremote" "root" "@wheel" ];
         trusted-users = [ "root" "nixremote" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
@@ -47,7 +45,6 @@
         ];
       };
     };
-    environment.systemPackages = with pkgs; [ home-manager ];
-
+    environment.systemPackages = [ pkgs.home-manager ];
   };
 }

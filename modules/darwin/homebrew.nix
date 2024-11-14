@@ -8,10 +8,10 @@ with lib;
 
 {
   options.modules.homebrew = {
-    taps = mkStringsOption [ ];
-    brews = mkStringsOption [ ];
-    casks = mkStringsOption [ ];
-    masApps = mkAttrsOption { };
+    taps = mkOption { type = types.listOf types.str; default = [ ]; };
+    brews = mkOption { type = types.listOf types.str; default = [ ]; };
+    casks = mkOption { type = types.listOf types.str; default = [ ]; };
+    masApps = mkOption { type = types.attrs; default = { }; };
   };
 
   config = {

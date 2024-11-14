@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [ vscode ];
 
+  modules.homebrew.taps = [ "deskpad" ];
   modules.homebrew.casks = [ "docker" "postman" "firefox-developer-edition" "chromium" ];
   modules.homebrew.masApps = {
     "Amphetamine" = 937984704;

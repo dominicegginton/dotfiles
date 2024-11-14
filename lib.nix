@@ -10,8 +10,6 @@ with inputs.nix-darwin.lib;
 with inputs.home-manager.lib;
 
 rec {
-  mkStringsOption = default: lib.mkOption { inherit default; type = lib.types.listOf lib.types.str; };
-  mkAttrsOption = default: lib.mkOption { inherit default; type = lib.types.attrs; };
   packagesFrom = module: { system }: module.packages.${system};
   defaultPackageFrom = module: attrs @ { system }: (packagesFrom module attrs // { inherit system; }).default;
 
