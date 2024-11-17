@@ -1,5 +1,5 @@
 { mkShell, nodejs, nodejs-shell-setup-hook }:
 
 mkShell {
-  nativeBuildInputs= [ nodejs nodejs-shell-setup-hook ];
+  nativeBuildInputs = [ nodejs nodejs-shell-setup-hook ];
 }

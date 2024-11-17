@@ -6,9 +6,9 @@
 
 # 5. run this derivation
 
-{ pkgs }:
+{ pkgs, writeShellApplication, writeScript }:
 
-pkgs.writeShellApplication {
+writeShellApplication {
   name = "install-nixos";
 
   runtimeInputs = with pkgs; [ openssh sops ssh-to-age ];
@@ -29,10 +29,17 @@ pkgs.writeShellApplication {
     trap cleanup EXIT
 
     install -d -m755 "$temp/etc/ssh"
-    ssh-keygen -t ed25519 -f "$temp/etc/ssh/ssh_host_ed25519_key"
-    ssh-to-age -i "$temp/etc/ssh/ssh_host_ed25519_key" -o "$temp/etc/ssh/ssh_host_ed25519_key.age"
-    chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
 
-    nix run github:nix-community/nixos-anywhere#nixos-anywhere -- --extra-files "$temp" --flake ".#$hostname" root@"$ip"
+    ${writeScript "ssh-keygen" ''
+      echo "Generating ssh keys"
+      echo $1
+    ''} hello
+
+    # ssh-keygen -t ed25519 -f "$temp/etc/ssh/ssh_host_ed25519_key"
+    # ssh-to-age -i "$temp/etc/ssh/ssh_host_ed25519_key" -o "$temp/etc/ssh/ssh_host_ed25519_key.age"
+
+    # chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
+
+    # nix run github:nix-community/nixos-anywhere#nixos-anywhere -- --extra-files "$temp" --flake ".#$hostname" root@"$ip"
   '';
 }
