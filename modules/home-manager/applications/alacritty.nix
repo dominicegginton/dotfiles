@@ -2,12 +2,8 @@
 
 with lib;
 
-let
-  cfg = config.modules.display;
-in
-
 {
-  config = mkIf cfg.enable {
+  config = {
     programs.alacritty = {
       enable = true;
       settings = {
