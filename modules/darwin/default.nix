@@ -1,7 +1,8 @@
-{ pkgs, config, ... }:
+{ inputs, pkgs, config, ... }:
 
 {
   imports = [
+    inputs.home-manager.darwinModules.home-manager
     ./console.nix
     ./homebrew.nix
     ./networking.nix
@@ -45,6 +46,5 @@
         ];
       };
     };
-    environment.systemPackages = [ pkgs.home-manager ];
   };
 }

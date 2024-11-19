@@ -13,8 +13,6 @@ _:
     ./syncthing.nix
     ./unifi.nix
     ./virtualisation.nix
-
-    ./nsm.nix
     ./home-manager.nix
   ];
 }

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, stateVersion, username, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   inherit (pkgs.stdenv) isDarwin;
@@ -17,9 +17,7 @@ with lib;
   config = {
     sops.defaultSopsFile = ../../secrets.yaml;
     home = {
-      inherit stateVersion username;
-      homeDirectory = if isDarwin then "/Users/${username}" else "/home/${username}";
-      sessionPath = [ "$HOME/.local/bin" ];
+      stateVersion = "24.05";
       activation.report-changes = config.lib.dag.entryAnywhere ''
         ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
       '';

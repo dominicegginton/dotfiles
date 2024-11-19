@@ -1,6 +1,10 @@
 { ... }:
 
 {
+  imports = [
+    ./hardware-configuration.nix
+  ];
+
   disko.devices = {
     disk = {
       main = {

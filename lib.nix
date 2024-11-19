@@ -27,17 +27,10 @@ rec {
       modules = [ ./hosts/nixos ];
     };
 
-  mkDarwinHost = { hostname, username, platform ? "x86_64-darwin" }:
+  mkDarwinHost = { hostname, platform ? "x86_64-darwin" }:
     darwinSystem {
       pkgs = pkgsFor platform;
-      specialArgs = specialArgsFor hostname // { inherit username; };
+      specialArgs = specialArgsFor hostname;
       modules = [ ./hosts/darwin ];
-    };
-
-  mkHome = { hostname, username, platform ? "x86_64-linux" }:
-    homeManagerConfiguration {
-      pkgs = pkgsFor platform;
-      modules = [ ./home ];
-      extraSpecialArgs = specialArgsFor hostname // { inherit username; };
     };
 }

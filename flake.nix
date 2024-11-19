@@ -6,13 +6,9 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    flake-schemas.url = "github:determinatesystems/flake-schemas";
     nixos-hardware.url = "github:nixos/nixos-hardware/master";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    impermanence.url = "github:nix-community/impermanence";
-    srvos.url = "github:nix-community/srvos";
-    srvos.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:lnl7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
@@ -20,7 +16,6 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
-    nix-index-database.url = "github:nix-community/nix-index-database";
     tt-schemes.url = "github:tinted-theming/schemes";
     tt-schemes.flake = false;
     base16-vim.url = "github:tinted-theming/base16-vim";
@@ -34,15 +29,13 @@
     twm.inputs.nixpkgs.follows = "nixpkgs";
     todo.url = "github:dominicegginton/todo";
     todo.inputs.nixpkgs.follows = "nixpkgs";
-    nsm.url = "github:dominicegginton/nsm";
-    nsm.inputs.nixpkgs.follows = "nixpkgs";
     flip.url = "github:dominicegginton/flip";
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, flake-utils, flake-schemas, flip, roll, ... }:
+  outputs = { self, nixpkgs, flake-utils, flip, roll, ... }:
 
     let
       inherit (self) inputs outputs;
@@ -96,45 +89,17 @@
     {
       inherit overlays templates;
 
-      schemas = flake-schemas.schemas;
-
       nixosConfigurations = {
         latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
         ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
         burbage = mkNixosHost { hostname = "burbage"; };
+        precision-5530 = mkNixosHost { hostname = "precision-5530"; };
         minimal-iso = mkNixosIso { hostname = "minimal-iso"; };
       };
 
       darwinConfigurations = {
-        MCCML44WMD6T = mkDarwinHost {
-          hostname = "MCCML44WMD6T";
-          username = "dom.egginton";
-        };
-      };
-
-      homeConfigurations = {
-        "dom@latitude-5290" = mkHome {
-          hostname = "latitude-5290";
-          username = "dom";
-        };
-        "dom@latitude-7390" = mkHome {
-          hostname = "latitude-7390";
-          username = "dom";
-        };
-        "dom@ghost-gs60" = mkHome {
-          hostname = "ghost-gs60";
-          username = "dom";
-        };
-        "dom@burbage" = mkHome {
-          hostname = "burbage";
-          username = "dom";
-        };
-        "dom.egginton@MCCML44WMD6T" = mkHome {
-          hostname = "MCCML44WMD6T";
-          username = "dom.egginton";
-          platform = "x86_64-darwin";
-        };
+        MCCML44WMD6T = mkDarwinHost { hostname = "MCCML44WMD6T"; };
       };
     };
 }

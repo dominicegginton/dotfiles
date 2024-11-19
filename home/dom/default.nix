@@ -1,6 +1,6 @@
 # TODO: clean up this entrie file
 
-{ config, lib, pkgs, username, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   inherit (pkgs.stdenv) isLinux isDarwin;
@@ -25,12 +25,6 @@ in
         vscode.enable = true;
       };
     };
-
-    systemd.user.tmpfiles.rules = mkIf isLinux [
-      "d ${config.home.homeDirectory}/dev/ 0755 ${username} users - -"
-      "d ${config.home.homeDirectory}/playgrounds/ 0755 ${username} users - -"
-      "d ${config.home.homeDirectory}/.dotfiles 0755 ${username} users - -"
-    ];
 
     home.packages =
       with pkgs;

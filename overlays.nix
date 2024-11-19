@@ -4,7 +4,6 @@ let
   inherit (inputs)
     nixpkgs-unstable
     sops-nix
-    nsm
     todo
     twm
     neovim-nightly;
@@ -26,7 +25,6 @@ with lib;
     install-nixos = final.callPackage ./pkgs/install-nixos.nix { };
     bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
 
-    nsm = final.callPackage (defaultPackageFrom nsm) { };
     todo = final.callPackage (defaultPackageFrom todo) { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
     download-nixpkgs-cache-index = final.callPackage ./pkgs/download-nixpkgs-cache-index.nix { };
