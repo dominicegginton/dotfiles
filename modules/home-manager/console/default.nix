@@ -19,7 +19,6 @@ with lib;
       bash.enable = true;
       info.enable = true;
       hstr.enable = true;
-      nix-index-database.comma.enable = true;
     };
 
     home.packages =
@@ -36,16 +35,7 @@ with lib;
         fx
         glow
         nix-output-monitor
-        nix-tree
-        nix-melt
         deadnix
-        nix-init
-        manix
-        nix-du
-        ranger
-        todo
-        # flip
-        # roll
       ]
       ++ (if isLinux then [ ncdu ] else [ ])
       ++ (if isDarwin then [ ] else [ ]);
