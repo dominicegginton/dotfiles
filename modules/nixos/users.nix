@@ -6,8 +6,8 @@ with lib;
   config = {
     sops.secrets."dom.password".neededForUsers = true;
 
-     home-manager.users = {
-       dom = _: {
+    home-manager.users = {
+      dom = _: {
         imports = [
           inputs.sops-nix.homeManagerModules.sops
           inputs.plasma-manager.homeManagerModules.plasma-manager
@@ -17,8 +17,8 @@ with lib;
           ../../home/dom
         ];
       };
-     };
-     users.users = {
+    };
+    users.users = {
       dom = {
         description = "Dominic Egginton";
         isNormalUser = true;

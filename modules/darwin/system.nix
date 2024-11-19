@@ -1,14 +1,8 @@
 { lib, config, ... }:
 
-let
-  cfg = config.modules.system;
-in
-
 with lib;
 
 {
-  options.modules.system.defaults = mkOption { type = types.attrs; defaults = { }; };
-
   config = {
     system.defaults = {
       NSGlobalDomain.AppleFontSmoothing = 1;

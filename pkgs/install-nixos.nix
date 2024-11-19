@@ -6,7 +6,7 @@
 
 # 5. run this derivation
 
-{ pkgs, writeShellApplication, writeScript }:
+{ pkgs, writeShellApplication }:
 
 writeShellApplication {
   name = "install-nixos";
