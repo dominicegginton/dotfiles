@@ -6,7 +6,7 @@ with lib;
   config = {
     sops.secrets."dom.password".neededForUsers = true;
 
-    users.users = {
+     users.users = {
       dom = {
         description = "Dominic Egginton";
         isNormalUser = true;

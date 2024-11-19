@@ -34,9 +34,7 @@
     nodev = {
       "/tmp" = {
         fsType = "tmpfs";
-        mountOptions = [
-          "size=200M"
-        ];
+        mountOptions = [ "defaults" "size=2G" "mode=755" ];
       };
     };
   };

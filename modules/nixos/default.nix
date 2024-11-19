@@ -4,7 +4,6 @@ with lib;
 
 {
   imports = [
-    # ./secrets.nix
     ./users.nix
     ./console
     ./display

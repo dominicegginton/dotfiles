@@ -10,19 +10,20 @@
 
 writeShellApplication {
   name = "install-nixos";
-
-  runtimeInputs = with pkgs; [ openssh sops ssh-to-age ];
-
+  runtimeInputs = with pkgs; [ nixos-anywhere ];
   text = ''
-    hostname=$1
-    ip=$2
+    set -e
 
-    if [ -z "$hostname" ] || [ -z "$ip" ]; then
-      echo "Usage: $0 <hostname> <ip>"
+    if [ "$#" -ne 2 ]; then
+      echo "Usage: $0 <ip> <hostname>"
       exit 1
     fi
 
+    ip=$1
+    hostname=$2
+
     temp=$(mktemp -d)
+
     cleanup() {
       rm -rf "$temp"
     }
@@ -30,16 +31,15 @@ writeShellApplication {
 
     install -d -m755 "$temp/etc/ssh"
 
-    ${writeScript "ssh-keygen" ''
-      echo "Generating ssh keys"
-      echo $1
-    ''} hello
+    sudo cp /etc/ssh/ssh_host_rsa_key "$temp/etc/ssh/ssh_host_rsa_key"
+    sudo cp /etc/ssh/ssh_host_rsa_key.pub "$temp/etc/ssh/ssh_host_rsa_key.pub"
+    sudo cp /etc/ssh/ssh_host_ed25519_key "$temp/etc/ssh/ssh_host_ed25519_key"
+    sudo cp /etc/ssh/ssh_host_ed25519_key.pub "$temp/etc/ssh/ssh_host_ed25519_key.pub"
+    sudo chmod 644 "$temp/etc/ssh/ssh_host_rsa_key.pub"
+    sudo chmod 600 "$temp/etc/ssh/ssh_host_rsa_key"
+    sudo chmod 644 "$temp/etc/ssh/ssh_host_ed25519_key.pub"
+    sudo chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
 
-    # ssh-keygen -t ed25519 -f "$temp/etc/ssh/ssh_host_ed25519_key"
-    # ssh-to-age -i "$temp/etc/ssh/ssh_host_ed25519_key" -o "$temp/etc/ssh/ssh_host_ed25519_key.age"
-
-    # chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
-
-    # nix run github:nix-community/nixos-anywhere#nixos-anywhere -- --extra-files "$temp" --flake ".#$hostname" root@"$ip"
+    nixos-anywhere --extra-files "$temp" --flake ".#$hostname" "root@$ip"
   '';
 }
