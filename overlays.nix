@@ -27,7 +27,6 @@ with lib;
 
     todo = final.callPackage (defaultPackageFrom todo) { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
-    download-nixpkgs-cache-index = final.callPackage ./pkgs/download-nixpkgs-cache-index.nix { };
     export-aws-credentials = final.callPackage ./pkgs/export-aws-credentials.nix { };
     git-sync = final.callPackage ./pkgs/git-sync.nix { };
     gpg-import-keys = final.callPackage ./pkgs/gpg-import-keys.nix { };
