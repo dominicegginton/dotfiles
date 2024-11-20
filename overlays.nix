@@ -25,7 +25,7 @@ rec {
   };
 
   unstable-packages = final: _: {
-    unstable = import nixpkgs-unstable {
+    unstable = import inputs.nixpkgs-unstable {
       inherit (final) system hostPlatform config;
       overlays = [ additions modifications ];
     };
