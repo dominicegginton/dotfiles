@@ -23,7 +23,6 @@
     plasma-manager.url = "github:nix-community/plasma-manager";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     plasma-manager.inputs.home-manager.follows = "home-manager";
-    nur.url = "github:nix-community/nur";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     twm.url = "github:vinnymeller/twm";
     twm.inputs.nixpkgs.follows = "nixpkgs";
@@ -62,11 +61,9 @@
               allowBroken = true;
             };
             overlays = with overlays; [
-              default
               additions
               modifications
               unstable-packages
-              nur
               flip.overlays.default
               roll.overlays.default
             ];

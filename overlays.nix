@@ -1,56 +1,33 @@
 { inputs, lib }:
 
-let
-  inherit (inputs)
-    nixpkgs-unstable
-    sops-nix
-    todo
-    twm
-    neovim-nightly;
-in
-
 with lib;
 
-{
-  default = final: prev: {
-    inherit
-      (packagesFrom sops-nix { inherit (final) system; })
-      sops-import-keys-hook
-      sops-init-gpg-key;
-    lib = prev.lib // lib;
-  };
-
+rec {
   additions = final: prev: {
-    ## temp
-    install-nixos = final.callPackage ./pkgs/install-nixos.nix { };
+    inherit (packagesFrom inputs.sops-nix { inherit (final) system; }) sops-import-keys-hook sops-init-gpg-key;
+    todo = final.callPackage (defaultPackageFrom inputs.todo) { };
     bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
-
-    todo = final.callPackage (defaultPackageFrom todo) { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
     export-aws-credentials = final.callPackage ./pkgs/export-aws-credentials.nix { };
-    git-sync = final.callPackage ./pkgs/git-sync.nix { };
     gpg-import-keys = final.callPackage ./pkgs/gpg-import-keys.nix { };
-    mmfm = final.callPackage ./pkgs/mmfm.nix { };
+    install-nixos = final.callPackage ./pkgs/install-nixos.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
-    prune-docker = final.callPackage ./pkgs/prune-docker.nix { };
+    nodejs-shell-setup-hook = final.callPackage ./pkgs/nodejs-shell-setup-hook.nix { };
     twx = final.callPackage ./pkgs/twx.nix { };
     lib = prev.lib // lib;
-
-    nodejs-shell-setup-hook = final.callPackage ./pkgs/nodejs-shell-setup-hook.nix { };
   };
 
   modifications = final: prev: {
-    twm = final.callPackage (defaultPackageFrom twm) { };
-    neovim = final.callPackage (defaultPackageFrom neovim-nightly) { };
+    twm = final.callPackage (defaultPackageFrom inputs.twm) { };
+    neovim = final.callPackage (defaultPackageFrom inputs.neovim-nightly) { };
     lib = prev.lib // lib;
   };
 
-  unstable-packages = final: _prev: {
+  unstable-packages = final: _: {
     unstable = import nixpkgs-unstable {
       inherit (final) system hostPlatform config;
+      overlays = [ additions modifications ];
     };
   };
-
-  nur = inputs.nur.overlay;
 }

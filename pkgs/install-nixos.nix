@@ -1,16 +1,7 @@
-# bootstap a new nixos system on a remote host
-# 1. run the bootstrap-nixos-iso-device script to create a bootable usb
-# 2. boot the remote host from the usb
-# 3. set a password for the root user with `passwd root`
-# 4. connect to a network with the wpa_supplicant service
-
-# 5. run this derivation
-
-{ pkgs, writeShellApplication }:
+{ writeShellApplication }:
 
 writeShellApplication {
   name = "install-nixos";
-  runtimeInputs = with pkgs; [ nixos-anywhere ];
   text = ''
     set -e
 
@@ -40,6 +31,6 @@ writeShellApplication {
     sudo chmod 644 "$temp/etc/ssh/ssh_host_ed25519_key.pub"
     sudo chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
 
-    nixos-anywhere --extra-files "$temp" --flake ".#$hostname" "root@$ip"
+    sudo nix run github:nix-community/nixos-anywhere -- --extra-files "$temp" --generate-hardware-config nixos-generate-config "./hosts/nixos/$hostname/hardware-configuration.nix" --flake ".#$hostname" "root@$ip"
   '';
 }

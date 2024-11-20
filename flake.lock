@@ -536,21 +536,6 @@
         "type": "github"
       }
     },
-    "nur": {
-      "locked": {
-        "lastModified": 1731851132,
-        "narHash": "sha256-qouQ1PepFte/ba/wmvixPTYgWjgTKKNadwJAmzyegSU=",
-        "owner": "nix-community",
-        "repo": "nur",
-        "rev": "b3f470a406135cf67de31c3d47eb55774ee2b12f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nur",
-        "type": "github"
-      }
-    },
     "plasma-manager": {
       "inputs": {
         "home-manager": [
@@ -608,7 +593,6 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "nur": "nur",
         "plasma-manager": "plasma-manager",
         "roll": "roll",
         "sops-nix": "sops-nix",
