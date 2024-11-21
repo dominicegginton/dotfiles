@@ -9,7 +9,7 @@ rec {
   };
 
   oci = dockerTools.buildLayeredImage {
-    name = pkg.name;
+    inherit (pkg) name;
     tag = "latest";
     created = "now";
     contents = [ pkg ];

@@ -20,7 +20,7 @@ with lib;
           let
             style = style: {
               family = "monospace";
-              style = style;
+              inherit style;
             };
           in
 

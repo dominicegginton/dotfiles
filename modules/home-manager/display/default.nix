@@ -39,8 +39,7 @@ with lib;
       "*color15" = "#e9e9e9";
     };
     xdg.enable = mkIf isLinux true;
-    home.packages = with pkgs; [ ]
-      ++ (if isLinux then [ libreoffice-fresh ] else [ ])
+    home.packages = with pkgs; (if isLinux then [ libreoffice-fresh ] else [ ])
       ++ (if isDarwin then [ ] else [ ]);
   };
 }

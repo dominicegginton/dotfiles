@@ -6,7 +6,7 @@ in
 
 buildNpmPackage {
   pname = packageJson.name;
-  version = packageJson.version;
+  inherit (packageJson) version;
   src = lib.sources.cleanSource ./.;
   npmDepsHash = "sha256-426gvVsB26fQyisFXKOuF0b8BSvCeEEZPn+Wop+R+is=";
   installPhase = ''
