@@ -2,9 +2,9 @@ local cmd = vim.cmd
 local solarized = require('solarized')
 
 vim.o.termguicolors = true
-vim.o.background = 'dark'
+vim.o.background = 'light'
 solarized.setup({
-  variant = 'autumn',
+  variant = 'winter',
   transparent = { nvimtree = true, normal = true },
 })
 cmd('colorscheme solarized')

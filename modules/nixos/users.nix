@@ -12,7 +12,7 @@ with lib;
           inputs.sops-nix.homeManagerModules.sops
           inputs.plasma-manager.homeManagerModules.plasma-manager
           inputs.base16.nixosModule
-          { scheme = "${inputs.tt-schemes}/base16/solarized-dark.yaml"; }
+          { scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml"; }
           ../../modules/home-manager
           ../../home/dom
         ];
