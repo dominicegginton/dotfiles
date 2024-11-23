@@ -1,13 +1,13 @@
-{ pkgs }:
+{ writeShellApplication, nix, home-manager }:
 
-pkgs.writeShellApplication {
+writeShellApplication {
   name = "collect-garbage";
-  runtimeInputs = with pkgs; [ nix ];
-
+  runtimeInputs = [ nix home-manager ];
   text = ''
-    nix store gc --no-keep-derivations --no-keep-outputs --max 20G
+    sudo -v
+    nix store gc
     nix-env --delete-generations +2
-    sudo nix-env --profile /nix/var/nix/profiles/system --delete-generations +2
+    nix-env --profile /nix/var/nix/profiles/system --delete-generations +2
     home-manager expire-generations "-1 days"
     nix store optimise
   '';

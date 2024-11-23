@@ -1,7 +1,7 @@
-{ pkgs, writers }:
+{ writers, awscli2, fzf }:
 
 writers.writeBashBin "export-aws-credientials" ''
-  profile=$(${pkgs.awscli2}/bin/aws configure list-profiles | ${pkgs.fzf}/bin/fzf)
-  ${pkgs.awscli2}/bin/aws sso login --profile $profile
-  eval $(${pkgs.awscli2}/bin/aws sso env --profile $profile --shell env)"
+  profile=$(${awscli2}/bin/aws configure list-profiles | ${fzf}/bin/fzf)
+  ${awscli2}/bin/aws sso login --profile $profile
+  eval $(${awscli2}/bin/aws sso env --profile $profile --shell env)"
 ''

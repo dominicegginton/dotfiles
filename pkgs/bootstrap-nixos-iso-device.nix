@@ -1,13 +1,14 @@
-{ pkgs }:
+{ writeShellApplication, coreutils, fzf, nixos-generators }:
 
-pkgs.writeShellApplication {
+writeShellApplication {
   name = "bootstrap-nixos-iso-device";
-  runtimeInputs = with pkgs; [ coreutils fzf nixos-generators ];
+  runtimeInputs = [ coreutils fzf nixos-generators ];
+
   text = ''
     echo "Building NixOS ISO..."
-    # nix run github:nix-community/nixos-generators#nixos-generate -- \
-    #   --flake github:dominicegginton/dotfiles#minimal-iso \
-    #   --format iso -o result
+    nix run github:nix-community/nixos-generators#nixos-generate -- \
+      --flake github:dominicegginton/dotfiles#minimal-iso \
+      --format iso -o result
 
     iso=$(find result/iso/*.iso | fzf --header='Select the NixOS ISO to install')
     device=$(lsblk -d -o name \
@@ -18,7 +19,6 @@ pkgs.writeShellApplication {
     echo "[ALERT] This will erase all data on /dev/$device - Are you sure you want to continue? (Y/n)"
     read -r response
     if [ "$response" != "Y" ]; then
-      echo "Aborting..."
       exit 1
     fi
 
