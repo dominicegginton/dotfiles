@@ -1,6 +1,6 @@
 { writeShellApplication, pinentry, gnupg, google-cloud-sdk }:
 
-pkgs.writeShellApplication {
+writeShellApplication {
   name = "gpg-import-keys";
   runtimeInputs = [ pinentry gnupg google-cloud-sdk ];
   text = ''
