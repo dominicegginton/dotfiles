@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -15,6 +15,7 @@ in
     services.displayManager.sddm.wayland.enable = true;
     services.desktopManager.plasma6.enable = true;
     services.printing.enable = true;
+    environment.systemPackages = with pkgs.kdePackages; [ kgpg dolphin-plugins ];
     services.pipewire = {
       enable = true;
       alsa.enable = true;

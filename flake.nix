@@ -6,7 +6,8 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    nixos-hardware.url = "github:nixos/nixos-hardware/master";
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixos-images.url = "github:nix-community/nixos-images";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:lnl7/nix-darwin";
@@ -32,14 +33,16 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
+    BW.url = "file+file:///dev/null";
+    BW.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, flip, roll, ... }:
+  outputs = { self, nixpkgs, flake-utils, flip, roll, BW, ... }:
 
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
-      lib = import ./lib.nix { inherit inputs outputs stateVersion; };
+      lib = import ./lib.nix { inherit inputs outputs stateVersion BW; };
       overlays = import ./overlays.nix { inherit inputs lib; };
       templates = import ./templates { };
     in

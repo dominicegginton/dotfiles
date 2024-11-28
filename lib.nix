@@ -1,8 +1,8 @@
-{ inputs, outputs, stateVersion }:
+{ inputs, outputs, stateVersion, BW }:
 
 let
   pkgsFor = platform: outputs.packages.${platform};
-  specialArgsFor = hostname: { inherit inputs outputs stateVersion hostname; };
+  specialArgsFor = hostname: { inherit inputs outputs stateVersion hostname BW; };
 in
 
 with inputs.nixpkgs.lib;
