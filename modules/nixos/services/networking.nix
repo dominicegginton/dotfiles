@@ -24,10 +24,21 @@ with lib;
         fallbackToWPA2 = true;
         userControlled.enable = true;
         userControlled.group = "wheel";
-        environmentFile = config.sops.secrets."wireless.env".path;
-        networks."@home_uuid@".psk = "@home_psk@";
-        networks."@burbage_uuid@".psk = "@burbage_psk@";
-        networks."@pixel_uuid@".psk = "@pixel_psk@";
+        secretsFile = config.sops.secrets."wireless.env".path;
+        networks = {
+          "Home" = {
+            pskRaw = "ext:psk_home";
+            priority = 0;
+          };
+          "Burbage" = {
+            pskRaw = "ext:psk_burbage";
+            priority = 1;
+          };
+          "Pixel6a" = {
+            pskRaw = "ext:psk_pixel6a";
+            priority = 2;
+          };
+        };
       };
     };
 

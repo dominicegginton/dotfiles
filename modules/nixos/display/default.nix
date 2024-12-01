@@ -27,7 +27,7 @@ with lib;
         defaultFonts.sansSerif = [ "Work Sans" "Fira Sans" "FiraGO" ];
         defaultFonts.monospace = [ "FiraCode Nerd Font Mono" "SauceCodePro Nerd Font Mono" ];
         defaultFonts.emoji = [ "Noto Color Emoji" ];
-        hinting.autohint = false;
+        hinting.autohint = true;
         hinting.enable = true;
         hinting.style = "full";
         subpixel.rgba = "rgb";

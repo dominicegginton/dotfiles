@@ -16,7 +16,6 @@ with lib;
           ../../modules/home-manager
           ../../home/dom
         ];
-        modules.display = config.modules.display;
       };
     };
     users.users = {

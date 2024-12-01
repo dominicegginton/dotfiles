@@ -19,7 +19,6 @@
     services.distributedBuilds.enable = true;
     services.virtualisation.enable = true;
     services.bluetooth.enable = true;
-    services.syncthing.enable = true;
     services.networking.enable = true;
     services.networking.wireless = true;
   };

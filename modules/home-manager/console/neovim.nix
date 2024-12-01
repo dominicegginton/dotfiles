@@ -29,7 +29,6 @@ with lib;
         nodePackages.dockerfile-language-server-nodejs
         nodePackages.typescript-language-server
         nodePackages.vscode-langservers-extracted
-        nodePackages.pyright
         prettierd
         eslint_d
         stylua

@@ -1,15 +1,5 @@
 { inputs, pkgs, config, ... }:
 
-let
-  nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
-    export __NV_PRIME_RENDER_OFFLOAD=1
-    export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
-    export __GLX_VENDOR_LIBRARY_NAME=nvidia
-    export __VK_LAYER_NV_optimus=NVIDIA_only
-    exec "$@"
-  '';
-in
-
 {
   imports = [
     inputs.nixos-hardware.nixosModules.msi-gs60
@@ -22,7 +12,10 @@ in
   ];
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  boot.initrd.kernelModules = [ "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" ];
+  boot.initrd.kernelModules = [ "kvm-intel" "nvidia" "nvidia_modeset" "nvidia_uvm" "nvidia_drm" ];
   boot.blacklistedKernelModules = [ "nouveau" ];
   boot.kernelParams = [ "nvidia.NVreg_PreserveVideoMemoryAllocations=1" "nvidia_drm.modeset=1" "nouveau.modeset=0" ];
   hardware = {
@@ -65,32 +58,32 @@ in
     prime.nvidiaBusId = "PCI:01:00:0";
   };
 
-  services.home-assistant = {
-    enable = true;
-    openFirewall = true;
-    configDir = "/var/lib/hass";
-    config = {
-      homeassistant = {
-        name = "Home";
-      };
-      config = { };
-      lovelace = { mode = "yaml"; };
-      logger = { default = "debug"; };
-      http = { server_port = 8123; };
-    };
-    configWritable = true;
-    lovelaceConfigWritable = true;
-    lovelaceConfig = {
-      title = "My Awesome Home";
-      views = [
-        {
-          title = "Example";
-          cards = [ ];
-        }
-      ];
-    };
-  };
-
+  # services.home-assistant = {
+  #   enable = true;
+  #   openFirewall = true;
+  #   configDir = "/var/lib/hass";
+  #   config = {
+  #     homeassistant = {
+  #       name = "Home";
+  #     };
+  #     config = { };
+  #     lovelace = { mode = "yaml"; };
+  #     logger = { default = "debug"; };
+  #     http = { server_port = 8123; };
+  #   };
+  #   configWritable = true;
+  #   lovelaceConfigWritable = true;
+  #   lovelaceConfig = {
+  #     title = "My Awesome Home";
+  #     views = [
+  #       {
+  #         title = "Example";
+  #         cards = [ ];
+  #       }
+  #     ];
+  #   };
+  # };
+  #
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
@@ -99,13 +92,11 @@ in
 
   modules = {
     services.networking.enable = true;
-    services.networking.hostname = "ghost-gs60";
     services.networking.wireless = true;
     services.virtualisation.enable = true;
     services.bluetooth.enable = true;
-    services.syncthing.enable = true;
-    services.steam.enable = true;
     display.enable = true;
     display.plasma.enable = true;
+    programs.steam.enable = true;
   };
 }

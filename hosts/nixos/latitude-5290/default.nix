@@ -51,10 +51,11 @@
   hardware.logitech.wireless.enableGraphical = true;
 
   modules = {
-    display.enable = true;
-    display.plasma.enable = true;
     services.bluetooth.enable = true;
     services.networking.enable = true;
     services.networking.wireless = true;
+    display.enable = true;
+    display.plasma.enable = true;
+    programs.steam.enable = true;
   };
 }

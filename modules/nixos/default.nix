@@ -4,9 +4,10 @@ with lib;
 
 {
   imports = [
-    ./users.nix
     ./console
     ./display
+    ./programs/steam.nix
+    ./users.nix
     ./services
   ];
 
@@ -15,6 +16,7 @@ with lib;
     sops.defaultSopsFile = ../../secrets.yaml;
     time.timeZone = "Europe/London";
     i18n.defaultLocale = "en_GB.UTF-8";
+    console.keyMap = "uk";
 
     nix = {
       package = pkgs.unstable.nix;
@@ -83,6 +85,7 @@ with lib;
       gitMinimal
       vim
       killall
+      hwinfo
       unzip
       wget
       htop-vim

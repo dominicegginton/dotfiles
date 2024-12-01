@@ -17,10 +17,10 @@ writeShellApplication {
     echo "Unmounting /dev/$device"
     sudo umount "/dev/$device" || true
     echo "Formatting /dev/$device"
-    sudo dd if=/dev/zero of="/dev/$device" status=progress oflag=sync
+    sudo dd if=/dev/zero of="/dev/$device" count=1 status=progress
     sync
     echo "Writing $iso to /dev/$device"
-    sudo dd if="$iso" of="/dev/$device" status=progress oflag=sync
+    sudo dd if="$iso" of="/dev/$device" status=progress
     sync
     echo "Ejecting /dev/$device"
     sudo eject "/dev/$device"

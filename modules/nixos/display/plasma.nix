@@ -15,7 +15,7 @@ in
     services.displayManager.sddm.wayland.enable = true;
     services.desktopManager.plasma6.enable = true;
     services.printing.enable = true;
-    environment.systemPackages = with pkgs.kdePackages; [ kgpg dolphin-plugins ];
+    environment.systemPackages = with pkgs; with kdePackages; [ kgpg dolphin-plugins maliit-keyboard maliit-framework ];
     services.pipewire = {
       enable = true;
       alsa.enable = true;

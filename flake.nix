@@ -3,7 +3,7 @@
 
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
@@ -75,6 +75,7 @@
 
         {
           formatter = pkgs.nixpkgs-fmt;
+          pkgs = pkgs;
           packages = pkgs;
           devShells = {
             default = pkgs.callPackage ./shell.nix { };
