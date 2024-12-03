@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, ... }:
+{ inputs, config, lib, theme, pkgs, ... }:
 
 with lib;
 
@@ -12,10 +12,12 @@ with lib;
           inputs.sops-nix.homeManagerModules.sops
           inputs.plasma-manager.homeManagerModules.plasma-manager
           inputs.base16.nixosModule
-          { scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml"; }
+          { scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml"; }
           ../../modules/home-manager
           ../../home/dom
         ];
+        home.file.theme.text = theme;
+        programs.plasma.workspace.lookAndFeel = if theme == "light" then "org.kde.breeze.desktop" else "org.kde.breezedark.desktop";
       };
     };
     users.users = {

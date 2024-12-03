@@ -12,7 +12,7 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:lnl7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
@@ -42,7 +42,8 @@
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
-      lib = import ./lib.nix { inherit inputs outputs stateVersion BW; };
+      theme = "dark";
+      lib = import ./lib.nix { inherit inputs outputs stateVersion theme BW; };
       overlays = import ./overlays.nix { inherit inputs lib; };
       templates = import ./templates { };
     in

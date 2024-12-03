@@ -2,6 +2,10 @@
 
 with lib;
 
+let
+  t = config.theme;
+in
+
 {
   config = {
     programs.plasma.enable = true;
@@ -325,7 +329,7 @@ with lib;
       "kscreenlockerrc"."Greeter"."WallpaperPlugin" = "org.kde.potd";
       "kscreenlockerrc"."Greeter/Wallpaper/org.kde.plasma.gameoflife/General"."color" = "#009cff";
       "kscreenlockerrc"."Greeter/Wallpaper/org.kde.potd/General"."Color" = "23,199,142";
-      "kscreenlockerrc"."Greeter/Wallpaper/org.kde.potd/General"."Provider" = "simonstalenhag";
+      "kscreenlockerrc"."Greeter/Wallpaper/org.kde.potd/General"."Provider" = "bing";
       "ksmserverrc"."General"."confirmLogout" = false;
       "ksmserverrc"."General"."loginMode" = "emptySession";
       "kwalletrc"."Auto Allow"."kdewallet" = "KDE System,discord,Chromium";
