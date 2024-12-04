@@ -1,15 +1,13 @@
-{ config, lib, ... }:
+{ inputs, config, lib, theme, ... }:
 
 with lib;
-
-let
-  t = config.theme;
-in
 
 {
   config = {
     programs.plasma.enable = true;
     programs.plasma.overrideConfig = true;
+    programs.plasma.workspace.lookAndFeel = if theme == "light" then "org.kde.breeze.desktop" else "org.kde.breezedark.desktop";
+    programs.plasma.workspace.wallpaper = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-stripes.png";
     programs.plasma.shortcuts = {
       "ActivityManager"."switch-to-activity-bad12a74-aaab-4185-ba10-ad68fedc3f10" = [ ];
       "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";

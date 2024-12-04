@@ -1,9 +1,11 @@
-{ inputs, config, lib, pkgs, stateVersion, ... }:
+{ inputs, config, lib, pkgs, modulesPath, stateVersion, ... }:
 
 with lib;
 
 {
   imports = [
+    "${modulesPath}/installer/scan/not-detected.nix"
+    "${modulesPath}/profiles/qemu-guest.nix"
     ./console
     ./display
     ./programs/steam.nix

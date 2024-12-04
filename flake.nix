@@ -33,6 +33,8 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-artwork.url = "github:nixos/nixos-artwork";
+    nixos-artwork.flake = false;
     BW.url = "file+file:///dev/null";
     BW.flake = false;
   };

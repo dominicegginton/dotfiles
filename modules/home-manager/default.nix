@@ -9,14 +9,4 @@ with lib;
     ./display
     ./services
   ];
-
-  config = {
-    sops.defaultSopsFile = ../../secrets.yaml;
-    home = {
-      stateVersion = "24.05";
-      activation.report-changes = config.lib.dag.entryAnywhere ''
-        ${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath
-      '';
-    };
-  };
 }

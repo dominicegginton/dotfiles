@@ -24,13 +24,24 @@ rec {
     nixosSystem {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
-      modules = [ ./hosts/nixos ];
+      modules = [
+        inputs.disko.nixosModules.disko
+        inputs.sops-nix.nixosModules.sops
+        inputs.home-manager.nixosModules.default
+        { home-manager.extraSpecialArgs = specialArgsFor hostname; }
+        inputs.base16.nixosModule
+        ./hosts/nixos/${hostname}
+        ./modules/nixos
+      ];
     };
 
   mkDarwinHost = { hostname, platform ? "x86_64-darwin" }:
     darwinSystem {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
-      modules = [ ./hosts/darwin ];
+      modules = [
+        ./hosts/darwin/${hostname}
+        ./modules/darwin
+      ];
     };
 }
