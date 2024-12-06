@@ -6,7 +6,7 @@ rec {
   additions = final: prev: {
     inherit (packagesFrom inputs.sops-nix { inherit (final) system; }) sops-import-keys-hook sops-init-gpg-key;
     inherit (packagesFrom inputs.nixos-images { inherit (final) system; }) image-installer-nixos-stable;
-    todo = final.callPackage (defaultPackageFrom inputs.todo) { };
+    bootstrap-nixos-host = final.callPackage ./pkgs/bootstrap-nixos-host.nix { };
     bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
     export-aws-credentials = final.callPackage ./pkgs/export-aws-credentials.nix { };
@@ -15,6 +15,8 @@ rec {
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     nodejs-shell-setup-hook = final.callPackage ./pkgs/nodejs-shell-setup-hook.nix { };
+    nixos-anywhere = final.callPackage (defaultPackageFrom inputs.nixos-anywhere) { };
+    todo = final.callPackage (defaultPackageFrom inputs.todo) { };
     twx = final.callPackage ./pkgs/twx.nix { };
     lib = prev.lib // lib;
   };

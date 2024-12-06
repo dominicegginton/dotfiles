@@ -1,5 +1,9 @@
 { inputs, config, lib, theme, ... }:
 
+let
+  wallpaper = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-stripes.png";
+in
+
 with lib;
 
 {
@@ -7,7 +11,8 @@ with lib;
     programs.plasma.enable = true;
     programs.plasma.overrideConfig = true;
     programs.plasma.workspace.lookAndFeel = if theme == "light" then "org.kde.breeze.desktop" else "org.kde.breezedark.desktop";
-    programs.plasma.workspace.wallpaper = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-stripes.png";
+    programs.plasma.workspace.wallpaper = wallpaper;
+    programs.plasma.kscreenlocker.appearance.wallpaper = wallpaper;
     programs.plasma.shortcuts = {
       "ActivityManager"."switch-to-activity-bad12a74-aaab-4185-ba10-ad68fedc3f10" = [ ];
       "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
@@ -324,7 +329,6 @@ with lib;
       "krunnerrc"."General"."FreeFloating" = true;
       "krunnerrc"."Plugins"."baloosearchEnabled" = true;
       "kscreenlockerrc"."Daemon"."LockGrace" = 0;
-      "kscreenlockerrc"."Greeter"."WallpaperPlugin" = "org.kde.potd";
       "kscreenlockerrc"."Greeter/Wallpaper/org.kde.plasma.gameoflife/General"."color" = "#009cff";
       "kscreenlockerrc"."Greeter/Wallpaper/org.kde.potd/General"."Color" = "23,199,142";
       "kscreenlockerrc"."Greeter/Wallpaper/org.kde.potd/General"."Provider" = "bing";

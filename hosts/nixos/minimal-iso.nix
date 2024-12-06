@@ -1,4 +1,4 @@
-{ modulesPath, inputs, ... }:
+{ inputs, modulesPath, pkgs, ... }:
 
 {
   imports = [
@@ -7,4 +7,5 @@
   ];
   nix.settings.experimental-features = "nix-command flakes";
   services.openssh.enable = true;
+  environment.systemPackages = with pkgs; [ fuse nmap fzf bottom ];
 }

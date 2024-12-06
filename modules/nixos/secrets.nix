@@ -3,7 +3,7 @@
 with lib;
 
 let
-  bitwarden-secret = builtins.readFile BW.outPath;
+  # bitwarden-secret = builtins.readFile BW.outPath;
   op_tmp_dir = "/root/op_tmp";
   op_cfg_dir = "/root/.config/op";
   chownGroup = "keys";

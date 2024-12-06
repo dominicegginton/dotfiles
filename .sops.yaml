@@ -22,6 +22,6 @@ creation_rules:
     key_groups:
     - pgp:
       - *dominic-egginton
-
+      - *latitude-5290
       - *latitude-7390
       - *ghost-gs60

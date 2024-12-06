@@ -1,11 +1,11 @@
-{ inputs, config, lib, theme, pkgs, stateVersion, ... }:
+{ inputs, config, theme, pkgs, stateVersion, ... }:
 
 {
   config = {
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
     home-manager.sharedModules = [
-      inputs.plasma-manager.homeManagerModules.plasma-manager
+      inputs.impermanence.homeManagerModules.impermanence
       inputs.sops-nix.homeManagerModules.sops
       inputs.plasma-manager.homeManagerModules.plasma-manager
       inputs.base16.nixosModule

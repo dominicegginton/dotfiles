@@ -8,6 +8,9 @@
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-images.url = "github:nix-community/nixos-images";
+    impermanence.url = "github:nix-community/impermanence";
+    nixos-anywhere.url = "github:nix-community/nixos-anywhere";
+    nixos-anywhere.inputs.nixpkgs.follows = "nixpkgs";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:lnl7/nix-darwin";
@@ -21,6 +24,8 @@
     tt-schemes.flake = false;
     base16-vim.url = "github:tinted-theming/base16-vim";
     base16-vim.flake = false;
+    nixos-artwork.url = "github:nixos/nixos-artwork";
+    nixos-artwork.flake = false;
     plasma-manager.url = "github:nix-community/plasma-manager";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     plasma-manager.inputs.home-manager.follows = "home-manager";
@@ -33,8 +38,6 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
-    nixos-artwork.url = "github:nixos/nixos-artwork";
-    nixos-artwork.flake = false;
     BW.url = "file+file:///dev/null";
     BW.flake = false;
   };
@@ -78,8 +81,7 @@
 
         {
           formatter = pkgs.nixpkgs-fmt;
-          pkgs = pkgs;
-          packages = pkgs;
+          legacyPackages = pkgs;
           devShells = {
             default = pkgs.callPackage ./shell.nix { };
             nodejs = pkgs.callPackage ./shells/nodejs.nix { };
@@ -96,8 +98,6 @@
       nixosConfigurations = {
         latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
-        ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
-        burbage = mkNixosHost { hostname = "burbage"; };
         precision-5530 = mkNixosHost { hostname = "precision-5530"; };
         minimal-iso = mkNixosIso { hostname = "minimal-iso"; };
       };

@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   imports = [
@@ -14,7 +14,10 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "500M";
+              priority = 1;
+              name = "ESP";
+              start = "1M";
+              end = "128M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -23,24 +26,89 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
-            root = {
-              size = "100%";
+            SWAP = {
+              size = "4G";
               content = {
-                type = "filesystem";
-                format = "ext4";
-                mountpoint = "/";
+                type = "swap";
+                resumeDevice = true;
+              };
+            };
+            root = {
+              name = "root";
+              size = "100%";
+              content = { type = "lvm_pv"; vg = "root_vg"; };
+            };
+          };
+        };
+      };
+    };
+    lvm_vg = {
+      root_vg = {
+        type = "lvm_vg";
+        lvs = {
+          root = {
+            size = "100%FREE";
+            content = {
+              type = "btrfs";
+              extraArgs = [ "-f" ];
+              subvolumes = {
+                "/root" = { mountpoint = "/"; };
+                "/persist" = {
+                  mountOptions = [ "subvol=persist" "noatime" ];
+                  mountpoint = "/persist";
+                };
+                "/nix" = {
+                  mountOptions = [ "subvol=nix" "noatime" ];
+                  mountpoint = "/nix";
+                };
               };
             };
           };
         };
       };
     };
-    nodev = {
-      "/tmp" = {
-        fsType = "tmpfs";
-        mountOptions = [ "defaults" "size=2G" "mode=755" ];
-      };
-    };
+  };
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    mkdir /btrfs_tmp
+    mount /dev/root_vg/root /btrfs_tmp
+    if [[ -e /btrfs_tmp/root ]]; then
+        mkdir -p /btrfs_tmp/old_roots
+        timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")
+        mv /btrfs_tmp/root "/btrfs_tmp/old_roots/$timestamp"
+    fi
+
+    delete_subvolume_recursively() {
+        IFS=$'\n'
+        for i in $(btrfs subvolume list -o "$1" | cut -f 9- -d ' '); do
+            delete_subvolume_recursively "/btrfs_tmp/$i"
+        done
+        btrfs subvolume delete "$1"
+    }
+
+    for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +30); do
+        delete_subvolume_recursively "$i"
+    done
+
+    btrfs subvolume create /btrfs_tmp/root
+    umount /btrfs_tmp
+  '';
+  programs.fuse.userAllowOther = true;
+  fileSystems."/persist".neededForBoot = true;
+  environment.persistence."/persist/system" = {
+    hideMounts = true;
+    directories = [
+      "/etc/nixos"
+      "/var/log"
+      "/var/lib/bluetooth"
+      "/var/lib/nixos"
+      "/var/lib/systemd/coredump"
+      "/etc/NetworkManager/system-connections"
+      "/etc/ssh"
+    ];
+    files = [
+      "/etc/machine-id"
+      { file = "/var/lib/sops-nix/key.txt"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
+    ];
   };
 
   boot.loader.systemd-boot.enable = true;

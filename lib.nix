@@ -1,7 +1,7 @@
 { inputs, outputs, stateVersion, theme, BW }:
 
 let
-  pkgsFor = platform: outputs.packages.${platform};
+  pkgsFor = platform: outputs.legacyPackages.${platform};
   specialArgsFor = hostname: { inherit inputs outputs stateVersion hostname theme BW; };
 in
 
@@ -25,6 +25,7 @@ rec {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
       modules = [
+        inputs.impermanence.nixosModules.impermanence
         inputs.disko.nixosModules.disko
         inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.default

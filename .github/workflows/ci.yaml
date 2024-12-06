@@ -26,14 +26,6 @@ jobs:
       - uses: DeterminateSystems/magic-nix-cache-action@main
       - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.toplevel
 
-  ghost-gs60:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
-      - run: nix build .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
-
   mccml44wmd6t:
     runs-on: macos-latest
     steps:
