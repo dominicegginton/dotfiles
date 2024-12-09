@@ -1,6 +1,18 @@
 {
   "nodes": {
-    "BW": {
+    "BWS_ACCESS_TOKEN": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-d6xi4mKdjkX2JFicDIv5niSzpyI0m/Hnm8GGAIU04kY=",
+        "type": "file",
+        "url": "file:///dev/null"
+      },
+      "original": {
+        "type": "file",
+        "url": "file:///dev/null"
+      }
+    },
+    "BWS_PROJECT_ID": {
       "flake": false,
       "locked": {
         "narHash": "sha256-d6xi4mKdjkX2JFicDIv5niSzpyI0m/Hnm8GGAIU04kY=",
@@ -784,7 +796,8 @@
     },
     "root": {
       "inputs": {
-        "BW": "BW",
+        "BWS_ACCESS_TOKEN": "BWS_ACCESS_TOKEN",
+        "BWS_PROJECT_ID": "BWS_PROJECT_ID",
         "base16": "base16",
         "base16-vim": "base16-vim",
         "disko": "disko",

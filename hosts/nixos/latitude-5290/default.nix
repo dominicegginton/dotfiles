@@ -110,6 +110,21 @@
       { file = "/var/lib/sops-nix/key.txt"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
     ];
   };
+  home.persistence."/persistent/home/dom" = {
+    directories = [
+      "Downloads"
+      "Music"
+      "Pictures"
+      "Documents"
+      "Videos"
+      ".gnupg"
+      ".ssh"
+      ".local/share/keyrings"
+      { directory = ".local/share/Steam"; method = "symlink"; }
+    ];
+    files = [ ];
+    allowOther = true;
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

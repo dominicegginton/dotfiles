@@ -38,17 +38,19 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
-    BW.url = "file+file:///dev/null";
-    BW.flake = false;
+    BWS_ACCESS_TOKEN.url = "file+file:///dev/null";
+    BWS_ACCESS_TOKEN.flake = false;
+    BWS_PROJECT_ID.url = "file+file:///dev/null";
+    BWS_PROJECT_ID.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, flip, roll, BW, ... }:
+  outputs = { self, nixpkgs, flake-utils, flip, roll, ... }:
 
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
       theme = "dark";
-      lib = import ./lib.nix { inherit inputs outputs stateVersion theme BW; };
+      lib = import ./lib.nix { inherit inputs outputs stateVersion theme; };
       overlays = import ./overlays.nix { inherit inputs lib; };
       templates = import ./templates { };
     in

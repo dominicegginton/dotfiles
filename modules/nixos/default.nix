@@ -11,6 +11,7 @@ with lib;
     ./programs/steam.nix
     ./users.nix
     ./services
+    ./secrets.nix
   ];
 
   config = {

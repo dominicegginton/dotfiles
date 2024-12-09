@@ -27,6 +27,8 @@ with lib;
           "users"
           "video"
           "docker"
+          "kvm"
+          "abdusers"
         ];
       };
 
