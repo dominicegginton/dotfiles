@@ -17,15 +17,11 @@
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
     tt-schemes.url = "github:tinted-theming/schemes";
     tt-schemes.flake = false;
     base16-vim.url = "github:tinted-theming/base16-vim";
     base16-vim.flake = false;
-    nixos-artwork.url = "github:nixos/nixos-artwork";
-    nixos-artwork.flake = false;
     plasma-manager.url = "github:nix-community/plasma-manager";
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     plasma-manager.inputs.home-manager.follows = "home-manager";
@@ -38,13 +34,10 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
-    BWS_ACCESS_TOKEN.url = "file+file:///dev/null";
-    BWS_ACCESS_TOKEN.flake = false;
-    BWS_PROJECT_ID.url = "file+file:///dev/null";
-    BWS_PROJECT_ID.flake = false;
   };
 
-  outputs = { self, nixpkgs, flake-utils, flip, roll, ... }:
+  outputs = { self, nixpkgs, flake-utils, ... }:
+
 
     let
       inherit (self) inputs outputs;
@@ -75,8 +68,8 @@
               additions
               modifications
               unstable-packages
-              flip.overlays.default
-              roll.overlays.default
+              inputs.flip.overlays.default
+              inputs.roll.overlays.default
             ];
           };
         in

@@ -26,7 +26,6 @@
     services.distributedBuilds.enable = true;
     services.virtualisation.enable = true;
     services.bluetooth.enable = true;
-    services.networking.enable = true;
-    services.networking.wireless = true;
+    networking.wireless.enable = true;
   };
 }

@@ -1,29 +1,5 @@
 {
   "nodes": {
-    "BWS_ACCESS_TOKEN": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-d6xi4mKdjkX2JFicDIv5niSzpyI0m/Hnm8GGAIU04kY=",
-        "type": "file",
-        "url": "file:///dev/null"
-      },
-      "original": {
-        "type": "file",
-        "url": "file:///dev/null"
-      }
-    },
-    "BWS_PROJECT_ID": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-d6xi4mKdjkX2JFicDIv5niSzpyI0m/Hnm8GGAIU04kY=",
-        "type": "file",
-        "url": "file:///dev/null"
-      },
-      "original": {
-        "type": "file",
-        "url": "file:///dev/null"
-      }
-    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -550,22 +526,6 @@
         "type": "github"
       }
     },
-    "nixos-artwork": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1731943625,
-        "narHash": "sha256-XquSEijNYtGDkW35bibT2ki18qicENCsIcDzDxrgQkM=",
-        "owner": "nixos",
-        "repo": "nixos-artwork",
-        "rev": "63f68a917f4e8586c5d35e050cdaf1309832272d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixos-artwork",
-        "type": "github"
-      }
-    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1732483221,
@@ -707,11 +667,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1732824227,
-        "narHash": "sha256-fYNXgpu1AEeLyd3fQt4Ym0tcVP7cdJ8wRoqJ+CtTRyY=",
+        "lastModified": 1733808091,
+        "narHash": "sha256-KWwINTQelKOoQgrXftxoqxmKFZb9pLVfnRvK270nkVk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c71ad5c34d51dcbda4c15f44ea4e4aa6bb6ac1e9",
+        "rev": "a0f3e10d94359665dba45b71b4227b0aeb851f8e",
         "type": "github"
       },
       "original": {
@@ -796,8 +756,6 @@
     },
     "root": {
       "inputs": {
-        "BWS_ACCESS_TOKEN": "BWS_ACCESS_TOKEN",
-        "BWS_PROJECT_ID": "BWS_PROJECT_ID",
         "base16": "base16",
         "base16-vim": "base16-vim",
         "disko": "disko",
@@ -808,14 +766,12 @@
         "neovim-nightly": "neovim-nightly",
         "nix-darwin": "nix-darwin",
         "nixos-anywhere": "nixos-anywhere",
-        "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixos-images": "nixos-images_2",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "plasma-manager": "plasma-manager",
         "roll": "roll",
-        "sops-nix": "sops-nix",
         "todo": "todo",
         "tt-schemes": "tt-schemes",
         "twm": "twm"
@@ -837,26 +793,6 @@
       "original": {
         "owner": "oxalica",
         "repo": "rust-overlay",
-        "type": "github"
-      }
-    },
-    "sops-nix": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1732575825,
-        "narHash": "sha256-xtt95+c7OUMoqZf4OvA/7AemiH3aVuWHQbErYQoPwFk=",
-        "owner": "Mic92",
-        "repo": "sops-nix",
-        "rev": "3433ea14fbd9e6671d0ff0dd45ed15ee4c156ffa",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Mic92",
-        "repo": "sops-nix",
         "type": "github"
       }
     },

@@ -27,7 +27,6 @@ rec {
       modules = [
         inputs.impermanence.nixosModules.impermanence
         inputs.disko.nixosModules.disko
-        inputs.sops-nix.nixosModules.sops
         inputs.home-manager.nixosModules.default
         { home-manager.extraSpecialArgs = specialArgsFor hostname; }
         inputs.base16.nixosModule

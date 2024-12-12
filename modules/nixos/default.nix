@@ -16,8 +16,6 @@ with lib;
 
   config = {
     system.stateVersion = stateVersion;
-    sops.defaultSopsFile = ../../secrets.yaml;
-    sops.age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
     time.timeZone = "Europe/London";
     i18n.defaultLocale = "en_GB.UTF-8";
     console.keyMap = "uk";

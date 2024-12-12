@@ -4,8 +4,6 @@ with lib;
 
 {
   config = {
-    sops.secrets."dom.password".neededForUsers = true;
-
     home-manager.users = {
       dom = _: {
         imports = [
@@ -17,7 +15,7 @@ with lib;
       dom = {
         description = "Dominic Egginton";
         isNormalUser = true;
-        hashedPasswordFile = config.sops.secrets."dom.password".path;
+        hashedPasswordFile = "/run/bitwarden-secrets/dom";
         homeMode = "0755";
         shell = pkgs.zsh;
         extraGroups = [

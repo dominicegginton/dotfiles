@@ -94,7 +94,7 @@
   '';
   programs.fuse.userAllowOther = true;
   fileSystems."/persist".neededForBoot = true;
-  environment.persistence."/persist/system" = {
+  environment.persistence."/persist" = {
     hideMounts = true;
     directories = [
       "/etc/nixos"
@@ -104,26 +104,12 @@
       "/var/lib/systemd/coredump"
       "/etc/NetworkManager/system-connections"
       "/etc/ssh"
+      "/root/bitwarden-secrets"
     ];
     files = [
       "/etc/machine-id"
-      { file = "/var/lib/sops-nix/key.txt"; parentDirectory = { mode = "u=rwx,g=,o="; }; }
+      "/etc/bitwarden-secrets.env"
     ];
-  };
-  home.persistence."/persistent/home/dom" = {
-    directories = [
-      "Downloads"
-      "Music"
-      "Pictures"
-      "Documents"
-      "Videos"
-      ".gnupg"
-      ".ssh"
-      ".local/share/keyrings"
-      { directory = ".local/share/Steam"; method = "symlink"; }
-    ];
-    files = [ ];
-    allowOther = true;
   };
 
   boot.loader.systemd-boot.enable = true;
@@ -134,11 +120,10 @@
   hardware.logitech.wireless.enableGraphical = true;
 
   modules = {
-    services.bluetooth.enable = true;
-    services.networking.enable = true;
-    services.networking.wireless = true;
     display.enable = true;
     display.plasma.enable = true;
     programs.steam.enable = true;
+    services.bluetooth.enable = true;
+    networking.wireless.enable = true;
   };
 }

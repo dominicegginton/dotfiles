@@ -1,69 +1,43 @@
-{ inputs, config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
 let
-  inherit (inputs) BWS_ACCESS_TOKEN BWS_PROJECT_ID;
-
-  accessToken = pkgs.stdenv.mkDerivation {
-    name = "bitwarden-access-token";
-    dontUnpack = true;
-    buildPhase = ''
-      echo ${builtins.readFile BWS_ACCESS_TOKEN.outPath} > ACCESS_TOKEN
-    '';
-    installPhase = ''
-      mkdir -p $out
-      cp ACCESS_TOKEN $out
-    '';
-  };
-
-  projectId = pkgs.stdenv.mkDerivation {
-    name = "bitwarden-project-id";
-    dontUnpack = true;
-    buildPhase = ''
-      echo ${builtins.readFile BWS_PROJECT_ID.outPath} > PROJECT_ID
-    '';
-    installPhase = ''
-      mkdir -p $out
-      cp PROJECT_ID $out
-    '';
-  };
+  directory = "/root/bitwarden-secrets";
+  mount = "/run/bitwarden-secrets";
+  environment = "etc/bitwarden-secrets.env";
 in
 
-{
-  options.modules.bitwarden = {
-    package = mkOption {
-      type = types.package;
-      description = "Bitwarden secrets CLI package";
-      default = pkgs.bws;
-    };
-  };
 
+{
   config = {
     systemd.services.secrets = {
-      wants = [ "network-online.target" ];
-      after = [ "network.target" "network-online.target" ];
+      wantedBy = [ "sysinit.target" "systemd-sysusers.service" ];
+      before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" ];
+      unitConfig.DefaultDependencies = "no";
       serviceConfig = {
         Type = "oneshot";
         StandardOutput = "null";
         StandardError = "null";
         RemainAfterExit = true;
+        EnvironmentFile = environment;
       };
       script = ''
-        unmount /root/secrets/bitwarden || true
-        rm -rf /root/secrets/bitwarden || true
-        mkdir -p /root/secrets/bitwarden
-        mount -t tmpfs -o size=1M tmpfs /root/secrets/bitwarden
-        chown root:root /root/secrets/bitwarden
-        export BWS_ACCESS_TOKEN=$(cat ${accessToken}/ACCESS_TOKEN)
-        export BWS_PROJECT_ID=$(cat ${projectId}/PROJECT_ID)
-        echo "Getting Bitwarden secrets"
-        ${config.modules.bitwarden.package}/bin/bws secret list "$BWS_PROJECT_ID" --output json > /root/secrets/bitwarden/secrets.json
-        echo "Linking secrets to /run/bitwarden-secrets"
-        ln -s /root/secrets/bitwarden/secrets.json /run/bitwarden-secrets
-        echo "Unmounting secrets"
-        unmount /root/secrets/bitwarden || true
-        rm -rf /root/secrets/bitwarden || true
+        source ${environment}
+        export BWS_ACCESS_TOKEN
+        export BWS_PROJECT_ID
+        ${pkgs.busybox}/bin/install -d -m700 ${mount}
+        ${pkgs.util-linux}/bin/umount ${mount} || true
+        ${pkgs.util-linux}/bin/mount -t ramfs -o size=1M ramfs ${mount}
+        ${pkgs.busybox}/bin/ping -c 1 api.bitwarden.com > /dev/null 2>&1 && ${pkgs.bws}/bin/bws secret list "$BWS_PROJECT_ID" --output json > ${directory}/secrets.json
+        secret_ids=$(${pkgs.jq}/bin/jq -r '.[] | .id' ${directory}/secrets.json)
+        for id in $secret_ids; do
+          name=$(${pkgs.jq}/bin/jq -r ".[] | select(.id == \"$id\") | .key" ${directory}/secrets.json)
+          value=$(${pkgs.jq}/bin/jq -r ".[] | select(.id == \"$id\") | .value" ${directory}/secrets.json)
+          echo $value | ${pkgs.busybox}/bin/sed 's/\\n/\n/g' > ${mount}/$name
+          chown root:root ${mount}/$name
+          chmod 600 ${mount}/$name
+        done
       '';
     };
 

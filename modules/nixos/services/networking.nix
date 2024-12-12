@@ -1,30 +1,20 @@
 { config, lib, pkgs, hostname, ... }:
 
-let
-  cfg = config.modules.services.networking;
-in
-
 with lib;
 
 {
-  options.modules.services.networking = {
-    enable = mkEnableOption "networking";
-    wireless = mkEnableOption "wireless";
-  };
+  options.modules.networking.wireless.enable = mkEnableOption "wireless";
 
-  config = mkIf cfg.enable {
-    sops.secrets."wireless.env" = { };
-
-
+  config = {
     networking = {
       hostName = hostname;
       useDHCP = true;
-      wireless = mkIf cfg.wireless {
+      wireless = mkIf config.modules.networking.wireless.enable {
         enable = true;
         fallbackToWPA2 = true;
         userControlled.enable = true;
         userControlled.group = "wheel";
-        secretsFile = config.sops.secrets."wireless.env".path;
+        secretsFile = "/run/bitwarden-secrets/wireless";
         networks = {
           "Home" = {
             pskRaw = "ext:psk_home";
@@ -51,19 +41,11 @@ with lib;
       interfaceName = "userspace-networking";
     };
     systemd.services.tailscale-autoconnect = {
-      description = "Automatic connection to Tailscale";
       after = [ "network-pre.target" "tailscale.service" ];
       wants = [ "network-pre.target" "tailscale.service" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig.Type = "oneshot";
-      script = with pkgs; ''
-        sleep 2
-        status="$(${tailscale}/bin/tailscale status -json | ${jq}/bin/jq -r .BackendState)"
-        if [ $status = "Running" ]; then
-          exit 0
-        fi
-        ${tailscale}/bin/tailscale up
-      '';
+      script = with pkgs; "${tailscale}/bin/tailscale up";
     };
     environment.systemPackages = with pkgs; [ tailscale ];
   };

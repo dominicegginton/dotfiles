@@ -6,7 +6,6 @@
     home-manager.useUserPackages = true;
     home-manager.sharedModules = [
       inputs.impermanence.homeManagerModules.impermanence
-      inputs.sops-nix.homeManagerModules.sops
       inputs.plasma-manager.homeManagerModules.plasma-manager
       inputs.base16.nixosModule
       {
