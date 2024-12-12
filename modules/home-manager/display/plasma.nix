@@ -1,7 +1,7 @@
 { inputs, config, lib, theme, ... }:
 
 let
-  wallpaper = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-stripes.png";
+  wallpaper = ./background.jpg;
 in
 
 with lib;

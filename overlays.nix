@@ -4,7 +4,6 @@ with lib;
 
 rec {
   additions = final: prev: {
-    inherit (packagesFrom inputs.sops-nix { inherit (final) system; }) sops-import-keys-hook sops-init-gpg-key;
     inherit (packagesFrom inputs.nixos-images { inherit (final) system; }) image-installer-nixos-stable;
     bootstrap-nixos-host = final.callPackage ./pkgs/bootstrap-nixos-host.nix { };
     bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };

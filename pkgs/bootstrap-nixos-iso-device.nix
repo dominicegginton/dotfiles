@@ -7,11 +7,9 @@ writeShellApplication {
     device=$(lsblk -d -o name \
       | tail -n +2 \
       | fzf --preview 'lsblk -o name,serial,rota,tran,rm,hotplug,ro,type,size,mountpoint' --preview-window=right:60%:wrap --header='Select the device to install NixOS on')
-
     iso=$(find ${image-installer-nixos-stable}/iso -name '*.iso' | fzf --header='Select the NixOS ISO to install')
-    echo "[IMPORTANT] This will erase all data on /dev/$device - Are you sure you want to continue? (Y/n)"
-    read -r response
-    if [ "$response" != "Y" ]; then
+    response=$(echo "Yes No" | tr " " "\n" | fzf --prompt "This will erase all data on /dev/$device - Are you sure you want to continue? ")
+    if [ "$response" != "Yes" ]; then
       exit 1
     fi
     echo "Unmounting /dev/$device"

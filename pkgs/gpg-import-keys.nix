@@ -9,7 +9,6 @@ writeShellApplication {
       rm -rf "$temp"
     }
     trap cleanup EXIT
-
     gcloud auth login
     gsutil rsync -r gs://dominicegginton/gpg "$temp"
     gpg --import "$temp"/*
