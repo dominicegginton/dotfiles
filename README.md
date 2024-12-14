@@ -43,7 +43,7 @@ This workspace follows the following structure:
 ├── shells          # Ad-hoc shells enviroments
 ├── templates       # Flake templates
 ├── flake.nix       # Flake inputs and outputs
-├── lib.nix         # Libary untils
+├── lib.nix         # Libary utils
 ├── overlays.nix    # Nix overlays
 └── shell.nix       # Workspace development shell
 ```
