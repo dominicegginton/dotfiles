@@ -1,6 +1,6 @@
 local cmd = vim.cmd
 local solarized = require('solarized')
-local theme = io.open(os.getenv('HOME') .. '/theme', 'r'):read()
+local theme = io.open('/etc/theme', 'r'):read()
 
 vim.o.termguicolors = true
 solarized.setup({

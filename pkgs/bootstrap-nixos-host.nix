@@ -5,7 +5,7 @@ writeShellApplication {
   runtimeInputs = [ nix nixos-anywhere fzf nmap jq busybox ];
   text = ''
     if [ "$(id -u)" -ne 0 ]; then
-      echo "Script must be run as root"
+      echo "This script must be run as root" 1>&2
       exit 1
     fi
     temp=$(mktemp -d)
@@ -14,7 +14,9 @@ writeShellApplication {
     }
     trap cleanup EXIT
     install -d -m755 "$temp/root/bitwarden-secrets"
-    sudo cp /root/bitwarden-secrets "$temp/root/bitwarden-secrets"
+    sudo cp /root/bitwarden-secrets/secrets.json "$temp/root/bitwarden-secrets/secrets.json"
+    chown -R root:root "$temp/root/bitwarden-secrets"
+    chmod -R 700 "$temp/root/bitwarden-secrets"
     hosts=$(nix flake show --json | jq -r '.nixosConfigurations | keys | .[]' | grep -v minimal-iso)
     host=$(echo "$hosts" | tr " " "\n" | fzf --prompt "Select a configuration: ")
     echo "[bootstap-nixos-host] Scanning network for nixos installer"
