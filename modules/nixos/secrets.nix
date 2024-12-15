@@ -8,7 +8,6 @@ let
   environment = "etc/bitwarden-secrets.env";
   setup = ''
     ${pkgs.busybox}/bin/install -d -m700 ${directory}
-    rm -rf ${directory}/root/*
     ${pkgs.busybox}/bin/install -d -m700 ${directory}/root
     ${pkgs.busybox}/bin/install -d -m700 ${mount}
     ${pkgs.util-linux}/bin/umount ${mount} || true
@@ -45,23 +44,21 @@ in
         StandardOutput = "null";
         StandardError = "null";
         RemainAfterExit = true;
-        EnvironmentFile = environment;
       };
       script = concatStringsSep "\n" [ setup install ];
     };
 
     systemd.services.secrets-sync = {
-      wants = [ "secrets.target" "network-online.target" ];
-      after = [ "secrets.target" "network.target" "network-online.target" ];
+      wants = [ "secrets.service" "network-online.target" ];
+      after = [ "secrets.service" "network.target" "network-online.target" ];
       unitConfig.DefaultDependencies = "no";
       serviceConfig = {
         Type = "oneshot";
         StandardOutput = "null";
         StandardError = "null";
         RemainAfterExit = true;
-        EnvironmentFile = environment;
       };
-      script = concatStringsSep "\n" [ setup sync install ];
+      script = concatStringsSep "\n" [ sync install ];
     };
 
     system.activationScripts.secrets-sync = {

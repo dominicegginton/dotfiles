@@ -80,6 +80,10 @@ with lib;
       text = ''${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"'';
     };
 
+    services.udev.packages = [
+      pkgs.android-udev-rules
+    ];
+
     environment.systemPackages = with pkgs; [
       cachix
       file

@@ -59,8 +59,8 @@
             inherit system;
             hostPlatform = system;
             config = {
+              android_sdk.accept_license = true;
               joypixels.acceptLicense = true;
-              nvidia.acceptLicense = true;
               allowUnfree = true;
               allowBroken = true;
             };
@@ -78,6 +78,7 @@
           formatter = pkgs.nixpkgs-fmt;
           legacyPackages = pkgs;
           devShells = {
+            android = pkgs.callPackage ./shells/android.nix { };
             default = pkgs.callPackage ./shell.nix { };
             nodejs = pkgs.callPackage ./shells/nodejs.nix { };
             python = pkgs.callPackage ./shells/python.nix { };
