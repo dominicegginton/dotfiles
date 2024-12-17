@@ -14,7 +14,7 @@ writeShellApplication {
     }
     trap cleanup EXIT
     install -d -m755 "$temp/root/bitwarden-secrets"
-    sudo cp /root/bitwarden-secrets/secrets.json "$temp/root/bitwarden-secrets/secrets.json"
+    sudo cp -r /root/bitwarden-secrets "$temp/root/bitwarden-secrets"
     chown -R root:root "$temp/root/bitwarden-secrets"
     chmod -R 700 "$temp/root/bitwarden-secrets"
     hosts=$(nix flake show --json | jq -r '.nixosConfigurations | keys | .[]' | grep -v minimal-iso)
