@@ -7,5 +7,5 @@
   ];
   nix.settings.experimental-features = "nix-command flakes";
   services.openssh.enable = true;
-  environment.systemPackages = with pkgs; [ fuse nmap fzf bottom ];
+  environment.systemPackages = with pkgs; [ fuse bottom ];
 }
