@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ config, lib, inputs, ... }:
 
 {
   imports = [ inputs.nixos-hardware.nixosModules.dell-latitude-7390 ];
@@ -13,6 +13,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" "vhost_vsock" ];
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
