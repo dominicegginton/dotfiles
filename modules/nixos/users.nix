@@ -4,13 +4,6 @@ with lib;
 
 {
   config = {
-    home-manager.users = {
-      dom = _: {
-        imports = [
-          ../../home/dom
-        ];
-      };
-    };
     users.users = {
       dom = {
         description = "Dominic Egginton";

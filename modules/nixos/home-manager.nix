@@ -1,5 +1,4 @@
 { inputs, config, theme, pkgs, stateVersion, ... }:
-
 {
   config = {
     home-manager.useGlobalPkgs = true;
@@ -13,7 +12,11 @@
         home.stateVersion = stateVersion;
         home.activation.report-changes = "${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath";
       }
-      ../../home-manager ## todo: refactor
+      ../home-manager
     ];
+
+    home-manager.users = {
+      dom = _: { imports = [ ../../home/dom ]; };
+    };
   };
 }
