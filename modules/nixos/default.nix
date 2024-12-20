@@ -8,10 +8,11 @@ with lib;
     "${modulesPath}/profiles/qemu-guest.nix"
     ./console
     ./display
-    ./programs/steam.nix
-    ./users.nix
     ./services
     ./secrets.nix
+    ./steam.nix
+    ./theme.nix
+    ./users.nix
   ];
 
   config = {
@@ -73,28 +74,6 @@ with lib;
 
     programs.gnupg.agent.enable = true;
     programs.gnupg.agent.pinentryPackage = pkgs.pinentry;
-
-    systemd.timers.auto-theme = {
-      wantedBy = [ "timers.target" ];
-      timerConfig = {
-        OnBootSec = "5m";
-        OnUnitActiveSec = "5m";
-        Unit = "auto-theme.service";
-      };
-    };
-    systemd.services.auto-theme = {
-      serviceConfig.Type = "oneshot";
-      script = ''
-        current_time=$(${pkgs.coreutils}/bin/date +%H:%M)
-        if [ "$current_time" \> "06:00" ] && [ "$current_time" \< "18:00" ]; then
-            ${pkgs.coreutils}/bin/echo "light" > /etc/theme
-        else
-            ${pkgs.coreutils}/bin/echo "dark" > /etc/theme
-        fi
-        ${pkgs.coreutils}/bin/echo ${theme} > /etc/theme ## temp set theme from nix config always
-        ${pkgs.coreutils}/bin/echo "Theme set to $(${pkgs.coreutils}/bin/cat /etc/theme)"
-      '';
-    };
 
     system.activationScripts.diff = {
       supportsDryActivation = true;
