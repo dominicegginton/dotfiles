@@ -7,11 +7,6 @@ in
 with lib;
 
 {
-  imports = [
-    ./sway.nix
-    ./plasma.nix
-  ];
-
   options.modules.display.enable = mkEnableOption "display";
 
   config = mkIf cfg.enable {

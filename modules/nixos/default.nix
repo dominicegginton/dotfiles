@@ -6,13 +6,23 @@ with lib;
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
-    ./console
-    ./display
-    ./services
+    ./bluetooth.nix
+    ./console.nix
+    ./deluge.nix
+    ./display.nix
+    ./distributed-builds.nix
+    ./home-assistant.nix
+    ./home-manager.nix
+    ./networking.nix
+    ./plasma.nix
+    ./plex.nix
     ./secrets.nix
     ./steam.nix
+    ./sway.nix
     ./theme.nix
+    ./unifi.nix
     ./users.nix
+    ./virtualisation.nix
   ];
 
   config = {
