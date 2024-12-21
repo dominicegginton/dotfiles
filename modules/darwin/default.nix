@@ -5,6 +5,7 @@
     inputs.home-manager.darwinModules.home-manager
     ./console.nix
     ./homebrew.nix
+    ./home-manager.nix
     ./networking.nix
     ./system.nix
   ];

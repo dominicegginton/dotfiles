@@ -9,11 +9,6 @@ in
 with lib;
 
 {
-  imports = [
-    ./plasma.nix
-    ./sway.nix
-  ];
-
   options.modules.display.enable = mkEnableOption "Enable graphical desktop environment";
 
   config = mkIf cfg.enable {
