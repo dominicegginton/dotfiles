@@ -13,8 +13,10 @@ NixOS | NixDarwin | HomeManager | Bitwarden Managed Secrets |
 - **User Home Environments** - Reproducible user home environments using _HomeManager_.
 - **NixOS and Darwin Hosts** - Resproducible configurations for _NixOS_ & _Darwin_ hosts.
 - **Bitwarden Managed Secrets** - Secrets managed with _Bitwarden Secret Managemer_.
+- **CSV Scanning** - Automatic CSV vulnerability scanning using _Vulnix_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Base16 Themes** - Base16 theming throughout system and package configurations.
+- **Nix Overlays** - Custom Nix overlays for packages, extra utils and tools.
 - **Ad-hoc Shell Environments** - Reproducible ad-hoc shell environments for common tools and tasks.
 - **Flake Templates** - Flake templates included for bootstrapping workspaces.
 
