@@ -4,7 +4,6 @@
 
 ```ocaml
 Declarative System, Package & Home Configurations - WIP Always
-NixOS | NixDarwin | HomeManager | Bitwarden Managed Secrets |
 ```
 
 ## Features
@@ -13,7 +12,7 @@ NixOS | NixDarwin | HomeManager | Bitwarden Managed Secrets |
 - **User Home Environments** - Reproducible user home environments using _HomeManager_.
 - **NixOS and Darwin Hosts** - Resproducible configurations for _NixOS_ & _Darwin_ hosts.
 - **Bitwarden Managed Secrets** - Secrets managed with _Bitwarden Secret Managemer_.
-- **CSV Scanning** - Automatic CSV vulnerability scanning using _Vulnix_.
+- **CVS Scanning** - Automatic CVS vulnerability scanning using _Vulnix_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Base16 Themes** - Base16 theming throughout system and package configurations.
 - **Nix Overlays** - Custom Nix overlays for packages, extra utils and tools.
@@ -23,9 +22,8 @@ NixOS | NixDarwin | HomeManager | Bitwarden Managed Secrets |
 > [!CAUTION]
 >
 > Host and home configurations within this workspace contain secrets values that
-> are managed using Bitwarden Secret Management. Hosts are authenticated using a
-> Bitwarden machine account access token specified in a **etc/bitwarden-secrets.env**
-> file:
+> are managed using **Bitwarden Secrets**. Hosts are authenticated using a
+> Bitwarden machine account access token specified in **/etc/bitwarden-secrets.env**:
 >
 > ``` shell
 > BWS_PROJECT_ID=<bitwarden-secrets-manager-project-id>
@@ -45,7 +43,7 @@ This workspace follows the following structure:
 ├── shells          # Ad-hoc shells enviroments
 ├── templates       # Flake templates
 ├── flake.nix       # Flake inputs and outputs
-├── lib.nix         # Libary utils
-├── overlays.nix    # Nix overlays
+├── lib.nix         # Nix utils
+├── overlays.nix    # Package overlays
 └── shell.nix       # Workspace development shell
 ```
