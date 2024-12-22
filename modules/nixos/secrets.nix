@@ -31,7 +31,7 @@ let
     ${pkgs.gum}/bin/gum log --level info "Bitwarden Secrets installed"
   '';
   sync = ''
-    ${pkgs.gum}/bin/gum log --level info "Syncing Bitwarden Secrets"
+    set -e -o pipefail
     source ${environment}
     export BWS_ACCESS_TOKEN
     export BWS_PROJECT_ID
@@ -39,9 +39,10 @@ let
       ${pkgs.gum}/bin/gum log --level error "BWS_ACCESS_TOKEN and BWS_PROJECT_ID must be set in ${environment}"
       exit 1
     fi
+    ${pkgs.gum}/bin/gum log --level info "Syncing Bitwarden Secrets"
     ${pkgs.bws}/bin/bws secret list "$BWS_PROJECT_ID" --output json > ${directory}/secrets.json
     secret_ids=$(${pkgs.jq}/bin/jq -r '.[] | .id' ${directory}/secrets.json)
-    ${pkgs.gum}/bin/gum log --level info "$(echo $secret_ids | wc -w) secrets found"
+    ${pkgs.gum}/bin/gum log --level info "Syncing $(echo $secret_ids | wc -w) secrets found in project $BWS_PROJECT_ID"
     for id in $secret_ids; do
       name=$(${pkgs.jq}/bin/jq -r ".[] | select(.id == \"$id\") | .key" ${directory}/secrets.json)
       value=$(${pkgs.jq}/bin/jq -r ".[] | select(.id == \"$id\") | .value" ${directory}/secrets.json)

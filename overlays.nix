@@ -5,6 +5,7 @@ with lib;
 rec {
   additions = final: prev: {
     inherit (packagesFrom inputs.nixos-images { inherit (final) system; }) image-installer-nixos-stable;
+    inherit (packagesFrom inputs.vulnix { inherit (final) system; }) vulnix;
     bootstrap-nixos-host = final.callPackage ./pkgs/bootstrap-nixos-host.nix { };
     bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
