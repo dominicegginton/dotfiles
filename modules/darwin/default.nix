@@ -8,6 +8,7 @@
     ./home-manager.nix
     ./networking.nix
     ./system.nix
+    ./users.nix
   ];
 
   config = {

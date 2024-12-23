@@ -19,8 +19,9 @@ in
       ".gitmessage".source = ./sources/.gitmessage;
     };
 
-    home.packages = with pkgs; [ bitwarden-cli ]
+    home.packages = with pkgs; [ ]
       ++ (if isLinux then [
+      bitwarden-cli
       whatsapp-for-linux
       telegram-desktop
       thunderbird

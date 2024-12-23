@@ -1,8 +1,10 @@
 { inputs, config, theme, pkgs, stateVersion, ... }:
+
 {
   config = {
     home-manager.useGlobalPkgs = true;
     home-manager.useUserPackages = true;
+    extraSpecialArgs = { inherit theme; };
     home-manager.sharedModules = [
       inputs.impermanence.homeManagerModules.impermanence
       inputs.plasma-manager.homeManagerModules.plasma-manager

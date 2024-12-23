@@ -40,8 +40,9 @@ rec {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
       modules = [
-        ./hosts/darwin/${hostname}
+        ./hosts/darwin/${hostname}.nix
         ./modules/darwin
+        { home-manager.extraSpecialArgs = specialArgsFor hostname; }
       ];
     };
 }
