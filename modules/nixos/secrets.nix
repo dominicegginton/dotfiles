@@ -69,30 +69,10 @@ in
       script = concatStringsSep "\n" [ setup install ];
     };
 
-    systemd.timers.secrets-sync = {
-      wantedBy = [ "timers.target" ];
-      wants = [ "network-online.target" ];
-      after = [ "network.target" "netork-online.target" ];
-      timerConfig = {
-        OnCalendar = "*:0/1";
-        Persistent = true;
-        Unit = "secrets-sync.service";
-      };
-    };
-
-    systemd.services.secrets-sync = {
-      wantedBy = [ "timers.target" ];
-      wants = [ "network-online.target" ];
-      after = [ "network.target" "network-online.target" ];
-      serviceConfig.Type = "oneshot";
-      serviceConfig.RemainAfterExit = true;
-      script = concatStringsSep "\n" [ sync install ];
-    };
-
     system.activationScripts.sync-secrets = {
       deps = [ "usrbinenv" ];
       supportsDryActivation = false;
-      text = config.systemd.services.secrets-sync.script;
+      text = concatStringsSep "\n" [ sync install ];
     };
   };
 }
