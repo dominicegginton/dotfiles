@@ -17,6 +17,7 @@ rec {
     nodejs-shell-setup-hook = final.callPackage ./pkgs/nodejs-shell-setup-hook.nix { };
     nixos-anywhere = final.callPackage (defaultPackageFrom inputs.nixos-anywhere) { };
     todo = final.callPackage (defaultPackageFrom inputs.todo) { };
+    secrets-sync = final.callPackage ./pkgs/secrets-sync.nix { };
     twx = final.callPackage ./pkgs/twx.nix { };
     lib = prev.lib // lib;
   };

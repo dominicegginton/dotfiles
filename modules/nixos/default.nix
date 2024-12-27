@@ -90,15 +90,15 @@ with lib;
       text = ''${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"'';
     };
 
-    system.activationScripts.vulnix = {
-      deps = [ "nvd" ];
-      supportsDryActivation = true;
-      text = ''
-        ${pkgs.gum}/bin/gum spin --show-output --title "Scanning for vulnerabilities" -- ${pkgs.vulnix}/bin/vulnix "$systemConfig" || \
-        ${pkgs.gum}/bin/gum log --level error "Vulnerabilities found in system configuration ($systemConfig) - see above for details" && \
-        true
-      '';
-    };
+    # system.activationScripts.vulnix = {
+    #   deps = [ "nvd" ];
+    #   supportsDryActivation = false;
+    #   text = ''
+    #     ${pkgs.gum}/bin/gum spin --show-output --title "Scanning for vulnerabilities" -- ${pkgs.vulnix}/bin/vulnix "$systemConfig" || \
+    #     ${pkgs.gum}/bin/gum log --prefix vulnix --level error "Vulnerabilities found in system configuration ($systemConfig) - see above for details" && \
+    #     true
+    #   '';
+    # };
 
     services.udev.packages = [ pkgs.android-udev-rules ];
     environment.systemPackages = with pkgs; [

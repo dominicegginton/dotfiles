@@ -13,7 +13,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" "vhost_vsock" ];
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
@@ -24,7 +23,6 @@
   modules = {
     display.enable = true;
     display.plasma.enable = true;
-    services.distributedBuilds.enable = true;
     services.virtualisation.enable = true;
     services.bluetooth.enable = true;
     networking.wireless.enable = true;
