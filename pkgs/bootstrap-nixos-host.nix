@@ -1,15 +1,9 @@
-{ writeShellApplication, coreutils, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum }:
+{ stdenv, writeShellApplication, coreutils, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
 
 writeShellApplication rec {
   name = "bootstrap-nixos-host";
-  runtimeInputs = [ coreutils busybox nix nixos-anywhere fzf nmap jq gum ];
+  runtimeInputs = [ coreutils busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ];
   text = ''
-    set -efu -o pipefail
-    temp=$(mktemp -d)
-    cleanup() {
-      rm -rf "$temp"
-    }
-    trap cleanup EXIT
     if [ "$(id -u)" -ne 0 ]; then
       echo "This script must be run as root" 1>&2
       exit 1
@@ -19,27 +13,42 @@ writeShellApplication rec {
       echo "This script must be run from the dotfiles flake root directory" 1>&2
       exit 1
     fi
+
+    temp=$(mktemp -d)
+    cleanup() {
+      rm -rf "$temp"
+    }
+    trap cleanup EXIT
+
     hostnames=$(echo "$hostnames" | grep -v "minimal-iso")
     hostname=$(echo "$hostnames" | tr " " "\n" | fzf --prompt "Select a hostname: " --height ~100%)
-    scan=$(printf "Scan network for installer IP\nUse nixos-installer.local" | fzf --prompt "Select an option: " --height ~100%)
-    if [ "$scan" == "Scan network for installer IP" ]; then
+    scan=$(printf "scan network\ninput manually\nnixos-installer.local" | fzf --prompt "Select an installer: " --height ~100%)
+    if [ "$scan" == "scan network" ]; then
       gum spin --show-output --title "Scanning network" -- nmap -sn "$(ip route | grep default | awk '{print $3}')"/24 -oG - | grep "Up" | awk '{print $2}' > "$temp/ips"
       ips=$(cat "$temp/ips")
       rm "$temp/ips"
       installer_ip=$(echo "$ips" | fzf --prompt "Select the installer: " --height ~100% --preview "sleep 1 && nmap -A {}")
+    elif [ "$scan" == "input manually" ]; then
+      installer_ip=$(gum input --prompt "Enter the installer IP: " --placeholder "xxx.xxx.xxx.xxx")
     else
       installer_ip="nixos-installer.local"
     fi
-    build_target=$(printf "Build on host\nBuild on installer" | fzf --prompt "Select a build target: " --height ~100% | awk '{print $3}')
-
-    install -d -m755 "$temp/root/bitwarden-secrets"
-    install -d -m755 "$temp/run/bitwarden-secrets"
-    install -d -m755 "$temp/etc"
+    build_target=$(printf "host\nremote" | fzf --prompt "Select a build target: " --height ~100%)
+    secrets-sync
+    mkdir -p "$temp/root/bitwarden-secrets"
+    mkdir -p "$temp/run/bitwarden-secrets"
+    chown -R root:root "$temp/root/bitwarden-secrets"
+    chown -R root:root "$temp/run/bitwarden-secrets"
+    chmod -R 700 "$temp/root/bitwarden-secrets"
+    chmod -R 700 "$temp/run/bitwarden-secrets"
     cp -r /root/bitwarden-secrets "$temp/root"
-    cp -r "$temp/root/bitwarden-secrets" "$temp/run/bitwarden-secrets"
-    gum input --password --header "Bitwarden Secrets Project ID" | echo "BWS_PROJECT_ID=$(cat)" >> "$temp/etc/bitwarden-secrets.env"
-    gum input --password --header "Bitward Secrets Access Token" | echo "BWS_ACCESS_TOKEN=$(cat)" >> "$temp/etc/bitwarden-secrets.env"
-    cat "$temp/etc/bitwarden-secrets.env"
+    secrets=$(find "$temp/root/bitwarden-secrets/secrets" -type f)
+    for secret in $secrets; do
+      name=$(basename "$secret")
+      cp "$secret" "$temp/run/bitwarden-secrets/$name"
+      chown root:root "$temp/run/bitwarden-secrets/$name"
+      chmod 600 "$temp/run/bitwarden-secrets/$name"
+    done
 
     msg=()
     msg+=("$(gum style --foreground=111 --align=center --width=50 --margin="1 2" --padding="2 4" "NixOS")")
@@ -47,6 +56,7 @@ writeShellApplication rec {
     msg+=("Hostname: $hostname")
     msg+=("Installer IP: $installer_ip")
     msg+=( "Build target: $build_target" )
+    msg+=("Temp directory size: $(du -sh "$temp" | awk '{print $1}')")
     gum style --border-foreground=111 --border normal "''${msg[@]}"
     gum confirm "Continue with the above configuration?" || exit 1
 

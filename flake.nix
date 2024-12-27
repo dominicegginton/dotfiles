@@ -35,7 +35,10 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
+    juvian.url = "github:jovian-experiments/jovian-nixos";
+    juvian.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
+
 
   outputs = { self, nixpkgs, flake-utils, ... }:
 

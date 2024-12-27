@@ -25,6 +25,7 @@ rec {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
       modules = [
+        inputs.juvian.nixosModules.default
         inputs.impermanence.nixosModules.impermanence
         inputs.disko.nixosModules.disko
         inputs.home-manager.nixosModules.default
