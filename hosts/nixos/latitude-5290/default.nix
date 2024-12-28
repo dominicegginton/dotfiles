@@ -92,7 +92,6 @@
   programs.fuse.userAllowOther = true;
   fileSystems."/persist".neededForBoot = true;
   environment.persistence."/persist" = {
-    hideMounts = true;
     directories = [
       "/etc/nixos"
       "/var/log"
@@ -113,13 +112,9 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
 
-  jovian.steam.enable = true;
-  jovian.steam.autoStart = true;
-  jovian.steam.user = "dom";
-
   modules = {
     display.enable = true;
-    # display.plasma.enable = true;
+    display.plasma.enable = true;
     services.bluetooth.enable = true;
     networking.wireless.enable = true;
   };

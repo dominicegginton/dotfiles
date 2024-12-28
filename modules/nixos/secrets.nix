@@ -33,5 +33,11 @@ in
         done
       '';
     };
+
+    system.activationScripts.secrets = {
+      text = config.systemd.services.secrets.script;
+      deps = [ "specialfs" ];
+    };
+    system.activationScripts.users.deps = [ "secrets" ];
   };
 }

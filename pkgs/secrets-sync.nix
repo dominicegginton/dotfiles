@@ -1,4 +1,4 @@
-{ stdenv, writers, busybox, gum, jq, bws, ... }:
+{ stdenv, writers, ensure-user-is-root, busybox, gum, jq, bws, ... }:
 
 if (!stdenv.isLinux)
 then throw "This script can only be run on linux hosts"
@@ -10,10 +10,7 @@ else
   in
 
   writers.writeBashBin "secrets-sync" ''
-    if [ "$(id -u)" != "0" ]; then
-      echo "This script must be run as root" 1>&2
-      exit 1
-    fi
+    ${ensure-user-is-root}/bin/ensure-user-is-root || exit 1
     BWS_PROJECT_ID=$(${gum}/bin/gum input --password --prompt "Bitwarden Secrets Project ID: " --placeholder "********")
     BWS_ACCESS_TOKEN=$(${gum}/bin/gum input --password --prompt "Bitwarden Secrets Access Token: " --placeholder "********")
     ${gum}/bin/gum spin \

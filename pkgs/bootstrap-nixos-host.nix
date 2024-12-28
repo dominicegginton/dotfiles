@@ -1,13 +1,10 @@
-{ stdenv, writeShellApplication, coreutils, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
+{ stdenv, writeShellApplication, ensure-user-is-root, coreutils, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
 
 writeShellApplication rec {
   name = "bootstrap-nixos-host";
-  runtimeInputs = [ coreutils busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ];
+  runtimeInputs = [ ensure-user-is-root coreutils busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ];
   text = ''
-    if [ "$(id -u)" -ne 0 ]; then
-      echo "This script must be run as root" 1>&2
-      exit 1
-    fi
+    ensure-user-is-root
     hostnames=$(nix flake show --json --all-systems | jq -r '.nixosConfigurations | keys | .[]')
     if ! echo "$hostnames" | grep -q "minimal-iso"; then
       echo "This script must be run from the dotfiles flake root directory" 1>&2

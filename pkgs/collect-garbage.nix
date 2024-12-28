@@ -1,13 +1,10 @@
-{ writeShellApplication, nix, home-manager }:
+{ writeShellApplication, ensure-user-is-root, nix, home-manager }:
 
 writeShellApplication {
   name = "collect-garbage";
-  runtimeInputs = [ nix home-manager ];
+  runtimeInputs = [ nix home-manager ensure-user-is-root ];
   text = ''
-    if [ "$(id -u)" != "0" ]; then
-      echo "This script must be run as root" 1>&2
-      exit 1
-    fi
+    ensure-user-is-root
     nix store gc
     nix-env --delete-generations +2
     nix-env --profile /nix/var/nix/profiles/system --delete-generations +2

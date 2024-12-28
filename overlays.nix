@@ -8,6 +8,7 @@ rec {
     inherit (packagesFrom inputs.vulnix { inherit (final) system; }) vulnix;
     bootstrap-nixos-host = final.callPackage ./pkgs/bootstrap-nixos-host.nix { };
     bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
+    ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
     export-aws-credentials = final.callPackage ./pkgs/export-aws-credentials.nix { };
     gpg-import-keys = final.callPackage ./pkgs/gpg-import-keys.nix { };

@@ -1,4 +1,4 @@
-{ stdenv, writeShellApplication }:
+{ stdenv, writeShellApplication, ensure-user-is-root }:
 
 
 if (!stdenv.isDarwin)
@@ -7,5 +7,8 @@ else
 
   writeShellApplication {
     name = "network-filters-disable";
-    text = "sudo launchctl unload /Library/LaunchDaemons/com.cisco.secureclient.vpnagentd.plist /Library/LaunchDaemons/com.cisco.secureclient.ciscod64.plist";
+    text = ''
+      ensure-user-is-root
+      launchctl unload /Library/LaunchDaemons/com.cisco.secureclient.vpnagentd.plist /Library/LaunchDaemons/com.cisco.secureclient.ciscod64.plist
+    '';
   }

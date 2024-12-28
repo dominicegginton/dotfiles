@@ -27,10 +27,6 @@ with lib;
 
   config = {
     system.stateVersion = stateVersion;
-    time.timeZone = "Europe/London";
-    i18n.defaultLocale = "en_GB.UTF-8";
-    console.keyMap = "uk";
-
     nix = {
       package = pkgs.unstable.nix;
       gc.automatic = true;
@@ -62,44 +58,29 @@ with lib;
         ];
       };
     };
-
-    boot.consoleLogLevel = 0;
-    boot.initrd.verbose = false;
-
-    documentation = {
-      enable = true;
-      man.enable = true;
-      nixos.enable = true;
-      info.enable = true;
-      doc.enable = true;
-    };
-
+    time.timeZone = "Europe/London";
+    i18n.defaultLocale = "en_GB.UTF-8";
+    console.keyMap = "uk";
     security.sudo.enable = true;
     security.polkit.enable = true;
     security.rtkit.enable = true;
-
+    boot.consoleLogLevel = 0;
+    boot.initrd.verbose = false;
     services.dbus.enable = true;
     services.smartd.enable = true;
     services.thermald.enable = true;
-
+    documentation.enable = true;
+    documentation.man.enable = true;
+    documentation.nixos.enable = true;
+    documentation.info.enable = true;
+    documentation.doc.enable = true;
     programs.gnupg.agent.enable = true;
     programs.gnupg.agent.pinentryPackage = pkgs.pinentry;
-
-    system.activationScripts.nvd = {
-      supportsDryActivation = true;
-      text = ''${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"'';
-    };
-
-    # system.activationScripts.vulnix = {
-    #   deps = [ "nvd" ];
-    #   supportsDryActivation = false;
-    #   text = ''
-    #     ${pkgs.gum}/bin/gum spin --show-output --title "Scanning for vulnerabilities" -- ${pkgs.vulnix}/bin/vulnix "$systemConfig" || \
-    #     ${pkgs.gum}/bin/gum log --prefix vulnix --level error "Vulnerabilities found in system configuration ($systemConfig) - see above for details" && \
-    #     true
-    #   '';
-    # };
-
+    system.activationScripts.diff.text = ''
+      if [[ -e /run/current-system ]]; then
+        ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+      fi
+    '';
     services.udev.packages = [ pkgs.android-udev-rules ];
     environment.systemPackages = with pkgs; [
       cachix
@@ -123,6 +104,8 @@ with lib;
       git-lfs
       pinentry
       pinentry-curses
+      collect-garbage
+      secrets-sync
     ];
   };
 }

@@ -1,9 +1,10 @@
-{ writeShellApplication, coreutils, fzf, image-installer-nixos-stable }:
+{ writeShellApplication, ensure-user-is-root, coreutils, fzf, image-installer-nixos-stable }:
 
 writeShellApplication {
   name = "bootstrap-nixos-iso-device";
   runtimeInputs = [ coreutils fzf ];
   text = ''
+    ensure-user-is-root
     device=$(lsblk -d -o name \
       | tail -n +2 \
       | fzf --preview 'lsblk -o name,serial,rota,tran,rm,hotplug,ro,type,size,mountpoint' --preview-window=right:60%:wrap --header='Select the device to install NixOS on')
