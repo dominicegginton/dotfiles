@@ -1,9 +1,7 @@
 { ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   disko.devices = {
     disk = {
@@ -14,7 +12,10 @@
           type = "gpt";
           partitions = {
             ESP = {
-              size = "500M";
+              priority = 1;
+              name = "ESP";
+              start = "1M";
+              end = "128M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -26,35 +27,26 @@
             root = {
               size = "100%";
               content = {
-                type = "filesystem";
-                format = "ext4";
+                type = "btrfs";
+                extraArgs = [ "-f" ];
                 mountpoint = "/";
+                mountOptions = [ "noatime" ];
               };
             };
           };
         };
       };
     };
-    nodev = {
-      "/tmp" = {
-        fsType = "tmpfs";
-        mountOptions = [ "defaults" "size=2G" "mode=755" ];
-      };
-    };
   };
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
-
   modules = {
     display.enable = true;
     display.plasma.enable = true;
     services.bluetooth.enable = true;
-    services.networking.enable = true;
-    services.networking.wireless = true;
+    networking.wireless.enable = true;
   };
 }

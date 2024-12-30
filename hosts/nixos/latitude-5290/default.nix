@@ -1,9 +1,7 @@
 { lib, ... }:
 
 {
-  imports = [
-    ./hardware-configuration.nix
-  ];
+  imports = [ ./hardware-configuration.nix ];
 
   disko.devices = {
     disk = {
@@ -104,14 +102,11 @@
     ];
     files = [ "/etc/machine-id" ];
   };
-
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
-
   modules = {
     display.enable = true;
     display.plasma.enable = true;
