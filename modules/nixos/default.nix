@@ -97,6 +97,7 @@ with lib;
       pinentry
       pinentry-curses
       collect-garbage
+      host-status
       secrets-sync
     ];
   };

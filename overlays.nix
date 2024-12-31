@@ -13,6 +13,7 @@ rec {
     export-aws-credentials = final.callPackage ./pkgs/export-aws-credentials.nix { };
     gpg-import-keys = final.callPackage ./pkgs/gpg-import-keys.nix { };
     install-nixos = final.callPackage ./pkgs/install-nixos.nix { };
+    host-status = final.callPackage ./pkgs/host-status.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     nodejs-shell-setup-hook = final.callPackage ./pkgs/nodejs-shell-setup-hook.nix { };

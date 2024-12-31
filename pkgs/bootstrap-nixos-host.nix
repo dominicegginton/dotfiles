@@ -49,8 +49,7 @@ writeShellApplication {
       chmod 600 "$temp/run/bitwarden-secrets/$name"
     done
     msg=()
-    msg+=("$(gum style --foreground=111 --align=center --width=50 --margin="1 2" --padding="2 4" "NixOS")")
-    msg+=("")
+    msgs+=("$(gum style --foreground=111 --align=center --margin="1 0" "NixOS")")
     msg+=("Hostname: $hostname")
     msg+=("Installer IP: $installer_ip")
     msg+=( "Build target: $build_target" )
