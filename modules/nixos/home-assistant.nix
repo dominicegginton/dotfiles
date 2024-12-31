@@ -14,7 +14,7 @@ in
     services.home-assistant.openFirewall = true;
     services.home-assistant.config = {
       homeassistant = {
-        name = "Home";
+        name = "Quarndon";
         latitude = "!secret latitude";
         longitude = "!secret longitude";
         elevation = "!secret elevation";

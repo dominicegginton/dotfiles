@@ -3,6 +3,10 @@
 let
   pkgsFor = platform: outputs.legacyPackages.${platform};
   specialArgsFor = hostname: { inherit inputs outputs stateVersion hostname theme; };
+  sharedModule = hostname: {
+    scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
+    home-manager.extraSpecialArgs = specialArgsFor hostname;
+  };
 in
 
 with inputs.nixpkgs.lib;
@@ -29,10 +33,10 @@ rec {
         inputs.impermanence.nixosModules.impermanence
         inputs.disko.nixosModules.disko
         inputs.home-manager.nixosModules.default
-        { home-manager.extraSpecialArgs = specialArgsFor hostname; }
         inputs.base16.nixosModule
         ./hosts/nixos/${hostname}
         ./modules/nixos
+        (sharedModule hostname)
       ];
     };
 
@@ -43,7 +47,7 @@ rec {
       modules = [
         ./hosts/darwin/${hostname}.nix
         ./modules/darwin
-        { home-manager.extraSpecialArgs = specialArgsFor hostname; }
+        (sharedModule hostname)
       ];
     };
 }

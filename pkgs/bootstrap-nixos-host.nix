@@ -1,8 +1,8 @@
-{ stdenv, writeShellApplication, ensure-user-is-root, coreutils, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
+{ stdenv, writeShellApplication, ensure-user-is-root, coreutils, git, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
 
-writeShellApplication rec {
+writeShellApplication {
   name = "bootstrap-nixos-host";
-  runtimeInputs = [ ensure-user-is-root coreutils busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ];
+  runtimeInputs = [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ];
   text = ''
     ensure-user-is-root
     hostnames=$(nix flake show --json --all-systems | jq -r '.nixosConfigurations | keys | .[]')
@@ -16,12 +16,14 @@ writeShellApplication rec {
       rm -rf "$temp"
     }
     trap cleanup EXIT
-
     hostnames=$(echo "$hostnames" | grep -v "minimal-iso")
     hostname=$(echo "$hostnames" | tr " " "\n" | fzf --prompt "Select a hostname: " --height ~100%)
     scan=$(printf "scan network\ninput manually\nnixos-installer.local" | fzf --prompt "Select an installer: " --height ~100%)
     if [ "$scan" == "scan network" ]; then
-      gum spin --show-output --title "Scanning network" -- nmap -sn "$(ip route | grep default | awk '{print $3}')"/24 -oG - | grep "Up" | awk '{print $2}' > "$temp/ips"
+      gum spin \
+        --show-output \
+        --title "Scanning network" \
+        -- nmap -sn "$(ip route | grep default | awk '{print $3}')"/24 -oG - | grep "Up" | awk '{print $2}' > "$temp/ips"
       ips=$(cat "$temp/ips")
       rm "$temp/ips"
       installer_ip=$(echo "$ips" | fzf --prompt "Select the installer: " --height ~100% --preview "sleep 1 && nmap -A {}")
@@ -46,7 +48,6 @@ writeShellApplication rec {
       chown root:root "$temp/run/bitwarden-secrets/$name"
       chmod 600 "$temp/run/bitwarden-secrets/$name"
     done
-
     msg=()
     msg+=("$(gum style --foreground=111 --align=center --width=50 --margin="1 2" --padding="2 4" "NixOS")")
     msg+=("")
@@ -56,13 +57,11 @@ writeShellApplication rec {
     msg+=("Temp directory size: $(du -sh "$temp" | awk '{print $1}')")
     gum style --border-foreground=111 --border normal "''${msg[@]}"
     gum confirm "Continue with the above configuration?" || exit 1
-
     if [ "$build_target" == "host" ]; then
       build_cmd="nixos-anywhere"
     else
       build_cmd="nixos-anywhere --build-on-remote"
     fi
-
     $build_cmd \
       --copy-host-keys \
       --extra-files "$temp" \

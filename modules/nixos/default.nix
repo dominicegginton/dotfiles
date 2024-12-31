@@ -8,21 +8,24 @@ with lib;
     "${modulesPath}/profiles/qemu-guest.nix"
     ./bluetooth.nix
     ./console.nix
-    ./deluge.nix
     ./display.nix
     ./distributed-builds.nix
+    ./documentation.nix
+    ./environment.nix
+    ./gpg.nix
     ./home-assistant.nix
     ./home-manager.nix
     ./networking.nix
     ./plasma.nix
-    ./plex.nix
     ./secrets.nix
+    ./security.nix
     ./steam.nix
     ./sway.nix
     ./theme.nix
     ./unifi.nix
     ./users.nix
     ./virtualisation.nix
+    ./zsh.nix
   ];
 
   config = {
@@ -60,22 +63,11 @@ with lib;
     };
     time.timeZone = "Europe/London";
     i18n.defaultLocale = "en_GB.UTF-8";
-    console.keyMap = "uk";
-    security.sudo.enable = true;
-    security.polkit.enable = true;
-    security.rtkit.enable = true;
     boot.consoleLogLevel = 0;
     boot.initrd.verbose = false;
     services.dbus.enable = true;
     services.smartd.enable = true;
     services.thermald.enable = true;
-    documentation.enable = true;
-    documentation.man.enable = true;
-    documentation.nixos.enable = true;
-    documentation.info.enable = true;
-    documentation.doc.enable = true;
-    programs.gnupg.agent.enable = true;
-    programs.gnupg.agent.pinentryPackage = pkgs.pinentry;
     system.activationScripts.diff.text = ''
       if [[ -e /run/current-system ]]; then
         ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
