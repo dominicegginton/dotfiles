@@ -18,6 +18,6 @@
       };
     };
 
-    home.packages = with pkgs; [ gitu onefetch ];
+    home.packages = with pkgs; [ gitu onefetch git-cleanup git-sync ];
   };
 }

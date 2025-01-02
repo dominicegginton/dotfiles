@@ -9,8 +9,11 @@ rec {
     bootstrap-nixos-host = final.callPackage ./pkgs/bootstrap-nixos-host.nix { };
     bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
+    ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     collect-garbage = final.callPackage ./pkgs/collect-garbage.nix { };
     export-aws-credentials = final.callPackage ./pkgs/export-aws-credentials.nix { };
+    git-cleanup = final.callPackage ./pkgs/git-cleanup.nix { };
+    git-sync = final.callPackage ./pkgs/git-sync.nix { };
     gpg-import-keys = final.callPackage ./pkgs/gpg-import-keys.nix { };
     install-nixos = final.callPackage ./pkgs/install-nixos.nix { };
     host-status = final.callPackage ./pkgs/host-status.nix { };

@@ -1,9 +1,11 @@
-{ stdenv, writeShellApplication, ensure-user-is-root, coreutils, git, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
+{ lib, stdenv, writers, ensure-user-is-root, coreutils, git, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
 
-writeShellApplication {
-  name = "bootstrap-nixos-host";
-  runtimeInputs = [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ];
-  text = ''
+if (!stdenv.isLinux)
+then throw "This script can only be run on linux hosts"
+else
+
+  writers.writeBashBin "bootstrap-nixos-hosts" ''
+    export PATH=${lib.makeBinPath [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ]}
     ensure-user-is-root
     hostnames=$(nix flake show --json --all-systems | jq -r '.nixosConfigurations | keys | .[]')
     if ! echo "$hostnames" | grep -q "minimal-iso"; then
@@ -66,5 +68,4 @@ writeShellApplication {
       --extra-files "$temp" \
       --generate-hardware-config nixos-generate-config "./hosts/nixos/$hostname/hardware-configuration.nix" \
       --flake ".#$hostname" "root@$installer_ip"
-  '';
-}
+  ''
