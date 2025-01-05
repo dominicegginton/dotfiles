@@ -4,10 +4,9 @@ with lib;
 
 rec {
   additions = final: prev: {
-    inherit (packagesFrom inputs.nixos-images { inherit (final) system; }) image-installer-nixos-stable;
     inherit (packagesFrom inputs.vulnix { inherit (final) system; }) vulnix;
     bootstrap-nixos-host = final.callPackage ./pkgs/bootstrap-nixos-host.nix { };
-    bootstrap-nixos-iso-device = final.callPackage ./pkgs/bootstrap-nixos-iso-device.nix { };
+    bootstrap-nixos-installer = final.callPackage ./pkgs/bootstrap-nixos-installer.nix { };
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
@@ -24,6 +23,7 @@ rec {
     nixos-anywhere = final.callPackage (defaultPackageFrom inputs.nixos-anywhere) { };
     todo = final.callPackage (defaultPackageFrom inputs.todo) { };
     secrets-sync = final.callPackage ./pkgs/secrets-sync.nix { };
+    set-theme = final.callPackage ./pkgs/set-theme.nix { };
     twx = final.callPackage ./pkgs/twx.nix { };
     lib = prev.lib // lib;
   };

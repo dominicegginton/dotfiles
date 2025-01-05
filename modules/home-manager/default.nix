@@ -12,6 +12,7 @@ _:
     ./plasma.nix
     ./ssh.nix
     ./sway.nix
+    ./theme.nix
     ./tmux.nix
     ./vscode.nix
     ./zsh.nix

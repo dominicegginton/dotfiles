@@ -1,4 +1,3 @@
-
 { lib, writers, coreutils, gum }:
 
 writers.writeBashBin "ensure-user-is-not-root" ''

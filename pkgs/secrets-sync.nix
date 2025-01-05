@@ -1,4 +1,4 @@
-{ stdenv, writers, ensure-user-is-root, busybox, gum, jq, bws, ... }:
+{ lib, stdenv, writers, ensure-user-is-root, busybox, gum, jq, bws, ... }:
 
 if (!stdenv.isLinux)
 then throw "This script can only be run on linux hosts"
@@ -10,29 +10,26 @@ else
   in
 
   writers.writeBashBin "secrets-sync" ''
-    ${ensure-user-is-root}/bin/ensure-user-is-root || exit 1
-    BWS_PROJECT_ID=$(${gum}/bin/gum input --password --prompt "Bitwarden Secrets Project ID: " --placeholder "********")
-    BWS_ACCESS_TOKEN=$(${gum}/bin/gum input --password --prompt "Bitwarden Secrets Access Token: " --placeholder "********")
-    ${gum}/bin/gum spin \
-      --title "Syncing Secrets" \
-      --show-output \
-      -- ${bws}/bin/bws secret list "$BWS_PROJECT_ID" \
-        --output json \
-        --access-token "$BWS_ACCESS_TOKEN" \
-        > ${directory}/secrets.json
-    secret_ids=$(${jq}/bin/jq -r '.[] | .id' ${directory}/secrets.json)
+    export PATH=${lib.makeBinPath [ ensure-user-is-root busybox gum jq bws ]}
+    set -efu -o pipefail
+    ensure-user-is-root
+    BWS_PROJECT_ID=$(gum input --password --prompt "Bitwarden Secrets Project ID: " --placeholder "********")
+    BWS_ACCESS_TOKEN=$(gum input --password --prompt "Bitwarden Secrets Access Token: " --placeholder "********")
+    gum spin --show-output --title "Syncing Secrets" \
+      -- bws secret list "$BWS_PROJECT_ID" --output json --access-token "$BWS_ACCESS_TOKEN" > ${directory}/secrets.json
+    secret_ids=$(q -r '.[] | .id' ${directory}/secrets.json)
     for id in $secret_ids; do
-      name=$(${jq}/bin/jq -r ".[] | select(.id == \"$id\") | .key" ${directory}/secrets.json)
-      value=$(${jq}/bin/jq -r ".[] | select(.id == \"$id\") | .value" ${directory}/secrets.json)
+      name=$(jq -r ".[] | select(.id == \"$id\") | .key" ${directory}/secrets.json)
+      value=$(jq -r ".[] | select(.id == \"$id\") | .value" ${directory}/secrets.json)
       if [ -z "$name" ] || [ -z "$value" ]; then
         continue
       fi
-      echo $value | ${busybox}/bin/sed 's/\\n/\n/g' > ${directory}/secrets/$name
-      ${busybox}/bin/chown root:root ${directory}/secrets/$name
-      ${busybox}/bin/chmod 600 ${directory}/secrets/$name
-      ${busybox}/bin/ln -sf ${directory}/secrets/$name ${mount}/$name
-      ${busybox}/bin/chown root:root ${mount}/$name
-      ${busybox}/bin/chmod 600 ${mount}/$name
-      ${gum}/bin/gum log --level info "Synced secret $name"
+      echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/$name
+      chown root:root ${directory}/secrets/$name
+      chmod 600 ${directory}/secrets/$name
+      ln -sf ${directory}/secrets/$name ${mount}/$name
+      chown root:root ${mount}/$name
+      chmod 600 ${mount}/$name
+      gum log --level info "Synced secret $name"
     done
   ''

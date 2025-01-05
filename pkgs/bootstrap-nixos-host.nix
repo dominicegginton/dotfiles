@@ -6,13 +6,13 @@ else
 
   writers.writeBashBin "bootstrap-nixos-hosts" ''
     export PATH=${lib.makeBinPath [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ]}
+    set -efu -o pipefail
     ensure-user-is-root
     hostnames=$(nix flake show --json --all-systems | jq -r '.nixosConfigurations | keys | .[]')
     if ! echo "$hostnames" | grep -q "minimal-iso"; then
       echo "This script must be run from the dotfiles flake root directory" 1>&2
       exit 1
     fi
-
     temp=$(mktemp -d)
     cleanup() {
       rm -rf "$temp"

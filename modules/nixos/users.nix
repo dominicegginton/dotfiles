@@ -36,5 +36,10 @@ with lib;
         hashedPassword = mkDefault null;
       };
     };
+
+    home-manager.users.dom = _: {
+      imports = [ ../../home/dom ];
+      programs.home-manager.enable = true;
+    };
   };
 }

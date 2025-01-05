@@ -7,7 +7,6 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    nixos-images.url = "github:nix-community/nixos-images";
     impermanence.url = "github:nix-community/impermanence";
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
     nixos-anywhere.inputs.nixpkgs.follows = "nixpkgs";
@@ -99,7 +98,7 @@
         latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
         precision-5530 = mkNixosHost { hostname = "precision-5530"; };
-        minimal-iso = mkNixosIso { hostname = "minimal-iso"; };
+        nixos-installer = mkNixosInstaller { hostname = "nixos-installer"; };
       };
 
       darwinConfigurations = {

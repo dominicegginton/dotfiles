@@ -3,10 +3,6 @@
 let
   pkgsFor = platform: outputs.legacyPackages.${platform};
   specialArgsFor = hostname: { inherit inputs outputs stateVersion hostname theme; };
-  sharedModule = hostname: {
-    scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
-    home-manager.extraSpecialArgs = specialArgsFor hostname;
-  };
 in
 
 with inputs.nixpkgs.lib;
@@ -17,26 +13,29 @@ rec {
   packagesFrom = module: { system }: module.packages.${system};
   defaultPackageFrom = module: attrs @ { system }: (packagesFrom module attrs // { inherit system; }).default;
 
-  mkNixosIso = { hostname, platform ? "x86_64-linux" }:
+  mkNixosInstaller = { hostname, platform ? "x86_64-linux" }:
     nixosSystem {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
-      modules = [ ./hosts/nixos/minimal-iso.nix ];
+      modules = [ ./hosts/nixos/nixos-installer.nix ];
     };
 
   mkNixosHost = { hostname, platform ? "x86_64-linux" }:
     nixosSystem {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
-      modules = [
-        inputs.juvian.nixosModules.default
-        inputs.impermanence.nixosModules.impermanence
-        inputs.disko.nixosModules.disko
-        inputs.home-manager.nixosModules.default
-        inputs.base16.nixosModule
-        ./hosts/nixos/${hostname}
+      modules = with inputs; [
+        disko.nixosModules.disko
+        home-manager.nixosModules.default
+        base16.nixosModule
+        juvian.nixosModules.default
+        impermanence.nixosModules.impermanence
+        (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./hosts/nixos/${hostname})
         ./modules/nixos
-        (sharedModule hostname)
+        {
+          scheme = "${inputs.tt-themes}/base16/solarized-${theme}.yaml";
+          home-manager.extraSpecialArgs = specialArgsFor hostname;
+        }
       ];
     };
 
@@ -47,7 +46,10 @@ rec {
       modules = [
         ./hosts/darwin/${hostname}.nix
         ./modules/darwin
-        (sharedModule hostname)
+        {
+          scheme = "${inputs.tt-themes}/base16/solarized-${theme}.yaml";
+          home-manager.extraSpecialArgs = specialArgsFor hostname;
+        }
       ];
     };
 }
