@@ -13,27 +13,23 @@ rec {
   packagesFrom = module: { system }: module.packages.${system};
   defaultPackageFrom = module: attrs @ { system }: (packagesFrom module attrs // { inherit system; }).default;
 
-  mkNixosInstaller = { hostname, platform ? "x86_64-linux" }:
-    nixosSystem {
-      pkgs = pkgsFor platform;
-      specialArgs = specialArgsFor hostname;
-      modules = [ ./hosts/nixos/nixos-installer.nix ];
-    };
-
   mkNixosHost = { hostname, platform ? "x86_64-linux" }:
     nixosSystem {
       pkgs = pkgsFor platform;
       specialArgs = specialArgsFor hostname;
       modules = with inputs; [
-        disko.nixosModules.disko
-        home-manager.nixosModules.default
         base16.nixosModule
-        juvian.nixosModules.default
+        disko.nixosModules.disko
         impermanence.nixosModules.impermanence
+        home-manager.nixosModules.default
+        juvian.nixosModules.default
+        ./modules/nixos/console.nix
+        ./modules/nixos/nix-settings.nix
+        (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./modules/nixos/system.nix)
         (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./hosts/nixos/${hostname})
-        ./modules/nixos
+        (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./modules/nixos)
         {
-          scheme = "${inputs.tt-themes}/base16/solarized-${theme}.yaml";
+          scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
           home-manager.extraSpecialArgs = specialArgsFor hostname;
         }
       ];
@@ -47,7 +43,7 @@ rec {
         ./hosts/darwin/${hostname}.nix
         ./modules/darwin
         {
-          scheme = "${inputs.tt-themes}/base16/solarized-${theme}.yaml";
+          scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
           home-manager.extraSpecialArgs = specialArgsFor hostname;
         }
       ];

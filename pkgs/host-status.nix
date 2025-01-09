@@ -18,8 +18,8 @@ writeShellScriptBin "host-status" ''
   msgs+=("Online: $online")
   msgs+=("Local addresses: $ips")
   msgs+=("Username: $(echo $username | gum style --foreground='#6f42c1')")
-  if [ "$(whoami)" == "root" ] && [ -f /var/shared/root-password ]; then
-    root_password=$(cat /var/shared/root-password | gum style --foreground='#d73a49')
+  if "$(whoami)" == "root"; then
+    root_password=$(echo "cat /var/shared/root-password)" | gum style --foreground='#d73a49')
     msgs+=("Root password: $root_password")
   fi
   msgs+=("Platform: $platform")

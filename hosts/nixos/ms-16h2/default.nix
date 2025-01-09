@@ -1,30 +1,36 @@
-{ lib, ... }:
+{ ... }:
 
 {
   imports = [ ./hardware-configuration.nix ];
+
   disko.devices = {
     disk = {
-      my-disk = {
+      main = {
         device = "/dev/sda";
         type = "disk";
         content = {
           type = "gpt";
           partitions = {
             ESP = {
+              priority = 1;
+              name = "ESP";
+              start = "1M";
+              end = "128M";
               type = "EF00";
-              size = "500M";
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+                mountOptions = [ "umask=0077" ];
               };
             };
             root = {
               size = "100%";
               content = {
-                type = "filesystem";
-                format = "ext4";
+                type = "btrfs";
+                extraArgs = [ "-f" ];
                 mountpoint = "/";
+                mountOptions = [ "noatime" ];
               };
             };
           };
@@ -40,7 +46,6 @@
   modules = {
     display.enable = true;
     display.plasma.enable = true;
-    services.virtualisation.enable = true;
     services.bluetooth.enable = true;
     networking.wireless.enable = true;
   };

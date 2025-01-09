@@ -7,9 +7,10 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
-    impermanence.url = "github:nix-community/impermanence";
+    nixos-images.url = "github:nix-community/nixos-images";
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
     nixos-anywhere.inputs.nixpkgs.follows = "nixpkgs";
+    impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:lnl7/nix-darwin";
@@ -38,6 +39,7 @@
     juvian.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
+  nixConfig.experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
 
   outputs = { self, nixpkgs, flake-utils, ... }:
 
@@ -97,8 +99,9 @@
       nixosConfigurations = {
         latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
+        ms-16h2 = mkNixosHost { hostname = "ms-16h2"; };
         precision-5530 = mkNixosHost { hostname = "precision-5530"; };
-        nixos-installer = mkNixosInstaller { hostname = "nixos-installer"; };
+        nixos-installer = mkNixosHost { hostname = "nixos-installer"; };
       };
 
       darwinConfigurations = {

@@ -66,3 +66,13 @@ lspconfig.lua_ls.setup({
     },
   },
 })
+lspconfig.nixd.setup({
+  capabilities = capabilities,
+  cmd = { 'nixd' },
+  settings = {
+    nixd = {
+      nixpkgs = { expr = 'import <nixpkgs> {}' },
+      formatting = { command = 'nixpkgs-fmt' },
+    },
+  },
+})

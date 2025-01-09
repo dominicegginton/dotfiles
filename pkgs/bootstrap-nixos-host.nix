@@ -8,19 +8,13 @@ else
     export PATH=${lib.makeBinPath [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ]}
     set -efu -o pipefail
     ensure-user-is-root
-    hostnames=$(nix flake show --json --all-systems | jq -r '.nixosConfigurations | keys | .[]')
-    if ! echo "$hostnames" | grep -q "minimal-iso"; then
-      echo "This script must be run from the dotfiles flake root directory" 1>&2
-      exit 1
-    fi
     temp=$(mktemp -d)
     cleanup() {
       rm -rf "$temp"
     }
     trap cleanup EXIT
-    hostnames=$(echo "$hostnames" | grep -v "minimal-iso")
-    hostname=$(echo "$hostnames" | tr " " "\n" | fzf --prompt "Select a hostname: " --height ~100%)
-    scan=$(printf "scan network\ninput manually\nnixos-installer.local" | fzf --prompt "Select an installer: " --height ~100%)
+    hostname=$(nix flake show --json --all-systems | jq -r '.nixosConfigurations | keys | .[]' | grep -v "nixos-installer" | tr " " "\n" | fzf --prompt "Select a hostname: " --height ~100%)
+    scan=$(printf "scan network\nnixos-installer.local" | fzf --prompt "Select an installer: " --height ~100%)
     if [ "$scan" == "scan network" ]; then
       gum spin \
         --show-output \
@@ -29,13 +23,11 @@ else
       ips=$(cat "$temp/ips")
       rm "$temp/ips"
       installer_ip=$(echo "$ips" | fzf --prompt "Select the installer: " --height ~100% --preview "sleep 1 && nmap -A {}")
-    elif [ "$scan" == "input manually" ]; then
-      installer_ip=$(gum input --prompt "Enter the installer IP: " --placeholder "xxx.xxx.xxx.xxx")
     else
       installer_ip="nixos-installer.local"
     fi
     build_target=$(printf "host\nremote" | fzf --prompt "Select a build target: " --height ~100%)
-    secrets-sync
+    gum confirm "Would you like to sync secrets before copying them to the installer?" && secrets-sync
     mkdir -p "$temp/root/bitwarden-secrets"
     mkdir -p "$temp/run/bitwarden-secrets"
     chown -R root:root "$temp/root/bitwarden-secrets"

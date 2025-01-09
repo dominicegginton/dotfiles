@@ -4,7 +4,7 @@ mkShell {
   nativeBuildInputs = with pkgs; [
     nix
     bootstrap-nixos-host
-    bootstrap-nixos-iso-device
+    bootstrap-nixos-installer
     collect-garbage
     git-cleanup
     git-sync

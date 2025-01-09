@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, ... }:
 
 with lib;
 
@@ -14,7 +14,7 @@ with lib;
         fd
         fzf
         tree-sitter
-        nil
+        nixd
         gcc
         rustc
         cargo
@@ -31,6 +31,7 @@ with lib;
         nodePackages.vscode-langservers-extracted
         prettierd
         eslint_d
+        nixpkgs-fmt
         stylua
       ];
     };

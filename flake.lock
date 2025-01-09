@@ -658,6 +658,25 @@
         "type": "github"
       }
     },
+    "nixos-images_2": {
+      "inputs": {
+        "nixos-stable": "nixos-stable_2",
+        "nixos-unstable": "nixos-unstable"
+      },
+      "locked": {
+        "lastModified": 1735025020,
+        "narHash": "sha256-ZKGyCvFaG8ygpBp6aPzKJOXvTj68vsdB3CXSSxCXOXk=",
+        "owner": "nix-community",
+        "repo": "nixos-images",
+        "rev": "0a157d05404afa5d28b21be213e451fa70ece56d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nixos-images",
+        "type": "github"
+      }
+    },
     "nixos-stable": {
       "locked": {
         "lastModified": 1733808091,
@@ -670,6 +689,38 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixos-stable_2": {
+      "locked": {
+        "lastModified": 1733151992,
+        "narHash": "sha256-o62gECqmpsXxXEtr2Ns1L6CYAFyS0cmuZW7v2zqr+vM=",
+        "owner": "Mic92",
+        "repo": "nixpkgs",
+        "rev": "f13a1a165096903d5174cded99ba821e617a47a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "ref": "compression-24.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixos-unstable": {
+      "locked": {
+        "lastModified": 1734435836,
+        "narHash": "sha256-kMBQ5PRiFLagltK0sH+08aiNt3zGERC2297iB6vrvlU=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "4989a246d7a390a859852baddb1013f825435cee",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -825,6 +876,7 @@
         "nix-darwin": "nix-darwin",
         "nixos-anywhere": "nixos-anywhere",
         "nixos-hardware": "nixos-hardware",
+        "nixos-images": "nixos-images_2",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "plasma-manager": "plasma-manager",
