@@ -14,18 +14,13 @@ else
     }
     trap cleanup EXIT
     hostname=$(nix flake show --json --all-systems | jq -r '.nixosConfigurations | keys | .[]' | grep -v "nixos-installer" | tr " " "\n" | fzf --prompt "Select a hostname: " --height ~100%)
-    scan=$(printf "scan network\nnixos-installer.local" | fzf --prompt "Select an installer: " --height ~100%)
-    if [ "$scan" == "scan network" ]; then
-      gum spin \
-        --show-output \
-        --title "Scanning network" \
-        -- nmap -sn "$(ip route | grep default | awk '{print $3}')"/24 -oG - | grep "Up" | awk '{print $2}' > "$temp/ips"
-      ips=$(cat "$temp/ips")
-      rm "$temp/ips"
-      installer_ip=$(echo "$ips" | fzf --prompt "Select the installer: " --height ~100% --preview "sleep 1 && nmap -A {}")
-    else
-      installer_ip="nixos-installer.local"
-    fi
+    gum spin \
+      --show-output \
+      --title "Scanning network" \
+      -- nmap -sn "$(ip route | grep default | awk '{print $3}')"/24 -oG - | grep "Up" | awk '{print $2}' > "$temp/ips"
+    ips=$(cat "$temp/ips")
+    rm "$temp/ips"
+    installer_ip=$(echo "$ips" | fzf --prompt "Select the installer: " --height ~100% --preview "sleep 1 && nmap -A {}")
     build_target=$(printf "host\nremote" | fzf --prompt "Select a build target: " --height ~100%)
     gum confirm "Would you like to sync secrets before copying them to the installer?" && secrets-sync
     mkdir -p "$temp/root/bitwarden-secrets"
@@ -56,7 +51,6 @@ else
       build_cmd="nixos-anywhere --build-on-remote"
     fi
     $build_cmd \
-      --copy-host-keys \
       --extra-files "$temp" \
       --generate-hardware-config nixos-generate-config "./hosts/nixos/$hostname/hardware-configuration.nix" \
       --flake ".#$hostname" "root@$installer_ip"

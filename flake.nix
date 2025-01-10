@@ -64,8 +64,8 @@
             inherit system;
             hostPlatform = system;
             config = {
-              android_sdk.accept_license = true;
               joypixels.acceptLicense = true;
+              nvidia.acceptLicense = true;
               allowUnfree = true;
               allowBroken = true;
             };
@@ -97,9 +97,9 @@
       inherit overlays templates;
 
       nixosConfigurations = {
+        ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
         latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
-        ms-16h2 = mkNixosHost { hostname = "ms-16h2"; };
         precision-5530 = mkNixosHost { hostname = "precision-5530"; };
         nixos-installer = mkNixosHost { hostname = "nixos-installer"; };
       };

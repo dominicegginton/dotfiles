@@ -1,7 +1,14 @@
-{ ... }:
+{ inputs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = with inputs.nixos-hardware.nixosModules; [
+    msi-gs60
+    common-pc-laptop
+    common-pc-laptop-ssd
+    common-pc-laptop-hdd
+    common-gpu-nvidia
+    ./hardware-configuration.nix
+  ];
 
   disko.devices = {
     disk = {
@@ -31,6 +38,22 @@
                 extraArgs = [ "-f" ];
                 mountpoint = "/";
                 mountOptions = [ "noatime" ];
+              };
+            };
+          };
+        };
+      };
+      extra = {
+        device = "/dev/sdb";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            data = {
+              size = "100%";
+              content = {
+                type = "btrfs";
+                mountpoint = "/mnt/data";
               };
             };
           };
