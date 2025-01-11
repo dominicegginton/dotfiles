@@ -7,6 +7,7 @@ else
 
   writeShellApplication {
     name = "network-filters-disable";
+    runtimeInputs = [ ensure-user-is-root ];
     text = ''
       ensure-user-is-root
       launchctl unload /Library/LaunchDaemons/com.cisco.secureclient.vpnagentd.plist /Library/LaunchDaemons/com.cisco.secureclient.ciscod64.plist

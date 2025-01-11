@@ -1,9 +1,9 @@
 # TODO: clean up this entrie file
 
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
-  inherit (pkgs.stdenv) isLinux isDarwin;
+  inherit (pkgs.stdenv) isLinux;
 in
 
 {

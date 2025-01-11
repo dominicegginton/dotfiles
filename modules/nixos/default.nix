@@ -1,6 +1,4 @@
-{ inputs, config, lib, pkgs, modulesPath, stateVersion, theme, ... }:
-
-with lib;
+{ modulesPath, ... }:
 
 {
   imports = [

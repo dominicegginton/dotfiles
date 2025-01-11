@@ -53,7 +53,9 @@
               size = "100%";
               content = {
                 type = "btrfs";
+                extraArgs = [ "-f" ];
                 mountpoint = "/mnt/data";
+                mountOptions = [ "noatime" ];
               };
             };
           };

@@ -1,6 +1,4 @@
-{ inputs, config, lib, ... }:
-
-with lib;
+_:
 
 {
   config = {

@@ -1,4 +1,4 @@
-{ config, lib, inputs, ... }:
+{ inputs, ... }:
 
 {
   imports = [ inputs.nixos-hardware.nixosModules.dell-latitude-7390 ];

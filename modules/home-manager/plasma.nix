@@ -1,10 +1,8 @@
-{ inputs, config, lib, theme, ... }:
+{ theme, ... }:
 
 let
   wallpaper = ./background.jpg;
 in
-
-with lib;
 
 {
   config = {

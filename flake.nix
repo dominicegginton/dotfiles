@@ -100,7 +100,6 @@
         ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
         latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
         latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
-        precision-5530 = mkNixosHost { hostname = "precision-5530"; };
         nixos-installer = mkNixosHost { hostname = "nixos-installer"; };
       };
 
