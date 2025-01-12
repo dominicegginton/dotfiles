@@ -84,7 +84,6 @@ add('nvim-focus/focus.nvim') -- Auto-focusing and auto-resizing splits
 add('mhartington/formatter.nvim') -- File formatting
 add('nullchilly/fsread.nvim') -- Flow state reading
 add('echasnovski/mini.comment') -- Comment lines
-add('echasnovski/mini.move') -- Move any selection in any direction
 add('echasnovski/mini.trailspace') -- Trailspace (highlight and remove)
 add('echasnovski/mini.jump') -- Jump to next/previous single character
 add('echasnovski/mini.jump2d') -- Jump within visible lines

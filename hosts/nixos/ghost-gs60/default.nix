@@ -68,6 +68,7 @@
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
+  environment.sessionVariables."VK_DRIVER_FILES" = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
   modules = {
     services.bluetooth.enable = true;
     networking.wireless.enable = true;
