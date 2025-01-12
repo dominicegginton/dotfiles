@@ -69,9 +69,9 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
   modules = {
-    display.enable = true;
-    display.plasma.enable = true;
     services.bluetooth.enable = true;
     networking.wireless.enable = true;
+    services.unifi.enable = true;
+    services.home-assistant.enable = true;
   };
 }
