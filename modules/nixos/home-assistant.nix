@@ -16,22 +16,6 @@ in
       openFirewall = true;
       config = {
         recorder.db_url = "postgresql://@/hass";
-        homeassistant = {
-          name = "Burbage";
-          latitude = "!secret latitude";
-          longitude = "!secret longitude";
-          elevation = "!secret elevation";
-          unit_system = "metric";
-          time_zone = "UTC";
-        };
-        zone = [
-          {
-            name = "Quorndon";
-            latitude = "!secret quorndon_latitude";
-            longitude = "!secret quorndon_longitude";
-            radius = "100";
-          }
-        ];
         shopping_list = { };
         weather = { };
         feedreader.urls = [
