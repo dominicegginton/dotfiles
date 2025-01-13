@@ -32,9 +32,6 @@ in
             radius = "100";
           }
         ];
-        frontend = { themes = "!include_dir_merge_named themes"; };
-        http = { };
-        map = { };
         shopping_list = { };
         weather = { };
         feedreader.urls = [
