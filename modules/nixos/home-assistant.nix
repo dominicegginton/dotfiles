@@ -32,7 +32,6 @@ in
             radius = "100";
           }
         ];
-        backup = { };
         frontend = { themes = "!include_dir_merge_named themes"; };
         http = { };
         map = { };
