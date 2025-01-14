@@ -12,40 +12,41 @@ in
   config = mkIf cfg.enable {
     services.home-assistant = {
       enable = true;
-      package = (pkgs.home-assistant.override { extraPackages = ps: [ ps.psycopg2 ]; });
+      package = pkgs.home-assistant;
       openFirewall = true;
+      lovelaceConfigWritable = true;
       config = {
-        shopping_list = { };
-        weather = { };
-        http = { };
         lovelace.mode = "storage";
-        lovelaceConfigWritable = true;
         homeassistant = {
           name = "Home";
-          latitude = "!secret latitude";
-          longitude = "!secret longitude";
-          elevation = "!secret elevation";
           unit_system = "metric";
           time_zone = "Europe/London";
           temperature_unit = "C";
         };
         frontend = { themes = "!include_dir_merge_named themes"; };
-        recorder.db_url = "postgresql://@/hass";
         feedreader.urls = [ "https://nixos.org/blogs.xml" ];
       };
       extraComponents = [
         "analytics"
         "default_config"
+        "mobile_app"
         "shopping_list"
         "weather"
         "unifi"
         "hue"
         "reolink"
+        "history"
+        "logbook"
+        "automation"
+        "script"
+        "sun"
+        "sensor"
+        "binary_sensor"
+        "google"
+        "google_assistant"
+        "google_translate"
+        "met"
       ];
-    };
-    services.postgresql = {
-      ensureDatabases = [ "hass" ];
-      ensureUsers = [{ name = "hass"; ensureDBOwnership = true; }];
     };
   };
 }
