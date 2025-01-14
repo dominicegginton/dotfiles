@@ -15,13 +15,33 @@ in
       package = (pkgs.home-assistant.override { extraPackages = ps: [ ps.psycopg2 ]; });
       openFirewall = true;
       config = {
-        recorder.db_url = "postgresql://@/hass";
         shopping_list = { };
         weather = { };
-        feedreader.urls = [
-          "https://nixos.org/blogs.xml"
-        ];
+        http = { };
+        lovelace.mode = "storage";
+        lovelaceConfigWritable = true;
+        homeassistant = {
+          name = "Home";
+          latitude = "!secret latitude";
+          longitude = "!secret longitude";
+          elevation = "!secret elevation";
+          unit_system = "metric";
+          time_zone = "Europe/London";
+          temperature_unit = "C";
+        };
+        frontend = { themes = "!include_dir_merge_named themes"; };
+        recorder.db_url = "postgresql://@/hass";
+        feedreader.urls = [ "https://nixos.org/blogs.xml" ];
       };
+      extraComponents = [
+        "analytics"
+        "default_config"
+        "shopping_list"
+        "weather"
+        "unifi"
+        "hue"
+        "reolink"
+      ];
     };
     services.postgresql = {
       ensureDatabases = [ "hass" ];

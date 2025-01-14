@@ -13,6 +13,7 @@
     ./gpg.nix
     ./home-assistant.nix
     ./home-manager.nix
+    ./homepage-dashboard.nix
     ./i18n.nix
     ./monitoring.nix
     ./networking.nix
