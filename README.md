@@ -22,13 +22,8 @@ Declarative System, Package & Home Configurations - WIP Always
 > [!CAUTION]
 >
 > Host and home configurations within this workspace contain secrets values that
-> are managed using **Bitwarden Secrets**. Hosts are authenticated using a
-> Bitwarden machine account access token specified in **/etc/bitwarden-secrets.env**:
->
-> ``` shell
-> BWS_PROJECT_ID=<bitwarden-secrets-manager-project-id>
-> BWS_ACCESS_TOKEN=<bitwarden-machine-account-access-token>
-> ```
+> are managed using **Bitwarden Secrets** and a combination of the `sync-secrets`
+> derivation and `secrets` _systemd_ service.
 
 
 ## Workspace

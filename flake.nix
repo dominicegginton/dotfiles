@@ -1,6 +1,3 @@
-# github:dominicegginton/dotfiles
-# there's no place like ~/
-
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
