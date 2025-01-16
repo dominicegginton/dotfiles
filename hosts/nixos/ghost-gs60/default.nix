@@ -73,6 +73,7 @@
     services.bluetooth.enable = true;
     networking.wireless.enable = true;
     services.homepage-dashboard.enable = true;
+    services.immich.enable = true;
     services.unifi.enable = true;
     services.home-assistant.enable = true;
   };

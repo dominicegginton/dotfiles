@@ -15,6 +15,7 @@
     ./home-manager.nix
     ./homepage-dashboard.nix
     ./i18n.nix
+    ./immich.nix
     ./monitoring.nix
     ./networking.nix
     ./nix-settings.nix
