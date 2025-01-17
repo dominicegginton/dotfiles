@@ -76,5 +76,9 @@
     services.immich.enable = true;
     services.unifi.enable = true;
     services.home-assistant.enable = true;
+    services.jellyfin.enable = true;
+    services.jellyfin.dataDir = "/mnt/data/media/";
+    services.deluge.enable = true;
+    services.deluge.dataDir = "/mnt/data/media/";
   };
 }

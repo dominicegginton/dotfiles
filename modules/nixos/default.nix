@@ -6,6 +6,7 @@
     "${modulesPath}/profiles/qemu-guest.nix"
     ./bluetooth.nix
     ./console.nix
+    ./deluge.nix
     ./display.nix
     ./distributed-builds.nix
     ./documentation.nix
@@ -16,6 +17,7 @@
     ./homepage-dashboard.nix
     ./i18n.nix
     ./immich.nix
+    ./jellyfin.nix
     ./monitoring.nix
     ./networking.nix
     ./nix-settings.nix
