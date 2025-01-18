@@ -20,7 +20,7 @@ with lib;
       web.enable = true;
       web.openFirewall = true;
       declarative = true;
-      authFile = "/run/secrets/deulge";
+      authFile = "/run/bitwarden-secrets/deulge";
     };
   };
 }

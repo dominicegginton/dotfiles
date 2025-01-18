@@ -3,9 +3,7 @@
 let
   cfg = config.modules.services.homepage-dashboard;
   allowedRules = {
-    allowedTCPPorts = [
-      8087
-    ];
+    allowedTCPPorts = [ 8087 ];
     allowedUDPPorts = [ ];
   };
 in
@@ -36,7 +34,7 @@ with lib;
           Burbage = [
             { "Home Assistant" = [{ abbr = "HA"; href = "http://ghost-gs60:8123/"; }]; }
             { Unifi = [{ abbr = "UTF"; href = "https://ghost-gs60:8443/"; }]; }
-            { Jellyfin = [{ abbr = "JF"; href = "http://ghost:8096/"; }]; }
+            { Jellyfin = [{ abbr = "JF"; href = "http://ghost-gs60:8096/"; }]; }
             { Deluge = [{ abbr = "DE"; href = "http://ghost-gs60:8112/"; }]; }
           ];
         }
@@ -52,9 +50,7 @@ with lib;
           ];
         }
       ];
-      services = [
-
-      ];
+      services = [];
       widgets = [
         {
           datetime = {

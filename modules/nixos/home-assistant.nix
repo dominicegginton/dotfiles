@@ -27,25 +27,18 @@ in
         feedreader.urls = [ "https://nixos.org/blogs.xml" ];
       };
       extraComponents = [
-        "analytics"
         "default_config"
+        "analytics"
         "mobile_app"
         "shopping_list"
-        "weather"
-        "unifi"
         "hue"
-        "reolink"
         "history"
-        "logbook"
-        "automation"
-        "script"
         "sun"
-        "sensor"
-        "binary_sensor"
         "google"
         "google_assistant"
         "google_translate"
         "met"
+        "tailscale"
       ];
     };
   };
