@@ -32,8 +32,6 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
-    juvian.url = "github:jovian-experiments/jovian-nixos";
-    juvian.inputs.nixpkgs.follows = "nixpkgs-unstable";
   };
 
   nixConfig.experimental-features = [ "nix-command" "flakes" "pipe-operators" ];

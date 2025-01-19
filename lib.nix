@@ -22,7 +22,6 @@ rec {
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
         home-manager.nixosModules.default
-        juvian.nixosModules.default
         ./modules/nixos/console.nix
         ./modules/nixos/nix-settings.nix
         (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./modules/nixos/system.nix)
