@@ -50,7 +50,7 @@ with lib;
           ];
         }
       ];
-      services = [];
+      services = [ ];
       widgets = [
         {
           datetime = {
