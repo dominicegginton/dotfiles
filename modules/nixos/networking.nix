@@ -45,7 +45,10 @@ with lib;
       wants = [ "network-pre.target" "tailscale.service" ];
       wantedBy = [ "multi-user.target" ];
       serviceConfig.Type = "oneshot";
-      script = with pkgs; "${tailscale}/bin/tailscale up";
+      script = ''
+        PATH=${with pkgs; makeBinPath [ tailscale ]}
+        tailscale up --ssh --accept-dns --auth-key /run/bitwarden-secrets/tailscale
+      '';
     };
     environment.systemPackages = with pkgs; [ tailscale ];
   };
