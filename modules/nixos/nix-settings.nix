@@ -14,8 +14,8 @@ with lib;
         experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
         connect-timeout = 5;
         log-lines = mkDefault 25;
-        min-free = mkDefault (10 * 1024 * 1024 * 1024); # 10 GiB
-        max-free = mkDefault (50 * 1024 * 1024 * 1024); # 50 GiB
+        min-free = mkDefault (10 * 1024 * 1024 * 1024);
+        max-free = mkDefault (120 * 1024 * 1024 * 1024);
         fallback = true;
         warn-dirty = true;
         keep-going = true;
