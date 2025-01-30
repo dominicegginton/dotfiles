@@ -3,7 +3,7 @@
 with lib;
 
 {
-  config = with config.modules.display; mkIf (sway.enable or plasma.enable) {
+  config = mkIf (config.modules.display.sway.enable or config.modules.display.plasma.enable) {
     fonts = {
       enableDefaultPackages = false;
       fontDir.enable = true;

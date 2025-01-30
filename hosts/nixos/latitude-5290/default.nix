@@ -47,7 +47,6 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
   modules = {
-    display.enable = true;
     display.plasma.enable = true;
     services.virtualisation.enable = true;
     services.bluetooth.enable = true;

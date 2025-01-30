@@ -17,7 +17,6 @@
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
   modules = {
-    display.enable = true;
     display.plasma.enable = true;
     services.virtualisation.enable = true;
     services.bluetooth.enable = true;

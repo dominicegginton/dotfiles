@@ -40,7 +40,7 @@ in
   options.modules.display.sway.enable = mkEnableOption "sway";
 
   config = mkIf cfg.enable {
-    greetd = {
+    services.greetd = mkIf (config.modules.display.plasma.enable == false) {
       enable = true;
       settings = {
         default_session = {

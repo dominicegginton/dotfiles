@@ -7,10 +7,10 @@
     ./bluetooth.nix
     ./console.nix
     ./deluge.nix
-    ./display.nix
     ./distributed-builds.nix
     ./documentation.nix
     ./environment.nix
+    ./fonts.nix
     ./gpg.nix
     ./home-assistant.nix
     ./home-manager.nix
