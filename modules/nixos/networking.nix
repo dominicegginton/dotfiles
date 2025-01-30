@@ -6,6 +6,8 @@ with lib;
   options.modules.networking.wireless.enable = mkEnableOption "wireless";
 
   config = {
+    modules.secrets.wireless = "04480e55-ca76-4444-a5cf-b242009fe153";
+    modules.secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
     networking = {
       hostName = hostname;
       useDHCP = true;

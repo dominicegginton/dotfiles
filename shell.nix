@@ -10,6 +10,5 @@ mkShell {
     git-sync
     gpg-import-keys
     host-status
-    secrets-sync
   ];
 }

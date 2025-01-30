@@ -13,6 +13,7 @@ with lib;
   };
 
   config = mkIf cfg.enable {
+    modules.secrets.deluge = "225fcfe8-3c90-4513-bd6d-b26800a12bbe";
     services.deluge = {
       enable = true;
       openFirewall = true;

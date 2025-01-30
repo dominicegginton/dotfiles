@@ -1,11 +1,71 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+with lib;
+with pkgs.writers;
 
 let
   directory = "/root/bitwarden-secrets";
-  mount = "/run/bitwarden-secrets";
+  mountpoint = "/run/bitwarden-secrets";
+  secret-install = { name, id }: ''
+    value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
+    echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
+    chown root:root ${directory}/secrets/${name}
+    chmod 600 ${directory}/secrets/${name}
+    ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
+    chown root:root ${mountpoint}/${name}
+    chmod 600 ${mountpoint}/${name}
+  '';
+  secrets-install = ''
+    mkdir -p ${directory} || true
+    mkdir -p ${directory}/secrets || true
+    mkdir -p ${mountpoint} || true
+    mount -t tmpfs none ${mountpoint} || true
+    chmod 700 ${directory}
+    chmod 700 ${directory}/secrets
+    chmod 700 ${mountpoint}
+    chown root:root ${directory}
+    chown root:root ${directory}/secrets
+    chown root:root ${mountpoint}
+    rm -f ${directory}/secrets/*
+    rm -f ${mountpoint}/*
+    ${lib.concatStringsSep "\n" (mapAttrsToList (name: id: secret-install { name = name; id = id; }) config.modules.secrets)}
+  '';
+  secrets-sync = writeBashBin "secrets-sync" ''
+    export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.busybox pkgs.gum pkgs.jq pkgs.bws ]}
+    set -efu -o pipefail
+    ensure-user-is-root
+    write_secrets_env() {
+      BWS_PROJECT_ID=$(gum input --password --prompt "Bitwarden Secrets Project ID: " --placeholder "********")
+      BWS_ACCESS_TOKEN=$(gum input --password --prompt "Bitwarden Secrets Access Token: " --placeholder "********")
+      echo "BWS_PROJECT_ID=$BWS_PROJECT_ID" > ${directory}/secrets.env
+      echo "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN" >> ${directory}/secrets.env
+      gum log --level info "${directory}/secrets.env created"
+    }
+    if [ -f ${directory}/secrets.env ]; then
+      gum confirm "${directory}/secrets.env already exists. Overwrite? (y/n)" && write_secrets_env
+    else
+      write_secrets_env
+    fi
+    source ${directory}/secrets.env
+    export BWS_PROJECT_ID
+    export BWS_ACCESS_TOKEN
+    gum spin \
+      --show-output \
+      --title "Syncing secrets from Bitwarden Secrets $BWS_PROJECT_ID" \
+      -- bws secret list "$BWS_PROJECT_ID" \
+        --output json \
+        --access-token "$BWS_ACCESS_TOKEN" \
+        > ${directory}/secrets.json
+    if [ ! -f ${directory}/secrets.json ]; then gum log --level error "Failed to create ${directory}/secrets.json"; exit 1; fi
+    ${secrets-install}
+  '';
 in
 
 {
+  options.modules.secrets = mkOption {
+    type = types.attrsOf types.str;
+    default = {};
+  };
   config = {
     systemd.services.secrets = {
       wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
@@ -14,30 +74,16 @@ in
       serviceConfig.Type = "oneshot";
       serviceConfig.RemainAfterExit = true;
       script = ''
-        ${pkgs.busybox}/bin/mkdir -p ${directory} || true
-        ${pkgs.busybox}/bin/mkdir -p ${directory}/secrets || true
-        ${pkgs.busybox}/bin/mkdir -p ${mount} || true
-        ${pkgs.busybox}/bin/mount -t tmpfs none ${mount} || true
-        ${pkgs.busybox}/bin/chmod 700 ${directory}
-        ${pkgs.busybox}/bin/chmod 700 ${directory}/secrets
-        ${pkgs.busybox}/bin/chmod 700 ${mount}
-        ${pkgs.busybox}/bin/chown root:root ${directory}
-        ${pkgs.busybox}/bin/chown root:root ${directory}/secrets
-        ${pkgs.busybox}/bin/chown root:root ${mount}
-        secrets=$(${pkgs.busybox}/bin/find ${directory}/secrets -type f)
-        for secret in $secrets; do
-          name=$(basename $secret)
-          ${pkgs.busybox}/bin/ln -sf ${directory}/secrets/$name ${mount}/$name
-          ${pkgs.busybox}/bin/chown root:root ${mount}/$name
-          ${pkgs.busybox}/bin/chmod 600 ${mount}/$name
-        done
+        export PATH=${makeBinPath [ pkgs.busybox pkgs.jq ]}
+        set -efu -o pipefail
+        ${secrets-install}
       '';
     };
-
     system.activationScripts.secrets = {
       text = config.systemd.services.secrets.script;
       deps = [ "specialfs" ];
     };
     system.activationScripts.users.deps = [ "secrets" ];
+    environment.systemPackages = [ secrets-sync ];
   };
 }
