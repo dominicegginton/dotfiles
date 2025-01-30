@@ -40,6 +40,14 @@ in
   options.modules.display.sway.enable = mkEnableOption "sway";
 
   config = mkIf cfg.enable {
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --remember-user-session --asterisks --cmd sway";
+        };
+      };
+    };
     xdg.portal = {
       enable = true;
       xdgOpenUsePortal = true;
@@ -120,6 +128,9 @@ in
         pulsemixer
         pavucontrol
         wpa_supplicant_gui
+        mpv
+        vlc
+        waypipe
       ];
     };
   };

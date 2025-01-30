@@ -28,34 +28,29 @@ in
       };
       extraComponents = [
         "default_config"
-        "auth"
-        "api"
         "date"
         "datetime"
-        "analytics"
-        "mobile_app"
-        "shopping_list"
-        "hue"
-        "history"
+        "browser" # Open URLs on host machine.
+        "caldav" # Calendar.
+        "camera" # IP camera support.
+        "cast" # For Google/Chrome casting.
+        "configurator" # Can request information from user.
+        "dlna_dms" # DLNA streaming support.
+        "ffmpeg" # FFmpg processing.
+        "flux" # Adjust lighting based on sun.
         "sun"
-        "androidtv"
-        "androidtv_remote"
-        "google"
-        "google_assistant"
-        "google_assistant_sdk"
-        "google_cloud"
-        "google_generative_ai_conversation"
-        "google_mail"
-        "google_maps"
-        "google_photos"
-        "google_pubsub"
-        "google_sheets"
-        "google_tasks"
-        "google_translate"
-        "google_travel_timei"
-        "met"
-        "tailscale"
-        "unifi"
+        "moon"
+        "homekit" # For controlling Home Assistant from the Apple Home app.
+        "hue" # Philips Hue support.
+        "jellyfin" # Media server.
+        "keyboard" # Support keyboard devices.
+        "kodi" # Media player.
+        "matter" # Beta Matter and Thread support.
+        "media_player" # Interacts with various media players.
+        "rest_command" # Call REST APIs.
+        "mobile_app"
+        "history"
+        "tailscale" # Tailscale support.
       ];
     };
   };

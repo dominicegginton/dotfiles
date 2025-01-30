@@ -1,17 +1,9 @@
-{ pkgs, config, lib, ... }:
-
-let
-  cfg = config.modules.display;
-in
+{ config, lib, pkgs, ... }:
 
 with lib;
 
 {
-  options.modules.display.enable = mkEnableOption "display";
-
-  config = mkIf cfg.enable {
-    boot.plymouth.enable = true;
-    boot.plymouth.theme = "spinner";
+  config = with config.modules.display; mkIf (sway.enable or plasma.enable) {
     fonts = {
       enableDefaultPackages = false;
       fontDir.enable = true;
@@ -43,12 +35,5 @@ with lib;
         ibm-plex
       ];
     };
-    environment.systemPackages = with pkgs; [
-      waypipe
-      wpa_supplicant_gui
-      mpv
-      vlc
-      transmission_4-gtk
-    ];
   };
 }

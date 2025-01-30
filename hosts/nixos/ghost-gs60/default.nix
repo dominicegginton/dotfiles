@@ -70,15 +70,10 @@
   hardware.logitech.wireless.enableGraphical = true;
   environment.sessionVariables."VK_DRIVER_FILES" = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
   modules = {
-    services.bluetooth.enable = true;
     networking.wireless.enable = true;
     services.homepage-dashboard.enable = true;
     services.immich.enable = true;
     services.unifi.enable = true;
     services.home-assistant.enable = true;
-    services.jellyfin.enable = true;
-    services.jellyfin.dataDir = "/mnt/data/media";
-    services.deluge.enable = true;
-    services.deluge.dataDir = "/mnt/data/media";
   };
 }
