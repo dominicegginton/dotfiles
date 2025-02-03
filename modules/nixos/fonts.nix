@@ -1,9 +1,7 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
+{ pkgs, ... }:
 
 {
-  config = mkIf (config.modules.display.sway.enable or config.modules.display.plasma.enable) {
+  config = {
     fonts = {
       enableDefaultPackages = false;
       fontDir.enable = true;

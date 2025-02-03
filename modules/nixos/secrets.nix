@@ -6,6 +6,7 @@ with pkgs.writers;
 let
   directory = "/root/bitwarden-secrets";
   mountpoint = "/run/bitwarden-secrets";
+  secretType = types.attrsOf types.str;
   secret-install = { name, id }: ''
     value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
     echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
@@ -26,12 +27,10 @@ let
     chown root:root ${directory}
     chown root:root ${directory}/secrets
     chown root:root ${mountpoint}
-    rm -f ${directory}/secrets/*
-    rm -f ${mountpoint}/*
-    ${lib.concatStringsSep "\n" (mapAttrsToList (name: id: secret-install { name = name; id = id; }) config.modules.secrets)}
+    ${lib.concatStringsSep "\n" (mapAttrsToList (name: id: secret-install { inherit name id; }) config.modules.secrets)}
   '';
   secrets-sync = writeBashBin "secrets-sync" ''
-    export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.busybox pkgs.gum pkgs.jq pkgs.bws ]}
+    export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.busybox pkgs.gum pkgs.jq pkgs.bws ]}:$PATH
     set -efu -o pipefail
     ensure-user-is-root
     write_secrets_env() {
@@ -47,8 +46,6 @@ let
       write_secrets_env
     fi
     source ${directory}/secrets.env
-    export BWS_PROJECT_ID
-    export BWS_ACCESS_TOKEN
     gum spin \
       --show-output \
       --title "Syncing secrets from Bitwarden Secrets $BWS_PROJECT_ID" \
@@ -63,7 +60,7 @@ in
 
 {
   options.modules.secrets = mkOption {
-    type = types.attrsOf types.str;
+    type = secretType;
     default = {};
   };
   config = {
@@ -74,8 +71,7 @@ in
       serviceConfig.Type = "oneshot";
       serviceConfig.RemainAfterExit = true;
       script = ''
-        export PATH=${makeBinPath [ pkgs.busybox pkgs.jq ]}
-        set -efu -o pipefail
+        export PATH=${makeBinPath [ pkgs.busybox pkgs.jq ]}:$PATH
         ${secrets-install}
       '';
     };
