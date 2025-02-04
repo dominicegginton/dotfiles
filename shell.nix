@@ -2,6 +2,7 @@
 
 mkShell {
   nativeBuildInputs = with pkgs; [
+    (lib.development-promt "dominicegginton/dotfiles")
     nix
     bootstrap-nixos-host
     bootstrap-nixos-installer

@@ -61,7 +61,7 @@ in
 {
   options.modules.secrets = mkOption {
     type = secretType;
-    default = {};
+    default = { };
   };
   config = {
     systemd.services.secrets = {

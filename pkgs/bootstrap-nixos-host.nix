@@ -1,11 +1,11 @@
-{ lib, stdenv, writers, ensure-user-is-root, coreutils, git, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, secrets-sync }:
+{ lib, stdenv, writers, ensure-user-is-root, coreutils, git, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum }:
 
 if (!stdenv.isLinux)
 then throw "This script can only be run on linux hosts"
 else
 
   writers.writeBashBin "bootstrap-nixos-hosts" ''
-    export PATH=${lib.makeBinPath [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum secrets-sync ]}
+    export PATH=${lib.makeBinPath [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum ]}
     set -efu -o pipefail
     ensure-user-is-root
     temp=$(mktemp -d)
@@ -22,7 +22,7 @@ else
     rm "$temp/ips"
     installer_ip=$(echo "$ips" | fzf --prompt "Select the installer: " --height ~100% --preview "sleep 1 && nmap -A {}")
     build_target=$(printf "host\nremote" | fzf --prompt "Select a build target: " --height ~100%)
-    gum confirm "Would you like to sync secrets before copying them to the installer?" && secrets-sync
+    # gum confirm "Would you like to sync secrets before copying them to the installer?" && secrets-sync
     mkdir -p "$temp/root/bitwarden-secrets"
     mkdir -p "$temp/run/bitwarden-secrets"
     chown -R root:root "$temp/root/bitwarden-secrets"

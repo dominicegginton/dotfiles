@@ -2,6 +2,12 @@
 
 with lib;
 
+let
+  lib-packages = prev: final: lib // {
+    development-promt = final.callPackage ./pkgs/development-promot.nix { };
+  };
+in
+
 rec {
   additions = final: prev: {
     inherit (packagesFrom inputs.vulnix { inherit (final) system; }) vulnix;
@@ -24,13 +30,13 @@ rec {
     todo = final.callPackage (defaultPackageFrom inputs.todo) { };
     set-theme = final.callPackage ./pkgs/set-theme.nix { };
     twx = final.callPackage ./pkgs/twx.nix { };
-    lib = prev.lib // lib;
+    lib = prev.lib // lib // (lib-packages prev final);
   };
 
   modifications = final: prev: {
     twm = final.callPackage (defaultPackageFrom inputs.twm) { };
     neovim = final.callPackage (defaultPackageFrom inputs.neovim-nightly) { };
-    lib = prev.lib // lib;
+    lib = prev.lib // lib // (lib-packages prev final);
   };
 
   unstable-packages = final: _: {
