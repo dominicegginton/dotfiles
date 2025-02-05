@@ -1,7 +1,8 @@
-{ pkgs, mkShell, vscode-extensions, vscode-with-extensions }:
+{ lib, mkShell, python3, pyright, vscode-extensions, vscode-with-extensions }:
 
 mkShell {
-  nativeBuildInputs = with pkgs; [
+  nativeBuildInputs = [
+    (lib.development-promt "temp python notebooks shell")
     (python3.withPackages (pythonPkgs: with pythonPkgs; [
       jupyterlab
       notebook

@@ -1,3 +1,5 @@
+## todo: move to internal module
+
 { writeShellApplication, pinentry, gnupg, google-cloud-sdk }:
 
 writeShellApplication {

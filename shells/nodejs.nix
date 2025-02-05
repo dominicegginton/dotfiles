@@ -1,5 +1,12 @@
-{ mkShell, nodejs, nodejs-shell-setup-hook }:
+{ lib, mkShell, nodejs, nodePackages }:
 
 mkShell {
-  nativeBuildInputs = [ nodejs nodejs-shell-setup-hook ];
+  nativeBuildInputs = [
+    (lib.development-promt "temp nodejs shell")
+    nodejs
+    lib.nodejs-setup-hook
+    nodePackages.typescript
+    nodePackages.typescript-language-server
+    nodePackages.prettier
+  ];
 }

@@ -3,8 +3,9 @@
 with lib;
 
 let
-  lib-packages = prev: final: lib // {
+  lib-packages = _: final: lib // {
     development-promt = final.callPackage ./pkgs/development-promot.nix { };
+    nodejs-setup-hook = final.callPackage ./pkgs/nodejs-setup-hook.nix { };
   };
 in
 
@@ -25,7 +26,6 @@ rec {
     host-status = final.callPackage ./pkgs/host-status.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
-    nodejs-shell-setup-hook = final.callPackage ./pkgs/nodejs-shell-setup-hook.nix { };
     nixos-anywhere = final.callPackage (defaultPackageFrom inputs.nixos-anywhere) { };
     todo = final.callPackage (defaultPackageFrom inputs.todo) { };
     set-theme = final.callPackage ./pkgs/set-theme.nix { };

@@ -1,3 +1,5 @@
+## todo: move to internal module
+
 { lib, writeShellScriptBin, busybox, coreutils, gum }:
 
 writeShellScriptBin "host-status" ''
