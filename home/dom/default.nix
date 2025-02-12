@@ -18,7 +18,6 @@ in
       ".gitignore".source = ./sources/.gitignore;
       ".gitmessage".source = ./sources/.gitmessage;
     };
-
     home.packages = with pkgs; [ ]
       ++ (if isLinux then [
       bitwarden-cli

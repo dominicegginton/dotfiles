@@ -1,21 +1,14 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.modules.services.ssh;
-in
-
-with lib;
+{ pkgs, ... }:
 
 {
-  options.modules.services.ssh.extraConfig = mkOption {
-    type = types.str;
-    default = "";
-  };
-
   config = {
     programs.ssh = {
       enable = true;
-      extraConfig = cfg.extraConfig or '''';
+      extraConfig = ''
+        Host i-* mi-*
+          User ec2-user
+          ProxyCommand sh -c "${pkgs.awscli}/bin/aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p'"
+      '';
     };
   };
 }
