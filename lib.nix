@@ -31,6 +31,8 @@ rec {
           scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
           home-manager.extraSpecialArgs = specialArgsFor hostname;
         }
+
+        inputs.nix-topology.nixosModules.default
       ];
     };
 

@@ -16,6 +16,7 @@
   hardware.logitech.wireless.enableGraphical = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
+  topology.self.hardware.info = "Main Workstation";
   modules = {
     display.plasma.enable = true;
     services.virtualisation.enable = true;

@@ -69,10 +69,13 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
   environment.sessionVariables."VK_DRIVER_FILES" = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
+  topology.self.hardware.info = "Homelab Server";
+  topology.self.services.homepage-dashboard = {
+    name = "Homepage Dashboard";
+  };
   modules = {
     networking.wireless.enable = true;
     services.homepage-dashboard.enable = true;
-    services.immich.enable = true;
     services.unifi.enable = true;
     services.home-assistant.enable = true;
   };

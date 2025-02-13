@@ -32,6 +32,8 @@
     flip.inputs.nixpkgs.follows = "nixpkgs";
     roll.url = "github:dominicegginton/roll";
     roll.inputs.nixpkgs.follows = "nixpkgs";
+    nix-topology.url = "github:oddlama/nix-topology";
+    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig.experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
@@ -64,12 +66,14 @@
               allowUnfree = true;
               allowBroken = true;
             };
-            overlays = with overlays; [
+            overlays = with inputs; with overlays; [
               additions
               modifications
               unstable-packages
-              inputs.flip.overlays.default
-              inputs.roll.overlays.default
+              flip.overlays.default
+              roll.overlays.default
+              nix-topology.overlays.default
+              nix-topology.overlays.topology
             ];
           };
         in
@@ -83,6 +87,13 @@
             nodejs = pkgs.callPackage ./shells/nodejs.nix { };
             python = pkgs.callPackage ./shells/python.nix { };
             python-notebook = pkgs.callPackage ./shells/python-notebook.nix { };
+          };
+          topology = import inputs.nix-topology {
+            inherit pkgs;
+            modules = [
+              (./topology.nix)
+              { inherit (self) nixosConfigurations; }
+            ];
           };
         })
 

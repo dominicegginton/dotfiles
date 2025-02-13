@@ -1,6 +1,7 @@
 { config, lib, pkgs, hostname, ... }:
 
 with lib;
+with config.lib.topology;
 
 {
   options.modules.networking.wireless.enable = mkEnableOption "wireless";
@@ -33,7 +34,21 @@ with lib;
         };
       };
     };
-
+    topology.self.interfaces = {
+      wlan0 = {
+        network = "quardon";
+        physicalConnections = [
+          (mkConnection "quardon-unifi-ap-dom" "wlan0")
+          (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
+          (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+        ];
+        type = "wifi";
+      };
+      tailscale = {
+        network = "tailscale";
+        virtual = true;
+      };
+    };
     services.openssh.enable = true;
     programs.ssh.startAgent = true;
 
