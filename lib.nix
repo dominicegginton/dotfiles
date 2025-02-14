@@ -22,6 +22,7 @@ rec {
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
         home-manager.nixosModules.default
+        inputs.nix-topology.nixosModules.default
         ./modules/nixos/console.nix
         ./modules/nixos/nix-settings.nix
         (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./modules/nixos/system.nix)
@@ -31,8 +32,6 @@ rec {
           scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
           home-manager.extraSpecialArgs = specialArgsFor hostname;
         }
-
-        inputs.nix-topology.nixosModules.default
       ];
     };
 

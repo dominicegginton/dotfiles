@@ -1,9 +1,10 @@
-{ config, lib, ... }:
+{ config, lib, hostname, ... }:
 
 let
   cfg = config.modules.services.homepage-dashboard;
+  port = 8087;
   allowedRules = {
-    allowedTCPPorts = [ 8087 ];
+    allowedTCPPorts = [ port ];
     allowedUDPPorts = [ ];
   };
 in
@@ -16,7 +17,7 @@ with lib;
   config = mkIf cfg.enable {
     services.homepage-dashboard = {
       enable = true;
-      listenPort = 8087;
+      listenPort = port;
       openFirewall = true;
       settings = {
         color = "stone";
@@ -88,5 +89,13 @@ with lib;
     };
     networking.firewall.allowedTCPPorts = allowedRules.allowedTCPPorts;
     networking.firewall.allowedUDPPorts = allowedRules.allowedUDPPorts;
+    topology.self.services.homepage-dashboard = {
+      name = "Homepage Dashboard";
+      details = {
+        listen = {
+          text = "0.0.0.0:${toString port} :::${toString port}";
+        };
+      };
+    };
   };
 }
