@@ -6,8 +6,8 @@ with lib;
   config = {
     nix = {
       package = pkgs.unstable.nix;
-      gc.automatic = mkDefault false;
-      optimise.automatic = mkDefault false;
+      gc.automatic = mkDefault true;
+      optimise.automatic = mkDefault true;
       registry = mapAttrs (_: value: { flake = value; }) inputs;
       nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
       settings = {

@@ -34,20 +34,14 @@ with config.lib.topology;
         };
       };
     };
-    topology.self.interfaces = {
-      wlan0 = {
-        network = "quardon";
-        physicalConnections = [
-          (mkConnection "quardon-unifi-ap-dom" "wlan0")
-          (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
-          (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
-        ];
-        type = "wifi";
-      };
-      tailscale = {
-        network = "tailscale";
-        virtual = true;
-      };
+    topology.self.interfaces.wlan0 = {
+      network = "quardon";
+      physicalConnections = [
+        (mkConnection "quardon-unifi-ap-dom" "wlan0")
+        (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
+        (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+      ];
+      type = "wifi";
     };
     services.openssh.enable = true;
     programs.ssh.startAgent = true;
@@ -68,5 +62,10 @@ with config.lib.topology;
       '';
     };
     environment.systemPackages = with pkgs; [ tailscale ];
+    topology.self.interfaces.tailscale = {
+      network = "tailscale";
+      virtual = true;
+    };
+
   };
 }
