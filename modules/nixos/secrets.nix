@@ -11,10 +11,10 @@ let
     value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
     echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
     chown root:root ${directory}/secrets/${name}
-    chmod 600 ${directory}/secrets/${name}
+    chmod 700 ${directory}/secrets/${name}
     ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
     chown root:root ${mountpoint}/${name}
-    chmod 600 ${mountpoint}/${name}
+    chmod 700 ${mountpoint}/${name}
   '';
   secrets-install = ''
     mkdir -p ${directory} || true
