@@ -11,13 +11,11 @@ let
       interfaces.wlan0 = {
         network = "quardon";
         type = "wifi";
+        physicalConnections = (filter ({ node }: node != name) (connectionsToAccessPoints "wlan0"));
       };
     };
-
-
   mkInterface = name: i: "${name}${toString i}";
   mkNunberedInterfaceGroup = name: n: (map (i: mkInterface name i) (lib.range 0 n));
-
   connectionsToAccessPoints = interface: [
     (mkConnection "quardon-unifi-ap-dom" interface)
     (mkConnection "quardon-unifi-ap-downstairs" interface)

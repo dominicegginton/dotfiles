@@ -60,7 +60,6 @@ in
       ];
     };
     hardware.opengl.enable = true;
-    hardware.opengl.driSupport = true;
     hardware.pulseaudio.enable = false;
     services = {
       xserver.enable = true;
@@ -110,7 +109,7 @@ in
         glib
         colloid-gtk-theme
         colloid-icon-theme
-        gnome3.adwaita-icon-theme
+        gnome.adwaita-icon-theme
         wl-gammactl
         flameshot
         slurp
