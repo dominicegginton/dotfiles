@@ -26,7 +26,8 @@ end
 
 local toggle_diff_overview = function() mini_diff.toggle_overview() end
 
-local toggle_diagnostic_pannel = function() vim.cmd('TroubleToggle') end
+local toggle_diagnostic_pannel = function() vim.cmd('Trouble diagnostics toggle win.position=bottom') end
+local toggle_lsp_pannel = function() vim.cmd('Trouble lsp toggle win.position=left') end
 local toggle_lsp_lens = function() vim.cmd('LspLensToggle') end
 local toggle_git_blame = function() vim.cmd('ToggleBlameLine') end
 local toggle_read = function() vim.cmd('FSToggle') end
@@ -35,6 +36,7 @@ local open_command_palette = function() vim.cmd('CmdPalette') end
 vim.keymap.set('n', '<leader>te', toggle_nvim_tree, { desc = 'Toggle File Explorer Pannel' })
 vim.keymap.set('n', '<leader>tE', toggle_mini_file_explorer, { desc = 'Toggle Mini File Explorer' })
 vim.keymap.set('n', '<leader>td', toggle_diagnostic_pannel, { desc = 'Toggle Diagnostics Pannel' })
+vim.keymap.set('n', '<leader>tL', toggle_lsp_pannel, { desc = 'Toggle LSP Pannel' })
 vim.keymap.set('n', '<leader>tD', toggle_diff_overview, { desc = 'Toggle Diff Overview' })
 vim.keymap.set('n', '<leader>tq', quickfix_list.toggle, { desc = 'Toggle Quickfix' })
 vim.keymap.set('n', '<leader>tb', toggle_git_blame, { desc = 'Toggle Git Blame' })
