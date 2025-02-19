@@ -9,7 +9,7 @@ else
     mountpoint = "$temp/run/bitwarden-secrets";
   in
 
-  writers.writeBashBin "bootstrap-nixos-hosts" ''
+  writers.writeBashBin "bootstrap-nixos-host" ''
     export PATH=${lib.makeBinPath [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum bws ]}
     set -efu -o pipefail
     ensure-user-is-root
@@ -45,6 +45,7 @@ else
         --output json \
         --access-token "$BWS_ACCESS_TOKEN" \
         > "${directory}/secrets.json"
+    ids=$(jq -r '.[].id' ${directory}/secrets.json)
     for id in $ids; do
       name=$(jq -r ".[] | select(.id == \"$id\") | .name" ${directory}/secrets.json)
       value=$(jq -r ".[] | select(.id == \"$id\") | .value" ${directory}/secrets.json)
