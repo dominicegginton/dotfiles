@@ -14,6 +14,7 @@ local function eslint_on_attach(_, bufnr)
   default_on_attach(_, bufnr)
 end
 
+lspconfig['typos_lsp'].setup(default_config)
 lspconfig['vimls'].setup(default_config)
 lspconfig['bashls'].setup(default_config)
 lspconfig['yamlls'].setup(default_config)

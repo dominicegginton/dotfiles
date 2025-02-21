@@ -33,6 +33,8 @@ with lib;
         eslint_d
         nixpkgs-fmt
         stylua
+        typos-lsp
+        pyright
       ];
     };
 
