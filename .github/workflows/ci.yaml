@@ -20,11 +20,13 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           path: result/main.svg
+          name: main.svg
           retention-days: 90
           compression-level: 0
       - uses: actions/upload-artifact@v4
         with:
           path: result/network.svg
+          name: network.svg
           retention-days: 90
           compression-level: 0
 
