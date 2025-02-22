@@ -58,7 +58,7 @@ with config.lib.topology;
       serviceConfig.Type = "oneshot";
       script = ''
         PATH=${with pkgs; makeBinPath [ tailscale ]}
-        tailscale up --ssh --accept-dns --auth-key /run/bitwarden-secrets/tailscale
+        tailscale up --reset --ssh --accept-dns --auth-key /run/bitwarden-secrets/tailscale
       '';
     };
     environment.systemPackages = with pkgs; [ tailscale ];
