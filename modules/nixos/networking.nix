@@ -27,10 +27,6 @@ with config.lib.topology;
             pskRaw = "ext:psk_burbage";
             priority = 1;
           };
-          "Pixel6a" = {
-            pskRaw = "ext:psk_pixel6a";
-            priority = 2;
-          };
         };
       };
     };

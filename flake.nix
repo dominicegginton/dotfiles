@@ -44,7 +44,7 @@
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
-      theme = "dark";
+      theme = "light";
       lib = import ./lib.nix { inherit inputs outputs stateVersion theme; };
       overlays = import ./overlays.nix { inherit inputs lib; };
       templates = import ./templates { };

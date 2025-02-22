@@ -10,6 +10,24 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/flake-checker-action@main
 
+  topology:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - run: nix build .\#topology.x86_64-linux.config.output
+      - uses: actions/upload-artifact@v4
+          with:
+            path: result/main.svg
+            retention-days: 90
+            compression-level: 0
+      - uses: actions/upload-artifact@v4
+          with:
+            path: result/network.svg
+            retention-days: 90
+            compression-level: 0
+
   ghost-gs60:
     runs-on: ubuntu-latest
     steps:
