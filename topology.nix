@@ -44,12 +44,12 @@ in
     };
   };
 
-  nodes.internet = mkInternet {};
+  nodes.internet = mkInternet { };
 
   nodes.quardon-router = mkRouter "Quardon Router" {
     info = "Unifi Security Gateway";
     interfaces.eth0 = {
-      physicalConnections = [ (mkConnection "internet" "*" ) ];
+      physicalConnections = [ (mkConnection "internet" "*") ];
     };
     interfaces.eth0 = {
       addresses = [ "192.168.1.1" ];
@@ -96,7 +96,7 @@ in
     info = "Google Pixel 9";
     interfaces."5G-radio" = {
       type = "wifi";
-      physicalConnections = [(mkConnection "internet" "*" )];
+      physicalConnections = [ (mkConnection "internet" "*") ];
     };
     interfaces.wifi = {
       network = "quardon";

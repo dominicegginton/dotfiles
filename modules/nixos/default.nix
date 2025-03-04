@@ -4,6 +4,7 @@
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
+    ./backup.nix
     ./bluetooth.nix
     ./console.nix
     ./deluge.nix
