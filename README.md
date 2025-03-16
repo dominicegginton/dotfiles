@@ -35,7 +35,7 @@ This workspace follows the following structure:
 ├── hosts           # Host NixOS and NixDarwin configurations
 ├── modules         # Nix modules
 ├── pkgs            # Packages
-├── shells          # Ad-hoc shells enviroments
+├── shells          # Ad-hoc shells environments
 ├── templates       # Flake templates
 ├── flake.nix       # Flake inputs and outputs
 ├── lib.nix         # Nix utils

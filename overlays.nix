@@ -4,7 +4,7 @@ with lib;
 
 let
   lib-packages = _: final: lib // {
-    development-promt = final.callPackage ./pkgs/development-promot.nix { };
+    development-prompt = final.callPackage ./pkgs/development-prompt.nix { };
     nodejs-setup-hook = final.callPackage ./pkgs/nodejs-setup-hook.nix { };
   };
 in

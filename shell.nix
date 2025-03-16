@@ -2,7 +2,7 @@
 
 mkShell {
   nativeBuildInputs = with pkgs; [
-    (lib.development-promt "dominicegginton/dotfiles")
+    (lib.development-prompt "dominicegginton/dotfiles")
     nix
     deadnix
     nixpkgs-fmt
@@ -12,4 +12,5 @@ mkShell {
     git-cleanup
     git-sync
   ];
+  NIX_SSHOPTS = "-t";
 }
