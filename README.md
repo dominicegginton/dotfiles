@@ -14,10 +14,10 @@ Declarative System, Package & Home Configurations - WIP Always
 - **Bitwarden Managed Secrets** - Secrets managed with _Bitwarden Secret Managemer_.
 - **CVS Scanning** - Automatic CVS vulnerability scanning using _Vulnix_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
-- **Base16 Themes** - Base16 theming throughout system and package configurations.
-- **Nix Overlays** - Custom Nix overlays for packages, extra utils and tools.
+- **Base16 Themeing** - Base16 theming throughout system and package configurations.
+- **Nix Overlays** - Nix overlays for packages, utils and tooling.
 - **Ad-hoc Shell Environments** - Reproducible ad-hoc shell environments for common tools and tasks.
-- **Flake Templates** - Flake templates included for bootstrapping workspaces.
+- **Flake Templates** - Flake templates included for bootstrapping common development workspaces.
 
 > [!CAUTION]
 >
