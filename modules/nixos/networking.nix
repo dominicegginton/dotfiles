@@ -30,15 +30,33 @@ with config.lib.topology;
         };
       };
     };
-    topology.self.interfaces.wlan0 = {
-      network = "quardon";
-      physicalConnections = [
-        (mkConnection "quardon-unifi-ap-dom" "wlan0")
-        (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
-        (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
-      ];
-      type = "wifi";
+    topology.self = {
+      interfaces = {
+        wlan0-quardon = mkIf config.modules.networking.wireless.enable {
+          network = "quardon";
+          type = "wifi";
+          physicalConnections = [
+            (mkConnection "quardon-unifi-ap-dom" "wlan0")
+            (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
+            (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+          ];
+        };
+        wlan0-ribble = mkIf config.modules.networking.wireless.enable {
+          network = "ribble";
+          type = "wifi";
+          physicalConnections = [
+            (mkConnection "ribble-unifi-ap" "wlan0")
+          ];
+        };
+        tailscale = {
+          network = "tailscale";
+          type = "tailscale";
+          icon = ../../assets/tailscale.svg;
+          virtual = true;
+        };
+      };
     };
+
     services.openssh.enable = true;
     programs.ssh.startAgent = true;
 
@@ -58,10 +76,5 @@ with config.lib.topology;
       '';
     };
     environment.systemPackages = with pkgs; [ tailscale ];
-    topology.self.interfaces.tailscale = {
-      network = "tailscale";
-      virtual = true;
-    };
-
   };
 }

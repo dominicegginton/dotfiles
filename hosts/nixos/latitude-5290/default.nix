@@ -46,6 +46,7 @@
   hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
+  topology.self.hardware.info = "Dell Latitude 5290 - Workstation";
   modules = {
     display.plasma.enable = true;
     services.virtualisation.enable = true;

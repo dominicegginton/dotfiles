@@ -16,7 +16,7 @@
   hardware.logitech.wireless.enableGraphical = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
-  topology.self.hardware.info = "Main Workstation";
+  topology.self.hardware.info = "Dell Latitude 7390 - Workstation";
   modules = {
     display.plasma.enable = true;
     services.virtualisation.enable = true;

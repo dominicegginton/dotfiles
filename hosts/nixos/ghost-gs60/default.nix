@@ -86,7 +86,7 @@
   };
   environment.systemPackages = with pkgs; [ nvtopPackages.full ];
   environment.sessionVariables."VK_DRIVER_FILES" = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
-  topology.self.hardware.info = "Homelab Server";
+  topology.self.hardware.info = "MSI Ghost GS60 - Server";
   modules = {
     networking.wireless.enable = true;
     services.homepage-dashboard.enable = true;

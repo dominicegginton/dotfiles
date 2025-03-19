@@ -8,6 +8,8 @@ with lib;
   topology.self.hardware.info = "NixOS Installer";
   topology.self.interfaces.tailscale = {
     network = "tailscale";
+    type = "tailscale";
+    icon = ../../assets/tailscale.svg;
     virtual = true;
   };
 }
