@@ -8,22 +8,13 @@ let
   mountpoint = "/run/bitwarden-secrets";
   secretType = types.attrsOf types.str;
   secret-install = { name, id }: ''
-    value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json | sed 's/\\n/\\\\n/g')
-    if [ -f ${directory}/secrets/${name} ]; then
-      if [ "$(cat ${directory}/secrets/${name})" = "$value" ]; then
-        echo "Secret ${name} already exists and is the same. Skipping."
-      fi
-      echo "Secret ${name} already exists but is different. Overwriting."
-      echo $value > ${directory}/secrets/${name}
-    else
-      echo "Secret ${name} does not exist. Creating."
-      echo $value > ${directory}/secrets/${name}
-      chown root:root ${directory}/secrets/${name}
-      chmod 700 ${directory}/secrets/${name}
-      ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
-      chown root:root ${mountpoint}/${name}
-      chmod 700 ${mountpoint}/${name}
-    fi
+    value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
+    echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
+    chown root:root ${directory}/secrets/${name}
+    chmod 700 ${directory}/secrets/${name}
+    ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
+    chown root:root ${mountpoint}/${name}
+    chmod 700 ${mountpoint}/${name}
   '';
   secrets-install = ''
     mkdir -p ${directory} || true
@@ -47,7 +38,7 @@ let
       BWS_ACCESS_TOKEN=$(gum input --password --prompt "Bitwarden Secrets Access Token: " --placeholder "********")
       echo "BWS_PROJECT_ID=$BWS_PROJECT_ID" > ${directory}/secrets.env
       echo "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN" >> ${directory}/secrets.env
-      gum log --level info "env created"
+      gum log --level info "${directory}/secrets.env created"
     }
     if [ -f ${directory}/secrets.env ]; then
       gum confirm "${directory}/secrets.env already exists. Overwrite? (y/n)" && write_secrets_env
