@@ -1,23 +1,36 @@
-{ config, lib, ... }:
-
-let
-  cfg = config.modules.services.homepage-dashboard;
-  port = 8087;
-  allowedRules = {
-    allowedTCPPorts = [ port ];
-    allowedUDPPorts = [ ];
-  };
-in
+{ config, lib, pkgs, hostname, ... }:
 
 with lib;
 
+let
+  cfg = config.modules.services.homepage-dashboard;
+  settingsFormat = pkgs.formats.yaml { };
+in
+
 {
-  options.modules.services.homepage-dashboard.enable = mkEnableOption "homepage dashboard";
+  options.modules.services.homepage-dashboard = {
+    enable = mkEnableOption "homepage dashboard";
+    listenPort = mkOption {
+      type = types.int;
+      default = 8087;
+      description = "Port to listen on";
+    };
+    bookmarks = mkOption {
+      inherit (settingsFormat) type;
+      default = [ ];
+      description = "Bookmarks";
+    };
+    monitorDisks = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = "Disks to monitor";
+    };
+  };
 
   config = mkIf cfg.enable {
     services.homepage-dashboard = {
       enable = true;
-      listenPort = port;
+      listenPort = cfg.listenPort;
       openFirewall = true;
       settings = {
         color = "stone";
@@ -25,33 +38,7 @@ with lib;
         useEqualHeights = true;
         statusStyle = "dot";
       };
-      bookmarks = [
-        {
-          Developer = [
-            { Github = [{ abbr = "GH"; href = "https://github.com/"; }]; }
-          ];
-        }
-        {
-          Burbage = [
-            { "Home Assistant" = [{ abbr = "HA"; href = "http://ghost-gs60:8123/"; }]; }
-            { Unifi = [{ abbr = "UTF"; href = "https://ghost-gs60:8443/"; }]; }
-            # { Jellyfin = [{ abbr = "JF"; href = "http://ghost-gs60:8096/"; }]; }
-            # { Deluge = [{ abbr = "DE"; href = "http://ghost-gs60:8112/"; }]; }
-          ];
-        }
-        {
-          Social = [
-            { Reddit = [{ abbr = "RD"; href = "https://reddit.com/"; }]; }
-            { Instagram = [{ abbr = "IG"; href = "https://instagram.com/"; }]; }
-          ];
-        }
-        {
-          Entertainment = [
-            { YouTube = [{ abbr = "YT"; href = "https://youtube.com/"; }]; }
-          ];
-        }
-      ];
-      services = [ ];
+      bookmarks = cfg.bookmarks;
       widgets = [
         {
           datetime = {
@@ -59,14 +46,6 @@ with lib;
               dateStyle = "long";
               timeStyle = "long";
             };
-          };
-        }
-        {
-          search = {
-            provider = "google";
-            focus = true;
-            showSearchSuggestions = true;
-            target = "self";
           };
         }
         {
@@ -79,21 +58,18 @@ with lib;
             tempmax = 100;
             refresh = 50000;
             expanded = true;
-            disk = [
-              "/"
-              "/mnt/data"
-            ];
+            disk = cfg.monitorDisks;
           };
         }
       ];
     };
-    networking.firewall.allowedTCPPorts = allowedRules.allowedTCPPorts;
-    networking.firewall.allowedUDPPorts = allowedRules.allowedUDPPorts;
+    networking.firewall.allowedTCPPorts = [ cfg.listenPort ];
+    networking.firewall.allowedUDPPorts = [ ];
     topology.self.services.homepage-dashboard = {
       name = "Homepage Dashboard";
       details = {
         listen = {
-          text = "0.0.0.0:${toString port} :::${toString port}";
+          text = "${hostname}:${toString cfg.listenPort} :::${toString cfg.listenPort}";
         };
       };
     };

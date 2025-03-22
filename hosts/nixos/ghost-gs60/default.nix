@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, ... }:
+{ inputs, config, pkgs, hostname, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
@@ -89,8 +89,21 @@
   topology.self.hardware.info = "MSI Ghost GS60 - Server";
   modules = {
     networking.wireless.enable = true;
-    services.homepage-dashboard.enable = true;
-    services.unifi.enable = true;
-    services.home-assistant.enable = true;
+    services = {
+      homepage-dashboard = {
+        enable = true;
+        monitorDisks = [ "/" "/mnt/data" ];
+        bookmarks = [
+          {
+            Burbage = [
+              { "Home Assistant" = [{ abbr = "HA"; href = "http://ghost-gs60:8123/"; }]; }
+              { Unifi = [{ abbr = "UTF"; href = "https://ghost-gs60:8443/"; }]; }
+            ];
+          }
+        ];
+      };
+      unifi.enable = true;
+      home-assistant.enable = true;
+    };
   };
 }

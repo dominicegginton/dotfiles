@@ -40,7 +40,6 @@
 
   outputs = { self, nixpkgs, flake-utils, ... }:
 
-
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
@@ -91,7 +90,7 @@
           topology = import inputs.nix-topology {
             inherit pkgs;
             modules = [
-              (./topology.nix)
+              ./topology.nix
               { inherit (self) nixosConfigurations; }
             ];
           };
