@@ -1,8 +1,8 @@
-{ inputs, outputs, stateVersion, theme }:
+{ inputs, outputs, stateVersion, theme, tailnet }:
 
 let
   pkgsFor = platform: outputs.legacyPackages.${platform};
-  specialArgsFor = hostname: { inherit inputs outputs stateVersion hostname theme; };
+  specialArgsFor = hostname: { inherit inputs outputs stateVersion hostname theme tailnet; };
 in
 
 with inputs.nixpkgs.lib;

@@ -44,7 +44,8 @@
       inherit (self) inputs outputs;
       stateVersion = "24.05";
       theme = "light";
-      lib = import ./lib.nix { inherit inputs outputs stateVersion theme; };
+      tailnet = "soay-puffin.ts.net";
+      lib = import ./lib.nix { inherit inputs outputs stateVersion theme tailnet; };
       overlays = import ./overlays.nix { inherit inputs lib; };
       templates = import ./templates { };
     in

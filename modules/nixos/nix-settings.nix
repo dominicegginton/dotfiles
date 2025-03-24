@@ -15,6 +15,7 @@ with lib;
         connect-timeout = 5;
         log-lines = mkDefault 25;
         min-free = mkDefault (10 * 1024 * 1024 * 1024);
+        download-buffer-size = mkDefault 524288000;
         fallback = true;
         warn-dirty = true;
         keep-going = true;

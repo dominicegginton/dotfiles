@@ -12,6 +12,7 @@
     ./documentation.nix
     ./environment.nix
     ./fonts.nix
+    ./frigate.nix
     ./gcsfuse.nix
     ./gpg.nix
     ./home-assistant.nix

@@ -104,6 +104,8 @@
       };
       unifi.enable = true;
       home-assistant.enable = true;
+      frigate.enable = true;
+      immich.enable = true;
     };
   };
 }

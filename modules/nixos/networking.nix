@@ -4,7 +4,10 @@ with lib;
 with config.lib.topology;
 
 {
-  options.modules.networking.wireless.enable = mkEnableOption "wireless";
+  options.modules.networking = {
+    wireless.enable = mkEnableOption "wireless";
+    tailscale = { };
+  };
 
   config = {
     modules.secrets.wireless = "04480e55-ca76-4444-a5cf-b242009fe153";
@@ -64,16 +67,9 @@ with config.lib.topology;
       enable = true;
       useRoutingFeatures = "both";
       interfaceName = "userspace-networking";
-    };
-    systemd.services.tailscale-autoconnect = {
-      after = [ "network-pre.target" "tailscale.service" ];
-      wants = [ "network-pre.target" "tailscale.service" ];
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig.Type = "oneshot";
-      script = ''
-        PATH=${with pkgs; makeBinPath [ tailscale ]}
-        tailscale up --reset --ssh --accept-dns --auth-key /run/bitwarden-secrets/tailscale
-      '';
+      authKeyFile = "/run/bitwarden-secrets/tailscale";
+      authKeyParameters.ephemeral = true;
+      extraUpFlags = [ "--ssh" "--accept-dns" ];
     };
     environment.systemPackages = with pkgs; [ tailscale ];
   };
