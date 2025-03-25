@@ -62,15 +62,16 @@ with config.lib.topology;
 
     services.openssh.enable = true;
     programs.ssh.startAgent = true;
-
     services.tailscale = {
       enable = true;
       useRoutingFeatures = "both";
-      interfaceName = "userspace-networking";
       authKeyFile = "/run/bitwarden-secrets/tailscale";
       authKeyParameters.ephemeral = true;
       extraUpFlags = [ "--ssh" "--accept-dns" ];
+      extraSetFlags = [ "--posture-checking=true" ];
     };
+    services.nginx.tailscaleAuth.virtualHosts = [
+    ];
     environment.systemPackages = with pkgs; [ tailscale ];
   };
 }

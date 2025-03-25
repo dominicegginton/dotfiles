@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, ... }:
+{ config, lib, pkgs, hostname, tailnet, ... }:
 
 with lib;
 
@@ -31,7 +31,6 @@ in
     services.homepage-dashboard = {
       enable = true;
       listenPort = cfg.listenPort;
-      openFirewall = true;
       settings = {
         color = "stone";
         hideVersion = "true";
@@ -63,13 +62,20 @@ in
         }
       ];
     };
-    networking.firewall.allowedTCPPorts = [ cfg.listenPort ];
-    networking.firewall.allowedUDPPorts = [ ];
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
+    services.nginx = {
+      enable = true;
+      tailscaleAuth.enable = true;
+      tailscaleAuth.virtualHosts = [ "dash.${hostname}" ];
+      virtualHosts."dash.${hostname}" = {
+        locations."/".proxyPass = "http://127.0.0.1:${toString cfg.listenPort}";
+      };
+    };
     topology.self.services.homepage-dashboard = {
       name = "Homepage Dashboard";
       details = {
         listen = {
-          text = "${hostname}:${toString cfg.listenPort} :::${toString cfg.listenPort}";
+          text = "dash.${hostname}";
         };
       };
     };

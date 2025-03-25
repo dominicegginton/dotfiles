@@ -33,9 +33,8 @@ in
       serviceConfig.Type = "oneshot";
       serviceConfig.RemainAfterExit = true;
       script = ''
-        export PATH=${makeBinPath [ pkgs.coreutils ]}:$PATH
-        set -eu
-        echo "backup ..."
+        export PATH=${makeBinPath [ pkgs.coreutils backup ]}:$PATH
+        backup
       '';
     };
     system.activationScripts.backup = {

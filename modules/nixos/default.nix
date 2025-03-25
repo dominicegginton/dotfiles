@@ -20,7 +20,6 @@
     ./homepage-dashboard.nix
     ./i18n.nix
     ./immich.nix
-    ./jellyfin.nix
     ./monitoring.nix
     ./networking.nix
     ./nix-settings.nix
