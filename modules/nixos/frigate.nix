@@ -11,7 +11,7 @@ with lib;
 
   config = mkIf cfg.enable {
     services.frigate = {
-      inherit hostname;
+      hostname = "frigate.${hostname}";
       enable = true;
       settings.auth.enabled = false;
       settings.tls.enabled = false;
@@ -19,20 +19,11 @@ with lib;
         "front".ffmpeg.inputs = [{ path = "rtsp://frigate:frigate@192.168.1.250"; roles = [ ]; }];
       };
     };
-    networking.firewall.allowedTCPPorts = [ 80 443 ];
-    services.nginx = {
-      enable = true;
-      tailscaleAuth.enable = true;
-      tailscaleAuth.virtualHosts = [ "frigate.${hostname}" ];
-      virtualHosts."frigate.${hostname}" = {
-        locations."/".proxyPass = "http://127.0.0.1:8971";
-      };
-    };
-    topology.self.services.homepage-dashboard = {
-      name = "Homepage Dashboard";
+    topology.self.services.frigate = {
+      name = "Frigate";
       details = {
         listen = {
-          text = "dash.${hostname}";
+          text = "frigate.${hostname}";
         };
       };
     };

@@ -62,15 +62,7 @@ in
         }
       ];
     };
-    networking.firewall.allowedTCPPorts = [ 80 443 ];
-    services.nginx = {
-      enable = true;
-      tailscaleAuth.enable = true;
-      tailscaleAuth.virtualHosts = [ "dash.${hostname}" ];
-      virtualHosts."dash.${hostname}" = {
-        locations."/".proxyPass = "http://127.0.0.1:${toString cfg.listenPort}";
-      };
-    };
+    services.nginx.virtualHosts."dash.${hostname}".locations."/".proxyPass = "http://localhost:${toString cfg.listenPort}";
     topology.self.services.homepage-dashboard = {
       name = "Homepage Dashboard";
       details = {

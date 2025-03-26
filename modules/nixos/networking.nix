@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, ... }:
+{ config, lib, pkgs, hostname, tailnet, ... }:
 
 with lib;
 with config.lib.topology;
@@ -15,6 +15,8 @@ with config.lib.topology;
     networking = {
       hostName = hostname;
       useDHCP = true;
+      firewall.enable = true;
+      nftables.enable = true;
       wireless = mkIf config.modules.networking.wireless.enable {
         enable = true;
         fallbackToWPA2 = true;
@@ -33,35 +35,30 @@ with config.lib.topology;
         };
       };
     };
-    topology.self = {
-      interfaces = {
-        wlan0-quardon = mkIf config.modules.networking.wireless.enable {
-          network = "quardon";
-          type = "wifi";
-          physicalConnections = [
-            (mkConnection "quardon-unifi-ap-dom" "wlan0")
-            (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
-            (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
-          ];
-        };
-        wlan0-ribble = mkIf config.modules.networking.wireless.enable {
-          network = "ribble";
-          type = "wifi";
-          physicalConnections = [
-            (mkConnection "ribble-unifi-ap" "wlan0")
-          ];
-        };
-        tailscale = {
-          network = "tailscale";
-          type = "tailscale";
-          icon = ../../assets/tailscale.svg;
-          virtual = true;
-        };
+    topology.self.interfaces = {
+      wlan0-quardon = mkIf config.modules.networking.wireless.enable {
+        network = "quardon";
+        type = "wifi";
+        physicalConnections = [
+          (mkConnection "quardon-unifi-ap-dom" "wlan0")
+          (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
+          (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+        ];
       };
+      wlan0-ribble = mkIf config.modules.networking.wireless.enable {
+        network = "ribble";
+        type = "wifi";
+        physicalConnections = [
+          (mkConnection "ribble-unifi-ap" "wlan0")
+        ];
+      };
+
     };
 
     services.openssh.enable = true;
     programs.ssh.startAgent = true;
+
+    services.tailscaleAuth.enable = true;
     services.tailscale = {
       enable = true;
       useRoutingFeatures = "both";
@@ -70,8 +67,20 @@ with config.lib.topology;
       extraUpFlags = [ "--ssh" "--accept-dns" ];
       extraSetFlags = [ "--posture-checking=true" ];
     };
-    services.nginx.tailscaleAuth.virtualHosts = [
-    ];
+    services.nginx = {
+      enable = true;
+      tailscaleAuth.enable = true;
+      tailscaleAuth.virtualHosts = [
+        "dash.${hostname}"
+        "frigate.${hostname}"
+      ];
+    };
     environment.systemPackages = with pkgs; [ tailscale ];
+    topology.self.interfaces.tailscale = {
+      network = "tailscale";
+      type = "tailscale";
+      icon = ../../assets/tailscale.svg;
+      virtual = true;
+    };
   };
 }
