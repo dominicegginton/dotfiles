@@ -6,7 +6,7 @@ with lib;
   config = mkIf pkgs.stdenv.isLinux {
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox-devedition;
+      package = pkgs.unstable.firefox-devedition;
     };
   };
 }
