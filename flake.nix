@@ -2,7 +2,6 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-images.url = "github:nix-community/nixos-images";
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
@@ -38,28 +37,29 @@
 
   nixConfig.experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
 
-  outputs = { self, nixpkgs, flake-utils, ... }:
+  outputs = { self, nixpkgs, ... }:
 
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
       theme = "dark";
       tailnet = "soay-puffin.ts.net";
+      eachPlatformMerge = op: systems: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem systems then systems else systems ++ [ builtins.currentSystem ]);
+      eachPlatform = eachPlatformMerge (f: attrs: system: let ret = f system; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${system} = ret.${key}; }; }) attrs (builtins.attrNames ret));
       lib = import ./lib.nix { inherit inputs outputs stateVersion theme tailnet; };
       overlays = import ./overlays.nix { inherit inputs lib; };
       templates = import ./templates { };
     in
 
     with lib;
-    with flake-utils.lib;
 
-    eachDefaultSystem
-      (system:
+    eachPlatform nixpkgs.lib.platforms.all
+      (platform:
 
         let
           pkgs = import nixpkgs {
-            inherit system;
-            hostPlatform = system;
+            system = platform;
+            hostPlatform = platform;
             config = {
               joypixels.acceptLicense = true;
               nvidia.acceptLicense = true;
@@ -80,11 +80,9 @@
         {
           formatter = pkgs.nixpkgs-fmt;
           legacyPackages = pkgs;
-          devShells = {
-            default = pkgs.callPackage ./shell.nix { };
-            nodejs = pkgs.callPackage ./shells/nodejs.nix { };
-            python = pkgs.callPackage ./shells/python.nix { };
-          };
+          devShells.default = pkgs.callPackage ./shell.nix { };
+          devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
+          devShells.python = pkgs.callPackage ./shells/python.nix { };
           topology = import inputs.nix-topology {
             inherit pkgs;
             modules = [
@@ -98,16 +96,10 @@
 
     {
       inherit overlays templates;
-
-      nixosConfigurations = {
-        ghost-gs60 = mkNixosHost { hostname = "ghost-gs60"; };
-        latitude-5290 = mkNixosHost { hostname = "latitude-5290"; };
-        latitude-7390 = mkNixosHost { hostname = "latitude-7390"; };
-        nixos-installer = mkNixosHost { hostname = "nixos-installer"; };
-      };
-
-      darwinConfigurations = {
-        MCCML44WMD6T = mkDarwinHost { hostname = "MCCML44WMD6T"; };
-      };
+      nixosConfigurations.nixos-installer = nixosSystem { hostname = "nixos-installer"; };
+      nixosConfigurations.ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
+      nixosConfigurations.latitude-5290 = nixosSystem { hostname = "latitude-5290"; };
+      nixosConfigurations.latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
+      darwinConfigurations.MCCML44WMD6T = mkDarwinHost { hostname = "MCCML44WMD6T"; };
     };
 }

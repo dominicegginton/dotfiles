@@ -1,8 +1,7 @@
-{ inputs, config, ... }:
+{ ... }:
 
 {
   imports = [
-    inputs.home-manager.darwinModules.home-manager
     ./console.nix
     ./homebrew.nix
     ./home-manager.nix
@@ -17,25 +16,21 @@
       useDaemon = true;
       gc.automatic = true;
       optimise.automatic = true;
+      registry = mapAttrs (_: value: { flake = value; }) inputs;
       settings = {
-        experimental-features = [ "nix-command" "flakes" ];
-        log-lines = 100;
-        connect-timeout = 30;
+        experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
+        connect-timeout = 5;
+        log-lines = mkDefault 25;
+        min-free = mkDefault (10 * 1024 * 1024 * 1024);
+        download-buffer-size = mkDefault 524288000;
         fallback = true;
         warn-dirty = true;
         keep-going = true;
         keep-outputs = true;
         keep-derivations = true;
-        # Set auto optimise store to false on darwin
-        # to avoid the issue with the store being locked
-        # and causing nix to hang when trying to build
-        # a derivation. This is a temporary fix until
-        # the issue is resolved in nix.
-        # SEE: https://github.com/NixOS/nix/issues/7273
-        auto-optimise-store = false;
-        min-free = 10000000000;
-        max-free = 20000000000;
-        trusted-users = [ "root" "nixremote" "@wheel" ];
+        auto-optimise-store = true;
+        builders-use-substitutes = true;
+        trusted-users = [ "dom" "nixremote" "root" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
           "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="

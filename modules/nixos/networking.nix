@@ -48,16 +48,11 @@ with config.lib.topology;
       wlan0-ribble = mkIf config.modules.networking.wireless.enable {
         network = "ribble";
         type = "wifi";
-        physicalConnections = [
-          (mkConnection "ribble-unifi-ap" "wlan0")
-        ];
+        physicalConnections = [ (mkConnection "ribble-unifi-ap" "wlan0") ];
       };
-
     };
-
     services.openssh.enable = true;
     programs.ssh.startAgent = true;
-
     services.tailscaleAuth.enable = true;
     services.tailscale = {
       enable = true;
@@ -76,10 +71,10 @@ with config.lib.topology;
       ];
     };
     environment.systemPackages = with pkgs; [ tailscale ];
-    topology.self.interfaces.tailscale = {
-      network = "tailscale";
+    interfaces.tailscale0 = {
+      network = tailnet;
       type = "tailscale";
-      icon = ../../assets/tailscale.svg;
+      icon = ./assets/tailscale.svg;
       virtual = true;
     };
   };

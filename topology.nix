@@ -1,25 +1,19 @@
-{ config, lib, ... }:
+{ config, pkgs, ... }:
 
 with config.lib.topology;
-with lib;
-
-let
-  mkInterface = name: i: "${name}${toString i}";
-  mkNunberedInterfaceGroup = name: n: (map (i: mkInterface name i) (lib.range 0 n));
-in
 
 {
   nodes.internet = mkInternet { };
   networks.internet = {
-    name = "Internet";
+    name = "internet";
     style = {
       primaryColor = "#cc241d";
       secondaryColor = "transparent";
       pattern = "dotted";
     };
   };
-  networks.tailscale = {
-    name = "burbage";
+  networks.${tailnet} = {
+    name = pkgs.lib.tailnet;
     cidrv4 = "100.100.100.100/24";
     cidrv6 = "fd00:2::/64";
     style = {
@@ -62,7 +56,6 @@ in
   };
   nodes.quardon-switch-main = mkSwitch "network cabinet switch" {
     info = "Cisco Switch 24 Port - Network Cabinet";
-    interfaceGroups = [ (mkNunberedInterfaceGroup "eth" 24) ];
     connections.eth0 = mkConnection "quardon-router" "eth1";
     connections.eth1 = mkConnection "quardon-switch-secondary" "eth0";
     connections.eth2 = mkConnection "quardon-unifi-ap-downstairs" "eth0";
@@ -72,7 +65,7 @@ in
   };
   nodes.quardon-switch-secondary = mkSwitch "doms's room switch" {
     info = "Netgear Switch 16 Port - Dom's Room";
-    interfaceGroups = [ (mkNunberedInterfaceGroup "eth" 16) ];
+    interfaces.eth0 = { };
     connections.eth1 = mkConnection "quardon-unifi-ap-dom" "eth0";
   };
   nodes.quardon-unifi-ap-dom = mkDevice "dom's room wireless access point" {
@@ -82,7 +75,8 @@ in
       network = "quardon";
       type = "wifi";
       physicalConnections = [
-
+        (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
+        (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
       ];
     };
   };
@@ -134,7 +128,6 @@ in
   };
   nodes.ribble-switch-main = mkSwitch "network room switch" {
     info = "Netgear Switch 16 Port";
-    interfaceGroups = [ (mkNunberedInterfaceGroup "eth" 16) ];
     connections.eth0 = mkConnection "ribble-router" "eth1";
     connections.eth1 = mkConnection "ribble-unifi-ap" "eth0";
     connections.eth2 = mkConnection "ribble-front-security-camera" "eth0";
@@ -155,7 +148,6 @@ in
   nodes.darwin-laptop = mkDevice "MCCML44WMD6T" {
     info = "Macbook Pro 2019 - Workstation";
     icon = ./assets/apple.svg;
-    interfaceGroups = [ [ "wlan0-quardon" ] [ "wlan0-ribble" ] [ "tailscale" ] ];
     interfaces.wlan0-quardon = {
       network = "quardon";
       type = "wifi";
@@ -172,8 +164,8 @@ in
         (mkConnection "ribble-unifi-ap" "wlan0")
       ];
     };
-    interfaces.tailscale = {
-      network = "tailscale";
+    interfaces.tailscale0 = {
+      network = pkgs.lib.tailnet;
       type = "tailscale";
       icon = ./assets/tailscale.svg;
       virtual = true;
@@ -183,12 +175,9 @@ in
   nodes.pixel-9 = mkDevice "pixel-9" {
     info = "Google Pixel 9 - Smartphone";
     icon = ./assets/google.svg;
-    interfaceGroups = [ [ "5g-radio" ] [ "wlan0-quardon" ] [ "wlan0-ribble" ] [ "tailscale" ] ];
     interfaces."5g-radio" = {
       network = "internet";
-      physicalConnections = [
-        (mkConnection "internet" "*")
-      ];
+      physicalConnections = [ (mkConnection "internet" "*") ];
     };
     interfaces.wlan0-quardon = {
       network = "quardon";
@@ -202,12 +191,10 @@ in
     interfaces.wlan0-ribble = {
       network = "ribble";
       type = "wifi";
-      physicalConnections = [
-        (mkConnection "ribble-unifi-ap" "wlan0")
-      ];
+      physicalConnections = [ (mkConnection "ribble-unifi-ap" "wlan0") ];
     };
-    interfaces.tailscale = {
-      network = "tailscale";
+    interfaces.tailscale0 = {
+      network = pkgs.lib.tailnet;
       type = "tailscale";
       icon = ./assets/tailscale.svg;
       virtual = true;
