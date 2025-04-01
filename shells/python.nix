@@ -1,8 +1,7 @@
-{ lib, pkgs, mkShell }:
+{ mkShell, python3, pyright }:
 
 mkShell {
-  nativeBuildInputs = with pkgs; [
-    (lib.development-promt "temp python shell")
+  nativeBuildInputs = [
     (python3.withPackages (pythonPkgs: with pythonPkgs; [ ]))
     pyright
   ];

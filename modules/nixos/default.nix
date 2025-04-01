@@ -8,7 +8,6 @@
     ./bluetooth.nix
     ./console.nix
     ./deluge.nix
-    ./distributed-builds.nix
     ./documentation.nix
     ./environment.nix
     ./fonts.nix

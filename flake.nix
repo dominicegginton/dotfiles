@@ -43,7 +43,7 @@
     let
       inherit (self) inputs outputs;
       stateVersion = "24.05";
-      theme = "light";
+      theme = "dark";
       tailnet = "soay-puffin.ts.net";
       lib = import ./lib.nix { inherit inputs outputs stateVersion theme tailnet; };
       overlays = import ./overlays.nix { inherit inputs lib; };
@@ -66,10 +66,9 @@
               allowUnfree = true;
               allowBroken = true;
             };
-            overlays = with inputs; with overlays; [
-              additions
-              modifications
-              unstable-packages
+            overlays = with inputs; [
+              overlays.default
+              overlays.unstable
               flip.overlays.default
               roll.overlays.default
               nix-topology.overlays.default
@@ -82,11 +81,9 @@
           formatter = pkgs.nixpkgs-fmt;
           legacyPackages = pkgs;
           devShells = {
-            android = pkgs.callPackage ./shells/android.nix { };
             default = pkgs.callPackage ./shell.nix { };
             nodejs = pkgs.callPackage ./shells/nodejs.nix { };
             python = pkgs.callPackage ./shells/python.nix { };
-            python-notebook = pkgs.callPackage ./shells/python-notebook.nix { };
           };
           topology = import inputs.nix-topology {
             inherit pkgs;

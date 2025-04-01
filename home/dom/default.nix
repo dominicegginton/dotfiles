@@ -1,6 +1,8 @@
-# TODO: clean up this entrie file
+# TODO: refactor this
 
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
+
+with lib;
 
 let
   inherit (pkgs.stdenv) isLinux;
@@ -18,16 +20,26 @@ in
       ".gitignore".source = ./sources/.gitignore;
       ".gitmessage".source = ./sources/.gitmessage;
     };
-    home.packages = with pkgs; [ ]
-      ++ (if isLinux then [
-      bitwarden-cli
-      whatsapp-for-linux
-      telegram-desktop
-      thunderbird
-      unstable.teams-for-linux
-      unstable.chromium
-      unstable.microsoft-edge
-    ]
-    else [ ]);
+
+    home.packages = mkIf isLinux [
+      pkgs.bitwarden-cli
+      pkgs.whatsapp-for-linux
+      pkgs.telegram-desktop
+      pkgs.thunderbird
+      # TODO: refactor this
+      # work related packeges
+      pkgs.unstable.teams-for-linux
+      pkgs.unstable.chromium
+      pkgs.unstable.microsoft-edge
+      (pkgs.unstable.vscode-with-extensions.override
+        {
+          vscodeExtensions = with pkgs.unstable.vscode-extensions; [
+            bbenoist.nix
+            vscodevim.vim
+            github.copilot
+            github.github-vscode-theme
+          ];
+        })
+    ];
   };
 }

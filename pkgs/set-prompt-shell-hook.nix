@@ -1,7 +1,7 @@
 { makeSetupHook, writeScript, stdenv, git }:
 
-workspaceName: (makeSetupHook { name = "development-prompt"; }
-  (writeScript "development-prompt" ''
+workspaceName: (makeSetupHook { name = "set-prompt-shell-hook"; }
+  (writeScript "set-prompt-shell-hook.sh" ''
     #!${stdenv.shell}
     function parse_git_dirty {
       [[ $(${git}/bin/git status --porcelain 2> /dev/null) ]] && echo "*"
