@@ -15,14 +15,14 @@ rec {
     } @args:
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = { inherit inputs outputs stateVersion hostname theme tailnet; } // (args.specialArgs or { });
+      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };
       modules = [
         inputs.base16.nixosModule
         inputs.disko.nixosModules.disko
         inputs.impermanence.nixosModules.impermanence
         inputs.home-manager.nixosModules.default
         inputs.nix-topology.nixosModules.default
-        (if hostname == "nixos-installer" then { } else ./modules/nixos)
+        (if hostname == "nixos-installer" then inputs.nixos-images.nixosModules.image-installer else ./modules/nixos)
         (if hostname == "nixos-installer" then ./modules/nixos/console.nix else { })
         (if hostname == "nixos-installer" then ./modules/nixos/nix-settings.nix else { })
         (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./hosts/nixos/${hostname}/default.nix)
@@ -41,7 +41,7 @@ rec {
     } @args:
     inputs.nix-darwin.lib.darwinSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = { inherit inputs outputs stateVersion hostname theme tailnet; } // (args.specialArgs or { });
+      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };
       modules = [
         inputs.home-manager.darwinModules.home-manager
         inputs.nix-topology.darwinModules.default

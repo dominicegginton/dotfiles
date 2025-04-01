@@ -1,15 +1,17 @@
-{ inputs, pkgs, lib, ... }:
+{ inputs, pkgs, lib, hostname, tailnet, ... }:
 
 with lib;
 
 {
-  imports = with inputs.nixos-images.nixosModules; [ image-installer ];
-  environment.systemPackages = with pkgs; [ bottom host-status ];
-  topology.self.hardware.info = "NixOS Installer";
-  topology.self.interfaces.tailscale = {
-    network = "tailscale";
-    type = "tailscale";
-    icon = ../../assets/tailscale.svg;
-    virtual = true;
+  environment.systemPackages = with pkgs; [ tailscale bottom host-status ];
+  networking = { hostName = hostname; };
+  topology.self = {
+    hardware.info = "ad-doc usb flash drive";
+    interfaces.tailscale0 = {
+      network = tailnet;
+      type = "tailscale";
+      icon = ../../assets/tailscale.svg;
+      virtual = true;
+    };
   };
 }

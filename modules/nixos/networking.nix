@@ -71,10 +71,10 @@ with config.lib.topology;
       ];
     };
     environment.systemPackages = with pkgs; [ tailscale ];
-    interfaces.tailscale0 = {
+    topology.self.interfaces.tailscale0 = {
       network = tailnet;
       type = "tailscale";
-      icon = ./assets/tailscale.svg;
+      icon = ../../assets/tailscale.svg;
       virtual = true;
     };
   };

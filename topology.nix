@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
 with config.lib.topology;
+with pkgs.lib;
 
 {
   nodes.internet = mkInternet { };
@@ -13,7 +14,7 @@ with config.lib.topology;
     };
   };
   networks.${tailnet} = {
-    name = pkgs.lib.tailnet;
+    name = tailnet;
     cidrv4 = "100.100.100.100/24";
     cidrv6 = "fd00:2::/64";
     style = {
@@ -41,7 +42,7 @@ with config.lib.topology;
     };
   };
 
-  nodes.quardon-router = mkRouter "secure gateway" {
+  nodes.quardon-router = mkRouter "secure-gateway" {
     info = "Unifi Security Gateway";
     interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
     interfaces.eth0 = {
@@ -54,8 +55,8 @@ with config.lib.topology;
       addresses = [ "192.168.1.1" ];
     };
   };
-  nodes.quardon-switch-main = mkSwitch "network cabinet switch" {
-    info = "Cisco Switch 24 Port - Network Cabinet";
+  nodes.quardon-switch-main = mkSwitch "switch" {
+    info = "Cisco Switch 24 Port";
     connections.eth0 = mkConnection "quardon-router" "eth1";
     connections.eth1 = mkConnection "quardon-switch-secondary" "eth0";
     connections.eth2 = mkConnection "quardon-unifi-ap-downstairs" "eth0";
@@ -63,13 +64,13 @@ with config.lib.topology;
     connections.eth4 = mkConnection "quardon-front-security-camera" "eth0";
     connections.eth5 = mkConnection "quardon-back-security-camera" "eth0";
   };
-  nodes.quardon-switch-secondary = mkSwitch "doms's room switch" {
-    info = "Netgear Switch 16 Port - Dom's Room";
+  nodes.quardon-switch-secondary = mkSwitch "switch" {
+    info = "Netgear Switch 16 Port";
     interfaces.eth0 = { };
     connections.eth1 = mkConnection "quardon-unifi-ap-dom" "eth0";
   };
-  nodes.quardon-unifi-ap-dom = mkDevice "dom's room wireless access point" {
-    info = "Unifi AP Light - Doms's Room";
+  nodes.quardon-unifi-ap-dom = mkDevice "doms-ap" {
+    info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
       network = "quardon";
@@ -80,8 +81,8 @@ with config.lib.topology;
       ];
     };
   };
-  nodes.quardon-unifi-ap-downstairs = mkDevice "downstairs wireless access point" {
-    info = "Unifi AP Light - Downstairs";
+  nodes.quardon-unifi-ap-downstairs = mkDevice "downstairs-ap" {
+    info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
       network = "quardon";
@@ -92,8 +93,8 @@ with config.lib.topology;
       ];
     };
   };
-  nodes.quardon-unifi-ap-upstairs = mkDevice "upstairs wireless access point" {
-    info = "Unifi AP Light - Upstairs";
+  nodes.quardon-unifi-ap-upstairs = mkDevice "upstairs-ap" {
+    info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
       network = "quardon";
@@ -104,16 +105,16 @@ with config.lib.topology;
       ];
     };
   };
-  nodes.quardon-front-security-camera = mkDevice "front drive security camera" {
-    info = "Reolink Security Camera - Front";
+  nodes.quardon-front-security-camera = mkDevice "front-security-camera" {
+    info = "Reolink Security Camera";
     interfaces.eth0 = { };
   };
-  nodes.quardon-back-security-camera = mkDevice "back drive security camera" {
-    info = "Reolink Security Camera - Back";
+  nodes.quardon-back-security-camera = mkDevice "back-security-camera" {
+    info = "Reolink Security Camera";
     interfaces.eth0 = { };
   };
 
-  nodes.ribble-router = mkRouter "secure gateway" {
+  nodes.ribble-router = mkRouter "secure-gateway" {
     info = "Unifi Security Gateway";
     interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
     interfaces.eth0 = {
@@ -126,27 +127,27 @@ with config.lib.topology;
       addresses = [ "192.168.1.1" ];
     };
   };
-  nodes.ribble-switch-main = mkSwitch "network room switch" {
+  nodes.ribble-switch-main = mkSwitch "switch" {
     info = "Netgear Switch 16 Port";
     connections.eth0 = mkConnection "ribble-router" "eth1";
     connections.eth1 = mkConnection "ribble-unifi-ap" "eth0";
-    connections.eth2 = mkConnection "ribble-front-security-camera" "eth0";
+    connections.eth2 = mkConnection "ribble-security-camera" "eth0";
   };
-  nodes.ribble-unifi-ap = mkDevice "network room wireless access point" {
-    info = "Unifi AP Light - Network Room";
+  nodes.ribble-unifi-ap = mkDevice "ribble-ap" {
+    info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" ] [ "wlan0" ] ];
     interfaces.wlan0 = {
       network = "ribble";
       type = "wifi";
     };
   };
-  nodes.ribble-front-security-camera = mkDevice "front drive security camera" {
-    info = "Security Camera - Front";
+  nodes.ribble-security-camera = mkDevice "security-camera" {
+    info = "Security Camera";
     interfaces.eth0 = { };
   };
 
   nodes.darwin-laptop = mkDevice "MCCML44WMD6T" {
-    info = "Macbook Pro 2019 - Workstation";
+    info = "Macbook Pro 2019";
     icon = ./assets/apple.svg;
     interfaces.wlan0-quardon = {
       network = "quardon";
@@ -160,12 +161,10 @@ with config.lib.topology;
     interfaces.wlan0-ribble = {
       network = "ribble";
       type = "wifi";
-      physicalConnections = [
-        (mkConnection "ribble-unifi-ap" "wlan0")
-      ];
+      physicalConnections = [ (mkConnection "ribble-unifi-ap" "wlan0") ];
     };
     interfaces.tailscale0 = {
-      network = pkgs.lib.tailnet;
+      network = tailnet;
       type = "tailscale";
       icon = ./assets/tailscale.svg;
       virtual = true;
@@ -173,7 +172,7 @@ with config.lib.topology;
   };
 
   nodes.pixel-9 = mkDevice "pixel-9" {
-    info = "Google Pixel 9 - Smartphone";
+    info = "Google Pixel 9";
     icon = ./assets/google.svg;
     interfaces."5g-radio" = {
       network = "internet";
@@ -194,7 +193,7 @@ with config.lib.topology;
       physicalConnections = [ (mkConnection "ribble-unifi-ap" "wlan0") ];
     };
     interfaces.tailscale0 = {
-      network = pkgs.lib.tailnet;
+      network = tailnet;
       type = "tailscale";
       icon = ./assets/tailscale.svg;
       virtual = true;
