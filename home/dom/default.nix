@@ -1,12 +1,4 @@
-# TODO: refactor this
-
 { lib, pkgs, ... }:
-
-with lib;
-
-let
-  inherit (pkgs.stdenv) isLinux;
-in
 
 {
   config = {
@@ -21,17 +13,14 @@ in
       ".gitmessage".source = ./sources/.gitmessage;
     };
 
-    home.packages = mkIf isLinux [
-      pkgs.bitwarden-cli
-      pkgs.whatsapp-for-linux
-      pkgs.telegram-desktop
-      pkgs.thunderbird
-      # TODO: refactor this
-      # work related packeges
-      pkgs.unstable.teams-for-linux
-      pkgs.unstable.chromium
-      pkgs.unstable.microsoft-edge
-      (pkgs.unstable.vscode-with-extensions.override
+
+    # TODO: refactor this
+    # work related packeges
+    home.packages = with pkgs; lib.mkIf pkgs.stdenv.isLinux [
+      unstable.teams-for-linux
+      unstable.chromium
+      unstable.microsoft-edge
+      (unstable.vscode-with-extensions.override
         {
           vscodeExtensions = with pkgs.unstable.vscode-extensions; [
             bbenoist.nix

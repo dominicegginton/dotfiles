@@ -80,6 +80,6 @@ in
       deps = [ "specialfs" ];
     };
     system.activationScripts.users.deps = [ "secrets" ];
-    environment.systemPackages = [ secrets-sync ];
+    environment.systemPackages = [ pkgs.bitwarden-cli secrets-sync ];
   };
 }
