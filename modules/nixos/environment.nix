@@ -33,7 +33,6 @@
         git-lfs
         pinentry
         pinentry-curses
-        collect-garbage
         host-status
       ];
     };

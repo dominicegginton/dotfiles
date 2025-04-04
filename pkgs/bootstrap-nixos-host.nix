@@ -1,4 +1,4 @@
-{ lib, stdenv, writers, ensure-user-is-root, coreutils, git, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, bws }:
+{ lib, stdenv, writeShellScriptBin, ensure-user-is-root, coreutils, git, busybox, nix, nixos-anywhere, fzf, nmap, jq, gum, bws }:
 
 if (!stdenv.isLinux)
 then throw "This script can only be run on linux hosts"
@@ -9,7 +9,7 @@ else
     mountpoint = "$temp/run/bitwarden-secrets";
   in
 
-  writers.writeBashBin "bootstrap-nixos-host" ''
+  writeShellScriptBin "bootstrap-nixos-host" ''
     export PATH=${lib.makeBinPath [ ensure-user-is-root coreutils git busybox nix nixos-anywhere fzf nmap jq gum bws ]}
     set -efu -o pipefail
     ensure-user-is-root

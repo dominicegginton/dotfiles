@@ -1,10 +1,10 @@
-{ stdenv, lib, writers, ensure-user-is-root, nix, util-linux, coreutils, busybox, gum }:
+{ stdenv, lib, writeShellScriptBin, ensure-user-is-root, nix, util-linux, coreutils, busybox, gum }:
 
 if (!stdenv.isLinux)
 then throw "This script can only be run on linux hosts"
 else
 
-  writers.writeBashBin "bootstrap-nixos-installer" ''
+  writeShellScriptBin "bootstrap-nixos-installer" ''
     export PATH=${lib.makeBinPath [ ensure-user-is-root nix util-linux coreutils busybox gum ]}
     set -efu -o pipefail
     ensure-user-is-root

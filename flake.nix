@@ -44,10 +44,8 @@
       stateVersion = "24.05";
       theme = "dark";
       tailnet = "soay-puffin.ts.net";
-      eachPlatformMerge = op: systems: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem systems then systems else systems ++ [ builtins.currentSystem ]);
-      eachPlatform = eachPlatformMerge (f: attrs: system: let ret = f system; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${system} = ret.${key}; }; }) attrs (builtins.attrNames ret));
-      lib = import ./lib.nix { inherit inputs outputs stateVersion theme tailnet; };
-      overlays = import ./overlays.nix { inherit inputs lib; };
+      lib = import ./lib.nix { inherit inputs outputs stateVersion theme tailnet; inherit (nixpkgs) lib; };
+      overlays = import ./overlays.nix { inherit inputs outputs; };
       templates = import ./templates { };
     in
 
@@ -95,7 +93,7 @@
     //
 
     {
-      inherit overlays templates;
+      inherit lib overlays templates;
       nixosConfigurations.nixos-installer = nixosSystem { hostname = "nixos-installer"; };
       nixosConfigurations.ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
       nixosConfigurations.latitude-5290 = nixosSystem { hostname = "latitude-5290"; };

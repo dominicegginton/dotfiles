@@ -1,10 +1,10 @@
-{ lib, stdenv, writers, ensure-user-is-not-root, busybox, kdePackages, gum, ... }:
+{ lib, stdenv, writeShellScriptBin, ensure-user-is-not-root, busybox, kdePackages, gum, ... }:
 
 if (!stdenv.isLinux)
 then throw "This script can only be run on linux hosts"
 else
 
-  writers.writeBashBin "set-theme" ''
+  writeShellScriptBin "set-theme" ''
     export PATH=${lib.makeBinPath [ ensure-user-is-not-root busybox kdePackages.plasma-workspace gum ]}
     set -efu -o pipefail
     ensure-user-is-not-root

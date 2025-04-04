@@ -1,6 +1,6 @@
-{ lib, writers, git, gum }:
+{ lib, writeShellScriptBin, git, gum }:
 
-writers.writeBashBin "ensure-workspace-is-clean" ''
+writeShellScriptBin "ensure-workspace-is-clean" ''
   export PATH=${lib.makeBinPath [ git gum ]}
   if ! git diff-index --quiet HEAD --; then
     gum log --level error "Workspace is dirty"

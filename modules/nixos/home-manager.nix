@@ -16,7 +16,7 @@
       }
       ../home-manager
     ];
-
+    home-manager.backupFileExtension = "backup";
     home-manager.users = {
       dom = _: {
         imports = [ ../../home/dom ];

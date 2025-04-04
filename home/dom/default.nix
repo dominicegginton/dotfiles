@@ -13,22 +13,12 @@
       ".gitmessage".source = ./sources/.gitmessage;
     };
 
-
-    # TODO: refactor this
-    # work related packeges
+    # TODO: refactor - work related packeges
     home.packages = with pkgs; lib.mkIf pkgs.stdenv.isLinux [
       unstable.teams-for-linux
       unstable.chromium
       unstable.microsoft-edge
-      (unstable.vscode-with-extensions.override
-        {
-          vscodeExtensions = with pkgs.unstable.vscode-extensions; [
-            bbenoist.nix
-            vscodevim.vim
-            github.copilot
-            github.github-vscode-theme
-          ];
-        })
+      (vscode-with-extensions.override { })
     ];
   };
 }

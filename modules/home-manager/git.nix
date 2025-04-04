@@ -1,6 +1,3 @@
-# TODO: add configuration to this module
-#       enable user to define configuration
-
 { pkgs, ... }:
 
 {
@@ -17,7 +14,5 @@
         };
       };
     };
-
-    home.packages = with pkgs; [ gitu onefetch git-cleanup git-sync ];
   };
 }

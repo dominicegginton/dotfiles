@@ -1,7 +1,6 @@
-{ writeShellApplication, tmux }:
+{ lib, writeShellScriptBin, tmux }:
 
-writeShellApplication {
-  name = "twx";
-  runtimeInputs = [ tmux ];
-  text = "tmux kill-server";
-}
+writeShellScriptBin "twx" ''
+  export PATH=${lib.makeBinPath [ tmux ]}
+  tmux kill-server
+''

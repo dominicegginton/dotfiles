@@ -1,18 +1,11 @@
-{ inputs, outputs, stateVersion, theme, tailnet }:
+{ inputs, outputs, lib, stateVersion, theme, tailnet }:
 
-rec {
+lib // rec {
   inherit theme tailnet;
-  eachPlatformMerge = op: systems: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem systems then systems else systems ++ [ builtins.currentSystem ]);
-  eachPlatform = eachPlatformMerge (f: attrs: system: let ret = f system; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${system} = ret.${key}; }; }) attrs (builtins.attrNames ret));
-  packagesFrom = module: { system }: module.packages.${system};
-  defaultPackageFrom = module: attrs @ { system }: (packagesFrom module attrs // { inherit system; }).default;
-  nixosSystem =
-    { hostname
-    , platform ? "x86_64-linux"
-    , specialArgs ? { }
-    , modules ? [ ]
-    , ...
-    } @args:
+  eachPlatformMerge = op: platforms: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then platforms else platforms ++ [ builtins.currentSystem ]);
+  eachPlatform = eachPlatformMerge (f: attrs: platform: let ret = f platform; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${platform} = ret.${key}; }; }) attrs (builtins.attrNames ret));
+  packagesFrom = module: platform: module.packages.${platform};
+  nixosSystem = { hostname, platform ? "x86_64-linux", specialArgs ? { }, modules ? [ ], ... } @args:
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
       specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };
@@ -32,13 +25,7 @@ rec {
         }
       ] ++ (args.modules or [ ]);
     });
-  darwinSystem =
-    { hostname
-    , platform ? "x86_64-darwin"
-    , specialArgs ? { }
-    , modules ? [ ]
-    , ...
-    } @args:
+  darwinSystem = { hostname, platform ? "x86_64-darwin", specialArgs ? { }, modules ? [ ], ... } @args:
     inputs.nix-darwin.lib.darwinSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
       specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };
