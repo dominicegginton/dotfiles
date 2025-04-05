@@ -14,11 +14,6 @@
     };
 
     # TODO: refactor - work related packeges
-    home.packages = with pkgs; lib.mkIf pkgs.stdenv.isLinux [
-      unstable.teams-for-linux
-      unstable.chromium
-      unstable.microsoft-edge
-      (vscode-with-extensions.override { })
-    ];
+    home.packages = with pkgs.unstable; lib.mkIf pkgs.stdenv.isLinux [ teams-for-linux chromium microsoft-edge vscode-with-extensions ];
   };
 }

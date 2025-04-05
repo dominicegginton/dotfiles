@@ -62,6 +62,7 @@ in
         }
       ];
     };
+    services.nginx.enable = true;
     services.nginx.virtualHosts."dash.${hostname}".locations."/".proxyPass = "http://localhost:${toString cfg.listenPort}";
     topology.self.services.homepage-dashboard = {
       name = "Homepage Dashboard";

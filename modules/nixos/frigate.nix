@@ -11,7 +11,7 @@ with lib;
 
   config = mkIf cfg.enable {
     services.frigate = {
-      hostname = "frigate.${hostname}";
+      hostname = "frigate.${hostname}.${tailnet}";
       enable = true;
       settings.auth.enabled = false;
       settings.tls.enabled = false;
@@ -19,6 +19,7 @@ with lib;
         "front".ffmpeg.inputs = [{ path = "rtsp://frigate:frigate@192.168.1.250"; roles = [ ]; }];
       };
     };
+
     topology.self.services.frigate = {
       name = "Frigate";
       details = {

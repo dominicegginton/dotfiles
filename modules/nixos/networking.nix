@@ -63,7 +63,6 @@ with config.lib.topology;
       extraSetFlags = [ "--posture-checking=true" ];
     };
     services.nginx = {
-      enable = true;
       tailscaleAuth.enable = true;
       tailscaleAuth.virtualHosts = [
         "dash.${hostname}"

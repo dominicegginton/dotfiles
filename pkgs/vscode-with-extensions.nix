@@ -1,16 +1,9 @@
 { vscode-with-extensions, vscode-extensions }:
 
-vscode-with-extensions
+let
+  defaultExtensions = with vscode-extensions; [ bbenoist.nix vscodevim.vim github.copilot github.github-vscode-theme ];
+in
 
-  //
+(vscode-with-extensions.override { vscodeExtensions = defaultExtensions; }) //
 
-{
-  override = { vscodeExtensions ? [ ], ... } @args: vscode-with-extensions.override (args // {
-    vscodeExtensions = with vscode-extensions; [
-      bbenoist.nix
-      vscodevim.vim
-      github.copilot
-      github.github-vscode-theme
-    ] ++ vscodeExtensions;
-  });
-}
+{ override = args: vscode-with-extensions.override (args // { vscodeExtensions = defaultExtensions ++ (args.vscodeExtensions or [ ]); }); }

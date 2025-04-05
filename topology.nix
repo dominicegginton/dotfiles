@@ -1,7 +1,7 @@
-{ config, pkgs, ... }:
+{ pkgs, config, ... }:
 
-with config.lib.topology;
 with pkgs.lib;
+with config.lib.topology;
 
 {
   nodes.internet = mkInternet { };
@@ -13,7 +13,7 @@ with pkgs.lib;
       pattern = "dotted";
     };
   };
-  networks.${tailnet} = {
+  networks."${tailnet}" = {
     name = tailnet;
     cidrv4 = "100.100.100.100/24";
     cidrv6 = "fd00:2::/64";
