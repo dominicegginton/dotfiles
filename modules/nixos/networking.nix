@@ -65,14 +65,11 @@ with config.lib.topology;
     };
     networking.firewall.trustedInterfaces = [ "tailscale0" ];
     networking.firewall.checkReversePath = "loose";
-    services.nginx = {
-      tailscaleAuth.enable = true;
-      tailscaleAuth.virtualHosts = [
-        "dash.${hostname}"
-        "frigate.${hostname}"
-        "ha.${hostname}"
-      ];
-    };
+    services.nginx.tailscaleAuth.virtualHosts = [
+      "dash.${hostname}"
+      "frigate.${hostname}"
+      "ha.${hostname}"
+    ];
     environment.systemPackages = with pkgs; [ tailscale ];
     topology.self.interfaces.tailscale0 = {
       network = tailnet;
