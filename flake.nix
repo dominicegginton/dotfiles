@@ -45,8 +45,8 @@
       templates = import ./templates { };
     in
 
-    with lib;
     with nixpkgs.lib;
+    with lib;
 
     eachPlatform platforms.all
       (platform:

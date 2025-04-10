@@ -10,7 +10,7 @@ rec {
   nixosSystem = { hostname, platform ? "x86_64-linux", ... } @args:
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };
+      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion theme tailnet hostname; };
       modules = [
         inputs.base16.nixosModule
         inputs.disko.nixosModules.disko
@@ -30,7 +30,7 @@ rec {
   darwinSystem = { hostname, platform ? "x86_64-darwin", ... } @args:
     inputs.nix-darwin.lib.darwinSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };
+      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion theme tailnet hostname; };
       modules = [
         inputs.home-manager.darwinModules.home-manager
         inputs.nix-topology.darwinModules.default
