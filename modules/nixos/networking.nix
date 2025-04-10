@@ -61,12 +61,16 @@ with config.lib.topology;
       authKeyParameters.ephemeral = true;
       extraUpFlags = [ "--ssh" "--accept-dns" ];
       extraSetFlags = [ "--posture-checking=true" ];
+      interfaceName = "tailscale0";
     };
+    networking.firewall.trustedInterfaces = [ "tailscale0" ];
+    networking.firewall.checkReversePath = "loose";
     services.nginx = {
       tailscaleAuth.enable = true;
       tailscaleAuth.virtualHosts = [
         "dash.${hostname}"
         "frigate.${hostname}"
+        "ha.${hostname}"
       ];
     };
     environment.systemPackages = with pkgs; [ tailscale ];
