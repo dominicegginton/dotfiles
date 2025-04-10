@@ -6,7 +6,7 @@
     common-pc-laptop
     common-pc-laptop-ssd
     common-pc-laptop-hdd
-    common-gpu-nvidia
+    # common-gpu-nvidia
     ./hardware-configuration.nix
   ];
 
