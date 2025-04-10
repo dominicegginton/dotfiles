@@ -78,7 +78,7 @@
           devShells.default = pkgs.callPackage ./shell.nix { };
           devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
           devShells.python = pkgs.callPackage ./shells/python.nix { };
-          topology = import inputs.nix-topology {
+          topology = import self.inputs.nix-topology {
             inherit pkgs;
             modules = [
               ./topology.nix
