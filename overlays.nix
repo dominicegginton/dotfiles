@@ -2,7 +2,6 @@
 
 rec {
   default = final: prev: with outputs.lib; let callPackage = final.callPackage; platform = final.system; in {
-    inherit (outputs) lib;
     bootstrap-nixos-host = callPackage ./pkgs/bootstrap-nixos-host.nix { };
     bootstrap-nixos-installer = callPackage ./pkgs/bootstrap-nixos-installer.nix { };
     ensure-user-is-root = callPackage ./pkgs/ensure-user-is-root.nix { };
@@ -23,10 +22,11 @@ rec {
     twx = callPackage ./pkgs/twx.nix { };
     vscode-with-extensions = import ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
     vulnix = callPackage (packagesFrom inputs.vulnix).vulnix { };
+    lib = prev.lib // outputs.lib;
   };
 
   unstable = final: _: {
-    unstable = import inputs.nixpkgs-unstable final // {
+    unstable = import inputs.nixpkgs-unstable {
       inherit (final) system hostPlatform config;
       overlays = [ default ];
     };

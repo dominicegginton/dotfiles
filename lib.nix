@@ -1,11 +1,13 @@
-{ inputs, outputs, lib, stateVersion, theme, tailnet }:
+{ inputs, outputs }:
 
-lib // rec {
-  inherit theme tailnet;
+rec {
+  stateVersion = "24.05";
+  theme = "dark";
+  tailnet = "soay-puffin.ts.net";
   eachPlatformMerge = op: platforms: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then platforms else platforms ++ [ builtins.currentSystem ]);
   eachPlatform = eachPlatformMerge (f: attrs: platform: let ret = f platform; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${platform} = ret.${key}; }; }) attrs (builtins.attrNames ret));
   packagesFrom = module: platform: module.packages.${platform};
-  nixosSystem = { hostname, platform ? "x86_64-linux", specialArgs ? { }, modules ? [ ], ... } @args:
+  nixosSystem = { hostname, platform ? "x86_64-linux", ... } @args:
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
       specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };
@@ -25,7 +27,7 @@ lib // rec {
         }
       ] ++ (args.modules or [ ]);
     });
-  darwinSystem = { hostname, platform ? "x86_64-darwin", specialArgs ? { }, modules ? [ ], ... } @args:
+  darwinSystem = { hostname, platform ? "x86_64-darwin", ... } @args:
     inputs.nix-darwin.lib.darwinSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
       specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion hostname theme tailnet; };

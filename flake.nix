@@ -40,18 +40,15 @@
   outputs = { self, nixpkgs, ... }:
 
     let
-      inherit (self) inputs outputs;
-      stateVersion = "24.05";
-      theme = "dark";
-      tailnet = "soay-puffin.ts.net";
-      lib = import ./lib.nix { inherit inputs outputs stateVersion theme tailnet; inherit (nixpkgs) lib; };
-      overlays = import ./overlays.nix { inherit inputs outputs; };
+      lib = import ./lib.nix { inherit (self) inputs outputs; };
+      overlays = import ./overlays.nix { inherit (self) inputs outputs; };
       templates = import ./templates { };
     in
 
     with lib;
+    with nixpkgs.lib;
 
-    eachPlatform nixpkgs.lib.platforms.all
+    eachPlatform platforms.all
       (platform:
 
         let
@@ -64,7 +61,7 @@
               allowUnfree = true;
               allowBroken = true;
             };
-            overlays = with inputs; [
+            overlays = with self.inputs; [
               overlays.default
               overlays.unstable
               flip.overlays.default

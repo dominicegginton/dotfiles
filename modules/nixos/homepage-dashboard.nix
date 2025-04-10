@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, tailnet, ... }:
+{ config, lib, pkgs, hostname, ... }:
 
 with lib;
 

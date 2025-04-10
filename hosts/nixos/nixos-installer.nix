@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, hostname, tailnet, ... }:
+{ pkgs, lib, hostname, tailnet, ... }:
 
 with lib;
 
