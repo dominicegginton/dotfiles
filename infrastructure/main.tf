@@ -1,0 +1,41 @@
+resource "random_id" "terraform-remote-backend" {
+  byte_length = 8
+}
+
+resource "google_storage_bucket" "terraform-remote-backend" {
+  project  = "dominicegginton-personal"
+  name     = "${random_id.terraform-remote-backend.hex}-terraform-remote-backend"
+  location = "EUROPE-WEST2"
+
+  force_destroy               = false 
+  public_access_prevention    = "enforced"
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
+}
+
+resource "local_file" "terraform-remote-backend" {
+  file_permission = "0644"
+  filename        = "${path.module}/backend.tf"
+
+  content = <<-EOT
+  terraform {
+    backend "gcs" {
+      bucket = "${google_storage_bucket.terraform-remote-backend.name}"
+    }
+  }
+  EOT
+}
+
+resource "google_storage_bucket" "dominicegginton" {
+  name     = "dominicegginton"
+  location = "EUROPE-WEST2"
+
+  force_destroy               = false 
+  public_access_prevention    = "enforced"
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
+}

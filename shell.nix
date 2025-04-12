@@ -1,6 +1,21 @@
-{ mkShell, nix, deadnix, bootstrap-nixos-host, bootstrap-nixos-installer }:
+{ mkShell
+, nix
+, deadnix
+, google-cloud-sdk
+, opentofu
+, bootstrap-nixos-host
+, bootstrap-nixos-installer
+}:
 
 mkShell {
   name = "dominicegginton/dotfiles";
-  packages = [ nix deadnix bootstrap-nixos-host bootstrap-nixos-installer ];
+  packages = [
+    nix
+    deadnix
+    google-cloud-sdk
+    opentofu
+
+    bootstrap-nixos-host
+    bootstrap-nixos-installer
+  ];
 }

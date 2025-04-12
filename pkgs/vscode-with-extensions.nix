@@ -1,7 +1,13 @@
 { vscode-with-extensions, vscode-extensions }:
 
 let
-  defaultExtensions = with vscode-extensions; [ bbenoist.nix vscodevim.vim github.copilot github.github-vscode-theme ];
+  defaultExtensions = with vscode-extensions; [
+    bbenoist.nix
+    hashicorp.terraform
+    vscodevim.vim
+    github.copilot
+    github.github-vscode-theme
+  ];
 in
 
 (vscode-with-extensions.override { vscodeExtensions = defaultExtensions; }) //

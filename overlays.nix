@@ -24,7 +24,6 @@ rec {
     vulnix = callPackage (packagesFrom inputs.vulnix).vulnix { };
     lib = prev.lib // outputs.lib;
   };
-
   unstable = final: _: {
     unstable = import inputs.nixpkgs-unstable {
       inherit (final) system hostPlatform config;
