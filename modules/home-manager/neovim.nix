@@ -1,9 +1,13 @@
-{ pkgs, lib, ... }:
-
-with lib;
+{ pkgs, ... }:
 
 {
   config = {
+    home.sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+      SYSTEMD_EDITOR = "nvim";
+    };
+
     programs.neovim = {
       enable = true;
       package = pkgs.neovim;
@@ -36,12 +40,6 @@ with lib;
         typos-lsp
         pyright
       ];
-    };
-
-    home.sessionVariables = {
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-      SYSTEMD_EDITOR = "nvim";
     };
   };
 }

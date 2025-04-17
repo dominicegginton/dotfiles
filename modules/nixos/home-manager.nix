@@ -1,4 +1,4 @@
-{ inputs, theme, pkgs, stateVersion, ... }:
+{ inputs, config, theme, pkgs, stateVersion, ... }:
 
 {
   config = {

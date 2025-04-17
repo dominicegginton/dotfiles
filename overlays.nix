@@ -16,7 +16,6 @@ rec {
     neovim = (packagesFrom inputs.neovim-nightly platform).neovim;
     set-prompt-shell-hook = callPackage ./pkgs/set-prompt-shell-hook.nix { };
     set-theme = callPackage ./pkgs/set-theme.nix { };
-    source-nodejs-packages-shell-hook = callPackage ./pkgs/source-nodejs-packages-shell-hook.nix { };
     todo = (packagesFrom inputs.todo platform).default;
     twm = (packagesFrom inputs.twm platform).default;
     twx = callPackage ./pkgs/twx.nix { };

@@ -2,9 +2,6 @@
 
 {
   config = {
-    programs.ssh = {
-      enable = true;
-      extraConfig = '''';
-    };
+    programs.ssh.enable = true;
   };
 }
