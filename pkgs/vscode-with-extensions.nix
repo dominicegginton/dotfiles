@@ -1,15 +1,22 @@
 { vscode-with-extensions, vscode-extensions }:
 
 let
-  defaultExtensions = with vscode-extensions; [
+  extensions = with vscode-extensions; [
+    vscodevim.vim
+    github.github-vscode-theme
+    github.vscode-pull-request-github
+    github.vscode-github-actions
+    github.copilot
+    ms-azuretools.vscode-docker
     bbenoist.nix
     hashicorp.terraform
-    vscodevim.vim
-    github.copilot
-    github.github-vscode-theme
+    rust-lang.rust-analyzer
+    sumneko.lua
+    ms-python.python
+    tekumara.typos-vscode
   ];
 in
 
-(vscode-with-extensions.override { vscodeExtensions = defaultExtensions; }) //
+(vscode-with-extensions.override { vscodeExtensions = extensions; }) //
 
-{ override = args: vscode-with-extensions.override (args // { vscodeExtensions = defaultExtensions ++ (args.vscodeExtensions or [ ]); }); }
+{ override = args: vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); }
