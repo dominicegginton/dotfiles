@@ -5,6 +5,12 @@ rec {
   darwinStateVersion = 5;
   theme = "dark";
   tailnet = "soay-puffin.ts.net";
+  maintainers.dominicegginton = {
+    name = "Dominic Egginton";
+    email = "dominic.egginton@gmail.com";
+    github = "dominicegginton";
+    githubId = 28626241;
+  };
   eachPlatformMerge = op: platforms: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then platforms else platforms ++ [ builtins.currentSystem ]);
   eachPlatform = eachPlatformMerge (f: attrs: platform: let ret = f platform; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${platform} = ret.${key}; }; }) attrs (builtins.attrNames ret));
   packagesFrom = module: platform: module.packages.${platform};

@@ -1,4 +1,4 @@
-{ inputs, config, pkgs, hostname, ... }:
+{ inputs, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [

@@ -1,6 +1,6 @@
 ## todo: move to internal module
 
-{ writeShellApplication, pinentry, gnupg, google-cloud-sdk }:
+{ lib, writeShellApplication, pinentry, gnupg, google-cloud-sdk }:
 
 writeShellApplication {
   name = "gpg-import-keys";
@@ -15,4 +15,5 @@ writeShellApplication {
     gsutil rsync -r gs://dominicegginton/gpg "$temp"
     gpg --import "$temp"/*
   '';
+  meta.maintainers = [ lib.maintainers.dominicegginton ];
 }

@@ -7,7 +7,7 @@ with lib;
     modules.secrets.dom = "be2b6a7a-7811-4711-86f0-b24200a41bbd";
     users.users = {
       dom = {
-        description = "Dominic Egginton";
+        description = maintainers.dominicegginton.name;
         isNormalUser = true;
         hashedPasswordFile = "/run/bitwarden-secrets/dom";
         homeMode = "0755";
@@ -27,6 +27,7 @@ with lib;
       root = {
         description = "System administrator";
         isNormalUser = mkDefault false;
+        isSystemUser = mkDefault true;
         hashedPassword = mkDefault null;
       };
     };
