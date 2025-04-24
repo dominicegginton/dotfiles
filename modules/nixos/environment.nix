@@ -35,6 +35,7 @@
         pinentry-curses
         status
         nun
+        nearch
       ];
     };
   };
