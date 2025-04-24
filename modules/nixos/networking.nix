@@ -32,6 +32,10 @@ with config.lib.topology;
             pskRaw = "ext:psk_burbage";
             priority = 1;
           };
+          "Ribble" = {
+            pskRaw = "ext:psk_ribble";
+            priority = 2;
+          };
         };
       };
     };

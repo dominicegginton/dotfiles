@@ -9,6 +9,7 @@ let
   secretType = types.attrsOf types.str;
   secret-install = { name, id }: ''
     value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
+    rm -f ${directory}/secrets/${name}
     echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
     chown root:root ${directory}/secrets/${name}
     chmod 700 ${directory}/secrets/${name}
