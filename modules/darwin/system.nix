@@ -1,10 +1,9 @@
-{ lib, config, ... }:
-
-with lib;
+{ stateVersion, ... }:
 
 {
-  config = {
-    system.defaults = {
+  system = {
+    inherit stateVersion;
+    defaults = {
       NSGlobalDomain.AppleFontSmoothing = 1;
       NSGlobalDomain.NSTableViewDefaultSizeMode = 1;
       NSGlobalDomain.AppleICUForce24HourTime = true;

@@ -7,18 +7,15 @@
     ./backup.nix
     ./bluetooth.nix
     ./console.nix
-    ./deluge.nix
     ./documentation.nix
     ./environment.nix
     ./fonts.nix
-    ./frigate.nix
     ./gcsfuse.nix
     ./gpg.nix
     ./home-assistant.nix
     ./home-manager.nix
     ./homepage-dashboard.nix
     ./i18n.nix
-    ./immich.nix
     ./monitoring.nix
     ./networking.nix
     ./nix-settings.nix

@@ -6,6 +6,8 @@
     nixos-images.url = "github:nix-community/nixos-images";
     nixos-anywhere.url = "github:nix-community/nixos-anywhere";
     nixos-anywhere.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
@@ -73,7 +75,7 @@
         in
 
         {
-          formatter = pkgs.nixpkgs-fmt;
+          formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
           devShells.default = pkgs.callPackage ./shell.nix { };
           devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
@@ -89,6 +91,6 @@
       nixosConfigurations.ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
       nixosConfigurations.latitude-5290 = nixosSystem { hostname = "latitude-5290"; };
       nixosConfigurations.latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
-      darwinConfigurations.MCCML44WMD6T = mkDarwinHost { hostname = "MCCML44WMD6T"; };
+      darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
     };
 }

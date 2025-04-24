@@ -7,12 +7,13 @@ rec {
     ensure-user-is-not-root = callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     gpg-import-keys = callPackage ./pkgs/gpg-import-keys.nix { };
-    host-status = callPackage ./pkgs/host-status.nix { };
+    status = callPackage ./pkgs/status.nix { };
     mkShell = import ./pkgs/mk-shell.nix { inherit (prev) mkShell; inherit (final) set-prompt-shell-hook; };
     network-filters-disable = callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = callPackage ./pkgs/network-filters-enable.nix { };
     nixos-anywhere = (packagesFrom inputs.nixos-anywhere platform).nixos-anywhere;
     neovim = (packagesFrom inputs.neovim-nightly platform).neovim;
+    nun = callPackage ./pkgs/nun.nix { };
     set-prompt-shell-hook = callPackage ./pkgs/set-prompt-shell-hook.nix { };
     set-theme = callPackage ./pkgs/set-theme.nix { };
     todo = (packagesFrom inputs.todo platform).default;

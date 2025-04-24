@@ -33,7 +33,8 @@
         git-lfs
         pinentry
         pinentry-curses
-        host-status
+        status
+        nun
       ];
     };
   };

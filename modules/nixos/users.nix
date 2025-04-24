@@ -24,13 +24,6 @@ with lib;
         ];
       };
 
-      nixremote = {
-        description = "Nix Remote";
-        isNormalUser = mkDefault true;
-        home = mkForce "/var/empty";
-        extraGroups = [ "nixremote" ];
-      };
-
       root = {
         description = "System administrator";
         isNormalUser = mkDefault false;

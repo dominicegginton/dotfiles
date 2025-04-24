@@ -11,7 +11,13 @@ with lib;
 
   config = mkIf cfg.enable {
     virtualisation = {
-      docker.enable = true;
+      docker = {
+        enable = true;
+        autoPrune = {
+          enable = true;
+          flags = [ "--all" ];
+        };
+      };
       vmVariant = {
         users.groups.nixosvmtest = { };
         users.users.nix = {

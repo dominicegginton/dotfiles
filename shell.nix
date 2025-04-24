@@ -1,5 +1,6 @@
 { mkShell
 , nix
+, nixpkgs-fmt
 , deadnix
 , nix-diff
 , nix-tree
@@ -13,6 +14,7 @@ mkShell {
   name = "dominicegginton/dotfiles";
   packages = [
     nix
+    nixpkgs-fmt
     deadnix
     nix-diff
     nix-tree

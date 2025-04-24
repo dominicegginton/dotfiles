@@ -1,7 +1,8 @@
 { inputs, outputs }:
 
 rec {
-  stateVersion = "24.05";
+  nixosStateVersion = "24.05";
+  darwinStateVersion = 5;
   theme = "dark";
   tailnet = "soay-puffin.ts.net";
   eachPlatformMerge = op: platforms: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then platforms else platforms ++ [ builtins.currentSystem ]);
@@ -10,11 +11,12 @@ rec {
   nixosSystem = { hostname, platform ? "x86_64-linux", ... } @args:
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion theme tailnet hostname; };
+      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs theme tailnet hostname; stateVersion = nixosStateVersion; };
       modules = [
         inputs.base16.nixosModule
         inputs.disko.nixosModules.disko
         inputs.impermanence.nixosModules.impermanence
+        inputs.nixos-wsl.nixosModules.default
         inputs.home-manager.nixosModules.default
         inputs.nix-topology.nixosModules.default
         (if hostname == "nixos-installer" then inputs.nixos-images.nixosModules.image-installer else ./modules/nixos)
@@ -30,7 +32,7 @@ rec {
   darwinSystem = { hostname, platform ? "x86_64-darwin", ... } @args:
     inputs.nix-darwin.lib.darwinSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs stateVersion theme tailnet hostname; };
+      specialArgs = (args.specialArgs or { }) // { inherit inputs outputs theme tailnet hostname; stateVersion = darwinStateVersion; };
       modules = [
         inputs.home-manager.darwinModules.home-manager
         inputs.nix-topology.darwinModules.default
