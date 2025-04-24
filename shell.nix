@@ -1,11 +1,12 @@
 { mkShell
 , nix
 , deadnix
+, nix-diff
+, nix-tree
 , google-cloud-sdk
 , opentofu
 , writeShellApplication
 , bootstrap-nixos-host
-, bootstrap-nixos-installer
 }:
 
 mkShell {
@@ -13,6 +14,8 @@ mkShell {
   packages = [
     nix
     deadnix
+    nix-diff
+    nix-tree
     google-cloud-sdk
     opentofu
     (writeShellApplication {
@@ -25,6 +28,5 @@ mkShell {
       '';
     })
     bootstrap-nixos-host
-    bootstrap-nixos-installer
   ];
 }
