@@ -14,7 +14,7 @@
 }:
 
 let
-  tampdir = "/tmp/dominicegginton";
+  tempdir = "/tmp/dominicegginton";
 in
 
 mkShell {
@@ -48,14 +48,14 @@ mkShell {
     (writeShellScriptBin "mount" ''
       export PATH=${lib.makeBinPath [ google-cloud-sdk gcsfuse ]};
       gcloud auth application-default login
-      rm -rf ${tampdir} || true
-      mkdir -p ${tampdir}
-      gcsfuse --implicit-dirs dominicegginton ${tampdir}
+      rm -rf ${tempdir} || true
+      mkdir -p ${tempdir}
+      gcsfuse --implicit-dirs dominicegginton ${tempdir}
     '')
     (writeShellScriptBin "unmount" ''
       export PATH=${lib.makeBinPath [ gcsfuse ]};
-      fusermount -u ${tampdir} > /dev/null 2>&1 || true
-      rm -rf ${tampdir} || true
+      fusermount -u ${tempdir} > /dev/null 2>&1 || true
+      rm -rf ${tempdir} || true
     '')
   ];
   shellHook = ''
