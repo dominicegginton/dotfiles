@@ -1,8 +1,7 @@
-{ mkShell, python3, pyright }:
+{ lib, mkShell, python3 }:
 
 mkShell {
-  nativeBuildInputs = [
-    (python3.withPackages (pythonPkgs: with pythonPkgs; [ ]))
-    pyright
-  ];
+  name = "ad-hoc python";
+  packages = [ (python3.withPackages (pythonPkgs: with pythonPkgs; [ ])) ];
+  meta.maintainers = [ lib.maintainers.dominicegginton ];
 }
