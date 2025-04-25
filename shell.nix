@@ -1,14 +1,21 @@
-{ mkShell
+{ lib
+, mkShell
 , nix
 , nixpkgs-fmt
 , deadnix
 , nix-diff
 , nix-tree
-, google-cloud-sdk
 , opentofu
-, writeShellApplication
-, bootstrap-nixos-host
+, google-cloud-sdk
+, gcsfuse
+, pinentry
+, gnupg
+, writeShellScriptBin
 }:
+
+let
+  tampdir = "/tmp/dominicegginton";
+in
 
 mkShell {
   name = "dominicegginton/dotfiles";
@@ -19,16 +26,42 @@ mkShell {
     nix-diff
     nix-tree
     google-cloud-sdk
+    gcsfuse
     opentofu
-    (writeShellApplication {
-      name = "deploy";
-      runtimeInputs = [ opentofu google-cloud-sdk ];
-      text = ''
-        gcloud auth application-default login
-        tofu -chdir=infrastructure init
-        tofu -chdir=infrastructure apply -refresh-only 
-      '';
-    })
-    bootstrap-nixos-host
+    (writeShellScriptBin "deploy" ''
+      export PATH=${lib.makeBinPath [ google-cloud-sdk ]};
+      gcloud auth application-default login
+      tofu -chdir=infrastructure init
+      tofu -chdir=infrastructure apply -refresh-only
+    '')
+    (writeShellScriptBin "gpg-import-keys" ''
+      export PATH=${lib.makeBinPath [ google-cloud-sdk pinentry gnupg ]};
+      temp=$(mktemp -d)
+      cleanup() {
+        rm -rf "$temp" || true
+      }
+      gcloud auth application-default login
+      trap cleanup EXIT
+      gsutil rsync -r gs://dominicegginton/gpg "$temp"
+      gpg --import "$temp"/*
+    '')
+    (writeShellScriptBin "mount" ''
+      export PATH=${lib.makeBinPath [ google-cloud-sdk gcsfuse ]};
+      gcloud auth application-default login
+      rm -rf ${tampdir} || true
+      mkdir -p ${tampdir}
+      gcsfuse --implicit-dirs dominicegginton ${tampdir}
+    '')
+    (writeShellScriptBin "unmount" ''
+      export PATH=${lib.makeBinPath [ gcsfuse ]};
+      fusermount -u ${tampdir} > /dev/null 2>&1 || true
+      rm -rf ${tampdir} || true
+    '')
   ];
+  shellHook = ''
+    cleanup() {
+      unmount
+    }
+    trap cleanup EXIT
+  '';
 }

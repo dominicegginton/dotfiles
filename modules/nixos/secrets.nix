@@ -6,17 +6,22 @@ with pkgs.writers;
 let
   directory = "/root/bitwarden-secrets";
   mountpoint = "/run/bitwarden-secrets";
-  secretType = types.attrsOf types.str;
-  secret-install = { name, id }: ''
-    value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
-    rm -f ${directory}/secrets/${name}
-    echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
-    chown root:root ${directory}/secrets/${name}
-    chmod 700 ${directory}/secrets/${name}
-    ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
-    chown root:root ${mountpoint}/${name}
-    chmod 700 ${mountpoint}/${name}
-  '';
+  secret-install = { name, secret }:
+    let
+      id = if (isString secret) then secret else secret.id;
+      user = if (isString secret) then "root" else (if secret.user == "" then "root" else secret.user);
+      permissions = if (isString secret) then "700" else (if secret.permissions == "" then "700" else secret.permissions);
+    in
+    ''
+      value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
+      rm -f ${directory}/secrets/${name}
+      echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
+      chown ${user}:${user} ${directory}/secrets/${name}
+      chmod ${permissions} ${directory}/secrets/${name}
+      ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
+      chown ${user}:${user} ${mountpoint}/${name}
+      chmod ${permissions} ${mountpoint}/${name}
+    '';
   secrets-install = ''
     mkdir -p ${directory} || true
     mkdir -p ${directory}/secrets || true
@@ -28,7 +33,7 @@ let
     chown root:root ${directory}
     chown root:root ${directory}/secrets
     chown root:root ${mountpoint}
-    ${lib.concatStringsSep "\n" (mapAttrsToList (name: id: secret-install { inherit name id; }) config.modules.secrets)}
+    ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.modules.secrets)}
   '';
   secrets-sync = writeBashBin "secrets-sync" ''
     export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.busybox pkgs.gum pkgs.jq pkgs.bws ]}:$PATH
@@ -60,10 +65,46 @@ let
 in
 
 {
-  options.modules.secrets = mkOption {
-    type = secretType;
-    default = { };
-  };
+  options.modules.secrets =
+    with types;
+    let
+      secretType = submodule {
+        options = {
+          id = mkOption {
+            type = str;
+            default = "";
+            example = "my-secret";
+            description = "Bitwarden secret ID.";
+          };
+          user = mkOption {
+            type = str;
+            default = "";
+            example = "root";
+            description = "User that will own the secret file.";
+          };
+          permissions = mkOption {
+            type = str;
+            default = "";
+            example = "700";
+            description = "Permissions for the secret file.";
+          };
+        };
+        example = {
+          id = "my-secret";
+          user = "root";
+          permissions = "700";
+        };
+      };
+    in
+    mkOption {
+      type = attrsOf (either str secretType);
+      default = { };
+      example = {
+        foo = "foo-secret";
+        bar = { id = "secret-bar"; user = "bar"; permissions = "700"; };
+      };
+      description = "Attribute set of secrets to be installed.";
+    };
   config = {
     systemd.services.secrets = {
       wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];

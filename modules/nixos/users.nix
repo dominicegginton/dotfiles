@@ -1,6 +1,7 @@
-{ lib, pkgs, ... }:
+{ lib, dlib, pkgs, ... }:
 
 with lib;
+with dlib;
 
 {
   config = {
