@@ -1,14 +1,13 @@
 { lib, dlib, pkgs, ... }:
 
 with lib;
-with dlib;
 
 {
   config = {
     modules.secrets.dom = "be2b6a7a-7811-4711-86f0-b24200a41bbd";
     users.users = {
       dom = {
-        description = maintainers.dominicegginton.name;
+        description = dlib.maintainers.dominicegginton.name;
         isNormalUser = true;
         hashedPasswordFile = "/run/bitwarden-secrets/dom";
         homeMode = "0755";
