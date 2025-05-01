@@ -42,7 +42,7 @@ with config.lib.topology;
     };
   };
 
-  nodes.quardon-router = mkRouter "secure-gateway" {
+  nodes.quardon-router = mkRouter "quardon-router" {
     info = "Unifi Security Gateway";
     interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
     interfaces.eth0 = {
@@ -55,68 +55,81 @@ with config.lib.topology;
       addresses = [ "192.168.1.1" ];
     };
   };
-  nodes.quardon-switch-main = mkSwitch "switch" {
+  nodes.quardon-switch-main = mkSwitch "quardon-switch-main" {
     info = "Cisco Switch 24 Port";
     connections.eth0 = mkConnection "quardon-router" "eth1";
     connections.eth1 = mkConnection "quardon-switch-secondary" "eth0";
-    connections.eth2 = mkConnection "quardon-unifi-ap-downstairs" "eth0";
-    connections.eth3 = mkConnection "quardon-unifi-ap-upstairs" "eth0";
+    connections.eth2 = mkConnection "quardon-ap-downstairs" "eth0";
+    connections.eth3 = mkConnection "quardon-ap-upstairs" "eth0";
     connections.eth4 = mkConnection "quardon-front-security-camera" "eth0";
     connections.eth5 = mkConnection "quardon-back-security-camera" "eth0";
   };
-  nodes.quardon-switch-secondary = mkSwitch "switch" {
+  nodes.quardon-switch-secondary = mkSwitch "quardon-switch-secondary" {
     info = "Netgear Switch 16 Port";
     interfaces.eth0 = { };
-    connections.eth1 = mkConnection "quardon-unifi-ap-dom" "eth0";
+    connections.eth1 = mkConnection "quardon-ap-dom" "eth0";
   };
-  nodes.quardon-unifi-ap-dom = mkDevice "doms-ap" {
+  nodes.quardon-ap-dom = mkDevice "quardon-ap-dom" {
     info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
       network = "quardon";
       type = "wifi";
       physicalConnections = [
-        (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
-        (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+        (mkConnection "quardon-ap-downstairs" "wlan0")
+        (mkConnection "quardon-ap-upstairs" "wlan0")
       ];
     };
   };
-  nodes.quardon-unifi-ap-downstairs = mkDevice "downstairs-ap" {
+  nodes.quardon-ap-downstairs = mkDevice "quardon-ap-downstairs" {
     info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
       network = "quardon";
       type = "wifi";
       physicalConnections = [
-        (mkConnection "quardon-unifi-ap-dom" "wlan0")
-        (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+        (mkConnection "quardon-ap-dom" "wlan0")
+        (mkConnection "quardon-ap-upstairs" "wlan0")
       ];
     };
   };
-  nodes.quardon-unifi-ap-upstairs = mkDevice "upstairs-ap" {
+  nodes.quardon-ap-upstairs = mkDevice "quardon-ap-upstairs" {
     info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
       network = "quardon";
       type = "wifi";
       physicalConnections = [
-        (mkConnection "quardon-unifi-ap-dom" "wlan0")
-        (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
+        (mkConnection "quardon-ap-dom" "wlan0")
+        (mkConnection "quardon-ap-downstairs" "wlan0")
       ];
     };
   };
-  nodes.quardon-front-security-camera = mkDevice "front-security-camera" {
+  nodes.quardon-front-center-security-camera = mkDevice "quardon-front-center-security-camera" {
+    info = "Reolink PTZ Security Camera";
+    interfaces.eth0 = { };
+    interfaces.wlan0 = {
+      network = "quardon";
+      type = "wifi";
+      physicalConnections = [
+        (mkConnection "quardon-ap-dom" "wlan0")
+        (mkConnection "quardon-ap-downstairs" "wlan0")
+        (mkConnection "quardon-ap-upstairs" "wlan0")
+      ];
+    };
+  };
+  nodes.quardon-front-security-camera = mkDevice "quardon-front-security-camera" {
     info = "Reolink Security Camera";
     interfaces.eth0 = { };
   };
-  nodes.quardon-back-security-camera = mkDevice "back-security-camera" {
+  nodes.quardon-back-security-camera = mkDevice "quardon-back-security-camera" {
     info = "Reolink Security Camera";
     interfaces.eth0 = { };
   };
 
-  nodes.ribble-router = mkRouter "secure-gateway" {
-    info = "Unifi Security Gateway";
-    interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
+  nodes.ribble-router = mkRouter "ribble-router" {
+    info = "Mikrotik Router";
+    interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" ] ];
     interfaces.eth0 = {
       network = "internet";
       type = "fiber-duplex";
@@ -126,42 +139,38 @@ with config.lib.topology;
       network = "ribble";
       addresses = [ "192.168.1.1" ];
     };
-  };
-  nodes.ribble-switch-main = mkSwitch "switch" {
-    info = "Netgear Switch 16 Port";
-    connections.eth0 = mkConnection "ribble-router" "eth1";
-    connections.eth1 = mkConnection "ribble-unifi-ap" "eth0";
+    connections.eth1 = mkConnection "ribble-ap" "eth0";
     connections.eth2 = mkConnection "ribble-security-camera" "eth0";
   };
-  nodes.ribble-unifi-ap = mkDevice "ribble-ap" {
-    info = "Unifi AP Light";
-    interfaceGroups = [ [ "eth0" ] [ "wlan0" ] ];
+  nodes.ribble-ap = mkDevice "ribble-ap" {
+    info = "Mikrotik AP";
+    interfaceGroups = [ [ "eth0" ] [ "wlan1" ] ];
     interfaces.wlan0 = {
       network = "ribble";
       type = "wifi";
     };
   };
-  nodes.ribble-security-camera = mkDevice "security-camera" {
+  nodes.ribble-security-camera = mkDevice "ribble-security-camera" {
     info = "Security Camera";
     interfaces.eth0 = { };
   };
 
-  nodes.darwin-laptop = mkDevice "MCCML44WMD6T" {
-    info = "Macbook Pro 2019";
+  nodes.mccml44wmd6t = mkDevice "MCCML44WMD6T" {
+    info = "Macbook Pro 2019 - Arup Workstation";
     icon = ./assets/apple.svg;
     interfaces.wlan0-quardon = {
       network = "quardon";
       type = "wifi";
       physicalConnections = [
-        (mkConnection "quardon-unifi-ap-dom" "wlan0")
-        (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
-        (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+        (mkConnection "quardon-ap-dom" "wlan0")
+        (mkConnection "quardon-ap-downstairs" "wlan0")
+        (mkConnection "quardon-ap-upstairs" "wlan0")
       ];
     };
     interfaces.wlan0-ribble = {
       network = "ribble";
       type = "wifi";
-      physicalConnections = [ (mkConnection "ribble-unifi-ap" "wlan0") ];
+      physicalConnections = [ (mkConnection "ribble-ap" "wlan0") ];
     };
     interfaces.tailscale0 = {
       network = tailnet;
@@ -182,15 +191,15 @@ with config.lib.topology;
       network = "quardon";
       type = "wifi";
       physicalConnections = [
-        (mkConnection "quardon-unifi-ap-dom" "wlan0")
-        (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
-        (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+        (mkConnection "quardon-ap-dom" "wlan0")
+        (mkConnection "quardon-ap-downstairs" "wlan0")
+        (mkConnection "quardon-ap-upstairs" "wlan0")
       ];
     };
     interfaces.wlan0-ribble = {
       network = "ribble";
       type = "wifi";
-      physicalConnections = [ (mkConnection "ribble-unifi-ap" "wlan0") ];
+      physicalConnections = [ (mkConnection "ribble-ap" "wlan0") ];
     };
     interfaces.tailscale0 = {
       network = tailnet;

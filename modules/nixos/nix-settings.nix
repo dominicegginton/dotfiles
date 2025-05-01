@@ -6,7 +6,11 @@ with lib;
   config = {
     nix = {
       package = pkgs.unstable.nix;
-      gc.automatic = mkDefault true;
+      gc = {
+        automatic = true;
+        dates = "weekly";
+        options = "--delete-older-than 30d";
+      };
       optimise.automatic = mkDefault true;
       registry = mapAttrs (_: value: { flake = value; }) inputs;
       nixPath = mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
@@ -21,6 +25,7 @@ with lib;
         keep-derivations = true;
         auto-optimise-store = true;
         builders-use-substitutes = true;
+        min-free = "2G";
         trusted-users = [ "dom" "nixremote" "root" "@wheel" ];
         trusted-public-keys = [
           "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="

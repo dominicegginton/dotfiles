@@ -44,15 +44,15 @@ with config.lib.topology;
         network = "quardon";
         type = "wifi";
         physicalConnections = [
-          (mkConnection "quardon-unifi-ap-dom" "wlan0")
-          (mkConnection "quardon-unifi-ap-downstairs" "wlan0")
-          (mkConnection "quardon-unifi-ap-upstairs" "wlan0")
+          (mkConnection "quardon-ap-dom" "wlan0")
+          (mkConnection "quardon-ap-downstairs" "wlan0")
+          (mkConnection "quardon-ap-upstairs" "wlan0")
         ];
       };
       wlan0-ribble = mkIf config.modules.networking.wireless.enable {
         network = "ribble";
         type = "wifi";
-        physicalConnections = [ (mkConnection "ribble-unifi-ap" "wlan0") ];
+        physicalConnections = [ (mkConnection "ribble-ap" "wlan0") ];
       };
     };
     services.openssh.enable = true;

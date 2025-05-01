@@ -13,7 +13,13 @@
       ".gitmessage".source = ./sources/.gitmessage;
     };
 
-    # TODO: refactor - work related pkgs
-    home.packages = with pkgs.unstable; lib.mkIf pkgs.stdenv.isLinux [ teams-for-linux chromium microsoft-edge vscode-with-extensions ];
+    home.packages = with pkgs.unstable; lib.mkIf pkgs.stdenv.isLinux [
+      # TODO: refactor - work related pkgs
+      teams-for-linux
+      chromium
+      ## TODO: refactor - ide
+      vscode-with-extensions
+      jetbrains.datagrip
+    ];
   };
 }
