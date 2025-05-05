@@ -8,13 +8,12 @@ rec {
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     status = final.callPackage ./pkgs/status.nix { };
-    mkShell = import ./pkgs/mk-shell.nix { inherit (prev) mkShell; inherit (final) set-prompt-shell-hook; };
+    mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     nearch = final.callPackage ./pkgs/nearch.nix { };
     neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
     nun = final.callPackage ./pkgs/nun.nix { };
-    set-prompt-shell-hook = final.callPackage ./pkgs/set-prompt-shell-hook.nix { };
     set-theme = final.callPackage ./pkgs/set-theme.nix { };
     todo = (packagesFrom inputs.todo final.system).default;
     twm = (packagesFrom inputs.twm final.system).default;

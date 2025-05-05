@@ -1,13 +1,28 @@
+terraform {
+  required_providers {
+    tailscale = {
+      source = "tailscale/tailscale"
+    }
+  }
+}
+
+provider "google" {
+  project = "dominicegginton-personal"
+  region  = "europe-west2"
+}
+
+provider "tailscale" {}
+
+provider "random" {}
+
 resource "random_id" "terraform-remote-backend" {
   byte_length = 8
 }
 
 resource "google_storage_bucket" "terraform-remote-backend" {
-  project  = "dominicegginton-personal"
-  name     = "${random_id.terraform-remote-backend.hex}-terraform-remote-backend"
-  location = "EUROPE-WEST2"
-
-  force_destroy               = false 
+  name                        = "${random_id.terraform-remote-backend.hex}-terraform-remote-backend"
+  location                    = "EUROPE-WEST2"
+  force_destroy               = false
   public_access_prevention    = "enforced"
   uniform_bucket_level_access = true
   versioning {
@@ -29,10 +44,9 @@ resource "local_file" "terraform-remote-backend" {
 }
 
 resource "google_storage_bucket" "dominicegginton" {
-  name     = "dominicegginton"
-  location = "EUROPE-WEST2"
-
-  force_destroy               = false 
+  name                        = "dominicegginton"
+  location                    = "EUROPE-WEST2"
+  force_destroy               = false
   public_access_prevention    = "enforced"
   uniform_bucket_level_access = true
   versioning {

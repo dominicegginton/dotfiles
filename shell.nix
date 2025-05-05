@@ -11,10 +11,13 @@
 , pinentry
 , gnupg
 , writeShellScriptBin
+, gum
+, coreutils
 }:
 
 let
   tempdir = "/tmp/dominicegginton";
+  gcpProject = "dominicegginton-personal";
 in
 
 mkShell {
@@ -28,9 +31,12 @@ mkShell {
     google-cloud-sdk
     gcsfuse
     opentofu
+    coreutils
+    gum
+    google-cloud-sdk
+    gcsfuse
     (writeShellScriptBin "deploy" ''
-      export PATH=${lib.makeBinPath [ google-cloud-sdk ]};
-      gcloud auth application-default login
+      export PATH=${lib.makeBinPath [ opentofu google-cloud-sdk ]};
       tofu -chdir=infrastructure init
       tofu -chdir=infrastructure apply -refresh-only
     '')
@@ -40,28 +46,15 @@ mkShell {
       cleanup() {
         rm -rf "$temp" || true
       }
-      gcloud auth application-default login
       trap cleanup EXIT
       gsutil rsync -r gs://dominicegginton/gpg "$temp"
       gpg --import "$temp"/*
     '')
-    (writeShellScriptBin "mount" ''
-      export PATH=${lib.makeBinPath [ google-cloud-sdk gcsfuse ]};
-      gcloud auth application-default login
-      rm -rf ${tempdir} || true
-      mkdir -p ${tempdir}
-      gcsfuse --implicit-dirs dominicegginton ${tempdir}
-    '')
-    (writeShellScriptBin "unmount" ''
-      export PATH=${lib.makeBinPath [ gcsfuse ]};
-      fusermount -u ${tempdir} > /dev/null 2>&1 || true
-      rm -rf ${tempdir} || true
-    '')
   ];
   shellHook = ''
-    cleanup() {
-      unmount
-    }
-    trap cleanup EXIT
+    gum confirm "Authenticate with GCP project ${gcpProject}?" && \
+      gcloud auth application-default login && \
+        gcloud config set project ${gcpProject} && \
+          gum log --level info "Authenticated with GCP project ${gcpProject}."
   '';
 }
