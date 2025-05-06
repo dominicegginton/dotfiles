@@ -11,17 +11,21 @@
           system = platform;
           overlays = [
             dotfiles.overlays.default
-            (final: _: { hello-world = final.callPackage ./default.nix { }; })
+            (final: _: {
+              hello-world = final.callPackage ./default.nix { };
+              hello-world-oci = final.callPackage ./oci.nix { };
+            })
           ];
         };
       in
 
       {
         formatter = pkgs.nixpkgs-fmt;
-        packages.default = pkgs.hello-world;
-        packages.hello-world = pkgs.hello-world;
+        packages = {
+          inherit (pkgs) hello-world hello-world-oci;
+          default = pkgs.hello-world;
+        };
         devShells.default = pkgs.callPackage ./shell.nix { };
       }
     );
 }
-

@@ -4,6 +4,7 @@
   "scripts": {
     "build": "tsc"
   },
+  "type": "module",
   "main": "hello-world.js",
   "files": ["hello-world.js"],
   "devDependencies": {

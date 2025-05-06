@@ -1,26 +1,28 @@
 {
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
+  inputs.dotfiles.url = "github:dominicegginton/dotfiles";
 
-  outputs = { nixpkgs, flake-utils, ... }:
+  outputs = { nixpkgs, dotfiles, ... }:
 
-    with flake-utils.lib;
-
-    eachDefaultSystem (system:
+    dotfiles.lib.eachPlatform nixpkgs.lib.platforms.all (platform:
 
       let
         pkgs = import nixpkgs {
-          inherit system;
-
-          overlays = [ (final: _: { hello-world = final.callPackage ./default.nix { }; }) ];
+          system = platform;
+          overlays = [
+            dotfiles.overlays.default
+            (final: _: { hello-world = final.callPackage ./default.nix { }; })
+          ];
         };
       in
 
       {
         formatter = pkgs.nixpkgs-fmt;
-        packages.hello-world = pkgs.hello-world;
         packages.default = pkgs.hello-world;
+        packages.hello-world = pkgs.hello-world;
         devShells.default = pkgs.callPackage ./shell.nix { };
       }
     );
 }
+
+

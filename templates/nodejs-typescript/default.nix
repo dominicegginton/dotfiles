@@ -1,12 +1,14 @@
-{ lib, buildNpmPackage }:
+{ lib, buildNpmPackage, importNpmLock }:
 
 let
   packageJson = builtins.fromJSON (builtins.readFile ./package.json);
 in
 
-buildNpmPackage {
+buildNpmPackage rec {
   pname = packageJson.name;
   inherit (packageJson) version;
   src = lib.sources.cleanSource ./.;
-  npmDepsHash = "sha256-fQur3bmag0vBa4VZU3EL8+2Vvhq+tsKgLSzBNfuEkw4=";
+  npmConfigHook = importNpmLock.npmConfigHook;
+  npmDeps = importNpmLock { npmRoot = src; };
+  meta.maintainers = [ lib.maintainers.dominicegginton ];
 }

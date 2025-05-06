@@ -1,6 +1,11 @@
-{ pkgs, prefetch-npm-deps }:
+{ mkShell, hello-world }:
 
-pkgs.mkShell {
-  inputsFrom = [ pkgs.hello-world ];
-  packages = [ prefetch-npm-deps ];
+mkShell {
+  inputsFrom = [ hello-world ];
+  npmConfigHook = importNpmLock.npmConfigHook;
+  npmDeps = importNpmLock.buildNodeModules {
+    inherit nodejs;
+    npmRoot = hello-world.src;
+  };
+  packages = [ importNpmLock.hooks.linkNodeModulesHook ];
 }

@@ -8,5 +8,6 @@ rustPlatform.buildRustPackage {
   pname = cargoToml.package.name;
   inherit (cargoToml.package) version;
   src = lib.sources.cleanSource ./.;
-  cargoSha256 = "sha256-CTjTUz8twqUz7OK6vZKmQRbAhX78C7cYbZY2dMfuXAs=";
+  cargoHash = lib.fakeHash;
+  meta.maintainers = [ lib.maintainers.dominicegginton ];
 }
