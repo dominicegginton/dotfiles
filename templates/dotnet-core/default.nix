@@ -5,4 +5,5 @@ buildDotnetModule {
   version = "0.0.0";
   src = lib.sources.cleanSource ./.;
   projectFile = "hello-world/hello-world.csproj";
+  meta.maintainers = [ lib.maintainers.dominicegginton ];
 }
