@@ -5,6 +5,9 @@ rec {
   darwinStateVersion = 5;
   theme = "dark";
   tailnet = "soay-puffin.ts.net";
+  nixosHostnames = inputs.nixpkgs.lib.attrNames outputs.nixosConfigurations;
+  darwinHostnames = inputs.nixpkgs.lib.attrNames outputs.darwinConfigurations;
+  hostnames = nixosHostnames ++ darwinHostnames;
   maintainers = inputs.nixpkgs.lib.maintainers // {
     dominicegginton = {
       name = "Dominic Egginton";
