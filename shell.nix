@@ -5,6 +5,7 @@
 , deadnix
 , nix-diff
 , nix-tree
+, nix-health
 , opentofu
 , google-cloud-sdk
 , gcsfuse
@@ -28,6 +29,7 @@ mkShell {
     deadnix
     nix-diff
     nix-tree
+    nix-health
     google-cloud-sdk
     gcsfuse
     opentofu
