@@ -168,6 +168,7 @@ with config.lib.topology;
       type = "tailscale";
       icon = ./assets/tailscale.svg;
       virtual = true;
+      addresses = [ "mccml44wmd6t" "mccml44wmd6t.${tailnet}" ];
     };
   };
   nodes.pixel-9 = mkDevice "pixel-9" {
@@ -193,6 +194,7 @@ with config.lib.topology;
       type = "tailscale";
       icon = ./assets/tailscale.svg;
       virtual = true;
+      addresses = [ "pixel-9" "pixel-9.${tailnet}" ];
     };
   };
 }

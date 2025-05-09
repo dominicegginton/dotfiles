@@ -34,6 +34,7 @@ with lib;
       type = "tailscale";
       icon = ../../assets/tailscale.svg;
       virtual = true;
+      addresses = [ "${hostname}.${tailnet}" ];
     };
   };
 }

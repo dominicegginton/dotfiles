@@ -43,10 +43,12 @@ with config.lib.topology;
       lo = {
         type = "loopback";
         virtual = true;
+        addresses = [ "localhost" "127.0.0.1" ];
       };
       docker0 = {
         type = "bridge";
         virtual = true;
+        addresses = [ "localhost" "127.0.0.1" ];
       };
       wlp108s0 = mkIf config.modules.networking.wireless.enable {
         type = "wifi";
@@ -84,6 +86,7 @@ with config.lib.topology;
       type = "tailscale";
       icon = ../../assets/tailscale.svg;
       virtual = true;
+      addresses = [ hostname "${hostname}.${tailnet}" ];
     };
   };
 }
