@@ -5,7 +5,6 @@ with config.lib.topology;
 
 {
   nodes.internet = mkInternet { };
-
   networks.internet = {
     name = "internet";
     style = {
@@ -32,7 +31,6 @@ with config.lib.topology;
       pattern = "dashed";
     };
   };
-
   nodes.quardon-router = mkRouter "quardon-router" {
     info = "Unifi Security Gateway";
     interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
@@ -113,7 +111,6 @@ with config.lib.topology;
     info = "Reolink Security Camera";
     interfaces.eth0 = { };
   };
-
   nodes.ribble-router-downstairs = mkRouter "ribble-router-downstairs" {
     info = "Mikrotik Router";
     interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" "wlan0" ] ];
@@ -151,7 +148,6 @@ with config.lib.topology;
     info = "Security Camera";
     interfaces.eth0 = { };
   };
-
   nodes.mccml44wmd6t = mkDevice "MCCML44WMD6T" {
     info = "Macbook Pro 2019 - Arup Workstation";
     icon = ./assets/apple.svg;
@@ -174,7 +170,6 @@ with config.lib.topology;
       virtual = true;
     };
   };
-
   nodes.pixel-9 = mkDevice "pixel-9" {
     info = "Google Pixel 9";
     icon = ./assets/google.svg;
