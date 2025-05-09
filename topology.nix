@@ -5,12 +5,21 @@ with config.lib.topology;
 
 {
   nodes.internet = mkInternet { };
+
   networks.internet = {
     name = "internet";
     style = {
-      primaryColor = "#cc241d";
-      secondaryColor = "transparent";
-      pattern = "dotted";
+      primaryColor = "lightblue";
+      pattern = "solid";
+    };
+  };
+  networks.burbage = {
+    name = "burbage";
+    cidrv4 = "192.168.1.0/24";
+    cidrv6 = "fd00:1::/64";
+    style = {
+      primaryColor = "#b16286";
+      pattern = "solid";
     };
   };
   networks."${tailnet}" = {
@@ -23,24 +32,6 @@ with config.lib.topology;
       pattern = "dashed";
     };
   };
-  networks.quardon = {
-    name = "quardon";
-    cidrv4 = "192.168.1.0/24";
-    cidrv6 = "fd00:1::/64";
-    style = {
-      primaryColor = "#4e9a06";
-      pattern = "solid";
-    };
-  };
-  networks.ribble = {
-    name = "ribble";
-    cidrv4 = "192.168.1.0/24";
-    cidrv6 = "fd00:1::/64";
-    style = {
-      primaryColor = "#f000aa";
-      pattern = "solid";
-    };
-  };
 
   nodes.quardon-router = mkRouter "quardon-router" {
     info = "Unifi Security Gateway";
@@ -50,10 +41,7 @@ with config.lib.topology;
       type = "fiber-duplex";
       physicalConnections = [ (mkConnection "internet" "*") ];
     };
-    interfaces.eth1 = {
-      network = "quardon";
-      addresses = [ "192.168.1.1" ];
-    };
+    interfaces.eth1.network = "burbage";
   };
   nodes.quardon-switch-main = mkSwitch "quardon-switch-main" {
     info = "Cisco Switch 24 Port";
@@ -73,7 +61,7 @@ with config.lib.topology;
     info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
-      network = "quardon";
+      network = "burbage";
       type = "wifi";
       physicalConnections = [
         (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -85,7 +73,7 @@ with config.lib.topology;
     info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
-      network = "quardon";
+      network = "burbage";
       type = "wifi";
       physicalConnections = [
         (mkConnection "quardon-ap-dom" "wlan0")
@@ -97,7 +85,7 @@ with config.lib.topology;
     info = "Unifi AP Light";
     interfaceGroups = [ [ "eth0" "wlan0" ] ];
     interfaces.wlan0 = {
-      network = "quardon";
+      network = "burbage";
       type = "wifi";
       physicalConnections = [
         (mkConnection "quardon-ap-dom" "wlan0")
@@ -107,9 +95,8 @@ with config.lib.topology;
   };
   nodes.quardon-front-center-security-camera = mkDevice "quardon-front-center-security-camera" {
     info = "Reolink PTZ Security Camera";
-    interfaces.eth0 = { };
     interfaces.wlan0 = {
-      network = "quardon";
+      network = "burbage";
       type = "wifi";
       physicalConnections = [
         (mkConnection "quardon-ap-dom" "wlan0")
@@ -127,28 +114,38 @@ with config.lib.topology;
     interfaces.eth0 = { };
   };
 
-  nodes.ribble-router = mkRouter "ribble-router" {
+  nodes.ribble-router-downstairs = mkRouter "ribble-router-downstairs" {
     info = "Mikrotik Router";
-    interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" ] ];
+    interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" "wlan0" ] ];
     interfaces.eth0 = {
       network = "internet";
       type = "fiber-duplex";
       physicalConnections = [ (mkConnection "internet" "*") ];
     };
-    interfaces.eth1 = {
-      network = "ribble";
-      addresses = [ "192.168.1.1" ];
-    };
-    connections.eth1 = mkConnection "ribble-ap" "eth0";
-    connections.eth2 = mkConnection "ribble-security-camera" "eth0";
-  };
-  nodes.ribble-ap = mkDevice "ribble-ap" {
-    info = "Mikrotik AP";
-    interfaceGroups = [ [ "eth0" ] [ "wlan1" ] ];
+    interfaces.eth1.network = "burbage";
     interfaces.wlan0 = {
-      network = "ribble";
+      network = "burbage";
       type = "wifi";
+      physicalConnections = [
+        (mkConnection "ribble-router-upstairs" "wlan0")
+      ];
     };
+  };
+  nodes.ribble-router-upstairs = mkDevice "ribble-router-upstairs" {
+    info = "Mikrotik AP";
+    interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" "wlan0" ] ];
+    interfaces.eth0 = {
+      network = "burbage";
+      physicalConnections = [ (mkConnection "ribble-router-downstairs" "eth1") ];
+    };
+    interfaces.wlan0 = {
+      network = "burbage";
+      type = "wifi";
+      physicalConnections = [
+        (mkConnection "ribble-router-downstairs" "wlan0")
+      ];
+    };
+    connections.eth2 = mkConnection "ribble-security-camera" "eth0";
   };
   nodes.ribble-security-camera = mkDevice "ribble-security-camera" {
     info = "Security Camera";
@@ -158,19 +155,17 @@ with config.lib.topology;
   nodes.mccml44wmd6t = mkDevice "MCCML44WMD6T" {
     info = "Macbook Pro 2019 - Arup Workstation";
     icon = ./assets/apple.svg;
-    interfaces.wlan0-quardon = {
-      network = "quardon";
+    interfaces.wlan0 = {
+      network = "burbage";
       type = "wifi";
       physicalConnections = [
         (mkConnection "quardon-ap-dom" "wlan0")
         (mkConnection "quardon-ap-downstairs" "wlan0")
         (mkConnection "quardon-ap-upstairs" "wlan0")
+        (mkConnection "ribble-router-downstairs" "wlan0")
+        (mkConnection "ribble-router-upstairs" "wlan0")
+
       ];
-    };
-    interfaces.wlan0-ribble = {
-      network = "ribble";
-      type = "wifi";
-      physicalConnections = [ (mkConnection "ribble-ap" "wlan0") ];
     };
     interfaces.tailscale0 = {
       network = tailnet;
@@ -187,19 +182,16 @@ with config.lib.topology;
       network = "internet";
       physicalConnections = [ (mkConnection "internet" "*") ];
     };
-    interfaces.wlan0-quardon = {
-      network = "quardon";
+    interfaces.wlan0 = {
+      network = "burbage";
       type = "wifi";
       physicalConnections = [
         (mkConnection "quardon-ap-dom" "wlan0")
         (mkConnection "quardon-ap-downstairs" "wlan0")
         (mkConnection "quardon-ap-upstairs" "wlan0")
+        (mkConnection "ribble-router-downstairs" "wlan0")
+        (mkConnection "ribble-router-upstairs" "wlan0")
       ];
-    };
-    interfaces.wlan0-ribble = {
-      network = "ribble";
-      type = "wifi";
-      physicalConnections = [ (mkConnection "ribble-ap" "wlan0") ];
     };
     interfaces.tailscale0 = {
       network = tailnet;

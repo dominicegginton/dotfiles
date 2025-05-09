@@ -40,19 +40,23 @@ with config.lib.topology;
       };
     };
     topology.self.interfaces = {
-      wlan0-quardon = mkIf config.modules.networking.wireless.enable {
-        network = "quardon";
+      lo = {
+        type = "loopback";
+        virtual = true;
+      };
+      docker0 = {
+        type = "bridge";
+        virtual = true;
+      };
+      wlp108s0 = mkIf config.modules.networking.wireless.enable {
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
+          (mkConnection "ribble-router-downstairs" "wlan0")
+          (mkConnection "ribble-router-upstairs" "wlan0")
         ];
-      };
-      wlan0-ribble = mkIf config.modules.networking.wireless.enable {
-        network = "ribble";
-        type = "wifi";
-        physicalConnections = [ (mkConnection "ribble-ap" "wlan0") ];
       };
     };
     services.openssh.enable = true;
