@@ -14,6 +14,7 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     vulnix.url = "github:nix-community/vulnix";
+    vulnix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
     tt-schemes.url = "github:tinted-theming/schemes";
     tt-schemes.flake = false;
@@ -23,6 +24,7 @@
     plasma-manager.inputs.nixpkgs.follows = "nixpkgs";
     plasma-manager.inputs.home-manager.follows = "home-manager";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
     twm.url = "github:vinnymeller/twm";
     twm.inputs.nixpkgs.follows = "nixpkgs";
     todo.url = "github:dominicegginton/todo";
@@ -64,6 +66,7 @@
             overlays = with self.inputs; [
               overlays.default
               overlays.unstable
+              neovim-nightly.overlays.default
               flip.overlays.default
               roll.overlays.default
               nix-topology.overlays.default

@@ -3,7 +3,7 @@
 rec {
   nixosStateVersion = "24.05";
   darwinStateVersion = 5;
-  theme = "dark";
+  theme = "light";
   tailnet = "soay-puffin.ts.net";
   nixosHostnames = inputs.nixpkgs.lib.attrNames outputs.nixosConfigurations;
   darwinHostnames = inputs.nixpkgs.lib.attrNames outputs.darwinConfigurations;

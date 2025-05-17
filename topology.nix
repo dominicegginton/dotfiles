@@ -52,7 +52,7 @@ with config.lib.topology;
   };
   nodes.quardon-switch-secondary = mkSwitch "quardon-switch-secondary" {
     info = "Netgear Switch 16 Port";
-    interfaces.eth0 = { };
+    interfaceGroups = [ [ "eth0" "eth1" "eth2" ] ];
     connections.eth1 = mkConnection "quardon-ap-dom" "eth0";
   };
   nodes.quardon-ap-dom = mkDevice "quardon-ap-dom" {

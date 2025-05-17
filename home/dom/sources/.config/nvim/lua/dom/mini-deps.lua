@@ -61,17 +61,14 @@ add('echasnovski/mini.icons') -- Icons
 add('echasnovski/mini.starter') -- Start screen
 add('echasnovski/mini.statusline') -- Statusline
 add('echasnovski/mini.tabline') -- Tabline
-add('bekaboo/dropbar.nvim') -- IDE-like breadcrumbs
 add('nvim-tree/nvim-tree.lua') -- File explorer
 add('echasnovski/mini.files') -- Navigate and manipulate file system
 add('echasnovski/mini.notify') -- Show notifications
-add('j-hui/fidget.nvim') -- Notifications and LSP progress messages
 add('echasnovski/mini.clue') -- Show next key clues
 add('folke/trouble.nvim') -- A pretty diagnostics, references, telescope results, quickfix and location list
 add('echasnovski/mini.cursorword') -- Autohighlight word under cursor
 add('echasnovski/mini.hipatterns') -- Highlight patterns in text
 add('echasnovski/mini.indentscope') -- Visualize and work with indent scope
-add('ellisonleao/glow.nvim') -- Markdown preview
 
 -- Utilities
 add('jghauser/mkdir.nvim') -- Create directories when writing a file
@@ -82,7 +79,6 @@ add('echasnovski/mini.visits') -- Track and reuse file system visits
 add('echasnovski/mini.fuzzy') -- Fuzzy matching
 add('nvim-focus/focus.nvim') -- Auto-focusing and auto-resizing splits
 add('mhartington/formatter.nvim') -- File formatting
-add('nullchilly/fsread.nvim') -- Flow state reading
 add('echasnovski/mini.comment') -- Comment lines
 add('echasnovski/mini.trailspace') -- Trailspace (highlight and remove)
 add('echasnovski/mini.bracketed') -- Go forward/backward with square brackets

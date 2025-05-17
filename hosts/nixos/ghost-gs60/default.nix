@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, config, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
@@ -86,7 +86,14 @@
   # };
   # environment.systemPackages = with pkgs; [ nvtopPackages.full ];
   # environment.sessionVariables."VK_DRIVER_FILES" = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
-  topology.self.hardware.info = "MSI Ghost GS60 - Server";
+  topology.self = {
+    hardware.info = "MSI Ghost GS60 - Server";
+    interfaces.eth0 = {
+      network = "burbage";
+      type = "ethernet";
+      physicalConnections = [ (config.lib.topology.mkConnection "quardon-switch-secondary" "eth2") ];
+    };
+  };
   modules = {
     networking.wireless.enable = true;
     services = {
