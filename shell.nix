@@ -76,8 +76,8 @@ mkShell {
     '')
   ];
   shellHook = ''
-    # gcloud auth application-default login && gcloud config set project ${gcp.project} \
-    #   && gum log --level info "Authenticated with GCP project ${gcp.project}." \
-    #   || gum log --level error "Failed to authenticate with GCP project ${gcp.project}."
+    gcloud auth application-default login && gcloud config set project ${gcp.project} \
+      && gum log --level info "Authenticated with GCP project ${gcp.project}." \
+      || gum log --level error "Failed to authenticate with GCP project ${gcp.project}."
   '';
 }
