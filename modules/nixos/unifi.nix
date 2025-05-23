@@ -26,7 +26,7 @@ with lib;
   config = mkIf cfg.enable {
     services.unifi.enable = true;
     services.unifi.openFirewall = true;
-    services.unifi.unifiPackage = pkgs.unifi8;
+    services.unifi.unifiPackage = pkgs.unifi;
     services.unifi.mongodbPackage = pkgs.mongodb-7_0;
     networking.firewall.allowedTCPPorts = allowedRules.allowedTCPPorts;
     networking.firewall.allowedUDPPorts = allowedRules.allowedUDPPorts;
