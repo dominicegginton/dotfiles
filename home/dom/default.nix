@@ -14,12 +14,14 @@
     };
 
     home.packages = with pkgs.unstable; lib.mkIf pkgs.stdenv.isLinux [
-      # TODO: refactor - work related pkgs
       teams-for-linux
-      chromium
-      ## TODO: refactor - ide
-      vscode-with-extensions
-      jetbrains.datagrip
+      # chromium
+      # vscode-with-extensions
+      # jetbrains.datagrip
+      # jetbrains.pycharm-professional
+      # python3
+      # jetbrains.webstorm
+      # nodejs
     ];
   };
 }

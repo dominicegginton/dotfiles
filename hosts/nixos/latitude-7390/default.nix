@@ -11,7 +11,7 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" ];
   boot.kernelModules = [ "kvm-intel" "vhost_vsock" ];
-  hardware.mwProCapture.enable = true;
+  # hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";

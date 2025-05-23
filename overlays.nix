@@ -3,6 +3,20 @@
 with outputs.lib;
 
 rec {
+  unstable = _: prev: {
+    unstable = import inputs.nixpkgs-unstable {
+      inherit (prev) system hostPlatform config;
+      overlays = [ default ];
+    };
+    lib = prev.lib // outputs.lib;
+  };
+  bleeding = _: prev: {
+    bleeding = import inputs.nixpkgs-bleeding {
+      inherit (prev) system hostPlatform config;
+      overlays = [ default ];
+    };
+    lib = prev.lib // outputs.lib;
+  };
   default = final: prev: {
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
@@ -20,13 +34,6 @@ rec {
     twx = final.callPackage ./pkgs/twx.nix { };
     vscode-with-extensions = import ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
-    lib = prev.lib // outputs.lib;
-  };
-  unstable = final: prev: {
-    unstable = import inputs.nixpkgs-unstable {
-      inherit (final) system hostPlatform config;
-      overlays = [ default ];
-    };
     lib = prev.lib // outputs.lib;
   };
 }

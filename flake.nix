@@ -1,7 +1,8 @@
 {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-bleeding.url = "github:nixos/nixpkgs";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-images.url = "github:nix-community/nixos-images";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
@@ -11,8 +12,10 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     nix-darwin.url = "github:lnl7/nix-darwin";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs-wayland.url = "github:nix-community/nixpkgs-wayland";
+    nixpkgs-wayland.inputs.nixpkgs.follows = "nixpkgs";
     vulnix.url = "github:nix-community/vulnix";
     vulnix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
@@ -37,7 +40,32 @@
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  nixConfig.experimental-features = [ "nix-command" "flakes" "pipe-operators" ];
+  nixConfig = {
+    fallback = true;
+    warn-dirty = true;
+    keep-going = true;
+    keep-outputs = true;
+    keep-derivations = true;
+    auto-optimise-store = true;
+    builders-use-substitutes = true;
+    experimental-features = [
+      "auto-allocate-uids"
+      "configurable-impure-env"
+      "nix-command"
+      "flakes"
+      "pipe-operators"
+    ];
+    substituters = [
+      "https://cache.nixos.org"
+      "https://dominicegginton.cachix.org"
+      "https://nixpkgs-wayland.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "dominicegginton.cachix.org-1:P8AQ3itMEVevMqAzCKiPyvJ6l1a9NVaFPAXJqb9mAaY="
+      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
+    ];
+  };
 
   outputs = { self, nixpkgs, ... }:
 
@@ -66,6 +94,8 @@
             overlays = with self.inputs; [
               overlays.default
               overlays.unstable
+              overlays.bleeding
+              nixpkgs-wayland.overlays.default
               neovim-nightly.overlays.default
               flip.overlays.default
               roll.overlays.default

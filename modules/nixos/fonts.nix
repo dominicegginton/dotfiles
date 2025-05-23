@@ -10,7 +10,7 @@
         antialias = true;
         defaultFonts.serif = [ "Source Serif" ];
         defaultFonts.sansSerif = [ "Work Sans" "Fira Sans" "FiraGO" ];
-        defaultFonts.monospace = [ "FiraCode Nerd Font Mono" "SauceCodePro Nerd Font Mono" ];
+        defaultFonts.monospace = [ "FiraCode Nerd Font Mono" "Noto Nerd Font Mono" ];
         defaultFonts.emoji = [ "Noto Color Emoji" ];
         hinting.autohint = true;
         hinting.enable = true;
@@ -20,7 +20,8 @@
       };
       packages = with pkgs; [
         font-manager
-        (nerdfonts.override { fonts = [ "FiraCode" "SourceCodePro" "UbuntuMono" ]; })
+        nerd-fonts.fira-code
+        nerd-fonts.noto
         fira
         fira-go
         joypixels

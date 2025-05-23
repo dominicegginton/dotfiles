@@ -55,6 +55,7 @@ mkShell {
           gum log --level info "Successfully ejected $target."
     '')
     (writeShellScriptBin "deploy" ''
+      gcloud auth application-default login && gcloud config set project ${gcp.project}
       tofu -chdir=infrastructure init
       tofu -chdir=infrastructure apply -refresh-only
     '')
@@ -65,8 +66,9 @@ mkShell {
         rm -rf "$temp" || true
       }
       trap cleanup EXIT
+      gcloud auth login
       gum log --level info "Copying GPG keys from GCP bucket ${gcp.bucket}/gpg to $temp."
-      gsutil rsync -r ${gcp.bucket}/gpg "$temp"
+      gsutil rsync gs://dominicegginton/gpg $temp
       gum log --level info "Importing GPG keys from $temp."
       for key in $(ls "$temp"); do
         gum log --level info "Importing GPG key $key."
@@ -75,9 +77,4 @@ mkShell {
       gum log --level info "Successfully imported GPG keys."
     '')
   ];
-  shellHook = ''
-    gcloud auth application-default login && gcloud config set project ${gcp.project} \
-      && gum log --level info "Authenticated with GCP project ${gcp.project}." \
-      || gum log --level error "Failed to authenticate with GCP project ${gcp.project}."
-  '';
 }
