@@ -49,8 +49,5 @@
   audio.enable = true;
   bluetooth.enable = true;
   networking.wireless.enable = true;
-  modules = {
-    display.plasma.enable = true;
-    services.virtualisation.enable = true;
-  };
+  display.enable = true;
 }

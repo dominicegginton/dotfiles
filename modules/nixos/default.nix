@@ -10,7 +10,6 @@
     ./console.nix
     ./documentation.nix
     ./environment.nix
-    ./fonts.nix
     ./gcsfuse.nix
     ./gpg.nix
     ./home-assistant.nix
@@ -24,7 +23,6 @@
     ./secrets.nix
     ./security.nix
     ./steam.nix
-    ./sway.nix
     ./system.nix
     ./theme.nix
     ./unifi.nix

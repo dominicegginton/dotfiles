@@ -19,20 +19,16 @@ Declarative System, Package & Home Configurations - WIP Always
 - **Ad-hoc Shell Environments** - Predefined ad-hoc shell environments for common tools and tasks.
 - **Flake Templates** - Flake templates included for bootstrapping common development workspaces.
 
-> [!CAUTION]
->
-> Host and home configurations within this workspace contain secrets values that
-> are managed using **Bitwarden Secrets** and a combination of the `sync-secrets`
-> derivation and `secrets` _systemd_ service.
-
 
 ## Workspace
 
 This workspace follows the following structure:
 
 ```
+├── assets          # Static assets
 ├── home            # User HomeManager configurations
 ├── hosts           # Host NixOS and NixDarwin configurations
+├── infrastructure  # Terraform configuration
 ├── modules         # Nix modules
 ├── pkgs            # Packages
 ├── shells          # Ad-hoc shells environments
@@ -40,5 +36,6 @@ This workspace follows the following structure:
 ├── flake.nix       # Flake inputs and outputs
 ├── lib.nix         # Nix utils
 ├── overlays.nix    # Package overlays
-└── shell.nix       # Workspace development shell
+├── shell.nix       # Workspace development shell
+└── topology.nix    # Topology diagram configuration
 ```

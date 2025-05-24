@@ -16,11 +16,9 @@
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
   topology.self.hardware.info = "Dell Latitude 7390";
+  display.enable = true;
   audio.enable = true;
   bluetooth.enable = true;
   networking.wireless.enable = true;
-  modules = {
-    display.plasma.enable = true;
-    services.virtualisation.enable = true;
-  };
+  virtualisation.enable = true;
 }

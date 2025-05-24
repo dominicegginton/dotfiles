@@ -1,15 +1,9 @@
 { config, lib, pkgs, ... }:
 
-let
-  cfg = config.modules.services.virtualisation;
-in
-
-with lib;
-
 {
-  options.modules.services.virtualisation.enable = mkEnableOption "virtualisation";
+  options.virtualisation.enable = lib.mkEnableOption "virtualisation";
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf config.virtualisation.enable {
     virtualisation = {
       docker = {
         enable = true;
