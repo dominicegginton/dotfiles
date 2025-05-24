@@ -1,4 +1,4 @@
-{ inputs, outputs }:
+{ inputs, outputs, nixConfig }:
 
 rec {
   nixosStateVersion = "24.05";
@@ -23,7 +23,7 @@ rec {
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
       specialArgs = (args.specialArgs or { }) // {
-        inherit inputs outputs theme tailnet hostname;
+        inherit inputs outputs theme tailnet hostname nixConfig;
         stateVersion = nixosStateVersion;
         dlib = outputs.lib;
       };

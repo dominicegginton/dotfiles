@@ -1,24 +1,17 @@
 { config, lib, pkgs, hostname, tailnet, ... }:
 
-with lib;
 with config.lib.topology;
 
 {
-  options.modules.networking = {
-    wireless.enable = mkEnableOption "wireless";
-    tailscale = { };
-  };
-
   config = {
-    modules.secrets.wireless = "04480e55-ca76-4444-a5cf-b242009fe153";
+    modules.secrets.wireless = lib.mkIf config.networking.wireless "04480e55-ca76-4444-a5cf-b242009fe153";
     modules.secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
     networking = {
       hostName = hostname;
       useDHCP = true;
       firewall.enable = true;
       nftables.enable = true;
-      wireless = mkIf config.modules.networking.wireless.enable {
-        enable = true;
+      wireless = lib.mkIf config.networking.wireless.enable {
         fallbackToWPA2 = true;
         userControlled.enable = true;
         userControlled.group = "wheel";
@@ -50,7 +43,7 @@ with config.lib.topology;
         virtual = true;
         addresses = [ "localhost" "127.0.0.1" ];
       };
-      wlp108s0 = mkIf config.modules.networking.wireless.enable {
+      wlp108s0 = lib.mkIf config.networking.wireless.enable {
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-dom" "wlan0")

@@ -1,4 +1,4 @@
-{
+rec {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -44,17 +44,10 @@
     fallback = true;
     warn-dirty = true;
     keep-going = true;
-    keep-outputs = true;
-    keep-derivations = true;
+    keep-outputs = false;
+    keep-derivations = false;
     auto-optimise-store = true;
     builders-use-substitutes = true;
-    experimental-features = [
-      "auto-allocate-uids"
-      "configurable-impure-env"
-      "nix-command"
-      "flakes"
-      "pipe-operators"
-    ];
     substituters = [
       "https://cache.nixos.org"
       "https://dominicegginton.cachix.org"
@@ -65,12 +58,14 @@
       "dominicegginton.cachix.org-1:P8AQ3itMEVevMqAzCKiPyvJ6l1a9NVaFPAXJqb9mAaY="
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
     ];
+
+
   };
 
   outputs = { self, nixpkgs, ... }:
 
     let
-      lib = import ./lib.nix { inherit (self) inputs outputs; };
+      lib = import ./lib.nix { inherit (self) inputs outputs; inherit nixConfig; };
       overlays = import ./overlays.nix { inherit (self) inputs outputs; };
       templates = import ./templates { };
     in

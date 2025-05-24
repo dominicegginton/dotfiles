@@ -11,10 +11,7 @@
         inputs.base16.nixosModule
         {
           scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
-          home = {
-            inherit stateVersion;
-            activation.report-changes = "${pkgs.nvd}/bin/nvd diff $oldGenPath $newGenPath";
-          };
+          home = { inherit stateVersion; };
         }
         ../home-manager
       ];

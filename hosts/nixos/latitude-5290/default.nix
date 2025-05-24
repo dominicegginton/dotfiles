@@ -43,14 +43,14 @@
   };
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  hardware.mwProCapture.enable = true;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
-  topology.self.hardware.info = "Dell Latitude 5290 - Workstation";
+  topology.self.hardware.info = "Dell Latitude 5290";
+  audio.enable = true;
+  bluetooth.enable = true;
+  networking.wireless.enable = true;
   modules = {
     display.plasma.enable = true;
     services.virtualisation.enable = true;
-    services.bluetooth.enable = true;
-    networking.wireless.enable = true;
   };
 }

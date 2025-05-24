@@ -17,11 +17,11 @@
       teams-for-linux
       # chromium
       # vscode-with-extensions
-      # jetbrains.datagrip
-      # jetbrains.pycharm-professional
-      # python3
-      # jetbrains.webstorm
-      # nodejs
+      jetbrains.datagrip
+      jetbrains.pycharm-professional
+      python3
+      jetbrains.webstorm
+      nodejs
     ];
   };
 }

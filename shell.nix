@@ -39,21 +39,6 @@ mkShell {
     coreutils
     gum
     jq
-    ## todo: finish this script
-    (writeShellScriptBin "create-bootable-usb" ''
-      target=$(gum choose --cursor "Select the target device" $(lsblk -d -n -p -o NAME,SIZE | grep -v loop | awk '{print $1}'))
-      nom build github:dominicegginton/dotfiles#nixosConfigurations.nixos-installer.config.system.build.isoImage
-      source=$(jq -r '.[] | select(.path | contains("result")) | .path' | head -n 1)
-      gum confirm "Are you sure you want to write $source to $target?" && \
-        sudo dd if="$source" of="$target" bs=4M status=progress && \
-          gum log --level info "Successfully wrote $source to $target."
-      gum confirm "Do you want to sync the filesystem?" && \
-        sudo sync && \
-          gum log --level info "Successfully synced the filesystem."
-      gum confirm "Do you want to eject the device?" && \
-        sudo eject "$target" && \
-          gum log --level info "Successfully ejected $target."
-    '')
     (writeShellScriptBin "deploy" ''
       gcloud auth application-default login && gcloud config set project ${gcp.project}
       tofu -chdir=infrastructure init
@@ -75,6 +60,13 @@ mkShell {
         gpg --import "$temp/$key" || gum log --level error "Failed to import GPG key $key."
       done
       gum log --level info "Successfully imported GPG keys."
+    '')
+    (writeShellScriptBin "bootstrap-nixos-installer" ''
+      source=$(nom build github:dominicegginton/dotfiles#nixosConfigurations.nixos-installer.config.system.build.isoImage --no-link --json | jq -r '.[] | select(.outputs.out) | .outputs.out' | head -n 1)
+      target=$(gum choose --cursor "Select the target device" $(lsblk -d -n -p -o NAME,SIZE | grep -v loop | awk '{print $1}'))
+      gum confirm "Are you sure you want to write $source to $target?" && \
+        sudo dd if="$source" of="$target" bs=4M status=progress && \
+          gum log --level info "Successfully wrote $source to $target."
     '')
   ];
 }

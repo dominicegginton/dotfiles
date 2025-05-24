@@ -1,17 +1,13 @@
 { config, pkgs, lib, ... }:
 
-let
-  cfg = config.modules.services.bluetooth;
-in
-
-with lib;
-
 {
-  options.modules.services.bluetooth.enable = mkEnableOption "bluetooth";
+  options.bluetooth.enable = lib.mkEnableOption "bluetooth";
 
-  config = mkIf cfg.enable {
-    hardware.bluetooth.enable = true;
-    hardware.bluetooth.package = pkgs.bluez;
+  config = lib.mkIf config.bluetooth.enable {
+    hardware.bluetooth = {
+      enable = true;
+      package = pkgs.bluez;
+    };
     services.blueman.enable = true;
   };
 }

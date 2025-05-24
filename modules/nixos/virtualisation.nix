@@ -16,6 +16,7 @@ with lib;
         autoPrune = {
           enable = true;
           flags = [ "--all" ];
+          dates = "daily";
         };
       };
       vmVariant = {
