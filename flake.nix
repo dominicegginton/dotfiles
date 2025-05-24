@@ -41,6 +41,13 @@ rec {
   };
 
   nixConfig = {
+    experimental-features = [
+      "auto-allocate-uids"
+      "configurable-impure-env"
+      "nix-command"
+      "flakes"
+      "pipe-operators"
+    ];
     fallback = true;
     warn-dirty = true;
     keep-going = true;
@@ -58,8 +65,6 @@ rec {
       "dominicegginton.cachix.org-1:P8AQ3itMEVevMqAzCKiPyvJ6l1a9NVaFPAXJqb9mAaY="
       "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
     ];
-
-
   };
 
   outputs = { self, nixpkgs, ... }:
