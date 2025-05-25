@@ -30,7 +30,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
-      - run: nix build .#nixosConfigurations.ghost-gs60.config.system.build.vm
+      - run: nix build .#nixosConfigurations.ghost-gs60.config.system.build.topLevel
 
   latitude-5290:
     runs-on: ubuntu-latest
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
-      - run: nix build .#nixosConfigurations.latitude-5290.config.system.build.vm
+      - run: nix build .#nixosConfigurations.latitude-5290.config.system.build.topLevel
 
   latitude-7390:
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
-      - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.vm
+      - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.topLevel
 
   mccml44wmd6t:
     runs-on: macos-latest
@@ -54,4 +54,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
-      - run: nix build .#darwinConfigurations.MCCML44WMD6T.config.system.build.vm
+      - run: nix build .#darwinConfigurations.MCCML44WMD6T.config.system.build.topLevel
