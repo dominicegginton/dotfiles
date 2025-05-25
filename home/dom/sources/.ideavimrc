@@ -1,0 +1,19 @@
+let mapleader=" "
+set surround
+set multiple-cursors
+set commentary
+set argtextobj
+set textobj-entire
+set ReplaceWithRegister
+set showmode
+set so=5
+set incsearch
+set nu
+set ideajoin
+set ideastatusicon=gray
+set idearefactormode=keep
+map Q gq
+map <leader>s <Action>SelectInProjectView)
+map <leader>a <Action>(Annotate)
+map <leader>h <Action>(Vcs.ShowTabbedFileHistory)
+map <leader>o <Action>(FileStructurePopup)
