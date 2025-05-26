@@ -6,7 +6,6 @@
       inherit stateVersion;
       autoUpgrade = {
         enable = true;
-        allowReboot = true;
         dates = "02:00";
         flake = "github:dominicegginton/dotfiles";
         operation = "boot";
