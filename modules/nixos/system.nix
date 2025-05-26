@@ -8,7 +8,7 @@
         enable = true;
         dates = "02:00";
         flake = "github:dominicegginton/dotfiles";
-        operation = "boot";
+        operation = "switch";
         persistent = true;
       };
       activationScripts.diff.text = ''
