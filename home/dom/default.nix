@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, pkgs, hostname, ... }:
 
 {
   config = {
@@ -15,15 +15,11 @@
       ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
-    home.packages = with pkgs.unstable; lib.mkIf pkgs.stdenv.isLinux [
-      teams-for-linux
-      # chromium
-      # vscode-with-extensions
-      jetbrains.datagrip
-      jetbrains.pycharm-professional
-      python3
-      jetbrains.webstorm
-      nodejs
+    home.packages = with pkgs; lib.mkIf (pkgs.stdenv.isLinux && hostname == "latitude-7390") [
+      unstable.teams-for-linux
+      unstable.jetbrains.datagrip
+      unstable.jetbrains.webstorm
+      unstable.nodejs
     ];
   };
 }
