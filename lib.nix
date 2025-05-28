@@ -47,7 +47,7 @@ rec {
             sharedModules = [
               inputs.impermanence.homeManagerModules.impermanence
               inputs.plasma-manager.homeManagerModules.plasma-manager
-              inputs.base16.nixosModule
+              inputs.base16.homeManagerModule
               {
                 scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
                 home = { stateVersion = nixosStateVersion; };
@@ -78,7 +78,7 @@ rec {
           home-manager.sharedModules = [
             inputs.impermanence.homeManagerModules.impermanence
             inputs.plasma-manager.homeManagerModules.plasma-manager
-            inputs.base16.nixosModule
+            inputs.base16.homeManagerModule
             {
               scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
               home.stateVersion = darwinStateVersion;
