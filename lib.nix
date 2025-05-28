@@ -81,7 +81,7 @@ rec {
             inputs.base16.homeManagerModule
             {
               scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
-              home.stateVersion = darwinStateVersion;
+              home.stateVersion = nixosStateVersion;
             }
             ./modules/home-manager
           ];
