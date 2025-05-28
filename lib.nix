@@ -40,7 +40,22 @@ rec {
         (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./hosts/nixos/${hostname}/default.nix)
         {
           scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
-          home-manager.extraSpecialArgs = specialArgs;
+          home-manager = {
+            extraSpecialArgs = specialArgs;
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            sharedModules = [
+              inputs.impermanence.homeManagerModules.impermanence
+              inputs.plasma-manager.homeManagerModules.plasma-manager
+              inputs.base16.nixosModule
+              {
+                scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
+                home = { stateVersion = nixosStateVersion; };
+              }
+              ./modules/home-manager
+            ];
+            backupFileExtension = "backup";
+          };
         }
       ] ++ (args.modules or [ ]);
     });
@@ -57,8 +72,20 @@ rec {
         ./modules/darwin
         ./hosts/darwin/${hostname}.nix
         {
-          scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
           home-manager.extraSpecialArgs = specialArgs;
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.sharedModules = [
+            inputs.impermanence.homeManagerModules.impermanence
+            inputs.plasma-manager.homeManagerModules.plasma-manager
+            inputs.base16.nixosModule
+            {
+              scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
+              home.stateVersion = darwinStateVersion;
+            }
+            ./modules/home-manager
+          ];
+
         }
       ] ++ (args.modules or [ ]);
     });

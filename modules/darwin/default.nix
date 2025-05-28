@@ -6,7 +6,6 @@ with lib;
   imports = [
     ./console.nix
     ./homebrew.nix
-    ./home-manager.nix
     ./networking.nix
     ./system.nix
     ./users.nix
