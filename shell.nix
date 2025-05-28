@@ -7,15 +7,15 @@
 , nix-diff
 , nix-tree
 , nix-health
-, opentofu
 , google-cloud-sdk
 , gcsfuse
+, opentofu
+, coreutils
+, gum
+, jq
 , pinentry
 , gnupg
 , writeShellScriptBin
-, gum
-, coreutils
-, jq
 }:
 
 let
@@ -27,6 +27,7 @@ mkShell rec {
   name = lib.maintainers.dominicegginton.github + "/dotfiles";
   packages = [
     nix
+    nix-output-monitor
     nixpkgs-fmt
     deadnix
     nix-diff
@@ -38,6 +39,8 @@ mkShell rec {
     coreutils
     gum
     jq
+    pinentry
+    gnupg
     (writeShellScriptBin "deploy" ''
       gcloud auth login
       tofu -chdir=infrastructure init
