@@ -14,7 +14,6 @@
 , coreutils
 , gum
 , jq
-, pinentry
 , gnupg
 , bootstrap
 }:
@@ -40,7 +39,6 @@ mkShell rec {
     coreutils
     gum
     jq
-    pinentry
     gnupg
     bootstrap
     (writeShellScriptBin "deploy" ''

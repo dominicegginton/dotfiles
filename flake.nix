@@ -38,6 +38,8 @@ rec {
     roll.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
+    nix-github-actions.url = "github:nix-community/nix-github-actions";
+    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -67,7 +69,7 @@ rec {
     ];
   };
 
-  outputs = { self, nixpkgs, ... }:
+  outputs = { self, nixpkgs, nix-github-actions, ... }:
 
     let
       lib = import ./lib.nix { inherit (self) inputs outputs; inherit nixConfig; };
@@ -76,6 +78,7 @@ rec {
     in
 
     with nixpkgs.lib;
+    with nix-github-actions.lib;
     with lib;
 
     eachPlatform platforms.all
@@ -123,5 +126,6 @@ rec {
       nixosConfigurations.latitude-5290 = nixosSystem { hostname = "latitude-5290"; };
       nixosConfigurations.latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
       darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
+      githubActions = mkGithubMatrix { checks = getAttrs (attrNames githubPlatforms) self.devShells; };
     };
 }
