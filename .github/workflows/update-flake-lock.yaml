@@ -12,8 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
-      - uses: DeterminateSystems/update-flake-lock@main
+      - uses: determinatesystems/update-flake-lock@v25
         with:
-          pr-title: "chore(worksapce): update flake.lock"
-          pr-labels: |
-            dependencies
+          pr-title: "chore: update flake.lock"
