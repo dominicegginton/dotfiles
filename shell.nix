@@ -40,7 +40,7 @@ mkShell {
     gum
     jq
     (writeShellScriptBin "deploy" ''
-      gcloud auth application-default login && gcloud config set project ${gcp.project}
+      gcloud auth login
       tofu -chdir=infrastructure init
       tofu -chdir=infrastructure apply -refresh-only
     '')

@@ -7,15 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/flake-checker-action@main
+      - uses: cachix/install-nix-action@v31
+      - uses: determinatesystems/flake-checker-action@v9
 
   topology:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/install-nix-action@v31
       - run: nix build .\#topology.x86_64-linux.config.output
       - uses: actions/upload-artifact@v4
         with:
@@ -28,30 +27,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/install-nix-action@v31
       - run: nix build .#nixosConfigurations.ghost-gs60.config.system.build.topLevel
 
   latitude-5290:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/install-nix-action@v31
       - run: nix build .#nixosConfigurations.latitude-5290.config.system.build.topLevel
 
   latitude-7390:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/install-nix-action@v31
       - run: nix build .#nixosConfigurations.latitude-7390.config.system.build.topLevel
 
   mccml44wmd6t:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
-      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - uses: cachix/install-nix-action@v31
       - run: nix build .#darwinConfigurations.MCCML44WMD6T.config.system.build.topLevel
