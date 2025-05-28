@@ -25,6 +25,11 @@ with lib;
         jq
         fx
         nix-output-monitor
+        nixpkgs-fmt
+        deadnix
+        nix-diff
+        nix-tree
+        nix-health
       ]
       ++ (if isLinux then [ ncdu ] else [ ])
       ++ (if isDarwin then [ ] else [ ]);

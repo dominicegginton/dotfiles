@@ -1,5 +1,6 @@
 { lib
 , mkShell
+, writeShellScriptBin
 , nix
 , nix-output-monitor
 , nixpkgs-fmt
@@ -15,7 +16,7 @@
 , jq
 , pinentry
 , gnupg
-, writeShellScriptBin
+, bootstrap
 }:
 
 let
@@ -41,6 +42,7 @@ mkShell rec {
     jq
     pinentry
     gnupg
+    bootstrap
     (writeShellScriptBin "deploy" ''
       gcloud auth login
       tofu -chdir=infrastructure init
