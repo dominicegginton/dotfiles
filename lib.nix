@@ -54,7 +54,6 @@ rec {
       };
       modules = [
         inputs.home-manager.darwinModules.home-manager
-        inputs.nix-topology.darwinModules.default
         ./modules/darwin
         ./hosts/darwin/${hostname}.nix
         {
