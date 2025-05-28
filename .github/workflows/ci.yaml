@@ -55,7 +55,7 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           name: dominicegginton-dotfiles
-          authToken: ${{ secrets.CACHIX_AUTH_TOKEN }}
+          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}''
       - run: nix build -L '.#${{ matrix.attr }}'
 
   ghost-gs60:
