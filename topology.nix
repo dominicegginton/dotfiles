@@ -150,7 +150,7 @@ with config.lib.topology;
   };
   nodes.mccml44wmd6t = mkDevice "MCCML44WMD6T" {
     info = "Macbook Pro 2019 - Arup Workstation";
-    icon = ./assets/apple.svg;
+    deviceIcon = ./assets/apple.svg;
     interfaces.wlan0 = {
       network = "burbage";
       type = "wifi";
@@ -173,7 +173,7 @@ with config.lib.topology;
   };
   nodes.pixel-9 = mkDevice "pixel-9" {
     info = "Google Pixel 9";
-    icon = ./assets/google.svg;
+    deviceIcon = ./assets/google.svg;
     interfaces."5g-radio" = {
       network = "internet";
       physicalConnections = [ (mkConnection "internet" "*") ];
