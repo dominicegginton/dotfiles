@@ -1,4 +1,5 @@
 { lib
+, stdenv
 , mkShell
 , writeShellScriptBin
 , nix
@@ -33,7 +34,7 @@ mkShell rec {
     nix-tree
     nix-health
     google-cloud-sdk
-    gcsfuse
+    (if stdenv.isLinux then gcsfuse else null)
     opentofu
     coreutils
     gum
