@@ -15,7 +15,6 @@
 , gum
 , jq
 , gnupg
-, bootstrap
 }:
 
 let
@@ -40,7 +39,6 @@ mkShell rec {
     gum
     jq
     gnupg
-    bootstrap
     (writeShellScriptBin "deploy" ''
       gcloud auth login
       tofu -chdir=infrastructure init
