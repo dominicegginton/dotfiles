@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
-      - uses: determinatesystems/flake-checker-action@v9
+      - uses: determinatesystems/flake-checker-action@v10
 
   formatter:
     runs-on: ubuntu-latest
@@ -85,4 +85,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
+      - name: free disk space
+        run: |
+          sudo swapoff -a
+          sudo rm -f /swapfile
+          sudo apt clean
+          docker rmi $(docker image ls -aq)
+          df -h
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
