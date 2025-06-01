@@ -4,12 +4,16 @@ with config.lib.topology;
 
 {
   config = {
-    modules.secrets.wireless = lib.mkIf config.networking.wireless.enable "04480e55-ca76-4444-a5cf-b242009fe153";
-    modules.secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
+    secrets.wireless = lib.mkIf config.networking.wireless.enable "04480e55-ca76-4444-a5cf-b242009fe153";
+    secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
     networking = {
       hostName = hostname;
-      useDHCP = true;
-      firewall.enable = true;
+      useDHCP = lib.mkDefault true;
+      firewall = {
+        enable = true;
+        trustedInterfaces = [ "tailscale0" ];
+        checkReversePath = "loose";
+      };
       nftables.enable = true;
       wireless = lib.mkIf config.networking.wireless.enable {
         fallbackToWPA2 = true;
@@ -32,6 +36,19 @@ with config.lib.topology;
         };
       };
     };
+    services.openssh.enable = true;
+    programs.ssh.startAgent = true;
+    services.tailscale = {
+      enable = true;
+      useRoutingFeatures = "both";
+      authKeyFile = "/run/bitwarden-secrets/tailscale";
+      authKeyParameters.ephemeral = true;
+      extraUpFlags = [ "--ssh" "--accept-dns" ];
+      extraSetFlags = [ "--posture-checking=true" ];
+      interfaceName = "tailscale0";
+    };
+    services.tailscaleAuth.enable = true;
+    environment.systemPackages = with pkgs; [ tailscale ];
     topology.self.interfaces = {
       lo = {
         type = "loopback";
@@ -53,33 +70,13 @@ with config.lib.topology;
           (mkConnection "ribble-router-upstairs" "wlan0")
         ];
       };
-    };
-    services.openssh.enable = true;
-    programs.ssh.startAgent = true;
-    services.tailscaleAuth.enable = true;
-    services.tailscale = {
-      enable = true;
-      useRoutingFeatures = "both";
-      authKeyFile = "/run/bitwarden-secrets/tailscale";
-      authKeyParameters.ephemeral = true;
-      extraUpFlags = [ "--ssh" "--accept-dns" ];
-      extraSetFlags = [ "--posture-checking=true" ];
-      interfaceName = "tailscale0";
-    };
-    networking.firewall.trustedInterfaces = [ "tailscale0" ];
-    networking.firewall.checkReversePath = "loose";
-    services.nginx.tailscaleAuth.virtualHosts = [
-      "dash.${hostname}"
-      "frigate.${hostname}"
-      "ha.${hostname}"
-    ];
-    environment.systemPackages = with pkgs; [ tailscale ];
-    topology.self.interfaces.tailscale0 = {
-      network = tailnet;
-      type = "tailscale";
-      icon = ../../assets/tailscale.svg;
-      virtual = true;
-      addresses = [ hostname "${hostname}.${tailnet}" ];
+      tailscale0 = {
+        network = tailnet;
+        type = "tailscale";
+        icon = ../../assets/tailscale.svg;
+        virtual = true;
+        addresses = [ hostname "${hostname}.${tailnet}" ];
+      };
     };
   };
 }

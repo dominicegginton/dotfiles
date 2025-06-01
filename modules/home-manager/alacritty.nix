@@ -52,7 +52,6 @@ in
         colors = lightTheme;
       };
     };
-
     home.file."alacritty-light-theme.toml".source = (pkgs.formats.toml { }).generate "alacritty-light-theme.toml" { colors = lightTheme; };
     home.file."alacritty-dark-theme.toml".source = (pkgs.formats.toml { }).generate "alacritty-dark-theme.toml" { colors = darkTheme; };
   };

@@ -1,8 +1,7 @@
-{ inputs, ... }:
+{ inputs, lib, config, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
-    ./hardware-configuration.nix
     common-pc-laptop
     common-pc-laptop-ssd
   ];
@@ -41,13 +40,18 @@
       };
     };
   };
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" "rtsx_pci_sdmmc" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
-  topology.self.hardware.info = "Dell Latitude 5290";
-  audio.enable = true;
-  bluetooth.enable = true;
+  hardware.bluetooth.enable = true;
   networking.wireless.enable = true;
-  display.enable = true;
+  services.desktopManager.plasma6.enable = true;
+  topology.self.hardware.info = "Dell Latitude 5290";
 }

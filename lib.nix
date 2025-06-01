@@ -37,7 +37,7 @@ rec {
         (if hostname == "nixos-installer" then inputs.nixos-images.nixosModules.image-installer else ./modules/nixos)
         (if hostname == "nixos-installer" then ./modules/nixos/console.nix else { })
         (if hostname == "nixos-installer" then ./modules/nixos/nix-settings.nix else { })
-        (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./hosts/nixos/${hostname}/default.nix)
+        (if hostname == "nixos-installer" then ./hosts/nixos/nixos-installer.nix else ./hosts/nixos/${hostname}.nix)
         {
           scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
           home-manager = {

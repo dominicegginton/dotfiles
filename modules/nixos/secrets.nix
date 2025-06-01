@@ -33,7 +33,7 @@ let
     chown root:root ${directory}
     chown root:root ${directory}/secrets
     chown root:root ${mountpoint}
-    ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.modules.secrets)}
+    ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.secrets)}
   '';
   secrets-sync = writeBashBin "secrets-sync" ''
     export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.busybox pkgs.gum pkgs.jq pkgs.bws ]}:$PATH
@@ -65,7 +65,7 @@ let
 in
 
 {
-  options.modules.secrets =
+  options.secrets =
     with types;
     let
       secretType = submodule {

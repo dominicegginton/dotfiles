@@ -1,7 +1,5 @@
 { ... }:
 
 {
-  config = {
-    programs.ssh.enable = true;
-  };
+  config.programs.ssh.enable = true;
 }

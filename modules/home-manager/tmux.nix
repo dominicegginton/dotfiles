@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }:
+{ pkgs, lib, ... }:
 
 with lib;
 
@@ -83,7 +83,6 @@ with lib;
         bind-key -n C-space if-shell -F '#{==:#{session_name},popup}' { detach-client } { if-shell -F '#{==:#{session_name},scratchpad}' { detach-client } { display-popup -d "#{pane_current_path}" -xC -yC -w 80% -h 75% -E 'tmux attach-session -t popup || tmux new-session -s popup\; set status off' } }
       '';
     };
-
     home.packages = with pkgs; [ twm twx ];
     home.file.".config/twm/twm.yaml".text = ''
       search_paths:

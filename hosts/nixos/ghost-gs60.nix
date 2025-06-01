@@ -1,15 +1,12 @@
-{ inputs, config, ... }:
+{ inputs, config, lib, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
-    msi-gs60
     common-pc-laptop
     common-pc-laptop-ssd
     common-pc-laptop-hdd
-    # common-gpu-nvidia
-    ./hardware-configuration.nix
+    msi-gs60
   ];
-
   disko.devices = {
     disk = {
       main = {
@@ -63,54 +60,23 @@
       };
     };
   };
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-intel" ];
+  boot.extraModulePackages = [ ];
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # hardware.mwProCapture.enable = true;
-  # hardware.logitech.wireless.enable = true;
-  # hardware.logitech.wireless.enableGraphical = true;
-  # services.xserver.videoDrivers = [ "nvidia" ];
-  # hardware.graphics.enable = true;
-  # hardware.graphics.enable32Bit = true;
-  # hardware.graphics.extraPackages = with pkgs; [ intel-media-driver intel-ocl intel-vaapi-driver mesa ];
-  # hardware.graphics.extraPackages32 = with pkgs.pkgsi686Linux; [ intel-media-driver intel-vaapi-driver ];
-  # hardware.nvidia = {
-  #   open = false;
-  #   powerManagement.enable = false;
-  #   powerManagement.finegrained = false;
-  #   nvidiaSettings = true;
-  #   package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
-  #   prime.offload.enable = true;
-  #   prime.offload.enableOffloadCmd = true;
-  #   prime.intelBusId = "PCI:00:02:0";
-  #   prime.nvidiaBusId = "PCI:01:00:0";
-  # };
-  # environment.systemPackages = with pkgs; [ nvtopPackages.full ];
-  # environment.sessionVariables."VK_DRIVER_FILES" = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  networking.wireless.enable = true;
+  services.unifi.enable = true;
+  services.home-assistant.enable = true;
   topology.self = {
     hardware.info = "MSI Ghost GS60";
     interfaces.eth0 = {
       network = "burbage";
       type = "ethernet";
       physicalConnections = [ (config.lib.topology.mkConnection "quardon-switch-secondary" "eth2") ];
-    };
-  };
-  networking.wireless.enable = true;
-  modules = {
-    services = {
-      homepage-dashboard = {
-        enable = true;
-        monitorDisks = [ "/" "/mnt/data" ];
-        bookmarks = [
-          {
-            Burbage = [
-              { "Home Assistant" = [{ abbr = "HA"; href = "http://ghost-gs60:8123/"; }]; }
-              { Unifi = [{ abbr = "UTF"; href = "https://ghost-gs60:8443/"; }]; }
-            ];
-          }
-        ];
-      };
-      unifi.enable = true;
-      home-assistant.enable = true;
     };
   };
 }

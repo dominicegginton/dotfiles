@@ -1,17 +1,16 @@
-{ theme, ... }:
+{ lib, config, theme, ... }:
 
 let
   wallpaper = ./background.jpg;
 in
 
 {
-  config = {
-    programs.plasma.enable = true;
-    programs.plasma.overrideConfig = true;
-    programs.plasma.workspace.lookAndFeel = if theme == "light" then "org.kde.breeze.desktop" else "org.kde.breezedark.desktop";
-    programs.plasma.workspace.wallpaper = wallpaper;
-    programs.plasma.kscreenlocker.appearance.wallpaper = wallpaper;
-    programs.plasma.shortcuts = {
+  config.programs.plasma = lib.mkIf config.programs.plasma.enable {
+    overrideConfig = true;
+    workspace.lookAndFeel = if theme == "light" then "org.kde.breeze.desktop" else "org.kde.breezedark.desktop";
+    workspace.wallpaper = wallpaper.outPath;
+    kscreenlocker.appearance.wallpaper = wallpaper.outPath;
+    shortcuts = {
       "ActivityManager"."switch-to-activity-bad12a74-aaab-4185-ba10-ad68fedc3f10" = [ ];
       "KDE Keyboard Layout Switcher"."Switch to Last-Used Keyboard Layout" = "Meta+Alt+L";
       "KDE Keyboard Layout Switcher"."Switch to Next Keyboard Layout" = "Meta+Alt+K";
@@ -242,7 +241,7 @@ in
       "services/org.kde.spectacle.desktop"."OpenWithoutScreenshot" = "Meta+$";
       "services/org.kde.spectacle.desktop"."RecordWindow" = [ ];
     };
-    programs.plasma.configFile = {
+    configFile = {
       "baloofilerc"."General"."dbVersion" = 2;
       "baloofilerc"."General"."exclude filters" = "*~,*.part,*.o,*.la,*.lo,*.loT,*.moc,moc_*.cpp,qrc_*.cpp,ui_*.h,cmake_install.cmake,CMakeCache.txt,CTestTestfile.cmake,libtool,config.status,confdefs.h,autom4te,conftest,confstat,Makefile.am,*.gcode,.ninja_deps,.ninja_log,build.ninja,*.csproj,*.m4,*.rej,*.gmo,*.pc,*.omf,*.aux,*.tmp,*.po,*.vm*,*.nvram,*.rcore,*.swp,*.swap,lzo,litmain.sh,*.orig,.histfile.*,.xsession-errors*,*.map,*.so,*.a,*.db,*.qrc,*.ini,*.init,*.img,*.vdi,*.vbox*,vbox.log,*.qcow2,*.vmdk,*.vhd,*.vhdx,*.sql,*.sql.gz,*.ytdl,*.tfstate*,*.class,*.pyc,*.pyo,*.elc,*.qmlc,*.jsc,*.fastq,*.fq,*.gb,*.fasta,*.fna,*.gbff,*.faa,po,CVS,.svn,.git,_darcs,.bzr,.hg,CMakeFiles,CMakeTmp,CMakeTmpQmake,.moc,.obj,.pch,.uic,.npm,.yarn,.yarn-cache,__pycache__,node_modules,node_packages,nbproject,.terraform,.venv,venv,core-dumps,lost+found";
       "baloofilerc"."General"."exclude filters version" = 9;
