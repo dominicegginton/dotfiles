@@ -90,6 +90,6 @@ jobs:
           sudo swapoff -a
           sudo rm -f /swapfile
           sudo apt clean
-          docker rmi $(docker image ls -aq)
+          docker image prune -af
           df -h
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
