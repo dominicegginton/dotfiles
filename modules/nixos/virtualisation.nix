@@ -1,12 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  options.virtualisation.enable = lib.mkEnableOption "virtualisation";
-
-  config = lib.mkIf config.virtualisation.enable {
+  config = {
     virtualisation = {
-      docker = {
-        enable = true;
+      docker = lib.mkIf config.virtualisation.docker.eneble {
         autoPrune = {
           enable = true;
           flags = [ "--all" ];
@@ -23,7 +20,6 @@
         };
       };
     };
-
-    environment.systemPackages = with pkgs; [ qemu docker ];
+    environment.systemPackages = with pkgs; lib.mkIf config.virtualisation.docker.eneble [ qemu docker ];
   };
 }

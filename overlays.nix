@@ -31,6 +31,7 @@ rec {
     nun = final.callPackage ./pkgs/nun.nix { };
     set-theme = final.callPackage ./pkgs/set-theme.nix { };
     todo = (packagesFrom inputs.todo final.system).default;
+    topology = outputs.topology.${final.system}.config.output;
     twm = (packagesFrom inputs.twm final.system).default;
     twx = final.callPackage ./pkgs/twx.nix { };
     vscode-with-extensions = import ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };

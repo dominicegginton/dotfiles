@@ -26,6 +26,6 @@
   services.desktopManager.plasma6.enable = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
-  virtualisation.enable = true;
+  virtualisation.docker.enable = true;
   topology.self.hardware.info = "Dell Latitude 7390";
 }

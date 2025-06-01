@@ -114,6 +114,7 @@ rec {
           devShells.default = pkgs.callPackage ./shell.nix { };
           devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
           devShells.python3 = pkgs.callPackage ./shells/python3.nix { };
+          devShells.python3-notebook = pkgs.callPackage ./shells/python3-notebook.nix { };
           topology = import self.inputs.nix-topology { inherit pkgs; modules = [{ inherit (self) nixosConfigurations; } ./topology.nix]; };
         })
 
@@ -121,10 +122,10 @@ rec {
 
     {
       inherit lib overlays templates;
-      nixosConfigurations.nixos-installer = nixosSystem { hostname = "nixos-installer"; };
       nixosConfigurations.ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
       nixosConfigurations.latitude-5290 = nixosSystem { hostname = "latitude-5290"; };
       nixosConfigurations.latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
+      nixosConfigurations.nixos-installer = nixosSystem { hostname = "nixos-installer"; };
       darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
       githubActions = mkGithubMatrix { checks = getAttrs (attrNames githubPlatforms) self.devShells; };
     };
