@@ -92,7 +92,7 @@ jobs:
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
-          sudo apt-get remove -y azure-cli google-cloud-sdk hhvm google-chrome-stable firefox powershell mono-devel
+          sudo apt-get remove -y azure-cli google-cloud-cli google-cloud-cli-anthoscli podman microsoft-edge-stable google-chrome-stable firefox
           sudo apt-get autoremove -y
           sudo apt-get clean
           rm -rf /usr/share/dotnet/
