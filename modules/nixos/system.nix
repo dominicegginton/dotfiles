@@ -18,7 +18,7 @@
       '';
     };
     time.timeZone = "Europe/London";
-    i18n.defaultLocale = "nl_NL.UTF-8";
+    i18n.defaultLocale = "en_GB.UTF-8";
     nix = {
       package = pkgs.unstable.nix;
       gc = {

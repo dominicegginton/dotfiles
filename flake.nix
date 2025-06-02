@@ -53,8 +53,8 @@ rec {
     fallback = true;
     warn-dirty = true;
     keep-going = true;
-    keep-outputs = false;
-    keep-derivations = false;
+    keep-outputs = true;
+    keep-derivations = true;
     auto-optimise-store = true;
     builders-use-substitutes = true;
     substituters = [
