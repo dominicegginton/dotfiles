@@ -20,6 +20,6 @@
         };
       };
     };
-    environment.systemPackages = with pkgs; lib.mkIf config.virtualisation.docker.eneble [ qemu docker ];
+    environment.systemPackages = with pkgs; lib.mkIf config.virtualisation.docker.enable [ qemu docker ];
   };
 }
