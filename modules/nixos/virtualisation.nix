@@ -3,7 +3,7 @@
 {
   config = {
     virtualisation = {
-      docker = lib.mkIf config.virtualisation.docker.eneble {
+      docker = lib.mkIf config.virtualisation.docker.enable {
         autoPrune = {
           enable = true;
           flags = [ "--all" ];
