@@ -1,4 +1,4 @@
-let mapleader=" "
+set NERDTree
 set surround
 set multiple-cursors
 set commentary
@@ -12,8 +12,8 @@ set nu
 set ideajoin
 set ideastatusicon=gray
 set idearefactormode=keep
-map Q gq
-map <leader>s <Action>SelectInProjectView)
-map <leader>a <Action>(Annotate)
-map <leader>h <Action>(Vcs.ShowTabbedFileHistory)
-map <leader>o <Action>(FileStructurePopup)
+set idearefactormode=visual
+let mapleader = "\<Space>"
+map <leader>fo <Action>(GotoFile)
+map <leader>fg <Action>(FindInPath)
+map <leader>te :NERDTreeToggle
