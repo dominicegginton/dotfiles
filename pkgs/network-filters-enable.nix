@@ -1,5 +1,3 @@
-## todo: convert to wrtier function
-
 { stdenv, writeShellApplication, ensure-user-is-root }:
 
 if (!stdenv.isDarwin)

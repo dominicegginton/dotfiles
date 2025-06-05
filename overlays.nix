@@ -26,7 +26,6 @@ rec {
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
-    nearch = final.callPackage ./pkgs/nearch.nix { };
     neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
     nun = final.callPackage ./pkgs/nun.nix { };
     set-theme = final.callPackage ./pkgs/set-theme.nix { };
@@ -37,6 +36,7 @@ rec {
     vscode-with-extensions = import ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     lib = prev.lib // outputs.lib;
+    ## WIP
     bootstrap = with final; writeShellScriptBin "bootstrap" ''
       export PATH=${lib.makeBinPath [ status ensure-user-is-root ensure-tailscale-is-connected coreutils git busybox nix fzf jq gum bws ]};
       set -efu -o pipefail
