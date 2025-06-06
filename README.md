@@ -13,6 +13,7 @@ Declarative System, Package & Home Configurations - WIP Always
 - **User Home Environments** - Reproducible user home environments using _HomeManager_.
 - **CVS Scanning** - Automatic CVS vulnerability scanning using _Vulnix_.
 - **Bitwarden Managed Secrets** - System wide and local user secrets managed with _Bitwarden Secret Manager_.
+- **Automated Backups to GCS** - Automated backups to _Google Cloud Storage Buckets_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Binary Caching** - Binary caching with _Cachix_ for fast builds of development shells and packages.
 - **Topology Diagrams** - Automated infrastructure and network diagrams using _nix-topology_.
