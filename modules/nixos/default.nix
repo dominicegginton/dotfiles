@@ -9,6 +9,7 @@
     ./gcsfuse.nix
     ./home-assistant.nix
     ./networking.nix
+    ./niri.nix
     ./plasma.nix
     ./secrets.nix
     ./steam.nix
