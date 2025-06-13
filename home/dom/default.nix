@@ -3,7 +3,7 @@
 {
   config = {
     home.file = {
-      ".aws/config".source = lib.mkIf (hostname == "latitude-7390" || hostname == "MCCML44WMD6T") ./sources/.aws/config;
+      ".aws/config".source = ./sources/.aws/config;
       ".face".source = ./face.jpg;
       ".config".source = ./sources/.config;
       ".config".recursive = true;
@@ -12,7 +12,7 @@
       ".gitconfig".source = ./sources/.gitconfig;
       ".gitignore".source = ./sources/.gitignore;
       ".gitmessage".source = ./sources/.gitmessage;
-      ".ideavimrc".source = lib.mkIf (hostname == "latitude-7390" || hostname == "MCCML44WMD6T") ./sources/.ideavimrc;
+      ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
     home.packages = with pkgs; lib.mkIf (pkgs.stdenv.isLinux && hostname == "latitude-7390") [

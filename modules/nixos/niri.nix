@@ -281,7 +281,7 @@
         antialias = true;
         defaultFonts.serif = [ "Ibm Plex Serif" ];
         defaultFonts.sansSerif = [ "Ibm Plex Sans" ];
-        defaultFonts.monospace = [ "Ibm Plex Mono" ];
+        defaultFonts.monospace = [ "Ibm Plex Mono" "Noto Nerd Font Mono" ];
         defaultFonts.emoji = [ "Noto Color Emoji" ];
         hinting.autohint = true;
         hinting.enable = true;
@@ -291,6 +291,7 @@
       };
       packages = with pkgs; [
         font-manager
+        nerd-fonts.noto
         noto-fonts-emoji
         ibm-plex
       ];
