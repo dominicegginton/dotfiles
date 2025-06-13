@@ -37,7 +37,6 @@ require('dom.modules.mini-clue')
 require('dom.modules.mini-cursorword')
 require('dom.modules.mini-hipatterns')
 require('dom.modules.mini-indentscope')
-require('dom.modules.glow')
 
 -- Utilities
 require('dom.modules.mini-sessions')

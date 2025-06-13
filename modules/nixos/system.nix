@@ -87,17 +87,20 @@
     };
     environment = {
       variables = {
-        EDITOR = "vim";
-        SYSTEMD_EDITOR = "vim";
-        VISUAL = "vim";
+        EDITOR = "helix";
+        SYSTEMD_EDITOR = "helix";
+        VISUAL = "helix";
         PAGER = "less";
+        NIXOS_OZONE_WL = "1";
+        MOZ_ENABLE_WAYLAND = "1";
+        MOZ_DBUS_REMOTE = "1";
       };
       systemPackages = with pkgs; [
         clamav
         cachix
         file
         gitMinimal
-        vim
+        helix
         killall
         hwinfo
         unzip
@@ -118,6 +121,19 @@
         pinentry
         pinentry-curses
         status
+        dnsutils
+        curl
+        wget
+        openssl
+        trash-cli
+        tzdata
+        unrar
+        unzip
+        zip
+        which
+        whois
+        psmisc
+        caligula
       ];
     };
   };

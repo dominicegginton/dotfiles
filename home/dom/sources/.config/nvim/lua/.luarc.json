@@ -1,4 +1,9 @@
 {
   "diagnostics.globals": ["vim"],
-  "diagnostics.disable": ["different-requires", "unused-local"]
+  "diagnostics.disable": ["different-requires", "unused-local"],
+    "workspace.library": [
+        "/nix/store/xwmf17qibhfr2dlz60008qmfqb9w85zw-neovim-unwrapped-nightly/share/nvim/runtime",
+        "~/.local/share/nvim/lazy/solarized.nvim",
+        "${3rd}/luv/library"
+    ]
 }

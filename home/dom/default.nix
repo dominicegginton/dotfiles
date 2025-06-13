@@ -17,8 +17,8 @@
 
     home.packages = with pkgs; lib.mkIf (pkgs.stdenv.isLinux && hostname == "latitude-7390") [
       unstable.teams-for-linux
-      unstable.jetbrains.datagrip
-      unstable.jetbrains.webstorm
+      jetbrains.datagrip
+      jetbrains.webstorm
       unstable.nodejs
     ];
   };
