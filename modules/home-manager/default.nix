@@ -8,6 +8,7 @@ _:
     ./git.nix
     ./gpg.nix
     ./neovim.nix
+    ./niri.nix
     ./ssh.nix
     ./tmux.nix
     ./zsh.nix

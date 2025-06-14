@@ -50,7 +50,7 @@ export class Niri extends GObject.Object {
     subprocess(
       ["niri", "msg", "--json", "event-stream"],
       (event) => this.handleEvent(JSON.parse(event)),
-      (err) => console.error(err)
+      (err) => console.error(err),
     );
   }
 
@@ -76,7 +76,7 @@ export class Niri extends GObject.Object {
         case "WorkspaceActiveWindowChanged":
           this.onWorkspaceActiveWindowChanged(
             value.workspace_id,
-            value.active_window_id
+            value.active_window_id,
           );
           break;
         case "WindowsChanged":
@@ -257,7 +257,9 @@ export class Niri extends GObject.Object {
     }));
 
     // Use idx instead of id for activeWorkspaceIdx
-    const activatedWorkspace = this.workspaces.find((ws) => ws.id === workspaceId);
+    const activatedWorkspace = this.workspaces.find(
+      (ws) => ws.id === workspaceId,
+    );
     if (activatedWorkspace) {
       this.activeWorkspaceIdx = activatedWorkspace.idx;
     }
@@ -293,7 +295,7 @@ export class Niri extends GObject.Object {
     if (!window || typeof window !== "object") {
       console.warn(
         "[niri] WindowOpenedOrChanged: Invalid window data received (not an object):",
-        window
+        window,
       );
       return;
     }
@@ -301,7 +303,7 @@ export class Niri extends GObject.Object {
     if (window.id === undefined || window.id === null) {
       console.warn(
         "[niri] WindowOpenedOrChanged: Invalid window data received (missing id):",
-        window
+        window,
       );
       return;
     }
@@ -392,11 +394,11 @@ export class Niri extends GObject.Object {
       "--id",
       String(windowId),
       "--workspace",
-      String(workspaceId)
+      String(workspaceId),
     ).catch((error) => {
       console.error(
         `Failed to move window ${windowId} to workspace ${workspaceId}:`,
-        error
+        error,
       );
     });
   }

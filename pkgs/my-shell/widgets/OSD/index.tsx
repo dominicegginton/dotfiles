@@ -5,14 +5,13 @@ import Wp from "gi://AstalWp";
 
 const OnScreenProgress = ({ visible }) => {
   const speaker = Wp.get_default()!.get_default_speaker();
-  const iconName = Variable("");
   const value = Variable(0);
   let count = 0;
 
-  function show(v: number, icon: string) {
+  function show(v: number) {
     visible.set(true);
+    if (v > 1) v = 1;
     value.set(v);
-    iconName.set(icon);
     count++;
     timeout(1000, () => {
       count--;
@@ -23,41 +22,28 @@ const OnScreenProgress = ({ visible }) => {
   return (
     <box
       setup={(self) => {
-        self.hook(speaker, "notify::volume", () => {
-          show(speaker.volume, speaker.volumeIcon);
-        });
+        self.hook(speaker, "notify::volume", () => show(speaker.get_volume()));
       }}
       spacing={16}
       halign={Gtk.Align.END}
       valign={Gtk.Align.CENTER}
       vertical={true}
       css={`
-        font-size: 1.5em;
-        background-color: rgba(0, 0, 0, 0.8);
-        border-radius: 9999;
-        padding: 0.8em;
-        margin: 2em;
-        padding-top: 1em;
+        margin-right: 1em;
       `}
     >
       <levelbar
         css={`
-          min-width: 0.7em;
-          border-radius: 0.7em;
+          min-width: 0.4em;
+          border-radius: 0.4em;
+          border: none;
+          box-shadow: none;
         `}
         halign={Gtk.Align.CENTER}
         heightRequest={100}
         value={value()}
         vertical={true}
         inverted={true}
-      />
-      <icon
-        icon={iconName()}
-        setup={(self) => {
-          self.hook(iconName, () => {
-            self.icon = iconName.get();
-          });
-        }}
       />
     </box>
   );
@@ -75,7 +61,6 @@ export default function OSD({ monitor }: { monitor: number }) {
       reactive={false}
       css={`
         background: none;
-        margin: 1em;
       `}
       monitor={monitor}
       application={App}

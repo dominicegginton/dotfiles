@@ -2,6 +2,7 @@ import { App, Astal } from "astal/gtk3";
 import { Gtk } from "astal/gtk3";
 import Playback from "./Playback";
 import SysTray from "./SysTray";
+import Avatar from "./Avatar";
 import niri from "../../support/niri";
 import { applyOpacityTransition } from "../../support/transitions";
 
@@ -10,20 +11,19 @@ export default ({ monitor }: { monitor: number }) => {
 
   const LeftModules = (
     <box spacing={8} hexpand halign={Gtk.Align.START}>
-      {[<Playback />]}
+      <Playback />
+    </box>
+  );
+
+  const CenterModules = (
+    <box spacing={8} hexpand hhalign={Gtk.Align.CENTER}>
+      {/* Add any center modules here if needed */}
     </box>
   );
 
   const RightModules = (
-    <box
-      spacing={8}
-      css={`
-        margin-right: 4px;
-      `}
-      hexpand
-      halign={Gtk.Align.END}
-    >
-      <SysTray />
+    <box spacing={8} hexpand halign={Gtk.Align.END}>
+      <Avatar />
     </box>
   );
 
@@ -41,12 +41,7 @@ export default ({ monitor }: { monitor: number }) => {
       css={`
         background: transparent;
       `}
-      child={
-        <centerbox
-          start_widget={LeftModules}
-          end_widget={RightModules}
-        />
-      }
+      child={<centerbox start_widget={LeftModules} end_widget={RightModules} />}
     />
   );
 

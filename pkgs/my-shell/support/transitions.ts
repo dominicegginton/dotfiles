@@ -16,7 +16,7 @@ const defaultOptions: Required<TransitionOptions> = {
 export function applyOpacityTransition(
   widget: Widget.Window,
   visible: boolean,
-  options: TransitionOptions = {}
+  options: TransitionOptions = {},
 ) {
   const opts = { ...defaultOptions, ...options };
 
