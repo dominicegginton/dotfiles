@@ -10,6 +10,7 @@ Declarative System, Package & Home Configurations - WIP Always
 
 - **Nix Flakes** - 100% Nix Flakes-based configuration, no Nix channels.
 - **Linux, WLS and Darwin Hosts** - Declarative configurations for _NixOS_, _WSL_ & _Darwin_ hosts.
+- **Scoling Desktop Environment** - 100% Wayland, no X, desktop environment provided by _Niri_ & _my-shell_.
 - **User Home Environments** - Reproducible user home environments using _HomeManager_.
 - **CVS Scanning** - Automatic CVS vulnerability scanning using _Vulnix_.
 - **Bitwarden Managed Secrets** - System wide and local user secrets managed with _Bitwarden Secret Manager_.
