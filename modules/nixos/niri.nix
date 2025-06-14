@@ -116,6 +116,7 @@ with config.scheme.withHashtag;
         XF86AudioPrev        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "previous"; }
         XF86AudioRaiseVolume allow-when-locked=true                    { spawn "${pkgs.pulseaudio}/bin/pactl" "set-sink-volume" "@DEFAULT_SINK@" "+5%"; }
         XF86AudioLowerVolume allow-when-locked=true                    { spawn "${pkgs.pulseaudio}/bin/pactl" "set-sink-volume" "@DEFAULT_SINK@" "-5%"; }
+        XF86AudioMute        allow-when-locked=true                    { spawn "${pkgs.pulseaudio}/bin/pactl" "set-sink-mute" "@DEFAULT_SINK@" "toggle"; }
         Mod+Left                                                       { focus-column-left; }
         Mod+Down                                                       { focus-window-down; }
         Mod+Up                                                         { focus-window-up; }
@@ -213,9 +214,7 @@ with config.scheme.withHashtag;
         Mod+V                                                          { toggle-window-floating; }
         Mod+Shift+V                                                    { switch-focus-between-floating-and-tiling; }
         Mod+W                                                          { toggle-column-tabbed-display; }
-        Print                                                          { screenshot; }
-        Ctrl+Print                                                     { screenshot-screen; }
-        Alt+Print                                                      { screenshot-window; }
+        Print                                                          { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
         Mod+Escape allow-inhibiting=false                              { toggle-keyboard-shortcuts-inhibit; }
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
