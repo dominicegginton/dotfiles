@@ -1,6 +1,5 @@
 local cmd = vim.cmd
 local solarized = require('solarized')
-local theme = io.open('/etc/theme', 'r'):read()
 
 vim.o.termguicolors = true
 solarized.setup({
@@ -8,10 +7,5 @@ solarized.setup({
   transparent = { nvimtree = true, normal = true },
 })
 
-if theme == 'light' then
-  vim.o.background = 'light'
-else
-  vim.o.background = 'dark'
-end
-
+vim.o.background = 'light'
 cmd('colorscheme solarized')
