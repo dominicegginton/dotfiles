@@ -3,7 +3,6 @@
 rec {
   nixosStateVersion = "24.05";
   darwinStateVersion = 5;
-  theme = "light";
   tailnet = "soay-puffin.ts.net";
   nixosHostnames = inputs.nixpkgs.lib.attrNames outputs.nixosConfigurations;
   darwinHostnames = inputs.nixpkgs.lib.attrNames outputs.darwinConfigurations;
@@ -23,7 +22,7 @@ rec {
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
       specialArgs = (args.specialArgs or { }) // {
-        inherit inputs outputs theme tailnet hostname nixConfig;
+        inherit inputs outputs tailnet hostname nixConfig;
         stateVersion = nixosStateVersion;
         dlib = outputs.lib;
       };
@@ -37,17 +36,17 @@ rec {
         ./hosts/nixos/${hostname}.nix
         (if hostname == "nixos-installer" then inputs.nixos-images.nixosModules.image-installer else ./modules/nixos)
         {
-          scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
+          scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml";
           home-manager = {
             extraSpecialArgs = specialArgs;
             useGlobalPkgs = true;
             useUserPackages = true;
             sharedModules = [
               inputs.impermanence.homeManagerModules.impermanence
-              inputs.plasma-manager.homeManagerModules.plasma-manager
               inputs.base16.homeManagerModule
+              inputs.ags.homeManagerModules.default
               {
-                scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
+                scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml";
                 home = { stateVersion = nixosStateVersion; };
               }
               ./modules/home-manager
@@ -61,7 +60,7 @@ rec {
     inputs.nix-darwin.lib.darwinSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};
       specialArgs = (args.specialArgs or { }) // {
-        inherit inputs outputs theme tailnet hostname;
+        inherit inputs outputs tailnet hostname;
         stateVersion = darwinStateVersion;
         dlib = outputs.lib;
       };
@@ -77,8 +76,9 @@ rec {
             inputs.impermanence.homeManagerModules.impermanence
             inputs.plasma-manager.homeManagerModules.plasma-manager
             inputs.base16.homeManagerModule
+            inputs.ags.homeManagerModules.default
             {
-              scheme = "${inputs.tt-schemes}/base16/solarized-${theme}.yaml";
+              scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml";
               home.stateVersion = nixosStateVersion;
             }
             ./modules/home-manager

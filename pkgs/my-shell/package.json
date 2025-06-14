@@ -1,0 +1,6 @@
+{
+  "name": "my-shell",
+  "dependencies": {
+    "astal": "$HOME/.local/share/ags"
+  }
+}

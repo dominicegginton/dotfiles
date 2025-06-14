@@ -66,8 +66,6 @@ rec {
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
-    nun = final.callPackage ./pkgs/nun.nix { };
-    set-theme = final.callPackage ./pkgs/set-theme.nix { };
     status = final.callPackage ./pkgs/status.nix { };
     todo = (packagesFrom inputs.todo final.system).default;
     topology = outputs.topology.${final.system}.config.output;
@@ -76,5 +74,10 @@ rec {
     vscode-with-extensions = import ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     lib = prev.lib // outputs.lib;
+
+    my-shell = final.callPackage ./pkgs/my-shell {
+      ags = inputs.ags;
+      system = final.system;
+    };
   };
 }

@@ -1,5 +1,4 @@
 { lib
-, stdenv
 , mkShell
 , writeShellScriptBin
 , nix
@@ -9,8 +8,8 @@
 , nix-diff
 , nix-tree
 , nix-health
+, clamav
 , google-cloud-sdk
-, gcsfuse
 , opentofu
 , coreutils
 , gum
@@ -18,13 +17,8 @@
 , gnupg
 }:
 
-let
-  gcp.project = "dominicegginton-personal";
-  gcp.bucket = "gs://dominicegginton";
-in
-
 mkShell rec {
-  name = lib.maintainers.dominicegginton.github + "/dotfiles";
+  name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
   packages = [
     nix
     nix-output-monitor
@@ -33,8 +27,8 @@ mkShell rec {
     nix-diff
     nix-tree
     nix-health
+    clamav
     google-cloud-sdk
-    (if stdenv.isLinux then gcsfuse else null)
     opentofu
     coreutils
     gum
@@ -53,9 +47,7 @@ mkShell rec {
       }
       trap cleanup EXIT
       gcloud auth login
-      gum log --level info "Copying GPG keys from GCP bucket ${gcp.bucket}/gpg to $temp."
-      gsutil rsync ${gcp.bucket}/gpg $temp
-      gum log --level info "Importing GPG keys from $temp."
+      gsutil rsync gs://dominicegginton/gpg $temp
       for key in $(ls "$temp"); do
         gum log --level info "Importing GPG key $key."
         gpg --import "$temp/$key" || gum log --level error "Failed to import GPG key $key."

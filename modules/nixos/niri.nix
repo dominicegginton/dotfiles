@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 
 with config.scheme.withHashtag;
 
@@ -35,6 +35,8 @@ with config.scheme.withHashtag;
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
       screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
+      spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
+      ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       environment {
         DISPLAY ":0"
       }
@@ -98,22 +100,22 @@ with config.scheme.withHashtag;
       }
       overview {
         zoom 0.7
+        backdrop-color "${base00}"
       }
       binds {
         Mod+Shift+Slash                                                { show-hotkey-overlay; }
         Mod+O                repeat=false                              { toggle-overview; }
         Mod+Shift+Q                                                    { close-window; }
         Mod+T                hotkey-overlay-title="Terminal"           { spawn "${lib.getExe pkgs.alacritty}"; }
-        Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.fuzzel}"; }
+        Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
         Super+Shift+L        hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}"; }
-        Mod+Delete           hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
-        XF86AudioRaiseVolume allow-when-locked=true                    { spawn "${pkgs.wireplumber}/bin/wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "+5%"; }
-        XF86AudioLowerVolume allow-when-locked=true                    { spawn "${pkgs.wireplumber}/bin/wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "-5%"; }
-        XF86AudioMute        allow-when-locked=true                    { spawn "${pkgs.wireplumber}/bin/wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
+        Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
         XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
         XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
         XF86AudioNext        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "next"; }
         XF86AudioPrev        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "previous"; }
+        XF86AudioRaiseVolume allow-when-locked=true                    { spawn "${pkgs.pulseaudio}/bin/pactl" "set-sink-volume" "@DEFAULT_SINK@" "+5%"; }
+        XF86AudioLowerVolume allow-when-locked=true                    { spawn "${pkgs.pulseaudio}/bin/pactl" "set-sink-volume" "@DEFAULT_SINK@" "-5%"; }
         Mod+Left                                                       { focus-column-left; }
         Mod+Down                                                       { focus-window-down; }
         Mod+Up                                                         { focus-window-up; }
@@ -216,7 +218,6 @@ with config.scheme.withHashtag;
         Alt+Print                                                      { screenshot-window; }
         Mod+Escape allow-inhibiting=false                              { toggle-keyboard-shortcuts-inhibit; }
         Mod+Shift+E                                                    { quit; }
-        Ctrl+Alt+Delete                                                { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
       }
       window-rule {
