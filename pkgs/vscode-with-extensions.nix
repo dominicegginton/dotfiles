@@ -9,8 +9,6 @@ let
     github.copilot
     ms-azuretools.vscode-docker
     bbenoist.nix
-    hashicorp.terraform
-    rust-lang.rust-analyzer
     sumneko.lua
     ms-python.python
     tekumara.typos-vscode
@@ -19,4 +17,4 @@ in
 
 (vscode-with-extensions.override { vscodeExtensions = extensions; }) //
 
-  { override = args: vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); }
+{ override = args: vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); }

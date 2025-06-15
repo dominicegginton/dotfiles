@@ -74,7 +74,7 @@ rec {
       webstorm = (prev.jetbrains.webstorm.override { inherit vmopts; }).overrideAttrs (oldAttrs: {
         postInstall = (oldAttrs.postInstall or "") + ''
           wrapProgram $out/bin/webstorm \
-            --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.python3 ]}" \
+            --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
             --set NODE_PATH "${final.nodejs}/lib/node_modules";
         '';
       });
@@ -92,7 +92,7 @@ rec {
     vscode = prev.vscode.overrideAttrs (oldAttrs: {
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/code \
-          --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs ]}" \
+          --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
