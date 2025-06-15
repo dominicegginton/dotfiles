@@ -112,6 +112,11 @@
         smartmontools
         fzf
         ripgrep
+        ncdu
+        tree
+        jq
+        fx
+        gum
         fd
         jq
         less
@@ -123,9 +128,9 @@
         status
         dnsutils
         curl
-        wget
         openssl
         trash-cli
+        termshark
         tzdata
         unrar
         unzip

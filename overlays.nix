@@ -63,7 +63,7 @@ rec {
         "-DUSE_WAYLAND_CLIPBOARD=1"
         "-DUSE_WAYLAND_GRIM=1"
       ];
-      buildInputs = oldAttrs.buildInputs ++ [ final.libsForQt5.kguiaddons ];
+      buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ final.makeWrapper final.libsForQt5.kguiaddons ];
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/flameshot \
           --prefix PATH : "${final.grim}/bin";
@@ -72,6 +72,7 @@ rec {
     jetbrains = let vmopts = "-Dawt.toolkit.name=WLToolkit"; in prev.jetbrains // {
       datagrip = prev.jetbrains.datagrip.override { inherit vmopts; };
       webstorm = (prev.jetbrains.webstorm.override { inherit vmopts; }).overrideAttrs (oldAttrs: {
+        nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
         postInstall = (oldAttrs.postInstall or "") + ''
           wrapProgram $out/bin/webstorm \
             --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
@@ -90,13 +91,30 @@ rec {
     twm = (packagesFrom inputs.twm final.system).default;
     twx = final.callPackage ./pkgs/twx.nix { };
     vscode = prev.vscode.overrideAttrs (oldAttrs: {
+      nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/code \
           --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
-    vscode-with-extensions = final.callPackage ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
+    vscode-with-extensions =
+      let
+        extensions = with prev.vscode-extensions; [
+          vscodevim.vim
+          github.github-vscode-theme
+          github.vscode-pull-request-github
+          github.vscode-github-actions
+          github.copilot
+          ms-azuretools.vscode-docker
+          bbenoist.nix
+          sumneko.lua
+          ms-python.python
+          tekumara.typos-vscode
+        ];
+      in
+      (prev.vscode-with-extensions.override { vscodeExtensions = extensions; }) //
+      { override = args: prev.vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     lib = prev.lib // outputs.lib;
 
