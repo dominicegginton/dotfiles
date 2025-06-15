@@ -96,7 +96,23 @@ rec {
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
-    vscode-with-extensions = final.callPackage ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
+    vscode-with-extensions =
+      let
+        extensions = with prev.vscode-extensions; [
+          vscodevim.vim
+          github.github-vscode-theme
+          github.vscode-pull-request-github
+          github.vscode-github-actions
+          github.copilot
+          ms-azuretools.vscode-docker
+          bbenoist.nix
+          sumneko.lua
+          ms-python.python
+          tekumara.typos-vscode
+        ];
+      in
+      (prev.vscode-with-extensions.override { vscodeExtensions = extensions; }) //
+      { override = args: prev.vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     lib = prev.lib // outputs.lib;
 
