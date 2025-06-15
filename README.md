@@ -8,19 +8,18 @@ Declarative System, Package & Home Configurations - WIP Always
 
 ## Features
 
-- **Nix Flakes** - 100% Nix Flakes-based configuration, no Nix channels.
-- **Linux, WLS and Darwin Hosts** - Declarative configurations for _NixOS_, _WSL_ & _Darwin_ hosts.
-- **Scrolling Desktop Environment** - Wayland only, 0% X, desktop environment provided by _Niri_ & _my-shell_.
-- **User Home Environments** - Reproducible user home environments using _HomeManager_.
-- **CVS Scanning** - Automatic CVS vulnerability scanning using _Vulnix_.
-- **Bitwarden Managed Secrets** - System wide and local user secrets managed with _Bitwarden Secret Manager_.
+- **Nix Flakes** - 100% _Nix Flakes_-based configuration, no Nix channels.
+- **Linux, WLS and Darwin Hosts** - Declarative configurations for _Linux_, _WSL_ & _Darwin_ hosts.
+- **Scrolling Wayland Desktop** - Bispoke scrolling desktop environment with _niri_ & _residence_ for _Linux_ hosts.
+- **AV & CVS Scanning** - Automatic CVS vulnerability scanning using _Vulnix_ and AV providded by _CalmAV_.
+- **Bitwarden Managed Secrets** - Infrastructure, system and local user secrets managed with _Bitwarden Secret Manager_.
 - **Automated Backups to GCS** - Automated backups to _Google Cloud Storage Buckets_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
-- **Binary Caching** - Binary caching with _Cachix_ for fast builds of development shells and packages.
+- **Binary Caching** - Binaries are cached on _Cachix_ for fast builds of development shells and packages.
 - **Topology Diagrams** - Automated infrastructure and network diagrams using _nix-topology_.
 - **Nix Overlays** - Overlays for packages, utils, and tooling.
 - **Ad-hoc Shell Environments** - Predefined ad-hoc shell environments for common tools and tasks.
-- **Flake Templates** - Flake templates included for bootstrapping common development workspaces.
+- **Development Workspace Templates** - _Flake_ templates for bootstrapping common development workspaces.
 
 
 ## Workspace
@@ -34,10 +33,10 @@ This workspace follows the following structure:
 ├── hosts             # Host NixOS and NixDarwin configurations
 ├── infrastructure    # Terraform configuration
 ├── modules           # Nix modules
-├── pkgs              # Packages
+├── pkgs              # Package definitions
 ├── shells            # Ad-hoc shells environments
-├── templates         # Flake templates
-├── flake.nix         # Flake inputs and outputs
+├── templates         # Development workspace Templates
+├── flake.nix         # Nix flake inputs & outputs
 ├── lib.nix           # Nix utils
 ├── overlays.nix      # Package overlays
 ├── shell.nix         # Workspace development shell

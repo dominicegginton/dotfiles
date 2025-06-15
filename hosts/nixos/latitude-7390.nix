@@ -23,9 +23,9 @@
   hardware.logitech.wireless.enableGraphical = true;
   hardware.bluetooth.enable = true;
   networking.wireless.enable = true;
-  programs.niri.enable = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
+  programs.niri.enable = true;
   virtualisation.docker.enable = true;
   topology.self.hardware.info = "Dell Latitude 7390";
 }

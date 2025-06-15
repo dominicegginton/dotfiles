@@ -1,21 +1,19 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 {
   programs.ags = {
     enable = true;
     configDir = null;
-    extraPackages = [
-      pkgs.my-shell
-    ];
+    extraPackages = [ pkgs.residence ];
   };
 
-  systemd.user.services.my-shell = {
+  systemd.user.services.residence = {
     Unit = {
       After = [ "graphical-session.target" ];
       Wants = [ "graphical-session.target" ];
     };
     Service = {
       Type = "simple";
-      ExecStart = "${pkgs.my-shell}/bin/my-shell";
+      ExecStart = lib.getExe pkgs.residence;
       Restart = "on-failure";
       RestartSec = 3;
     };

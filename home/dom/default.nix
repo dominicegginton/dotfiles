@@ -20,6 +20,7 @@
       jetbrains.datagrip
       jetbrains.webstorm
       unstable.nodejs
+      vscode-with-extensions
     ];
   };
 }

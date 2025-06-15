@@ -19,4 +19,4 @@ in
 
 (vscode-with-extensions.override { vscodeExtensions = extensions; }) //
 
-{ override = args: vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); }
+  { override = args: vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); }

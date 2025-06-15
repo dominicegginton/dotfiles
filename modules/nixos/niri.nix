@@ -215,6 +215,7 @@ with config.scheme.withHashtag;
         Mod+Shift+V                                                    { switch-focus-between-floating-and-tiling; }
         Mod+W                                                          { toggle-column-tabbed-display; }
         Print                                                          { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
+        Mod+Print                                                      { spawn "${lib.getExe pkgs.flameshot}" "full" "--path" "~/Pictures/Screenshots"; }
         Mod+Escape allow-inhibiting=false                              { toggle-keyboard-shortcuts-inhibit; }
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }

@@ -52,6 +52,6 @@
   hardware.logitech.wireless.enableGraphical = true;
   hardware.bluetooth.enable = true;
   networking.wireless.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  programs.niri.enable = true;
   topology.self.hardware.info = "Dell Latitude 5290";
 }

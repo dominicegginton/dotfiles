@@ -58,26 +58,47 @@ rec {
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
+    flameshot = prev.flameshot.overrideAttrs (oldAttrs: {
+      cmakeFlags = [
+        "-DUSE_WAYLAND_CLIPBOARD=1"
+        "-DUSE_WAYLAND_GRIM=1"
+      ];
+      buildInputs = oldAttrs.buildInputs ++ [ final.libsForQt5.kguiaddons ];
+      postInstall = (oldAttrs.postInstall or "") + ''
+        wrapProgram $out/bin/flameshot \
+          --prefix PATH : "${final.grim}/bin";
+      '';
+    });
     jetbrains = let vmopts = "-Dawt.toolkit.name=WLToolkit"; in prev.jetbrains // {
       datagrip = prev.jetbrains.datagrip.override { inherit vmopts; };
-      webstorm = prev.jetbrains.webstorm.override { inherit vmopts; };
+      webstorm = (prev.jetbrains.webstorm.override { inherit vmopts; }).overrideAttrs (oldAttrs: {
+        postInstall = (oldAttrs.postInstall or "") + ''
+          wrapProgram $out/bin/webstorm \
+            --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.python3 ]}" \
+            --set NODE_PATH "${final.nodejs}/lib/node_modules";
+        '';
+      });
     };
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
+    residence = final.callPackage ./pkgs/residence { inherit (inputs) ags; inherit (final) system; };
     status = final.callPackage ./pkgs/status.nix { };
     todo = (packagesFrom inputs.todo final.system).default;
     topology = outputs.topology.${final.system}.config.output;
     twm = (packagesFrom inputs.twm final.system).default;
     twx = final.callPackage ./pkgs/twx.nix { };
-    vscode-with-extensions = import ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
+    vscode = prev.vscode.overrideAttrs (oldAttrs: {
+      postInstall = (oldAttrs.postInstall or "") + ''
+        wrapProgram $out/bin/code \
+          --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs ]}" \
+          --set NODE_PATH "${final.nodejs}/lib/node_modules";
+      '';
+    });
+    vscode-with-extensions = final.callPackage ./pkgs/vscode-with-extensions.nix { inherit (prev) vscode-with-extensions; inherit (final) vscode-extensions; };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     lib = prev.lib // outputs.lib;
 
-    my-shell = final.callPackage ./pkgs/my-shell {
-      ags = inputs.ags;
-      system = final.system;
-    };
   };
 }

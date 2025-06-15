@@ -1,4 +1,5 @@
-{ pkgs
+{ lib
+, pkgs
 , ags
 , system
 , gnome-weather
@@ -13,7 +14,7 @@
 ags.lib.bundle {
   inherit pkgs;
   src = ./.;
-  name = "my-shell";
+  name = (lib.importJSON ./package.json).name;
   entry = "app.ts";
   gtk4 = false;
   extraPackages = [
@@ -23,11 +24,7 @@ ags.lib.bundle {
     ags.packages.${system}.io
     ags.packages.${system}.apps
     ags.packages.${system}.mpris
-    ags.packages.${system}.network
-    ags.packages.${system}.tray
     ags.packages.${system}.wireplumber
-    gnome-weather
-    gnome-calendar
     mission-center
     curl
     systemd
