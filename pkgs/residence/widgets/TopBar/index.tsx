@@ -1,6 +1,7 @@
 import { App, Astal } from "astal/gtk3";
 import { Gtk } from "astal/gtk3";
 import Playback from "./Playback";
+import Battery from "./Battery";
 import Time from "./Time";
 import Avatar from "./Avatar";
 import niri from "../../support/niri";
@@ -23,6 +24,7 @@ export default ({ monitor }: { monitor: number }) => {
 
   const RightModules = (
     <box spacing={8} hexpand halign={Gtk.Align.END}>
+      <Battery />
       <Time />
       <Avatar />
     </box>

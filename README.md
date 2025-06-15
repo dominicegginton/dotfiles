@@ -12,7 +12,7 @@ Declarative System, Package & Home Configurations - WIP Always
 - **Linux, WLS and Darwin Hosts** - Declarative configurations for _Linux_, _WSL_ & _Darwin_ hosts.
 - **Scrolling Wayland Desktop** - Bispoke scrolling desktop environment with _niri_ & _residence_ for _Linux_ hosts.
 - **AV & CVS Scanning** - Automatic CVS vulnerability scanning using _Vulnix_ and AV providded by _CalmAV_.
-- **Bitwarden Managed Secrets** - Infrastructure, system and local user secrets managed with _Bitwarden Secret Manager_.
+- **Bitwarden Managed Secrets** - Infrastructure & system secrets managed with _Bitwarden Secret Manager_.
 - **Automated Backups to GCS** - Automated backups to _Google Cloud Storage Buckets_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Binary Caching** - Binaries are cached on _Cachix_ for fast builds of development shells and packages.

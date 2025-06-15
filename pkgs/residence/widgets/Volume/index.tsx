@@ -28,9 +28,7 @@ const OnScreenProgress = ({ visible }) => {
       halign={Gtk.Align.END}
       valign={Gtk.Align.CENTER}
       vertical={true}
-      css={`
-        margin-right: 1em;
-      `}
+      css="margin-right: 1em;"
     >
       <levelbar
         css={`
@@ -59,9 +57,7 @@ export default function OSD({ monitor }: { monitor: number }) {
       namespace="osd"
       visible={visible()}
       reactive={false}
-      css={`
-        background: none;
-      `}
+      css="background: none;"
       monitor={monitor}
       application={App}
       layer={Astal.Layer.OVERLAY}

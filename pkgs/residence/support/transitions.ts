@@ -10,7 +10,7 @@ export interface TransitionOptions {
 const defaultOptions: Required<TransitionOptions> = {
   fadeInDuration: 300,
   fadeOutDuration: 60,
-  fadeInDelay: 10,
+  fadeInDelay: 30,
 };
 
 export function applyOpacityTransition(

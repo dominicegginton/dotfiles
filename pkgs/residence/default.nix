@@ -23,6 +23,7 @@ ags.lib.bundle {
     ags.packages.${system}.astal4
     ags.packages.${system}.io
     ags.packages.${system}.apps
+    ags.packages.${system}.battery
     ags.packages.${system}.mpris
     ags.packages.${system}.wireplumber
     mission-center
