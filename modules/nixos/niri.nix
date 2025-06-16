@@ -107,9 +107,8 @@ with config.scheme.withHashtag;
         Mod+Shift+Q                                                    { close-window; }
         Mod+T                hotkey-overlay-title="Terminal"           { spawn "${lib.getExe pkgs.alacritty}"; }
         Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
-        Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" --image "${./background.jpg}"; }
-        Mod+Shift+3          hotkey-overlay-title="Screenshot - Full"  { spawn "${lib.getExe pkgs.flameshot}" "full"; }
-        Mod+Shift+4          hotkey-overlay-title="Screenshot - Full"  { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
+        Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" "--image" "${./background.jpg}"; }
+        Mod+Shift+3          hotkey-overlay-title="Screenshot"         { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
         Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
@@ -144,10 +143,6 @@ with config.scheme.withHashtag;
         Mod+Shift+Down                                                 { focus-monitor-down; }
         Mod+Shift+Up                                                   { focus-monitor-up; }
         Mod+Shift+Right                                                { focus-monitor-right; }
-        Mod+Shift+H                                                    { focus-monitor-left; }
-        Mod+Shift+J                                                    { focus-monitor-down; }
-        Mod+Shift+K                                                    { focus-monitor-up; }
-        Mod+Shift+L                                                    { focus-monitor-right; }
         Mod+Shift+Ctrl+Left                                            { move-column-to-monitor-left; }
         Mod+Shift+Ctrl+Down                                            { move-column-to-monitor-down; }
         Mod+Shift+Ctrl+Up                                              { move-column-to-monitor-up; }
@@ -223,6 +218,15 @@ with config.scheme.withHashtag;
         draw-border-with-background false
         geometry-corner-radius 4.0 4.0 4.0 4.0
         clip-to-geometry true
+      }
+      window-rule {
+        match app-id="flameshot"
+        open-floating true
+        open-fullscreen true 
+        open-focused true
+        default-window-height { proportion 1.0; }
+        default-column-width { proportion 1.0; }
+        clip-to-geometry false
       }
     '';
     security.polkit.enable = true;

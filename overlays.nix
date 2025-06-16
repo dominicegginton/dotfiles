@@ -63,10 +63,11 @@ rec {
         "-DUSE_WAYLAND_CLIPBOARD=1"
         "-DUSE_WAYLAND_GRIM=1"
       ];
-      buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ final.makeWrapper final.libsForQt5.kguiaddons ];
+      buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/flameshot \
-          --prefix PATH : "${final.grim}/bin";
+          --prefix PATH : "${final.grim}/bin" \
+          --set QT_QPA_PLATFORM "wayland"; 
       '';
     });
     jetbrains = let vmopts = "-Dawt.toolkit.name=WLToolkit"; in prev.jetbrains // {
