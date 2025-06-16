@@ -35,6 +35,7 @@ with config.scheme.withHashtag;
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
+      spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       environment {
         DISPLAY ":0"
@@ -111,6 +112,7 @@ with config.scheme.withHashtag;
         Mod+Shift+3          hotkey-overlay-title="Screenshot"         { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
+        Mod+Shift+H                                                    { spawn "${lib.getExe (pkgs.writeShellScriptBin "clipboard-history" ''${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.fuzzel} --dmenu | ${pkgs.wl-clipboard}/bin/wl-copy'')}"; } 
         Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
         XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
         XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
