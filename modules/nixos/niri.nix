@@ -34,7 +34,6 @@ with config.scheme.withHashtag;
     '';
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
-      screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       environment {
@@ -108,7 +107,11 @@ with config.scheme.withHashtag;
         Mod+Shift+Q                                                    { close-window; }
         Mod+T                hotkey-overlay-title="Terminal"           { spawn "${lib.getExe pkgs.alacritty}"; }
         Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
-        Super+Shift+L        hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}"; }
+        Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" --image "${./background.jpg}"; }
+        Mod+Shift+3          hotkey-overlay-title="Screenshot - Full"  { spawn "${lib.getExe pkgs.flameshot}" "full"; }
+        Mod+Shift+4          hotkey-overlay-title="Screenshot - Full"  { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
+        Mod+Shift+E                                                    { quit; }
+        Mod+Shift+P                                                    { power-off-monitors; }
         Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
         XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
         XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
@@ -214,26 +217,12 @@ with config.scheme.withHashtag;
         Mod+V                                                          { toggle-window-floating; }
         Mod+Shift+V                                                    { switch-focus-between-floating-and-tiling; }
         Mod+W                                                          { toggle-column-tabbed-display; }
-        Print                                                          { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
-        Mod+Print                                                      { spawn "${lib.getExe pkgs.flameshot}" "full" "--path" "~/Pictures/Screenshots"; }
-        Mod+Escape allow-inhibiting=false                              { toggle-keyboard-shortcuts-inhibit; }
-        Mod+Shift+E                                                    { quit; }
-        Mod+Shift+P                                                    { power-off-monitors; }
       }
       window-rule {
         match
         draw-border-with-background false
         geometry-corner-radius 4.0 4.0 4.0 4.0
         clip-to-geometry true
-      }
-      window-rule {
-        match app-id=r#"^org\.keepassxc\.KeePassXC$"#
-        match app-id=r#"^org\.gnome\.World\.Secrets$"#
-        block-out-from "screen-capture"
-      }
-      layer-rule {
-        match namespace="notifications"
-        block-out-from "screen-capture"
       }
     '';
     security.polkit.enable = true;
