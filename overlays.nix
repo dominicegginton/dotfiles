@@ -115,6 +115,14 @@ rec {
           github.vscode-pull-request-github
           github.vscode-github-actions
           github.copilot
+          (prev.vscode-utils.buildVscodeMarketplaceExtension {
+            mktplcRef = {
+              name = "vscode-jest";
+              publisher = "orta";
+              version = "6.4.3";
+              hash = "sha256-naSH6AdAlyDSW/k250cUZGYEdKCUi63CjJBlHhkWBPs=";
+            };
+          })
           ms-azuretools.vscode-docker
           bbenoist.nix
           sumneko.lua
