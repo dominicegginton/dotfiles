@@ -6,7 +6,6 @@
     "${modulesPath}/profiles/qemu-guest.nix"
     ./backup.nix
     ./bluetooth.nix
-    ./gcsfuse.nix
     ./home-assistant.nix
     ./networking.nix
     ./niri.nix

@@ -13,8 +13,24 @@ export default ({ format = "%H:%M - %A %e" }) => {
 
     return (
         <box vertical hexpand>
-            <label onDestroy={() => greeting.drop()} label={greeting()} halign={Gtk.Align.END} />
-            <label onDestroy={() => time.drop()} label={time()} halign={Gtk.Align.END} />
+            <label
+              onDestroy={() => greeting.drop()}
+              label={greeting()}
+              halign={Gtk.Align.END}
+              css={`
+                font-size: 0.9em;
+                font-weight: bold;
+              `}
+            />
+            <label
+              onDestroy={() => time.drop()}
+              label={time()}
+              halign={Gtk.Align.END}
+              css={`
+                font-size: 0.8em;
+                opacity: 0.8;
+              `}
+            />
         </box>
     );
 };

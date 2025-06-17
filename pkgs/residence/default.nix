@@ -2,12 +2,8 @@
 , pkgs
 , ags
 , system
-, gnome-weather
-, gnome-calendar
-, mission-center
 , curl
 , systemd
-, libgtop
 , ...
 }:
 
@@ -26,9 +22,7 @@ ags.lib.bundle {
     ags.packages.${system}.battery
     ags.packages.${system}.mpris
     ags.packages.${system}.wireplumber
-    mission-center
     curl
     systemd
-    libgtop
   ];
 }

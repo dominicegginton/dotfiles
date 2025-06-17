@@ -15,6 +15,13 @@ rec {
     //
     {
       lib = prev.lib // outputs.lib;
+      ## requires vm options to be set
+      ## to run on wayland
+      jetbrains = prev.jetbrains // {
+        fleet = prev.callPackage inputs.jetbrains-fleet { };
+      };
+      ## fails to build with rustc(1.86)
+      ## requires rustc(1.87) or later
       ms-edit = prev.callPackage
         ({ rustPlatform }:
           rustPlatform.buildRustPackage rec {
@@ -29,6 +36,7 @@ rec {
             cargoHash = "sha256-qT4u8LuKX/QbZojNDoK43cRnxXwMjvEwybeuZIK6DQQ=";
           })
         { };
+      ## incomplete implementation
       bootstrap = with final; writeShellScriptBin "bootstrap" ''
         export PATH=${lib.makeBinPath [ status ensure-user-is-root ensure-tailscale-is-connected coreutils git busybox nix fzf jq gum bws ]};
         set -efu -o pipefail
@@ -117,7 +125,14 @@ rec {
       (prev.vscode-with-extensions.override { vscodeExtensions = extensions; }) //
       { override = args: prev.vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
+    wlogout = prev.wlogout.overrideAttrs (oldAttrs: {
+      nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
+      postInstall = (oldAttrs.postInstall or "") + ''
+        wrapProgram $out/bin/wlogout \
+          --prefix PATH : "${final.lib.makeBinPath [ prev.wl-clipboard prev.swaylock ]}" \
+          --set WLR_BACKEND "wayland";
+      '';
+    });
     lib = prev.lib // outputs.lib;
-
   };
 }

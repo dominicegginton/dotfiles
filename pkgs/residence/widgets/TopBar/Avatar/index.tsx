@@ -1,4 +1,3 @@
-import { Variable } from "astal";
 import { Gtk } from "astal/gtk3";
 import GLib from "gi://GLib";
 
@@ -13,9 +12,7 @@ export default () => {
       halign={Gtk.Align.CENTER}
       child={
         <box
-          css={`
-            border-radius: 100%;
-          `}
+          css={"border-radius: 100%;"}
           child={
             <box
               css={`

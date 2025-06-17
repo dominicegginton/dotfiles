@@ -1,5 +1,5 @@
 import Mpris from "gi://AstalMpris";
-import { bind, Variable } from "astal";
+import { bind } from "astal";
 import { Gtk } from "astal/gtk3";
 
 const Player = (player) => {
@@ -29,7 +29,6 @@ const Player = (player) => {
           />
         }
       />
-
       <box
         orientation={Gtk.Orientation.VERTICAL}
         css={`

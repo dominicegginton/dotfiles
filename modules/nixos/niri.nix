@@ -108,6 +108,7 @@ with config.scheme.withHashtag;
         Mod+Shift+Q                                                    { close-window; }
         Mod+T                hotkey-overlay-title="Terminal"           { spawn "${lib.getExe pkgs.alacritty}"; }
         Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
+        Mod+Shift+Escape     hotkey-overlay-title="System Manage"      { spawn "${lib.getExe pkgs.wlogout}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" "--image" "${./background.jpg}"; }
         Mod+Shift+3          hotkey-overlay-title="Screenshot"         { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
         Mod+Shift+E                                                    { quit; }
