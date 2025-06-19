@@ -36,7 +36,7 @@ with config.scheme.withHashtag;
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
-      spanw-at-startup "${lib.getExe pkgs.dunst}"
+      spawn-at-startup "${lib.getExe pkgs.dunst}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       environment {
         DISPLAY ":0"
