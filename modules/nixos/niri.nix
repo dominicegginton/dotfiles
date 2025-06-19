@@ -36,6 +36,7 @@ with config.scheme.withHashtag;
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
+      spanw-at-startup "${lib.getExe pkgs.dunst}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       environment {
         DISPLAY ":0"
@@ -66,6 +67,15 @@ with config.scheme.withHashtag;
           natural-scroll
           accel-profile "flat"
         }
+      }
+      output "eDP-1" {
+        scale 1.0
+      }
+      output "Dell Inc. DELL U2520D 6LD5923" {
+        position x=0 y=0
+      }
+      output "Dell Inc. DELL U2520D BGD5923" {
+        position x=2560 y=0
       }
       layout {
         gaps 16
@@ -110,10 +120,10 @@ with config.scheme.withHashtag;
         Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
         Mod+Shift+Escape     hotkey-overlay-title="System Manage"      { spawn "${lib.getExe pkgs.wlogout}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" "--image" "${./background.jpg}"; }
-        Mod+Shift+3          hotkey-overlay-title="Screenshot"         { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
+        Mod+Shift+4          hotkey-overlay-title="Screenshot"         { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
-        Mod+Shift+H                                                    { spawn "${lib.getExe (pkgs.writeShellScriptBin "clipboard-history" ''${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.fuzzel} --dmenu | ${pkgs.wl-clipboard}/bin/wl-copy'')}"; } 
+        Mod+Shift+H                                                    { spawn "${lib.getExe (pkgs.writeShellScriptBin "clipboard-history" ''${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.fuzzel} --dmenu | ${pkgs.wl-clipboard}/bin/wl-copy'')}"; }
         Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
         XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
         XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
@@ -205,16 +215,13 @@ with config.scheme.withHashtag;
         Mod+Ctrl+R                                                     { reset-window-height; }
         Mod+F                                                          { maximize-column; }
         Mod+Shift+F                                                    { fullscreen-window; }
-        Mod+Ctrl+F                                                     { expand-column-to-available-width; }
         Mod+C                                                          { center-column; }
-        Mod+Ctrl+C                                                     { center-visible-columns; }
         Mod+Minus                                                      { set-column-width "-10%"; }
         Mod+Equal                                                      { set-column-width "+10%"; }
         Mod+Shift+Minus                                                { set-window-height "-10%"; }
         Mod+Shift+Equal                                                { set-window-height "+10%"; }
-        Mod+V                                                          { toggle-window-floating; }
-        Mod+Shift+V                                                    { switch-focus-between-floating-and-tiling; }
-        Mod+W                                                          { toggle-column-tabbed-display; }
+        Mod+Shift+V                                                    { toggle-window-floating; }
+        Mod+Shift+W                                                    { toggle-column-tabbed-display; }
       }
       window-rule {
         match
@@ -225,7 +232,7 @@ with config.scheme.withHashtag;
       window-rule {
         match app-id="flameshot"
         open-floating true
-        open-fullscreen true 
+        open-fullscreen true
         open-focused true
         default-window-height { proportion 1.0; }
         default-column-width { proportion 1.0; }
@@ -239,15 +246,16 @@ with config.scheme.withHashtag;
     programs.dconf.enable = true;
     environment.systemPackages = with pkgs; [
       mission-center
+      systemdgenie
       wpa_supplicant_gui
+      wdisplays
+      pavucontrol
       nautilus
-      showtime
       sushi
+      clapper
+      nomacs
       file-roller
       evince
-      eog
-      decibels
-      wdisplays
     ];
     fonts = {
       enableDefaultPackages = false;

@@ -20,6 +20,7 @@
       jetbrains.datagrip
       jetbrains.webstorm
       vscode-with-extensions
+      nyxt
     ];
   };
 }
