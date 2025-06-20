@@ -15,6 +15,7 @@ with config.scheme.withHashtag;
         configPackages = [ pkgs.niri ];
       };
     };
+    services.tlp.enable = true;
     services.printing.enable = true;
     services.pipewire = {
       enable = true;
@@ -32,11 +33,31 @@ with config.scheme.withHashtag;
         ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
       }
     '';
+    environment.etc."dunst/dunstrc".text = ''
+      [global]
+      follow = keyboard
+      timeout = 0
+      frame_color = "${base00}"
+      separator_color = "${base00}"
+      [low]
+      msg_urency = "low"
+      frame_color = "${base07}"
+      separator_color = "${base07}"
+      [normal]
+      msg_urency = "normal"
+      frame_color = "${base07}"
+      separator_color = "${base07}"
+      [critical]
+      msg_urency = "critical"
+      frame_color = "${yellow}"
+      separator_color = "${yellow}"
+    '';
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
-      spawn-at-startup "${lib.getExe pkgs.dunst}"
+      spawn-at-startup "${lib.getExe pkgs.dunst}" "--config" "${config.environment.etc."dunst/dunstrc".source}"
+      spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       environment {
         DISPLAY ":0"
@@ -70,12 +91,6 @@ with config.scheme.withHashtag;
       }
       output "eDP-1" {
         scale 1.0
-      }
-      output "Dell Inc. DELL U2520D 6LD5923" {
-        position x=0 y=0
-      }
-      output "Dell Inc. DELL U2520D BGD5923" {
-        position x=2560 y=0
       }
       layout {
         gaps 16
