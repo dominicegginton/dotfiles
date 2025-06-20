@@ -75,20 +75,29 @@ rec {
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/flameshot \
           --prefix PATH : "${final.grim}/bin" \
-          --set QT_QPA_PLATFORM "wayland"; 
+          --set QT_QPA_PLATFORM "wayland";
       '';
     });
-    jetbrains = let vmopts = "-Dawt.toolkit.name=WLToolkit"; in prev.jetbrains // {
-      datagrip = prev.jetbrains.datagrip.override { inherit vmopts; };
-      webstorm = (prev.jetbrains.webstorm.override { inherit vmopts; }).overrideAttrs (oldAttrs: {
-        nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
-        postInstall = (oldAttrs.postInstall or "") + ''
-          wrapProgram $out/bin/webstorm \
-            --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
-            --set NODE_PATH "${final.nodejs}/lib/node_modules";
+    jetbrains =
+      let
+        vmopts = ''
+          -Dawt.toolkit.name=WLToolkit
+          -Xmx8G
+          -Xms2G
+          -XX:NewRatio=1
         '';
-      });
-    };
+      in
+      prev.jetbrains // {
+        datagrip = prev.jetbrains.datagrip.override { inherit vmopts; };
+        webstorm = (prev.jetbrains.webstorm.override { inherit vmopts; }).overrideAttrs (oldAttrs: {
+          nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
+          postInstall = (oldAttrs.postInstall or "") + ''
+            wrapProgram $out/bin/webstorm \
+              --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
+              --set NODE_PATH "${final.nodejs}/lib/node_modules";
+          '';
+        });
+      };
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };

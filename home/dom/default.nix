@@ -15,11 +15,43 @@
       ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
+    programs.vscode = lib.mkIf (pkgs.stdenv.isLinux && hostname == "latitude-7390") {
+      enable = true;
+      profiles.default = {
+        extensions = with pkgs.vscode-extensions; [
+          vscodevim.vim
+          github.github-vscode-theme
+          github.vscode-pull-request-github
+          github.vscode-github-actions
+          github.copilot
+          (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+            mktplcRef = {
+              name = "vscode-jest";
+              publisher = "orta";
+              version = "6.4.3";
+              hash = "sha256-naSH6AdAlyDSW/k250cUZGYEdKCUi63CjJBlHhkWBPs=";
+            };
+          })
+          ms-azuretools.vscode-docker
+          bbenoist.nix
+          sumneko.lua
+          ms-python.python
+          tekumara.typos-vscode
+        ];
+        userSettings = {
+          "editor.minimap.enabled" = false;
+          "workbench.colorTheme" = "Solarized Light";
+          "workbench.activityBar.location" = "top";
+          "workbench.sideBar.location" = "right";
+          "workbench.startupEditor" = "none";
+        };
+      };
+    };
+
     home.packages = with pkgs; lib.mkIf (pkgs.stdenv.isLinux && hostname == "latitude-7390") [
       unstable.teams-for-linux
       jetbrains.datagrip
       jetbrains.webstorm
-      vscode-with-extensions
       nyxt
     ];
   };

@@ -33,6 +33,18 @@ with config.scheme.withHashtag;
         ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
       }
     '';
+    environment.etc."tofi/config".text = ''
+      corner-radius = 20
+      border-width = 0
+      outline-width = 4
+      text-cursor-style = bar
+      anchor = center
+      text-color = ${base07}
+      prompt-color = ${magenta}
+      selection-color = ${magenta}
+      background-color = ${base00}
+      outline-color = ${magenta}
+    '';
     environment.etc."dunst/dunstrc".text = ''
       [global]
       follow = keyboard
@@ -59,6 +71,9 @@ with config.scheme.withHashtag;
       spawn-at-startup "${lib.getExe pkgs.dunst}" "--config" "${config.environment.etc."dunst/dunstrc".source}"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
+      ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
+      ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.bluez}/bin/bluetoothctl" "power" "on"''}
+      ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${lib.getExe pkgs.cups-browsed}"''}
       environment {
         DISPLAY ":0"
       }
@@ -135,10 +150,11 @@ with config.scheme.withHashtag;
         Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
         Mod+Shift+Escape     hotkey-overlay-title="System Manage"      { spawn "${lib.getExe pkgs.wlogout}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" "--image" "${./background.jpg}"; }
-        Mod+Shift+4          hotkey-overlay-title="Screenshot"         { spawn "${lib.getExe pkgs.flameshot}" "gui"; }
+        Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }
+        Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-region" ''PATH=${lib.makeBinPath [ pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.swappy} -f -'')}"; }
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
-        Mod+Shift+H                                                    { spawn "${lib.getExe (pkgs.writeShellScriptBin "clipboard-history" ''${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.fuzzel} --dmenu | ${pkgs.wl-clipboard}/bin/wl-copy'')}"; }
+        Mod+Shift+H          hotkey-overlay-title="Clipboard: History" { spawn "${lib.getExe (pkgs.writeShellScriptBin "clipboard-history" ''${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.tofi} --config ${config.environment.etc."tofi/config".source} --font ${pkgs.ibm-plex}/share/donts/opentype/IBMPlexSans-Text.otf | ${lib.getExe pkgs.cliphist} decode | ${pkgs.wl-clipboard}/bin/wl-copy'')}"; }
         Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
         XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
         XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
@@ -243,15 +259,6 @@ with config.scheme.withHashtag;
         draw-border-with-background false
         geometry-corner-radius 4.0 4.0 4.0 4.0
         clip-to-geometry true
-      }
-      window-rule {
-        match app-id="flameshot"
-        open-floating true
-        open-fullscreen true
-        open-focused true
-        default-window-height { proportion 1.0; }
-        default-column-width { proportion 1.0; }
-        clip-to-geometry false
       }
     '';
     security.polkit.enable = true;
