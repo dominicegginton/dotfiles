@@ -155,7 +155,7 @@ with config.scheme.withHashtag;
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
         Mod+Shift+H          hotkey-overlay-title="Clipboard: History" { spawn "${lib.getExe (pkgs.writeShellScriptBin "clipboard-history" ''${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.tofi} --config ${config.environment.etc."tofi/config".source} --font ${pkgs.ibm-plex}/share/donts/opentype/IBMPlexSans-Text.otf | ${lib.getExe pkgs.cliphist} decode | ${pkgs.wl-clipboard}/bin/wl-copy'')}"; }
-        Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
+        Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.resources}"; }
         XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
         XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
         XF86AudioNext        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "next"; }
@@ -267,7 +267,7 @@ with config.scheme.withHashtag;
     services.displayManager.sessionPackages = [ pkgs.niri ];
     programs.dconf.enable = true;
     environment.systemPackages = with pkgs; [
-      mission-center
+      resources
       systemdgenie
       wpa_supplicant_gui
       wdisplays
