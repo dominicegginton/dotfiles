@@ -16,6 +16,16 @@
           ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
         fi
       '';
+      nixos = {
+        distroName = lib.mkDefault "Residence";
+        distroId = lib.mkDefault "residence";
+        vendorName = lib.mkDefault pkgs.lib.maintainers.dominicegginton.name;
+        vendorId = lib.mkDefault pkgs.lib.maintainers.dominicegginton.github;
+        tags = [
+          (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux")
+          (lib.optionalString (pkgs.stdenv.isDarwin) "residence-darwin")
+        ];
+      };
     };
     time.timeZone = "Europe/London";
     i18n.defaultLocale = "en_GB.UTF-8";
@@ -88,79 +98,44 @@
         VISUAL = "helix";
         PAGER = "less";
         NIXOS_OZONE_WL = "1";
-        MOZ_ENABLE_WAYLAND = "1";
-        MOZ_DBUS_REMOTE = "1";
       };
-      etc = {
-        issue.text = ''
-          ▗▄▄▖ ▗▄▄▄▖ ▗▄▄▖▗▄▄▄▖▗▄▄▄ ▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖▗▄▄▄▖
-          ▐▌ ▐▌▐▌   ▐▌     █  ▐▌  █▐▌   ▐▛▚▖▐▌▐▌   ▐▌   
-          ▐▛▀▚▖▐▛▀▀▘ ▝▀▚▖  █  ▐▌  █▐▛▀▀▘▐▌ ▝▜▌▐▌   ▐▛▀▀▘
-          ▐▌ ▐▌▐▙▄▄▖▗▄▄▞▘▗▄█▄▖▐▙▄▄▀▐▙▄▄▖▐▌  ▐▌▝▚▄▄▖▐▙▄▄▖
-        '';
-        "os-release".text = ''
-            ANSI_COLOR="1;34"
-            ID=residence
-            NAME="Residence"
-            PRETTY_NAME="Residence"
-            VERSION="rolling"
-            VERSION_CODENAME="rolling"
-            VERSION_ID="rolling"
-            BUILD_ID="rolling"
-            IMAGE_ID="rolling"
-            IMAGE_VERSION="rolling"
-            HOME_URL="https://github.com/${pkgs.lib.maintainers.dominicegginton.github}/dotfiles"
-            DOCUMENTATION_URL="https://${pkgs.lib.maintainers.dominicegginton.github}/dotfiles"
-            SUPPORT_URL="https://github.com/${pkgs.lib.maintainers.dominicegginton.github}/dotfiles/issues"
-            BUG_REPORT_URL="https://github.com/${pkgs.lib.maintainers.dominicegginton.github}/dotfiles/issues"
+      etc.issue.text = ''
+        ▗▄▄▖ ▗▄▄▄▖ ▗▄▄▖▗▄▄▄▖▗▄▄▄ ▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖▗▄▄▄▖
+        ▐▌ ▐▌▐▌   ▐▌     █  ▐▌  █▐▌   ▐▛▚▖▐▌▐▌   ▐▌   
+        ▐▛▀▚▖▐▛▀▀▘ ▝▀▚▖  █  ▐▌  █▐▛▀▀▘▐▌ ▝▜▌▐▌   ▐▛▀▀▘
+        ▐▌ ▐▌▐▙▄▄▖▗▄▄▞▘▗▄█▄▖▐▙▄▄▀▐▙▄▄▖▐▌  ▐▌▝▚▄▄▖▐▙▄▄▖
       '';
-      };
       systemPackages = with pkgs; [
-        uutils-coreutils-noprefix
-        bat
-        clamav
-        cachix
-        file
-        trash-cli
-        git
-        git-lfs
-        gitui
+        (lib.hiPrio uutils-coreutils-noprefix)
+        (lib.hiPrio uutils-findutils)
+        (lib.hiPrio uutils-diffutils)
+        (if stdenv.isLinux then trashy else darwin.trash)
         helix
-        killall
-        hwinfo
-        unzip
-        wget
-        htop-vim
-        bottom
         fzf
+        ripgrep
         ripgrep-all
-        du
-        dua
-        tree
-        jq
-        fx
-        gum
-        fd
-        jq
         less
-        pinentry
-        pinentry-curses
-        status
-        dnsutils
-        curl
-        openssl
-        termshark
-        tzdata
-        unrar
-        unzip
-        zip
-        which
-        whois
-        psmisc
+        tree
+        fd
+        file
+        dua
+        gum
+        hwinfo
         usbutils
         nvme-cli
         smartmontools
-        caligula
+        clamav
+        bottom
+        status
+        openssl
+        openssh
+        curl
+        wget
+        dnsutils
+        git
+        git-lfs
+        pinentry
+        pinentry-curses
       ];
     };
   };

@@ -1,4 +1,4 @@
-{ lib, pkgs, hostname, ... }:
+{ pkgs, ... }:
 
 {
   config = {
@@ -15,7 +15,8 @@
       ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
-    programs.vscode = lib.mkIf (pkgs.stdenv.isLinux && hostname == "latitude-7390") {
+    programs.firefox.enable = true;
+    programs.vscode = {
       enable = true;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
@@ -48,10 +49,20 @@
       };
     };
 
-    home.packages = with pkgs; lib.mkIf (pkgs.stdenv.isLinux && hostname == "latitude-7390") [
+    programs.zsh.shellAliases = {
+      cat = "bat";
+      ls = "eza";
+    };
+    home.packages = with pkgs; [
+      nix-output-monitor
+      cachix
+      bat
+      eza
+      gitui
       unstable.teams-for-linux
       jetbrains.datagrip
       jetbrains.webstorm
+      chromium
       nyxt
     ];
   };
