@@ -40,11 +40,11 @@
           tekumara.typos-vscode
         ];
         userSettings = {
-          "editor.minimap.enabled" = false;
-          "workbench.colorTheme" = "Solarized Light";
-          "workbench.activityBar.location" = "top";
-          "workbench.sideBar.location" = "right";
-          "workbench.startupEditor" = "none";
+          editor.minimap.enabled = false;
+          workbench.colorTheme = "Solarized Light";
+          workbench.activityBar.location = "top";
+          workbench.sideBar.location = "right";
+          workbench.startupEditor  = "none";
         };
       };
     };
