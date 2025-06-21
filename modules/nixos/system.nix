@@ -91,11 +91,40 @@
         MOZ_ENABLE_WAYLAND = "1";
         MOZ_DBUS_REMOTE = "1";
       };
+      etc = {
+        issue.text = ''
+          ▗▄▄▖ ▗▄▄▄▖ ▗▄▄▖▗▄▄▄▖▗▄▄▄ ▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖▗▄▄▄▖
+          ▐▌ ▐▌▐▌   ▐▌     █  ▐▌  █▐▌   ▐▛▚▖▐▌▐▌   ▐▌   
+          ▐▛▀▚▖▐▛▀▀▘ ▝▀▚▖  █  ▐▌  █▐▛▀▀▘▐▌ ▝▜▌▐▌   ▐▛▀▀▘
+          ▐▌ ▐▌▐▙▄▄▖▗▄▄▞▘▗▄█▄▖▐▙▄▄▀▐▙▄▄▖▐▌  ▐▌▝▚▄▄▖▐▙▄▄▖
+        '';
+        "os-release".text = ''
+            ANSI_COLOR="1;34"
+            ID=residence
+            NAME="Residence"
+            PRETTY_NAME="Residence"
+            VERSION="rolling"
+            VERSION_CODENAME="rolling"
+            VERSION_ID="rolling"
+            BUILD_ID="rolling"
+            IMAGE_ID="rolling"
+            IMAGE_VERSION="rolling"
+            HOME_URL="https://github.com/${pkgs.lib.maintainers.dominicegginton.github}/dotfiles"
+            DOCUMENTATION_URL="https://${pkgs.lib.maintainers.dominicegginton.github}/dotfiles"
+            SUPPORT_URL="https://github.com/${pkgs.lib.maintainers.dominicegginton.github}/dotfiles/issues"
+            BUG_REPORT_URL="https://github.com/${pkgs.lib.maintainers.dominicegginton.github}/dotfiles/issues"
+      '';
+      };
       systemPackages = with pkgs; [
+        uutils-coreutils-noprefix
+        bat
         clamav
         cachix
         file
-        gitMinimal
+        trash-cli
+        git
+        git-lfs
+        gitui
         helix
         killall
         hwinfo
@@ -103,12 +132,10 @@
         wget
         htop-vim
         bottom
-        usbutils
-        nvme-cli
-        smartmontools
         fzf
-        ripgrep
-        ncdu
+        ripgrep-all
+        du
+        dua
         tree
         jq
         fx
@@ -116,16 +143,12 @@
         fd
         jq
         less
-        bat
-        git
-        git-lfs
         pinentry
         pinentry-curses
         status
         dnsutils
         curl
         openssl
-        trash-cli
         termshark
         tzdata
         unrar
@@ -134,8 +157,12 @@
         which
         whois
         psmisc
+        usbutils
+        nvme-cli
+        smartmontools
         caligula
       ];
     };
   };
 }
+
