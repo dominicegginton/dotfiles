@@ -17,7 +17,6 @@
 , gum
 , jq
 , gnupg
-, bitwarden-cli
 }:
 
 mkShell rec {
@@ -37,7 +36,6 @@ mkShell rec {
     gum
     jq
     gnupg
-    bitwarden-cli
     (writeShellScriptBin "deploy" ''
       gcloud auth login
       tofu -chdir=infrastructure init

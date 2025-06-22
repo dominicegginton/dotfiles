@@ -64,6 +64,7 @@
       jetbrains.webstorm
       chromium
       nyxt
+      bitwarden-cli
     ];
   };
 }
