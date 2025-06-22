@@ -73,11 +73,11 @@
       nixos.enable = true;
     };
     services = {
-      clamav = {
-        scanner.enable = true;
-        updater.enable = true;
-        daemon.enable = true;
-      };
+      # clamav = {
+      #   scanner.enable = true;
+      #   updater.enable = true;
+      #   daemon.enable = true;
+      # };
       dbus.enable = true;
       smartd.enable = true;
       thermald.enable = true;
@@ -108,11 +108,11 @@
              /\     _   \%&&%%&%
             /  \___/^\___\%&%%&&
             |  | []   [] |%\Y&%'
-            |  |   .-.   | ||  
+            |  |   .-.   | ||
           ~~@._|@@_|||_@@|~||~~~~~~~~~~~~~
                `""") )"""`
         ▗▄▄▖ ▗▄▄▄▖ ▗▄▄▖▗▄▄▄▖▗▄▄▄ ▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖▗▄▄▄▖
-        ▐▌ ▐▌▐▌   ▐▌     █  ▐▌  █▐▌   ▐▛▚▖▐▌▐▌   ▐▌   
+        ▐▌ ▐▌▐▌   ▐▌     █  ▐▌  █▐▌   ▐▛▚▖▐▌▐▌   ▐▌
         ▐▛▀▚▖▐▛▀▀▘ ▝▀▚▖  █  ▐▌  █▐▛▀▀▘▐▌ ▝▜▌▐▌   ▐▛▀▀▘
         ▐▌ ▐▌▐▙▄▄▖▗▄▄▞▘▗▄█▄▖▐▙▄▄▀▐▙▄▄▖▐▌  ▐▌▝▚▄▄▖▐▙▄▄▖
       '';
@@ -151,4 +151,3 @@
     };
   };
 }
-

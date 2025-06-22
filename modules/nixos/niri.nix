@@ -129,6 +129,12 @@ with config.scheme.withHashtag;
           inactive-color "${base07}"
           urgent-color "${yellow}"
         }
+        tab-indicator {
+          width 2
+          active-color "${magenta}"
+          inactive-color "${base07}"
+          urgent-color "${yellow}"
+        }
         default-column-width {
           proportion 0.75
         }
@@ -140,7 +146,7 @@ with config.scheme.withHashtag;
       }
       overview {
         zoom 0.7
-        backdrop-color "${base00}"
+        backdrop-color "${blue}"
       }
       binds {
         Mod+Shift+Slash                                                { show-hotkey-overlay; }
@@ -259,6 +265,21 @@ with config.scheme.withHashtag;
         draw-border-with-background false
         geometry-corner-radius 4.0 4.0 4.0 4.0
         clip-to-geometry true
+      }
+      window-rule {
+        match is-window-cast-target=true
+        focus-ring {
+          active-color "${red}"
+          inactive-color "${red}"
+        }
+        border {
+          width 2
+          inactive-color "${red}"
+        }
+        tab-indicator {
+          active-color "${red}"
+          inactive-color "${red}"
+        }
       }
     '';
     security.polkit.enable = true;
