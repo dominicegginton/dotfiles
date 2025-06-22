@@ -78,6 +78,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
+      - name: free disk space
+        run: |
+          sudo apt clean
+          docker image prune -af
+          sudo apt-get remove -y azure-cli google-cloud-cli google-cloud-cli-anthoscli podman dotnet-sdk-8.0 temurin-8-jdk microsoft-edge-stable google-chrome-stable firefox
+          sudo apt-get autoremove -y
+          sudo apt-get clean
+          sudo rm -rf "/usr/local/share/boost"
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+          sudo rm -rf /usr/share/dotnet/
       - run: nix build -L .#nixosConfigurations.latitude-5290.config.system.build.toplevel
 
   latitude-7390:
@@ -87,8 +97,6 @@ jobs:
       - uses: cachix/install-nix-action@v31
       - name: free disk space
         run: |
-          df -h
-          dpkg-query -Wf '${Installed-Size}\t${Package}\n' | sort -n | tail -n 100
           sudo apt clean
           docker image prune -af
           sudo apt-get remove -y azure-cli google-cloud-cli google-cloud-cli-anthoscli podman dotnet-sdk-8.0 temurin-8-jdk microsoft-edge-stable google-chrome-stable firefox
@@ -97,9 +105,6 @@ jobs:
           sudo rm -rf "/usr/local/share/boost"
           sudo rm -rf "$AGENT_TOOLSDIRECTORY"
           sudo rm -rf /usr/share/dotnet/
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          df -h
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
 
   iso-installer:
