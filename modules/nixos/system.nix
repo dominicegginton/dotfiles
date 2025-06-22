@@ -11,11 +11,14 @@
         operation = "switch";
         persistent = true;
       };
-      activationScripts.diff.text = ''
-        if [[ -e /run/current-system ]]; then
-          ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
-        fi
-      '';
+      activationScripts = {
+        diff.text = ''
+          if [[ -e /run/current-system ]]; then
+            ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+          fi
+        '';
+        residence.text = "cat /etc/issue";
+      };
       nixos = {
         distroName = lib.mkDefault "Residence";
         distroId = lib.mkDefault "residence";
@@ -100,6 +103,14 @@
         NIXOS_OZONE_WL = "1";
       };
       etc.issue.text = ''
+                  `'::.
+              _________H ,%%&%,
+             /\     _   \%&&%%&%
+            /  \___/^\___\%&%%&&
+            |  | []   [] |%\Y&%'
+            |  |   .-.   | ||  
+          ~~@._|@@_|||_@@|~||~~~~~~~~~~~~~
+               `""") )"""`
         ▗▄▄▖ ▗▄▄▄▖ ▗▄▄▖▗▄▄▄▖▗▄▄▄ ▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖▗▄▄▄▖
         ▐▌ ▐▌▐▌   ▐▌     █  ▐▌  █▐▌   ▐▛▚▖▐▌▐▌   ▐▌   
         ▐▛▀▚▖▐▛▀▀▘ ▝▀▚▖  █  ▐▌  █▐▛▀▀▘▐▌ ▝▜▌▐▌   ▐▛▀▀▘

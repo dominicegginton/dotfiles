@@ -269,6 +269,7 @@ with config.scheme.withHashtag;
     environment.systemPackages = with pkgs; [
       resources
       systemdgenie
+      clamtk
       wpa_supplicant_gui
       wdisplays
       pavucontrol

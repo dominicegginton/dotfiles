@@ -44,7 +44,7 @@
           workbench.colorTheme = "Solarized Light";
           workbench.activityBar.location = "top";
           workbench.sideBar.location = "right";
-          workbench.startupEditor  = "none";
+          workbench.startupEditor = "none";
         };
       };
     };

@@ -21,12 +21,13 @@ let
       ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
       chown ${user}:${user} ${mountpoint}/${name}
       chmod ${permissions} ${mountpoint}/${name}
+      gum log --level info "Installed secret ${name} (${id}) [${user}:${permissions}]"
     '';
   secrets-install = ''
+    export PATH=${makeBinPath [ pkgs.toybox pkgs.jq pkgs.gum ]}:$PATH
     mkdir -p ${directory} || true
     mkdir -p ${directory}/secrets || true
     mkdir -p ${mountpoint} || true
-    mount -t tmpfs none ${mountpoint} || true
     chmod 700 ${directory}
     chmod 700 ${directory}/secrets
     chmod 700 ${mountpoint}
@@ -36,7 +37,7 @@ let
     ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.secrets)}
   '';
   secrets-sync = writeBashBin "secrets-sync" ''
-    export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.busybox pkgs.gum pkgs.jq pkgs.bws ]}:$PATH
+    export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.toybox pkgs.gum pkgs.jq pkgs.bws ]}:$PATH
     set -efu -o pipefail
     ensure-user-is-root
     write_secrets_env() {
@@ -112,16 +113,16 @@ in
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
       serviceConfig.RemainAfterExit = true;
-      script = ''
-        export PATH=${makeBinPath [ pkgs.busybox pkgs.jq ]}:$PATH
-        ${secrets-install}
-      '';
+      script = secrets-install;
     };
     system.activationScripts.secrets = {
-      text = config.systemd.services.secrets.script;
       deps = [ "specialfs" ];
+      text = ''
+        if [[ -e /run/current-system ]]; then
+          ./${lib.getExe secrets-sync}
+        fi
+      '';
     };
     system.activationScripts.users.deps = [ "secrets" ];
-    environment.systemPackages = [ pkgs.bitwarden-cli secrets-sync ];
   };
 }
