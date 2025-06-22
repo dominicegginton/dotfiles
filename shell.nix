@@ -18,7 +18,6 @@
 , jq
 , gnupg
 , bitwarden-cli
-, bws
 }:
 
 mkShell rec {
@@ -39,7 +38,6 @@ mkShell rec {
     jq
     gnupg
     bitwarden-cli
-    bws
     (writeShellScriptBin "deploy" ''
       gcloud auth login
       tofu -chdir=infrastructure init
@@ -67,20 +65,5 @@ mkShell rec {
         sudo dd if="$source" of="$target" bs=4M status=progress && \
           gum log --level info "Successfully wrote $source to $target."
     '')
-    # (makeSetupHook { name = "bws-setup-shell-hook"; }
-    #   (writeScript "bws-setup-shell-hook" ''
-    #     PATH=${lib.makeBinPath [ bws gum ]}:$PATH
-    #     function bwsSetupShellHook() {
-    #       if [ -z "$BWS_ACCESS_TOKEN" ]; then
-    #         export BWS_ACCESS_TOKEN=$(gum input --placeholder "Bitwarden access token")
-    #         if [ -z "$BWS_ACCESS_TOKEN" ]; then
-    #           gum log --level error "Bitwarden access token is required."
-    #           return 1
-    #         fi
-    #       fi
-    #     }
-    #     shellHook="bwsSetupShellHook; $shellHook"
-    #   '')
-    # )
   ];
 }
