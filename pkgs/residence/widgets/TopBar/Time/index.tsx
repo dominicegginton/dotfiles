@@ -20,6 +20,7 @@ export default ({ format = "%H:%M - %A %e" }) => {
               css={`
                 font-size: 0.9em;
                 font-weight: bold;
+                color: #ffffff;
               `}
             />
             <label
@@ -29,6 +30,7 @@ export default ({ format = "%H:%M - %A %e" }) => {
               css={`
                 font-size: 0.8em;
                 opacity: 0.8;
+                color: #ffffff;
               `}
             />
         </box>
