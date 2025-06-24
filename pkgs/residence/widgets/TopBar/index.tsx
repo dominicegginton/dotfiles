@@ -11,19 +11,19 @@ export default ({ monitor }: { monitor: number }) => {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
 
   const LeftModules = (
-    <box spacing={8} hexpand halign={Gtk.Align.START}>
+    <box spacing={8} hexpand halign={Gtk.Align.START} valign={Gtk.Align.CENTER}>
       <Playback />
     </box>
   );
 
   const CenterModules = (
-    <box spacing={8} hexpand hhalign={Gtk.Align.CENTER}>
+    <box spacing={8} hexpand hhalign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
       {/* Add any center modules here if needed */}
     </box>
   );
 
   const RightModules = (
-    <box spacing={8} hexpand halign={Gtk.Align.END}>
+    <box spacing={8} hexpand halign={Gtk.Align.END} valign={Gtk.Align.CENTER}>
       <Battery />
       <Time />
       <Avatar />

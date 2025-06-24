@@ -12,7 +12,9 @@ export default () => {
       halign={Gtk.Align.CENTER}
       child={
         <box
-          css={"border-radius: 100%;"}
+          css={`
+            border-radius: 100%;
+          `}
           child={
             <box
               css={`

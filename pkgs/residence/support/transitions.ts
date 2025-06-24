@@ -19,23 +19,16 @@ export function applyOpacityTransition(
   options: TransitionOptions = {},
 ) {
   const opts = { ...defaultOptions, ...options };
-
   if (visible) {
     widget.set_visible(true);
     widget.set_opacity(0);
-
     GLib.timeout_add(GLib.PRIORITY_DEFAULT, opts.fadeInDelay, () => {
-      // Start fade-in animation
       const startTime = Date.now();
-
       const animate = () => {
         const elapsed = Date.now() - startTime;
         const progress = Math.min(elapsed / opts.fadeInDuration, 1);
-
-        // Ease-out cubic function for smooth transition
         const easeOut = 1 - Math.pow(1 - progress, 3);
         widget.set_opacity(easeOut);
-
         if (progress < 1) {
           GLib.timeout_add(GLib.PRIORITY_DEFAULT, 16, () => {
             animate();
@@ -44,24 +37,18 @@ export function applyOpacityTransition(
         }
         return false;
       };
-
       animate();
       return false;
     });
   } else {
-    // Start fade-out animation
     const startTime = Date.now();
     const startOpacity = widget.get_opacity();
-
     const animate = () => {
       const elapsed = Date.now() - startTime;
       const progress = Math.min(elapsed / opts.fadeOutDuration, 1);
-
-      // Ease-in cubic function for smooth transition
       const easeIn = Math.pow(progress, 3);
       const opacity = startOpacity * (1 - easeIn);
       widget.set_opacity(opacity);
-
       if (progress < 1) {
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, 16, () => {
           animate();
@@ -72,7 +59,6 @@ export function applyOpacityTransition(
       }
       return false;
     };
-
     animate();
   }
 }

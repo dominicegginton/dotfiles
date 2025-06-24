@@ -18,9 +18,10 @@ ags.lib.bundle {
     ags.packages.${system}.astal3
     ags.packages.${system}.astal4
     ags.packages.${system}.io
-    ags.packages.${system}.apps
     ags.packages.${system}.battery
     ags.packages.${system}.mpris
+    ags.packages.${system}.notifd
+    ags.packages.${system}.powerprofiles
     ags.packages.${system}.wireplumber
     curl
     systemd

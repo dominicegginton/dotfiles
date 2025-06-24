@@ -12,7 +12,6 @@ const Player = (player) => {
           min-width: 36px;
           min-height: 36px;
           border-radius: 4px;
-          border: 2px solid rgba(255, 255, 255, 0.2);
         `}
         child={
           <box
@@ -41,6 +40,7 @@ const Player = (player) => {
           css={`
             font-size: 0.9em;
             font-weight: bold;
+            color: #ffffff; 
           `}
           label={bind(player, "artist")}
           halign={Gtk.Align.START}
@@ -50,6 +50,7 @@ const Player = (player) => {
           css={`
             font-size: 0.8em;
             opacity: 0.8;
+            color: #ffffff;
           `}
           label={bind(player, "title")}
           halign={Gtk.Align.START}
