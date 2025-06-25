@@ -47,29 +47,29 @@ let
       echo "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN" >> ${directory}/secrets.env
       gum log --level info "${directory}/secrets.env created"
     }
-    if [ -f ${directory}/secrets.env ]; then
-      source ${directory}/secrets.env || true
-      gum log --level info "${directory}/secrets.env loaded"
+    get_secrets() {
+      if [ ! -f ${directory}/secrets.env ]; then
+        write_secrets_env
+      fi
+      source ${directory}/secrets.env 
+      gum log --level info "Fetching secrets from Bitwarden Secrets $BWS_PROJECT_ID"
       bws secret list "$BWS_PROJECT_ID" \
         --output json \
         --access-token "$BWS_ACCESS_TOKEN" \
-        > /dev/null 2>&1
-      if [ $? -ne 0 ]; then
-        gum log --level error "Failed to connect to Bitwarden Secrets with provided credentials. Please check your BWS_PROJECT_ID and BWS_ACCESS_TOKEN."
-        gum confirm "${directory}/secrets.env already exists. Overwrite? (y/n)" && write_secrets_env
-      fi
-    else
-      write_secrets_env
-    fi
-    source ${directory}/secrets.env
-    gum spin \
-      --show-output \
-      --title "Syncing secrets from Bitwarden Secrets $BWS_PROJECT_ID" \
-      -- bws secret list "$BWS_PROJECT_ID" \
-        --output json \
-        --access-token "$BWS_ACCESS_TOKEN" \
         > ${directory}/secrets.json
-    if [ ! -f ${directory}/secrets.json ]; then gum log --level error "Failed to create ${directory}/secrets.json"; exit 1; fi
+      if [ $? -ne 0 ]; then
+        gum log --level error "Failed to fetch secrets from Bitwarden Secrets."
+        gum confirm "Write a new secrets.env file?" && {
+          write_secrets_env
+          get_secrets
+        } || exit 1
+      fi
+    }
+    get_secrets
+    if [ ! -f ${directory}/secrets.json ]; then
+      gum log --level error "Failed to create ${directory}/secrets.json"
+      exit 1
+    fi
     ${secrets-install}
   '';
 in

@@ -145,7 +145,7 @@ with config.scheme.withHashtag;
         }
       }
       overview {
-        zoom 0.7
+        zoom 0.77 
         backdrop-color "${blue}"
       }
       binds {

@@ -1,7 +1,6 @@
 import { App, Astal } from "astal/gtk3";
 import { Gtk } from "astal/gtk3";
 import Playback from "./Playback";
-import Battery from "./Battery";
 import Time from "./Time";
 import Avatar from "./Avatar";
 import niri from "../../support/niri";
@@ -17,14 +16,18 @@ export default ({ monitor }: { monitor: number }) => {
   );
 
   const CenterModules = (
-    <box spacing={8} hexpand hhalign={Gtk.Align.CENTER} valign={Gtk.Align.CENTER}>
+    <box
+      spacing={8}
+      hexpand
+      hhalign={Gtk.Align.CENTER}
+      valign={Gtk.Align.CENTER}
+    >
       {/* Add any center modules here if needed */}
     </box>
   );
 
   const RightModules = (
     <box spacing={8} hexpand halign={Gtk.Align.END} valign={Gtk.Align.CENTER}>
-      <Battery />
       <Time />
       <Avatar />
     </box>
@@ -34,7 +37,7 @@ export default ({ monitor }: { monitor: number }) => {
     <window
       name="top-bar"
       monitor={monitor}
-      visible={false}
+      visible={niri.overviewIsOpen.get()}
       exclusivity={Astal.Exclusivity.IGNORE}
       anchor={TOP | LEFT | RIGHT}
       marginTop={104}
@@ -44,13 +47,17 @@ export default ({ monitor }: { monitor: number }) => {
       css={`
         background: transparent;
       `}
-      child={<centerbox start_widget={LeftModules} end_widget={RightModules} />}
+      child={
+        <centerbox
+          start_widget={LeftModules}
+          center_widget={CenterModules}
+          end_widget={RightModules}
+        />
+      }
     />
   );
 
-  niri.overviewIsOpen.subscribe((v) => {
-    applyOpacityTransition(win, v);
-  });
+  niri.overviewIsOpen.subscribe((open) => applyOpacityTransition(win, open));
 
   return win;
 };

@@ -40,7 +40,7 @@ const Player = (player) => {
           css={`
             font-size: 0.9em;
             font-weight: bold;
-            color: #ffffff; 
+            color: #ffffff;
           `}
           label={bind(player, "artist")}
           halign={Gtk.Align.START}
