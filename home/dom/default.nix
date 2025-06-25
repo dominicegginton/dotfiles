@@ -19,7 +19,7 @@
       enable = true;
       profiles =
         let
-          setting = {
+          settings = {
             browser.urlbar.suggest.history = false;
             browser.urlbar.suggest.bookmark = false;
             browser.urlbar.suggest.openpage = false;
@@ -36,13 +36,13 @@
             isDefault = true;
             name = "Dominic Egginton";
             userChrome = ./sources/userChrome.css;
-            inherit setting;
+            inherit settings;
           };
           arup = {
             id = 1;
             name = "Dominic Egginton - Arup";
             userChrome = ./sources/userChrome.css;
-            inherit setting;
+            inherit settings;
           };
         };
     };
