@@ -15,7 +15,37 @@
       ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
-    programs.firefox.enable = true;
+    programs.firefox = {
+      enable = true;
+      profiles =
+        let
+          setting = {
+            browser.urlbar.suggest.history = false;
+            browser.urlbar.suggest.bookmark = false;
+            browser.urlbar.suggest.openpage = false;
+            browser.urlbar.suggest.searches = false;
+            toolkit.legacyUserProfileCustomizations.stylesheets = true;
+            layers.acceleration.force-enabled = true;
+            gfx.webrender.all = true;
+            svg.context-properties.content.enabled = true;
+          };
+        in
+        {
+          personal = {
+            id = 0;
+            isDefault = true;
+            name = "Dominic Egginton";
+            userChrome = ./sources/userChrome.css;
+            inherit setting;
+          };
+          arup = {
+            id = 1;
+            name = "Dominic Egginton - Arup";
+            userChrome = ./sources/userChrome.css;
+            inherit setting;
+          };
+        };
+    };
     programs.vscode = {
       enable = true;
       profiles.default = {

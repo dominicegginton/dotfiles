@@ -48,7 +48,16 @@ let
       gum log --level info "${directory}/secrets.env created"
     }
     if [ -f ${directory}/secrets.env ]; then
-      gum confirm "${directory}/secrets.env already exists. Overwrite? (y/n)" && write_secrets_env
+      source ${directory}/secrets.env || true
+      gum log --level info "${directory}/secrets.env loaded"
+      bws secret list "$BWS_PROJECT_ID" \
+        --output json \
+        --access-token "$BWS_ACCESS_TOKEN" \
+        > /dev/null 2>&1
+      if [ $? -ne 0 ]; then
+        gum log --level error "Failed to connect to Bitwarden Secrets with provided credentials. Please check your BWS_PROJECT_ID and BWS_ACCESS_TOKEN."
+        gum confirm "${directory}/secrets.env already exists. Overwrite? (y/n)" && write_secrets_env
+      fi
     else
       write_secrets_env
     fi

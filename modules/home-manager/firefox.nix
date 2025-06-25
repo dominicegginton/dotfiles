@@ -9,9 +9,8 @@
       MOZ_USE_XINPUT2_BY_DEFAULT = "1";
     };
 
-
     programs.firefox = {
-      package = pkgs.unstable.firefox-devedition;
+      package = pkgs.unstable.firefox;
       policies = {
         HardwareAcceleration = true;
         CaptivePortal = false;
