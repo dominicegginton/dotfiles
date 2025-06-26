@@ -121,13 +121,13 @@
         (lib.hiPrio uutils-findutils)
         (lib.hiPrio uutils-diffutils)
         (if stdenv.isLinux then trashy else darwin.trash)
-        dust
         helix
         fzf
         ripgrep
         ripgrep-all
         less
         tree
+        dust
         fd
         file
         dua
