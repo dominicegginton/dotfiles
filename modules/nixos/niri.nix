@@ -36,14 +36,13 @@ with config.scheme.withHashtag;
     environment.etc."tofi/config".text = ''
       corner-radius = 20
       border-width = 0
-      outline-width = 4
+      outline-width = 2
       text-cursor-style = bar
-      anchor = center
       text-color = ${base07}
-      prompt-color = ${magenta}
-      selection-color = ${magenta}
+      prompt-color = ${blue}
+      selection-color = ${blue}
       background-color = ${base00}
-      outline-color = ${magenta}
+      outline-color = ${blue}
     '';
     environment.etc."dunst/dunstrc".text = ''
       [global]
@@ -109,7 +108,7 @@ with config.scheme.withHashtag;
       }
       layout {
         gaps 16
-        center-focused-column "on-overflow"
+        center-focused-column "never"
         always-center-single-column
         struts {
           left 0
@@ -119,19 +118,19 @@ with config.scheme.withHashtag;
         }
         focus-ring {
           width 2
-          active-color "${magenta}"
+          active-color "${blue}"
           inactive-color "${base07}"
           urgent-color "${yellow}"
         }
         border {
-          width 1
-          active-color "${magenta}"
+          width 2
+          active-color "${blue}"
           inactive-color "${base07}"
           urgent-color "${yellow}"
         }
         tab-indicator {
           width 2
-          active-color "${magenta}"
+          active-color "${blue}"
           inactive-color "${base07}"
           urgent-color "${yellow}"
         }
@@ -145,7 +144,7 @@ with config.scheme.withHashtag;
         }
       }
       overview {
-        zoom 0.77 
+        zoom 0.5 
         backdrop-color "${blue}"
       }
       binds {
@@ -273,7 +272,7 @@ with config.scheme.withHashtag;
           inactive-color "${red}"
         }
         border {
-          width 2
+          active-color "${red}"
           inactive-color "${red}"
         }
         tab-indicator {
