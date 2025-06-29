@@ -14,26 +14,65 @@ export default ({ format = "%H:%M - %A %e" }) => {
   });
 
   return (
-    <box vertical hexpand>
-      <label
-        onDestroy={() => greeting.drop()}
-        label={greeting()}
-        halign={Gtk.Align.END}
+    <box
+      horizontal
+      valign={Gtk.Align.CENTER}
+      spacing={8}
+      css={`
+        padding: 8px;
+        border-radius: 4px;
+        background-color: #268bd2;
+      `}
+    >
+      <box vertical hexpand>
+        <label
+          onDestroy={() => greeting.drop()}
+          label={greeting()}
+          halign={Gtk.Align.END}
+          css={`
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #ffffff;
+          `}
+        />
+        <label
+          onDestroy={() => time.drop()}
+          label={time()}
+          halign={Gtk.Align.END}
+          css={`
+            font-size: 0.8em;
+            opacity: 0.8;
+            color: #ffffff;
+          `}
+        />
+      </box>
+
+      <box
         css={`
-          font-size: 0.9em;
-          font-weight: bold;
-          color: #ffffff;
+          background: transparent;
+          border: none;
         `}
-      />
-      <label
-        onDestroy={() => time.drop()}
-        label={time()}
-        halign={Gtk.Align.END}
-        css={`
-          font-size: 0.8em;
-          opacity: 0.8;
-          color: #ffffff;
-        `}
+        valign={Gtk.Align.CENTER}
+        halign={Gtk.Align.CENTER}
+        child={
+          <box
+            css={`
+              border-radius: 100%;
+            `}
+            child={
+              <box
+                css={`
+                  min-width: 32px;
+                  min-height: 32px;
+                  background-image: url("${GLib.getenv("HOME")}/.face");
+                  background-size: cover;
+                  background-position: center;
+                  border-radius: 100%;
+                `}
+              />
+            }
+          />
+        }
       />
     </box>
   );

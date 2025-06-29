@@ -4,7 +4,13 @@ import { Gtk } from "astal/gtk3";
 
 const Player = (player) => {
   return (
-    <box>
+    <box
+      css={`
+        padding: 8px;
+        border-radius: 4px;
+        background: #268bd2;
+      `}
+    >
       <box
         className="artwork-container"
         valign={Gtk.Align.CENTER}
