@@ -56,14 +56,14 @@ let
       bws secret list "$BWS_PROJECT_ID" \
         --output json \
         --access-token "$BWS_ACCESS_TOKEN" \
-        > ${directory}/secrets.json
-      if [ $? -ne 0 ]; then
-        gum log --level error "Failed to fetch secrets from Bitwarden Secrets."
-        gum confirm "Write a new secrets.env file?" && {
-          write_secrets_env
-          get_secrets
-        } || exit 1
-      fi
+        > ${directory}/secrets.json \
+        || {
+          gum log --level error "Failed to fetch secrets from Bitwarden Secrets."
+          gum confirm "Write a new secrets.env file?" && {
+            write_secrets_env
+            get_secrets
+          } || exit 1
+        }
     }
     get_secrets
     if [ ! -f ${directory}/secrets.json ]; then
