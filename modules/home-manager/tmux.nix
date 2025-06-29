@@ -34,7 +34,7 @@ with lib;
         set -g status-justify left
         set -g status-left-length 100
         set -g status-right-length 100
-        set -g status-style fg=brightwhite,bg=blue
+        set -g status-style fg=black,bg=blue
         set -g status-left " #S "
         set -g status-right " %d-%m %H:%M #h "
         set -g message-style fg=black,bg=red
