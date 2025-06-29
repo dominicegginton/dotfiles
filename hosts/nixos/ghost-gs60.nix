@@ -1,4 +1,4 @@
-{ inputs, config, lib, ... }:
+{ inputs, config, lib, hostname, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
@@ -78,5 +78,11 @@
       type = "ethernet";
       physicalConnections = [ (config.lib.topology.mkConnection "quardon-switch-secondary" "eth2") ];
     };
+  };
+
+  services.frigate = {
+    enable = true;
+    hostname = hostname;
+    settings.cameras = {};
   };
 }
