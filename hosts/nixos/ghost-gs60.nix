@@ -83,6 +83,6 @@
   services.frigate = {
     enable = true;
     hostname = hostname;
-    settings.cameras = {};
+    settings.cameras = { };
   };
 }

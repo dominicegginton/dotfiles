@@ -59,6 +59,15 @@ rec {
           exit 1;
         }
       '';
+      karren = prev.writeShellScriptBin "rc" ''
+        export PATH=${prev.lib.makeBinPath [ prev.alacritty ]};
+        alacritty --title "karren" --class "karren" --command \
+          ${prev.lib.getExe (prev.writeShellScriptBin "rx-script" ''
+            export PATH=${prev.lib.makeBinPath [ prev.gum ]};
+            name=$(gum input --placeholder "Enter script name")
+            gum log --level info "Creating script $name"
+          '')};
+      '';
     };
   };
   default = final: prev: {
