@@ -59,7 +59,7 @@ rec {
           exit 1;
         }
       '';
-      karren = prev.writeShellScriptBin "rc" ''
+      karren.launcher = prev.writeShellScriptBin "rc" ''
         export PATH=${prev.lib.makeBinPath [ prev.alacritty ]};
         alacritty --title "karren" --class "karren" --command \
           ${prev.lib.getExe (prev.writeShellScriptBin "rx-script" ''
@@ -68,6 +68,58 @@ rec {
             gum log --level info "Creating script $name"
           '')};
       '';
+      karren.lazy-desktop = prev.callPackage
+        ({ lib
+         , stdenv
+         , runCommand
+         , nix-index
+         , desktop-file-utils
+         }:
+          let
+            nix-index-database = builtins.fetchurl {
+              url = "https://github.com/nix-community/nix-index-database/releases/download/2025-06-29-034928/index-x86_64-linux";
+              sha256 = "ca077887a89c8dc194361f282b24dc11acde744b2aab96bde640ea915f7f3baf";
+            };
+          in
+          stdenv.mkDerivation {
+            name = "karren.lazy-desktop";
+            buildInputs = [
+              nix-index
+              desktop-file-utils
+            ];
+            dontUnpack = true;
+            dontBuild = true;
+            installPhase = ''
+              mkdir -p $out/share/applications
+              ln -s ${nix-index-database} files
+              nix-locate \
+                --db . \
+                --top-level \
+                --minimal \
+                --regex \
+                '/share/applications/.*\.desktop$' \
+                | while read -r package
+                do
+                  cat > $out/share/applications/"$package.desktop" << EOF
+              [Desktop Entry]
+              Version=1.0
+              Name="Lazy: $package"
+              Type=Application
+              Exec=nix run "nixpkgs#$package" -- %F
+              EOF
+                  desktop-file-validate $out/share/applications/"$package.desktop"
+                done
+            '';
+            meta = {
+              platforms = lib.platforms.linux;
+              maintainers = with lib.maintainers; [ dominicegginton ];
+              description = ''
+                A package with desktop files for all packages in the nix-index database.
+                When a .desktop is executed it will run the package using `nix run nixpkgs#package`.
+              '';
+            };
+          })
+        { };
     };
   };
   default = final: prev: {

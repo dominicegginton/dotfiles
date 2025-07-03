@@ -144,7 +144,7 @@ with config.scheme.withHashtag;
         }
       }
       overview {
-        zoom 0.5 
+        zoom 0.5
         backdrop-color "${blue}"
       }
       binds {
@@ -153,6 +153,7 @@ with config.scheme.withHashtag;
         Mod+Shift+Q                                                    { close-window; }
         Mod+T                hotkey-overlay-title="Terminal"           { spawn "${lib.getExe pkgs.alacritty}"; }
         Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
+        Mod+Shift+Space      hotkey-overlay-title="Karren"             { spawn "${lib.getExe pkgs.bleeding.karren.launcher}"; }
         Mod+Shift+Escape     hotkey-overlay-title="System Manage"      { spawn "${lib.getExe pkgs.wlogout}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" "--image" "${./background.jpg}"; }
         Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }
@@ -280,6 +281,17 @@ with config.scheme.withHashtag;
           inactive-color "${red}"
         }
       }
+      window-rule {
+        match app-id="karren"
+        open-floating true
+        open-focused true
+        min-width 480
+        max-width 480
+        min-height 270
+        max-height 270
+        default-column-width { fixed 480; }
+        default-window-height { fixed 270; }
+      }
     '';
     security.polkit.enable = true;
     services.gnome.gnome-keyring.enable = true;
@@ -299,6 +311,7 @@ with config.scheme.withHashtag;
       nomacs
       file-roller
       evince
+      bleeding.karren.lazy-desktop
     ];
     fonts = {
       enableDefaultPackages = false;
