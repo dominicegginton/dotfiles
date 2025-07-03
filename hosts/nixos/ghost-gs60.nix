@@ -1,4 +1,4 @@
-{ inputs, config, lib, hostname, ... }:
+{ inputs, config, lib, hostname, tailnet, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
@@ -80,9 +80,39 @@
     };
   };
 
+
+  # testing frigate
+  secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
   services.frigate = {
     enable = true;
-    hostname = hostname;
-    settings.cameras = { };
+    hostname = "${hostname}.${tailnet}";
+    settings = {
+      auth.enabled = false;
+      motion.enabled = true;
+      record.enabled = true;
+      snapshots.enabled = true;
+      detect = {
+        enabled = true;
+        fps = 5;
+      };
+      cameras = {
+          "01" = {
+            ffmpeg.inputs = [
+              { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_main"; roles = [ "record" ]; }
+              { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_sub"; roles = [ "detect" ]; }
+            ];
+          };
+          "02" = {
+            ffmpeg.inputs = [
+              { path = "rtsp://frigate:frigate@192.168.1.44/preview_02_main"; roles = [ "record" ]; }
+              { path = "rtsp://frigate:frigate@192.168.1.44/Preview_02_sub"; roles = [ "detect" ]; }
+            ];
+          };
+          "03".ffmpeg.inputs = [
+            { path = "rtsp://frigate:frigate123@192.168.1.186:554/Preview_01_main"; roles = [ "record" ]; }
+            { path = "rtsp://frigate:frigate123@192.168.1.186:554/Preview_01_sub"; roles = [ "detect" ]; }
+          ];
+        };
+    };
   };
 }
