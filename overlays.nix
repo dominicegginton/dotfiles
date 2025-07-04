@@ -82,7 +82,21 @@ rec {
               ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
             '')};
         '';
-        clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
+        tv-guide = prev.writeShellScriptBin "karren-tv-guide" ''
+            ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
+              ${prev.lib.getExe (prev.writeShellScriptBin "karren-tv-guide-runtime" ''
+                selection=$(printf "youtube\nnetflix" | ${prev.lib.getExe prev.fzf} --prompt "Select TV Guide: " --no-sort)
+                if [ "$selection" = "youtube" ]; then
+                  execCommand="${prev.lib.getExe prev.firefox} --kiosk --new-window https://www.youtube.com"
+                elif [ "$selection" = "netflix" ]; then
+                  execCommand="${prev.lib.getExe prev.firefox} --kiosk --new-window https://www.netflix.com"
+                else
+                  exit 1
+                fi
+                ${prev.uutils-coreutils-noprefix}/bin/nohup ${prev.bash}/bin/sh -c "$execCommand || ${prev.libnotify}bin/notify-send --urgency=critical 'Karren TV Guide' 'Failed to run $selection'" > /dev/null 2>&1 &
+                ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
+              '')};
+          clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
         launcher = prev.writeShellScriptBin "karren-launcher" ''
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
