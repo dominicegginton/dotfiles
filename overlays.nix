@@ -59,89 +59,117 @@ rec {
           exit 1;
         }
       '';
-      karren.launcher = prev.writeShellScriptBin "karren-launcher" ''
-        export PATH=${prev.lib.makeBinPath [ prev.alacritty ]}:$PATH;
-        alacritty --title "karren" --class "karren" --command \
-          ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" ''
-            export PATH=${prev.lib.makeBinPath [ prev.gum prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
-            desktopFiles=$(find /run/current-system/sw/share/applications -name '*.desktop' | sed 's|/run/current-system/sw/share/applications/||')
-            selection=$(echo "$desktopFiles" | fzf --prompt "Run: " --print-query)
-            selectedApp=$(echo "$selection" | tail -1)
-            selectionQuery=$(echo "$selection" | head -1)
-            if [[ "$selectionQuery" == "!"* ]]; then
-              selectionQuery=$(echo "$selectionQuery" | sed 's/^!//')
-              if [[ -z "$selectionQuery" ]]; then
-                exit 1
-              fi
-              sh -c "$selectionQuery"
-              read -p "Press Enter to continue..."
-            else
-              execCommand=$(grep '^Exec=' "/run/current-system/sw/share/applications/$selectedApp" | cut -d '=' -f 2- | sed 's/ %.*//')
-              if [[ -z "$execCommand" ]]; then
-                exit 1
-              fi
-              if [[ "$execCommand" == nix\ run* ]]; then
-                nohup sh -c "$execCommand" >/dev/null 2>&1 &
-                notify-send "Karren Lazy" "$execCommand\nThis may take a while to start if the package is not already in the nix store."
+      karren = {
+        system-manager = prev.writeShellScriptBin "karren-system-manager" ''
+          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
+            ${prev.lib.getExe (prev.writeShellScriptBin "karren-system-manager-runtime" ''
+              selection=$(${prev.lib.getExe prev.gum} choose "lock" "shutdown" "reboot" "suspend")
+              if [ "$selection" = "shutdown" ]; then
+                ${prev.lib.getExe prev.gum} confirm "Are you sure you want to shutdown?" || exit 1
+                execCommand="${prev.systemd}/bin/systemctl poweroff"
+              elif [ "$selection" = "reboot" ]; then
+                ${prev.lib.getExe prev.gum} confirm "Are you sure you want to reboot?" || exit 1
+                execCommand="${prev.systemd}/bin/systemctl reboot"
+              elif [ "$selection" = "suspend" ]; then
+                ${prev.lib.getExe prev.gum} confirm "Are you sure you want to suspend?" || exit 1
+                execCommand="${prev.systemd}/bin/systemctl suspend"
+              elif [ "$selection" = "lock" ]; then
+                execCommand="${prev.lib.getExe prev.swaylock}"
               else
-                nohup sh -c "$execCommand" >/dev/null 2>&1 & 
-                sleep 0.1
+                exit 1
               fi
-            fi
-          '')};
-      '';
-      karren.lazy-desktop = prev.callPackage
-        ({ lib
-         , stdenv
-         , runCommand
-         , nix-index
-         , desktop-file-utils
-         }:
-          let
-            nix-index-database = builtins.fetchurl {
-              url = "https://github.com/nix-community/nix-index-database/releases/download/2025-06-29-034928/index-x86_64-linux";
-              sha256 = "ca077887a89c8dc194361f282b24dc11acde744b2aab96bde640ea915f7f3baf";
-            };
-          in
-          stdenv.mkDerivation {
-            name = "karren.lazy-desktop";
-            buildInputs = [
-              nix-index
-              desktop-file-utils
-            ];
-            dontUnpack = true;
-            dontBuild = true;
-            installPhase = ''
-              mkdir -p $out/share/applications
-              ln -s ${nix-index-database} files
-              nix-locate \
-                --db . \
-                --top-level \
-                --minimal \
-                --regex \
-                '/share/applications/.*\.desktop$' \
-                | while read -r package
-                do
-                  cat > $out/share/applications/"$package.desktop" << EOF
-              [Desktop Entry]
-              Version=1.0
-              Name="Lazy: $package"
-              Type=Application
-              Exec=nix run "nixpkgs#$package"
-              EOF
-                  desktop-file-validate $out/share/applications/"$package.desktop"
-                done
-            '';
-            meta = {
-              platforms = lib.platforms.linux;
-              maintainers = with lib.maintainers; [ dominicegginton ];
-              description = ''
-                A package with desktop files for all packages in the nix-index database.
-                When a .desktop is executed it will run the package using `nix run nixpkgs#package`.
+              ${prev.uutils-coreutils-noprefix}/bin/nohup ${prev.bash}/bin/sh -c "$execCommand || ${prev.libnotify}bin/notify-send --urgency=critical 'Karren System Manager' 'Failed to run $selection'" > /dev/null 2>&1 &
+              ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
+            '')};
+        '';
+        clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
+        launcher = prev.writeShellScriptBin "karren-launcher" ''
+          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
+            ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
+              export PATH=${prev.lib.makeBinPath [ prev.gum prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
+              desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications -name "*.desktop" -print)
+              selection=$(echo "$desktopFiles" | fzf --prompt "Run: " --preview "cat {}")
+              if [ -z "$selection" ]; then
+                exit 1;
+              fi
+              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
+              if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then 
+                execCommand="alacritty --command $execCommand";
+              fi
+              nohup sh -c "$execCommand || notify-send --urgency=critical 'Karren Launcher' 'Failed to run $selection'" > /dev/null 2>&1 &
+              sleep 0.1
+            '')};
+        '';
+        lazy-launcher = prev.writeShellScriptBin "karren-lazy-launcher" ''
+          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
+            ${prev.lib.getExe (prev.writeShellScriptBin "karren-lazy-runtime" ''
+              export PATH=${prev.lib.makeBinPath [ prev.gum prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
+              desktopFiles=$(find /run/current-system/sw/share/applications -name '*.desktop' -print)
+              selection=$(echo "$desktopFiles" | fzf --prompt "Run: " --preview "cat {}")
+              if [ -z "$selection" ]; then
+                exit 1;
+              fi
+              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
+              if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then 
+                execCommand="alacritty --command $execCommand";
+              fi
+              nohup sh -c "$execCommand || notify-send --urgency=critical 'Karren Lazy' 'Failed to run $selection'" > /dev/null 2>&1 &
+              notify-send "Karren Lazy" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
+            '')};
+        '';
+        lazy-desktop = prev.callPackage
+          ({ lib
+           , stdenv
+           , runCommand
+           , nix-index
+           , desktop-file-utils
+           }:
+            let
+              nix-index-database = builtins.fetchurl {
+                url = "https://github.com/nix-community/nix-index-database/releases/download/2025-06-29-034928/index-x86_64-linux";
+                sha256 = "ca077887a89c8dc194361f282b24dc11acde744b2aab96bde640ea915f7f3baf";
+              };
+            in
+            stdenv.mkDerivation {
+              name = "karren.lazy-desktop";
+              buildInputs = [
+                nix-index
+                desktop-file-utils
+              ];
+              dontUnpack = true;
+              dontBuild = true;
+              installPhase = ''
+                mkdir -p $out/share/applications
+                ln -s ${nix-index-database} files
+                nix-locate \
+                  --db . \
+                  --top-level \
+                  --minimal \
+                  --regex \
+                  '/share/applications/.*\.desktop$' \
+                  | while read -r package
+                  do
+                    cat > $out/share/applications/"$package.desktop" << EOF
+                [Desktop Entry]
+                Version=1.0
+                Name="Lazy: $package"
+                Type=Application
+                Exec=nix run "nixpkgs#$package"
+                EOF
+                    desktop-file-validate $out/share/applications/"$package.desktop"
+                  done
               '';
-            };
-          })
-        { };
+              meta = {
+                platforms = lib.platforms.linux;
+                maintainers = with lib.maintainers; [ dominicegginton ];
+                description = ''
+                  A package with desktop files for all packages in the nix-index database.
+                  When a .desktop is executed it will run the package using `nix run nixpkgs#package`.
+                '';
+              };
+            })
+          { };
+      };
     };
   };
   default = final: prev: {

@@ -100,7 +100,6 @@
         SYSTEMD_EDITOR = "helix";
         VISUAL = "helix";
         PAGER = "less";
-        NIXOS_OZONE_WL = "1";
       };
       etc.issue.text = ''
                   `'::.

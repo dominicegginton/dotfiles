@@ -33,17 +33,6 @@ with config.scheme.withHashtag;
         ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
       }
     '';
-    environment.etc."tofi/config".text = ''
-      corner-radius = 20
-      border-width = 0
-      outline-width = 2
-      text-cursor-style = bar
-      text-color = ${base07}
-      prompt-color = ${blue}
-      selection-color = ${blue}
-      background-color = ${base00}
-      outline-color = ${blue}
-    '';
     environment.etc."dunst/dunstrc".text = ''
       [global]
       follow = keyboard
@@ -151,16 +140,16 @@ with config.scheme.withHashtag;
         Mod+Shift+Slash                                                { show-hotkey-overlay; }
         Mod+O                repeat=false                              { toggle-overview; }
         Mod+Shift+Q                                                    { close-window; }
-        Mod+T                hotkey-overlay-title="Terminal"           { spawn "${lib.getExe pkgs.alacritty}"; }
-        Mod+Space            hotkey-overlay-title="Run an Application" { spawn "${lib.getExe pkgs.wldash}"; }
-        Mod+Shift+Space      hotkey-overlay-title="Karren"             { spawn "${lib.getExe pkgs.bleeding.karren.launcher}"; }
-        Mod+Shift+Escape     hotkey-overlay-title="System Manage"      { spawn "${lib.getExe pkgs.wlogout}"; }
+        Mod+T                hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
+        Mod+Space            hotkey-overlay-title="Karren Launcher"    { spawn "${lib.getExe pkgs.bleeding.karren.launcher}"; }
+        Mod+Shift+Space      hotkey-overlay-title="Karren Lazy Launch" { spawn "${lib.getExe pkgs.bleeding.karren.lazy-launcher}"; }
+        Mod+Shift+Escape     hotkey-overlay-title="Karren Sys Manager" { spawn "${lib.getExe pkgs.bleeding.karren.system-manager}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" "--image" "${./background.jpg}"; }
         Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }
         Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-region" ''PATH=${lib.makeBinPath [ pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.swappy} -f -'')}"; }
         Mod+Shift+E                                                    { quit; }
         Mod+Shift+P                                                    { power-off-monitors; }
-        Mod+Shift+H          hotkey-overlay-title="Clipboard: History" { spawn "${lib.getExe (pkgs.writeShellScriptBin "clipboard-history" ''${lib.getExe pkgs.cliphist} list | ${lib.getExe pkgs.tofi} --config ${config.environment.etc."tofi/config".source} --font ${pkgs.ibm-plex}/share/donts/opentype/IBMPlexSans-Text.otf | ${lib.getExe pkgs.cliphist} decode | ${pkgs.wl-clipboard}/bin/wl-copy'')}"; }
+        Mod+Shift+H          hotkey-overlay-title="Karren: Clip Hist"  { spawn "${lib.getExe pkgs.bleeding.karren.clipboard-history}"; }
         Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.resources}"; }
         XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
         XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
@@ -285,12 +274,12 @@ with config.scheme.withHashtag;
         match app-id="karren"
         open-floating true
         open-focused true
-        min-width 480
-        max-width 480
-        min-height 270
-        max-height 270
-        default-column-width { fixed 480; }
-        default-window-height { fixed 270; }
+        min-width 880
+        max-width 880
+        min-height 470
+        max-height 470
+        default-column-width { fixed 880; }
+        default-window-height { fixed 470; }
       }
     '';
     security.polkit.enable = true;
@@ -298,21 +287,27 @@ with config.scheme.withHashtag;
     services.displayManager.ly.enable = true;
     services.displayManager.sessionPackages = [ pkgs.niri ];
     programs.dconf.enable = true;
-    environment.systemPackages = with pkgs; [
-      resources
-      systemdgenie
-      clamtk
-      wpa_supplicant_gui
-      wdisplays
-      pavucontrol
-      nautilus
-      sushi
-      clapper
-      nomacs
-      file-roller
-      evince
-      bleeding.karren.lazy-desktop
-    ];
+    environment = {
+      variables = {
+        NIXOS_OZONE_WL = "1";
+        DISPLAY = ":0";
+      };
+      systemPackages = with pkgs; [
+        resources
+        systemdgenie
+        clamtk
+        wpa_supplicant_gui
+        wdisplays
+        pavucontrol
+        nautilus
+        sushi
+        clapper
+        nomacs
+        file-roller
+        evince
+        bleeding.karren.lazy-desktop
+      ];
+    };
     fonts = {
       enableDefaultPackages = false;
       fontDir.enable = true;
