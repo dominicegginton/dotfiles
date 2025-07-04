@@ -59,13 +59,35 @@ rec {
           exit 1;
         }
       '';
-      karren.launcher = prev.writeShellScriptBin "rc" ''
-        export PATH=${prev.lib.makeBinPath [ prev.alacritty ]};
+      karren.launcher = prev.writeShellScriptBin "karren-launcher" ''
+        export PATH=${prev.lib.makeBinPath [ prev.alacritty ]}:$PATH;
         alacritty --title "karren" --class "karren" --command \
-          ${prev.lib.getExe (prev.writeShellScriptBin "rx-script" ''
-            export PATH=${prev.lib.makeBinPath [ prev.gum ]};
-            name=$(gum input --placeholder "Enter script name")
-            gum log --level info "Creating script $name"
+          ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" ''
+            export PATH=${prev.lib.makeBinPath [ prev.gum prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
+            desktopFiles=$(find /run/current-system/sw/share/applications -name '*.desktop' | sed 's|/run/current-system/sw/share/applications/||')
+            selection=$(echo "$desktopFiles" | fzf --prompt "Run: " --print-query)
+            selectedApp=$(echo "$selection" | tail -1)
+            selectionQuery=$(echo "$selection" | head -1)
+            if [[ "$selectionQuery" == "!"* ]]; then
+              selectionQuery=$(echo "$selectionQuery" | sed 's/^!//')
+              if [[ -z "$selectionQuery" ]]; then
+                exit 1
+              fi
+              sh -c "$selectionQuery"
+              read -p "Press Enter to continue..."
+            else
+              execCommand=$(grep '^Exec=' "/run/current-system/sw/share/applications/$selectedApp" | cut -d '=' -f 2- | sed 's/ %.*//')
+              if [[ -z "$execCommand" ]]; then
+                exit 1
+              fi
+              if [[ "$execCommand" == nix\ run* ]]; then
+                nohup sh -c "$execCommand" >/dev/null 2>&1 &
+                notify-send "Karren Lazy" "$execCommand\nThis may take a while to start if the package is not already in the nix store."
+              else
+                nohup sh -c "$execCommand" >/dev/null 2>&1 & 
+                sleep 0.1
+              fi
+            fi
           '')};
       '';
       karren.lazy-desktop = prev.callPackage
@@ -105,7 +127,7 @@ rec {
               Version=1.0
               Name="Lazy: $package"
               Type=Application
-              Exec=nix run "nixpkgs#$package" -- %F
+              Exec=nix run "nixpkgs#$package"
               EOF
                   desktop-file-validate $out/share/applications/"$package.desktop"
                 done
