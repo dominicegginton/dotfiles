@@ -144,7 +144,7 @@ with config.scheme.withHashtag;
         Mod+Space            hotkey-overlay-title="Karren Launcher"    { spawn "${lib.getExe pkgs.bleeding.karren.launcher}"; }
         Mod+Shift+Space      hotkey-overlay-title="Karren Lazy Launch" { spawn "${lib.getExe pkgs.bleeding.karren.lazy-launcher}"; }
         Mod+Shift+Escape     hotkey-overlay-title="Karren Sys Manager" { spawn "${lib.getExe pkgs.bleeding.karren.system-manager}"; }
-        Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock}" "--image" "${./background.jpg}"; }
+        Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock-effects}" "-S" "--effect-blur" "10x10"; }
         Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }
         Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-region" ''PATH=${lib.makeBinPath [ pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.swappy} -f -'')}"; }
         Mod+Shift+E                                                    { quit; }

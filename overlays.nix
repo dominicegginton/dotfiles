@@ -63,18 +63,18 @@ rec {
         system-manager = prev.writeShellScriptBin "karren-system-manager" ''
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-system-manager-runtime" ''
-              selection=$(${prev.lib.getExe prev.gum} choose "lock" "shutdown" "reboot" "suspend")
+              selection=$(printf "lock\nshutdown\nreboot\nsuspend\n" | ${prev.lib.getExe prev.fzf} --prompt "Select action: " --no-sort)
               if [ "$selection" = "shutdown" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Are you sure you want to shutdown?" || exit 1
+                ${prev.lib.getExe prev.gum} confirm "Shutdown?" || exit 1
                 execCommand="${prev.systemd}/bin/systemctl poweroff"
               elif [ "$selection" = "reboot" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Are you sure you want to reboot?" || exit 1
+                ${prev.lib.getExe prev.gum} confirm "Reboot?" || exit 1
                 execCommand="${prev.systemd}/bin/systemctl reboot"
               elif [ "$selection" = "suspend" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Are you sure you want to suspend?" || exit 1
+                ${prev.lib.getExe prev.gum} confirm "Suspend?" || exit 1
                 execCommand="${prev.systemd}/bin/systemctl suspend"
               elif [ "$selection" = "lock" ]; then
-                execCommand="${prev.lib.getExe prev.swaylock}"
+                execCommand="${prev.lib.getExe prev.swaylock-effects} -S --effect-blur 10x10"
               else
                 exit 1
               fi
@@ -83,20 +83,19 @@ rec {
             '')};
         '';
         tv-guide = prev.writeShellScriptBin "karren-tv-guide" ''
-            ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
-              ${prev.lib.getExe (prev.writeShellScriptBin "karren-tv-guide-runtime" ''
-                selection=$(printf "youtube\nnetflix" | ${prev.lib.getExe prev.fzf} --prompt "Select TV Guide: " --no-sort)
-                if [ "$selection" = "youtube" ]; then
-                  execCommand="${prev.lib.getExe prev.firefox} --kiosk --new-window https://www.youtube.com"
-                elif [ "$selection" = "netflix" ]; then
-                  execCommand="${prev.lib.getExe prev.firefox} --kiosk --new-window https://www.netflix.com"
-                else
-                  exit 1
-                fi
-                ${prev.uutils-coreutils-noprefix}/bin/nohup ${prev.bash}/bin/sh -c "$execCommand || ${prev.libnotify}bin/notify-send --urgency=critical 'Karren TV Guide' 'Failed to run $selection'" > /dev/null 2>&1 &
-                ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
-              '')};
-          clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
+          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
+            ${prev.lib.getExe (prev.writeShellScriptBin "karren-tv-guide-runtime" ''
+              selection=$(printf "youtube\n" | ${prev.lib.getExe prev.fzf} --prompt "Select TV Guide: " --no-sort)
+              if [ "$selection" = "youtube" ]; then
+                execCommand="${prev.lib.getExe prev.firefox} --kiosk https://www.youtube.com"
+              else
+                exit 1
+              fi
+              ${prev.uutils-coreutils-noprefix}/bin/nohup ${prev.bash}/bin/sh -c "$execCommand || ${prev.libnotify}bin/notify-send --urgency=critical 'Karren TV Guide' 'Failed to run $selection'" > /dev/null 2>&1 &
+              ${prev.uutils-coreutils-noprefix}/bin/sleep 10
+            '')};
+        '';
+        clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
         launcher = prev.writeShellScriptBin "karren-launcher" ''
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
