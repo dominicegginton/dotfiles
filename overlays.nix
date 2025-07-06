@@ -63,36 +63,36 @@ rec {
         system-manager = prev.writeShellScriptBin "karren-system-manager" ''
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-system-manager-runtime" ''
-              selection=$(printf "lock\nshutdown\nreboot\nsuspend\n" | ${prev.lib.getExe prev.fzf} --prompt "Select action: " --no-sort)
+              selection=$(printf "suspend\nreboot\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select action: ")
               if [ "$selection" = "shutdown" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Shutdown?" || exit 1
-                execCommand="${prev.systemd}/bin/systemctl poweroff"
+                ${prev.lib.getExe prev.gum} confirm "Shutdown?" && ${prev.systemd}/bin/systemctl poweroff
               elif [ "$selection" = "reboot" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Reboot?" || exit 1
-                execCommand="${prev.systemd}/bin/systemctl reboot"
+                ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
               elif [ "$selection" = "suspend" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Suspend?" || exit 1
-                execCommand="${prev.systemd}/bin/systemctl suspend"
-              elif [ "$selection" = "lock" ]; then
-                execCommand="${prev.lib.getExe prev.swaylock-effects} -S --effect-blur 10x10"
-              else
-                exit 1
+                ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend
               fi
-              ${prev.uutils-coreutils-noprefix}/bin/nohup ${prev.bash}/bin/sh -c "$execCommand || ${prev.libnotify}bin/notify-send --urgency=critical 'Karren System Manager' 'Failed to run $selection'" > /dev/null 2>&1 &
-              ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
+              sleep 0.1
             '')};
         '';
         clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
         launcher = prev.writeShellScriptBin "karren-launcher" ''
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
-              export PATH=${prev.lib.makeBinPath [ prev.gum prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
+              export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
               desktopFiles=$(find /run/current-system/sw/share/applications /etc/profiles/per-user/*/share/applications ~/.local/share/applications -name "*.desktop" -print)
               selection=$(echo "$desktopFiles" | fzf -i --prompt "Run: " --preview "cat {}")
               if [ -z "$selection" ]; then
                 exit 1;
               fi
-              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
+              if [ $(cat "$selection" | grep -c '^Exec=') -gt 1 ]; then
+                execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//' | fzf --prompt "Select Exec command: " --no-sort)
+                if [ -z "$execCommand" ]; then
+                  exit 1;
+                fi
+              else
+                ## if there is only one Exec= line, use that
+                execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
+              fi
               if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then 
                 execCommand="alacritty --command $execCommand";
               fi
