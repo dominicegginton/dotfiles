@@ -48,6 +48,7 @@ with config.lib.topology;
       interfaceName = "tailscale0";
     };
     services.tailscaleAuth.enable = true;
+    services.nginx.tailscaleAuth.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
     topology.self.interfaces = {
       lo = {
