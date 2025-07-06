@@ -67,6 +67,7 @@ with config.scheme.withHashtag;
       }
       hotkey-overlay {
         skip-at-startup
+        hide-not-bound
       }
       input {
         mod-key "Super"
@@ -142,7 +143,6 @@ with config.scheme.withHashtag;
         Mod+Shift+Q                                                    { close-window; }
         Mod+T                hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
         Mod+Space            hotkey-overlay-title="Karren Launcher"    { spawn "${lib.getExe pkgs.bleeding.karren.launcher}"; }
-        Mod+Shift+Space      hotkey-overlay-title="Karren Lazy Launch" { spawn "${lib.getExe pkgs.bleeding.karren.lazy-launcher}"; }
         Mod+Shift+Escape     hotkey-overlay-title="Karren Sys Manager" { spawn "${lib.getExe pkgs.bleeding.karren.system-manager}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock-effects}" "-S" "--effect-blur" "10x10"; }
         Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }
@@ -306,6 +306,7 @@ with config.scheme.withHashtag;
         file-roller
         evince
         bleeding.karren.lazy-desktop
+        bleeding.karren.tv-desktop
       ];
     };
     fonts = {

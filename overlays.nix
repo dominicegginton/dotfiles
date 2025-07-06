@@ -82,26 +82,13 @@ rec {
               ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
             '')};
         '';
-        tv-guide = prev.writeShellScriptBin "karren-tv-guide" ''
-          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
-            ${prev.lib.getExe (prev.writeShellScriptBin "karren-tv-guide-runtime" ''
-              selection=$(printf "youtube\n" | ${prev.lib.getExe prev.fzf} --prompt "Select TV Guide: " --no-sort)
-              if [ "$selection" = "youtube" ]; then
-                execCommand="${prev.lib.getExe prev.firefox} --kiosk https://www.youtube.com"
-              else
-                exit 1
-              fi
-              ${prev.uutils-coreutils-noprefix}/bin/nohup ${prev.bash}/bin/sh -c "$execCommand || ${prev.libnotify}bin/notify-send --urgency=critical 'Karren TV Guide' 'Failed to run $selection'" > /dev/null 2>&1 &
-              ${prev.uutils-coreutils-noprefix}/bin/sleep 10
-            '')};
-        '';
         clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
         launcher = prev.writeShellScriptBin "karren-launcher" ''
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
               export PATH=${prev.lib.makeBinPath [ prev.gum prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
-              desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications -name "*.desktop" -print)
-              selection=$(echo "$desktopFiles" | fzf --prompt "Run: " --preview "cat {}")
+              desktopFiles=$(find /run/current-system/sw/share/applications /etc/profiles/per-user/*/share/applications ~/.local/share/applications -name "*.desktop" -print)
+              selection=$(echo "$desktopFiles" | fzf -i --prompt "Run: " --preview "cat {}")
               if [ -z "$selection" ]; then
                 exit 1;
               fi
@@ -110,68 +97,81 @@ rec {
                 execCommand="alacritty --command $execCommand";
               fi
               nohup sh -c "$execCommand || notify-send --urgency=critical 'Karren Launcher' 'Failed to run $selection'" > /dev/null 2>&1 &
+              if echo "$execCommand" | grep -q "nix run"; then
+                notify-send "Karren Launcher" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
+              fi
               sleep 0.1
             '')};
         '';
-        lazy-launcher = prev.writeShellScriptBin "karren-lazy-launcher" ''
-          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
-            ${prev.lib.getExe (prev.writeShellScriptBin "karren-lazy-runtime" ''
-              export PATH=${prev.lib.makeBinPath [ prev.gum prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
-              desktopFiles=$(find /run/current-system/sw/share/applications -name '*.desktop' -print)
-              selection=$(echo "$desktopFiles" | fzf --prompt "Run: " --preview "cat {}")
-              if [ -z "$selection" ]; then
-                exit 1;
-              fi
-              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
-              if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then 
-                execCommand="alacritty --command $execCommand";
-              fi
-              nohup sh -c "$execCommand || notify-send --urgency=critical 'Karren Lazy' 'Failed to run $selection'" > /dev/null 2>&1 &
-              notify-send "Karren Lazy" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
-            '')};
-        '';
-        lazy-desktop = prev.callPackage
-          ({ lib
-           , stdenv
-           , runCommand
-           , nix-index
-           , desktop-file-utils
-           }:
-            let
-              nix-index-database = builtins.fetchurl {
-                url = "https://github.com/nix-community/nix-index-database/releases/download/2025-06-29-034928/index-x86_64-linux";
-                sha256 = "ca077887a89c8dc194361f282b24dc11acde744b2aab96bde640ea915f7f3baf";
-              };
-            in
+        tv-desktop = prev.callPackage
+          ({ lib, stdenv, desktop-file-utils, chromium }:
             stdenv.mkDerivation {
-              name = "karren.lazy-desktop";
-              buildInputs = [
-                nix-index
-                desktop-file-utils
-              ];
+              name = "karren.tv-desktop";
+              buildInputs = [ desktop-file-utils ];
               dontUnpack = true;
               dontBuild = true;
-              installPhase = ''
-                mkdir -p $out/share/applications
-                ln -s ${nix-index-database} files
-                nix-locate \
-                  --db . \
-                  --top-level \
-                  --minimal \
-                  --regex \
-                  '/share/applications/.*\.desktop$' \
-                  | while read -r package
-                  do
-                    cat > $out/share/applications/"$package.desktop" << EOF
-                [Desktop Entry]
-                Version=1.0
-                Name="Lazy: $package"
-                Type=Application
-                Exec=nix run "nixpkgs#$package"
-                EOF
-                    desktop-file-validate $out/share/applications/"$package.desktop"
-                  done
-              '';
+              installPhase =
+                let
+                  urls = { youtube = "https://www.youtube.com"; };
+                in
+                ''
+                  mkdir -p $out/share/applications
+                  ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: url: ''
+                    cat > $out/share/applications/karren-tv-${name}.desktop << EOF
+                  [Desktop Entry]
+                  Version=1.0
+                  Name="Karren TV: ${name}"
+                  Type=Application
+                  Exec=${lib.getExe chromium} --app=${url}
+                  EOF
+                    desktop-file-validate $out/share/applications/karren-tv-${name}.desktop
+                  '') urls)}
+                '';
+              meta = {
+                platforms = lib.platforms.linux;
+                maintainers = with lib.maintainers; [ dominicegginton ];
+                description = ''
+                  A package with desktop files for popular TV streaming services.
+                  When a .desktop is executed it will open the service in chromium application mode.
+                '';
+              };
+            })
+          { };
+        lazy-desktop = prev.callPackage
+          ({ lib, stdenv, nix-index, desktop-file-utils }:
+            stdenv.mkDerivation {
+              name = "karren.lazy-desktop";
+              buildInputs = [ nix-index desktop-file-utils ];
+              dontUnpack = true;
+              dontBuild = true;
+              installPhase =
+                let
+                  nix-index-database = builtins.fetchurl {
+                    url = "https://github.com/nix-community/nix-index-database/releases/download/2025-06-29-034928/index-x86_64-linux";
+                    sha256 = "ca077887a89c8dc194361f282b24dc11acde744b2aab96bde640ea915f7f3baf";
+                  };
+                in
+                ''
+                  mkdir -p $out/share/applications
+                  ln -s ${nix-index-database} files
+                  nix-locate \
+                    --db . \
+                    --top-level \
+                    --minimal \
+                    --regex \
+                    '/share/applications/.*\.desktop$' \
+                    | while read -r package
+                    do
+                      cat > $out/share/applications/"$package.desktop" << EOF
+                  [Desktop Entry]
+                  Version=1.0
+                  Name="Lazy: $package"
+                  Type=Application
+                  Exec=nix run "nixpkgs#$package"
+                  EOF
+                      desktop-file-validate $out/share/applications/"$package.desktop"
+                    done
+                '';
               meta = {
                 platforms = lib.platforms.linux;
                 maintainers = with lib.maintainers; [ dominicegginton ];
