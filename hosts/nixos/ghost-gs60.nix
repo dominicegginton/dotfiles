@@ -87,6 +87,7 @@
     enable = true;
     hostname = "${hostname}.${tailnet}";
     settings = {
+      teleemetry.stats.network_bandwidth = true;
       auth.enabled = false;
       motion.enabled = true;
       record.enabled = true;
@@ -101,17 +102,26 @@
             { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_main"; roles = [ "record" ]; }
             { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_sub"; roles = [ "detect" ]; }
           ];
+          webui_url = "http://192.168.1.44";
         };
         "02" = {
           ffmpeg.inputs = [
             { path = "rtsp://frigate:frigate@192.168.1.44/preview_02_main"; roles = [ "record" ]; }
             { path = "rtsp://frigate:frigate@192.168.1.44/Preview_02_sub"; roles = [ "detect" ]; }
           ];
+          webui_url = "http://192.168.1.44";
         };
-        "03".ffmpeg.inputs = [
-          { path = "rtsp://frigate:frigate123@192.168.1.186:554/Preview_01_main"; roles = [ "record" ]; }
-          { path = "rtsp://frigate:frigate123@192.168.1.186:554/Preview_01_sub"; roles = [ "detect" ]; }
-        ];
+        "03" = {
+          ffmpeg.inputs = [
+            { path = "rtsp://frigate:frigate123@192.168.1.186:554/Preview_01_main"; roles = [ "record" ]; }
+            { path = "rtsp://frigate:frigate123@192.168.1.186:554/Preview_01_sub"; roles = [ "detect" ]; }
+          ];
+          webui_url = "http://192.168.1.186";
+        };
+      };
+      camera_groups = {
+        front = [ "02" "03" ];
+        back = [ "01" ];
       };
     };
   };
