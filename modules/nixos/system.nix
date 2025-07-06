@@ -96,9 +96,9 @@
     };
     environment = {
       variables = {
-        EDITOR = "helix";
-        SYSTEMD_EDITOR = "helix";
-        VISUAL = "helix";
+        EDITOR = "ad";
+        SYSTEMD_EDITOR = "ad";
+        VISUAL = "ad";
         PAGER = "less";
       };
       etc.issue.text = ''
@@ -120,7 +120,7 @@
         (lib.hiPrio uutils-findutils)
         (lib.hiPrio uutils-diffutils)
         (if stdenv.isLinux then trashy else darwin.trash)
-        helix
+        ad
         fzf
         ripgrep
         ripgrep-all
