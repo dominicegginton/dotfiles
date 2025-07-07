@@ -183,6 +183,53 @@ rec {
             })
           { };
       };
+      local-web-app = prev.callPackage
+        ({ stdenv, lib, chromium }: stdenv.mkDerivation rec {
+          pname = "local-web-app";
+          version = "1.0";
+          dontBuild = true;
+          dontUnpack = true;
+          installPhase = ''
+            mkdir -p $out/share/doc/${pname}
+            cat > $out/share/doc/${pname}/${pname}.html <<EOF
+            <html>
+            <head>
+            <title>${pname}</title>
+            <style>
+            * { background: blue; color: white; }
+            </style>
+            </head>
+            <body>
+            <h1>${pname}</h1>
+            <p>${meta.description}</p>
+            </body>
+            </html>
+            EOF
+            mkdir -p $out/bin
+            cat > $out/bin/${pname} <<EOF
+            #!${stdenv.shell}
+            exec ${lib.getExe chromium} --app=file://$out/share/doc/${pname}/${pname}.html
+            EOF
+            chmod +x $out/bin/${pname} 
+            mkdir -p $out/share/applications
+            cat > $out/share/applications/${pname}.desktop <<EOF
+            [Desktop Entry]
+            Version=${version}
+            Name=${pname}
+            Comment=${meta.description}
+            Exec=$out/bin/${pname}
+            Terminal=false
+            Type=Application
+            Categories=Utility;
+            EOF
+          '';
+          meta = {
+            description = "A simple example package";
+            license = with prev.lib.licenses; [ mit ];
+            maintainers = with prev.lib.maintainers; [ dominicegginton ];
+          };
+        })
+        { };
     };
   };
   default = final: prev: {
