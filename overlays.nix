@@ -79,8 +79,7 @@ rec {
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
               export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
-              desktopFiles=$(find /run/current-system/sw/share/applications /etc/profiles/per-user/*/share/applications ~/.local/share/applications -name "*.desktop" -print)
-              selection=$(echo "$desktopFiles" | fzf -i --prompt "Run: " --preview "cat {}")
+              desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
               if [ -z "$selection" ]; then
                 exit 1;
               fi
@@ -147,8 +146,8 @@ rec {
               installPhase =
                 let
                   nix-index-database = builtins.fetchurl {
-                    url = "https://github.com/nix-community/nix-index-database/releases/download/2025-06-29-034928/index-x86_64-linux";
-                    sha256 = "ca077887a89c8dc194361f282b24dc11acde744b2aab96bde640ea915f7f3baf";
+                    url = "https://github.com/nix-community/nix-index-database/releases/download/2025-07-06-034719/index-x86_64-linux";
+                    sha256 = "b8f0b5d94d2b43716e4f0e26dbc9f141b238c3f516618b592c2a9435cdacd8a1";
                   };
                 in
                 ''
