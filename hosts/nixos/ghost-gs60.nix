@@ -83,12 +83,10 @@
 
   # testing frigate
   secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
-  services.nginx.tailscaleAuth.virtualHosts = [ "${hostname}.${tailnet}" ];
   services.frigate = {
     enable = true;
     hostname = "${hostname}.${tailnet}";
     settings = {
-      teleemetry.stats.network_bandwidth = true;
       auth.enabled = false;
       motion.enabled = true;
       record.enabled = true;
@@ -119,10 +117,6 @@
           ];
           webui_url = "http://192.168.1.186";
         };
-      };
-      camera_groups = {
-        front = [ "02" "03" ];
-        back = [ "01" ];
       };
     };
   };

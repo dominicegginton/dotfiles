@@ -21,6 +21,7 @@ with lib;
           "docker"
           "kvm"
           "abdusers"
+          "davfs2"
         ];
       };
 

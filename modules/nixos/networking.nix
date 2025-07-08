@@ -49,6 +49,7 @@ with config.lib.topology;
     };
     services.tailscaleAuth.enable = true;
     services.nginx.tailscaleAuth.enable = true;
+    services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
     topology.self.interfaces = {
       lo = {
