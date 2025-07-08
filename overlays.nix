@@ -80,6 +80,7 @@ rec {
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
               export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
               desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
+              selection=$(printf "$desktopFiles" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Run: ")
               if [ -z "$selection" ]; then
                 exit 1;
               fi
@@ -89,7 +90,6 @@ rec {
                   exit 1;
                 fi
               else
-                ## if there is only one Exec= line, use that
                 execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
               fi
               if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then 
