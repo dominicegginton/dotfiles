@@ -80,6 +80,8 @@
     };
   };
 
+  # testing silver bullet
+  services.silverbullet.enable = true;
 
   # testing frigate
   secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
