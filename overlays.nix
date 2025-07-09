@@ -80,7 +80,7 @@ rec {
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
               export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
               desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
-              selection=$(printf "$desktopFiles" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Run: ")
+              selection=$(echo "$desktopFiles" | ${prev.lib.getExe prev.fzf} --prompt "Run: ")
               if [ -z "$selection" ]; then
                 exit 1;
               fi
