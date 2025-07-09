@@ -134,8 +134,8 @@ with config.scheme.withHashtag;
         }
       }
       overview {
-        zoom 0.5
-        backdrop-color "${blue}"
+        zoom 1.0
+        backdrop-color "${magenta}"
       }
       binds {
         Mod+Shift+Slash                                                { show-hotkey-overlay; }
@@ -274,11 +274,11 @@ with config.scheme.withHashtag;
         match is-floating=true
         shadow {
           on
-          softness 50
-          spread 50
-          offset x=0 y=100
+          softness 100
+          spread 40
+          offset x=0 y=80
           draw-behind-window true
-          color "${base07}"
+          color "${base07}40"
         }
       }
       window-rule {
@@ -299,6 +299,7 @@ with config.scheme.withHashtag;
     environment = {
       variables = {
         NIXOS_OZONE_WL = "1";
+        ELECTRON_OZONE_PLATFORM_HINT = "auto";
         DISPLAY = ":0";
       };
       systemPackages = with pkgs; [

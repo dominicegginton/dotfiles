@@ -9,7 +9,7 @@ rec {
     //
     { lib = prev.lib // outputs.lib; };
   };
-  bleeding = _: prev: {
+  bleeding = final: prev: {
     bleeding = import inputs.nixpkgs-bleeding
       { inherit (prev) system hostPlatform config; overlays = [ default ]; }
     //
@@ -76,30 +76,37 @@ rec {
         '';
         clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
         launcher = prev.writeShellScriptBin "karren-launcher" ''
+          if [ $(pgrep -c karren-launcher) -gt 1 ]; then
+            ${prev.libnotify}/bin/notify-send --urgency=critical "Karren Launcher" "Another instance of Karren Launcher is already running."
+            exit 1;
+          fi
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
               export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
               desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
-              selection=$(echo "$desktopFiles" | ${prev.lib.getExe prev.fzf} --prompt "Run: ")
+              selection=$(echo "$desktopFiles" | fzf -i --no-sort --prompt "Run: ")
               if [ -z "$selection" ]; then
                 exit 1;
               fi
               if [ $(cat "$selection" | grep -c '^Exec=') -gt 1 ]; then
-                execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//' | fzf --prompt "Select Exec command: " --no-sort)
-                if [ -z "$execCommand" ]; then
-                  exit 1;
-                fi
+                execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//' | fzf -i --prompt "Exec: " --no-sort)
               else
                 execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
+              fi
+              if [ -z "$execCommand" ]; then
+                exit 1;
               fi
               if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then 
                 execCommand="alacritty --command $execCommand";
               fi
-              nohup sh -c "$execCommand || notify-send --urgency=critical 'Karren Launcher' 'Failed to run $selection'" > /dev/null 2>&1 &
-              if echo "$execCommand" | grep -q "nix run"; then
-                notify-send "Karren Launcher" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
+              if [ -z "$execCommand" ]; then
+                exit 1;
               fi
-              sleep 0.1
+              if echo "$execCommand" | grep -q "nix run"; then
+                notify-send "Karren" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
+                execCommand="$execCommand || { notify-send --urgency=critical 'Karren' 'Failed to run: $execCommand'; exit 1; }" 
+              fi
+              nohup sh -c "$execCommand &" > /dev/null 2>&1
             '')};
         '';
         tv-desktop = prev.callPackage
@@ -167,6 +174,9 @@ rec {
                   Name="Lazy: $package"
                   Type=Application
                   Exec=nix run "nixpkgs#$package"
+                  Terminal=false
+                  Categories=Utility;
+                  Comment="Run the package $package using nix run"
                   EOF
                       desktop-file-validate $out/share/applications/"$package.desktop"
                     done
