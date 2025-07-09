@@ -14,6 +14,8 @@ Declarative System, Package & Home Configurations - WIP Always
 - **Bitwarden Managed Secrets** - System wide secrets and user passwords managed by _bsm_ & _bw_.
 - **CVS Scanning & AV** - Automatic CVS vulnerability scanning using _Vulnix_ and AV providded by _CalmAV_.
 - **Automated GCS Backups** - Automated backups to _Google Cloud Storage Buckets_.
+- **Peer-to-peer secure VPN** - _Tailscale_ zero config virtual private mesh networking.
+- **Private DNS Service** - Prvicy-fixused and security-oriented domain name service by _NextDNS_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
 - **Binary Caching** - Binaries are cached on _Cachix_ for fast builds of development shells and packages.
 - **Topology Diagrams** - Automated infrastructure and network diagrams using _nix-topology_.

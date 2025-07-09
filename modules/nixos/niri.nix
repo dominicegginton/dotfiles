@@ -113,7 +113,7 @@ with config.scheme.withHashtag;
           urgent-color "${yellow}"
         }
         border {
-          width 2
+          width 0
           active-color "${blue}"
           inactive-color "${base07}"
           urgent-color "${yellow}"
@@ -271,15 +271,24 @@ with config.scheme.withHashtag;
         }
       }
       window-rule {
+        match is-floating=true
+        shadow {
+          on
+          softness 50
+          spread 50
+          offset x=0 y=100
+          draw-behind-window true
+          color "${base07}"
+        }
+      }
+      window-rule {
         match app-id="karren"
         open-floating true
         open-focused true
         min-width 880
         max-width 880
-        min-height 470
-        max-height 470
-        default-column-width { fixed 880; }
-        default-window-height { fixed 470; }
+        default-column-width { proportion 0.5; }
+        default-window-height { proportion 0.3; } 
       }
     '';
     security.polkit.enable = true;

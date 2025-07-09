@@ -20,8 +20,7 @@ export default ({ format = "%H:%M - %A %e" }) => {
       spacing={8}
       css={`
         padding: 8px;
-        border-radius: 4px;
-        background-color: #268bd2;
+        background-color: tansparent;
       `}
     >
       <box vertical hexpand>
