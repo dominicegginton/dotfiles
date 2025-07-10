@@ -5,6 +5,7 @@
     package = pkgs.home-assistant;
     openFirewall = true;
     lovelaceConfigWritable = true;
+    configWritable = true;
     config = {
       lovelace.mode = "storage";
       homeassistant = {
@@ -13,12 +14,16 @@
         time_zone = "Europe/London";
         temperature_unit = "C";
       };
-      frontend = { themes = "!include_dir_merge_named themes"; };
       mobile_app = { };
+      history = { };
     };
     extraComponents = [
       "default_config"
       "esphome"
+      "my"
+      "shopping_list"
+      "wled"
+      "history"
       "met"
       "date"
       "datetime"
