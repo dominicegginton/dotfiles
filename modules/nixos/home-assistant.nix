@@ -17,6 +17,11 @@
       mobile_app = { };
       history = { };
     };
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [ mushroom advanced-camera-card ];
+    customComponents = with pkgs.home-assistant-custom-components; [ frigate ];
+
+
+
     extraComponents = [
       "default_config"
       "esphome"
@@ -38,6 +43,37 @@
       "media_player"
       "rest_command"
       "mobile_app"
+      "media_source"
+      "mqtt"
+
+      "unifi"
+      "monzo"
+      "metoffice"
+      "cast"
+      "rest"
+      "thread"
+      "threshold"
+      "time"
+      "time_date"
+      "timer"
+      "tmb"
+      "tod"
+      "todo"
+
+      "google_assistant"
+      "google_assistant_sdk"
+      "google_cloud"
+      "google_drive"
+      "google_gemini"
+      "google_generative_ai_conversation"
+      "google_mail"
+      "google_maps"
+      "google_photos"
+      "google_pubsub"
+      "google_sheets"
+      "google_tasks"
+      "google_translate"
+      "google_travel_time"
     ];
   };
 }

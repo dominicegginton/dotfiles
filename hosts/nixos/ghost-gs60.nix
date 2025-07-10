@@ -88,8 +88,19 @@
     openFirewall = true;
   };
 
+
   # testing frigate
   secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
+  services.mosquitto = {
+    enable = true;
+    listeners = [
+      {
+        acl = [ "pattern readwrite #" ];
+        omitPasswordAuth = true;
+        settings.allow_anonymous = true;
+      }
+    ];
+  };
   services.frigate = {
     enable = true;
     hostname = "${hostname}.${tailnet}";
@@ -98,6 +109,14 @@
       motion.enabled = true;
       record.enabled = true;
       snapshots.enabled = true;
+      # mqtt = {
+      #   enable = true;
+      #   host = "localhost";
+      #   port = 1883;
+      #   user = "";
+      #   password = "";
+      #   tls_insecure = true;
+      # };
       detect = {
         enabled = true;
         fps = 5;
