@@ -61,6 +61,10 @@ rec {
       '';
       karren = {
         system-manager = prev.writeShellScriptBin "karren-system-manager" ''
+          if [ $(${prev.toybox}/bin/pgrep -c karren-system-m) -gt 1 ]; then
+            ${prev.libnotify}/bin/notify-send --urgency=critical "Karren System Manager" "Already running, please close the previous instance first."; 
+            exit 1;
+          fi
           ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-system-manager-runtime" ''
               selection=$(printf "suspend\nreboot\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select action: ")
@@ -76,7 +80,7 @@ rec {
         '';
         clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''${prev.lib.getExe prev.cliphist} list | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " | ${prev.lib.getExe prev.cliphist} decode | ${prev.wl-clipboard}/bin/wl-copy'')};'';
         launcher = prev.writeShellScriptBin "karren-launcher" ''
-          if [ $(pgrep -c karren-launcher) -gt 1 ]; then
+          if [ $(${prev.toybox}/bin/pgrep -c karren-launcher) -gt 1 ]; then
             ${prev.libnotify}/bin/notify-send --urgency=critical "Karren Launcher" "Another instance of Karren Launcher is already running."
             exit 1;
           fi
@@ -84,7 +88,7 @@ rec {
             ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
               export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH; 
               desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
-              selection=$(echo "$desktopFiles" | fzf -i --no-sort --prompt "Run: ")
+              selection=$(echo "$desktopFiles" | fzf --prompt "Run: ")
               if [ -z "$selection" ]; then
                 exit 1;
               fi
@@ -104,7 +108,7 @@ rec {
               fi
               if echo "$execCommand" | grep -q "nix run"; then
                 notify-send "Karren" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
-                execCommand="$execCommand || { notify-send --urgency=critical 'Karren' 'Failed to run: $execCommand'; exit 1; }" 
+                execCommand="$execCommand || { notify-send --urgency=critical 'Karren' 'Failed to run: $execCommand'; exit 1; } && { notify-send 'Karren' 'Successfully ran: $execCommand'; exit 0; }"
               fi
               nohup sh -c "$execCommand &" > /dev/null 2>&1
             '')};

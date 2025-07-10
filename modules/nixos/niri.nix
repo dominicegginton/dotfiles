@@ -137,11 +137,56 @@ with config.scheme.withHashtag;
         zoom 1.0
         backdrop-color "${magenta}"
       }
+      layer-rule {
+        match namespace="^notifications$" 
+        block-out-from "screencast"
+      }
+      window-rule {
+        match
+        draw-border-with-background false
+        geometry-corner-radius 4.0 4.0 4.0 4.0
+        clip-to-geometry true
+      }
+      window-rule {
+        match is-window-cast-target=true
+        focus-ring {
+          active-color "${red}"
+          inactive-color "${red}"
+        }
+        border {
+          active-color "${red}"
+          inactive-color "${red}"
+        }
+        tab-indicator {
+          active-color "${red}"
+          inactive-color "${red}"
+        }
+      }
+      window-rule {
+        match is-floating=true
+        shadow {
+          on
+          softness 100
+          spread 40
+          offset x=0 y=80
+          draw-behind-window true
+          color "${base07}40"
+        }
+      }
+      window-rule {
+        match app-id="karren"
+        open-floating true
+        open-focused true
+        min-width 880
+        max-width 880
+        default-column-width { proportion 0.5; }
+        default-window-height { proportion 0.3; } 
+      }
       binds {
         Mod+Shift+Slash                                                { show-hotkey-overlay; }
         Mod+O                repeat=false                              { toggle-overview; }
         Mod+Shift+Q                                                    { close-window; }
-        Mod+T                hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
+        Mod+Return           hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
         Mod+Space            hotkey-overlay-title="Karren Launcher"    { spawn "${lib.getExe pkgs.bleeding.karren.launcher}"; }
         Mod+Shift+Escape     hotkey-overlay-title="Karren Sys Manager" { spawn "${lib.getExe pkgs.bleeding.karren.system-manager}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock-effects}" "-S" "--effect-blur" "10x10"; }
@@ -248,47 +293,6 @@ with config.scheme.withHashtag;
         Mod+Shift+Equal                                                { set-window-height "+10%"; }
         Mod+Shift+V                                                    { toggle-window-floating; }
         Mod+Shift+W                                                    { toggle-column-tabbed-display; }
-      }
-      window-rule {
-        match
-        draw-border-with-background false
-        geometry-corner-radius 4.0 4.0 4.0 4.0
-        clip-to-geometry true
-      }
-      window-rule {
-        match is-window-cast-target=true
-        focus-ring {
-          active-color "${red}"
-          inactive-color "${red}"
-        }
-        border {
-          active-color "${red}"
-          inactive-color "${red}"
-        }
-        tab-indicator {
-          active-color "${red}"
-          inactive-color "${red}"
-        }
-      }
-      window-rule {
-        match is-floating=true
-        shadow {
-          on
-          softness 100
-          spread 40
-          offset x=0 y=80
-          draw-behind-window true
-          color "${base07}40"
-        }
-      }
-      window-rule {
-        match app-id="karren"
-        open-floating true
-        open-focused true
-        min-width 880
-        max-width 880
-        default-column-width { proportion 0.5; }
-        default-window-height { proportion 0.3; } 
       }
     '';
     security.polkit.enable = true;
