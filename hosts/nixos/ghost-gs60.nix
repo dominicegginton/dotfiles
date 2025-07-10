@@ -109,14 +109,6 @@
       motion.enabled = true;
       record.enabled = true;
       snapshots.enabled = true;
-      # mqtt = {
-      #   enable = true;
-      #   host = "localhost";
-      #   port = 1883;
-      #   user = "";
-      #   password = "";
-      #   tls_insecure = true;
-      # };
       detect = {
         enabled = true;
         fps = 5;
