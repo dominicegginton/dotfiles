@@ -10,20 +10,18 @@
       lovelace.mode = "storage";
       frontend.themes = "!include_dir_merge_named themes";
       homeassistant = {
-        name = "Quandon";
+        name = "Quardon";
         unit_system = "metric";
         time_zone = "Europe/London";
         temperature_unit = "C";
       };
+      default_config = { };
       mobile_app = { };
       history = { };
       http = { };
     };
-    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [ mushroom advanced-camera-card ];
     customComponents = with pkgs.home-assistant-custom-components; [ frigate ];
-
-
-
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [ mushroom advanced-camera-card ];
     extraComponents = [
       "default_config"
       "esphome"
@@ -47,9 +45,6 @@
       "mobile_app"
       "media_source"
       "mqtt"
-
-      "unifi"
-      "monzo"
       "metoffice"
       "cast"
       "rest"
@@ -58,24 +53,10 @@
       "time"
       "time_date"
       "timer"
-      "tmb"
       "tod"
       "todo"
-
-      "google_assistant"
-      "google_assistant_sdk"
-      "google_cloud"
-      "google_drive"
-      "google_gemini"
-      "google_generative_ai_conversation"
-      "google_mail"
-      "google_maps"
-      "google_photos"
-      "google_pubsub"
-      "google_sheets"
-      "google_tasks"
-      "google_translate"
-      "google_travel_time"
+      "unifi"
+      "monzo"
     ];
   };
 }
