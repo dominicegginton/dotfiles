@@ -83,11 +83,10 @@
   # testing silverbullet
   services.silverbullet = {
     enable = true;
-    listenAddress = hostname;
     listenPort = 8765;
+    listenAddress = "0.0.0.0";
     openFirewall = true;
   };
-
 
   # testing frigate
   secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";

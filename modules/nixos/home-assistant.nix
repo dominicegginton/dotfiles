@@ -8,14 +8,16 @@
     configWritable = true;
     config = {
       lovelace.mode = "storage";
+      frontend.themes = "!include_dir_merge_named themes";
       homeassistant = {
-        name = "Home";
+        name = "Quandon";
         unit_system = "metric";
         time_zone = "Europe/London";
         temperature_unit = "C";
       };
       mobile_app = { };
       history = { };
+      http = { };
     };
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [ mushroom advanced-camera-card ];
     customComponents = with pkgs.home-assistant-custom-components; [ frigate ];
