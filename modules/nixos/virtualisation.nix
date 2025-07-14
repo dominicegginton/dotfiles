@@ -21,5 +21,10 @@
       };
     };
     environment.systemPackages = with pkgs; lib.mkIf config.virtualisation.docker.enable [ qemu docker ];
+    topology.self.interfaces.docker0 = {
+      type = "bridge";
+      virtual = true;
+      addresses = [ "localhost" "127.0.0.1" ];
+    };
   };
 }

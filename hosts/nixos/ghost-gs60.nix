@@ -71,47 +71,12 @@
   networking.wireless.enable = true;
   services.unifi.enable = true;
   services.home-assistant.enable = true;
-  topology.self = {
-    hardware.info = "MSI Ghost GS60";
-    interfaces.eth0 = {
-      network = "burbage";
-      type = "ethernet";
-      physicalConnections = [ (config.lib.topology.mkConnection "quardon-switch-secondary" "eth2") ];
-    };
-  };
-
-  # testing silverbullet
-  services.silverbullet = {
-    enable = true;
-    listenPort = 8765;
-    listenAddress = "0.0.0.0";
-    openFirewall = true;
-  };
-
-  # testing frigate
-  secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
-  services.mosquitto = {
-    enable = true;
-    listeners = [
-      {
-        acl = [ "pattern readwrite #" ];
-        omitPasswordAuth = true;
-        settings.allow_anonymous = true;
-      }
-    ];
-  };
+  services.silverbullet.enable = true;
+  services.mosquitto.enable = true;
+  secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3"; ## todo: use
   services.frigate = {
     enable = true;
-    hostname = "${hostname}.${tailnet}";
     settings = {
-      auth.enabled = false;
-      motion.enabled = true;
-      record.enabled = true;
-      snapshots.enabled = true;
-      detect = {
-        enabled = true;
-        fps = 5;
-      };
       cameras = {
         "01" = {
           ffmpeg.inputs = [
@@ -135,6 +100,15 @@
           webui_url = "http://192.168.1.200";
         };
       };
+    };
+  };
+  topology.self = {
+    hardware.info = "MSI Ghost GS60";
+    interfaces.eth0 = {
+      network = "burbage";
+      type = "ethernet";
+      addresses = [ hostname ];
+      physicalConnections = [ (config.lib.topology.mkConnection "quardon-switch-secondary" "eth2") ];
     };
   };
 }

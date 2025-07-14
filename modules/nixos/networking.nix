@@ -47,7 +47,7 @@ with config.lib.topology;
       extraSetFlags = [ "--posture-checking=true" ];
       interfaceName = "tailscale0";
     };
-    services.tailscaleAuth.enable = true;
+    services.tailscaleAuth.enable = (config.services.nginx.enable && config.services.tailscale.enable);
     services.nginx.tailscaleAuth.enable = true;
     services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
@@ -57,19 +57,14 @@ with config.lib.topology;
         virtual = true;
         addresses = [ "localhost" "127.0.0.1" ];
       };
-      docker0 = {
-        type = "bridge";
-        virtual = true;
-        addresses = [ "localhost" "127.0.0.1" ];
-      };
       wlp108s0 = lib.mkIf config.networking.wireless.enable {
         type = "wifi";
+        addresses = [ hostname ];
         physicalConnections = [
           (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
-          (mkConnection "ribble-router-downstairs" "wlan0")
-          (mkConnection "ribble-router-upstairs" "wlan0")
+          (mkConnection "ribble-ap" "wlan0")
         ];
       };
       tailscale0 = {

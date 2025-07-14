@@ -2,10 +2,12 @@
 
 {
   config = lib.mkIf config.services.unifi.enable {
-    services.unifi.openFirewall = true;
-    services.unifi.unifiPackage = pkgs.unifi;
-    services.unifi.mongodbPackage = pkgs.mongodb-7_0;
-    topology.self.services.homepage-dashboard = {
+    services.unifi = {
+      unifiPackage = pkgs.unifi;
+      mongodbPackage = pkgs.mongodb-7_0;
+      openFirewall = true;
+    };
+    topology.self.services.unifi = {
       name = "Unifi";
       icon = ./../../assets/unifi.svg;
       details = {

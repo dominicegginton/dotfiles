@@ -6,10 +6,13 @@
     "${modulesPath}/profiles/qemu-guest.nix"
     ./backup.nix
     ./bluetooth.nix
+    ./frigate.nix
     ./home-assistant.nix
+    ./mosquitto.nix
     ./networking.nix
     ./niri.nix
     ./secrets.nix
+    ./silverbullet.nix
     ./steam.nix
     ./system.nix
     ./unifi.nix
