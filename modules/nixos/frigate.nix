@@ -3,7 +3,7 @@
 {
   config = lib.mkIf config.services.frigate.enable {
     services.frigate = {
-      hostname = "${hostname}.${tailnet}";
+      hostname = "fg.${hostname}";
       settings = {
         auth.enabled = false;
         motion.enabled = true;
@@ -19,4 +19,3 @@
     services.mosquitto.enable = true;
   };
 }
-

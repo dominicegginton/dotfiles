@@ -47,7 +47,7 @@ with config.lib.topology;
       extraSetFlags = [ "--posture-checking=true" ];
       interfaceName = "tailscale0";
     };
-    services.tailscaleAuth.enable = (config.services.nginx.enable && config.services.tailscale.enable);
+    services.tailscaleAuth.enable = true;
     services.nginx.tailscaleAuth.enable = true;
     services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
