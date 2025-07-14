@@ -21,7 +21,14 @@
       http = { };
     };
     customComponents = with pkgs.home-assistant-custom-components; [ frigate ];
-    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [ mushroom advanced-camera-card ];
+    customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
+      advanced-camera-card
+      bubble-card
+      card-mod
+      clock-weather-card
+      mini-graph-card
+      mushroom
+    ];
     extraComponents = [
       "default_config"
       "esphome"
