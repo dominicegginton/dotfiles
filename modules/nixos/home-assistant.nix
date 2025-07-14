@@ -20,7 +20,11 @@
       history = { };
       http = { };
     };
-    customComponents = with pkgs.home-assistant-custom-components; [ frigate ];
+    customComponents = with pkgs.home-assistant-custom-components; [
+      adaptive_lighting
+      frigate
+      waste_collection_schedule
+    ];
     customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
       advanced-camera-card
       bubble-card
