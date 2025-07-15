@@ -73,7 +73,10 @@ rec {
               elif [ "$selection" = "reboot" ]; then
                 ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
               elif [ "$selection" = "suspend" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend
+                ${prev.lib.getExe prev.gum} confirm "Suspend?" && {
+                  nohup sh -c "${prev.lib.getExe prev.swaylock-effects} -FS --effect-blur 10x10" > /dev/null 2>&1 &
+                  ${prev.systemd}/bin/systemctl suspend
+                }
               fi
               sleep 0.1
             '')};
