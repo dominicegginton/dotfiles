@@ -92,7 +92,8 @@ rec {
               if [ -z "$selection" ]; then
                 exit 1;
               fi
-              gsettings set org.gnome.desktop.interface color-scheme prefer-$selection
+              ${prev.glib}/bin/gsettings set org.gnome.desktop.interface color-scheme prefer-$selection
+              sleep 0.1
             '')};
         '';
         clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''
