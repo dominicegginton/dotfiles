@@ -81,6 +81,20 @@ rec {
               sleep 0.1
             '')};
         '';
+        theme-switcher = prev.writeShellScriptBin "karren-theme-switcher" ''
+          if [ $(${prev.toybox}/bin/pgrep -c karren-theme-swit) -gt 1 ]; then
+            ${prev.libnotify}/bin/notify-send --urgency=critical "Karren Theme Switcher" "Another instance of Karren Theme Switcher is already running."
+            exit 1;
+          fi
+          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
+            ${prev.lib.getExe (prev.writeShellScriptBin "karren-theme-switcher-runtime" ''
+              selection=$(printf "light\ndark" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select theme: ")
+              if [ -z "$selection" ]; then
+                exit 1;
+              fi
+              gsettings set org.gnome.desktop.interface color-scheme prefer-$selection
+            '')};
+        '';
         clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''
           if [ $(${prev.toybox}/bin/pgrep -c karren-clipboar) -gt 1 ]; then
             ${prev.libnotify}/bin/notify-send --urgency=critical "Karren Clipboard History" "Another instance of Karren Clipboard History is already running."
