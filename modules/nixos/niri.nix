@@ -37,34 +37,64 @@ with config.scheme.withHashtag;
       [global]
       follow = keyboard
       timeout = 0
+      height = (0, 300)
+      origin = top-right
+      offset = (35, 35)
+      indicate_hidden = yes
+      notification_limit = 5
+      gap_size = 12
+      padding = 12
+      horizontal_padding = 20
+      frame_width = 1
+      sort = no
+      progress_bar_frame_width = 0
+      progress_bar_corner_radius = 3
+      foreground = "${base07}"
       frame_color = "${base00}"
+      highlight = "${base07}, ${base00}"
       separator_color = "${base00}"
+      markup = full
+      alignment = left
+      vertical_alignment = center
+      show_age_threshold = -1
+      hide_deuplicate_count = false
+      icon_position = left
+      min_icon_size = 54
+      max_icon_size = 80
+      icon_corner_radius = 4
+      corner_radius = 10
       [low]
       msg_urency = "low"
       frame_color = "${base07}"
       separator_color = "${base07}"
+      timeout = 3
       [normal]
       msg_urency = "normal"
       frame_color = "${base07}"
       separator_color = "${base07}"
+      timeout = 5
       [critical]
       msg_urency = "critical"
       frame_color = "${yellow}"
       separator_color = "${yellow}"
+      timeout = 0
+      [fullscreen_delay_everything]
+      fullscreen = delay
+      [fullscreen_show_critical]
+      msg_urency = critical
+      fullscreen = show
     '';
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
-      spawn-at-startup "${lib.getExe pkgs.dunst}" "--config" "${config.environment.etc."dunst/dunstrc".source}"
+      spawn-at-startup "${pkgs.dunst}/bin/dunst" "--config" "${config.environment.etc."dunst/dunstrc".source}"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.bluez}/bin/bluetoothctl" "power" "on"''}
-      ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${lib.getExe pkgs.cups-browsed}"''}
-      environment {
-        DISPLAY ":0"
-      }
+      ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsd" "-l"''}
+      ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsenable"''}
       hotkey-overlay {
         skip-at-startup
         hide-not-bound
@@ -138,7 +168,7 @@ with config.scheme.withHashtag;
         backdrop-color "${magenta}"
       }
       layer-rule {
-        match namespace="^notifications$" 
+        match namespace="^notifications$"
         block-out-from "screencast"
       }
       window-rule {
@@ -180,7 +210,7 @@ with config.scheme.withHashtag;
         min-width 880
         max-width 880
         default-column-width { proportion 0.5; }
-        default-window-height { proportion 0.3; } 
+        default-window-height { proportion 0.3; }
       }
       binds {
         Mod+Shift+Slash                                                { show-hotkey-overlay; }
@@ -321,6 +351,7 @@ with config.scheme.withHashtag;
         evince
         bleeding.karren.lazy-desktop
         bleeding.karren.tv-desktop
+        bleeding.karren.hl-desktop
       ];
     };
     fonts = {
