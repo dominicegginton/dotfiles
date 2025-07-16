@@ -38,9 +38,9 @@ export default ({ monitor }: { monitor: number }) => {
       visible={niri.overviewIsOpen.get()}
       exclusivity={Astal.Exclusivity.IGNORE}
       anchor={TOP | LEFT | RIGHT}
-      marginTop={104}
-      marginLeft={300}
-      marginRight={300}
+      marginTop={100}
+      marginLeft={50}
+      marginRight={50}
       application={App}
       css={`
         background: transparent;

@@ -92,7 +92,8 @@ rec {
               if [ -z "$selection" ]; then
                 exit 1;
               fi
-              ${prev.glib}/bin/gsettings set org.gnome.desktop.interface color-scheme prefer-$selection
+              ${prev.glib}/bin/gsettings set org.gnome.desktop.interface color-scheme "prefer-$selection"
+              ${prev.libnotify}/bin/notify-send "Karren Theme Switcher" "Switched to $selection theme."
               sleep 0.1
             '')};
         '';

@@ -5,7 +5,7 @@ import Volume from "./widgets/Volume";
 let monitors: Record<number, any> = {};
 
 App.start({
-  instanceName: "residence",
+  instanceName: "residence" + Math.random().toString(36).substring(2, 15),
   main() {
     function render() {
       for (const monitor in App.get_monitors()) {
