@@ -59,215 +59,218 @@ rec {
           exit 1;
         }
       '';
-      karren = {
-        system-manager = prev.writeShellScriptBin "karren-system-manager" ''
-          if [ $(${prev.toybox}/bin/pgrep -c karren-system-m) -gt 1 ]; then
-            ${prev.libnotify}/bin/notify-send --urgency=critical "Karren System Manager" "Already running, please close the previous instance first.";
-            exit 1;
-          fi
-          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
-            ${prev.lib.getExe (prev.writeShellScriptBin "karren-system-manager-runtime" ''
+      karren =
+        let
+          alacrittyConiguration = (prev.formats.toml { }).generate "alacritty-config.toml" {
+            colors = {
+              primary = {
+                background = "#6c71c1";
+                foreground = "#FDF6E3";
+              };
+            };
+          };
+
+          karrenScript = runtimeScript: prev.writeShellScriptBin "karren" ''
+            set -efu -o pipefail
+            if [ $(${prev.toybox}/bin/pgrep -c karren) -gt 1 ]; then
+              ${prev.libnotify}/bin/notify-send --urgency=critical "Karren" "Another instance of Karren is already running."
+              exit 1;
+            fi
+
+            ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConiguration}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
+          '';
+        in
+
+
+        {
+          system-manager =
+
+            let
+              lockscreenscript = "${prev.swaylock-effects}/bin/swaylock-effects -FS --effect-blur 10x10";
+            in
+
+            karrenScript ''
               selection=$(printf "suspend\nreboot\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select action: ")
+              if [ -z "$selection" ]; then
+                exit 1;
+              fi
               if [ "$selection" = "shutdown" ]; then
                 ${prev.lib.getExe prev.gum} confirm "Shutdown?" && ${prev.systemd}/bin/systemctl poweroff
               elif [ "$selection" = "reboot" ]; then
                 ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
               elif [ "$selection" = "suspend" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Suspend?" && {
-                  nohup sh -c "${prev.lib.getExe prev.swaylock-effects} -FS --effect-blur 10x10" > /dev/null 2>&1 &
-                  ${prev.systemd}/bin/systemctl suspend
-                }
+                ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend && ${lockscreenscript}
               fi
-              sleep 0.1
-            '')};
-        '';
-        theme-switcher = prev.writeShellScriptBin "karren-theme-switcher" ''
-          if [ $(${prev.toybox}/bin/pgrep -c karren-theme-swit) -gt 1 ]; then
-            ${prev.libnotify}/bin/notify-send --urgency=critical "Karren Theme Switcher" "Another instance of Karren Theme Switcher is already running."
-            exit 1;
-          fi
-          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
-            ${prev.lib.getExe (prev.writeShellScriptBin "karren-theme-switcher-runtime" ''
-              selection=$(printf "light\ndark" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select theme: ")
-              if [ -z "$selection" ]; then
-                exit 1;
-              fi
-              ${prev.glib}/bin/gsettings set org.gnome.desktop.interface color-scheme "prefer-$selection"
-              ${prev.libnotify}/bin/notify-send "Karren Theme Switcher" "Switched to $selection theme."
-              sleep 0.1
-            '')};
-        '';
-        clipboard-history = prev.writeShellScriptBin "karren-clipboard-history" ''
-          if [ $(${prev.toybox}/bin/pgrep -c karren-clipboar) -gt 1 ]; then
-            ${prev.libnotify}/bin/notify-send --urgency=critical "Karren Clipboard History" "Another instance of Karren Clipboard History is already running."
-            exit 1;
-          fi
-          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
-            ${prev.lib.getExe (prev.writeShellScriptBin "karren-clipboard-history-runtime" ''
-              ${prev.lib.getExe prev.cliphist} list \
-                | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select clipboard entry: " \
-                  | ${prev.lib.getExe prev.cliphist} decode \
-                    | ${prev.wl-clipboard}/bin/wl-copy
-            '')};
-        '';
-        launcher = prev.writeShellScriptBin "karren-launcher" ''
-          if [ $(${prev.toybox}/bin/pgrep -c karren-launcher) -gt 1 ]; then
-            ${prev.libnotify}/bin/notify-send --urgency=critical "Karren Launcher" "Another instance of Karren Launcher is already running."
-            exit 1;
-          fi
-          ${prev.lib.getExe prev.alacritty} --title "karren" --class "karren" --command \
-            ${prev.lib.getExe (prev.writeShellScriptBin "karren-lunacher-runtime" ''
-              export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH;
-              desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
-              selection=$(echo "$desktopFiles" | fzf --prompt "Run: ")
-              if [ -z "$selection" ]; then
-                exit 1;
-              fi
-              if [ $(cat "$selection" | grep -c '^Exec=') -gt 1 ]; then
-                execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//' | fzf -i --prompt "Exec: " --no-sort)
-              else
-                execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
-              fi
-              if [ -z "$execCommand" ]; then
-                exit 1;
-              fi
-              if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then
-                execCommand="alacritty --command $execCommand";
-              fi
-              if [ -z "$execCommand" ]; then
-                exit 1;
-              fi
-              if echo "$execCommand" | grep -q "nix run"; then
-                notify-send "Karren" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
-              execCommand="$execCommand || { notify-send --urgency=critical 'Karren' 'Failed to run: $execCommand'; exit 1; } && { notify-send 'Karren' 'Successfully ran: $execCommand'; exit 0; }"
-              fi
-              nohup sh -c "$execCommand &" > /dev/null 2>&1
-            '')};
-        '';
-        hl-desktop = prev.callPackage
-          ({ lib, stdenv, desktop-file-utils, chromium }:
-            stdenv.mkDerivation {
-              name = "karren.hl-desktop";
-              buildInputs = [ desktop-file-utils ];
-              dontUnpack = true;
-              dontBuild = true;
-              installPhase =
-                let
-                  urls = {
-                    sb = "http://sb.ghost-gs60";
-                    ha = "https://ha.ghost-gs60";
-                    fg = "https://fg.ghost-gs60";
-                  };
-                in
-                ''
-                  mkdir -p $out/share/applications
-                  ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: url: ''
-                    cat > $out/share/applications/karren-hl-${name}.desktop << EOF
-                  [Desktop Entry]
-                  Version=1.0
-                  Name="Karren HL: ${name}"
-                  Type=Application
-                  Exec=${lib.getExe chromium} --app=${url}
-                  EOF
-                    desktop-file-validate $out/share/applications/karren-hl-${name}.desktop
-                  '') urls)}
-                '';
-              meta = {
-                platforms = lib.platforms.linux;
-                maintainers = with lib.maintainers; [ dominicegginton ];
-                description = ''
-                  A package with desktop files for homelab services.
-                  When a .desktop is executed it will open the service in chromium application mode.
-                '';
-              };
-            })
-          { };
-        tv-desktop = prev.callPackage
-          ({ lib, stdenv, desktop-file-utils, chromium }:
-            stdenv.mkDerivation {
-              name = "karren.tv-desktop";
-              buildInputs = [ desktop-file-utils ];
-              dontUnpack = true;
-              dontBuild = true;
-              installPhase =
-                let
-                  urls = {
-                    youtube = "https://www.youtube.com";
-                    netflix = "https://www.netflix.com";
-                  };
-                in
-                ''
-                  mkdir -p $out/share/applications
-                  ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: url: ''
-                    cat > $out/share/applications/karren-tv-${name}.desktop << EOF
-                  [Desktop Entry]
-                  Version=1.0
-                  Name="Karren TV: ${name}"
-                  Type=Application
-                  Exec=${lib.getExe chromium} --app=${url}
-                  EOF
-                    desktop-file-validate $out/share/applications/karren-tv-${name}.desktop
-                  '') urls)}
-                '';
-              meta = {
-                platforms = lib.platforms.linux;
-                maintainers = with lib.maintainers; [ dominicegginton ];
-                description = ''
-                  A package with desktop files for popular TV streaming services.
-                  When a .desktop is executed it will open the service in chromium application mode.
-                '';
-              };
-            })
-          { };
-        lazy-desktop = prev.callPackage
-          ({ lib, stdenv, nix-index, desktop-file-utils }:
-            stdenv.mkDerivation {
-              name = "karren.lazy-desktop";
-              buildInputs = [ nix-index desktop-file-utils ];
-              dontUnpack = true;
-              dontBuild = true;
-              installPhase =
-                let
-                  nix-index-database = builtins.fetchurl {
-                    url = "https://github.com/nix-community/nix-index-database/releases/download/2025-07-06-034719/index-x86_64-linux";
-                    sha256 = "b8f0b5d94d2b43716e4f0e26dbc9f141b238c3f516618b592c2a9435cdacd8a1";
-                  };
-                in
-                ''
-                  mkdir -p $out/share/applications
-                  ln -s ${nix-index-database} files
-                  nix-locate \
-                    --db . \
-                    --top-level \
-                    --minimal \
-                    --regex \
-                    '/share/applications/.*\.desktop$' \
-                    | while read -r package
-                    do
-                      cat > $out/share/applications/"$package.desktop" << EOF
-                  [Desktop Entry]
-                  Version=1.0
-                  Name="Lazy: $package"
-                  Type=Application
-                  Exec=nix run "nixpkgs#$package"
-                  Terminal=false
-                  Categories=Utility;
-                  Comment="Run the package $package using nix run"
-                  EOF
-                      desktop-file-validate $out/share/applications/"$package.desktop"
-                    done
-                '';
-              meta = {
-                platforms = lib.platforms.linux;
-                maintainers = with lib.maintainers; [ dominicegginton ];
-                description = ''
-                  A package with desktop files for all packages in the nix-index database.
-                  When a .desktop is executed it will run the package using `nix run nixpkgs#package`.
-                '';
-              };
-            })
-          { };
-      };
+            '';
+          theme-switcher = karrenScript ''
+            selection=$(printf "light\ndark" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select theme: ")
+            if [ -z "$selection" ]; then
+              exit 1;
+            fi
+            ${prev.glib}/bin/gsettings set org.gnome.desktop.interface color-scheme "prefer-$selection"
+            ${prev.libnotify}/bin/notify-send "Karren Theme Switcher" "Switched to $selection theme."
+            sleep 0.1
+          '';
+          clipboard-history = karrenScript ''
+            selection=$(${prev.cliphist}/bin/cliphist list | ${prev.fzf}/bin/fzf --no-sort --prompt "Select clipboard entry: ")
+            if [ -z "$selection" ]; then
+              exit 1;
+            fi
+            echo "$selection" | ${prev.cliphist}/bin/cliphist decode | ${prev.wl-clipboard}/bin/wl-copy
+            ${prev.libnotify}/bin/notify-send "Karren Clipboard History" "Copied clipboard entry to clipboard."
+            sleep 0.1
+          '';
+          launcher = karrenScript ''
+            export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH
+            desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
+            selection=$(echo "$desktopFiles" | ${prev.fzf}/bin/fzf --prompt "Run: ")
+            if [ -z "$selection" ]; then
+              exit 1;
+            fi
+            if [ $(cat "$selection" | grep -c '^Exec=') -gt 1 ]; then
+              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//' | ${prev.fzf}/bin/fzf -i --prompt "Exec: " --no-sort)
+            else
+              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
+            fi
+            if [ -z "$execCommand" ]; then
+              exit 1;
+            fi
+            if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then
+              execCommand="alacritty --command $execCommand"
+            fi
+            if [ -z "$execCommand" ]; then
+              exit 1;
+            fi
+            if echo "$execCommand" | grep -q "nix run"; then
+              ${prev.libnotify}/bin/notify-send "Karren" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
+              execCommand="$execCommand || { ${prev.libnotify}/bin/notify-send --urgency=critical 'Karren' 'Failed to run: $execCommand'; exit 1; } && { ${prev.libnotify}/bin/notify-send 'Karren' 'Successfully ran: $execCommand'; exit 0; }"
+            fi
+            nohup sh -c "$execCommand &" > /dev/null 2>&1
+          '';
+          hl-desktop = prev.callPackage
+            ({ lib, stdenv, desktop-file-utils, chromium }:
+              stdenv.mkDerivation {
+                name = "karren.hl-desktop";
+                buildInputs = [ desktop-file-utils ];
+                dontUnpack = true;
+                dontBuild = true;
+                installPhase =
+                  let
+                    urls = {
+                      sb = "http://sb.ghost-gs60";
+                      ha = "https://ha.ghost-gs60";
+                      fg = "https://fg.ghost-gs60";
+                    };
+                  in
+                  ''
+                    mkdir -p $out/share/applications
+                    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: url: ''
+                      cat > $out/share/applications/karren-hl-${name}.desktop << EOF
+                    [Desktop Entry]
+                    Version=1.0
+                    Name="Karren HL: ${name}"
+                    Type=Application
+                    Exec=${lib.getExe chromium} --app=${url}
+                    EOF
+                      desktop-file-validate $out/share/applications/karren-hl-${name}.desktop
+                    '') urls)}
+                  '';
+                meta = {
+                  platforms = lib.platforms.linux;
+                  maintainers = with lib.maintainers; [ dominicegginton ];
+                  description = ''
+                    A package with desktop files for homelab services.
+                    When a .desktop is executed it will open the service in chromium application mode.
+                  '';
+                };
+              })
+            { };
+          tv-desktop = prev.callPackage
+            ({ lib, stdenv, desktop-file-utils, chromium }:
+              stdenv.mkDerivation {
+                name = "karren.tv-desktop";
+                buildInputs = [ desktop-file-utils ];
+                dontUnpack = true;
+                dontBuild = true;
+                installPhase =
+                  let
+                    urls = {
+                      youtube = "https://www.youtube.com";
+                      netflix = "https://www.netflix.com";
+                    };
+                  in
+                  ''
+                    mkdir -p $out/share/applications
+                    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: url: ''
+                      cat > $out/share/applications/karren-tv-${name}.desktop << EOF
+                    [Desktop Entry]
+                    Version=1.0
+                    Name="Karren TV: ${name}"
+                    Type=Application
+                    Exec=${lib.getExe chromium} --app=${url}
+                    EOF
+                      desktop-file-validate $out/share/applications/karren-tv-${name}.desktop
+                    '') urls)}
+                  '';
+                meta = {
+                  platforms = lib.platforms.linux;
+                  maintainers = with lib.maintainers; [ dominicegginton ];
+                  description = ''
+                    A package with desktop files for popular TV streaming services.
+                    When a .desktop is executed it will open the service in chromium application mode.
+                  '';
+                };
+              })
+            { };
+          lazy-desktop = prev.callPackage
+            ({ lib, stdenv, nix-index, desktop-file-utils }:
+              stdenv.mkDerivation {
+                name = "karren.lazy-desktop";
+                buildInputs = [ nix-index desktop-file-utils ];
+                dontUnpack = true;
+                dontBuild = true;
+                installPhase =
+                  let
+                    nix-index-database = builtins.fetchurl {
+                      url = "https://github.com/nix-community/nix-index-database/releases/download/2025-07-06-034719/index-x86_64-linux";
+                      sha256 = "b8f0b5d94d2b43716e4f0e26dbc9f141b238c3f516618b592c2a9435cdacd8a1";
+                    };
+                  in
+                  ''
+                    mkdir -p $out/share/applications
+                    ln -s ${nix-index-database} files
+                    nix-locate \
+                      --db . \
+                      --top-level \
+                      --minimal \
+                      --regex \
+                      '/share/applications/.*\.desktop$' \
+                      | while read -r package
+                      do
+                        cat > $out/share/applications/"$package.desktop" << EOF
+                    [Desktop Entry]
+                    Version=1.0
+                    Name="Lazy: $package"
+                    Type=Application
+                    Exec=nix run "nixpkgs#$package"
+                    Terminal=false
+                    Categories=Utility;
+                    Comment="Run the package $package using nix run"
+                    EOF
+                        desktop-file-validate $out/share/applications/"$package.desktop"
+                      done
+                  '';
+                meta = {
+                  platforms = lib.platforms.linux;
+                  maintainers = with lib.maintainers; [ dominicegginton ];
+                  description = ''
+                    A package with desktop files for all packages in the nix-index database.
+                    When a .desktop is executed it will run the package using `nix run nixpkgs#package`.
+                  '';
+                };
+              })
+            { };
+        };
       local-web-app = prev.callPackage
         ({ stdenv, lib, chromium }: stdenv.mkDerivation rec {
           pname = "local-web-app";

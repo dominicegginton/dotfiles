@@ -4,6 +4,7 @@ rec {
   nixosStateVersion = "24.05";
   darwinStateVersion = 5;
   tailnet = "soay-puffin.ts.net";
+  theme = "solarized-light";
   nixosHostnames = inputs.nixpkgs.lib.attrNames outputs.nixosConfigurations;
   darwinHostnames = inputs.nixpkgs.lib.attrNames outputs.darwinConfigurations;
   hostnames = nixosHostnames ++ darwinHostnames;
@@ -36,7 +37,7 @@ rec {
         ./hosts/nixos/${hostname}.nix
         (if hostname == "nixos-installer" then inputs.nixos-images.nixosModules.image-installer else ./modules/nixos)
         {
-          scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml";
+          scheme = "${inputs.tt-schemes}/base16/${theme}.yaml";
           home-manager = {
             extraSpecialArgs = specialArgs;
             useGlobalPkgs = true;
@@ -46,7 +47,7 @@ rec {
               inputs.base16.homeManagerModule
               inputs.ags.homeManagerModules.default
               {
-                scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml";
+                scheme = "${inputs.tt-schemes}/base16/${theme}.yaml";
                 home = { stateVersion = nixosStateVersion; };
               }
               ./modules/home-manager
@@ -78,7 +79,7 @@ rec {
             inputs.base16.homeManagerModule
             inputs.ags.homeManagerModules.default
             {
-              scheme = "${inputs.tt-schemes}/base16/solarized-light.yaml";
+              scheme = "${inputs.tt-schemes}/base16/${theme}.yaml";
               home.stateVersion = nixosStateVersion;
             }
             ./modules/home-manager

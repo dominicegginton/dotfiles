@@ -338,25 +338,25 @@ with config.scheme.withHashtag;
         DISPLAY = ":0";
       };
       systemPackages = with pkgs; [
-        resources                       # System Monitor
-        systemdgenie                    # Systemd Manager
-        dconf-edotor                    # Dconf Editor
-        gnome-tweaks                    # GNOME Tweaks
-        clamtk                          # Antivirus
-        wpa_supplicant_gui              # Wi-Fi Connection Manager
-        wdisplays                       # Display Manager
-        pavucontrol                     # PulseAudio Volume Control
-        swaysettings                    # Sway Settings
-        nautilus                        # File Manager
-        sushi                           # File Previewer
-        clapper                         # Media Player
-        loupe                           # Image Viewer
-        file-roller                     # Archive Manager
-        evince                          # Document Viewer
-        gnome-font-viewer               # Font Viewer
-        gnome-calendar                  # Calendar
+        resources # System Monitor
+        systemdgenie # Systemd Manager
+        dconf-edotor # Dconf Editor
+        gnome-tweaks # GNOME Tweaks
+        clamtk # Antivirus
+        wpa_supplicant_gui # Wi-Fi Connection Manager
+        wdisplays # Display Manager
+        pavucontrol # PulseAudio Volume Control
+        swaysettings # Sway Settings
+        nautilus # File Manager
+        sushi # File Previewer
+        clapper # Media Player
+        loupe # Image Viewer
+        file-roller # Archive Manager
+        evince # Document Viewer
+        gnome-font-viewer # Font Viewer
+        gnome-calendar # Calendar
         bleeding.karren.lazy-desktop
-        bleeding.karren.tv-desktop      
+        bleeding.karren.tv-desktop
         bleeding.karren.hl-desktop
       ];
     };
