@@ -340,8 +340,7 @@ with config.scheme.withHashtag;
       systemPackages = with pkgs; [
         resources # System Monitor
         systemdgenie # Systemd Manager
-        dconf-edotor # Dconf Editor
-        gnome-tweaks # GNOME Tweaks
+        dconf-editor # Dconf Editor
         clamtk # Antivirus
         wpa_supplicant_gui # Wi-Fi Connection Manager
         wdisplays # Display Manager
