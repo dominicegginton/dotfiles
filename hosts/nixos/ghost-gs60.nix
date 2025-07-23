@@ -1,4 +1,4 @@
-{ inputs, config, lib, hostname, tailnet, ... }:
+{ inputs, config, lib, hostname, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [

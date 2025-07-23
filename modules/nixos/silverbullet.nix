@@ -1,4 +1,4 @@
-{ config, lib, hostname, tailnet, ... }:
+{ config, lib, hostname, ... }:
 
 {
   config = lib.mkIf config.services.silverbullet.enable {

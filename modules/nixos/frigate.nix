@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, tailnet, ... }:
+{ config, lib, hostname, ... }:
 
 {
   config = lib.mkIf config.services.frigate.enable {

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 {
   config.services.mosquitto = lib.mkIf config.services.mosquitto.enable {
