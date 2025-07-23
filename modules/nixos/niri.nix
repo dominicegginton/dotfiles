@@ -15,7 +15,6 @@ with config.scheme.withHashtag;
         configPackages = [ pkgs.niri ];
       };
     };
-    services.tlp.enable = true;
     services.printing.enable = true;
     services.pipewire = {
       enable = true;
@@ -41,7 +40,6 @@ with config.scheme.withHashtag;
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
-      ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.bluez}/bin/bluetoothctl" "power" "on"''}
       ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsd" "-l"''}
       ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsenable"''}
       hotkey-overlay {

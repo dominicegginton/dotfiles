@@ -75,6 +75,7 @@
           workbench.activityBar.location = "top";
           workbench.sideBar.location = "right";
           workbench.startupEditor = "none";
+          terminal.integrated.defaultProfile.linux = "zsh";
         };
       };
     };

@@ -11,14 +11,11 @@
         operation = "switch";
         persistent = true;
       };
-      activationScripts = {
-        diff.text = ''
-          if [[ -e /run/current-system ]]; then
-            ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
-          fi
-        '';
-        residence.text = "cat /etc/issue";
-      };
+      activationScripts.diff.text = ''
+        if [[ -e /run/current-system ]]; then
+          ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+        fi
+      '';
       nixos = {
         distroName = lib.mkDefault "Residence";
         distroId = lib.mkDefault "residence";
@@ -81,6 +78,7 @@
       dbus.enable = true;
       smartd.enable = true;
       thermald.enable = true;
+      power-profiles-daemon.enable = true;
     };
     programs = {
       zsh = {
@@ -101,20 +99,6 @@
         VISUAL = "ad";
         PAGER = "less";
       };
-      etc.issue.text = ''
-                  `'::.
-              _________H ,%%&%,
-             /\     _   \%&&%%&%
-            /  \___/^\___\%&%%&&
-            |  | []   [] |%\Y&%'
-            |  |   .-.   | ||
-          ~~@._|@@_|||_@@|~||~~~~~~~~~~~~~
-               `""") )"""`
-        ▗▄▄▖ ▗▄▄▄▖ ▗▄▄▖▗▄▄▄▖▗▄▄▄ ▗▄▄▄▖▗▖  ▗▖ ▗▄▄▖▗▄▄▄▖
-        ▐▌ ▐▌▐▌   ▐▌     █  ▐▌  █▐▌   ▐▛▚▖▐▌▐▌   ▐▌
-        ▐▛▀▚▖▐▛▀▀▘ ▝▀▚▖  █  ▐▌  █▐▛▀▀▘▐▌ ▝▜▌▐▌   ▐▛▀▀▘
-        ▐▌ ▐▌▐▙▄▄▖▗▄▄▞▘▗▄█▄▖▐▙▄▄▀▐▙▄▄▖▐▌  ▐▌▝▚▄▄▖▐▙▄▄▖
-      '';
       systemPackages = with pkgs; [
         (lib.hiPrio uutils-coreutils-noprefix)
         (lib.hiPrio uutils-findutils)
@@ -147,6 +131,7 @@
         git-lfs
         pinentry
         pinentry-curses
+        power-profiles-daemon
       ];
     };
   };
