@@ -34,10 +34,11 @@ export default (monitor: Gdk.Monitor) => {
   const win = (
     <window
       name="top-bar"
+      namespace="top-bar"
       application={App}
       gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.IGNORE}
-      layer={Astal.Layer.OVERLAY}
+      layer={Astal.Layer.TOP}
       visible={niri.overviewIsOpen.get()}
       anchor={TOP | LEFT | RIGHT}
       marginTop={100}
