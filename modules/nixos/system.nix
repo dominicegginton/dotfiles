@@ -79,6 +79,7 @@
       smartd.enable = true;
       thermald.enable = true;
       power-profiles-daemon.enable = true;
+      upower.enable = true;
     };
     programs = {
       zsh = {

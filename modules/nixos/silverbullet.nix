@@ -7,14 +7,14 @@
       listenPort = 8765;
       openFirewall = false;
     };
-    services.nginx.virtualHosts."sb.${hostname}".locations."/".proxyPass = "http://${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
+    services.nginx.virtualHosts."sb.${hostname}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/".proxyPass = "http://${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
+    };
     topology.self.services.silverbullet = {
       name = "Silverbullet";
-      details = {
-        listen = {
-          text = "${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
-        };
-      };
+      details.listen.text = "sb.${hostname}";
     };
   };
 }

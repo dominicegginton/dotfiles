@@ -72,6 +72,12 @@
       ];
     };
 
+    services.nginx.virtualHosts."homeassistant.${config.networking.hostName}" = {
+      forceSSL = true;
+      enableACME = true;
+      locations."/".proxyPass = "http://${builtins.elemAt config.services.home-assistant.config.http.server_host 0}:${toString config.services.home-assistant.config.http.server_port}";
+    };
+
     services.mosquitto.enable = true;
   };
 }
