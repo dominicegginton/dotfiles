@@ -20,7 +20,7 @@ export default ({ format = "%H:%M - %A %e" }) => {
       spacing={8}
       css={`
         padding: 8px;
-        background-color: tansparent;
+        background-color: none;
       `}
     >
       <box vertical hexpand>
@@ -48,7 +48,7 @@ export default ({ format = "%H:%M - %A %e" }) => {
 
       <box
         css={`
-          background: transparent;
+          background: none;
           border: none;
         `}
         valign={Gtk.Align.CENTER}

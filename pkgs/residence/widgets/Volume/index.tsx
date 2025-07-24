@@ -47,18 +47,17 @@ const OnScreenProgress = ({ visible }) => {
   );
 };
 
-export default function OSD({ monitor }: { monitor: number }) {
+export default function OSD(monitor: Astal.Monitor) {
   const visible = Variable(false);
   const { RIGHT } = Astal.WindowAnchor;
 
   return (
     <window
       name="osd"
-      namespace="osd"
       visible={visible()}
       reactive={false}
       css="background: none;"
-      monitor={monitor}
+      gdkmonitor={monitor}
       application={App}
       layer={Astal.Layer.OVERLAY}
       exclusivity={Astal.Exclusivity.IGNORE}

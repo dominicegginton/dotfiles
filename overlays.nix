@@ -69,26 +69,21 @@ rec {
               };
             };
           };
-
           karrenScript = runtimeScript: prev.writeShellScriptBin "karren" ''
             set -efu -o pipefail
             if [ $(${prev.toybox}/bin/pgrep -c karren) -gt 1 ]; then
-              ${prev.libnotify}/bin/notify-send --urgency=critical "Karren" "Another instance of Karren is already running."
+              ${prev.libnotify}/bin/notify-send --urgency=critical --app "Karren" "Karren" "Another instance of is already running." "Please close all existing Karren windows before starting a new one."
               exit 1;
             fi
 
             ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConiguration}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
           '';
         in
-
-
         {
           system-manager =
-
             let
               lockscreenscript = "${prev.swaylock-effects}/bin/swaylock-effects -FS --effect-blur 10x10";
             in
-
             karrenScript ''
               selection=$(printf "suspend\nreboot\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select action: ")
               if [ -z "$selection" ]; then
@@ -108,7 +103,7 @@ rec {
               exit 1;
             fi
             ${prev.glib}/bin/gsettings set org.gnome.desktop.interface color-scheme "prefer-$selection"
-            ${prev.libnotify}/bin/notify-send "Karren Theme Switcher" "Switched to $selection theme."
+            ${prev.libnotify}/bin/notify-send --app "Karren" "" "Switched to $selection theme."
             sleep 0.1
           '';
           clipboard-history = karrenScript ''
@@ -117,7 +112,7 @@ rec {
               exit 1;
             fi
             echo "$selection" | ${prev.cliphist}/bin/cliphist decode | ${prev.wl-clipboard}/bin/wl-copy
-            ${prev.libnotify}/bin/notify-send "Karren Clipboard History" "Copied clipboard entry to clipboard."
+            ${prev.libnotify}/bin/notify-send --app "Karren" "" "Copied clipboard entry to clipboard."
             sleep 0.1
           '';
           launcher = karrenScript ''
@@ -142,8 +137,8 @@ rec {
               exit 1;
             fi
             if echo "$execCommand" | grep -q "nix run"; then
-              ${prev.libnotify}/bin/notify-send "Karren" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
-              execCommand="$execCommand || { ${prev.libnotify}/bin/notify-send --urgency=critical 'Karren' 'Failed to run: $execCommand'; exit 1; } && { ${prev.libnotify}/bin/notify-send 'Karren' 'Successfully ran: $execCommand'; exit 0; }"
+              ${prev.libnotify}/bin/notify-send --app "Karren" "" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
+              execCommand="$execCommand || { ${prev.libnotify}/bin/notify-send --urgency=critical --app "Karren" "" "Failed to run: $execCommand"; exit 1; } && { ${prev.libnotify}/bin/notify-send --app "Karren" "" "Successfully ran: $execCommand"; exit 0; }"
             fi
             nohup sh -c "$execCommand &" > /dev/null 2>&1
           '';
