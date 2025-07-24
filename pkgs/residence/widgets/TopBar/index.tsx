@@ -42,9 +42,7 @@ export default ({ monitor }: { monitor: number }) => {
       marginLeft={50}
       marginRight={50}
       application={App}
-      css={`
-        background: transparent;
-      `}
+      css="background: none;"
       child={
         <centerbox
           start_widget={LeftModules}

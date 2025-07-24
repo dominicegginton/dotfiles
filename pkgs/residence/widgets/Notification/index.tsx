@@ -12,10 +12,9 @@ const fileExists = (path: string) => GLib.file_test(path, GLib.FileTest.EXISTS);
 const time = (time: number, format = "%H:%M") =>
   GLib.DateTime.new_from_unix_local(time).format(format)!;
 
-const urgency = (n: AstalNotifd.Notification) => {
+const urgency = ({ urgency }: AstalNotifd.Notification) => {
   const { LOW, NORMAL, CRITICAL } = AstalNotifd.Urgency;
-  // match operator when?
-  switch (n.urgency) {
+  switch (urgency) {
     case LOW:
       return "low";
     case CRITICAL:
@@ -39,7 +38,7 @@ export function Notification(props: Props) {
   const icon = n.appIcon || n.desktopEntry;
   return (
     <eventbox
-      className={`Notification ${urgency(n)}`}
+      className={urgency(n)}
       setup={setup}
       onHoverLost={onHoverLost}
     >
@@ -55,7 +54,7 @@ export function Notification(props: Props) {
             label={n.appName || "Unknown"}
           />
           <label className="time" hexpand halign={END} label={time(n.time)} />
-          <button onClicked={() => n.dismiss()}>
+          <button onClicked={() => n.dismiss()} halign={END}>
             <icon icon="window-close-symbolic" />
           </button>
         </box>
@@ -71,7 +70,7 @@ export function Notification(props: Props) {
             />
           )}
           {n.image && isIcon(n.image) && (
-            <box expand={false} valign={START} className="icon-image">
+            <box expand={false} valign={START}> 
               <icon icon={n.image} expand halign={CENTER} valign={CENTER} />
             </box>
           )}
@@ -113,7 +112,7 @@ const TIMEOUT_DELAY = 5000;
 
 // The purpose if this class is to replace Variable<Array<Widget>>
 // with a Map<number, Widget> type in order to track notification widgets
-// by their id, while making it conviniently bindable as an array
+// by their id, while making it conveniently bindable as an array
 class NotificationMap implements Subscribable {
   // the underlying map to keep track of id widget pairs
   private map: Map<number, Gtk.Widget> = new Map();
@@ -147,8 +146,8 @@ class NotificationMap implements Subscribable {
           // once hovering over the notification is done
           // destroy the widget without calling notification.dismiss()
           // so that it acts as a "popup" and we can still display it
-          // in a notification center like widget
-          // but clicking on the close button will close it
+          // in a notification ceclose buttondget
+          // but clicking on the notification will close it
           onHoverLost: () => this.delete(id),
 
           // notifd by default does not close notifications
@@ -198,14 +197,20 @@ class NotificationMap implements Subscribable {
 }
 
 export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
-  const { BOTTOM, RIGHT } = Astal.WindowAnchor;
+  const { TOP, CENTER } = Astal.WindowAnchor;
   const notifs = new NotificationMap();
 
   return (
     <window
-      className="NotificationPopups"
+      name="notification-popups"
+      namespace="notification-popups"
+      css="background: rgba(0, 0, 0, 0.8); border-radius: 0.5em; padding: 10px; color: white;"
       gdkmonitor={gdkmonitor}
-      anchor={BOTTOM | RIGHT}
+      application={App}
+      exclusivity={Astal.Exclusivity.IGNORE}
+      layer={Astal.Layer.OVERLAY}
+      anchor={TOP | CENTER }
+      marginTop={25}
     >
       <box vertical>{bind(notifs)}</box>
     </window>
