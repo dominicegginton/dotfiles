@@ -1,4 +1,4 @@
-{ lib, dlib, pkgs, ... }:
+{ config, lib, dlib, pkgs, ... }:
 
 with lib;
 
@@ -18,10 +18,10 @@ with lib;
           "input"
           "users"
           "video"
-          "docker"
-          "kvm"
-          "abdusers"
           "davfs2"
+          (lib.optionalString (config.virtualisation.docker.enable) "docker")
+          (lib.optionalString (config.programs.adb.enable) "adbusers")
+          (lib.optionalString (config.programs.adb.enable) "kvm")
         ];
       };
 

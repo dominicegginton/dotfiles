@@ -1,11 +1,11 @@
 import { App, Astal } from "astal/gtk3";
-import { Gtk } from "astal/gtk3";
+import { Gtk, Gdk } from "astal/gtk3";
 import Playback from "./Playback";
 import Time from "./Time";
 import niri from "../../support/niri";
 import { applyOpacityTransition } from "../../support/transitions";
 
-export default ({ monitor }: { monitor: number }) => {
+export default (monitor: Gdk.Monitor) => {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
 
   const LeftModules = (
@@ -34,17 +34,16 @@ export default ({ monitor }: { monitor: number }) => {
   const win = (
     <window
       name="top-bar"
-      monitor={monitor}
-      visible={niri.overviewIsOpen.get()}
+      application={App}
+      gdkmonitor={monitor}
       exclusivity={Astal.Exclusivity.IGNORE}
+      layer={Astal.Layer.OVERLAY}
+      visible={niri.overviewIsOpen.get()}
       anchor={TOP | LEFT | RIGHT}
       marginTop={100}
       marginLeft={50}
       marginRight={50}
-      application={App}
-      css={`
-        background: transparent;
-      `}
+      css="background: none;"
       child={
         <centerbox
           start_widget={LeftModules}

@@ -1,4 +1,4 @@
-{ inputs, config, lib, hostname, tailnet, ... }:
+{ inputs, config, lib, hostname, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
@@ -69,6 +69,8 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   networking.wireless.enable = true;
+  services.logind.lidSwitch = "ignore";
+  services.upower.ignoreLid = true;
   services.unifi.enable = true;
   services.home-assistant.enable = true;
   services.silverbullet.enable = true;

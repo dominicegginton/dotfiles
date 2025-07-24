@@ -1,7 +1,5 @@
 { lib
 , mkShell
-, makeSetupHook
-, writeScript
 , writeShellScriptBin
 , nix
 , nix-output-monitor

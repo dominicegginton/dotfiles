@@ -7,7 +7,7 @@ const Player = (player) => {
     <box
       css={`
         padding: 8px;
-        background: tansparent;
+        background: none;
       `}
     >
       <box

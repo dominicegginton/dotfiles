@@ -1,6 +1,0 @@
-2025-07-15 21:15:33 - [main.c:282] Found config * for output DP-3 ((null))
-2025-07-15 21:15:33 - [main.c:282] Found config * for output DP-4 ((null))
-2025-07-15 21:15:33 - [background-image.c:30] Failed to load background image (Failed to open file “Downloads/bg.jpg”: No such file or directory).
-2025-07-15 21:15:33 - [main.c:610] Failed to load image: Downloads/bg.jpg
-2025-07-15 21:15:50 - [main.c:282] Found config * for output DP-3 ((null))
-2025-07-15 21:15:50 - [main.c:282] Found config * for output DP-4 ((null))
