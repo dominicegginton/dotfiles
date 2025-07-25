@@ -91,8 +91,6 @@
       eza
       gitui
       unstable.teams-for-linux
-      jetbrains.datagrip
-      jetbrains.webstorm
       chromium
       nyxt
       bitwarden-cli
