@@ -24,6 +24,10 @@
         proxyWebsockets = true;
       };
     };
+    security.acme.certs."unifi.${hostname}" = {
+      email = "admin@${hostname}";
+      extraDomains = [ "unifi.${hostname}" ];
+    };
     topology.self.services.unifi = {
       name = "Unifi";
       icon = ./../../assets/unifi.svg;

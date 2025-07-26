@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hostname, ... }:
 
 {
   config = lib.mkIf config.services.home-assistant.enable {
@@ -71,13 +71,15 @@
         "monzo"
       ];
     };
-
+    services.mosquitto.enable = true;
     services.nginx.virtualHosts."homeassistant.${config.networking.hostName}" = {
       forceSSL = true;
       enableACME = true;
       locations."/".proxyPass = "http://${builtins.elemAt config.services.home-assistant.config.http.server_host 0}:${toString config.services.home-assistant.config.http.server_port}";
     };
-
-    services.mosquitto.enable = true;
+    security.acme.certs."sb.${hostname}" = {
+      email = "admin@${hostname}";
+      extraDomains = [ "sb.${hostname}" ];
+    };
   };
 }
