@@ -80,23 +80,22 @@ rec {
           '';
         in
         {
-          system-manager =
-            let
-              lockscreenscript = "${prev.swaylock-effects}/bin/swaylock-effects -FS --effect-blur 10x10";
-            in
-            karrenScript ''
-              selection=$(printf "suspend\nreboot\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select action: ")
-              if [ -z "$selection" ]; then
-                exit 1;
-              fi
-              if [ "$selection" = "shutdown" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Shutdown?" && ${prev.systemd}/bin/systemctl poweroff
-              elif [ "$selection" = "reboot" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
-              elif [ "$selection" = "suspend" ]; then
-                ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend && ${lockscreenscript}
-              fi
-            '';
+          system-manager = karrenScript ''
+            selection=$(${prev.uutils-coreutils-noprefix}/bin/printf "suspend\nreboot\nexit\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "> ")
+            if [ -z "$selection" ]; then
+              exit 1;
+            fi
+            if [ "$selection" = "shutdown" ]; then
+              ${prev.lib.getExe prev.gum} confirm "Shutdown?" && ${prev.systemd}/bin/systemctl poweroff
+            elif [ "$selection" = "reboot" ]; then
+              ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
+            elif [ "$selection" = "exit" ]; then
+              ${prev.lib.getExe prev.gum} confirm "Exit Niri?" && ${prev.niri}/bin/niri msg action quit 
+            elif [ "$selection" = "suspend" ]; then
+              ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend
+            fi
+            ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
+          '';
           theme-switcher = karrenScript ''
             selection=$(printf "light\ndark" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select theme: ")
             if [ -z "$selection" ]; then
