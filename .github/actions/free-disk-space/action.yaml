@@ -4,5 +4,5 @@ runs:
   using: "composite"
   steps:
     - name: free-disk-space
-      run: free-disk-space.sh
+      run: ./github/actions/free-disk-space/free-disk-space.sh
       shell: bash 
