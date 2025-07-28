@@ -49,7 +49,10 @@ with config.lib.topology;
     };
     services.tailscaleAuth.enable = true;
     services.nginx.tailscaleAuth.enable = true;
-    security.acme.acceptTerms = true;
+    security.acme = {
+      acceptTerms = true;
+      email = "admin@${hostname}";
+    };
     services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
     topology.self.interfaces = {
