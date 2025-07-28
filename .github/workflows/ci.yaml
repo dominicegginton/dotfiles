@@ -59,7 +59,7 @@ jobs:
       matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v4
-      - uses: dominicegginton/dotfiles/.github/actions/free-disk-space.yaml@main
+      - uses: ./.github/actions/free-disk-space.yaml
       - uses: cachix/install-nix-action@v31
       - uses: cachix/cachix-action@v16
         with:
