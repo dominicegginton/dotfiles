@@ -1,5 +1,7 @@
 name: Free Disk Space
 description: Free up disk space on runner 
+inputs:
+outputs:
 runs:
   using: "composite"
   steps:
