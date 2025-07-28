@@ -1,5 +1,5 @@
-inputs:
-outputs:
+name: Free Disk Space
+description: Free up disk space on runner 
 runs:
   using: "composite"
   steps:
