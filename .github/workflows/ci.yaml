@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - uses: determinatesystems/flake-checker-action@v12
 
@@ -17,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - run: nix fmt -- --check .
 
@@ -24,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - uses: cachix/cachix-action@v16
         with:
@@ -43,6 +46,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - id: set-matrix
         name: Generate Nix Matrix
@@ -80,16 +84,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
-      - name: free disk space
-        run: |
-          sudo apt clean
-          docker image prune -af
-          sudo apt-get remove -y azure-cli google-cloud-cli google-cloud-cli-anthoscli podman dotnet-sdk-8.0 temurin-8-jdk microsoft-edge-stable google-chrome-stable firefox
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          sudo rm -rf /usr/share/dotnet/
+      - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.latitude-5290.config.system.build.toplevel
 
   latitude-7390:
@@ -97,16 +92,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
-      - name: free disk space
-        run: |
-          sudo apt clean
-          docker image prune -af
-          sudo apt-get remove -y azure-cli google-cloud-cli google-cloud-cli-anthoscli podman dotnet-sdk-8.0 temurin-8-jdk microsoft-edge-stable google-chrome-stable firefox
-          sudo apt-get autoremove -y
-          sudo apt-get clean
-          sudo rm -rf "/usr/local/share/boost"
-          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-          sudo rm -rf /usr/share/dotnet/
+      - uses: ./.github/actions/free-disk-space 
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
 
   iso-installer:
@@ -114,4 +100,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v31
+      - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.nixos-installer.config.system.build.isoImage
