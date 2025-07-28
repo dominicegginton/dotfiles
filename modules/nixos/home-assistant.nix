@@ -77,9 +77,9 @@
       enableACME = true;
       locations."/".proxyPass = "http://${builtins.elemAt config.services.home-assistant.config.http.server_host 0}:${toString config.services.home-assistant.config.http.server_port}";
     };
-    security.acme.certs."sb.${hostname}" = {
-      email = "admin@${hostname}";
-      extraDomains = [ "sb.${hostname}" ];
-    };
+    # security.acme.certs."sb.${hostname}" = {
+    #   email = "admin@${hostname}";
+    #   extraDomains = [ "sb.${hostname}" ];
+    # };
   };
 }
