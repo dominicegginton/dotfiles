@@ -92,7 +92,7 @@
       gitui
       unstable.teams-for-linux
       chromium
-      nyxt
+      # nyxt
       bitwarden-cli
     ];
   };

@@ -51,7 +51,7 @@ with config.lib.topology;
     services.nginx.tailscaleAuth.enable = true;
     security.acme = {
       acceptTerms = true;
-      email = "admin@${hostname}";
+      defaults.email = "admin@${hostname}";
     };
     services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];

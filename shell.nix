@@ -8,6 +8,7 @@
 , nix-diff
 , nix-tree
 , nix-health
+, nix-index
 , clamav
 , google-cloud-sdk
 , opentofu
@@ -27,6 +28,7 @@ mkShell rec {
     nix-diff
     nix-tree
     nix-health
+    nix-index
     clamav
     google-cloud-sdk
     opentofu

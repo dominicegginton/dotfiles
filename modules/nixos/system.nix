@@ -92,6 +92,7 @@
         enable = true;
         pinentryPackage = pkgs.pinentry;
       };
+      command-not-found.enable = true;
     };
     environment = {
       variables = {

@@ -12,10 +12,6 @@
       enableACME = true;
       locations."/".proxyPass = "http://${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
     };
-    # security.acme.certs."sb.${hostname}" = {
-    #   email = "admin@${hostname}";
-    #   extraDomains = [ "sb.${hostname}" ];
-    # };
     topology.self.services.silverbullet = {
       name = "Silverbullet";
       details.listen.text = "sb.${hostname}";
