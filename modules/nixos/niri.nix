@@ -34,7 +34,7 @@ with config.scheme.withHashtag;
     '';
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
-      spawn-at-startup "${pkgs.swaysettings}/bin/sway-wallpaper" "--image" "${./background.jpg}" "--mode" "fill"
+      spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
       spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
