@@ -43,6 +43,9 @@ let
     write_secrets_env() {
       BWS_PROJECT_ID=$(gum input --password --prompt "Bitwarden Secrets Project ID: " --placeholder "********")
       BWS_ACCESS_TOKEN=$(gum input --password --prompt "Bitwarden Secrets Access Token: " --placeholder "********")
+      mkdir -p ${directory} || true
+      chmod 700 ${directory}
+      chown root:root ${directory}
       echo "BWS_PROJECT_ID=$BWS_PROJECT_ID" > ${directory}/secrets.env
       echo "BWS_ACCESS_TOKEN=$BWS_ACCESS_TOKEN" >> ${directory}/secrets.env
       gum log --level info "${directory}/secrets.env created"
@@ -124,14 +127,17 @@ in
       serviceConfig.RemainAfterExit = true;
       script = secrets-install;
     };
-    system.activationScripts.secrets = {
-      deps = [ "specialfs" ];
-      text = ''
-        if [[ -e /run/current-system ]]; then
-          ./${lib.getExe secrets-sync}
-        fi
-      '';
+    system.activationScripts = {
+      secrets = {
+        deps = [ "specialfs" ];
+        text = ''
+          if [[ -e /run/current-system ]]; then
+            ./${lib.getExe secrets-sync}
+          fi
+        '';
+      };
+      users.deps = [ "secrets" ];
     };
-    system.activationScripts.users.deps = [ "secrets" ];
+    environment.systemPackages = [ secrets-sync ];
   };
 }

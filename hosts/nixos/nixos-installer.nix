@@ -8,10 +8,7 @@
 with lib;
 
 {
-  environment.systemPackages = with pkgs; [
-    tailscale
-    status
-  ];
+  environment.systemPackages = with pkgs; [ tailscale status ];
   networking = { hostName = hostname; };
   topology.self = {
     hardware.info = "ad-doc usb flash drive";
