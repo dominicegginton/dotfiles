@@ -27,12 +27,13 @@ const urgency = ({ urgency }: AstalNotifd.Notification) => {
 
 type Props = {
   setup(self: EventBox): void;
+  hide(self: EventBox): void;
   onHoverLost(self: EventBox): void;
   notification: AstalNotifd.Notification;
 };
 
 export function Notification(props: Props) {
-  const { notification: n, onHoverLost, setup } = props;
+  const { notification: n, onHoverLost, setup, hide } = props;
   const { START, CENTER, END } = Gtk.Align;
 
   const icon = n.appIcon || n.desktopEntry;
@@ -54,8 +55,15 @@ export function Notification(props: Props) {
             label={n.appName || "Unknown"}
           />
           <label className="time" hexpand halign={END} label={time(n.time)} />
+          <button
+            onClicked={() => hide()}
+            className="close-button"
+            halign={END}
+          >
+            <icon icon="notification-close-symbolic" />
+          </button>
           <button onClicked={() => n.dismiss()} halign={END}>
-            <icon icon="window-close-symbolic" />
+            <icon icon="notification-clear-symbolic" />
           </button>
         </box>
         <Gtk.Separator visible />
@@ -70,7 +78,7 @@ export function Notification(props: Props) {
             />
           )}
           {n.image && isIcon(n.image) && (
-            <box expand={false} valign={START}> 
+            <box expand={false} valign={START}>
               <icon icon={n.image} expand halign={CENTER} valign={CENTER} />
             </box>
           )}
@@ -142,25 +150,9 @@ class NotificationMap implements Subscribable {
         id,
         Notification({
           notification: notifd.get_notification(id)!,
-
-          // once hovering over the notification is done
-          // destroy the widget without calling notification.dismiss()
-          // so that it acts as a "popup" and we can still display it
-          // in a notification ceclose buttondget
-          // but clicking on the notification will close it
-          onHoverLost: () => this.delete(id),
-
-          // notifd by default does not close notifications
-          // until user input or the timeout specified by sender
-          // which we set to ignore above
-          setup: () =>
-            timeout(TIMEOUT_DELAY, () => {
-              /**
-               * uncomment this if you want to "hide" the notifications
-               * after TIMEOUT_DELAY
-               */
-              // this.delete(id)
-            }),
+          onHoverLost: () => void 0,
+          hide: () => this.delete(id),
+          setup: () => timeout(TIMEOUT_DELAY, () => void 0),
         }),
       );
     });
@@ -209,8 +201,9 @@ export default function NotificationPopups(gdkmonitor: Gdk.Monitor) {
       application={App}
       exclusivity={Astal.Exclusivity.IGNORE}
       layer={Astal.Layer.OVERLAY}
-      anchor={TOP | CENTER }
+      anchor={TOP | CENTER}
       marginTop={25}
+      width={1000}
     >
       <box vertical>{bind(notifs)}</box>
     </window>
