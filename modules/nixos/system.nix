@@ -123,6 +123,7 @@
         smartmontools
         clamav
         bottom
+        htop-vim
         status
         openssl
         openssh

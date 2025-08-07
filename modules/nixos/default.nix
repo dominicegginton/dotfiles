@@ -18,5 +18,6 @@
     ./unifi.nix
     ./users.nix
     ./virtualisation.nix
+    # ./zabbix.nix
   ];
 }
