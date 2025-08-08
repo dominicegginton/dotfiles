@@ -15,13 +15,11 @@ App.start({
     const notifications = new Map<Gdk.Monitor, Gtk.Widget>();
     const volumes = new Map<Gdk.Monitor, Gtk.Widget>();
     for (const gdkmonitor of App.get_monitors()) {
-      console.log("Adding monitor", gdkmonitor);
       topbars.set(gdkmonitor, TopBar(gdkmonitor));
       notifications.set(gdkmonitor, Notification(gdkmonitor));
       volumes.set(gdkmonitor, Volume(gdkmonitor));
     }
     App.connect("monitor-added", (_, gdkmonitor) => {
-      cosole.log("Adding monitor", gdkmonitor);
       if (gdkmonitor.model) {
         topbars.set(gdkmonitor, TopBar(gdkmonitor));
         notifications.set(gdkmonitor, Notification(gdkmonitor));

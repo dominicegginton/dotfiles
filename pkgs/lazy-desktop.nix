@@ -7,8 +7,8 @@ stdenv.mkDerivation {
   installPhase =
     let
       nix-index-database = builtins.fetchurl {
-        url = "https://github.com/nix-community/nix-index-database/releases/download/2025-07-06-034719/index-x86_64-linux";
-        sha256 = "b8f0b5d94d2b43716e4f0e26dbc9f141b238c3f516618b592c2a9435cdacd8a1";
+        url = "https://github.com/nix-community/nix-index-database/releases/download/2025-08-03-040401/index-x86_64-linux";
+        sha256 = "48e55a1857af91690bb952a4f4b6889c99992a8ca0adfafd30aa97ac84941af1";
       };
     in
     ''
@@ -16,7 +16,6 @@ stdenv.mkDerivation {
       ln -s ${nix-index-database} files
       nix-locate \
         --db . \
-        --top-level \
         --minimal \
         --regex \
         '/share/applications/.*\.desktop$' \
