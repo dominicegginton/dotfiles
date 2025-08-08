@@ -80,27 +80,18 @@
     enable = true;
     settings = {
       cameras = {
-        "01" = {
-          ffmpeg.inputs = [
-            { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_main"; roles = [ "record" ]; }
-            { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_sub"; roles = [ "detect" ]; }
-          ];
-          webui_url = "http://192.168.1.44";
-        };
-        "02" = {
-          ffmpeg.inputs = [
-            { path = "rtsp://frigate:frigate@192.168.1.44/preview_02_main"; roles = [ "record" ]; }
-            { path = "rtsp://frigate:frigate@192.168.1.44/Preview_02_sub"; roles = [ "detect" ]; }
-          ];
-          webui_url = "http://192.168.1.44";
-        };
-        "03" = {
-          ffmpeg.inputs = [
-            { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_main"; roles = [ "record" ]; }
-            { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_sub"; roles = [ "detect" ]; }
-          ];
-          webui_url = "http://192.168.1.200";
-        };
+        "01".ffmpeg.inputs = [
+          { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_main"; roles = [ "record" ]; }
+          { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_sub"; roles = [ "detect" ]; }
+        ];
+        "02".ffmpeg.inputs = [
+          { path = "rtsp://frigate:frigate@192.168.1.44/preview_02_main"; roles = [ "record" ]; }
+          { path = "rtsp://frigate:frigate@192.168.1.44/Preview_02_sub"; roles = [ "detect" ]; }
+        ];
+        "03".ffmpeg.inputs = [
+          { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_main"; roles = [ "record" ]; }
+          { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_sub"; roles = [ "detect" ]; }
+        ];
       };
     };
   };

@@ -19,6 +19,8 @@ rec {
   eachPlatformMerge = op: platforms: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then platforms else platforms ++ [ builtins.currentSystem ]);
   eachPlatform = eachPlatformMerge (f: attrs: platform: let ret = f platform; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${platform} = ret.${key}; }; }) attrs (builtins.attrNames ret));
   packagesFrom = module: platform: module.packages.${platform};
+  ffmpegReolinkCamera = { ip, port ? 554, username ? "frigate", password ? "frigate", streams ? [{ stream = "Preview_01_main"; roles = [ "record" ]; } { steam = "Preview_01_sub"; roles = [ "detect" ]; }] }:
+    { ffmpeg.inputs = builtins.map ({ stream, roles }: { inherit roles; path = "rtsp://${username}:${password}@${ip}:${port}/${stream}"; }) streams; };
   nixosSystem = { hostname, platform ? "x86_64-linux", ... } @args:
     inputs.nixpkgs.lib.nixosSystem ((builtins.removeAttrs args [ "hostname" ]) // rec {
       pkgs = outputs.legacyPackages.${platform};

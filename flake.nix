@@ -123,6 +123,7 @@ rec {
       nixosConfigurations.latitude-5290 = nixosSystem { hostname = "latitude-5290"; };
       nixosConfigurations.latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
       nixosConfigurations.nixos-installer = nixosSystem { hostname = "nixos-installer"; };
+      nixosConfigurations.walsgrave = nixosSystem { hostname = "walsgrave"; };
       darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
       githubActions = mkGithubMatrix { checks = getAttrs (attrNames githubPlatforms) self.devShells; };
     };
