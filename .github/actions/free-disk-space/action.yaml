@@ -35,7 +35,7 @@ runs:
       if: steps.environment-check.outputs.is_supported == 'true'
       shell: bash
       run: |
-        input_protocol="${{ inputs.hatchet-protocol }}"
+        input_protocol="cleave"
         # Convert to lowercase for case-insensitive comparison
         input_protocol="$(tr '[:upper:]' '[:lower:]' <<< "$input_protocol")"
         
@@ -96,7 +96,7 @@ runs:
         loop_dev=$(sudo losetup --find)
         loop_num=${loop_dev##*/loop}
 
-        if sudo fallocate -l $((free_space - ${{ inputs.mnt-safe-haven }}))M "/mnt/disk${loop_num}.img"; then
+        if sudo fallocate -l $((free_space - 1024M "/mnt/disk${loop_num}.img"; then
           sudo losetup ${loop_dev} "/mnt/disk${loop_num}.img"
         fi
           
@@ -109,11 +109,6 @@ runs:
         sudo mkdir -p /nix
         sudo mount LABEL=nix /nix -o noatime,nobarrier,nodiscard,compress=zstd:1,space_cache=v2,commit=120
         sudo df -h
-
-        if [[ "${{ inputs.nix-permission-edict }}" == "true" ]]; then
-          echo "Applying Nix Permission Edict: Granting user ownership of /nix"
-          sudo chown -R "$(id --user)":"$(id --group)" /nix
-        fi
 
         # Create a tmp directory within /mnt for Nix builds and set TMPDIR
         TMPNIX="$(sudo mktemp --directory --tmpdir=/mnt)"
@@ -141,7 +136,7 @@ runs:
         
         protocol_level="${{ steps.set-hatchet-protocol.outputs.level }}"
         expansion_dir="${HOME}/.expansion"
-        root_safe_haven="${{ inputs.root-safe-haven }}"
+        root_safe_haven="2048"
         
         function add_expansion_disk() {
           # Check for additional free space after purging
@@ -321,14 +316,8 @@ runs:
 
         # Make script executable
         chmod +x /tmp/expand_nix_volume.sh
-        # Execute based on witness-carnage setting
-        if [ "${{ inputs.witness-carnage }}" == "true" ]; then
-          echo "😮 Displaying the carnage in real-time. This will block until completion."
-          /tmp/expand_nix_volume.sh | tee ${HOME}/.expansion/expansion.log
-        else
-          /tmp/expand_nix_volume.sh > ${HOME}/.expansion/expansion.log 2>&1 &
-          echo "📈 Background space expansion started. /nix will grow as space becomes available."
-        fi
+        echo "😮 Displaying the carnage in real-time. This will block until completion."
+        /tmp/expand_nix_volume.sh | tee ${HOME}/.expansion/expansion.log
     - name: The Post
       if: ${{ runner.os }} == 'Linux'
       uses: srz-zumix/post-run-action@v2
