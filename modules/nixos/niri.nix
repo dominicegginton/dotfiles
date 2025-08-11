@@ -300,9 +300,9 @@ with config.scheme.withHashtag;
         evince # Document Viewer
         gnome-font-viewer # Font Viewer
         gnome-calendar # Calendar
-        bleeding.karren.lazy-desktop
-        bleeding.karren.tv-desktop
-        bleeding.karren.hl-desktop
+        # bleeding.karren.lazy-desktop
+        # bleeding.karren.tv-desktop
+        # bleeding.karren.hl-desktop
       ];
     };
     fonts = {
