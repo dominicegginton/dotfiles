@@ -9,7 +9,13 @@ export default (monitor: Gdk.Monitor) => {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
 
   const LeftModules = (
-    <box spacing={8} hexpand halign={Gtk.Align.START} valign={Gtk.Align.CENTER}>
+    <box
+      spacing={8}
+      hexpand
+      halign={Gtk.Align.START}
+      valign={Gtk.Align.CENTER}
+      css="background: rgba(0, 0, 0, 0);"
+    >
       <Playback />
     </box>
   );
@@ -18,15 +24,22 @@ export default (monitor: Gdk.Monitor) => {
     <box
       spacing={8}
       hexpand
-      hhalign={Gtk.Align.CENTER}
+      halign={Gtk.Align.CENTER}
       valign={Gtk.Align.CENTER}
+      css="background: rgba(0, 0, 0, 0);"
     >
       {/* Add any center modules here if needed */}
     </box>
   );
 
   const RightModules = (
-    <box spacing={8} hexpand halign={Gtk.Align.END} valign={Gtk.Align.CENTER}>
+    <box
+      spacing={8}
+      hexpand
+      halign={Gtk.Align.END}
+      valign={Gtk.Align.CENTER}
+      css="background: rgba(0, 0, 0, 0);"
+    >
       <Time />
     </box>
   );
@@ -41,9 +54,9 @@ export default (monitor: Gdk.Monitor) => {
       layer={Astal.Layer.TOP}
       visible={niri.overviewIsOpen.get()}
       anchor={TOP | LEFT | RIGHT}
-      marginTop={100}
-      marginLeft={50}
-      marginRight={50}
+      marginTop={20}
+      marginLeft={20}
+      marginRight={20}
       css="background: none;"
       child={
         <centerbox
