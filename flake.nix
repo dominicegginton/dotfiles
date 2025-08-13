@@ -132,6 +132,7 @@ rec {
             (getAttrs (attrNames githubPlatforms) self.devShells)
             ## TODO: ensure that only supported platforms are included
             ## (getAttrs (attrNames githubPlatforms) self.checks);
+            {};
       };
     };
 }
