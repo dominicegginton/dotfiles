@@ -108,7 +108,7 @@ rec {
         {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
-          checks = { inherit (pkgs) niri neovim; };
+          ciBuilds = { inherit (pkgs) niri neovim; };
           devShells.default = pkgs.callPackage ./shell.nix { };
           devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
           devShells.python3 = pkgs.callPackage ./shells/python3.nix { };
@@ -130,7 +130,7 @@ rec {
         checks =
           nixpkgs.lib.attrsets.recursiveUpdate
             (getAttrs (attrNames githubPlatforms) self.devShells)
-            (getAttrs ["x86_64-linux"] self.checks);
+            (getAttrs ["x86_64-linux"] self.ciBuilds);
       };
     };
 }
