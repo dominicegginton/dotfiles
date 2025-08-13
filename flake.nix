@@ -130,7 +130,7 @@ rec {
         checks =
           nixpkgs.lib.attrsets.recursiveUpdate
             (getAttrs (attrNames githubPlatforms) self.devShells)
-            (getAttrs ["x86_64-linux"] self.ciBuilds);
+            (getAttrs [ "x86_64-linux" ] self.ciBuilds);
       };
     };
 }
