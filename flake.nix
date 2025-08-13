@@ -130,9 +130,7 @@ rec {
         checks =
           nixpkgs.lib.attrsets.recursiveUpdate
             (getAttrs (attrNames githubPlatforms) self.devShells)
-            ## TODO: ensure that only supported platforms are included
-            ## (getAttrs (attrNames githubPlatforms) self.checks);
-            {};
+            (getAttrs ["x86_64-linux"] self.checks);
       };
     };
 }
