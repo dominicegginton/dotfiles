@@ -108,7 +108,7 @@ rec {
         {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
-          checks = { inherit (pkgs) niri neovim; }; 
+          checks = { inherit (pkgs) niri neovim; };
           devShells.default = pkgs.callPackage ./shell.nix { };
           devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
           devShells.python3 = pkgs.callPackage ./shells/python3.nix { };
