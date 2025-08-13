@@ -108,6 +108,7 @@ rec {
         {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
+          checks = { inherit (pkgs) niri neovim; }; 
           devShells.default = pkgs.callPackage ./shell.nix { };
           devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
           devShells.python3 = pkgs.callPackage ./shells/python3.nix { };
@@ -125,6 +126,11 @@ rec {
       nixosConfigurations.nixos-installer = nixosSystem { hostname = "nixos-installer"; };
       nixosConfigurations.walsgrave = nixosSystem { hostname = "walsgrave"; };
       darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
-      githubActions = mkGithubMatrix { checks = getAttrs (attrNames githubPlatforms) self.devShells; };
+      githubActions = mkGithubMatrix {
+        checks =
+          nixpkgs.lib.attrsets.recursiveUpdate
+            (getAttrs (attrNames githubPlatforms) self.devShells)
+            (getAttrs (attrNames githubPlatforms) self.checks);
+      };
     };
 }
