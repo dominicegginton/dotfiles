@@ -8,7 +8,7 @@ const E = GLib.getenv;
 const path = `${E("XDG_DATA_HOME")}/icons/hicolor/32x32/apps`;
 App.add_icons(path);
 App.start({
-  instanceName: "residence" + Math.random().toString(36).substring(2, 15),
+  instanceName: "residence",
   requestHandler: (_, res) => res("ok"),
   main() {
     const topbars = new Map<Gdk.Monitor, Gtk.Widget>();

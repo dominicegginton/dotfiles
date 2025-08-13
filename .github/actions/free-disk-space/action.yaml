@@ -4,7 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: free-disk-space
-      if: ${{ runner.os == 'Linux' }}
+      if: ${{ runner.os == 'Linux' && runner.arch == 'x64' }}
       run: | 
         sudo apt clean
         docker image prune -af

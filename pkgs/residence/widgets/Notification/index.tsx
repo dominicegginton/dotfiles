@@ -38,11 +38,7 @@ export function Notification(props: Props) {
 
   const icon = n.appIcon || n.desktopEntry;
   return (
-    <eventbox
-      className={urgency(n)}
-      setup={setup}
-      onHoverLost={onHoverLost}
-    >
+    <eventbox className={urgency(n)} setup={setup} onHoverLost={onHoverLost}>
       <box vertical>
         <box className="header">
           {icon && (
