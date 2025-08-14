@@ -109,7 +109,7 @@ rec {
         {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
-          ciBuilds = { inherit (pkgs) niri neovim bws; };
+          ciBuilds = { inherit (pkgs) residence niri neovim bws; };
           devShells.default = pkgs.callPackage ./shell.nix { };
           devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
           devShells.python3 = pkgs.callPackage ./shells/python3.nix { };
