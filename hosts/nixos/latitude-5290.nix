@@ -52,6 +52,12 @@
   hardware.logitech.wireless.enableGraphical = true;
   hardware.bluetooth.enable = true;
   networking.wireless.enable = true;
-  programs.niri.enable = true;
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
+  services.gnome.core-apps.enable = false;
+  services.gnome.core-developer-tools.enable = false;
+  services.gnome.games.enable = false;
+  environment.systemPackages = with pkgs; [ gnome-console ];
+  environment.gnome.excludePackages = with pkgs; [ gnome-tour gnome-user-docs ];
   topology.self.hardware.info = "Dell Latitude 5290";
 }
