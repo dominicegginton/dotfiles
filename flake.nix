@@ -109,11 +109,13 @@ rec {
         {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
-          ciBuilds = { inherit (pkgs) residence niri neovim bws; };
-          devShells.default = pkgs.callPackage ./shell.nix { };
-          devShells.nodejs = pkgs.callPackage ./shells/nodejs.nix { };
-          devShells.python3 = pkgs.callPackage ./shells/python3.nix { };
-          devShells.python3-notebook = pkgs.callPackage ./shells/python3-notebook.nix { };
+          buildAndCachePackages = { inherit (pkgs) residence niri neovim bws; };
+          devShells = {
+            default = pkgs.callPackage ./shell.nix { };
+            nodejs = pkgs.callPackage ./shells/nodejs.nix { };
+            python3 = pkgs.callPackage ./shells/python3.nix { };
+            python3-notebook = pkgs.callPackage ./shells/python3-notebook.nix { };
+          };
           topology = import self.inputs.nix-topology { inherit pkgs; modules = [{ inherit (self) nixosConfigurations; } ./topology.nix]; };
         })
 
@@ -131,7 +133,7 @@ rec {
         checks =
           nixpkgs.lib.attrsets.recursiveUpdate
             (getAttrs (attrNames githubPlatforms) self.devShells)
-            (getAttrs [ "x86_64-linux" ] self.ciBuilds);
+            (getAttrs [ "x86_64-linux" ] self.buildAndCachePackages);
       };
     };
 }
