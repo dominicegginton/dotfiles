@@ -18,6 +18,7 @@
     ./unifi.nix
     ./users.nix
     ./virtualisation.nix
+    ./wio.nix
     # ./zabbix.nix
   ];
 }

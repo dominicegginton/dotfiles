@@ -53,5 +53,8 @@
   hardware.bluetooth.enable = true;
   networking.wireless.enable = true;
   programs.niri.enable = true;
+  programs.wio.enable = true;
+  programs.steam.enable = true;
+  programs.gamescope.enable = true;
   topology.self.hardware.info = "Dell Latitude 5290";
 }
