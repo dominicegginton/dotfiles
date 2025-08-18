@@ -9,7 +9,7 @@ jobs:
   flake-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - uses: determinatesystems/flake-checker-action@v12
@@ -17,7 +17,7 @@ jobs:
   formatter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - run: nix fmt -- --check .
@@ -25,7 +25,7 @@ jobs:
   topology:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - uses: cachix/cachix-action@v16
@@ -45,7 +45,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - id: set-matrix
@@ -62,7 +62,7 @@ jobs:
     strategy:
       matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/free-disk-space
       - uses: cachix/install-nix-action@v31
       - uses: cachix/cachix-action@v16
@@ -74,7 +74,7 @@ jobs:
   ghost-gs60:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31 
       - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
@@ -82,7 +82,7 @@ jobs:
   latitude-5290:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.latitude-5290.config.system.build.toplevel
@@ -90,7 +90,7 @@ jobs:
   latitude-7390:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - uses: ./.github/actions/free-disk-space 
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
@@ -98,7 +98,7 @@ jobs:
   iso-installer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.nixos-installer.config.system.build.isoImage
