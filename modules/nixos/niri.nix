@@ -2,6 +2,13 @@
 
 with config.scheme.withHashtag;
 
+
+let
+  background = pkgs.fetchurl {
+    url = "https://unsplash.com/photos/wKdWb9j2BIg/download?ixid=M3wxMjA3fDB8MXxhbGx8NjJ8fHx8fHx8fDE3NTU1MTMwNDF8";
+    sha256 = "0c4j500hy5xdy1s2vvfpkiy2ikgmr0a6y5vafymsdjmxhacs8gxs";
+  };
+in
 {
   config = lib.mkIf config.programs.niri.enable {
     hardware.graphics.enable = true;
@@ -34,7 +41,7 @@ with config.scheme.withHashtag;
     '';
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
-      spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${./background.jpg}" "--mode" "fill"
+      spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${background}" "--mode" "fill"
       spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"

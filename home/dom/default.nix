@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{ lib, osConfig, pkgs, ... }:
+
+let
+  gui = osConfig.programs.niri.enable;
+in
 
 {
   config = {
@@ -15,7 +19,7 @@
       ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
-    programs.firefox = {
+    programs.firefox = lib.mkIf gui {
       enable = true;
       profiles =
         let
@@ -46,7 +50,7 @@
           };
         };
     };
-    programs.vscode = {
+    programs.vscode = lib.mkIf gui {
       enable = true;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
@@ -90,10 +94,11 @@
       bat
       eza
       gitui
+      bitwarden-cli
+    ] ++ lib.optionals gui [
       unstable.teams-for-linux
       chromium
-      # nyxt
-      bitwarden-cli
+      nyxt
     ];
   };
 }
