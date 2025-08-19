@@ -53,7 +53,6 @@ with config.lib.topology;
       interfaceName = "tailscale0";
     };
     services.tailscaleAuth.enable = true;
-    services.nginx.tailscaleAuth.enable = true;
     security.acme = {
       acceptTerms = true;
       defaults.email = "admin@${hostname}";
@@ -70,10 +69,9 @@ with config.lib.topology;
         type = "wifi";
         addresses = [ hostname ];
         physicalConnections = [
-          (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
-          (mkConnection "ribble-ap" "wlan0")
+          (mkConnection "ribble-router" "wlan0")
         ];
       };
       tailscale0 = {

@@ -51,28 +51,10 @@ with config.lib.topology;
     quardon-switch-main = mkSwitch "quardon-switch-main" {
       info = "Cisco Switch 24 Port";
       connections.eth0 = mkConnection "quardon-router" "eth1";
-      connections.eth1 = mkConnection "quardon-switch-secondary" "eth0";
       connections.eth2 = mkConnection "quardon-ap-downstairs" "eth0";
       connections.eth3 = mkConnection "quardon-ap-upstairs" "eth0";
       connections.eth4 = mkConnection "quardon-front-security-camera" "eth0";
       connections.eth5 = mkConnection "quardon-back-security-camera" "eth0";
-    };
-    quardon-switch-secondary = mkSwitch "quardon-switch-secondary" {
-      info = "Netgear Switch 16 Port";
-      interfaceGroups = [ [ "eth0" "eth1" "eth2" ] ];
-      connections.eth1 = mkConnection "quardon-ap-dom" "eth0";
-    };
-    quardon-ap-dom = mkDevice "quardon-ap-dom" {
-      info = "Unifi AP Light";
-      interfaceGroups = [ [ "eth0" "wlan0" ] ];
-      interfaces.wlan0 = {
-        network = "burbage";
-        type = "wifi";
-        physicalConnections = [
-          (mkConnection "quardon-ap-downstairs" "wlan0")
-          (mkConnection "quardon-ap-upstairs" "wlan0")
-        ];
-      };
     };
     quardon-ap-downstairs = mkDevice "quardon-ap-downstairs" {
       info = "Unifi AP Light";
@@ -81,7 +63,6 @@ with config.lib.topology;
         network = "burbage";
         type = "wifi";
         physicalConnections = [
-          (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
         ];
       };
@@ -93,7 +74,6 @@ with config.lib.topology;
         network = "burbage";
         type = "wifi";
         physicalConnections = [
-          (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-downstairs" "wlan0")
         ];
       };
@@ -104,7 +84,6 @@ with config.lib.topology;
         network = "burbage";
         type = "wifi";
         physicalConnections = [
-          (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
         ];
@@ -131,20 +110,16 @@ with config.lib.topology;
         addresses = [ "192.168.1.1" ];
         type = "ethernet";
       };
-    };
-    ribble-switch = mkSwitch "ribble-switch" {
-      info = "Switch";
-      connections.eth0 = mkConnection "ribble-router" "eth1";
-      connections.eth1 = mkConnection "ribble-ap" "eth0";
-      connections.eth2 = mkConnection "ribble-security-camera" "eth0";
-    };
-    ribble-ap = mkDevice "ribble-ap" {
-      info = "Unifi AP Light";
-      interfaceGroups = [ [ "eth0" "wlan0" ] ];
       interfaces.wlan0 = {
         network = "burbage";
         type = "wifi";
       };
+    };
+    ribble-switch = mkSwitch "ribble-switch" {
+      info = "Switch";
+      interfaceGroups = [ [ "eth0" "eth1" "eth2" "eth3" ] ];
+      connections.eth0 = mkConnection "ribble-router" "eth1";
+      connections.eth2 = mkConnection "ribble-security-camera" "eth0";
     };
     ribble-security-camera = mkDevice "ribble-security-camera" {
       info = "Security Camera";
@@ -157,11 +132,9 @@ with config.lib.topology;
         network = "burbage";
         type = "wifi";
         physicalConnections = [
-          (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
-          (mkConnection "ribble-ap" "wlan0")
-
+          (mkConnection "ribble-router" "wlan0")
         ];
       };
       interfaces.tailscale0 = {
@@ -183,10 +156,9 @@ with config.lib.topology;
         network = "burbage";
         type = "wifi";
         physicalConnections = [
-          (mkConnection "quardon-ap-dom" "wlan0")
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
-          (mkConnection "ribble-ap" "wlan0")
+          (mkConnection "ribble-router" "wlan0")
         ];
       };
       interfaces.tailscale0 = {

@@ -14,6 +14,7 @@ in
   config = lib.mkIf config.display.residence.enable {
     programs.niri.enable = true;
     hardware.graphics.enable = true;
+    services.hardware.bolt.enable = true;
     xdg = {
       autostart.enable = true;
       menus.enable = true;

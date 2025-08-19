@@ -11,7 +11,7 @@
         lovelace.mode = "storage";
         frontend.themes = "!include_dir_merge_named themes";
         homeassistant = {
-          name = "Quardon";
+          name = "Ribble";
           unit_system = "metric";
           time_zone = "Europe/London";
           temperature_unit = "C";
@@ -66,9 +66,6 @@
         "time_date"
         "timer"
         "tod"
-        "todo"
-        "unifi"
-        "monzo"
       ];
     };
     services.mosquitto.enable = true;

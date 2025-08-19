@@ -73,22 +73,15 @@
   services.upower.ignoreLid = true;
   services.unifi.enable = true;
   services.home-assistant.enable = true;
+  services.home-assistant.customComponents = [];
   services.silverbullet.enable = true;
   services.mosquitto.enable = true;
-  secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3"; ## todo: use
+  secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
   services.frigate = {
     enable = true;
     settings = {
       cameras = {
-        "01".ffmpeg.inputs = [
-          { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_main"; roles = [ "record" ]; }
-          { path = "rtsp://frigate:frigate@192.168.1.44/Preview_01_sub"; roles = [ "detect" ]; }
-        ];
-        "02".ffmpeg.inputs = [
-          { path = "rtsp://frigate:frigate@192.168.1.44/preview_02_main"; roles = [ "record" ]; }
-          { path = "rtsp://frigate:frigate@192.168.1.44/Preview_02_sub"; roles = [ "detect" ]; }
-        ];
-        "03".ffmpeg.inputs = [
+        "Frontdoor".ffmpeg.inputs = [
           { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_main"; roles = [ "record" ]; }
           { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_sub"; roles = [ "detect" ]; }
         ];
@@ -101,7 +94,7 @@
       network = "burbage";
       type = "ethernet";
       addresses = [ hostname ];
-      physicalConnections = [ (config.lib.topology.mkConnection "quardon-switch-secondary" "eth2") ];
+      physicalConnections = [ (config.lib.topology.mkConnection "ribble-switch" "eth3") ];
     };
   };
 }
