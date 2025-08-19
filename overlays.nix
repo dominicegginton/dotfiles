@@ -9,56 +9,12 @@ rec {
     //
     { lib = prev.lib // outputs.lib; };
   };
-  bleeding = final: prev: {
+  bleeding = _: prev: {
     bleeding = import inputs.nixpkgs-bleeding
       { inherit (prev) system hostPlatform config; overlays = [ default ]; }
     //
     {
       lib = prev.lib // outputs.lib;
-      ## requires vm options to be set
-      ## to run on wayland
-      jetbrains = prev.jetbrains // {
-        fleet = prev.callPackage inputs.jetbrains-fleet { };
-      };
-      ## fails to build with rustc(1.86)
-      ## requires rustc(1.87) or later
-      ms-edit = prev.callPackage
-        ({ rustPlatform }:
-          rustPlatform.buildRustPackage rec {
-            pname = "ms-edit";
-            version = "v1.1.0";
-            src = prev.fetchFromGitHub {
-              owner = "microsoft";
-              repo = "edit";
-              tag = version;
-              hash = "sha256-ubdZynQVwCYhZA/z4P/v6aX5rRG9BCcWKih/PzuPSeE=";
-            };
-            cargoHash = "sha256-qT4u8LuKX/QbZojNDoK43cRnxXwMjvEwybeuZIK6DQQ=";
-          })
-        { };
-      ## incomplete implementation
-      bootstrap = with final; writeShellScriptBin "bootstrap" ''
-        export PATH=${lib.makeBinPath [ status ensure-user-is-root ensure-tailscale-is-connected coreutils git busybox nix fzf jq gum bws ]};
-        set -efu -o pipefail
-        ensure-user-is-root
-        ensure-tailscale-is-connected
-        status
-        gum style --foreground '#ff0000' --bold "CURRENTLY IN DEVELOPMENT"
-        gum confirm "Accept warning Are you sure you want to continue?" || {
-          gum log --level error "User cancelled the bootstrap process."
-          exit 0;
-        }
-        temp=$(mktemp -d)
-        cleanup() {
-          gum log --level info "Cleaning up temporary directory $temp."
-          rm -rf "$temp" || true
-        }
-        trap cleanup EXIT
-        git clone --depth 1 https://github.com/dominicegginton/dotfiles "$temp/dotfiles" || {
-          gum log --level error "Failed to clone dotfiles repository."
-          exit 1;
-        }
-      '';
       karren =
         let
           alacrittyConiguration = (prev.formats.toml { }).generate "alacritty-config.toml" {
@@ -96,15 +52,6 @@ rec {
             fi
             ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
           '';
-          theme-switcher = karrenScript ''
-            selection=$(printf "light\ndark" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "Select theme: ")
-            if [ -z "$selection" ]; then
-              exit 1;
-            fi
-            ${prev.glib}/bin/gsettings set org.gnome.desktop.interface color-scheme "prefer-$selection"
-            ${prev.libnotify}/bin/notify-send --app "Karren" "" "Switched to $selection theme."
-            sleep 0.1
-          '';
           clipboard-history = karrenScript ''
             selection=$(${prev.cliphist}/bin/cliphist list | ${prev.fzf}/bin/fzf --no-sort --prompt "Select clipboard entry: ")
             if [ -z "$selection" ]; then
@@ -141,92 +88,9 @@ rec {
             fi
             nohup sh -c "$execCommand &" > /dev/null 2>&1
           '';
-          tv-desktop = prev.callPackage
-            ({ lib, stdenv, desktop-file-utils, chromium }:
-              stdenv.mkDerivation {
-                name = "karren.tv-desktop";
-                buildInputs = [ desktop-file-utils ];
-                dontUnpack = true;
-                dontBuild = true;
-                installPhase =
-                  let
-                    urls = {
-                      youtube = "https://www.youtube.com";
-                      netflix = "https://www.netflix.com";
-                    };
-                  in
-                  ''
-                    mkdir -p $out/share/applications
-                    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: url: ''
-                      cat > $out/share/applications/karren-tv-${name}.desktop << EOF
-                    [Desktop Entry]
-                    Version=1.0
-                    Name="Karren TV: ${name}"
-                    Type=Application
-                    Exec=${lib.getExe chromium} --app=${url}
-                    EOF
-                      desktop-file-validate $out/share/applications/karren-tv-${name}.desktop
-                    '') urls)}
-                  '';
-                meta = {
-                  platforms = lib.platforms.linux;
-                  maintainers = with lib.maintainers; [ dominicegginton ];
-                  description = ''
-                    A package with desktop files for popular TV streaming services.
-                    When a .desktop is executed it will open the service in chromium application mode.
-                  '';
-                };
-              })
-            { };
           lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
         };
-      local-web-app = prev.callPackage
-        ({ stdenv, lib, chromium }: stdenv.mkDerivation rec {
-          pname = "local-web-app";
-          version = "1.0";
-          dontBuild = true;
-          dontUnpack = true;
-          installPhase = ''
-            mkdir -p $out/share/doc/${pname}
-            cat > $out/share/doc/${pname}/${pname}.html <<EOF
-            <html>
-            <head>
-            <title>${pname}</title>
-            <style>
-            * { background: blue; color: white; }
-            </style>
-            </head>
-            <body>
-            <h1>${pname}</h1>
-            <p>${meta.description}</p>
-            </body>
-            </html>
-            EOF
-            mkdir -p $out/bin
-            cat > $out/bin/${pname} <<EOF
-            #!${stdenv.shell}
-            exec ${lib.getExe chromium} --app=file://$out/share/doc/${pname}/${pname}.html
-            EOF
-            chmod +x $out/bin/${pname}
-            mkdir -p $out/share/applications
-            cat > $out/share/applications/${pname}.desktop <<EOF
-            [Desktop Entry]
-            Version=${version}
-            Name=${pname}
-            Comment=${meta.description}
-            Exec=$out/bin/${pname}
-            Terminal=false
-            Type=Application
-            Categories=Utility;
-            EOF
-          '';
-          meta = {
-            description = "A simple example package";
-            license = with prev.lib.licenses; [ mit ];
-            maintainers = with prev.lib.maintainers; [ dominicegginton ];
-          };
-        })
-        { };
+      youtube = prev.callPackage ./pkgs/youtube.nix { };
     };
   };
   default = final: prev: {
@@ -234,26 +98,6 @@ rec {
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
-    jetbrains =
-      let
-        vmopts = ''
-          -Dawt.toolkit.name=WLToolkit
-          -Xmx8G
-          -Xms2G
-          -XX:NewRatio=1
-        '';
-      in
-      prev.jetbrains // {
-        datagrip = prev.jetbrains.datagrip.override { inherit vmopts; };
-        webstorm = (prev.jetbrains.webstorm.override { inherit vmopts; }).overrideAttrs (oldAttrs: {
-          nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
-          postInstall = (oldAttrs.postInstall or "") + ''
-            wrapProgram $out/bin/webstorm \
-              --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
-              --set NODE_PATH "${final.nodejs}/lib/node_modules";
-          '';
-        });
-      };
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };

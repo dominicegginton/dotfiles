@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, ... }:
+{ inputs, lib, config, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [
@@ -47,6 +47,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  role = "kiosk";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;

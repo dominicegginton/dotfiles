@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   config = lib.mkIf config.services.home-assistant.enable {

@@ -1,17 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 {
-  ## role option is a enum of "server", "workstation", "kiosk", "bigscreen", "console"
-  options.nixos.role = lib.mkOption {
-    type = lib.types.enum [
-      "server"
-      "workstation"
-      "kiosk"
-      "bigscreen"
-      "console"
-    ];
+  options.role = lib.mkOption {
+    type = lib.types.enum [ "server" "workstation" "kiosk" "bigscreen" "console" "installer" ];
     description = "Machine role configuration.";
   };
 
-  config = { };
+  config = {
+    topology.self.deviceType = lib.mkDefault "residence-${config.role}";
+  };
 }

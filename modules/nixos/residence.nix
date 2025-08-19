@@ -4,8 +4,10 @@ with config.scheme.withHashtag;
 
 let
   background = pkgs.fetchurl {
+    name = "residence-background";
     url = "https://unsplash.com/photos/wKdWb9j2BIg/download?ixid=M3wxMjA3fDB8MXxhbGx8NjJ8fHx8fHx8fDE3NTU1MTMwNDF8";
     sha256 = "0c4j500hy5xdy1s2vvfpkiy2ikgmr0a6y5vafymsdjmxhacs8gxs";
+    meta.license = lib.licenses.free;
   };
 in
 
@@ -45,7 +47,6 @@ in
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${background}" "--mode" "fill"
-      spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
@@ -174,9 +175,8 @@ in
         Mod+O                repeat=false                              { toggle-overview; }
         Mod+Shift+Q                                                    { close-window; }
         Mod+Return           hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
-        Mod+Space            hotkey-overlay-title="Launcher"           { spawn "${lib.getExe pkgs.bleeding.karren.launcher}"; }
+        Mod+Space            hotkey-overlay-title="Launcher"           { spawn "${lib.getExe pkgs.bleeding.sherlock-launcher}"; }
         Mod+Shift+Escape     hotkey-overlay-title="System Manager"     { spawn "${lib.getExe pkgs.bleeding.karren.system-manager}"; }
-        Mod+Shift+T          hotkey-overlay-title="Theme Manager"      { spawn "${lib.getExe pkgs.bleeding.karren.theme-switcher}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock-effects}" "-S" "--effect-blur" "10x10"; }
         Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }
         Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-region" ''PATH=${lib.makeBinPath [ pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.swappy} -f -'')}"; }
@@ -310,8 +310,6 @@ in
         evince # Document Viewer
         gnome-font-viewer # Font Viewer
         gnome-calendar # Calendar
-        # bleeding.karren.lazy-desktop
-        # bleeding.karren.tv-desktop
       ];
     };
     fonts = {

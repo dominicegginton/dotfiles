@@ -109,7 +109,7 @@ rec {
         {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
-          buildAndCachePackages = { inherit (pkgs) residence niri neovim bws; };
+          buildAndCachePackages = { inherit (pkgs) residence niri neovim bws; inherit (pkgs.bleeding) sherlock-launcher; };
           devShells = {
             default = pkgs.callPackage ./shell.nix { };
             nodejs = pkgs.callPackage ./shells/nodejs.nix { };

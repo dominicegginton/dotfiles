@@ -11,7 +11,7 @@
     ./home-assistant.nix
     ./mosquitto.nix
     ./networking.nix
-    ./niri.nix
+    ./residence.nix
     ./role.nix
     ./secrets.nix
     ./silverbullet.nix

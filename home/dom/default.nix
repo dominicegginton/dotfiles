@@ -1,7 +1,7 @@
 { lib, osConfig, pkgs, ... }:
 
 let
-  gui = osConfig.programs.niri.enable;
+  gui = osConfig.display.residence.enable || osConfig.display.gnome.enable;
 in
 
 {
@@ -99,6 +99,7 @@ in
       unstable.teams-for-linux
       chromium
       nyxt
+      bleeding.youtube
     ];
   };
 }
