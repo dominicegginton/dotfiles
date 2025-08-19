@@ -141,44 +141,6 @@ rec {
             fi
             nohup sh -c "$execCommand &" > /dev/null 2>&1
           '';
-          hl-desktop = prev.callPackage
-            ({ lib, stdenv, desktop-file-utils, chromium }:
-              stdenv.mkDerivation {
-                name = "karren.hl-desktop";
-                buildInputs = [ desktop-file-utils ];
-                dontUnpack = true;
-                dontBuild = true;
-                installPhase =
-                  let
-                    urls = {
-                      sb = "http://sb.ghost-gs60";
-                      ha = "https://ha.ghost-gs60";
-                      fg = "https://fg.ghost-gs60";
-                    };
-                  in
-                  ''
-                    mkdir -p $out/share/applications
-                    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: url: ''
-                      cat > $out/share/applications/karren-hl-${name}.desktop << EOF
-                    [Desktop Entry]
-                    Version=1.0
-                    Name="Karren HL: ${name}"
-                    Type=Application
-                    Exec=${lib.getExe chromium} --app=${url}
-                    EOF
-                      desktop-file-validate $out/share/applications/karren-hl-${name}.desktop
-                    '') urls)}
-                  '';
-                meta = {
-                  platforms = lib.platforms.linux;
-                  maintainers = with lib.maintainers; [ dominicegginton ];
-                  description = ''
-                    A package with desktop files for homelab services.
-                    When a .desktop is executed it will open the service in chromium application mode.
-                  '';
-                };
-              })
-            { };
           tv-desktop = prev.callPackage
             ({ lib, stdenv, desktop-file-utils, chromium }:
               stdenv.mkDerivation {

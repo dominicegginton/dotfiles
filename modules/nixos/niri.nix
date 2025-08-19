@@ -312,7 +312,6 @@ in
         gnome-calendar # Calendar
         # bleeding.karren.lazy-desktop
         # bleeding.karren.tv-desktop
-        # bleeding.karren.hl-desktop
       ];
     };
     fonts = {
