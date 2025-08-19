@@ -14,31 +14,31 @@ stdenv.mkDerivation {
   dontUnpack = true;
   dontBuild = true;
   installPhase = ''
-      mkdir -p $out/share/applications
-      ln -s ${nix-index-database} files
-      nix-locate \
-        --db . \
-        --minimal \
-        --regex \
-        '/share/applications/.*\.desktop$' \
-        | while read -r package
-        do
-          cat > $out/share/applications/"$package.desktop" << EOF
-      [Desktop Entry]
-      Version=1.0
-      Name="Lazy: $package"
-      Type=Application
-      Exec=nix run "nixpkgs#$package"
-      Terminal=false
-      Categories=Utility;
-      Comment="Run the package $package using nix run"
-      EOF
-          desktop-file-validate $out/share/applications/"$package.desktop"
-        done
-    '';
+    mkdir -p $out/share/applications
+    ln -s ${nix-index-database} files
+    nix-locate \
+      --db . \
+      --minimal \
+      --regex \
+      '/share/applications/.*\.desktop$' \
+      | while read -r package
+      do
+        cat > $out/share/applications/"$package.desktop" << EOF
+    [Desktop Entry]
+    Version=1.0
+    Name="Lazy: $package"
+    Type=Application
+    Exec=nix run "nixpkgs#$package"
+    Terminal=false
+    Categories=Utility;
+    Comment="Run the package $package using nix run"
+    EOF
+        desktop-file-validate $out/share/applications/"$package.desktop"
+      done
+  '';
   meta = {
     deskscription = "A package with desktop files for all packages in the nix-index database";
-    longDescription= ''
+    longDescription = ''
       A package with desktop files for all packages in the nix-index database.
 
       When a .desktop is executed it will run the package using `nix run nixpkgs#package`.
