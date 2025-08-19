@@ -71,9 +71,6 @@
   networking.wireless.enable = true;
   services.logind.lidSwitch = "ignore";
   services.upower.ignoreLid = true;
-  services.unifi.enable = true;
-  services.home-assistant.enable = true;
-  services.home-assistant.customComponents = [];
   services.silverbullet.enable = true;
   services.mosquitto.enable = true;
   secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
