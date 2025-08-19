@@ -74,14 +74,13 @@
   services.upower.ignoreLid = true;
   services.silverbullet.enable = true;
   services.mosquitto.enable = true;
-  secrets.cam = "7491f2bd-a2f1-43f3-9f53-b30e008631e3";
   services.frigate = {
     enable = true;
     settings = {
       cameras = {
         "Frontdoor".ffmpeg.inputs = [
-          { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_main"; roles = [ "record" ]; }
-          { path = "rtsp://frigate:frigate123@192.168.1.200:554/Preview_01_sub"; roles = [ "detect" ]; }
+          { path = "rtsp://frigate:frigate123@192.168.1.227:554/Preview_01_main"; roles = [ "record" ]; }
+          { path = "rtsp://frigate:frigate123@192.168.1.227:554/Preview_01_sub"; roles = [ "detect" ]; }
         ];
       };
     };
