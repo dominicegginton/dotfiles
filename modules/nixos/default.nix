@@ -7,10 +7,12 @@
     ./backup.nix
     ./bluetooth.nix
     ./frigate.nix
+    ./gnome.nix
     ./home-assistant.nix
     ./mosquitto.nix
     ./networking.nix
     ./niri.nix
+    ./role.nix
     ./secrets.nix
     ./silverbullet.nix
     ./steam.nix
@@ -19,6 +21,6 @@
     ./users.nix
     ./virtualisation.nix
     ./wio.nix
-    # ./zabbix.nix
+    ./zabbix.nix
   ];
 }

@@ -25,7 +25,7 @@
   networking.wireless.enable = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
-  programs.niri.enable = true;
+  display.residence.enable = true;
   virtualisation.docker.enable = true;
   topology.self.hardware.info = "Dell Latitude 7390";
 }

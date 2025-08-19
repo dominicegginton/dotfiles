@@ -2,15 +2,17 @@
 
 with config.scheme.withHashtag;
 
-
 let
   background = pkgs.fetchurl {
     url = "https://unsplash.com/photos/wKdWb9j2BIg/download?ixid=M3wxMjA3fDB8MXxhbGx8NjJ8fHx8fHx8fDE3NTU1MTMwNDF8";
     sha256 = "0c4j500hy5xdy1s2vvfpkiy2ikgmr0a6y5vafymsdjmxhacs8gxs";
   };
 in
+
 {
-  config = lib.mkIf config.programs.niri.enable {
+  options.display.residence.enable = lib.mkEnableOption "Residence";
+  config = lib.mkIf config.display.residence.enable {
+    programs.niri.enable = true;
     hardware.graphics.enable = true;
     xdg = {
       autostart.enable = true;

@@ -15,6 +15,11 @@ with config.lib.topology;
         checkReversePath = "loose";
       };
       nftables.enable = true;
+      networkmanager = {
+        enable = true;
+        dns = "systemd-resolved";
+        unmanaged = [ "lo" "wlp108s0" ];
+      };
       wireless = lib.mkIf config.networking.wireless.enable {
         fallbackToWPA2 = true;
         userControlled.enable = true;

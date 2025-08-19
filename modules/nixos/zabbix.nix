@@ -1,16 +1,14 @@
-{ hostname, ... }:
+{ config, lib, hostname, ... }:
 
 {
-  config = {
+  config = lib.mkIf config.services.zabbixServer.enable {
     services = {
+      zabbixWeb.enable = true;
       zabbixAgent = {
         enable = true;
         server = "localhost";
         settings."Hostname" = hostname;
       };
-
-      zabbixServer.enable = true;
-      zabbixWeb.enable = true;
     };
   };
 }
