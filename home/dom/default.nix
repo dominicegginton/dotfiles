@@ -80,6 +80,9 @@ in
           workbench.sideBar.location = "right";
           workbench.startupEditor = "none";
           terminal.integrated.defaultProfile.linux = "zsh";
+          workbench.preferredLightColorTheme = "Solarized Light";
+          workbench.preferredDarkColorTheme = "Solarized Dark";
+          window.autoDetectColorScheme = true;
         };
       };
     };
