@@ -67,14 +67,9 @@
       doc.enable = true;
       dev.enable = true;
       info.enable = true;
-      nixos.enable = true;
+      nixos.enable = (config.role == "workstation");
     };
     services = {
-      # clamav = {
-      #   scanner.enable = true;
-      #   updater.enable = true;
-      #   daemon.enable = true;
-      # };
       dbus.enable = true;
       smartd.enable = true;
       thermald.enable = true;
@@ -93,49 +88,6 @@
         pinentryPackage = pkgs.pinentry;
       };
       command-not-found.enable = true;
-    };
-    environment = {
-      variables = {
-        EDITOR = "ad";
-        SYSTEMD_EDITOR = "ad";
-        VISUAL = "ad";
-        PAGER = "less";
-      };
-      systemPackages = with pkgs; [
-        (lib.hiPrio uutils-coreutils-noprefix)
-        (lib.hiPrio uutils-findutils)
-        (lib.hiPrio uutils-diffutils)
-        (if stdenv.isLinux then trashy else darwin.trash)
-        ad
-        fzf
-        ripgrep
-        ripgrep-all
-        less
-        tree
-        dust
-        fd
-        file
-        dua
-        gum
-        hwinfo
-        usbutils
-        nvme-cli
-        smartmontools
-        clamav
-        bottom
-        htop-vim
-        status
-        openssl
-        openssh
-        curl
-        wget
-        dnsutils
-        git
-        git-lfs
-        pinentry
-        pinentry-curses
-        power-profiles-daemon
-      ];
     };
   };
 }

@@ -83,6 +83,10 @@ in
           workbench.preferredLightColorTheme = "Solarized Light";
           workbench.preferredDarkColorTheme = "Solarized Dark";
           window.autoDetectColorScheme = true;
+          extensions.ignoreRecommendations = true;
+          extensions.autoCheckUpdates = false;
+          extensions.autoUpdate = false;
+          updates.mode = "none";
         };
       };
     };

@@ -6,6 +6,8 @@
     "${modulesPath}/profiles/qemu-guest.nix"
     ./backup.nix
     ./bluetooth.nix
+    ./calmav.nix
+    ./environment.nix
     ./frigate.nix
     ./gnome.nix
     ./home-assistant.nix
