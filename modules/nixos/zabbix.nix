@@ -3,7 +3,11 @@
 {
   config = {
     services = {
-      zabbixWeb.enable = config.services.zabbixServer.enable; 
+      zabbixWeb = mkIf config.services.zabbixServer.enable {
+        enable = true;
+        forntend = "nginx";
+        hostname = "zabbix.${hostname}";
+      }; 
       zabbixAgent = {
         enable = true;
         server = if config.services.zabbixServer.enable then "${hostname}" else "ghost-gs60"; 
