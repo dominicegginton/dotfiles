@@ -55,7 +55,7 @@ with config.lib.topology;
     services.tailscaleAuth.enable = true;
     security.acme = {
       acceptTerms = true;
-      defaults.email = "admin@${hostname}";
+      defaults.email = "admin@${hostname}.${tailnet}";
     };
     services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
