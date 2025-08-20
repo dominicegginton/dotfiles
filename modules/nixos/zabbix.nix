@@ -1,13 +1,13 @@
 { config, lib, hostname, ... }:
 
 {
-  config = lib.mkIf config.services.zabbixServer.enable {
+  config = {
     services = {
-      zabbixWeb.enable = true;
+      zabbixWeb.enable = config.services.zabbixServer.enable; 
       zabbixAgent = {
         enable = true;
-        server = "localhost";
-        settings."Hostname" = hostname;
+        server = if config.services.zabbixServer.enable then "${hostname}" else "ghost-gs60"; 
+        settings.Hostname = hostname;
       };
     };
   };
