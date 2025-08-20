@@ -3,7 +3,7 @@
 {
   config = {
     services = {
-      zabbixWeb = mkIf config.services.zabbixServer.enable {
+      zabbixWeb = lib.mkIf config.services.zabbixServer.enable {
         enable = true;
         forntend = "nginx";
         hostname = "zabbix.${hostname}";
