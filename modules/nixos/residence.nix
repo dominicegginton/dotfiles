@@ -5,8 +5,8 @@ with config.scheme.withHashtag;
 let
   background = pkgs.fetchurl {
     name = "residence-background";
-    url = "https://unsplash.com/photos/wKdWb9j2BIg/download?ixid=M3wxMjA3fDB8MXxhbGx8NjJ8fHx8fHx8fDE3NTU1MTMwNDF8";
-    sha256 = "0c4j500hy5xdy1s2vvfpkiy2ikgmr0a6y5vafymsdjmxhacs8gxs";
+    url = "https://unsplash.com/photos/xY98ahEi-M0/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzU1NzcxNTk5fA";
+    sha256 = "a9d911e2ef310e05cd90ec9b72f19b7e96be90753c39c4d57dc7a5cf2c695654";
     meta.license = lib.licenses.free;
   };
 in
