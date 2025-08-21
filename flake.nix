@@ -23,10 +23,6 @@ rec {
     vulnix.url = "github:nix-community/vulnix";
     vulnix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
-    tt-schemes.url = "github:tinted-theming/schemes";
-    tt-schemes.flake = false;
-    base16-vim.url = "github:tinted-theming/base16-vim";
-    base16-vim.flake = false;
     niri.url = "github:yalter/niri";
     niri.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";

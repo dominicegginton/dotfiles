@@ -61,22 +61,6 @@
         "type": "github"
       }
     },
-    "base16-vim": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1754702877,
-        "narHash": "sha256-XqC2kdHXC+Owme6A7dCqkpJsxwo/xraSpAulVeRKXDI=",
-        "owner": "tinted-theming",
-        "repo": "base16-vim",
-        "rev": "a99c8a86d99bc108b4ff04f373a849ae0a970e53",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tinted-theming",
-        "repo": "base16-vim",
-        "type": "github"
-      }
-    },
     "devshell": {
       "inputs": {
         "nixpkgs": [
@@ -890,7 +874,6 @@
       "inputs": {
         "ags": "ags",
         "base16": "base16",
-        "base16-vim": "base16-vim",
         "disko": "disko",
         "flip": "flip",
         "home-manager": "home-manager",
@@ -908,7 +891,6 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "roll": "roll",
         "todo": "todo",
-        "tt-schemes": "tt-schemes",
         "twm": "twm",
         "vulnix": "vulnix"
       }
@@ -1107,22 +1089,6 @@
       "original": {
         "owner": "numtide",
         "repo": "treefmt-nix",
-        "type": "github"
-      }
-    },
-    "tt-schemes": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1754779259,
-        "narHash": "sha256-8KG2lXGaXLUE0F/JVwLQe7kOVm21IDfNEo0gfga5P4M=",
-        "owner": "tinted-theming",
-        "repo": "schemes",
-        "rev": "097d751b9e3c8b97ce158e7d141e5a292545b502",
-        "type": "github"
-      },
-      "original": {
-        "owner": "tinted-theming",
-        "repo": "schemes",
         "type": "github"
       }
     },
