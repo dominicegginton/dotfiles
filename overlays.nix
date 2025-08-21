@@ -98,6 +98,7 @@ rec {
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
+    extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
