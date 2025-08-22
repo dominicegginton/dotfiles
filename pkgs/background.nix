@@ -1,9 +1,9 @@
 { lib, fetchurl }:
 
 fetchurl rec {
-  name = "a_colorful_swirls_of_paint.jpg";
-  url = "https://raw.githubusercontent.com/dharmx/walls/refs/heads/main/abstract/a_colorful_swirls_of_paint.jpg";
-  sha256 = "8ce0380d95f76c457eec19a2fae02756f38bc5a4ab6ea3de24ccb37124a254da";
+  name = "a_city_by_the_water.jpg";
+  url = "https://raw.githubusercontent.com/dharmx/walls/refs/heads/main/architecture/a_city_by_the_water.jpg";
+  hash = "sha256-/ANSbbf9vmQaVtN7w4nNW0v/9b5Nh61agL+v+Nqqjm4=";
   meta = {
     description = "Background image ${name} from ${url}";
     license = lib.licenses.free;
