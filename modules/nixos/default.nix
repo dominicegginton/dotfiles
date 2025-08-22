@@ -21,6 +21,7 @@
     ./steam.nix
     ./system.nix
     ./unifi.nix
+    ./upgrade.nix
     ./users.nix
     ./virtualisation.nix
     ./wio.nix
