@@ -19,7 +19,7 @@
     };
     topology.self.services.silverbullet = {
       name = "Silverbullet";
-      details.listen.text = config.services.silverbullet.hostname; 
+      details.listen.text = config.services.silverbullet.hostname;
     };
   };
 }

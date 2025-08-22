@@ -67,7 +67,6 @@
       doc.enable = true;
       dev.enable = true;
       info.enable = true;
-      nixos.enable = (config.role == "workstation");
     };
     services = {
       dbus.enable = true;

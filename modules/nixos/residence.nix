@@ -4,9 +4,9 @@ with config.scheme.withHashtag;
 
 let
   background = pkgs.fetchurl {
-    name = "residence-background";
-    url = "https://unsplash.com/photos/Hmm0dIRTcqo/download?ixid=M3wxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNzU1Nzc5MzYxfA";
-    sha256 = "01fb52dcfe0ed92a6b9e08efadc6908ac00f4c03ef6b503fb62d0ab01596a1ae";
+    name = "a_colorful_swirls_of_paint.jpg";
+    url = "https://raw.githubusercontent.com/dharmx/walls/refs/heads/main/abstract/a_colorful_swirls_of_paint.jpg";
+    sha256 = "8ce0380d95f76c457eec19a2fae02756f38bc5a4ab6ea3de24ccb37124a254da";
     meta.license = lib.licenses.free;
   };
 in
@@ -46,7 +46,7 @@ in
     '';
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
-      spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${background}" "--mode" "fill"
+      spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}

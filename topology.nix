@@ -89,7 +89,7 @@ with config.lib.topology;
     quardon-nvr = mkDevice "quardon-nvr" {
       info = "Reolink NVR";
       deviceIcon = ./assets/reolink.svg;
-      interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" ]  ];
+      interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" ] ];
       interfaces.eth0 = {
         network = "burbage";
         type = "ethernet";

@@ -94,6 +94,7 @@ rec {
     };
   };
   default = final: prev: {
+    background = final.callPackage ./pkgs/background.nix { };
     ensure-tailscale-is-connected = final.callPackage ./pkgs/ensure-tailscale-is-connected.nix { };
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
@@ -105,6 +106,7 @@ rec {
     neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
     residence = final.callPackage ./pkgs/residence { inherit (inputs) ags; inherit (final) system; };
     status = final.callPackage ./pkgs/status.nix { };
+    theme = final.callPackage ./pkgs/theme.nix { };
     todo = (packagesFrom inputs.todo final.system).default;
     topology = outputs.topology.${final.system}.config.output;
     twm = (packagesFrom inputs.twm final.system).default;

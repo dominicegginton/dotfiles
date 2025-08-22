@@ -4,7 +4,6 @@ rec {
   nixosStateVersion = "24.05";
   darwinStateVersion = 5;
   tailnet = "soay-puffin.ts.net";
-  scheme = ./theme.yaml; # todo: move this to be genertated dynamically given background
   nixosHostnames = inputs.nixpkgs.lib.attrNames outputs.nixosConfigurations;
   darwinHostnames = inputs.nixpkgs.lib.attrNames outputs.darwinConfigurations;
   hostnames = nixosHostnames ++ darwinHostnames;
@@ -38,8 +37,8 @@ rec {
         inputs.nix-topology.nixosModules.default
         ./hosts/nixos/${hostname}.nix
         (if hostname == "nixos-installer" then inputs.nixos-images.nixosModules.image-installer else ./modules/nixos)
-        {
-          inherit scheme;
+        rec {
+          scheme = "${pkgs.theme}/theme.yaml";
           home-manager = {
             extraSpecialArgs = specialArgs;
             useGlobalPkgs = true;
@@ -81,7 +80,7 @@ rec {
             inputs.base16.homeManagerModule
             inputs.ags.homeManagerModules.default
             {
-              inherit scheme;
+              scheme = "${pkgs.theme}/theme.yaml";
               home.stateVersion = nixosStateVersion;
             }
             ./modules/home-manager
