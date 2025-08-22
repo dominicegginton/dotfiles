@@ -15,7 +15,7 @@
     ./mosquitto.nix
     ./networking.nix
     ./residence.nix
-    ./role.nix
+    ./roles.nix
     ./secrets.nix
     ./silverbullet.nix
     ./steam.nix

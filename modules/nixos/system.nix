@@ -37,6 +37,14 @@
     boot = {
       consoleLogLevel = 0;
       initrd.verbose = false;
+      loader = {
+        systemd-boot.enable = true;
+        efi.canTouchEfiVariables = true;
+      };
+    };
+    hardware.cpu = {
+      intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     };
     console = {
       enable = true;

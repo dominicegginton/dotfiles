@@ -22,6 +22,8 @@ in
     '';
   };
   config = {
+    display.residence.enable = lib.elem "workstation" config.roles;
+    display.gnome.enable = lib.elem "kiosk" config.roles;
     topology.self.deviceType = lib.mkDefault "Residence ${lib.concatStringsSep ", " config.roles}";
   };
 }
