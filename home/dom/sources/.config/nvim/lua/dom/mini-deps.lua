@@ -18,7 +18,7 @@ local mini_deps = require('mini.deps')
 local add = mini_deps.add
 mini_deps.setup({ path = { package = path_package } })
 
--- Utils & Helpers
+-- Helpers
 add('nvim-lua/plenary.nvim') -- Lua functions
 add('kevinhwang91/promise-async') -- Promise-based async functions
 add('echasnovski/mini.misc') -- Miscellaneous functions
@@ -54,8 +54,6 @@ add('echasnovski/mini.diff') -- Git diff hunks
 add('tveskag/nvim-blame-line') -- GitBlame
 
 -- User Interface
-add('maxmx03/solarized.nvim') -- Solarized theme
-add('projekt0n/github-nvim-theme') -- Github theme
 add('nvim-tree/nvim-web-devicons') -- Icons
 add('echasnovski/mini.icons') -- Icons
 add('echasnovski/mini.starter') -- Start screen
@@ -72,16 +70,12 @@ add('echasnovski/mini.indentscope') -- Visualize and work with indent scope
 
 -- Utilities
 add('jghauser/mkdir.nvim') -- Create directories when writing a file
-add('christoomey/vim-tmux-navigator') -- Navigate between vim and tmux panes
 add('editorconfig/editorconfig-vim') -- Editorconfig integration
 add('echasnovski/mini.sessions') -- Session management
 add('echasnovski/mini.visits') -- Track and reuse file system visits
 add('echasnovski/mini.fuzzy') -- Fuzzy matching
-add('nvim-focus/focus.nvim') -- Auto-focusing and auto-resizing splits
-add('mhartington/formatter.nvim') -- File formatting
 add('echasnovski/mini.comment') -- Comment lines
 add('echasnovski/mini.trailspace') -- Trailspace (highlight and remove)
 add('echasnovski/mini.bracketed') -- Go forward/backward with square brackets
 add('echasnovski/mini.surround') -- Surround actions
 add('echasnovski/mini.visits') -- Track and reuse file system visits
-add('AckslD/nvim-neoclip.lua') -- Clipboard manager

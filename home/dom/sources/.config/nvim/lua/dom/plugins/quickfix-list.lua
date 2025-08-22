@@ -6,7 +6,7 @@ M.toggle = function()
     if win['quickfix'] == 1 then exists = true end
   end
   if exists == true then
-    vim.cmd('cclose')
+    vim.cmd('close')
     return
   end
   if not vim.tbl_isempty(vim.fn.getqflist()) then vim.cmd('botright cwindow') end

@@ -1,4 +1,3 @@
-local focus = require('focus')
 local quickfix_list = require('dom.plugins.quickfix-list')
 local mini_extra = require('mini.extra')
 local mini_files = require('mini.files')
@@ -30,7 +29,6 @@ local toggle_diagnostic_panel = function() vim.cmd('Trouble diagnostics toggle w
 local toggle_lsp_panel = function() vim.cmd('Trouble lsp toggle win.position=left') end
 local toggle_lsp_lens = function() vim.cmd('LspLensToggle') end
 local toggle_git_blame = function() vim.cmd('ToggleBlameLine') end
-local toggle_read = function() vim.cmd('FSToggle') end
 local open_command_palette = function() vim.cmd('CmdPalette') end
 
 vim.keymap.set('n', '<leader>te', toggle_nvim_tree, { desc = 'Toggle File Explorer Panel' })
@@ -41,7 +39,6 @@ vim.keymap.set('n', '<leader>tD', toggle_diff_overview, { desc = 'Toggle Diff Ov
 vim.keymap.set('n', '<leader>tq', quickfix_list.toggle, { desc = 'Toggle Quickfix' })
 vim.keymap.set('n', '<leader>tb', toggle_git_blame, { desc = 'Toggle Git Blame' })
 vim.keymap.set('n', '<leader>tl', toggle_lsp_lens, { desc = 'Toggle LSP Lens' })
-vim.keymap.set('n', '<leader>tr', toggle_read, { desc = 'Toggle Reading Mode' })
 vim.keymap.set('n', '<leader>tp', open_command_palette, { desc = 'Open Command Palette' })
 
 -- Utilities

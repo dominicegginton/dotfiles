@@ -1,4 +1,4 @@
-{ inputs, lib, config, ... }:
+{ inputs, lib, ... }:
 
 {
   imports = with inputs.nixos-hardware.nixosModules; [ common-pc-laptop common-pc-laptop-ssd ];
