@@ -8,6 +8,7 @@
     ./bluetooth.nix
     ./calmav.nix
     ./environment.nix
+    ./filesystem.nix
     ./frigate.nix
     ./gnome.nix
     ./home-assistant.nix

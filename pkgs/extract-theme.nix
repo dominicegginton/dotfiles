@@ -11,7 +11,7 @@ with open(sys.argv[2] if len(sys.argv) > 2 else 'theme.yaml', 'w') as f:
     f.write('author: "Dominic Egginton"\n')
     f.write('variant: "custom"\n')
     f.write('palette:\n')
-    for i, color in enumerate(palette):
+    for i, color in reversed(list(enumerate(palette))):
         rgb = color.rgb
         hex_color = '#%02x%02x%02x' % (rgb[0], rgb[1], rgb[2])
         index_as_hex = hex(i)[2:].zfill(2)

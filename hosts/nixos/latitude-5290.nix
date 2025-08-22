@@ -54,5 +54,5 @@
   hardware.bluetooth.enable = true;
   networking.wireless.enable = true;
   display.gnome.enable = true;
-  topology.self.hardware.info = "Dell Latitude 5290";
+  topology.self.hardware.info = "Dell Latitude 5290 Convertible";
 }

@@ -72,7 +72,6 @@
   networking.wireless.enable = true;
   services.logind.lidSwitch = "ignore";
   services.upower.ignoreLid = true;
-  # services.zabbixServer.enable = true;
   services.silverbullet.enable = true;
   services.mosquitto.enable = true;
   services.frigate = {

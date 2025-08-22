@@ -29,5 +29,5 @@
   display.residence.enable = true;
   display.wio.enable = true;
   virtualisation.docker.enable = true;
-  topology.self.hardware.info = "Dell Latitude 7390";
+  topology.self.hardware.info = "Dell Latitude 7390 2-in-1";
 }
