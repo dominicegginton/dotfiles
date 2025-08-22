@@ -119,10 +119,13 @@ rec {
 
     {
       inherit lib overlays templates;
-      nixosConfigurations.ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
-      nixosConfigurations.latitude-5290 = nixosSystem { hostname = "latitude-5290"; };
-      nixosConfigurations.latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
-      nixosConfigurations.nixos-installer = nixosSystem { hostname = "nixos-installer"; };
+      nixosConfigurations = {
+        ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
+        latitude-5290 = nixosSystem { hostname = "latitude-5290"; };
+        latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
+        nixos-installer = nixosSystem { hostname = "nixos-installer"; };
+        rio = nixosSystem { hostname = "rio"; };
+      };
       darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
       githubActions = mkGithubMatrix {
         checks =
