@@ -3,7 +3,7 @@ on:
   push:
 
 env:
-  NIX_CONFIG: 'accept-flake-config = true'
+  NIX_CONFIG: "accept-flake-config = true"
 
 jobs:
   flake-check:
@@ -31,12 +31,12 @@ jobs:
       - uses: cachix/cachix-action@v16
         with:
           name: dominicegginton-dotfiles
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix build -L .\#topology.x86_64-linux.config.output
       - uses: actions/upload-artifact@v4
         with:
-          path: result/ 
-          name: topology 
+          path: result/
+          name: topology
           retention-days: 90
           compression-level: 0
 
@@ -68,14 +68,14 @@ jobs:
       - uses: cachix/cachix-action@v16
         with:
           name: dominicegginton-dotfiles
-          authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix build -L '.#${{ matrix.attr }}'
 
   ghost-gs60:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: cachix/install-nix-action@v31 
+      - uses: cachix/install-nix-action@v31
       - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
 
@@ -92,7 +92,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
-      - uses: ./.github/actions/free-disk-space 
+      - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
 
   iso-installer:

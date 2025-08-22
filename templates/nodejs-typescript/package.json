@@ -6,7 +6,9 @@
   },
   "type": "module",
   "main": "hello-world.js",
-  "files": ["hello-world.js"],
+  "files": [
+    "hello-world.js"
+  ],
   "devDependencies": {
     "typescript": "5.5.4"
   }

@@ -1,11 +1,11 @@
 name: Free Disk Space
-description: Free up disk space on runner 
+description: Free up disk space on runner
 runs:
   using: "composite"
   steps:
     - name: free-disk-space
       if: ${{ runner.os == 'Linux' && runner.arch == 'x64' }}
-      run: | 
+      run: |
         sudo apt clean
         docker image prune -af
         sudo apt-get remove -y azure-cli google-cloud-cli google-cloud-cli-anthoscli
@@ -14,4 +14,4 @@ runs:
         sudo rm -rf "/usr/local/share/boost"
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo rm -rf /usr/share/dotnet/
-      shell: bash 
+      shell: bash

@@ -23,7 +23,6 @@ Declarative System, Package & Home Configurations - WIP Always
 - **Ad-hoc Shell Environments** - Predefined ad-hoc shell environments for common tools and tasks.
 - **Development Workspace Templates** - _Flake_ templates for bootstrapping common development workspaces.
 
-
 ## Workspace
 
 This workspace follows the following structure:

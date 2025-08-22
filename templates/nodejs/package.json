@@ -2,6 +2,8 @@
   "name": "hello-world",
   "version": "0.0.0",
   "main": "hello-world.js",
-  "files": ["hello-world.js"],
+  "files": [
+    "hello-world.js"
+  ],
   "type": "module"
 }

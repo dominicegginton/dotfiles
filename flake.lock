@@ -3,9 +3,7 @@
     "ags": {
       "inputs": {
         "astal": "astal",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1744557573,
@@ -24,10 +22,7 @@
     },
     "astal": {
       "inputs": {
-        "nixpkgs": [
-          "ags",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["ags", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1742571008,
@@ -63,10 +58,7 @@
     },
     "devshell": {
       "inputs": {
-        "nixpkgs": [
-          "nix-topology",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nix-topology", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1728330715,
@@ -84,9 +76,7 @@
     },
     "disko": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1754971456,
@@ -104,11 +94,7 @@
     },
     "fenix": {
       "inputs": {
-        "nixpkgs": [
-          "twm",
-          "naersk",
-          "nixpkgs"
-        ],
+        "nixpkgs": ["twm", "naersk", "nixpkgs"],
         "rust-analyzer-src": "rust-analyzer-src"
       },
       "locked": {
@@ -207,10 +193,7 @@
     },
     "flake-parts": {
       "inputs": {
-        "nixpkgs-lib": [
-          "neovim-nightly",
-          "nixpkgs"
-        ]
+        "nixpkgs-lib": ["neovim-nightly", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1754487366,
@@ -228,11 +211,7 @@
     },
     "flake-parts_2": {
       "inputs": {
-        "nixpkgs-lib": [
-          "neovim-nightly",
-          "hercules-ci-effects",
-          "nixpkgs"
-        ]
+        "nixpkgs-lib": ["neovim-nightly", "hercules-ci-effects", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1754487366,
@@ -249,10 +228,7 @@
     },
     "flake-parts_3": {
       "inputs": {
-        "nixpkgs-lib": [
-          "vulnix",
-          "nixpkgs"
-        ]
+        "nixpkgs-lib": ["vulnix", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1741352980,
@@ -376,9 +352,7 @@
     "flip": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1728204253,
@@ -414,10 +388,7 @@
       "inputs": {
         "flake-compat": "flake-compat_2",
         "gitignore": "gitignore",
-        "nixpkgs": [
-          "neovim-nightly",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["neovim-nightly", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1754416808,
@@ -435,11 +406,7 @@
     },
     "gitignore": {
       "inputs": {
-        "nixpkgs": [
-          "neovim-nightly",
-          "git-hooks",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["neovim-nightly", "git-hooks", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1709087332,
@@ -457,11 +424,7 @@
     },
     "gitignore_2": {
       "inputs": {
-        "nixpkgs": [
-          "nix-topology",
-          "pre-commit-hooks",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nix-topology", "pre-commit-hooks", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1709087332,
@@ -480,10 +443,7 @@
     "hercules-ci-effects": {
       "inputs": {
         "flake-parts": "flake-parts_2",
-        "nixpkgs": [
-          "neovim-nightly",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["neovim-nightly", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1755233722,
@@ -501,9 +461,7 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1753592768,
@@ -538,10 +496,7 @@
     "naersk": {
       "inputs": {
         "fenix": "fenix",
-        "nixpkgs": [
-          "twm",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["twm", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1752689277,
@@ -565,9 +520,7 @@
         "git-hooks": "git-hooks",
         "hercules-ci-effects": "hercules-ci-effects",
         "neovim-src": "neovim-src",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
@@ -602,9 +555,7 @@
     },
     "niri": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "rust-overlay": "rust-overlay"
       },
       "locked": {
@@ -623,9 +574,7 @@
     },
     "nix-darwin": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1749744770,
@@ -644,9 +593,7 @@
     },
     "nix-github-actions": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1737420293,
@@ -666,9 +613,7 @@
       "inputs": {
         "devshell": "devshell",
         "flake-utils": "flake-utils_2",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "pre-commit-hooks": "pre-commit-hooks"
       },
       "locked": {
@@ -756,9 +701,7 @@
     "nixos-wsl": {
       "inputs": {
         "flake-compat": "flake-compat_4",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1755261305,
@@ -826,14 +769,8 @@
       "inputs": {
         "flake-compat": "flake-compat_3",
         "gitignore": "gitignore_2",
-        "nixpkgs": [
-          "nix-topology",
-          "nixpkgs"
-        ],
-        "nixpkgs-stable": [
-          "nix-topology",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nix-topology", "nixpkgs"],
+        "nixpkgs-stable": ["nix-topology", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1730797577,
@@ -852,9 +789,7 @@
     "roll": {
       "inputs": {
         "flake-utils": "flake-utils_3",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1728206060,
@@ -914,10 +849,7 @@
     },
     "rust-overlay": {
       "inputs": {
-        "nixpkgs": [
-          "niri",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["niri", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1752374969,
@@ -935,10 +867,7 @@
     },
     "rust-overlay_2": {
       "inputs": {
-        "nixpkgs": [
-          "twm",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["twm", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1754707163,
@@ -1032,9 +961,7 @@
     "todo": {
       "inputs": {
         "flake-utils": "flake-utils_4",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1719176125,
@@ -1052,10 +979,7 @@
     },
     "treefmt-nix": {
       "inputs": {
-        "nixpkgs": [
-          "neovim-nightly",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["neovim-nightly", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1754847726,
@@ -1073,10 +997,7 @@
     },
     "treefmt-nix_2": {
       "inputs": {
-        "nixpkgs": [
-          "vulnix",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["vulnix", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1742370146,
@@ -1096,9 +1017,7 @@
       "inputs": {
         "flake-utils": "flake-utils_5",
         "naersk": "naersk",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
@@ -1120,9 +1039,7 @@
         "flake-compat": "flake-compat_5",
         "flake-parts": "flake-parts_3",
         "flake-root": "flake-root",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {

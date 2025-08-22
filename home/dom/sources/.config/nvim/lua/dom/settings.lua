@@ -21,7 +21,7 @@ option.laststatus = 3
 option.scrolloff = 8
 option.sidescrolloff = 8
 option.cmdheight = 0
-global.flow_strength = 0
+-- global.flow_strength = 0
 
 -- TABS AND INDENTATION
 option.expandtab = true
@@ -54,8 +54,8 @@ option.updatetime = 250
 option.timeoutlen = 500
 
 -- NETRW
-global.loaded_netrw = 1
-global.loaded_netrwPlugin = 1
+-- global.loaded_netrw = 1
+-- global.loaded_netrwPlugin = 1
 
 -- STARTUP
 option.shortmess:append('sI')

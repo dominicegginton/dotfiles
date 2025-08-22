@@ -7,5 +7,5 @@ solarized.setup({
   transparent = { nvimtree = true, normal = true },
 })
 
-vim.o.background = 'light'
-cmd('colorscheme solarized')
+-- vim.o.background = 'light'
+-- cmd('colorscheme solarized')
