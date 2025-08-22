@@ -105,14 +105,20 @@ rec {
         {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
-          buildAndCachePackages = { inherit (pkgs) residence niri neovim bws; inherit (pkgs.bleeding) sherlock-launcher; };
+          buildAndCachePackages = {
+            inherit (pkgs) residence niri neovim bws twm;
+            inherit (pkgs.bleeding) sherlock-launcher;
+          };
           devShells = {
             default = pkgs.callPackage ./shell.nix { };
             nodejs = pkgs.callPackage ./shells/nodejs.nix { };
             python3 = pkgs.callPackage ./shells/python3.nix { };
             python3-notebook = pkgs.callPackage ./shells/python3-notebook.nix { };
           };
-          topology = import self.inputs.nix-topology { inherit pkgs; modules = [{ inherit (self) nixosConfigurations; } ./topology.nix]; };
+          topology = import self.inputs.nix-topology {
+            inherit pkgs;
+            modules = [{ inherit (self) nixosConfigurations; } ./topology.nix];
+          };
         })
 
     //
