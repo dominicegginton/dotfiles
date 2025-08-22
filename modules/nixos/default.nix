@@ -19,7 +19,6 @@
     ./secrets.nix
     ./silverbullet.nix
     ./steam.nix
-    ./system.nix
     ./unifi.nix
     ./upgrade.nix
     ./users.nix
@@ -27,4 +26,26 @@
     ./wio.nix
     ./zabbix.nix
   ];
+
+  ## todo: tidy up
+  boot = {
+    consoleLogLevel = 0;
+    initrd.verbose = false;
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+  };
+  security = {
+    sudo.enable = true;
+    polkit.enable = true;
+  };
+  services = {
+    dbus.enable = true;
+    smartd.enable = true;
+    thermald.enable = true;
+    power-profiles-daemon.enable = true;
+    upower.enable = true;
+  };
+
 }

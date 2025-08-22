@@ -43,10 +43,8 @@ vim.keymap.set('n', '<leader>tp', open_command_palette, { desc = 'Open Command P
 
 -- Utilities
 local auto_format_group = vim.api.nvim_create_augroup('AutoFormat', {})
-local format = function() vim.cmd('Format') end
 local format_write_callback = function() vim.cmd('FormatWrite') end
 local clear_highlighting = function() vim.cmd('noh') end
 
-vim.keymap.set('n', '<leader><leader>f', format, { desc = 'Format' })
 vim.keymap.set('n', '<leader><leader>n', clear_highlighting, { desc = 'Clear Highlight' })
 vim.api.nvim_create_autocmd('BufWritePost', { group = auto_format_group, callback = format_write_callback })
