@@ -3,7 +3,7 @@
 with config.lib.topology;
 
 {
-  config = {
+  config = lib.mkIf (! lib.elem "installer" config.roles) {
     secrets.wireless = lib.mkIf config.networking.wireless.enable "04480e55-ca76-4444-a5cf-b242009fe153";
     secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
     networking = {
@@ -55,7 +55,7 @@ with config.lib.topology;
     services.tailscaleAuth.enable = true;
     security.acme = {
       acceptTerms = true;
-      defaults.email = "admin@${hostname}.dominicegginton.dev";
+      defaults.email = lib.maintainers.dominicegginton.email;
     };
     services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];

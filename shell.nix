@@ -56,12 +56,5 @@ mkShell rec {
       done
       gum log --level info "Successfully imported GPG keys."
     '')
-    (writeShellScriptBin "bootstrap-nixos-installer" ''
-      source=$(nom build github:${name}#nixosConfigurations.nixos-installer.config.system.build.isoImage --no-link --json | jq -r '.[] | select(.outputs.out) | .outputs.out' | head -n 1)
-      target=$(gum choose --cursor "Select the target device" $(lsblk -d -n -p -o NAME,SIZE | grep -v loop | awk '{print $1}'))
-      gum confirm "Are you sure you want to write $source to $target?" && \
-        sudo dd if="$source" of="$target" bs=4M status=progress && \
-          gum log --level info "Successfully wrote $source to $target."
-    '')
   ];
 }

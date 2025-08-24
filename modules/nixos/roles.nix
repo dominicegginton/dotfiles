@@ -21,6 +21,7 @@ in
       You can specify multiple roles if the machine serves multiple purposes.
     '';
   };
+
   config = {
     display.residence.enable = lib.elem "workstation" config.roles;
     display.gnome.enable = lib.elem "kiosk" config.roles;
