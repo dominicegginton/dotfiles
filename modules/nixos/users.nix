@@ -3,19 +3,18 @@
 with lib;
 
 let
-  defaultExtraGroups = [ "input" "audio" "video" "users" ];
+  defaultExtraGroups = [ "input" "audio" "video" "users" "lp" ];
+  previlegedExtraGroups = [ "wheel" ]
+    ++ (lib.optional config.services.printing.enable [ "lpadmin" ])
+    ++ (lib.optional config.virtualisation.docker.enable [ "docker" ])
+    ++ (lib.optional config.services.davfs2.enable [ "dav2fs" ])
+    ++ (lib.optional config.programs.adb.enable [ "adbusers" "kvm" ]);
 in
 
 {
-  options.extraUsers = lib.mkOption {
-    type = lib.types.listOf (lib.types.enum [ "matt" ]);
-    default = [ ];
-    description = "List of extra users to create on the system.";
-  };
-
   config = {
-    secrets.dom = "be2b6a7a-7811-4711-86f0-b24200a41bbd";
-    secrets.matt = lib.mkIf (elem "matt" config.extraUsers) "";
+    secrets.dom = lib.mkIf config.users.users.dom.enable "be2b6a7a-7811-4711-86f0-b24200a41bbd";
+    secrets.matt = lib.mkIf config.users.users.matt.enable "";
 
     users.users = {
       root = {
@@ -26,23 +25,19 @@ in
       };
 
       dom = {
-        description = dlib.maintainers.dominicegginton.name;
+        enable = lib.mkDefault true;
         isNormalUser = true;
+        description = dlib.maintainers.dominicegginton.name;
         hashedPasswordFile = "/run/bitwarden-secrets/dom";
         homeMode = "0755";
         shell = pkgs.zsh;
-        extraGroups = defaultExtraGroups ++ [
-          "wheel"
-          "davfs2"
-          (lib.optionalString (config.virtualisation.docker.enable) "docker")
-          (lib.optionalString (config.programs.adb.enable) "adbusers")
-          (lib.optionalString (config.programs.adb.enable) "kvm")
-        ];
+        extraGroups = defaultExtraGroups ++ previlegedExtraGroups;
       };
 
-      matt = lib.mkIf (elem "matt" config.extraUsers) {
-        description = "Matt";
+      matt = {
+        enable = false;
         isNormalUser = true;
+        description = "Matt";
         hashedPasswordFile = "/run/bitwarden-secrets/matt";
         homeMode = "0755";
         shell = pkgs.zsh;
@@ -51,14 +46,8 @@ in
     };
 
     home-manager.users = {
-      dom = _: {
-        imports = [ ../../home/dom ];
-        programs.home-manager.enable = true;
-      };
-      matt = lib.mkIf (elem "matt" config.extraUsers) (_: {
-        imports = [ ../../home/matt ];
-        programs.home-manager.enable = true;
-      });
+      dom = lib.mkIf config.users.users.dom.enable ../../home/dom;
+      matt = lib.mkIf config.users.users.matt.enable ../../home/matt;
     };
   };
 }

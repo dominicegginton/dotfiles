@@ -6,36 +6,47 @@ with pkgs.writers;
 let
   directory = "/root/bitwarden-secrets";
   mountpoint = "/run/bitwarden-secrets";
-  secret-install = { name, secret }:
+
+
+  ## install secrets 
+  secrets-install =
     let
-      id = if (isString secret) then secret else secret.id;
-      user = if (isString secret) then "root" else (if secret.user == "" then "root" else secret.user);
-      permissions = if (isString secret) then "700" else (if secret.permissions == "" then "700" else secret.permissions);
+
+      ## instal a single secret
+      secret-install = { name, secret }:
+        let
+          id = if (isString secret) then secret else secret.id;
+          user = if (isString secret) then "root" else (if secret.user == "" then "root" else secret.user);
+          permissions = if (isString secret) then "700" else (if secret.permissions == "" then "700" else secret.permissions);
+        in
+        ''
+          value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
+          rm -f ${directory}/secrets/${name}
+          echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
+          chown ${user}:${user} ${directory}/secrets/${name}
+          chmod ${permissions} ${directory}/secrets/${name}
+          ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
+          chown ${user}:${user} ${mountpoint}/${name}
+          chmod ${permissions} ${mountpoint}/${name}
+          gum log --level info "Installed secret ${name} (${id}) [${user}:${permissions}]"
+        '';
     in
+
     ''
-      value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
-      rm -f ${directory}/secrets/${name}
-      echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
-      chown ${user}:${user} ${directory}/secrets/${name}
-      chmod ${permissions} ${directory}/secrets/${name}
-      ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
-      chown ${user}:${user} ${mountpoint}/${name}
-      chmod ${permissions} ${mountpoint}/${name}
-      gum log --level info "Installed secret ${name} (${id}) [${user}:${permissions}]"
+      export PATH=${makeBinPath [ pkgs.toybox pkgs.jq pkgs.gum ]}:$PATH
+      mkdir -p ${directory} || true
+      mkdir -p ${directory}/secrets || true
+      mkdir -p ${mountpoint} || true
+      chmod 700 ${directory}
+      chmod 700 ${directory}/secrets
+      chmod 700 ${mountpoint}
+      chown root:root ${directory}
+      chown root:root ${directory}/secrets
+      chown root:root ${mountpoint}
+      ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.secrets)}
     '';
-  secrets-install = ''
-    export PATH=${makeBinPath [ pkgs.toybox pkgs.jq pkgs.gum ]}:$PATH
-    mkdir -p ${directory} || true
-    mkdir -p ${directory}/secrets || true
-    mkdir -p ${mountpoint} || true
-    chmod 700 ${directory}
-    chmod 700 ${directory}/secrets
-    chmod 700 ${mountpoint}
-    chown root:root ${directory}
-    chown root:root ${directory}/secrets
-    chown root:root ${mountpoint}
-    ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.secrets)}
-  '';
+
+
   secrets-sync = writeBashBin "secrets-sync" ''
     export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.toybox pkgs.gum pkgs.jq pkgs.bws ]}:$PATH
     set -efu -o pipefail
@@ -127,6 +138,8 @@ in
       serviceConfig.RemainAfterExit = true;
       script = secrets-install;
     };
+
+    ## maybe disable this as is only really is updating secret values 
     system.activationScripts = {
       secrets = {
         deps = [ "specialfs" ];

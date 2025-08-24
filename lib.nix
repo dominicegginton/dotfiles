@@ -115,7 +115,6 @@ rec {
             home-manager = {
               extraSpecialArgs = specialArgs;
               useGlobalPkgs = true;
-              useUserPackages = true;
               sharedModules = [
                 inputs.impermanence.homeManagerModules.impermanence
                 inputs.base16.homeManagerModule
@@ -147,7 +146,6 @@ rec {
         ({ pkgs, ... }: {
           home-manager.extraSpecialArgs = specialArgs;
           home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
           home-manager.sharedModules = [
             inputs.impermanence.homeManagerModules.impermanence
             inputs.base16.homeManagerModule
