@@ -5,9 +5,12 @@
     hardware.steam-hardware.enable = true;
     hardware.xone.enable = true;
     environment.systemPackages = with pkgs; [ steam-run mangohud ];
-    programs.steam.gamescopeSession.enable = true;
-    gamescope = {
-      enable = true;
-      capSysNice = true;
+    programs = {
+      steam.gamescopeSession.enable = true;
+      gamescope = {
+        enable = true;
+        capSysNice = true;
+      };
     };
-  }
+  };
+}

@@ -100,11 +100,17 @@ rec {
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
-    residence-iso = (outputs.lib.nixosSystem {
+    residence-installer = (outputs.lib.nixosSystem {
       hostname = "residence-installer";
       platform = final.system;
-      modules = [ ({ modulesPath, ... }: { imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ]; }) ];
-    }).config.system.build.isoImage;
+      extraModules = [
+        ({ modulesPath, ... }: {
+          imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
+          roles = [ "installer" ];
+        })
+      ];
+    });
+    residence-iso = final.residence-installer.config.system.build.isoImage;
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
