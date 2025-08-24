@@ -74,7 +74,10 @@ rec {
                 min-free = "8G";
                 max-free = "10G";
                 min-free-check-interval = 1;
-                trusted-users = [ "dom" "root" "@wheel" ];
+                ## todo: update:
+                ##       should add
+                ##       
+                trusted-users = [ "root" "@wheel" ];
               };
             };
             documentation = {
