@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, tailnet, ... }:
+{ config, lib, dlib, pkgs, hostname, tailnet, ... }:
 
 with config.lib.topology;
 
@@ -55,7 +55,7 @@ with config.lib.topology;
     services.tailscaleAuth.enable = true;
     security.acme = {
       acceptTerms = true;
-      defaults.email = lib.maintainers.dominicegginton.email;
+      defaults.email = dlib.maintainers.dominicegginton.email;
     };
     services.davfs2.enable = true;
     environment.systemPackages = with pkgs; [ tailscale ];
