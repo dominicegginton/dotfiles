@@ -7,6 +7,7 @@
   boot.kernelModules = [ "kvm-intel" ];
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   roles = [ "kiosk" ];
+  extraUsers = [ "matt" ];
   filesystem.type = "btrfs";
   networking.wireless.enable = true;
   topology.self.hardware.info = "";
