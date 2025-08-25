@@ -5,10 +5,10 @@ with lib;
 let
   defaultExtraGroups = [ "input" "audio" "video" "users" "lp" ];
   previlegedExtraGroups = [ "wheel" ]
-    ++ (lib.optional config.services.printing.enable [ "lpadmin" ])
-    ++ (lib.optional config.virtualisation.docker.enable [ "docker" ])
-    ++ (lib.optional config.services.davfs2.enable [ "dav2fs" ])
-    ++ (lib.optional config.programs.adb.enable [ "adbusers" "kvm" ]);
+    ++ lib.optionals (config.services.printing.enable) [ "lpadmin" ]
+    ++ lib.optionals (config.virtualisation.docker.enable) [ "docker" ]
+    ++ lib.optionals (config.services.davfs2.enable) [ "dav2fs" ]
+    ++ lib.optionals (config.programs.adb.enable) [ "adbusers" "kvm" ];
 in
 
 {

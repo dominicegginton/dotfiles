@@ -78,8 +78,8 @@
     settings = {
       cameras = {
         "Frontdoor".ffmpeg.inputs = [
-          { path = "rtsp://frigate:frigate123@192.168.1.227:554/Preview_01_main"; roles = [ "record" ]; }
-          { path = "rtsp://frigate:frigate123@192.168.1.227:554/Preview_01_sub"; roles = [ "detect" ]; }
+          { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main"; roles = [ "record" ]; }
+          { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub"; roles = [ "detect" ]; }
         ];
       };
     };
