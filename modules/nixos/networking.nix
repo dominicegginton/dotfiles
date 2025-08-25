@@ -3,7 +3,7 @@
 with config.lib.topology;
 
 {
-  config = lib.mkIf (! lib.elem "installer" config.roles) {
+  config = lib.mkIf (hostname != "residence-installer") {
     secrets.wireless = lib.mkIf config.networking.wireless.enable "04480e55-ca76-4444-a5cf-b242009fe153";
     secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
     networking = {
