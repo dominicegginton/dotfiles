@@ -79,13 +79,13 @@ jobs:
       - uses: ./.github/actions/free-disk-space
       - run: nix build -L .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
 
-  latitude-5290:
+  rio:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: cachix/install-nix-action@v31
       - uses: ./.github/actions/free-disk-space
-      - run: nix build -L .#nixosConfigurations.latitude-5290.config.system.build.toplevel
+      - run: nix build -L .#nixosConfigurations.rio.config.system.build.toplevel
 
   latitude-7390:
     runs-on: ubuntu-latest
