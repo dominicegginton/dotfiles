@@ -11,7 +11,7 @@ Declarative System, Package & Home Configurations - WIP Always
 - **Nix Flakes** - 100% _Nix Flakes_-based configuration, no Nix channels.
 - **Linux, WLS and Darwin Hosts** - Declarative configurations for _Linux_, _WSL_ & _Darwin_ hosts.
 - **Bispoke Wayland Desktop** - Built on top of _niri_, _residence_ provides a scrolling desktop environment.
-- **Bitwarden Managed Secrets** - System wide secrets and user passwords managed by _bsm_ & _bw_.
+- **GPG Encrypted & Bitwarden Managed Secrets** - System wide encrypted secrets managed by _bsm_ & _bw_.
 - **CVS Scanning & AV** - Automatic CVS vulnerability scanning using _Vulnix_ and AV providded by _CalmAV_.
 - **Comprehensive Backups** - Automated backups to _Google Cloud Storage Buckets_.
 - **Peer-to-peer secure VPN** - _Tailscale_ zero config virtual private mesh networking.

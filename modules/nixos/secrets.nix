@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hostname, ... }:
 
 with lib;
 with pkgs.writers;
@@ -6,13 +6,8 @@ with pkgs.writers;
 let
   directory = "/root/bitwarden-secrets";
   mountpoint = "/run/bitwarden-secrets";
-
-
-  ## install secrets 
   secrets-install =
     let
-
-      ## instal a single secret
       secret-install = { name, secret }:
         let
           id = if (isString secret) then secret else secret.id;
@@ -31,7 +26,6 @@ let
           gum log --level info "Installed secret ${name} (${id}) [${user}:${permissions}]"
         '';
     in
-
     ''
       export PATH=${makeBinPath [ pkgs.toybox pkgs.jq pkgs.gum ]}:$PATH
       mkdir -p ${directory} || true
@@ -45,8 +39,6 @@ let
       chown root:root ${mountpoint}
       ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.secrets)}
     '';
-
-
   secrets-sync = writeBashBin "secrets-sync" ''
     export PATH=${makeBinPath [ pkgs.ensure-user-is-root pkgs.toybox pkgs.gum pkgs.jq pkgs.bws ]}:$PATH
     set -efu -o pipefail
@@ -129,7 +121,26 @@ in
       };
       description = "Attribute set of secrets to be installed.";
     };
-  config = {
+  config = lib.mkIf (hostname != "residence-installer") {
+    # systemd.services.decrypt-and-install-secrets = {
+    #   wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
+    #   before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
+    #   unitConfig.DefaultDependencies = "no";
+    #   serviceConfig.Type = "oneshot";
+    #   serviceConfig.RemainAfterExit = true;
+    #   script = ''
+    #     export PATH=${makeBinPath [ pkgs.toybox pkgs.gum pkgs.jq pkgs.gnupg ]}:$PATH
+    #     TEMP_DIR=$(mktemp -d)
+    #     trap 'rm -rf $TEMP_DIR' EXIT
+    #     export GPG_TTY=$(tty)
+    #     export GPG_AGENT_INFO=/dev/null
+    #     export GPG_KEYBOX=/dev/null
+    #     gpg \
+    #       --yes \
+    #       --output $TEMP_DIR/secrets.json \
+    #       --decrypt ${../../secrets.json}
+    #   '';
+    # };
     systemd.services.secrets = {
       wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
       before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
@@ -138,8 +149,6 @@ in
       serviceConfig.RemainAfterExit = true;
       script = secrets-install;
     };
-
-    ## maybe disable this as is only really is updating secret values 
     system.activationScripts = {
       secrets = {
         deps = [ "specialfs" ];

@@ -60,6 +60,10 @@ mkShell rec {
         gpg --import "$temp/$key" || gum log --level error "Failed to import GPG key $key."
         gum log --level info "Importing GPG key $key for root."
         sudo -u root bash -c "gpg --import '$temp/$key'" || gum log --level error "Failed to import GPG key $key for root."
+        fingerprint=$(gpg --with-colons --fingerprint | grep fpr | head -n 1 | cut -d: -f10)
+        echo -e "5\ny\n" | gpg --command-fd 0 --expert --edit-key "$fingerprint" trust || gum log --level error "Failed to trust GPG key $key."
+        sudo -u root bash -c "echo -e '5\ny\n' | gpg --command-fd 0 --expert --edit-key '$fingerprint' trust" || gum log --level error "Failed to trust GPG key $key for root."
+        gum log --level info "Successfully imported and trusted GPG key $key with fingerprint $fingerprint."
       done
       gum log --level info "Successfully imported GPG keys."
     '')
@@ -70,8 +74,9 @@ mkShell rec {
         --output json \
         --access-token $BWS_ACCESS_TOKEN \
         > $TEMP_DIR/secrets.json
-      ${lib.getExe gnupg} --encrypt \
+      sudo ${lib.getExe gnupg} --encrypt \
         --recipient dominic.egginton@gmail.com \
+        --recipient root@latitude-7390 \
         --output secrets.json \
         $TEMP_DIR/secrets.json 
       ${lib.getExe gum} log --level info "Secrets synchronized and encrypted to secrets.json."
