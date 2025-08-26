@@ -74,9 +74,6 @@ rec {
                 min-free = "8G";
                 max-free = "10G";
                 min-free-check-interval = 1;
-                ## todo: update:
-                ##       should add
-                ##       
                 trusted-users = [ "root" "@wheel" ];
               };
             };
@@ -87,24 +84,13 @@ rec {
               dev.enable = true;
               info.enable = true;
             };
-            console = {
-              enable = true;
-              earlySetup = true;
-              keyMap = "uk";
-              font = "${pkgs.terminus_font}/share/consolefonts/ter-u22n.psf.gz";
-              colors = config.scheme.toList;
-            };
+            services.openssh.enable = true;
             programs = {
-              zsh = {
-                enable = true;
-                enableCompletion = true;
-                autosuggestions.enable = true;
-                promptInit = "autoload -U promptinit && promptinit";
-              };
               gnupg.agent = {
                 enable = true;
                 pinentryPackage = pkgs.pinentry;
               };
+              ssh.startAgent = true;
               command-not-found.enable = true;
             };
             hardware.cpu = {

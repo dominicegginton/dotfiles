@@ -22,5 +22,7 @@
     services.gnome.games.enable = false;
     environment.systemPackages = with pkgs; [ gnome-console ];
     environment.gnome.excludePackages = with pkgs; [ gnome-tour gnome-user-docs gnome-backgrounds ];
+
+    networking.networkmanager.enable = true;
   };
 }

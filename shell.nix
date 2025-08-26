@@ -16,7 +16,6 @@
 , gum
 , jq
 , gnupg
-, writers
 , bws
 }:
 

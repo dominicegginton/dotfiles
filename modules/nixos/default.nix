@@ -7,6 +7,7 @@
     ./backup.nix
     ./bluetooth.nix
     ./calmav.nix
+    ./console.nix
     ./environment.nix
     ./filesystem.nix
     ./frigate.nix
@@ -19,12 +20,14 @@
     ./secrets.nix
     ./silverbullet.nix
     ./steam.nix
+    ./tailscale.nix
     ./unifi.nix
     ./upgrade.nix
     ./users.nix
     ./virtualisation.nix
     ./wio.nix
     ./zabbix.nix
+    ./zsh.nix
   ];
 
   ## todo: tidy up

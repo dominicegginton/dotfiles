@@ -1,24 +1,18 @@
-{ config, lib, dlib, pkgs, hostname, tailnet, ... }:
+{ config, lib, hostname, ... }:
 
 with config.lib.topology;
 
 {
   config = lib.mkIf (hostname != "residence-installer") {
     secrets.wireless = lib.mkIf config.networking.wireless.enable "04480e55-ca76-4444-a5cf-b242009fe153";
-    secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
     networking = {
       hostName = hostname;
       useDHCP = lib.mkDefault true;
+      nftables.enable = lib.mkDefault true;
       firewall = {
-        enable = true;
+        enable = lib.mkDefault true;
         trustedInterfaces = [ "tailscale0" ];
         checkReversePath = "loose";
-      };
-      nftables.enable = true;
-      networkmanager = {
-        enable = true;
-        dns = "systemd-resolved";
-        unmanaged = [ "lo" "wlp108s0" ];
       };
       wireless = lib.mkIf config.networking.wireless.enable {
         fallbackToWPA2 = true;
@@ -40,25 +34,11 @@ with config.lib.topology;
           };
         };
       };
+      networkmanager = lib.mkIf config.networking.networkmanager.enable {
+        dns = "systemd-resolved";
+        unmanaged = [ "wlp108s0" ];
+      };
     };
-    services.openssh.enable = true;
-    programs.ssh.startAgent = true;
-    services.tailscale = {
-      enable = true;
-      useRoutingFeatures = "both";
-      authKeyFile = "/run/bitwarden-secrets/tailscale";
-      authKeyParameters.ephemeral = true;
-      extraUpFlags = [ "--ssh" "--accept-dns" ];
-      extraSetFlags = [ "--posture-checking=true" ];
-      interfaceName = "tailscale0";
-    };
-    services.tailscaleAuth.enable = true;
-    security.acme = {
-      acceptTerms = true;
-      defaults.email = dlib.maintainers.dominicegginton.email;
-    };
-    services.davfs2.enable = true;
-    environment.systemPackages = with pkgs; [ tailscale ];
     topology.self.interfaces = {
       lo = {
         type = "loopback";
@@ -73,13 +53,6 @@ with config.lib.topology;
           (mkConnection "quardon-ap-upstairs" "wlan0")
           (mkConnection "ribble-router" "wlan0")
         ];
-      };
-      tailscale0 = {
-        network = tailnet;
-        type = "tailscale";
-        icon = ../../assets/tailscale.svg;
-        virtual = true;
-        addresses = [ hostname "${hostname}.${tailnet}" ];
       };
     };
   };
