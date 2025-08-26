@@ -122,25 +122,26 @@ in
       description = "Attribute set of secrets to be installed.";
     };
   config = lib.mkIf (hostname != "residence-installer") {
-    # systemd.services.decrypt-and-install-secrets = {
-    #   wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
-    #   before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
-    #   unitConfig.DefaultDependencies = "no";
-    #   serviceConfig.Type = "oneshot";
-    #   serviceConfig.RemainAfterExit = true;
-    #   script = ''
-    #     export PATH=${makeBinPath [ pkgs.toybox pkgs.gum pkgs.jq pkgs.gnupg ]}:$PATH
-    #     TEMP_DIR=$(mktemp -d)
-    #     trap 'rm -rf $TEMP_DIR' EXIT
-    #     export GPG_TTY=$(tty)
-    #     export GPG_AGENT_INFO=/dev/null
-    #     export GPG_KEYBOX=/dev/null
-    #     gpg \
-    #       --yes \
-    #       --output $TEMP_DIR/secrets.json \
-    #       --decrypt ${../../secrets.json}
-    #   '';
-    # };
+    systemd.services.decrypt-secrets = {
+      wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
+      before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
+      unitConfig.DefaultDependencies = "no";
+      serviceConfig.Type = "oneshot";
+      serviceConfig.RemainAfterExit = true;
+      script = ''
+        export PATH=${makeBinPath [ pkgs.toybox pkgs.gum pkgs.jq pkgs.gnupg ]}:$PATH
+        TEMP_DIR=$(mktemp -d)
+        trap 'rm -rf $TEMP_DIR' EXIT
+        export GPG_TTY=$(tty)
+        export GPG_AGENT_INFO=/dev/null
+        export GPG_KEYBOX=/dev/null
+        gpg \
+          --yes \
+          --output $TEMP_DIR/secrets.json \
+          --decrypt ${../../secrets.json}
+        echo "Decrypted secrets to $TEMP_DIR/secrets.json"
+      '';
+    };
     systemd.services.secrets = {
       wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
       before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];

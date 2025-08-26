@@ -105,7 +105,22 @@ rec {
       platform = final.system;
       extraModules = [
         ({ modulesPath, ... }: {
-          imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
+          imports = [
+            (modulesPath + "/installer/scan/not-detected.nix")
+            (modulesPath + "/profiles/qemu-guest.nix")
+          ];
+          boot.loader.grub = {
+            efiSupport = true;
+            efiInstallAsRemovable = true;
+          };
+          services.openssh.enable = true;
+
+          environment.systemPackages = map lib.lowPrio [
+            pkgs.curl
+            pkgs.gitMinimal
+          ];
+
+          users.users.root.openssh.authorizedKeys.keys = [ "ssh-rsa4096/4C79CE4F82847A9F dominic.egginton@gmail.com" ];
           roles = [ "installer" ];
         })
       ];
