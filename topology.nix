@@ -43,14 +43,20 @@ with config.lib.topology;
   };
   nodes = {
     internet = mkInternet { };
+    quardon-vm-modem = mkDevice "quardon-vm-modem" {
+      info = "VM Broadband Modem";
+      interfaces.eth0 = {
+        network = "internet";
+        physicalConnections = [ (mkConnection "internet" "*") ];
+      };
+      interfaces.eth1 = {
+        type = "ethernet";
+        physicalConnections = [ (mkConnection "quardon-router" "eth0") ];
+      };
+    };
     quardon-router = mkRouter "quardon-router" {
       info = "Unifi Security Gateway";
       interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
-      interfaces.eth0 = {
-        network = "internet";
-        type = "fiber-duplex";
-        physicalConnections = [ (mkConnection "internet" "*") ];
-      };
       interfaces.eth1 = {
         network = "burbage";
         addresses = [ "192.168.1.1" ];
@@ -208,14 +214,21 @@ with config.lib.topology;
         ];
       };
     };
-    ribble-router = mkRouter "ribble-router" {
-      info = "Unifi Security Gateway";
-      interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
+    ribble-fiber-modem = mkDevice "ribble-ee-fiber-modem" {
+      info = "EE Fiber Modem";
       interfaces.eth0 = {
         network = "internet";
         type = "fiber-duplex";
         physicalConnections = [ (mkConnection "internet" "*") ];
       };
+      interfaces.eth1 = {
+        type = "ethernet";
+        physicalConnections = [ (mkConnection "ribble-router" "eth0") ];
+      };
+    };
+    ribble-router = mkRouter "ribble-router" {
+      info = "Unifi Security Gateway";
+      interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
       interfaces.eth1 = {
         network = "burbage";
         addresses = [ "192.168.1.1" ];
