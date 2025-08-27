@@ -60,7 +60,6 @@ add('echasnovski/mini.starter') -- Start screen
 add('echasnovski/mini.statusline') -- Statusline
 add('echasnovski/mini.tabline') -- Tabline
 add('nvim-tree/nvim-tree.lua') -- File explorer
-add('echasnovski/mini.files') -- Navigate and manipulate file system
 add('echasnovski/mini.notify') -- Show notifications
 add('echasnovski/mini.clue') -- Show next key clues
 add('folke/trouble.nvim') -- A pretty diagnostics, references, telescope results, quickfix and location list

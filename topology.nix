@@ -6,27 +6,36 @@ with config.lib.topology;
 {
   networks = {
     internet = {
-      name = "internet";
+      name = "WAN Internet";
       style = {
         primaryColor = "lightblue";
         pattern = "solid";
       };
     };
-    burbage = {
-      name = "burbage";
+    quarndon = {
+      name = "LAN Quarndon";
       cidrv4 = "192.168.1.0/24";
       cidrv6 = "fd00:1::/64";
       style = {
-        primaryColor = "#b16286";
+        primaryColor = "#835923ff";
         pattern = "solid";
       };
     };
-    cameras = {
-      name = "cameras";
+    ribble = {
+      name = "LAN Ribble";
+      cidrv4 = "192.168.1.0/24";
+      cidrv6 = "fd00:1::/64";
+      style = {
+        primaryColor = "#763088ff";
+        pattern = "solid";
+      };
+    };
+    quardon-nvr = {
+      name = "LAN NVR Quarndon";
       cidrv4 = "192.168.1.0/24";
       cidrv6 = "fd00:3::/64";
       style = {
-        primaryColor = "#dfa000";
+        primaryColor = "#a53926ff";
         pattern = "solid";
       };
     };
@@ -43,8 +52,8 @@ with config.lib.topology;
   };
   nodes = {
     internet = mkInternet { };
-    quardon-vm-modem = mkDevice "quardon-vm-modem" {
-      info = "VM Broadband Modem";
+    quardon-vm-modem = mkDevice "Virgin Media Super Hub" {
+      info = "Virgin Media Super Hub (Disabled WiFi & Routing - Modem Only)";
       interfaces.eth0 = {
         network = "internet";
         physicalConnections = [ (mkConnection "internet" "*") ];
@@ -54,54 +63,54 @@ with config.lib.topology;
         physicalConnections = [ (mkConnection "quardon-router" "eth0") ];
       };
     };
-    quardon-router = mkRouter "quardon-router" {
+    quardon-router = mkRouter "Unifi Security Gateway" {
       info = "Unifi Security Gateway";
       interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
       interfaces.eth1 = {
-        network = "burbage";
+        network = "quarndon";
         addresses = [ "192.168.1.1" ];
         type = "ethernet";
       };
     };
-    quardon-switch-main = mkSwitch "quardon-switch-main" {
+    quardon-switch-main = mkSwitch "Cisco Switch 24 Port" {
       info = "Cisco Switch 24 Port";
       connections.eth0 = mkConnection "quardon-router" "eth1";
       connections.eth2 = mkConnection "quardon-ap-downstairs" "eth0";
       connections.eth3 = mkConnection "quardon-ap-upstairs" "eth0";
       connections.eth4 = mkConnection "quardon-nvr" "eth0";
     };
-    quardon-ap-downstairs = mkDevice "quardon-ap-downstairs" {
+    quardon-ap-downstairs = mkDevice "Downstairs Wireless Unifi Access Point" {
       info = "Unifi AP Light";
       interfaceGroups = [ [ "eth0" "wlan0" ] ];
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-upstairs" "wlan0")
         ];
       };
     };
-    quardon-ap-upstairs = mkDevice "quardon-ap-upstairs" {
+    quardon-ap-upstairs = mkDevice "Upstairs Wireless Unifi Access Point" {
       info = "Unifi AP Light";
       interfaceGroups = [ [ "eth0" "wlan0" ] ];
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
         ];
       };
     };
-    quardon-nvr = mkDevice "quardon-nvr" {
-      info = "Reolink NVR";
+    quardon-nvr = mkDevice "Reolink NVR" {
+      info = "Reolink Network Video Recorder (NVR)";
       deviceIcon = ./assets/reolink.svg;
       interfaceGroups = [ [ "eth0" ] [ "eth1" "eth2" ] ];
       interfaces.eth0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "ethernet";
       };
       interfaces.eth1 = {
-        network = "cameras";
+        network = "quardon-nvr";
         type = "ethernet";
         physicalConnections = [
           (mkConnection "quardon-front-security-camera" "eth0")
@@ -109,11 +118,11 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-front-center-security-camera = mkDevice "quardon-front-center-security-camera" {
-      info = "Reolink PTZ Security Camera";
+    quardon-front-center-security-camera = mkDevice "Reolink PTZ Front Center Security Camera" {
+      info = "Reolink PTZ Security Camera Wifi";
       deviceIcon = ./assets/reolink.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -121,21 +130,21 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-front-security-camera = mkDevice "quardon-front-security-camera" {
+    quardon-front-security-camera = mkDevice "Reolink Front Security Camera" {
       info = "Reolink Security Camera";
       deviceIcon = ./assets/reolink.svg;
       interfaces.eth0 = { };
     };
-    quardon-back-security-camera = mkDevice "quardon-back-security-camera" {
+    quardon-back-security-camera = mkDevice "Reolink Back Security Camera" {
       info = "Reolink Security Camera";
       deviceIcon = ./assets/reolink.svg;
       interfaces.eth0 = { };
     };
-    quardon-office-desktop = mkDevice "quardon-office-desktop" {
+    quardon-office-desktop = mkDevice "Matt's Desktop Office PC" {
       info = "Desktop All In One PC";
       deviceIcon = ./assets/windows.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -143,11 +152,11 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-move-speaker = mkDevice "quardon-move-speaker" {
+    quardon-move-speaker = mkDevice "Sonos Move Speaker" {
       info = "Sonos Move Speaker";
       deviceIcon = ./assets/sonos.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -155,11 +164,11 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-familyrooom-speaker = mkDevice "quardon-familyrooom-speaker" {
+    quardon-familyrooom-speaker = mkDevice "Family Room Speaker" {
       info = "Sonos One Speaker";
       deviceIcon = ./assets/sonos.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -167,10 +176,10 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-livingroom-tv = mkDevice "quardon-livingroom-tv" {
+    quardon-livingroom-tv = mkDevice "Living Room TV" {
       info = "Smart TV";
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -178,11 +187,11 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-livingroom-speaker = mkDevice "quardon-livingroom-speaker" {
+    quardon-livingroom-speaker = mkDevice "Living Room Speaker" {
       info = "Sonos Soundbar";
       deviceIcon = ./assets/sonos.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -190,11 +199,22 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-bedroom-tv = mkDevice "quardon-bedroom-tv" {
+    quardon-master-bedroom-tv = mkDevice "Master Bedroom TV" {
+      info = "Samsung Smart TV";
+      interfaces.wlan0 = {
+        network = "quarndon";
+        type = "wifi";
+        physicalConnections = [
+          (mkConnection "quardon-ap-downstairs" "wlan0")
+          (mkConnection "quardon-ap-upstairs" "wlan0")
+        ];
+      };
+    };
+    quardon-master-bedroom-google-tv = mkDevice "Master Bedroom Google TV" {
       info = "Google Chromecast with Google TV 4K";
       deviceIcon = ./assets/google.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -202,11 +222,11 @@ with config.lib.topology;
         ];
       };
     };
-    quardon-bedroom-speaker = mkDevice "quardon-bedroom-speaker" {
+    quardon-bedroom-speaker = mkDevice "Bedroom Speaker" {
       info = "Sonos One Speaker";
       deviceIcon = ./assets/sonos.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "quarndon";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -214,7 +234,7 @@ with config.lib.topology;
         ];
       };
     };
-    ribble-fiber-modem = mkDevice "ribble-ee-fiber-modem" {
+    ribble-fiber-modem = mkDevice "EE Fiber Modem" {
       info = "EE Fiber Modem";
       interfaces.eth0 = {
         network = "internet";
@@ -226,76 +246,76 @@ with config.lib.topology;
         physicalConnections = [ (mkConnection "ribble-router" "eth0") ];
       };
     };
-    ribble-router = mkRouter "ribble-router" {
-      info = "Unifi Security Gateway";
+    ribble-router = mkRouter "EE Router" {
+      info = "EE Router";
       interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
       interfaces.eth1 = {
-        network = "burbage";
+        network = "ribble";
         addresses = [ "192.168.1.1" ];
         type = "ethernet";
       };
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
       };
     };
-    ribble-switch = mkSwitch "ribble-switch" {
+    ribble-switch = mkSwitch "Switch" {
       info = "Switch";
       interfaceGroups = [ [ "eth0" "eth1" "eth2" "eth3" ] ];
       connections.eth0 = mkConnection "ribble-router" "eth1";
       connections.eth2 = mkConnection "ribble-security-camera" "eth0";
     };
-    ribble-security-camera = mkDevice "ribble-security-camera" {
+    ribble-security-camera = mkDevice "Doorbell Camera" {
       info = "Reolink Doorbell Camera";
       deviceIcon = ./assets/reolink.svg;
       interfaces.eth0 = { };
     };
-    ribble-livingroom-tv = mkDevice "ribble-livingroom-tv" {
+    ribble-livingroom-google-tv = mkDevice "Living Room Google TV" {
       info = "Google Chromecast with Google TV 1080p";
       deviceIcon = ./assets/google.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [ (mkConnection "ribble-router" "wlan0") ];
       };
     };
-    ribble-livingroom-lamp-switch = mkDevice "ribble-livingroom-lamp-switch" {
+    ribble-livingroom-lamp-switch = mkDevice "Lamp" {
       info = "Sonoff Living Room Lamp Switch";
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [ (mkConnection "ribble-router" "wlan0") ];
       };
     };
-    ribble-kitchen-lamp-switch = mkDevice "ribble-kitchen-lamp-switch" {
+    ribble-kitchen-lamp-switch = mkDevice "Shelf Lamp" {
       info = "Sonoff Kitchen Lamp Switch";
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [ (mkConnection "ribble-router" "wlan0") ];
       };
     };
-    ribble-office-lamp-switch = mkDevice "ribble-office-lamp-switch" {
+    ribble-office-lamp-switch = mkDevice "Desk Lamp" {
       info = "Sonoff Office Lamp Switch";
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [ (mkConnection "ribble-router" "wlan0") ];
       };
     };
-    ribble-bedroom-lamps-switch = mkDevice "ribble-bedroom-lamps-switch" {
+    ribble-bedroom-lamps-switch = mkDevice "Bedside Lights" {
       info = "Sonoff Bedroom Lamps Switch";
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [ (mkConnection "ribble-router" "wlan0") ];
       };
     };
-    ribble-bedroom-speaker = mkDevice "ribble-bedroom-speaker" {
+    ribble-bedroom-speaker = mkDevice "Dom's Bedroom Speaker" {
       info = "Google Home Bedroom Speaker";
       deviceIcon = ./assets/google.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [ (mkConnection "ribble-router" "wlan0") ];
       };
@@ -304,7 +324,7 @@ with config.lib.topology;
       info = "Macbook Pro 2019 - Arup Workstation";
       deviceIcon = ./assets/apple.svg;
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -328,7 +348,7 @@ with config.lib.topology;
         physicalConnections = [ (mkConnection "internet" "*") ];
       };
       interfaces.wlan0 = {
-        network = "burbage";
+        network = "ribble";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")

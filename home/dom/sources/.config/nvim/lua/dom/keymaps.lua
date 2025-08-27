@@ -1,6 +1,5 @@
 local quickfix_list = require('dom.plugins.quickfix-list')
 local mini_extra = require('mini.extra')
-local mini_files = require('mini.files')
 local mini_pick = require('mini.pick')
 local mini_diff = require('mini.diff')
 
@@ -19,9 +18,6 @@ vim.keymap.set('n', '<leader>fr', mini_pick.builtin.resume, { desc = 'Resume Pic
 
 -- User Interface
 local toggle_nvim_tree = function() vim.cmd('NvimTreeToggle') end
-local toggle_mini_file_explorer = function()
-  if not mini_files.close() then mini_files.open(vim.api.nvim_buf_get_name(0)) end
-end
 
 local toggle_diff_overview = function() mini_diff.toggle_overview() end
 
@@ -32,7 +28,6 @@ local toggle_git_blame = function() vim.cmd('ToggleBlameLine') end
 local open_command_palette = function() vim.cmd('CmdPalette') end
 
 vim.keymap.set('n', '<leader>te', toggle_nvim_tree, { desc = 'Toggle File Explorer Panel' })
-vim.keymap.set('n', '<leader>tE', toggle_mini_file_explorer, { desc = 'Toggle Mini File Explorer' })
 vim.keymap.set('n', '<leader>td', toggle_diagnostic_panel, { desc = 'Toggle Diagnostics Panel' })
 vim.keymap.set('n', '<leader>tL', toggle_lsp_panel, { desc = 'Toggle LSP Panel' })
 vim.keymap.set('n', '<leader>tD', toggle_diff_overview, { desc = 'Toggle Diff Overview' })
@@ -43,8 +38,6 @@ vim.keymap.set('n', '<leader>tp', open_command_palette, { desc = 'Open Command P
 
 -- Utilities
 local auto_format_group = vim.api.nvim_create_augroup('AutoFormat', {})
-local format_write_callback = function() vim.cmd('FormatWrite') end
 local clear_highlighting = function() vim.cmd('noh') end
 
 vim.keymap.set('n', '<leader><leader>n', clear_highlighting, { desc = 'Clear Highlight' })
-vim.api.nvim_create_autocmd('BufWritePost', { group = auto_format_group, callback = format_write_callback })

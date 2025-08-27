@@ -95,6 +95,12 @@ in
       cat = "bat";
       ls = "eza";
     };
+
+    home.sessionVariables = {
+      SB_URL = "https://sb.ghost-gs60";
+      FG_URL = "http://fg.ghost-gs60";
+    };
+
     home.packages = with pkgs; [
       nix-output-monitor
       cachix
@@ -107,6 +113,8 @@ in
       chromium
       nyxt
       bleeding.youtube
+      silverbullet-desktop
+      frigate-desktop
     ];
   };
 }

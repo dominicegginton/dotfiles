@@ -23,6 +23,7 @@ rec {
       email = "dominic.egginton@gmail.com";
       github = "dominicegginton";
       githubId = 28626241;
+      sshKeys = [ "ssh-rsa4096/4C79CE4F82847A9F" ];
     };
   };
   eachPlatformMerge = op: platforms: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then platforms else platforms ++ [ builtins.currentSystem ]);

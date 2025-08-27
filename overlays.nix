@@ -100,6 +100,7 @@ rec {
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
+    frigate-desktop = final.callPackage ./pkgs/frigate-desktop.nix { };
     residence-installer = (outputs.lib.nixosSystem {
       hostname = "residence-installer";
       platform = final.system;
@@ -131,6 +132,7 @@ rec {
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
     residence = final.callPackage ./pkgs/residence { inherit (inputs) ags; inherit (final) system; };
+    silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     status = final.callPackage ./pkgs/status.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
     todo = (packagesFrom inputs.todo final.system).default;

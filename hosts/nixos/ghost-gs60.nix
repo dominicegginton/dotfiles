@@ -87,7 +87,7 @@
   topology.self = {
     hardware.info = "MSI Ghost GS60";
     interfaces.eth0 = {
-      network = "burbage";
+      network = "ribble";
       type = "ethernet";
       addresses = [ hostname ];
       physicalConnections = [ (config.lib.topology.mkConnection "ribble-switch" "eth3") ];

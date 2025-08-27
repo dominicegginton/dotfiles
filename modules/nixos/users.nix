@@ -22,7 +22,10 @@ in
         isNormalUser = mkDefault false;
         isSystemUser = mkDefault true;
         hashedPassword = mkDefault null;
-        openssh.authorizedKeys.keys = [ "ssh-rsa4096/4C79CE4F82847A9F dominic.egginton@gmail.com" ];
+        openssh = {
+          authorizedPrincipals = [ "root@localhost" "root@${hostname}" dlib.maintainers.dominicegginton.email ];
+          authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
+        };
       };
 
       dom = {
@@ -33,7 +36,7 @@ in
         homeMode = "0755";
         shell = pkgs.zsh;
         extraGroups = defaultExtraGroups ++ previlegedExtraGroups;
-        openssh.authorizedKeys.keys = [ "ssh-rsa4096/4C79CE4F82847A9F dominic.egginton@gmail.com" ];
+        openssh.authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
       };
 
       matt = {

@@ -9,6 +9,35 @@ let
     sha256 = "8ce0380d95f76c457eec19a2fae02756f38bc5a4ab6ea3de24ccb37124a254da";
     meta.license = lib.licenses.free;
   };
+
+  sherlockConfigToml = pkgs.writeText "sherlock-config.toml" ''
+    [default_apps]
+    teams = "${lib.getExe pkgs.teams-for-linux} --enable-features=UseOzonePlatform --ozone-platform=wayland --url {meeting_url}"
+    calendar_client = "${lib.getExe pkgs.gnome-calendar}"
+    terminal = "${lib.getExe pkgs.alacritty}"
+    browser = "${lib.getExe pkgs.firefox} --name firefox %U"
+    [units]
+    lengths = "meters"
+    weights = "kg"
+    volumes = "l"
+    temperatures = "C"
+    [appearance]
+    width = 900
+    height = 593
+    gsk_renderer = "cairo"
+    icon_paths = ["~/.config/sherlock/icons/"]
+    icon_size = 22
+    search_icon = true
+    use_base_css = true
+    status_bar = false
+    opacity = 1.0
+    mod_key_ascii = ["⇧", "⇧", "⌘", "⌘", "⎇", "✦", "✦", "⌘"]
+    [behavior]
+    cache = "~/.cache/sherlock/sherlock_desktop_cache.json"
+    caching = true
+    daemonize = false
+    animate = true
+  '';
 in
 
 {
@@ -175,7 +204,7 @@ in
         Mod+O                repeat=false                              { toggle-overview; }
         Mod+Shift+Q                                                    { close-window; }
         Mod+Return           hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
-        Mod+Space            hotkey-overlay-title="Launcher"           { spawn "${lib.getExe pkgs.bleeding.sherlock-launcher}"; }
+        Mod+Space            hotkey-overlay-title="Launcher"           { spawn "${lib.getExe pkgs.bleeding.sherlock-launcher}" "--config" "${sherlockConfigToml}"; }
         Mod+Shift+Escape     hotkey-overlay-title="System Manager"     { spawn "${lib.getExe pkgs.bleeding.karren.system-manager}"; }
         Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock-effects}" "-S" "--effect-blur" "10x10"; }
         Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }

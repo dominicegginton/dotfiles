@@ -33,6 +33,7 @@ local open_nvim_tree = function(data)
   if not real_file and not no_name then return end
   if vim.fn.expand('%') == '.git/COMMIT_EDITMSG' then return end
   if vim.fn.expand('%') == '.git/rebase-merge/git-rebase-todo' then return end
+  if vim.api.nvim_win_get_option(0, "diff") then return end
   nvim_tree_api.tree.toggle({ focus = false, find_file = true })
 end
 vim.api.nvim_create_autocmd({ 'VimEnter' }, { callback = open_nvim_tree })
