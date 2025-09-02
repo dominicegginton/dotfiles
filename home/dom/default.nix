@@ -5,7 +5,14 @@ let
 in
 
 {
+  imports = [
+    ./firefox.nix
+    ./git.nix
+    ./tmux.nix
+    ./zsh.nix
+  ];
   config = {
+
     home.file = {
       ".aws/config".source = ./sources/.aws/config;
       ".face".source = ./face.jpg;
@@ -95,10 +102,54 @@ in
       cat = "bat";
       ls = "eza";
     };
+    programs.ssh.enable = true;
+    programs.gpg.enable = true;
+    services.gpg-agent = lib.mkIf pkgs.stdenv.isLinux {
+      enable = true;
+      enableSshSupport = true;
+      enableZshIntegration = true;
+    };
 
     home.sessionVariables = {
       SB_URL = "https://sb.ghost-gs60";
       FG_URL = "http://fg.ghost-gs60";
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+      SYSTEMD_EDITOR = "nvim";
+    };
+
+    programs.neovim = {
+      enable = true;
+      package = pkgs.neovim;
+      viAlias = true;
+      vimAlias = true;
+      extraPackages = with pkgs; [
+        ripgrep
+        fd
+        fzf
+        tree-sitter
+        nixd
+        gcc
+        rustc
+        cargo
+        rust-analyzer
+        nodejs
+        nodePackages.typescript
+        terraform-lsp
+        lua-language-server
+        nodePackages.vim-language-server
+        nodePackages.bash-language-server
+        nodePackages.yaml-language-server
+        nodePackages.dockerfile-language-server-nodejs
+        nodePackages.typescript-language-server
+        nodePackages.vscode-langservers-extracted
+        prettierd
+        eslint_d
+        nixpkgs-fmt
+        stylua
+        typos-lsp
+        pyright
+      ];
     };
 
     home.packages = with pkgs; [
