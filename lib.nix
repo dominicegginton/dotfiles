@@ -98,7 +98,7 @@ rec {
               intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
               amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
             };
-            scheme = "${pkgs.theme}/theme.yaml";
+            scheme = "${pkgs.theme}/residence-theme.yaml";
             home-manager = {
               extraSpecialArgs = specialArgs;
               useGlobalPkgs = true;
@@ -138,7 +138,7 @@ rec {
             inputs.base16.homeManagerModule
             inputs.ags.homeManagerModules.default
             {
-              scheme = "${pkgs.theme}/theme.yaml";
+              scheme = "${pkgs.theme}/resodence-theme.yaml";
               home = { inherit stateVersion; };
             }
             ./modules/home-manager
