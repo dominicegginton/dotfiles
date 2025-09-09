@@ -205,7 +205,6 @@ with config.scheme.withHashtag;
       layout {
         gaps 16
         center-focused-column "never"
-        always-center-single-column
         struts {
           left 0
           right 0
