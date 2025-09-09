@@ -56,8 +56,7 @@ in
     services.gnome.core-developer-tools.enable = false;
     services.gnome.games.enable = false;
     environment.systemPackages = with pkgs; [ gnome-console residence-background-info ];
-    environment.gnome.excludePackages = with pkgs; [ gnome-tour gnome-user-docs nixos-background-info gnome-backgrounds ];
-
+    environment.gnome.excludePackages = with pkgs; [ gnome-tour gnome-user-docs gnome-backgrounds ];
     networking.networkmanager.enable = true;
   };
 }
