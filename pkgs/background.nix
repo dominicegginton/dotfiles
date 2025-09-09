@@ -1,9 +1,9 @@
 { lib, fetchurl }:
 
 fetchurl rec {
-  name = "1398452.jpg";
-  url = "https://images6.alphacoders.com/139/1398452.jpg";
-  hash = "sha256-U1KOW31Rn66mwxMlpAlDArrMyvCi+ILEQBqmfdRnlro=";
+  name = "h0lBtpi.jpeg";
+  url = "https://i.imgur.com/h0lBtpi.jpeg";
+  sha256 = "1nfh9fk69gjyjlshhxpnbysa3969gcskl70rl29dh3g27224zw6z";
   meta = {
     description = "Background image ${name} from ${url}";
     license = lib.licenses.free;

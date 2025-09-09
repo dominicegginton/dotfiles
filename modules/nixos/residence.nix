@@ -427,6 +427,7 @@ with config.scheme.withHashtag;
         evince # Document Viewer
         gnome-font-viewer # Font Viewer
         gnome-calendar # Calendar
+        bleeding.karren.lazy-desktop
       ];
     };
     fonts = {

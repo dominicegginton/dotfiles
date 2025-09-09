@@ -26,7 +26,6 @@
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
   display.residence.enable = true;
-  display.wio.enable = true;
   virtualisation.docker.enable = true;
   topology.self.hardware.info = "Dell Latitude 7390 2-in-1";
 }
