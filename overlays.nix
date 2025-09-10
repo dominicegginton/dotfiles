@@ -105,25 +105,104 @@ rec {
       hostname = "residence-installer";
       platform = final.system;
       extraModules = [
-        ({ modulesPath, ... }: {
-          imports = [
-            (modulesPath + "/installer/scan/not-detected.nix")
-            (modulesPath + "/profiles/qemu-guest.nix")
-          ];
-          boot.loader.grub = {
-            efiSupport = true;
-            efiInstallAsRemovable = true;
-          };
-          services.openssh.enable = true;
-
-          environment.systemPackages = map lib.lowPrio [
-            pkgs.curl
-            pkgs.gitMinimal
-          ];
-
-          users.users.root.openssh.authorizedKeys.keys = [ "ssh-rsa4096/4C79CE4F82847A9F dominic.egginton@gmail.com" ];
-          roles = [ "installer" ];
-        })
+        ({ pkgs, lib, modulesPath, config, ... }:
+          let
+            network-status = pkgs.writeShellScriptBin "network-status" ''
+              export PATH=${with pkgs; lib.makeBinPath [ iproute2 coreutils gnugrep nettools gum ]}
+              set -efu -o pipefail
+              msgs=()
+              if [[ -e /var/shared/qrcode.utf8 ]]; then
+                qrcode=$(gum style --border-foreground 240 --border normal "$(< /var/shared/qrcode.utf8)")
+                msgs+=("$qrcode")
+              fi
+              network_status="Root password: $(cat /var/shared/root-password)
+              Local network addresses:
+              $(ip -brief -color addr | grep -v 127.0.0.1)
+              $([[ -e /var/shared/onion-hostname ]] && echo "Onion address: $(cat /var/shared/onion-hostname)" || echo "Onion address: Waiting for tor network to be ready...")
+              Multicast DNS: $(hostname).local"
+              network_status=$(gum style --border-foreground 240 --border normal "$network_status")
+              msgs+=("$network_status")
+              msgs+=("Press 'Ctrl-C' for console access")
+              gum join --vertical "''${msgs[@]}"
+            '';
+          in
+          {
+            imports = [
+              (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
+            ];
+            roles = [ "installer" ];
+            boot = {
+              supportedFilesystems.bcachefs = lib.mkDefault true;
+              loader.grub = {
+                efiSupport = true;
+                efiInstallAsRemovable = true;
+              };
+            };
+            isoImage.squashfsCompression = "zstd";
+            image.baseName = lib.mkDefault "residence-installer";
+            console.earlySetup = true;
+            networking = {
+              tempAddresses = "disabled";
+              wireless = {
+                enable = false;
+                iwd = {
+                  enable = true;
+                  settings = {
+                    Network = {
+                      EnableIPv6 = true;
+                      RoutePriorityOffset = 300;
+                    };
+                    Settings.AutoConnect = true;
+                  };
+                };
+              };
+            };
+            services = {
+              openssh = {
+                enable = true;
+                settings.PermitRootLogin = "yes";
+              };
+              getty.autologinUser = lib.mkForce "root";
+            };
+            programs.bash.interactiveShellInit = ''
+              if [[ "$(tty)" =~ /dev/(tty1|hvc0|ttyS0)$ ]]; then
+                systemctl restart systemd-vconsole-setup.service
+                watch --no-title --color ${network-status}/bin/network-status
+              fi
+            '';
+            systemd = {
+              services.log-network-status = {
+                wantedBy = [ "multi-user.target" ];
+                restartIfChanged = false;
+                serviceConfig = {
+                  Type = "oneshot";
+                  StandardOutput = "journal+console";
+                  ExecStart = [
+                    "-${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online"
+                    "${pkgs.iproute2}/bin/ip -c addr"
+                    "${pkgs.iproute2}/bin/ip -c -6 route"
+                    "${pkgs.iproute2}/bin/ip -c -4 route"
+                    "${pkgs.systemd}/bin/networkctl status"
+                  ];
+                };
+              };
+              tmpfiles.rules = [ "d /var/shared 0777 root root - -" ];
+            };
+            system.activationScripts.root-password = ''
+              mkdir -p /var/shared
+              ${pkgs.xkcdpass}/bin/xkcdpass --numwords 3 --delimiter - --count 1 > /var/shared/root-password
+              echo "root:$(cat /var/shared/root-password)" | chpasswd
+            '';
+            environment.systemPackages = with pkgs; map lib.lowPrio [
+                curl
+                gitMinimal
+                nixos-install-tools
+                jq
+                rsync
+                disko
+                network-status
+              ];
+          })
       ];
     });
     residence-iso = final.residence-installer.config.system.build.isoImage;

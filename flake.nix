@@ -106,7 +106,7 @@ rec {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
           buildAndCachePackages = {
-            inherit (pkgs) residence niri neovim bws twm tailscale;
+            inherit (pkgs) residence niri neovim bws twm tailscale residence-iso;
             inherit (pkgs.bleeding) sherlock-launcher;
           };
           devShells = {

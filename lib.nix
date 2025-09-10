@@ -2,11 +2,8 @@
 
 let
   tailnet = "soay-puffin.ts.net";
-  stateVersion = {
-    nixos = "24.05";
-    darwin = 5;
-  };
-  specialArgsFor = { hostname, stateVersion }: {
+  stateVersion.darwin = 5;
+  specialArgsFor = { hostname }: {
     inherit inputs outputs tailnet hostname stateVersion nixConfig;
     dlib = outputs.lib;
   };
@@ -32,10 +29,7 @@ rec {
   nixosSystem = { hostname, platform ? "x86_64-linux", extraModules ? [ ], ... }:
     inputs.nixpkgs.lib.nixosSystem rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = specialArgsFor {
-        inherit hostname;
-        stateVersion = stateVersion.nixos;
-      };
+      specialArgs = specialArgsFor { inherit hostname; };
       modules = [
         inputs.base16.nixosModule
         inputs.disko.nixosModules.disko
@@ -44,10 +38,10 @@ rec {
         inputs.home-manager.nixosModules.default
         inputs.nix-topology.nixosModules.default
         ./modules/nixos
-        ({ config, lib, pkgs, nixConfig, stateVersion, ... }:
+        ({ config, lib, pkgs, nixConfig, ... }:
           rec {
             system = {
-              inherit stateVersion;
+              stateVersion = config.system.nixos.release;
               nixos = {
                 distroName = lib.mkDefault "Residence";
                 distroId = lib.mkDefault "residence";
@@ -122,10 +116,7 @@ rec {
   darwinSystem = { hostname, platform ? "x86_64-darwin", extraModules ? [ ], ... }:
     inputs.nix-darwin.lib.darwinSystem rec {
       pkgs = outputs.legacyPackages.${platform};
-      specialArgs = specialArgsFor {
-        inherit hostname;
-        stateVersion = stateVersion.darwin;
-      };
+      specialArgs = specialArgsFor { inherit hostname; };
       modules = [
         inputs.home-manager.darwinModules.home-manager
         ./modules/darwin
@@ -139,7 +130,7 @@ rec {
             inputs.ags.homeManagerModules.default
             {
               scheme = "${pkgs.theme}/resodence-theme.yaml";
-              home = { inherit stateVersion; };
+              home = { stateVersion = stateVersion.darwin; };
             }
             ./modules/home-manager
           ];
