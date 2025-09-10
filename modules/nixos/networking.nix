@@ -22,15 +22,19 @@ with config.lib.topology;
         networks = {
           "Home" = {
             pskRaw = "ext:psk_home";
-            priority = 0;
+            priority = 2;
           };
           "Burbage" = {
             pskRaw = "ext:psk_burbage";
             priority = 1;
           };
+          "Dom's Pixel 9" = {
+            pskRaw = "ext:psk_pixel9";
+            priority = 1;
+          };
           "Ribble" = {
             pskRaw = "ext:psk_ribble";
-            priority = 2;
+            priority = 0;
           };
         };
       };
