@@ -10,6 +10,7 @@
     ./console.nix
     ./environment.nix
     ./filesystem.nix
+    ./firefox.nix
     ./frigate.nix
     ./gnome.nix
     ./home-assistant.nix

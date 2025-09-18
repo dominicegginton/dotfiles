@@ -194,14 +194,14 @@ rec {
               echo "root:$(cat /var/shared/root-password)" | chpasswd
             '';
             environment.systemPackages = with pkgs; map lib.lowPrio [
-                curl
-                gitMinimal
-                nixos-install-tools
-                jq
-                rsync
-                disko
-                network-status
-              ];
+              curl
+              gitMinimal
+              nixos-install-tools
+              jq
+              rsync
+              disko
+              network-status
+            ];
           })
       ];
     });

@@ -3,8 +3,8 @@
 let
   nix-index-database = builtins.fetchurl {
     name = "nix-index-database";
-    url = "https://github.com/nix-community/nix-index-database/releases/download/2025-08-03-040401/index-x86_64-linux";
-    sha256 = "48e55a1857af91690bb952a4f4b6889c99992a8ca0adfafd30aa97ac84941af1";
+    url = "https://github.com/nix-community/nix-index-database/releases/download/2025-09-14-032502/index-x86_64-linux";
+    sha256 = "16dc5881f6766beb731ad2bbe6a8bf23a8b2e25a84b971a71d65cafcaff7cc92";
   };
 in
 

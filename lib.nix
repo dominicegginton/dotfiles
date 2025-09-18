@@ -96,17 +96,22 @@ rec {
             home-manager = {
               extraSpecialArgs = specialArgs;
               useGlobalPkgs = true;
+              backupFileExtension = "backup";
               sharedModules = [
                 inputs.impermanence.homeManagerModules.impermanence
                 inputs.base16.homeManagerModule
                 inputs.ags.homeManagerModules.default
                 {
                   inherit scheme;
-                  home = { inherit stateVersion; };
+                  home.stateVersion = "25.05";
+                  programs = {
+                    bash.enable = true;
+                    info.enable = true;
+                    hstr.enable = true;
+                  };
                 }
                 ./modules/home-manager
               ];
-              backupFileExtension = "backup";
             };
           })
       ]
