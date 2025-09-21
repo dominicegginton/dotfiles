@@ -381,7 +381,6 @@ with config.lib.topology;
     };
     steamdeck = mkDevice "steamdeck" {
       info = "Steam Deck";
-      deviceIcon = ./assets/steam.svg;
       interfaces.wlan0 = {
         network = "ribble";
         type = "wifi";

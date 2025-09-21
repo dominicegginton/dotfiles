@@ -10,14 +10,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/free-disk-space
+      - uses: ./.github/actions/install-nix
       - uses: determinatesystems/flake-checker-action@v12
 
   formatter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/free-disk-space
+      - uses: ./.github/actions/install-nix
       - run: nix fmt -- --check .
 
   topology:
