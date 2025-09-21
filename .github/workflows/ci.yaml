@@ -11,7 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/free-disk-space
-      - uses: cachix/install-nix-action@v31
       - uses: determinatesystems/flake-checker-action@v12
 
   formatter:
@@ -19,15 +18,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: ./.github/actions/free-disk-space
-      - uses: cachix/install-nix-action@v31
       - run: nix fmt -- --check .
 
   topology:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/free-disk-space
-      - uses: cachix/install-nix-action@v31
+      - uses: ./.github/actions/install-nix
       - uses: cachix/cachix-action@v16
         with:
           name: dominicegginton-dotfiles
@@ -46,8 +43,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/free-disk-space
-      - uses: cachix/install-nix-action@v31
+      - uses: ./.github/actions/install-nix
       - id: set-matrix
         name: Generate Nix Matrix
         run: |
@@ -63,8 +59,7 @@ jobs:
       matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
       - uses: actions/checkout@v5
-      - uses: ./.github/actions/free-disk-space
-      - uses: cachix/install-nix-action@v31
+      - uses: ./.github/actions/install-nix
       - uses: cachix/cachix-action@v16
         with:
           name: dominicegginton-dotfiles
@@ -75,22 +70,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: cachix/install-nix-action@v31
-      - uses: ./.github/actions/free-disk-space
+      - uses: ./.github/actions/install-nix
+        with:
+          free-disk-space: true
       - run: nix build -L .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
 
   rio:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: cachix/install-nix-action@v31
-      - uses: ./.github/actions/free-disk-space
+      - uses: ./.github/actions/install-nix
+        with:
+          free-disk-space: true
       - run: nix build -L .#nixosConfigurations.rio.config.system.build.toplevel
 
   latitude-7390:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: cachix/install-nix-action@v31
-      - uses: ./.github/actions/free-disk-space
+      - uses: ./.github/actions/install-nix
+        with:
+          free-disk-space: true
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel

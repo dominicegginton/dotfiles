@@ -39,6 +39,16 @@ with config.lib.topology;
         pattern = "solid";
       };
     };
+    pixel-9 = {
+      name = "Pixel 9";
+      cidrv4 = "100.100.100.100/24";
+      cidrv6 = "fd00:2::/64";
+      style = {
+        primaryColor = "#70a5eb";
+        secondaryColor = "transparent";
+        pattern = "dashed";
+      };
+    };
     "${tailnet}" = {
       name = tailnet;
       cidrv4 = "100.100.100.100/24";
@@ -347,6 +357,10 @@ with config.lib.topology;
         network = "internet";
         physicalConnections = [ (mkConnection "internet" "*") ];
       };
+      interfaces.hotspot = {
+        network = "pixel-9";
+        type = "wifi";
+      };
       interfaces.wlan0 = {
         network = "ribble";
         type = "wifi";
@@ -354,6 +368,7 @@ with config.lib.topology;
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
           (mkConnection "ribble-router" "wlan0")
+          (mkConnection "pixel-9" "hotspot")
         ];
       };
       interfaces.tailscale0 = {
@@ -362,6 +377,27 @@ with config.lib.topology;
         icon = ./assets/tailscale.svg;
         virtual = true;
         addresses = [ "pixel-9" "pixel-9.${tailnet}" ];
+      };
+    };
+    steamdeck = mkDevice "steamdeck" {
+      info = "Steam Deck";
+      deviceIcon = ./assets/steam.svg;
+      interfaces.wlan0 = {
+        network = "ribble";
+        type = "wifi";
+        physicalConnections = [
+          (mkConnection "quardon-ap-downstairs" "wlan0")
+          (mkConnection "quardon-ap-upstairs" "wlan0")
+          (mkConnection "ribble-router" "wlan0")
+          (mkConnection "pixel-9" "hotspot")
+        ];
+      };
+      interfaces.tailscale0 = {
+        network = tailnet;
+        type = "tailscale";
+        icon = ./assets/tailscale.svg;
+        virtual = true;
+        addresses = [ "steamdeck" "steamdeck.${tailnet}" ];
       };
     };
   };

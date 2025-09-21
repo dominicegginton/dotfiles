@@ -1,10 +1,16 @@
-name: Free Disk Space
-description: Free up disk space on runner
+name: Install Nix 
+description: Install Nix package manager, optionally freeing disk space from the runner first. 
+
+inputs:
+  free-disk-space:
+    description: 'Free disk space'
+    default: false
+
 runs:
   using: "composite"
   steps:
     - name: free-disk-space
-      if: ${{ runner.os == 'Linux' && runner.arch == 'x64' }}
+      if: ${{ inputs.free-disk-space == 'true' && runner.os == 'Linux' && runner.arch == 'x64' }}
       run: |
         sudo apt clean
         docker image prune -af
@@ -15,3 +21,5 @@ runs:
         sudo rm -rf "$AGENT_TOOLSDIRECTORY"
         sudo rm -rf /usr/share/dotnet/
       shell: bash
+    - name: Install Nix
+      uses: cachix/install-nix-action@v31
