@@ -23,7 +23,7 @@ rec {
     vulnix.url = "github:nix-community/vulnix";
     vulnix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
-    niri.url = "github:yalter/niri?rev=86edeb3b0b3d1a08d4d4f59705cbc99a732f5e95";
+    niri.url = "github:yalter/niri?rev=b7909dbf61c7c1511b9a51ef46e1d503d5ba3d05";
     niri.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
