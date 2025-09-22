@@ -1,9 +1,9 @@
-name: Install Nix 
-description: Install Nix package manager, optionally freeing disk space from the runner first. 
+name: Install Nix
+description: Install Nix package manager, optionally freeing disk space from the runner first.
 
 inputs:
   free-disk-space:
-    description: 'Free disk space'
+    description: "Free disk space"
     default: false
 
 runs:

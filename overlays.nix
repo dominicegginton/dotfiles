@@ -230,6 +230,7 @@ rec {
       let
         extensions = with prev.vscode-extensions; [
           vscodevim.vim
+          editorconfig.editorconfig
           github.github-vscode-theme
           github.vscode-pull-request-github
           github.vscode-github-actions

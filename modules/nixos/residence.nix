@@ -57,7 +57,7 @@ with config.scheme.withHashtag;
       opacity = 1.0
       mod_key_ascii = ["⇧", "⇧", "⌘", "⌘", "⎇", "✦", "✦", "⌘"]
       [behavior]
-      animate = true
+      animate = false 
       [runtime]
       multi = false
       center = false
@@ -65,107 +65,28 @@ with config.scheme.withHashtag;
       display_raw = false
       daemonize = false
       [caching]
-      enable = false 
+      enable = true 
       [expand]
       enable = false
       edge = "top"
       margin = 0
       [backdrop]
-      enable = false
+      enable = true 
       opacity = 0.6
       edge = "top"
       [status_bar]
       enable = false 
       [search_bar_icon]
       enable = false 
+      [files]
+      fallback = "${config.environment.etc."sherlock-launcher/fallback.json".source}" 
     '';
-    environment.etc."sherlock-launcher/fallback.json".text = ''
-      [
-          {
-              "name": "Audio Player",
-              "type": "audio_sink",
-              "args": {},
-              "async": true,
-              "priority": 1,
-              "home": "OnlyHome",
-              "spawn_focus": false,
-              "binds": [
-                  {
-                      "bind": "Return",
-                      "callback": "playpause",
-                      "exit": false
-                  },
-                  {
-                      "bind": "control+l",
-                      "callback": "next",
-                      "exit": false
-                  },
-                  {
-                      "bind": "control+h",
-                      "callback": "previous",
-                      "exit": false
-                  }
-              ],
-              "actions": [
-                  {
-                      "name": "Skip",
-                      "icon": "media-seek-forward",
-                      "method": "inner.next",
-                      "exit": false
-                  },
-                  {
-                      "name": "Previous",
-                      "icon": "media-seek-backward",
-                      "method": "inner.previous",
-                      "exit": false
-                  }
-              ]
-          },
-          {
-              "name": "Calculator",
-              "type": "calculation",
-              "args": {
-                  "capabilities": [
-                      "calc.math",
-                      "calc.units"
-                  ]
-              },
-              "priority": 1,
-              "on_return": "copy"
-          },
-          {
-              "name": "App Launcher",
-              "alias": "app",
-              "type": "app_launcher",
-              "args": {},
-              "priority": 3,
-              "home": "Home"
-          },
-          {
-              "name": "Kill Process",
-              "alias": "kill",
-              "type": "process",
-              "args": {},
-              "priority": 0
-          },
-          {
-              "name": "Web Search",
-              "display_name": "Google Search",
-              "tag_start": "{keyword}",
-              "alias": "gg",
-              "type": "web_launcher",
-              "args": {
-                  "search_engine": "google",
-                  "icon": "google"
-              },
-              "priority": 100
-          }
-      ]
-    '';
+    environment.etc."sherlock-launcher/fallback.json".source = ./sherlock-launcher/fallback.json;
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"
       spawn-at-startup "${pkgs.swaysettings}/bin/sway-wallpaper" "--mode" "fill"
+      spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
@@ -204,7 +125,7 @@ with config.scheme.withHashtag;
         scale 1.0
       }
       layout {
-        gaps 16
+        gaps 0
         center-focused-column "never"
         struts {
           left 0
@@ -250,7 +171,7 @@ with config.scheme.withHashtag;
       window-rule {
         match
         draw-border-with-background false
-        geometry-corner-radius 4.0 4.0 4.0 4.0
+        geometry-corner-radius 0 0 0 0
         clip-to-geometry true
       }
       window-rule {
@@ -287,6 +208,16 @@ with config.scheme.withHashtag;
         max-width 880
         default-column-width { proportion 0.5; }
         default-window-height { proportion 0.3; }
+      }
+      window-rule {
+        match app-id="firefox" title="^Dialog$"
+        open-floating true
+        open-focused true
+      }
+      window-rule {
+        match app-id="chromium" title="^Dialog$"
+        open-floating true
+        open-focused true
       }
       binds {
         Mod+Shift+Slash                                                { show-hotkey-overlay; }
