@@ -165,7 +165,7 @@ with config.scheme.withHashtag;
     environment.etc."niri/config.kdl".text = ''
       prefer-no-csd
       spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"
-      spawn-at-startup "#{pkgs.swaysettings}/bin/sway-wallpaper" "--mode" "fill"
+      spawn-at-startup "${pkgs.swaysettings}/bin/sway-wallpaper" "--mode" "fill"
       spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
       spawn-at-startup "${lib.getExe pkgs.wlsunset}"
       ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
@@ -433,7 +433,7 @@ with config.scheme.withHashtag;
         evince # Document Viewer
         gnome-font-viewer # Font Viewer
         gnome-calendar # Calendar
-        bleeding.karren.lazy-desktop
+        # bleeding.karren.lazy-desktop
       ];
     };
     fonts = {

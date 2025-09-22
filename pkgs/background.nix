@@ -1,9 +1,9 @@
 { lib, fetchurl }:
 
 fetchurl rec {
-  name = "h0lBtpi.jpeg";
-  url = "https://i.imgur.com/h0lBtpi.jpeg";
-  sha256 = "1nfh9fk69gjyjlshhxpnbysa3969gcskl70rl29dh3g27224zw6z";
+  name = "a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background.jpg";
+  url = "https://raw.githubusercontent.com/dharmx/walls/refs/heads/main/mountain/a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background.jpg";
+  sha256 = "0l59xwjs9xlz2mxq9v73gcmw7h3jjqnxgy24c5karm7ysbgwb41q";
   meta = {
     description = "Background image ${name} from ${url}";
     license = lib.licenses.free;
