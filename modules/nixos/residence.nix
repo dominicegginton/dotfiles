@@ -80,6 +80,7 @@ with config.scheme.withHashtag;
       };
       systemPackages = with pkgs; [
         niri # Niri
+        wlsunset # Screen Color Temperature Adjuster
         alacritty # Terminal
         resources # System Monitor
         dconf-editor # Dconf Editor
@@ -121,7 +122,7 @@ with config.scheme.withHashtag;
           currency = "GBP"
           [appearance]
           width = 800
-          height = 500 
+          height = 500
           gsk_renderer = "cairo"
           search_icon = true
           use_base_css = true
@@ -129,7 +130,7 @@ with config.scheme.withHashtag;
           opacity = 1.0
           mod_key_ascii = ["⇧", "⇧", "⌘", "⌘", "⎇", "✦", "✦", "⌘"]
           [behavior]
-          animate = false 
+          animate = false
           [runtime]
           multi = false
           center = false
@@ -137,21 +138,21 @@ with config.scheme.withHashtag;
           display_raw = false
           daemonize = false
           [caching]
-          enable = true 
+          enable = true
           [expand]
           enable = false
           edge = "top"
           margin = 0
           [backdrop]
-          enable = true 
+          enable = true
           opacity = 0.6
           edge = "top"
           [status_bar]
-          enable = false 
+          enable = false
           [search_bar_icon]
-          enable = false 
+          enable = false
           [files]
-          fallback = "${config.environment.etc."sherlock-launcher/fallback.json".source}" 
+          fallback = "${config.environment.etc."sherlock-launcher/fallback.json".source}"
         '';
         "sherlock-launcher/fallback.json".source = ./sherlock-launcher/fallback.json;
         "niri/config.kdl".text = ''
@@ -159,7 +160,7 @@ with config.scheme.withHashtag;
           spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"
           spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
           spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
-          spawn-at-startup "${lib.getExe pkgs.wlsunset}"
+          spawn-at-startup "${lib.getExe pkgs.wlsunset}" "-S" "06:30" "-s" "19:30"
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
           ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsd" "-l"''}
