@@ -53,6 +53,7 @@ rec {
                 ];
               };
             };
+            scheme = "${pkgs.theme}/residence-theme.yaml";
             time.timeZone = "Europe/London";
             i18n.defaultLocale = "en_GB.UTF-8";
             nix = {
@@ -92,7 +93,15 @@ rec {
               intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
               amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
             };
-            scheme = "${pkgs.theme}/residence-theme.yaml";
+            virtualisation.vmVariant.users = {
+              groups.nixosvmtest = { };
+              users.nix = {
+                description = "NixOS VM Test User";
+                isNormalUser = true;
+                initialPassword = "";
+                group = "nixosvmtest";
+              };
+            };
             home-manager = {
               extraSpecialArgs = specialArgs;
               useGlobalPkgs = true;

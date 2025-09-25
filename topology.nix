@@ -360,6 +360,7 @@ with config.lib.topology;
       interfaces.hotspot = {
         network = "pixel-9";
         type = "wifi";
+        physicalConnections = [ ];
       };
       interfaces.wlan0 = {
         network = "ribble";
@@ -368,7 +369,6 @@ with config.lib.topology;
           (mkConnection "quardon-ap-downstairs" "wlan0")
           (mkConnection "quardon-ap-upstairs" "wlan0")
           (mkConnection "ribble-router" "wlan0")
-          (mkConnection "pixel-9" "hotspot")
         ];
       };
       interfaces.tailscale0 = {

@@ -27,5 +27,6 @@
   services.logind.lidSwitch = "suspend";
   display.residence.enable = true;
   virtualisation.docker.enable = true;
+  virtualisation.waydroid.enable = true;
   topology.self.hardware.info = "Dell Latitude 7390 2-in-1";
 }

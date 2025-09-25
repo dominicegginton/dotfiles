@@ -9,6 +9,7 @@
     ./calmav.nix
     ./console.nix
     ./environment.nix
+    ./docker.nix
     ./filesystem.nix
     ./firefox.nix
     ./frigate.nix
@@ -26,6 +27,7 @@
     ./upgrade.nix
     ./users.nix
     ./virtualisation.nix
+    ./waydroid.nix
     ./wio.nix
     ./zabbix.nix
     ./zsh.nix
