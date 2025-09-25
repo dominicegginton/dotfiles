@@ -8,7 +8,7 @@ with config.lib.topology;
     internet = {
       name = "WAN Internet";
       style = {
-        primaryColor = "lightblue";
+        primaryColor = "#ff0000ff";
         pattern = "solid";
       };
     };
@@ -17,7 +17,7 @@ with config.lib.topology;
       cidrv4 = "192.168.1.0/24";
       cidrv6 = "fd00:1::/64";
       style = {
-        primaryColor = "#835923ff";
+        primaryColor = "#702383ff";
         pattern = "solid";
       };
     };
@@ -26,7 +26,7 @@ with config.lib.topology;
       cidrv4 = "192.168.1.0/24";
       cidrv6 = "fd00:1::/64";
       style = {
-        primaryColor = "#763088ff";
+        primaryColor = "#702383ff";
         pattern = "solid";
       };
     };
@@ -35,18 +35,18 @@ with config.lib.topology;
       cidrv4 = "192.168.1.0/24";
       cidrv6 = "fd00:3::/64";
       style = {
-        primaryColor = "#a53926ff";
+        primaryColor = "#a52670ff";
         pattern = "solid";
       };
     };
     pixel-9 = {
-      name = "Pixel 9";
+      name = "Pixel 9 Hotspot";
       cidrv4 = "100.100.100.100/24";
       cidrv6 = "fd00:2::/64";
       style = {
-        primaryColor = "#70a5eb";
+        primaryColor = "#9b70ebff";
         secondaryColor = "transparent";
-        pattern = "dashed";
+        pattern = "solid";
       };
     };
     "${tailnet}" = {
@@ -64,7 +64,9 @@ with config.lib.topology;
     internet = mkInternet { };
     quardon-vm-modem = mkDevice "Virgin Media Super Hub" {
       info = "Virgin Media Super Hub (Disabled WiFi & Routing - Modem Only)";
-      interfaces.eth0 = {
+      interfaceGroups = [ [ "coax" "eth1" ] ];
+      interfaces.coax = {
+        type = "coaxial";
         network = "internet";
         physicalConnections = [ (mkConnection "internet" "*") ];
       };
@@ -76,6 +78,11 @@ with config.lib.topology;
     quardon-router = mkRouter "Unifi Security Gateway" {
       info = "Unifi Security Gateway";
       interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
+      interfaces.eth0 = {
+        network = "internet";
+        addresses = [ "dhcp" ];
+        type = "ethernet";
+      };
       interfaces.eth1 = {
         network = "quarndon";
         addresses = [ "192.168.1.1" ];
@@ -122,10 +129,12 @@ with config.lib.topology;
       interfaces.eth1 = {
         network = "quardon-nvr";
         type = "ethernet";
-        physicalConnections = [
-          (mkConnection "quardon-front-security-camera" "eth0")
-          (mkConnection "quardon-back-security-camera" "eth0")
-        ];
+        physicalConnections = [ (mkConnection "quardon-front-security-camera" "eth0") ];
+      };
+      interfaces.eth2 = {
+        network = "quardon-nvr";
+        type = "ethernet";
+        physicalConnections = [ (mkConnection "quardon-back-security-camera" "eth0") ];
       };
     };
     quardon-front-center-security-camera = mkDevice "Reolink PTZ Front Center Security Camera" {
@@ -246,7 +255,8 @@ with config.lib.topology;
     };
     ribble-fiber-modem = mkDevice "EE Fiber Modem" {
       info = "EE Fiber Modem";
-      interfaces.eth0 = {
+      interfaceGroups = [ [ "fiber" "eth1" ] ];
+      interfaces.fiber = {
         network = "internet";
         type = "fiber-duplex";
         physicalConnections = [ (mkConnection "internet" "*") ];
@@ -258,7 +268,12 @@ with config.lib.topology;
     };
     ribble-router = mkRouter "EE Router" {
       info = "EE Router";
-      interfaceGroups = [ [ "eth0" ] [ "eth1" ] ];
+      interfaceGroups = [ [ "eth0" ] [ "wlan0" "eth1" "eth2" "eth3" "eth4" ] ];
+      interfaces.eth0 = {
+        network = "internet";
+        addresses = [ "dhcp" ];
+        type = "ethernet";
+      };
       interfaces.eth1 = {
         network = "ribble";
         addresses = [ "192.168.1.1" ];
@@ -266,19 +281,24 @@ with config.lib.topology;
       };
       interfaces.wlan0 = {
         network = "ribble";
+        addresses = [ "192.168.1.1" ];
         type = "wifi";
       };
     };
     ribble-switch = mkSwitch "Switch" {
       info = "Switch";
-      interfaceGroups = [ [ "eth0" "eth1" "eth2" "eth3" ] ];
+      interfaceGroups = [ [ "eth0" "eth1" "eth2" "eth3" "eth4" "eth5" "eth6" "eth7" "eth8" "eth9" "eth10" "eth11" "eth12" "eth13" "eth14" "eth15" "eth16" ] ];
       connections.eth0 = mkConnection "ribble-router" "eth1";
-      connections.eth2 = mkConnection "ribble-security-camera" "eth0";
+      connections.eth1 = mkConnection "ribble-security-camera" "eth0";
     };
     ribble-security-camera = mkDevice "Doorbell Camera" {
       info = "Reolink Doorbell Camera";
       deviceIcon = ./assets/reolink.svg;
-      interfaces.eth0 = { };
+      interfaces.eth0 = {
+        network = "ribble";
+        type = "ethernet";
+        physicalConnections = [ (mkConnection "ribble-switch" "eth1") ];
+      };
     };
     ribble-livingroom-google-tv = mkDevice "Living Room Google TV" {
       info = "Google Chromecast with Google TV 1080p";
@@ -334,7 +354,6 @@ with config.lib.topology;
       info = "Macbook Pro 2019 - Arup Workstation";
       deviceIcon = ./assets/apple.svg;
       interfaces.wlan0 = {
-        network = "ribble";
         type = "wifi";
         physicalConnections = [
           (mkConnection "quardon-ap-downstairs" "wlan0")
@@ -350,17 +369,18 @@ with config.lib.topology;
         addresses = [ "mccml44wmd6t" "mccml44wmd6t.${tailnet}" ];
       };
     };
+
     pixel-9 = mkDevice "pixel-9" {
       info = "Google Pixel 9";
       deviceIcon = ./assets/google.svg;
       interfaces."5g-radio" = {
+        type = "cellular";
         network = "internet";
         physicalConnections = [ (mkConnection "internet" "*") ];
       };
       interfaces.hotspot = {
         network = "pixel-9";
         type = "wifi";
-        physicalConnections = [ ];
       };
       interfaces.wlan0 = {
         network = "ribble";
