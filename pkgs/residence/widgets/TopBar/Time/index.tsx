@@ -1,5 +1,6 @@
 import { Variable, GLib } from "astal";
 import { Gtk } from "astal/gtk3";
+import Battery from "gi://AstalBattery";
 
 export default ({ format = "%H:%M - %A %e" }) => {
   const time = Variable<string>("").poll(
@@ -12,6 +13,10 @@ export default ({ format = "%H:%M - %A %e" }) => {
     if (hour < 18) return "Good Afternoon";
     return "Good Evening";
   });
+  const bat = Variable<string>("").poll(
+    60000,
+    () => `${Battery.get_default()?.get_percentage() * 100}%` || "",
+  );
 
   return (
     <box
@@ -34,21 +39,59 @@ export default ({ format = "%H:%M - %A %e" }) => {
             color: #ffffff;
           `}
         />
-        <label
-          onDestroy={() => time.drop()}
-          label={time()}
-          halign={Gtk.Align.END}
-          css={`
-            font-size: 0.8em;
-            opacity: 0.8;
-            color: #ffffff;
-          `}
-        />
+        <box horizontal valign={Gtk.Align.CENTER} spacing={16}>
+          {bat() !== "" && (
+            <box horizontal valign={Gtk.Align.CENTER} spacing={8}>
+              <label
+                label={String.fromCharCode(0xf240)}
+                valign={Gtk.Align.CENTER}
+                halign={Gtk.Align.CENTER}
+                css={`
+                  font-size: 0.8em;
+                  opacity: 0.8;
+                  color: #ffffff;
+                `}
+              />
+              <label
+                onDestroy={() => bat.drop()}
+                label={bat()}
+                halign={Gtk.Align.END}
+                css={`
+                  font-size: 0.8em;
+                  opacity: 0.8;
+                  color: #ffffff;
+                `}
+              />
+            </box>
+          )}
+          <box horizontal valign={Gtk.Align.CENTER} spacing={8}>
+            <label
+              label={String.fromCharCode(0xf017)}
+              valign={Gtk.Align.CENTER}
+              halign={Gtk.Align.CENTER}
+              css={`
+                font-size: 0.8em;
+                opacity: 0.8;
+                color: #ffffff;
+              `}
+            />
+            <label
+              onDestroy={() => time.drop()}
+              label={time()}
+              halign={Gtk.Align.END}
+              css={`
+                font-size: 0.8em;
+                opacity: 0.8;
+                color: #ffffff;
+              `}
+            />
+          </box>
+        </box>
       </box>
 
       <box
         css={`
-          background: none;
+          background: transparent;
           border: none;
         `}
         valign={Gtk.Align.CENTER}

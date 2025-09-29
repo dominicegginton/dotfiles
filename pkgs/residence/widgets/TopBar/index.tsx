@@ -57,7 +57,7 @@ export default (monitor: Gdk.Monitor) => {
       marginTop={20}
       marginLeft={20}
       marginRight={20}
-      css="background: none;"
+      css="background: transparent;"
       child={
         <centerbox
           start_widget={LeftModules}
