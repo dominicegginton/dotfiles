@@ -161,6 +161,7 @@ with config.scheme.withHashtag;
           spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
           spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
           spawn-at-startup "${lib.getExe pkgs.wlsunset}" "-S" "06:30" "-s" "19:30"
+          spawn-at-startup "${lib.getExe pkgs.xwayland-satellite}"
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
           ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsd" "-l"''}
@@ -174,6 +175,12 @@ with config.scheme.withHashtag;
             mod-key-nested "Alt"
             warp-mouse-to-focus
             workspace-auto-back-and-forth
+          tablet {
+            map-to-output "eDP-1"
+          }
+          touch {
+            map-to-output "eDP-1"
+          }
             keyboard {
               numlock
               xkb {
@@ -195,6 +202,12 @@ with config.scheme.withHashtag;
           }
           output "eDP-1" {
             scale 1.0
+          }
+          switch-events {
+            lid-close { spawn "notify-send" "The laptop lid is closed!"; }
+            lid-open { spawn "notify-send" "The laptop lid is open!"; }
+            tablet-mode-on { spawn "bash" "-c" "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled true"; }
+            tablet-mode-off { spawn "bash" "-c" "gsettings set org.gnome.desktop.a11y.applications screen-keyboard-enabled false"; }
           }
           layout {
             gaps 0
@@ -234,7 +247,7 @@ with config.scheme.withHashtag;
           }
           overview {
             zoom 1.0
-            backdrop-color "${magenta}"
+            backdrop-color "${base16}"
           }
           layer-rule {
             match namespace="^notifications$"
@@ -262,6 +275,13 @@ with config.scheme.withHashtag;
             }
           }
           window-rule {
+            match app-id="^dropdown$"
+            open-floating true
+            default-floating-position x=0 y=0 relative-to="top"
+            default-window-height { proportion 0.5; }
+            default-column-width { proportion 0.8; }
+          }
+          window-rule {
             match is-floating=true
             shadow {
               on
@@ -282,12 +302,9 @@ with config.scheme.withHashtag;
             default-window-height { proportion 0.3; }
           }
           window-rule {
-            match app-id="firefox" title="^Dialog$"
-            open-floating true
-            open-focused true
-          }
-          window-rule {
-            match app-id="chromium" title="^Dialog$"
+            match app-id="^sway-settings$"
+            match app-id="^wdisplays$"
+            match app-id="^.blueman-manager-wrapped$"
             open-floating true
             open-focused true
           }
