@@ -23,6 +23,7 @@
     ./silverbullet.nix
     ./steam.nix
     ./tailscale.nix
+    ./tlp.nix
     ./unifi.nix
     ./upgrade.nix
     ./users.nix
@@ -46,12 +47,11 @@
     sudo.enable = true;
     polkit.enable = true;
   };
+  hardware.system76.power-daemon.enable = true;
   services = {
     dbus.enable = true;
     smartd.enable = true;
     thermald.enable = true;
-    power-profiles-daemon.enable = true;
     upower.enable = true;
   };
-
 }

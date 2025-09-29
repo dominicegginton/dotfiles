@@ -22,9 +22,12 @@
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
   hardware.bluetooth.enable = true;
+  hardware.intel-gpu-tools.enable = true;
   networking.wireless.enable = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
+  services.upower.enable = true;
+  services.tlp.enable = true;
   display.residence.enable = true;
   virtualisation.docker.enable = true;
   virtualisation.waydroid.enable = true;

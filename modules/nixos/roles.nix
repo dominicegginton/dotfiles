@@ -26,5 +26,7 @@ in
     display.residence.enable = lib.elem "workstation" config.roles;
     display.gnome.enable = lib.elem "kiosk" config.roles || lib.elem "installer" config.roles;
     topology.self.deviceType = lib.mkDefault "Residence ${lib.concatStringsSep ", " config.roles}";
+    users.users.celestial.enable = lib.elem "kios" config.roles;
+    services.getty.autologinUser = lib.mkIf (lib.elem "kios" config.roles) (lib.mkDefault "celestial");
   };
 }

@@ -73,6 +73,7 @@
   services.upower.ignoreLid = true;
   services.silverbullet.enable = true;
   services.mosquitto.enable = true;
+  services.tlp.enable = true;
   services.frigate = {
     enable = true;
     settings = {

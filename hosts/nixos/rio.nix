@@ -10,5 +10,6 @@
   users.users.matt.enable = lib.mkDefault true;
   filesystem.type = "btrfs";
   networking.wireless.enable = true;
+  services.tlp.enable = true;
   topology.self.hardware.info = "";
 }

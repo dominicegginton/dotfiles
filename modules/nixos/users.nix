@@ -16,6 +16,7 @@ in
     secrets.dom = lib.mkIf config.users.users.dom.enable "be2b6a7a-7811-4711-86f0-b24200a41bbd";
     secrets.matt = lib.mkIf config.users.users.matt.enable "";
 
+
     users.users = {
       root = {
         description = "System administrator";
@@ -26,6 +27,18 @@ in
           authorizedPrincipals = [ "root@localhost" "root@${hostname}" dlib.maintainers.dominicegginton.email ];
           authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
         };
+      };
+
+      celestial = {
+        enable = false;
+        isNormalUser = true;
+        description = "Celestial";
+        hashedPassword = null;
+        home = "/home/residence-user";
+        homeMode = "0755";
+        shell = pkgs.zsh;
+        extraGroups = defaultExtraGroups;
+        openssh.authorizedKeys.keys = [ ];
       };
 
       dom = {
