@@ -66,12 +66,7 @@ rec {
               optimise.automatic = lib.mkDefault true;
               registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
               nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-              settings = nixConfig // {
-                min-free = "8G";
-                max-free = "10G";
-                min-free-check-interval = 1;
-                trusted-users = [ "root" "@wheel" ];
-              };
+              settings = nixConfig // { min-free = "8G"; min-free-check-interval = 1; trusted-users = [ "root" "@wheel" ]; };
             };
             documentation = {
               enable = true;

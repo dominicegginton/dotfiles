@@ -160,7 +160,7 @@ with config.scheme.withHashtag;
           spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"
           spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
           spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
-          spawn-at-startup "${lib.getExe pkgs.wlsunset}" "-S" "06:30" "-s" "19:30"
+          spawn-at-startup "${lib.getExe pkgs.wlsunset}"
           spawn-at-startup "${lib.getExe pkgs.xwayland-satellite}"
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
@@ -220,13 +220,13 @@ with config.scheme.withHashtag;
             }
             focus-ring {
               width 2
-              active-color "${blue}"
+              active-color "${magenta}"
               inactive-color "${base07}"
               urgent-color "${yellow}"
             }
             border {
               width 0
-              active-color "${blue}"
+              active-color "${magenta}"
               inactive-color "${base07}"
               urgent-color "${yellow}"
             }
@@ -247,7 +247,7 @@ with config.scheme.withHashtag;
           }
           overview {
             zoom 1.0
-            backdrop-color "${base16}"
+            backdrop-color "${base07}"
           }
           layer-rule {
             match namespace="^notifications$"
@@ -283,11 +283,12 @@ with config.scheme.withHashtag;
           }
           window-rule {
             match is-floating=true
+            geometry-corner-radius 4 4 4 4 
             shadow {
               on
               softness 100
               spread 40
-              offset x=0 y=80
+              offset x=0 y=0
               draw-behind-window true
               color "${base07}40"
             }

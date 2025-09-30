@@ -39,7 +39,6 @@ rec {
 
   nixConfig = {
     experimental-features = [
-      "auto-allocate-uids"
       "configurable-impure-env"
       "nix-command"
       "flakes"
@@ -52,7 +51,6 @@ rec {
     keep-derivations = true;
     auto-optimise-store = true;
     builders-use-substitutes = true;
-    download-buffer-size = 524288000;
     substituters = [
       "https://cache.nixos.org"
       "https://dominicegginton-dotfiles.cachix.org"

@@ -9,7 +9,7 @@
 
   systemd.user.services.residence = lib.mkIf osConfig.display.residence.enable {
     Unit = {
-      ConditionEnvironment = [ "WAYLAND_DISPLAY" "NIRI_SOCKET" ];
+      ConditionEnvironment = [ "NIRI_SOCKET" ];
       PartOf = [ "graphical-session.target" ];
       After = [ "graphical-session.target" ];
       Wants = [ "graphical-session.target" ];
