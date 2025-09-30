@@ -99,7 +99,6 @@ with config.scheme.withHashtag;
         # bleeding.karren.lazy-desktop
       ];
       etc = {
-
         "wireplumber/bluetooth.lua.d/51-bluez-config.lua".text = lib.mkIf config.hardware.bluetooth.enable ''
           bluez_monitor.properties = {
             ["bluez5.enable-sbc-xq"] = true,
@@ -286,9 +285,9 @@ with config.scheme.withHashtag;
             geometry-corner-radius 4 4 4 4 
             shadow {
               on
-              softness 100
-              spread 40
-              offset x=0 y=0
+              softness 40
+              spread 5
+              offset x=0 y=5
               draw-behind-window true
               color "${base07}40"
             }
@@ -303,11 +302,36 @@ with config.scheme.withHashtag;
             default-window-height { proportion 0.3; }
           }
           window-rule {
-            match app-id="^sway-settings$"
+            match app-id="^org.gnome.Nautilus$"
+            match app-id="^org.gnome.FileRoller$"
+            match app-id="^org.gnome.Evince$"
+            match app-id="^org.gnome.Calendar$"
+            match app-id="^org.gnome.FontViewer$"
+            match app-id="^org.gnome.Sushi$"
+            match app-id="^org.gnome.Clocks$"
+            match app-id="^org.gnome.Logs$"
+            match app-id="^org.gnome.Todo$"
+            match app-id="^org.gnome.Maps$"
+            match app-id="^org.gnome.Contacts$"
+            match app-id="^org.gnome.Photos$"
+            match app-id="^org.gnome.Cheese$"
+            match app-id="^org.gnome.Music$"
+            match app-id="^org.gnome.Videos$"
+            match app-id="^net.nokyan.Resources$"
+            match app-id="^org.erikreider.swaysettings$"
+            match app-id="^dconf-editor$"
             match app-id="^wdisplays$"
+            match app-id="^com.jaoushingan.WaydroidHelper$"
             match app-id="^.blueman-manager-wrapped$"
             open-floating true
             open-focused true
+            default-column-width { proportion 0.4; }
+            default-window-height { proportion 0.4; }
+          }
+          window-rule {
+            match app-id="^waydroid.com.*$"
+            open-floating true
+            tiled-state false
           }
           binds {
             Mod+Shift+Slash                                                { show-hotkey-overlay; }
