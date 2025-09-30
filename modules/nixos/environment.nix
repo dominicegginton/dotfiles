@@ -17,7 +17,6 @@
         usbutils # USB device information
         nvme-cli # NVMe device management
         smartmontools # Disk health monitoring
-        power-profiles-daemon # Power management daemon
         twm # Twmux window manager
         twx # Twmux server exterminator 
         neovim # Editor
@@ -29,7 +28,7 @@
         dust # Disk usage analyzer
         fd # Fast file finder
         file # File type identification 
-        (if stdenv.isLinux then trashy else darwin.trash) # Use trashy on Linux, darwin.trash on Darwin 
+        trashy # Command-line trash utility
         dua # Disk usage analyzer
         gum # Command-line UI tooling
         jq # JSON processor

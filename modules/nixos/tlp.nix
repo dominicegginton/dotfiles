@@ -2,7 +2,7 @@
 
 {
   config.services = lib.mkIf config.services.tlp.enable {
-    power-profiles-daemon.enable = lib.mkDefault false;
+    power-profiles-daemon.enable = lib.mkForce false;
     tlp.settings = {
       CPU_BOOST_ON_AC = 1;
       CPU_BOOST_ON_BAT = 1;
