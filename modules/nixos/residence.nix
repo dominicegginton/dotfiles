@@ -159,7 +159,7 @@ with config.scheme.withHashtag;
           spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"
           spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
           spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
-          spawn-at-startup "${lib.getExe pkgs.wlsunset}"
+          spawn-at-startup "${lib.getExe pkgs.wlsunset}" "-S" "08:00" "-s" "19:00"
           spawn-at-startup "${lib.getExe pkgs.xwayland-satellite}"
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
           ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
