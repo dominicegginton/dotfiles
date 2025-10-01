@@ -26,18 +26,12 @@ with config.scheme.withHashtag;
       hardware.bolt.enable = true;
       graphical-desktop.enable = true;
       printing.enable = true;
-      pipewire = {
-        enable = true;
-        alsa.enable = true;
-        alsa.support32Bit = true;
-        pulse.enable = true;
-        jack.enable = true;
-        wireplumber.enable = true;
-      };
+      pipewire.enable = true;
       gnome.gnome-keyring.enable = true;
       displayManager.ly.enable = true;
       displayManager.sessionPackages = [ pkgs.niri ];
       xserver.desktopManager.runXdgAutostartIfNone = lib.mkDefault true;
+      geoclue2.enableDemoAgent = lib.mkDefault true;
     };
     programs = {
       niri.enable = true;
@@ -153,7 +147,7 @@ with config.scheme.withHashtag;
           [files]
           fallback = "${config.environment.etc."sherlock-launcher/fallback.json".source}"
         '';
-        "sherlock-launcher/fallback.json".source = ./sherlock-launcher/fallback.json;
+        "sherlock-launcher/fallback.json".source = ./programs/sherlock-launcher/fallback.json;
         "niri/config.kdl".text = ''
           prefer-no-csd
           spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"

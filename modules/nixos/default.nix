@@ -4,34 +4,36 @@
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
+    ./hardware/bluetooth.nix
+    ./programs/chromium.nix
+    ./programs/firefox.nix
+    ./programs/steam.nix
+    ./programs/zsh.nix
+    ./services/calmav.nix
+    ./services/frigate.nix
+    ./services/home-assistant.nix
+    ./services/mosquitto.nix
+    ./services/pipewire.nix
+    ./services/silverbullet.nix
+    ./services/tailscale.nix
+    ./services/tlp.nix
+    ./services/unifi.nix
+    ./services/zabbix.nix
+    ./virtualisation/virtualisation.nix
+    ./virtualisation/docker.nix
+    ./virtualisation/waydroid.nix
     ./backup.nix
-    ./bluetooth.nix
-    ./calmav.nix
     ./console.nix
     ./environment.nix
-    ./docker.nix
     ./filesystem.nix
-    ./firefox.nix
-    ./frigate.nix
     ./gnome.nix
-    ./home-assistant.nix
-    ./mosquitto.nix
     ./networking.nix
     ./residence.nix
     ./roles.nix
     ./secrets.nix
-    ./silverbullet.nix
-    ./steam.nix
-    ./tailscale.nix
-    ./tlp.nix
-    ./unifi.nix
     ./upgrade.nix
     ./users.nix
-    ./virtualisation.nix
-    ./waydroid.nix
     ./wio.nix
-    ./zabbix.nix
-    ./zsh.nix
   ];
 
   ## todo: tidy up
