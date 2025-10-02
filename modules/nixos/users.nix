@@ -16,9 +16,6 @@ in
     secrets.dom = mkIf config.users.users.dom.enable "be2b6a7a-7811-4711-86f0-b24200a41bbd";
     secrets.matt = mkIf config.users.users.matt.enable "";
 
-    users.users.celestial.group = "celestial";
-    users.groups.celestial = { };
-
     users = {
       users = {
         root = {
@@ -31,14 +28,6 @@ in
             authorizedPrincipals = [ "root@localhost" "root@${hostname}" dlib.maintainers.dominicegginton.email ];
             authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
           };
-        };
-
-        celestial = {
-          enable = false;
-          isNormalUser = mkDefault true;
-          hashedPassword = mkDefault null;
-          shell = pkgs.zsh;
-          extraGroups = defaultExtraGroups ++ [ "celestial" ];
         };
 
         dom = {
@@ -65,13 +54,11 @@ in
     };
 
     home-manager.users = {
-      celestial = mkIf config.users.users.celestial.enable ../../home/celestial;
       dom = mkIf config.users.users.dom.enable ../../home/dom;
       matt = mkIf config.users.users.matt.enable ../../home/matt;
     };
 
-    systemd.tmpfiles.rules = lib.mkIf config.users.users.celestial.enable [
-      "d /home/celestial 0755 celestial celestial -"
+    systemd.tmpfiles.rules = [
       "R! /home/celestial 1777 root root -"
     ];
   };
