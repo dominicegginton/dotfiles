@@ -1,7 +1,7 @@
 { lib, osConfig, pkgs, ... }:
 
 let
-  gui = osConfig.display.residence.enable || osConfig.display.gnome.enable;
+  gui = osConfig.display.niri.enable || osConfig.display.gnome.enable;
 in
 
 {

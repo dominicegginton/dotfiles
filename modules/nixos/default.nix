@@ -30,11 +30,9 @@
     ./environment.nix
     ./filesystem.nix
     ./networking.nix
-    ./roles.nix
     ./secrets.nix
     ./upgrade.nix
     ./users.nix
-    ./wio.nix
   ];
 
   ## todo: tidy up
