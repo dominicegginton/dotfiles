@@ -67,7 +67,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  roles = [ "server" ];
   networking.wireless.enable = true;
   services.logind.lidSwitch = "ignore";
   services.upower.ignoreLid = true;

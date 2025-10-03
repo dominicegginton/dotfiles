@@ -3,9 +3,9 @@
 with config.scheme.withHashtag;
 
 {
-  options.display.residence.enable = lib.mkEnableOption "Residence";
+  options.display.niri.enable = lib.mkEnableOption "Niri";
 
-  config = lib.mkIf config.display.residence.enable {
+  config = lib.mkIf config.display.niri.enable {
     hardware.graphics.enable = true;
     security = {
       polkit.enable = true;
@@ -22,13 +22,13 @@ with config.scheme.withHashtag;
         configPackages = [ pkgs.niri ];
       };
     };
+    display.gnome.enable = lib.mkForce true;
     services = {
       hardware.bolt.enable = true;
       graphical-desktop.enable = true;
       printing.enable = true;
       pipewire.enable = true;
       gnome.gnome-keyring.enable = true;
-      displayManager.ly.enable = true;
       displayManager.sessionPackages = [ pkgs.niri ];
       xserver.desktopManager.runXdgAutostartIfNone = lib.mkDefault true;
       geoclue2.enableDemoAgent = lib.mkDefault true;
@@ -38,6 +38,7 @@ with config.scheme.withHashtag;
       dconf.enable = true;
       firefox.enable = true;
       xwayland.enable = lib.mkDefault true;
+      sherlock-launcher.enable = true;
     };
     fonts = {
       enableDefaultPackages = false;
@@ -101,53 +102,6 @@ with config.scheme.withHashtag;
             ["bluez5.headset-roles"] = "[ hsp_hs hsp_ag hfp_hf hfp_ag ]"
           }
         '';
-        "sherlock-launcher/config.toml".text = ''
-          [default_apps]
-          teams = "${lib.getExe pkgs.teams-for-linux} --enable-features=UseOzonePlatform --ozone-platform=wayland --url {meeting_url}"
-          calendar_client = "${lib.getExe pkgs.gnome-calendar}"
-          terminal = "${lib.getExe pkgs.alacritty}"
-          browser = "${lib.getExe pkgs.firefox} --name firefox %U"
-          [units]
-          lengths = "meters"
-          weights = "kg"
-          volumes = "l"
-          temperatures = "C"
-          currency = "GBP"
-          [appearance]
-          width = 800
-          height = 500
-          gsk_renderer = "cairo"
-          search_icon = true
-          use_base_css = true
-          status_bar = false
-          opacity = 1.0
-          mod_key_ascii = ["⇧", "⇧", "⌘", "⌘", "⎇", "✦", "✦", "⌘"]
-          [behavior]
-          animate = false
-          [runtime]
-          multi = false
-          center = false
-          photo_mode = false
-          display_raw = false
-          daemonize = false
-          [caching]
-          enable = true
-          [expand]
-          enable = false
-          edge = "top"
-          margin = 0
-          [backdrop]
-          enable = true
-          opacity = 0.6
-          edge = "top"
-          [status_bar]
-          enable = false
-          [search_bar_icon]
-          enable = false
-          [files]
-          fallback = "${config.environment.etc."sherlock-launcher/fallback.json".source}"
-        '';
-        "sherlock-launcher/fallback.json".source = ./programs/sherlock-launcher/fallback.json;
         "niri/config.kdl".text = ''
           prefer-no-csd
           spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background}" "--mode" "fill"

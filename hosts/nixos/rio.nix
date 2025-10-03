@@ -6,7 +6,7 @@
   boot.initrd.kernelModules = [ "dm-snapshot" ];
   boot.kernelModules = [ "kvm-intel" ];
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  roles = [ "kiosk" ];
+  display.gnome.enable = true;
   users.users.matt.enable = lib.mkDefault true;
   filesystem.type = "btrfs";
   networking.wireless.enable = true;

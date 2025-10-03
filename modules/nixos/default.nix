@@ -4,9 +4,12 @@
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
+    ./display/gnome.nix
+    ./display/niri.nix
     ./hardware/bluetooth.nix
     ./programs/chromium.nix
     ./programs/firefox.nix
+    ./programs/sherlock-launcher.nix
     ./programs/steam.nix
     ./programs/zsh.nix
     ./services/calmav.nix
@@ -26,9 +29,7 @@
     ./console.nix
     ./environment.nix
     ./filesystem.nix
-    ./gnome.nix
     ./networking.nix
-    ./residence.nix
     ./roles.nix
     ./secrets.nix
     ./upgrade.nix

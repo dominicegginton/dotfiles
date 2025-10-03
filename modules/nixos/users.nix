@@ -14,7 +14,6 @@ in
 {
   config = mkIf (hostname != "residence-installer") {
     secrets.dom = mkIf config.users.users.dom.enable "be2b6a7a-7811-4711-86f0-b24200a41bbd";
-    secrets.matt = mkIf config.users.users.matt.enable "";
 
     users = {
       users = {
@@ -40,26 +39,13 @@ in
           extraGroups = defaultExtraGroups ++ previlegedExtraGroups;
           openssh.authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
         };
-
-        matt = {
-          enable = false;
-          isNormalUser = mkDefault true;
-          description = "Matt";
-          hashedPasswordFile = "/run/bitwarden-secrets/matt";
-          homeMode = "0755";
-          shell = pkgs.zsh;
-          extraGroups = defaultExtraGroups;
-        };
       };
     };
 
     home-manager.users = {
       dom = mkIf config.users.users.dom.enable ../../home/dom;
-      matt = mkIf config.users.users.matt.enable ../../home/matt;
     };
 
-    systemd.tmpfiles.rules = [
-      "R! /home/celestial 1777 root root -"
-    ];
+    systemd.tmpfiles.rules = [ "R! /home/celestial 1777 root root -" ];
   };
 }

@@ -18,7 +18,6 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  roles = [ "workstation" ];
   hardware.logitech.wireless.enable = true;
   hardware.logitech.wireless.enableGraphical = true;
   hardware.bluetooth.enable = true;
@@ -28,7 +27,7 @@
   services.logind.lidSwitch = "suspend";
   services.upower.enable = true;
   services.tlp.enable = true;
-  display.residence.enable = true;
+  display.gnome.enable = true;
   virtualisation.docker.enable = true;
   virtualisation.waydroid.enable = true;
   topology.self.hardware.info = "Dell Latitude 7390 2-in-1";
