@@ -61,35 +61,8 @@ rec {
             ${prev.libnotify}/bin/notify-send --app "Karren" "" "Copied clipboard entry to clipboard."
             sleep 0.1
           '';
-          launcher = karrenScript ''
-            export PATH=${prev.lib.makeBinPath [ prev.fzf prev.uutils-findutils prev.uutils-coreutils-noprefix prev.libnotify ]}:$PATH
-            desktopFiles=$(find /etc/profiles/per-user/*/share/applications ~/.local/share/applications /run/current-system/sw/share/applications -name "*.desktop" -print)
-            selection=$(echo "$desktopFiles" | ${prev.fzf}/bin/fzf --prompt "Run: ")
-            if [ -z "$selection" ]; then
-              exit 1;
-            fi
-            if [ $(cat "$selection" | grep -c '^Exec=') -gt 1 ]; then
-              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//' | ${prev.fzf}/bin/fzf -i --prompt "Exec: " --no-sort)
-            else
-              execCommand=$(cat "$selection" | grep '^Exec=' | cut -d '=' -f 2- | sed 's/ %.*//')
-            fi
-            if [ -z "$execCommand" ]; then
-              exit 1;
-            fi
-            if [ $(cat "$selection" | grep -c '^Terminal=true') -gt 0 ]; then
-              execCommand="alacritty --command $execCommand"
-            fi
-            if [ -z "$execCommand" ]; then
-              exit 1;
-            fi
-            if echo "$execCommand" | grep -q "nix run"; then
-              ${prev.libnotify}/bin/notify-send --app "Karren" "" "$execCommand\n\nThis may take a while to start if the package is not already in the nix store."
-              execCommand="$execCommand || { ${prev.libnotify}/bin/notify-send --urgency=critical --app "Karren" "" "Failed to run: $execCommand"; exit 1; } && { ${prev.libnotify}/bin/notify-send --app "Karren" "" "Successfully ran: $execCommand"; exit 0; }"
-            fi
-            nohup sh -c "$execCommand &" > /dev/null 2>&1
-          '';
-          lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
         };
+      lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
       youtube = prev.callPackage ./pkgs/youtube.nix { };
     };
   };
@@ -226,32 +199,6 @@ rec {
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
-    vscode-with-extensions =
-      let
-        extensions = with prev.vscode-extensions; [
-          vscodevim.vim
-          editorconfig.editorconfig
-          github.github-vscode-theme
-          github.vscode-pull-request-github
-          github.vscode-github-actions
-          github.copilot
-          (prev.vscode-utils.buildVscodeMarketplaceExtension {
-            mktplcRef = {
-              name = "vscode-jest";
-              publisher = "orta";
-              version = "6.4.3";
-              hash = "sha256-naSH6AdAlyDSW/k250cUZGYEdKCUi63CjJBlHhkWBPs=";
-            };
-          })
-          ms-azuretools.vscode-docker
-          bbenoist.nix
-          sumneko.lua
-          ms-python.python
-          tekumara.typos-vscode
-        ];
-      in
-      (prev.vscode-with-extensions.override { vscodeExtensions = extensions; }) //
-      { override = args: prev.vscode-with-extensions.override (args // { vscodeExtensions = extensions ++ (args.vscodeExtensions or [ ]); }); };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     lib = prev.lib // outputs.lib;
   };

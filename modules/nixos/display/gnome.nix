@@ -49,7 +49,8 @@ in
     services.gnome.core-apps.enable = false;
     services.gnome.core-developer-tools.enable = false;
     services.gnome.games.enable = false;
-    environment.systemPackages = with pkgs; [ gnome-console residence-background-info ];
+    programs.firefox.enable = true;
+    environment.systemPackages = with pkgs; [ gnome-console residence-background-info resources ];
     environment.gnome.excludePackages = with pkgs; [ gnome-tour gnome-user-docs gnome-backgrounds ];
     networking.networkmanager.enable = true;
   };

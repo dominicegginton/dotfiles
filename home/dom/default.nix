@@ -30,7 +30,6 @@ in
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
           vscodevim.vim
-          github.github-vscode-theme
           github.vscode-pull-request-github
           github.vscode-github-actions
           github.copilot
@@ -50,18 +49,20 @@ in
         ];
         userSettings = {
           editor.minimap.enabled = false;
-          workbench.colorTheme = "Solarized Light";
-          workbench.activityBar.location = "top";
-          workbench.sideBar.location = "right";
-          workbench.startupEditor = "none";
-          terminal.integrated.defaultProfile.linux = "zsh";
-          workbench.preferredLightColorTheme = "Solarized Light";
-          workbench.preferredDarkColorTheme = "Solarized Dark";
-          window.autoDetectColorScheme = true;
+          editor.renderLineHighlight = "none";
           extensions.ignoreRecommendations = true;
           extensions.autoCheckUpdates = false;
           extensions.autoUpdate = false;
+          terminal.integrated.defaultProfile.linux = "zsh";
           updates.mode = "none";
+          window.titleBarStyle = "custom";
+          window.commandCenter = true;
+          window.autoDetectColorScheme = true;
+          workbench.activityBar.location = "top";
+          workbench.sideBar.location = "right";
+          workbench.startupEditor = "none";
+          workbench.iconTheme = null;
+          workbench.tree.indent = 12;
         };
       };
     };
