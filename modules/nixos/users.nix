@@ -3,7 +3,14 @@
 with lib;
 
 let
-  defaultExtraGroups = [ "input" "audio" "video" "users" "lp" ];
+  defaultExtraGroups = [
+    "input"
+    "audio"
+    "video"
+    "users"
+    "lp"
+  ]
+  ++ optionals (config.networking.networkmanager.enable) [ "networkmanager" ];
   previlegedExtraGroups = [ "wheel" ]
     ++ optionals (config.services.printing.enable) [ "lpadmin" ]
     ++ optionals (config.virtualisation.docker.enable) [ "docker" ]

@@ -13,6 +13,7 @@
     ./programs/steam.nix
     ./programs/zsh.nix
     ./services/calmav.nix
+    ./services/flatpak.nix
     ./services/frigate.nix
     ./services/home-assistant.nix
     ./services/mosquitto.nix

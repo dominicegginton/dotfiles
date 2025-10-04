@@ -32,6 +32,7 @@ in
     services = {
       printing.enable = true;
       pipewire.enable = true;
+      udev.packages = [ pkgs.gnome-settings-daemon ];
       xserver = {
         enable = true;
         displayManager.gdm.enable = true;
@@ -50,9 +51,10 @@ in
         gnome-text-editor
         yelp
       ];
-      systemPackages = with pkgs; [
+      systemPackages = with pkgs; with gnomeExtensions; [
         residence-background-info
         resources
+        appindicator
       ];
     };
   };
