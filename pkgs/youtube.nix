@@ -46,7 +46,7 @@ symlinkJoin {
       This package installs an application launcher item that opens YouTube in a dedicated Google Chrome window. If your preferred browser doesn't support YouTube's DRM, this package provides a quick and easy way to launch YouTube on a supported browser, without polluting your application list with a redundant, single-purpose browser.
     '';
     homepage = google-chrome.meta.homepage or null;
-    license = lib.licenses.unfree;
+    license = google-chrome.meta.license;
     maintainers = [ lib.maintainers.dominicegginton ];
     platforms = google-chrome.meta.platforms or lib.platforms.all;
   };
