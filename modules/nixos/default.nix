@@ -11,6 +11,7 @@
     ./programs/firefox.nix
     ./programs/sherlock-launcher.nix
     ./programs/steam.nix
+    ./programs/vscode.nix
     ./programs/zsh.nix
     ./services/calmav.nix
     ./services/flatpak.nix

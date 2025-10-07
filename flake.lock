@@ -125,6 +125,22 @@
         "type": "github"
       }
     },
+    "firefox-gnome-theme": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759418614,
+        "narHash": "sha256-0E3TqvXAy81qeM/jZXWWOTZ14Hs1RT7o78UyZM+Jbr4=",
+        "owner": "rafaelmardojai",
+        "repo": "firefox-gnome-theme",
+        "rev": "afd438034bf91089cfeb9e6b5cb987bdf5442d0f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rafaelmardojai",
+        "repo": "firefox-gnome-theme",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -858,6 +874,7 @@
         "ags": "ags",
         "base16": "base16",
         "disko": "disko",
+        "firefox-gnome-theme": "firefox-gnome-theme",
         "flip": "flip",
         "home-manager": "home-manager",
         "impermanence": "impermanence",

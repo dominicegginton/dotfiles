@@ -55,6 +55,7 @@ in
         residence-background-info
         resources
         appindicator
+        pano
       ];
     };
   };

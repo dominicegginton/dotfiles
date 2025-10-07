@@ -1,4 +1,4 @@
-{ lib, osConfig, pkgs, ... }:
+{ inputs, lib, osConfig, pkgs, ... }:
 
 let
   gui = osConfig.display.niri.enable || osConfig.display.gnome.enable;
@@ -25,7 +25,24 @@ in
       ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
-    programs.vscode = lib.mkIf gui {
+    home.file.".mozilla/firefox/default/chrome/firefox-gnome-theme".source = lib.mkIf osConfig.programs.firefox.enable inputs.firefox-gnome-theme;
+
+    programs.firefox.profiles.default = lib.mkIf osConfig.programs.firefox.enable {
+      userChrome = ''
+        @import "firefox-gnome-theme/userChrome.css";
+      '';
+      userContent = ''
+        @import "firefox-gnome-theme/userContent.css";
+      '';
+      settings = {
+        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+        "browser.uidensity" = 0;
+        "svg.context-properties.content.enabled" = true;
+        "browser.theme.dark-private-windows" = false;
+      };
+    };
+
+    programs.vscode = lib.mkIf osConfig.programs.vscode.enable {
       enable = true;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [

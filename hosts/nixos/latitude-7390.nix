@@ -29,6 +29,7 @@
   services.tlp.enable = true;
   services.printing.enable = true;
   services.flatpak.enable = true;
+  programs.vscode.enable = true;
   display.gnome.enable = true;
   virtualisation.docker.enable = true;
   virtualisation.waydroid.enable = true;
