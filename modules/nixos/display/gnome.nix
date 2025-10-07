@@ -32,6 +32,7 @@ in
     services = {
       printing.enable = true;
       pipewire.enable = true;
+      geoclue2.enableDemoAgent = lib.mkDefault true;
       udev.packages = [ pkgs.gnome-settings-daemon ];
       xserver = {
         enable = true;

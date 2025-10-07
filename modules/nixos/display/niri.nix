@@ -32,6 +32,7 @@ with config.scheme.withHashtag;
       displayManager.sessionPackages = [ pkgs.niri ];
       xserver.desktopManager.runXdgAutostartIfNone = lib.mkDefault true;
       geoclue2.enableDemoAgent = lib.mkDefault true;
+      blueman.enable = true;
     };
     programs = {
       niri.enable = true;
