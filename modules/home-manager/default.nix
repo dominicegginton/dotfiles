@@ -2,7 +2,7 @@ _:
 
 {
   imports = [
-    ./alacritty.nix
+    # ./alacritty.nix
     ./residence.nix
   ];
 }

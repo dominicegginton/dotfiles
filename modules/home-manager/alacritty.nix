@@ -1,9 +1,8 @@
-{ config, ... }:
+{ config, osConfig, lib, ... }:
 
 {
-  config = {
+  config = lib.mkIf osConfig.programs.alacritty.enable {
     programs.alacritty = {
-      enable = true;
       settings = {
         window.dynamic_padding = false;
         window.padding = { x = 0; y = 0; };

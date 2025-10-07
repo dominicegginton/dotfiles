@@ -7,6 +7,7 @@
     ./display/gnome.nix
     ./display/niri.nix
     ./hardware/bluetooth.nix
+    ./programs/alacritty.nix
     ./programs/chromium.nix
     ./programs/firefox.nix
     ./programs/sherlock-launcher.nix

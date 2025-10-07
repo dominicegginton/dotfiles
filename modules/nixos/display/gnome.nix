@@ -18,25 +18,8 @@ let
   gsettings-desktop-schemas = pkgs.gnome.nixos-gsettings-overrides.override {
     inherit (config.services.xserver.desktopManager.gnome) extraGSettingsOverrides extraGSettingsOverridePackages favoriteAppsOverride;
   };
-  residence-background-info = pkgs.writeTextFile rec {
-    name = "residence-background-info.xml";
-    text = with config.scheme.withHashtag; ''
-      <?xml version="1.0"?>
-      <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
-      <wallpapers>
-        <wallpaper deleted="false">
-          <name>Blobs</name>
-          <filename>${pkgs.nixos-artwork.wallpapers.simple-blue.gnomeFilePath}</filename>
-          <filename-dark>${pkgs.nixos-artwork.wallpapers.simple-dark-gray.gnomeFilePath}</filename-dark>
-          <options>zoom</options>
-          <shade_type>solid</shade_type>
-          <pcolor>${blue}</pcolor>
-          <scolor>${yellow}</scolor>
-        </wallpaper>
-      </wallpapers>
-    '';
-    destination = "/share/gnome-background-properties/residence.xml";
-  };
+
+  destination = "/share/gnome-background-properties/residence.xml";
 in
 
 {
@@ -70,7 +53,7 @@ in
         yelp
       ];
       systemPackages = with pkgs; with gnomeExtensions; [
-        residence-background-info
+        background
         resources
         appindicator
         pano

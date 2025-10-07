@@ -37,6 +37,7 @@ with config.scheme.withHashtag;
     programs = {
       niri.enable = true;
       dconf.enable = true;
+      alacritty.enable = true;
       firefox.enable = true;
       xwayland.enable = lib.mkDefault true;
       sherlock-launcher.enable = true;
@@ -77,7 +78,6 @@ with config.scheme.withHashtag;
       systemPackages = with pkgs; [
         niri # Niri
         wlsunset # Screen Color Temperature Adjuster
-        alacritty # Terminal
         resources # System Monitor
         dconf-editor # Dconf Editor
         clamtk # Antivirus
