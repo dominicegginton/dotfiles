@@ -1,23 +1,38 @@
 { lib, fetchurl, stdenv, imagemagick, ... }:
 let
+
   mkBackground = { name, src, description, license ? lib.licenses.free, ... }:
     let
-      pkg = stdenv.mkDerivation {
-        inherit name src;
+      darkSrc = stdenv.mkDerivation {
+        name = "darkened-image";
+        inherit src;
         dontUnpack = true;
         buildInputs = [ imagemagick ];
         buildPhase = ''
           runHook preBuild
-          
           convert $src -modulate 70,0,100 -fill black -colorize 30% $src.dark.jpg
-
           runHook postBuild
         '';
         installPhase = ''
           runHook preInstall
+          mkdir -p $out
+          mv $src.dark.jpg $out/
+          runHook postInstall
+        '';
+        meta = with lib; {
+          description = "Darkened version of ${src}";
+          maintainers = with maintainers; [ dominicegginton ];
+          license = lib.licenses.free;
+          platforms = platforms.all;
+        };
+      };
+      pkg = stdenv.mkDerivation {
+        inherit name src;
+        dontUnpack = true;
+        installPhase = ''
+          runHook preInstall
           mkdir -p $out/share/backgrounds/nixos
           ln -s $src $out/share/backgrounds/nixos/${src.name}
-          ln -s $src.dark.jpg $out/share/backgrounds/nixos/${src.name}.dark.jpg
           mkdir -p $out/share/gnome-background-properties/
           cat <<EOF > $out/share/gnome-background-properties/${name}.xml
           <?xml version="1.0" encoding="UTF-8"?>
@@ -26,7 +41,7 @@ let
             <wallpaper deleted="false">
               <name>${name}</name>
               <filename>${src}</filename>
-              <filename-dark>${src}.dark.jpg</filename-dark>
+              <filename-dark>${darkSrc}/$(basename ${src}).dark.jpg</filename-dark>
               <options>zoom</options>
               <shade_type>solid</shade_type>
               <pcolor>#ffffff</pcolor>
@@ -36,10 +51,8 @@ let
           EOF
           mkdir -p $out/share/artwork/gnome
           ln -s $src $out/share/artwork/gnome/${src.name}
-          ln -s $src.dark.jpg $out/share/artwork/gnome/${src.name}.dark.jpg
           mkdir -p $out/share/wallpapers/${name}/contents/images
           ln -s $src $out/share/wallpapers/${name}/contents/images/${src.name}
-          ln -s $src.dark.jpg $out/share/wallpapers/${name}/contents/images/${src.name}.dark.jpg
           cat >>$out/share/wallpapers/${name}/metadata.desktop <<_EOF
           [Desktop Entry]
           Name=${name}
@@ -54,7 +67,7 @@ let
         };
         meta = with lib; {
           inherit description license;
-          homepage = "https://github.com/NixOS/nixos-artwork";
+          maintainers = with maintainers; [ dominicegginton ];
           platforms = platforms.all;
         };
       };
