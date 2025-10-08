@@ -55,7 +55,10 @@
     };
     services.geoclue2 = {
       enable = lib.mkDefault true;
-      appConfig.firefox.isAllowed = true;
+      appConfig.firefox = {
+        desktopID = "firefox.desktop";
+        isAllowed = true;
+      };
     };
   };
 }
