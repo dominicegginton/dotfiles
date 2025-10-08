@@ -148,7 +148,6 @@ in
     ] ++ lib.optionals gui [
       unstable.teams-for-linux
       chromium
-      nyxt
       bleeding.youtube
       silverbullet-desktop
       frigate-desktop
