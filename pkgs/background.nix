@@ -1,32 +1,35 @@
 { lib, fetchurl, stdenv, imagemagick, ... }:
+
 let
 
   mkBackground = { name, src, description, license ? lib.licenses.free, ... }:
+
     let
-      darkSrc = stdenv.mkDerivation {
-        name = "darkened-image";
+
+      backgroundImageDark = stdenv.mkDerivation {
         inherit src;
+        name = "darkened-image";
         dontUnpack = true;
         buildInputs = [ imagemagick ];
         buildPhase = ''
           runHook preBuild
-          convert $src -modulate 70,0,100 -fill black -colorize 30% $src.dark.jpg
+          convert $src -fill black -colorize 30% $backgroundImage.dark.jpg 
           runHook postBuild
         '';
         installPhase = ''
           runHook preInstall
           mkdir -p $out
-          mv $src.dark.jpg $out/
+          mv $backgroundImage.dark.jpg $out/$(basename ${src}).dark.jpg
           runHook postInstall
         '';
         meta = with lib; {
-          description = "Darkened version of ${src}";
+          description = "Darkened version of ${backgroundImage}";
           maintainers = with maintainers; [ dominicegginton ];
-          license = lib.licenses.free;
-          platforms = platforms.all;
+          platforms = imagemagick.meta.platforms;
         };
       };
-      pkg = stdenv.mkDerivation {
+
+      background = stdenv.mkDerivation {
         inherit name src;
         dontUnpack = true;
         installPhase = ''
@@ -41,7 +44,7 @@ let
             <wallpaper deleted="false">
               <name>${name}</name>
               <filename>${src}</filename>
-              <filename-dark>${darkSrc}/$(basename ${src}).dark.jpg</filename-dark>
+              <filename-dark>${backgroundImageDark}/$(basename ${src}).dark.jpg</filename-dark>
               <options>zoom</options>
               <shade_type>solid</shade_type>
               <pcolor>#ffffff</pcolor>
@@ -61,21 +64,27 @@ let
           runHook postInstall
         '';
         passthru = {
-          filePath = "${pkg}/share/backgrounds/nixos/${src.name}";
-          gnomeFilePath = "${pkg}/share/backgrounds/nixos/${src.name}";
-          kdeFilePath = "${pkg}/share/wallpapers/${name}/contents/images/${src.name}";
+          light = "${src}/$(basename ${src})";
+          dark = "${backgroundImageDark}/$(basename ${src}).dark.jpg";
+          filePath = "${background}/share/backgrounds/nixos/${src.name}";
+          gnomeFilePath = "${background}/share/backgrounds/nixos/${src.name}";
+          kdeFilePath = "${background}/share/wallpapers/${name}/contents/images/${src.name}";
         };
         meta = with lib; {
           inherit description license;
           maintainers = with maintainers; [ dominicegginton ];
-          platforms = platforms.all;
+          platforms = src.meta.platforms ++ imagemagick.meta.platforms;
         };
       };
+
     in
-    pkg;
+
+    background;
 in
+
 mkBackground {
   name = "a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background";
+  description = "A castle on a hill with fog with Eltz Castle in the background";
   src = fetchurl rec {
     name = "a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background.jpg";
     url = "https://raw.githubusercontent.com/dharmx/walls/refs/heads/main/mountain/a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background.jpg";
@@ -87,6 +96,4 @@ mkBackground {
       platforms = lib.platforms.all;
     };
   };
-  description = "A castle on a hill with fog with Eltz Castle in the background";
-  license = lib.licenses.free;
 }
