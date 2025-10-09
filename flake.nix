@@ -37,6 +37,7 @@ rec {
     roll.inputs.nixpkgs.follows = "nixpkgs";
     firefox-gnome-theme.url = "github:rafaelmardojai/firefox-gnome-theme";
     firefox-gnome-theme.flake = false;
+    jovian-expirances.url = "github:Jovian-Experiments/Jovian-NixOS";
   };
 
   nixConfig = {

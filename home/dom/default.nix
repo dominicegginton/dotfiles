@@ -42,6 +42,7 @@ in
       };
     };
 
+    # todo: move this into a nixos module
     programs.vscode = lib.mkIf osConfig.programs.vscode.enable {
       enable = true;
       profiles.default = {
@@ -72,7 +73,7 @@ in
           extensions.autoUpdate = false;
           terminal.integrated.defaultProfile.linux = "zsh";
           updates.mode = "none";
-          window.titleBarStyle = "custom";
+          window.titleBarStyle = "native";
           window.commandCenter = true;
           window.autoDetectColorScheme = true;
           workbench.activityBar.location = "top";

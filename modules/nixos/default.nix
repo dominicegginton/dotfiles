@@ -6,6 +6,7 @@
     "${modulesPath}/profiles/qemu-guest.nix"
     ./display/gnome.nix
     ./display/niri.nix
+    ./display/steamos.nix
     ./hardware/bluetooth.nix
     ./programs/alacritty.nix
     ./programs/chromium.nix

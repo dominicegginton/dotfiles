@@ -3,7 +3,13 @@
 {
   config = lib.mkIf config.programs.steam.enable {
     boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = true; # See: https://github.com/ValveSoftware/SteamOS/issues/1006
-    environment.systemPackages = [ pkgs.gamescope ];
+    environment = {
+      systemPackages = [ pkgs.gamescope ];
+      etc."xdg/gamescope-session/environment".text = ''
+        export STEAM_ALLOW_DRIVE_ADROPT=0
+        export STEAM_ALLOW_DRIVE_UNMOUNT=1 
+      '';
+    };
     hardware = {
       steam-hardware.enable = true;
       xone.enable = true;
