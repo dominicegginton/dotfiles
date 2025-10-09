@@ -10,7 +10,7 @@ stdenv.mkDerivation rec {
   hash = lib.fakeHash;
   buildPhase = ''
     runHook preBuild
-    extract-theme $src $THEME_FILE --colors 16 
+    extract-theme $src $THEME_FILE --colors 16
     runHook postBuild
   '';
   installPhase = ''
