@@ -29,11 +29,8 @@
   services.tlp.enable = true;
   services.tlp.batteryThreshold.enable = true;
   services.printing.enable = true;
-  services.flatpak.enable = true;
-  programs.vscode.enable = true;
-  programs.alacritty.enable = true;
   display.gnome.enable = true;
+  programs.vscode.enable = true;
   virtualisation.docker.enable = true;
-  virtualisation.waydroid.enable = true;
   topology.self.hardware.info = "Dell Latitude 7390 2-in-1";
 }
