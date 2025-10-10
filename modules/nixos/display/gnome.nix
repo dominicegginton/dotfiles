@@ -32,6 +32,7 @@ in
     services = {
       printing.enable = true;
       pipewire.enable = true;
+      tlp.batteryThreshold.enable = lib.mkDefault false;
       udev.packages = [ pkgs.gnome-settings-daemon ];
       xserver = {
         enable = true;
@@ -55,7 +56,7 @@ in
       systemPackages = with pkgs; with gnomeExtensions; [
         background
         resources
-        appindicator
+        status-icons
         pano
       ];
     };
