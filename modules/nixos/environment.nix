@@ -13,6 +13,7 @@
         (lib.hiPrio uutils-coreutils-noprefix) # Use uutils-coreutils
         (lib.hiPrio uutils-findutils) # Use uutils-findutils
         (lib.hiPrio uutils-diffutils) # Use uutils-diffutils
+        killall # Kill processes by name
         hwinfo # Hardware information tool 
         usbutils # USB device information
         nvme-cli # NVMe device management
