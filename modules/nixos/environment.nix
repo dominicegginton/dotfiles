@@ -40,7 +40,6 @@
         nix-diff # Nix expression differ
         nix-tree # Nix dependency tree visualizer
         nix-health # Nix system health checker
-        bottom # System resource monitor
         htop-vim # Interactive process viewer
         status # System status monitoring
         openssl # Secure communications
