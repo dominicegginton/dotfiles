@@ -1,27 +1,5 @@
 { config, lib, pkgs, ... }:
 
-let
-  mimeAppsList = pkgs.writeTextFile {
-    name = "gnome-mimeapps";
-    destination = "/share/applications/mimeapps.list";
-    text = ''
-      [Default Applications]
-      inode/directory=nautilus.desktop;org.gnome.Nautilus.desktop
-    '';
-  };
-
-  defaultFavoriteAppsOverride = ''
-    [org.gnome.shell]
-    favorite-apps=[ 'org.gnome.Epiphany.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop', 'org.gnome.Nautilus.desktop' ]
-  '';
-
-  gsettings-desktop-schemas = pkgs.gnome.nixos-gsettings-overrides.override {
-    inherit (config.services.xserver.desktopManager.gnome) extraGSettingsOverrides extraGSettingsOverridePackages favoriteAppsOverride;
-  };
-
-  destination = "/share/gnome-background-properties/residence.xml";
-in
-
 {
   options.display.gnome.enable = lib.mkEnableOption "Gnome";
 
@@ -45,7 +23,6 @@ in
       };
     };
     environment = {
-      sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = "${gsettings-desktop-schemas}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
       gnome.excludePackages = with pkgs; [
         gnome-tour
         gnome-user-docs
