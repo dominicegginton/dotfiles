@@ -27,6 +27,7 @@
   services.logind.lidSwitch = "suspend";
   services.upower.enable = true;
   services.tlp.enable = true;
+  services.tlp.batteryThreshold.enable = true;
   services.printing.enable = true;
   services.flatpak.enable = true;
   programs.vscode.enable = true;
