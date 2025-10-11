@@ -13,13 +13,13 @@ let
         buildInputs = [ imagemagick ];
         buildPhase = ''
           runHook preBuild
-          convert $src -fill black -colorize 30% $backgroundImage.dark.jpg 
+          convert $src -fill black -colorize 30% tmp.jpg
           runHook postBuild
         '';
         installPhase = ''
           runHook preInstall
           mkdir -p $out
-          mv $backgroundImage.dark.jpg $out/$(basename ${src}).dark.jpg
+          mv tmp.jpg $out/$(basename ${src}).jpg
           runHook postInstall
         '';
         meta = with lib; {
@@ -44,7 +44,7 @@ let
             <wallpaper deleted="false">
               <name>${name}</name>
               <filename>${src}</filename>
-              <filename-dark>${backgroundImageDark}/$(basename ${src}).dark.jpg</filename-dark>
+              <filename-dark>${backgroundImageDark}/$(basename ${src}).jpg</filename-dark>
               <options>zoom</options>
               <shade_type>solid</shade_type>
               <pcolor>#ffffff</pcolor>

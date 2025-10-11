@@ -35,6 +35,9 @@
         resources
         status-icons
         pano
+        night-theme-switcher
+        caffeine
+        tailscale-status
       ];
     };
   };
