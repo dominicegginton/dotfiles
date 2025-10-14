@@ -8,12 +8,13 @@ let
 
       backgroundImageDark = stdenv.mkDerivation {
         inherit src;
-        name = "darkened-image";
+        name = "${name}-dark";
+        preferLocalBuild = true;
         dontUnpack = true;
         buildInputs = [ imagemagick ];
         buildPhase = ''
           runHook preBuild
-          convert $src -fill black -colorize 30% tmp.jpg
+          convert $src -fill black -colorize 70% -strip tmp.jpg
           runHook postBuild
         '';
         installPhase = ''
@@ -23,9 +24,9 @@ let
           runHook postInstall
         '';
         meta = with lib; {
+          inherit (src.meta) license platforms;
           description = "Darkened version of ${backgroundImage}";
           maintainers = with maintainers; [ dominicegginton ];
-          platforms = imagemagick.meta.platforms;
         };
       };
 

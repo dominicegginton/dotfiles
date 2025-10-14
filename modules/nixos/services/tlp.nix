@@ -37,7 +37,7 @@ in
 
   config.services = lib.mkIf config.services.tlp.enable {
     power-profiles-daemon.enable = lib.mkForce false;
-    tlp.settings = lib.mkIf config.services.xserver.desktopManager.gnome.enable {
+    tlp.settings = lib.mkIf (config.services.xserver.desktopManager.gnome.enable == false) {
       CPU_BOOST_ON_AC = 1;
       CPU_BOOST_ON_BAT = 1;
       CPU_HWP_DYN_BOOST_ON_AC = 1;
