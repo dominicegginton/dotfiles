@@ -103,6 +103,7 @@ in
       EDITOR = "nvim";
       VISUAL = "nvim";
       SYSTEMD_EDITOR = "nvim";
+      SSH_AUTH_SOCK = "/home/dom/.bitwarden-ssh-socket/ssh_auth_sock";
     };
 
     programs.neovim = {

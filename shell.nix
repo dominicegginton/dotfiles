@@ -57,6 +57,7 @@ mkShell rec {
     (writeShellScriptBin "create-new-machine-key" ''
       ## todo finish
     '')
+
     (writeShellScriptBin "sync-keys" ''
       temp=$(mktemp -d)
       trap "rm -rf $temp" EXIT
