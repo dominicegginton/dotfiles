@@ -17,6 +17,7 @@
 , jq
 , gnupg
 , bws
+, qrencode
 }:
 
 with lib;
@@ -43,21 +44,16 @@ mkShell rec {
     gum
     jq
     gnupg
+    qrencode
     (writeShellScriptBin "deploy" ''
       gcloud auth login
       tofu -chdir=infrastructure init
       tofu -chdir=infrastructure apply -refresh-only
     '')
-    (writeShellScriptBin "deploy-new-machine" ''
-      temp=$(mktemp -d)
-      trap "rm -rf $temp" EXIT 
-      install -d -m755 "$temp/etc/ssh"
-      ## todo finish
+    (writeShellScriptBin "advertise-ssh" ''
+      root_password=$(openssl rand -base64 32)
+      echo "Root password: $root_password" | qrencode -t ANSIUTF8
     '')
-    (writeShellScriptBin "create-new-machine-key" ''
-      ## todo finish
-    '')
-
     (writeShellScriptBin "sync-keys" ''
       temp=$(mktemp -d)
       trap "rm -rf $temp" EXIT

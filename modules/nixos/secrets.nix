@@ -84,7 +84,7 @@ in
   options.secrets =
     with types;
     let
-      secretType = submodule {
+      secretType = submodule rec {
         options = {
           id = mkOption {
             type = str;
@@ -140,27 +140,36 @@ in
           --output $TEMP_DIR/secrets.json \
           --decrypt ${../../secrets.json}
         echo "Decrypted secrets to $TEMP_DIR/secrets.json"
+        if [ ! -f $TEMP_DIR/secrets.json ]; then
+          gum log --level error "Failed to decrypt secrets file."
+          exit 1
+        fi
+        mv $TEMP_DIR/secrets.json /root/bitwarden-secrets/secrets.json
+        gum log --level info "Moved decrypted secrets to /root/bitwarden-secrets/secrets.json"
+        chown root:root /root/bitwarden-secrets/secrets.json
+        chmod 600 /root/bitwarden-secrets/secrets.json
+        ${secrets-install}
       '';
     };
-    systemd.services.secrets = {
-      wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
-      before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
-      unitConfig.DefaultDependencies = "no";
-      serviceConfig.Type = "oneshot";
-      serviceConfig.RemainAfterExit = true;
-      script = secrets-install;
-    };
-    system.activationScripts = {
-      secrets = {
-        deps = [ "specialfs" ];
-        text = ''
-          if [[ -e /run/current-system ]]; then
-            ./${lib.getExe secrets-sync}
-          fi
-        '';
-      };
-      users.deps = [ "secrets" ];
-    };
+    # systemd.services.secrets = {
+    #   wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
+    #   before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
+    #   unitConfig.DefaultDependencies = "no";
+    #   serviceConfig.Type = "oneshot";
+    #   serviceConfig.RemainAfterExit = true;
+    #   script = secrets-install;
+    # };
+    # system.activationScripts = {
+    #   secrets = {
+    #     deps = [ "specialfs" ];
+    #     text = ''
+    #       if [[ -e /run/current-system ]]; then
+    #         ./${lib.getExe secrets-sync}
+    #       fi
+    #     '';
+    #   };
+    #   users.deps = [ "secrets" ];
+    # };
     environment.systemPackages = [ secrets-sync ];
   };
 }
