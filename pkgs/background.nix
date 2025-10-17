@@ -31,12 +31,13 @@ let
       };
 
       background = stdenv.mkDerivation {
-        inherit name src;
+        inherit name;
+        src = [ src backgroundImageDark ];
         dontUnpack = true;
         installPhase = ''
           runHook preInstall
           mkdir -p $out/share/backgrounds/nixos
-          ln -s $src $out/share/backgrounds/nixos/${src.name}
+          ln -s ${src} $out/share/backgrounds/nixos/${src.name}
           mkdir -p $out/share/gnome-background-properties/
           cat <<EOF > $out/share/gnome-background-properties/${name}.xml
           <?xml version="1.0" encoding="UTF-8"?>
@@ -54,9 +55,9 @@ let
           </wallpapers>
           EOF
           mkdir -p $out/share/artwork/gnome
-          ln -s $src $out/share/artwork/gnome/${src.name}
+          ln -s ${src} $out/share/artwork/gnome/${src.name}
           mkdir -p $out/share/wallpapers/${name}/contents/images
-          ln -s $src $out/share/wallpapers/${name}/contents/images/${src.name}
+          ln -s ${src} $out/share/wallpapers/${name}/contents/images/${src.name}
           cat >>$out/share/wallpapers/${name}/metadata.desktop <<_EOF
           [Desktop Entry]
           Name=${name}
