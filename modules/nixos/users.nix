@@ -44,7 +44,10 @@ in
           homeMode = "0755";
           shell = pkgs.zsh;
           extraGroups = defaultExtraGroups ++ previlegedExtraGroups;
-          openssh.authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
+          openssh = {
+            authorizedPrincipals = [ "dom@localhost" "dom@${hostname}" dlib.maintainers.dominicegginton.email ];
+            authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
+          };
         };
       };
     };
