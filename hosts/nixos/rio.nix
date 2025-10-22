@@ -8,7 +8,6 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   display.gnome.enable = true;
   users.users.matt.enable = lib.mkDefault true;
-  filesystem.type = "btrfs";
   networking.wireless.enable = true;
   services.tlp.enable = true;
   topology.self.hardware.info = "";

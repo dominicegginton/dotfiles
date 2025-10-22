@@ -8,6 +8,7 @@
     ./display/niri.nix
     ./display/steamos.nix
     ./hardware/bluetooth.nix
+    ./hardware/disks.nix
     ./programs/alacritty.nix
     ./programs/chromium.nix
     ./programs/firefox.nix
@@ -32,7 +33,6 @@
     ./backup.nix
     ./console.nix
     ./environment.nix
-    ./filesystem.nix
     ./networking.nix
     ./secrets.nix
     ./upgrade.nix
