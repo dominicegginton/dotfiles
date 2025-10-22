@@ -25,7 +25,9 @@ in
       ".ideavimrc".source = ./sources/.ideavimrc;
     };
 
-    home.file.".mozilla/firefox/default/chrome/firefox-gnome-theme".source = lib.mkIf osConfig.programs.firefox.enable inputs.firefox-gnome-theme;
+    home.file.".mozilla/firefox/default/chrome/firefox-gnome-theme" = lib.mkIf osConfig.programs.firefox.enable {
+      source = inputs.firefox-gnome-theme;
+    };
 
     programs.firefox.profiles.default = lib.mkIf osConfig.programs.firefox.enable {
       userChrome = ''
