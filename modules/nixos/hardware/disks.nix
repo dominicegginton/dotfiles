@@ -3,10 +3,11 @@
 {
   options.hardware.disks.root.id = lib.mkOption {
     type = lib.types.str;
+    default = "";
     description = "The disk identifier where the root filesystem will be created.";
   };
 
-  config.disko.devices.disk.main = lib.mkIf (config.hardware.disks.root.id != null) {
+  config.disko.devices.disk.main = lib.mkIf (config.hardware.disks.root.id != "") {
     type = "disk";
     device = config.hardware.disks.root.id;
     content = {

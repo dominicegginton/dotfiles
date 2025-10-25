@@ -83,6 +83,12 @@ in
           workbench.startupEditor = "none";
           workbench.iconTheme = null;
           workbench.tree.indent = 12;
+          github.copilot.enable = {
+            "*" = true;
+            plaintext = false;
+            markdown = true;
+            scminput = false;
+          };
         };
       };
     };
