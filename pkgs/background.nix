@@ -2,7 +2,13 @@
 
 let
 
-  mkBackground = { name, src, description, license ? lib.licenses.free, ... }:
+  mkBackground =
+    { src
+    , name ? src.name
+    , description ? src.meta.description
+    , license ? src.meta.license
+    , ...
+    }:
 
     let
 
@@ -85,12 +91,11 @@ let
 in
 
 mkBackground {
-  name = "a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background";
-  description = "A castle on a hill with fog with Eltz Castle in the background";
+  name = "photo-1726992118416-00c2fa03e03b";
   src = fetchurl rec {
-    name = "a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background.jpg";
-    url = "https://raw.githubusercontent.com/dharmx/walls/refs/heads/main/mountain/a_castle_on_a_hill_with_fog_with_Eltz_Castle_in_the_background.jpg";
-    sha256 = "0l59xwjs9xlz2mxq9v73gcmw7h3jjqnxgy24c5karm7ysbgwb41q";
+    name = "photo-1726992118416-00c2fa03e03b";
+    url = "https://images.unsplash.com/photo-1726992118416-00c2fa03e03b";
+    sha256 = "0mrc71l7rnz5rnqrgls9d7gv36z8hx2lamzrg8dwa143i1mpr45k";
     meta = {
       description = "Background image ${name} from ${url}";
       license = lib.licenses.free;
