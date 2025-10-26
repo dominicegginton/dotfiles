@@ -119,7 +119,7 @@ rec {
             };
           })
       ]
-      ++ (if hostname != "residence-installer" && builtins.pathExists ./hosts/nixos/${hostname}.nix then [ ./hosts/nixos/${hostname}.nix ] else [ ])
+      ++ (builtins.pathExists ./hosts/nixos/${hostname}.nix then [ ./hosts/nixos/${hostname}.nix ] else [ ])
       ++ extraModules;
     };
   darwinSystem = { hostname, platform ? "x86_64-darwin", extraModules ? [ ], ... }:
