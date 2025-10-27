@@ -10,8 +10,6 @@ rec {
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
@@ -127,10 +125,15 @@ rec {
     {
       inherit lib overlays templates;
       nixosConfigurations = {
-        ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
-        latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
+        ghost-gs60 = nixosSystem {
+          hostname = "ghost-gs60";
+          modules = [ ./hosts/nixos/ghost-gs60.nix ];
+        };
+        latitude-7390 = nixosSystem {
+          hostname = "latitude-7390";
+          modules = [ ./hosts/nixos/latitude-7390.nix ];
+        };
       };
-      darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
       githubActions = mkGithubMatrix {
         checks =
           nixpkgs.lib.attrsets.recursiveUpdate

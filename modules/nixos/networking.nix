@@ -43,6 +43,7 @@ with config.lib.topology;
         unmanaged = [ "wlp108s0" ];
       };
     };
+
     topology.self.interfaces = {
       lo = {
         type = "loopback";
@@ -53,9 +54,7 @@ with config.lib.topology;
         type = "wifi";
         addresses = [ hostname ];
         physicalConnections = [
-          (mkConnection "quardon-ap-downstairs" "wlan0")
-          (mkConnection "quardon-ap-upstairs" "wlan0")
-          (mkConnection "ribble-router" "wlan0")
+          (mkConnection "router" "wlan0")
           (mkConnection "pixel-9" "hotspot")
         ];
       };

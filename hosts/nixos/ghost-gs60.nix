@@ -90,7 +90,7 @@
       network = "ribble";
       type = "ethernet";
       addresses = [ hostname ];
-      physicalConnections = [ (config.lib.topology.mkConnection "ribble-switch" "eth3") ];
+      physicalConnections = [ (config.lib.topology.mkConnection "switch" "eth3") ];
     };
   };
 }
