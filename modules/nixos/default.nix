@@ -69,9 +69,6 @@ rec {
     # nix pkg 
     package = pkgs.nix;
 
-    # auto - cpu core count 
-    max-jobs = "auto";
-
     # automatic garbage collection
     gc = {
       automatic = true;
@@ -95,6 +92,28 @@ rec {
       min-free = "8G";
       max-free = "120G";
       min-free-check-interval = 1;
+
+      # disable global registry
+      flake-registry = "";
+
+      # performance optimizations for faster rebuilds
+      keep-outputs = true; # keep build outputs
+      keep-derivations = true; # keep derivations for faster rebuilds
+
+      # performance settings
+      eval-cache = true; # enable caching 
+      narinfo-cache-positive-ttl = 3600; # longer cache for existing narinfos
+      narinfo-cache-negative-ttl = 60; # quicker retries on missing narinfo
+      fsync-metadata = false; # faster on SSDs
+      connect-timeout = 10; # faster timeouts 
+      max-substitution-jobs = 128; # increased parallel substitutions 
+      http-connections = 128; # increased parallel connections
+      cores = 0; # use all available CPU cores
+      max-jobs = "auto"; # use all available CPU cores
+
+      # redunce storage overhead
+      keep-build-log = false; # dont keep build logs
+      compress-build-log = true; # compress build logs
 
       # trusted users for nix commands
       trusted-users = [
@@ -127,11 +146,16 @@ rec {
   };
 
   programs = {
+    # enable gpg agent for managing gpg keys
     gnupg.agent = {
       enable = true;
-      pinentryPackage = pkgs.pinentry;
+      pinentryPackage = pkgs.pinentry; # use default pinentry
     };
+    
+    # enable ssh agent for managing ssh keys
     ssh.startAgent = true;
+    
+    # suggest commands when command is not found 
     command-not-found.enable = true;
   };
 
