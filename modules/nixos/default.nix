@@ -42,38 +42,82 @@ rec {
   ];
 
   system = {
+    # state version for nixos modules
     stateVersion = config.system.nixos.release;
+
+    # custom distro metadata 
     nixos = {
       distroName = lib.mkDefault "Residence";
       distroId = lib.mkDefault "residence";
       vendorName = lib.mkDefault pkgs.lib.maintainers.dominicegginton.name;
       vendorId = lib.mkDefault pkgs.lib.maintainers.dominicegginton.github;
-      tags = [
-        (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux")
-        (lib.optionalString (pkgs.stdenv.isDarwin) "residence-darwin")
-      ];
+      tags = [ (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux") ];
     };
   };
+
+  # system color scheme
   scheme = "${pkgs.theme}/residence-theme.yaml";
+
+  # system time zone
   time.timeZone = "Europe/London";
+
+  # system locale
   i18n.defaultLocale = "en_GB.UTF-8";
+
+  # nix settings
   nix = {
-    package = pkgs.unstable.nix;
+    # nix pkg 
+    package = pkgs.nix;
+
+    # auto - cpu core count 
+    max-jobs = "auto";
+
+    # automatic garbage collection
     gc = {
       automatic = true;
       dates = "weekly";
-      options = "--delete-older-than 30d";
+      options = "--delete-older-than 7d";
     };
+
+    # automatic optimise of the nix store
     optimise.automatic = lib.mkDefault true;
+
+    # disable channel updates
+    channel.enable = false;
+
+    # nix registry entries
     registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
+
+    # nix settings
     settings = nixConfig // {
+      # garbage collection settings
       min-free = "8G";
       max-free = "120G";
       min-free-check-interval = 1;
-      trusted-users = [ "root" "@wheel" ];
+
+      # trusted users for nix commands
+      trusted-users = [
+        "root" # machine root user
+        "@wheel" # admin group
+      ];
     };
   };
+
+  boot = {
+    # silence boot messages
+    consoleLogLevel = 0;
+
+    # disable verbose initrd
+    initrd.verbose = false;
+
+    # boot loader settings 
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+  };
+
   documentation = {
     enable = true;
     man.enable = true;
@@ -81,7 +125,7 @@ rec {
     dev.enable = true;
     info.enable = true;
   };
-  services.openssh.enable = true;
+
   programs = {
     gnupg.agent = {
       enable = true;
@@ -90,12 +134,20 @@ rec {
     ssh.startAgent = true;
     command-not-found.enable = true;
   };
+
+  # enable microcode updates for intel/amd cpus
   hardware.cpu = {
     intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
+
+  # virtualisation settings for machine images
   virtualisation.vmVariant.users = {
+
+    # setup a usergroup for the test user 
     groups.nixosvmtest = { };
+
+    # setup the test user
     users.nix = {
       description = "NixOS VM Test User";
       isNormalUser = true;
@@ -103,25 +155,25 @@ rec {
       group = "nixosvmtest";
     };
   };
-  boot = {
-    consoleLogLevel = 0;
-    initrd.verbose = false;
-    loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
-    };
-  };
+
+  # enable sudo and polkit for privilege escalation
   security = {
     sudo.enable = true;
     polkit.enable = true;
   };
+
+  # enable the system76 power daemon for power management (thanks system76!) 
   hardware.system76.power-daemon.enable = true;
+
+  # enable common system services
   services = {
+    openssh.enable = true;
     dbus.enable = true;
     smartd.enable = true;
     thermald.enable = true;
     upower.enable = true;
   };
+
   home-manager = {
     useGlobalPkgs = true;
     backupFileExtension = "backup";

@@ -41,6 +41,7 @@ with config.lib.topology;
       networkmanager = lib.mkIf config.networking.networkmanager.enable {
         dns = "systemd-resolved";
         unmanaged = [ "wlp108s0" ];
+        # wifi.backend = "iwd";
       };
     };
 
