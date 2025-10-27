@@ -75,15 +75,6 @@ jobs:
           free-disk-space: true
       - run: nix build -L .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
 
-  rio:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: ./.github/actions/install-nix
-        with:
-          free-disk-space: true
-      - run: nix build -L .#nixosConfigurations.rio.config.system.build.toplevel
-
   latitude-7390:
     runs-on: ubuntu-latest
     steps:

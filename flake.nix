@@ -107,7 +107,7 @@ rec {
           formatter = pkgs.unstable.nixpkgs-fmt;
           legacyPackages = pkgs;
           buildAndCachePackages = {
-            inherit (pkgs) residence niri neovim bws twm tailscale residence-iso background;
+            inherit (pkgs) residence niri neovim bws twm tailscale background;
             inherit (pkgs.bleeding) sherlock-launcher;
           };
           devShells = {
@@ -129,7 +129,6 @@ rec {
       nixosConfigurations = {
         ghost-gs60 = nixosSystem { hostname = "ghost-gs60"; };
         latitude-7390 = nixosSystem { hostname = "latitude-7390"; };
-        rio = nixosSystem { hostname = "rio"; };
       };
       darwinConfigurations.MCCML44WMD6T = darwinSystem { hostname = "MCCML44WMD6T"; };
       githubActions = mkGithubMatrix {
