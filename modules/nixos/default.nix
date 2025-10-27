@@ -151,10 +151,10 @@ rec {
       enable = true;
       pinentryPackage = pkgs.pinentry; # use default pinentry
     };
-    
+
     # enable ssh agent for managing ssh keys
     ssh.startAgent = true;
-    
+
     # suggest commands when command is not found 
     command-not-found.enable = true;
   };
@@ -180,10 +180,15 @@ rec {
     };
   };
 
-  # enable sudo and polkit for privilege escalation
   security = {
-    sudo.enable = true;
+    sudo = {
+      enable = true;
+      extraConfig = "Defaults lecture=never\nDefaults passwd_timeout=0\nDefaults insults";
+    };
     polkit.enable = true;
+
+    # enable tpm2 support 
+    tpm2.enable = true;
   };
 
   # enable the system76 power daemon for power management (thanks system76!) 
