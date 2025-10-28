@@ -191,6 +191,7 @@ rec {
     topology = outputs.topology.${final.system}.config.output;
     twm = (packagesFrom inputs.twm final.system).default;
     twx = final.callPackage ./pkgs/twx.nix { };
+    plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
     vscode = prev.vscode.overrideAttrs (oldAttrs: {
       nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''

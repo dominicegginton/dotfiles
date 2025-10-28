@@ -135,6 +135,13 @@ rec {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
+
+    # boot theme
+    plymouth = {
+      enable = true;
+      themePackages = [ pkgs.plymouth-theme ];
+      theme = "colorful";
+    };
   };
 
   documentation = {
