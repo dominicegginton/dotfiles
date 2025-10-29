@@ -90,7 +90,6 @@ in
         bind-key -T copy-mode-vi 'C-\' select-pane -l
       '';
     };
-    home.packages = with pkgs; [ twm twx ];
     home.file.".config/twm/twm.yaml".text = ''
       search_paths:
         - "~/.dotfiles"
@@ -249,6 +248,8 @@ in
       eza
       gitui
       bitwarden-cli
+      twm
+      twx
     ] ++ lib.optionals gui [
       fleet
       unstable.teams-for-linux
