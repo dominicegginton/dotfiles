@@ -4,10 +4,9 @@ with outputs.lib;
 
 rec {
   unstable = _: prev: {
-    unstable = import inputs.nixpkgs-unstable
-      { inherit (prev) system hostPlatform config; overlays = [ default ]; }
-    //
-    { lib = prev.lib // outputs.lib; };
+    unstable = import inputs.nixpkgs-unstable { inherit (prev) system hostPlatform config; overlays = [ default ]; }
+      //
+      { lib = prev.lib // outputs.lib; };
   };
   bleeding = _: prev: {
     bleeding = import inputs.nixpkgs-bleeding
@@ -62,11 +61,11 @@ rec {
             sleep 0.1
           '';
         };
-      lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
-      youtube = prev.callPackage ./pkgs/youtube.nix { };
     };
   };
   default = final: prev: {
+    lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
+    youtube = prev.callPackage ./pkgs/youtube.nix { };
     background = final.callPackage ./pkgs/background.nix { };
     ensure-tailscale-is-connected = final.callPackage ./pkgs/ensure-tailscale-is-connected.nix { };
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
@@ -78,6 +77,7 @@ rec {
       hostname = "residence-installer";
       platform = final.system;
       extraModules = [
+        (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
         ({ pkgs, lib, modulesPath, config, ... }:
           let
             network-status = pkgs.writeShellScriptBin "network-status" ''
@@ -100,36 +100,9 @@ rec {
             '';
           in
           {
-            imports = [
-              (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
-            ];
             roles = [ "installer" ];
-            boot = {
-              supportedFilesystems.bcachefs = lib.mkDefault true;
-              loader.grub = {
-                efiSupport = true;
-                efiInstallAsRemovable = true;
-              };
-            };
-            isoImage.squashfsCompression = "zstd";
             image.baseName = lib.mkDefault "residence-installer";
             console.earlySetup = true;
-            networking = {
-              tempAddresses = "disabled";
-              wireless = {
-                enable = false;
-                iwd = {
-                  enable = true;
-                  settings = {
-                    Network = {
-                      EnableIPv6 = true;
-                      RoutePriorityOffset = 300;
-                    };
-                    Settings.AutoConnect = true;
-                  };
-                };
-              };
-            };
             services = {
               openssh = {
                 enable = true;
