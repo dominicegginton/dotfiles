@@ -124,23 +124,17 @@ rec {
   };
 
   boot = {
-    # silence boot messages
-    consoleLogLevel = 0;
-
-    # disable verbose initrd
-    initrd.verbose = false;
-
-    # boot loader settings 
+    consoleLogLevel = 0; # log all boot messages
+    initrd.verbose = false; # disable verbose initrd
     loader = {
-      systemd-boot.enable = true;
-      efi.canTouchEfiVariables = true;
+      systemd-boot.enable = true; # enable systemd-boot
+      efi.canTouchEfiVariables = true; # allow efi variables modification
     };
 
-    # boot theme
     plymouth = {
       enable = true;
-      themePackages = [ pkgs.plymouth-theme ];
-      theme = "colorful";
+      themePackages = [ pkgs.plymouth-theme ]; # boot theme package
+      theme = "colorful"; # set boot theme
     };
   };
 
@@ -188,28 +182,26 @@ rec {
   };
 
   security = {
+    # sudo for privilege escalation
     sudo = {
       enable = true;
       extraConfig = "Defaults lecture=never\nDefaults passwd_timeout=0\nDefaults insults";
     };
-    polkit.enable = true;
-
-    # enable tpm2 support 
-    tpm2.enable = true;
+    polkit.enable = true; # polkit for privilege escalation
+    tpm2.enable = true; # tpm2 support
   };
 
-  # enable the system76 power daemon for power management (thanks system76!) 
-  hardware.system76.power-daemon.enable = true;
-
-  # enable common system services
   services = {
-    openssh.enable = true;
-    dbus.enable = true;
-    smartd.enable = true;
-    thermald.enable = true;
-    upower.enable = true;
+    openssh.enable = true; # ssh 
+    dbus.enable = true; # system bus
+    smartd.enable = true; # disk health monitoring
+    thermald.enable = true; # thermal management
+    upower.enable = true; # power management
+    fwupd.enable = true; # firmware updates
+    fstrim.enable = true; # periodic trim for ssd
   };
 
+  # todo: remove home manager
   home-manager = {
     useGlobalPkgs = true;
     backupFileExtension = "backup";

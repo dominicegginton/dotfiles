@@ -75,7 +75,7 @@ in
           extensions.autoUpdate = false;
           terminal.integrated.defaultProfile.linux = "zsh";
           updates.mode = "none";
-          window.titleBarStyle = "native";
+          window.titleBarStyle = "custom";
           window.commandCenter = true;
           window.autoDetectColorScheme = true;
           workbench.activityBar.location = "top";
@@ -156,6 +156,7 @@ in
       gitui
       bitwarden-cli
     ] ++ lib.optionals gui [
+      fleet
       unstable.teams-for-linux
       chromium
       bleeding.youtube

@@ -201,6 +201,7 @@ rec {
       '';
     });
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
+    fleet = final.callPackage ./pkgs/fleet.nix { };
     lib = prev.lib // outputs.lib;
   };
 }
