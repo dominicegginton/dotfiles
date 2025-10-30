@@ -127,11 +127,11 @@ rec {
       nixosConfigurations = {
         ghost-gs60 = nixosSystem {
           hostname = "ghost-gs60";
-          modules = [ ./hosts/nixos/ghost-gs60.nix ];
+          modules = [ ./hosts/ghost-gs60.nix ];
         };
         latitude-7390 = nixosSystem {
           hostname = "latitude-7390";
-          modules = [ ./hosts/nixos/latitude-7390.nix ];
+          modules = [ ./hosts/latitude-7390.nix ];
         };
       };
       githubActions = mkGithubMatrix {
