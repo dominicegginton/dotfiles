@@ -7,6 +7,7 @@ with lib;
     secrets.dom = mkIf config.users.users.dom.enable "be2b6a7a-7811-4711-86f0-b24200a41bbd";
 
     users = {
+      defaultUserShell = pkgs.zsh;
       users = {
         root = {
           enable = mkDefault true;
