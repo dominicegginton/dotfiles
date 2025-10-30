@@ -31,7 +31,7 @@ rec {
         inputs.nixos-wsl.nixosModules.default
         inputs.home-manager.nixosModules.default
         inputs.nix-topology.nixosModules.default
-        ./modules/nixos
+        ./modules
       ];
     };
 }

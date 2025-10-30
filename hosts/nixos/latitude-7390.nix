@@ -22,7 +22,6 @@
   hardware.logitech.wireless.enableGraphical = true;
   hardware.bluetooth.enable = true;
   hardware.intel-gpu-tools.enable = true;
-  networking.wireless.enable = true;
   services.logind.extraConfig = "HandlePowerKey=suspend";
   services.logind.lidSwitch = "suspend";
   services.upower.enable = true;

@@ -43,7 +43,7 @@ with lib;
     };
 
     home-manager.users = {
-      dom = mkIf config.users.users.dom.enable ../../home/dom;
+      dom = mkIf config.users.users.dom.enable ../home/dom;
     };
   };
 }
