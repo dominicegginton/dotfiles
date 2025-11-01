@@ -252,6 +252,7 @@ in
       twx
     ] ++ lib.optionals gui [
       fleet
+      jetbrains.webstorm
       unstable.teams-for-linux
       chromium
       youtube
