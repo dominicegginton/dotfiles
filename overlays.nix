@@ -45,7 +45,7 @@ rec {
             elif [ "$selection" = "reboot" ]; then
               ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
             elif [ "$selection" = "exit" ]; then
-              ${prev.lib.getExe prev.gum} confirm "Exit Niri?" && ${prev.niri}/bin/niri msg action quit 
+              ${prev.lib.getExe prev.gum} confirm "Exit Niri?" && ${prev.niri}/bin/niri msg action quit
             elif [ "$selection" = "suspend" ]; then
               ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend
             fi
@@ -122,7 +122,7 @@ rec {
             (writeShellScriptBin "install" ''
               set -eux
               DISKS=$(${pkgs.lsblk}/bin/lsblk -dn -o NAME,TYPE | ${pkgs.gnugrep}/bin/grep 'disk')
-              DISK_NAMES=$(echo "$DISKS" | ${pkgs.coreutils}/bin/awk '{print $1}') 
+              DISK_NAMES=$(echo "$DISKS" | ${pkgs.coreutils}/bin/awk '{print $1}')
               DISK=$(${pkgs.gum}/bin/gum choose $DISK_NAMES --header="Select the target disk for NixOS installation:")
               exec ${pkgs.disko}/bin/disko-install --flake "${self}#your-machine" --disk main /dev/$DISK --write-efi-boot-entries
             '')
@@ -147,7 +147,7 @@ rec {
       nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/code \
-          --prefix PATH : "${final.lib.makeBinPath [ prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
+          --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
