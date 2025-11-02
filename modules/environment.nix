@@ -3,6 +3,15 @@
 {
   config = {
     environment = {
+      # set system issue file text - shown on tty login prompts 
+      etc.issue.text = "Residence";
+
+      # add zsh pkg to system shells 
+      shells = [ pkgs.zsh ];
+
+      # link zsh to /bin/sh
+      pathsToLink = [ "/share/zsh" ];
+
       variables = {
         EDITOR = "nvim";
         SYSTEMD_EDITOR = "nvim";
@@ -42,7 +51,6 @@
         nix-tree # Nix dependency tree visualizer
         nix-health # Nix system health checker
         htop-vim # Interactive process viewer
-        status # System status monitoring
         openssl # Secure communications
         openssh # Secure shell client
         curl # Data transfer tool

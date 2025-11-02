@@ -9,7 +9,7 @@ Declarative System, Package & Home Configurations - WIP Always
 ## Features
 
 - **Nix Flakes** - 100% _Nix Flakes_-based configuration, no Nix channels.
-- **Linux, WLS and Darwin Hosts** - Declarative configurations for _Linux_, _WSL_ & _Darwin_ hosts.
+- **Linux & WLS** - Declarative configurations for both _Linux_ _WSL_.
 - **Bispoke Wayland Desktop** - Built on top of _niri_, _residence_ provides a scrolling desktop environment.
 - **GPG Encrypted & Bitwarden Managed Secrets** - System wide encrypted secrets managed by _bsm_ & _bw_.
 - **CVS Scanning & AV** - Automatic CVS vulnerability scanning using _Vulnix_ and AV providded by _CalmAV_.

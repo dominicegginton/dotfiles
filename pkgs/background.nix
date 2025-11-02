@@ -91,11 +91,11 @@ let
 in
 
 mkBackground {
-  name = "photo-1726992118416-00c2fa03e03b";
+  name = "AAAABXy27SOJ7bh3yO_zA1t9flg-s8m_0J4F2oL4GqdnfdnNLOu0PwaDHZKXXe9euvWl7nAut9Rt67WWc01EOiCCpFusYoDTyL2kd60S.jpg";
   src = fetchurl rec {
-    name = "photo-1726992118416-00c2fa03e03b";
-    url = "https://images.unsplash.com/photo-1726992118416-00c2fa03e03b";
-    sha256 = "0mrc71l7rnz5rnqrgls9d7gv36z8hx2lamzrg8dwa143i1mpr45k";
+    name = "AAAABXy27SOJ7bh3yO_zA1t9flg-s8m_0J4F2oL4GqdnfdnNLOu0PwaDHZKXXe9euvWl7nAut9Rt67WWc01EOiCCpFusYoDTyL2kd60S.jpg";
+    url = "https://occ-0-8407-2219.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABXy27SOJ7bh3yO_zA1t9flg-s8m_0J4F2oL4GqdnfdnNLOu0PwaDHZKXXe9euvWl7nAut9Rt67WWc01EOiCCpFusYoDTyL2kd60S.jpg";
+    sha256 = "1w218p6i5pi86ckfdh73inwj3rrvk0fp7vkpp2pqjyzjp3h9kv7j";
     meta = {
       description = "Background image ${name} from ${url}";
       license = lib.licenses.free;

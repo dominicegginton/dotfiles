@@ -4,7 +4,6 @@ with config.lib.topology;
 
 {
   config = lib.mkIf (hostname != "residence-installer") {
-    secrets.wireless = lib.mkIf config.networking.wireless.enable "04480e55-ca76-4444-a5cf-b242009fe153";
     networking = {
       hostName = hostname;
       useDHCP = lib.mkDefault true;
@@ -14,35 +13,31 @@ with config.lib.topology;
         trustedInterfaces = [ "tailscale0" ];
         checkReversePath = "loose";
       };
-      wireless = lib.mkIf config.networking.wireless.enable {
+      wireless = {
         fallbackToWPA2 = true;
         userControlled.enable = true;
         userControlled.group = "wheel";
-        secretsFile = "/run/bitwarden-secrets/wireless";
-        networks = {
-          "Home" = {
-            pskRaw = "ext:psk_home";
-            priority = 2;
-          };
-          "Burbage" = {
-            pskRaw = "ext:psk_burbage";
-            priority = 1;
-          };
-          "Dom's Pixel 9" = {
-            pskRaw = "ext:psk_pixel9";
-            priority = 1;
-          };
-          "Ribble" = {
-            pskRaw = "ext:psk_ribble";
-            priority = 0;
+        iwd = {
+          enable = true;
+          settings = {
+            IPv6.Enabled = true;
+            Settings.AutoConnect = true;
+            General.PowerSave = false;
           };
         };
       };
-      networkmanager = lib.mkIf config.networking.networkmanager.enable {
+
+      networkmanager = {
+        enable = true;
         dns = "systemd-resolved";
         unmanaged = [ "wlp108s0" ];
+        wifi = {
+          backend = "iwd";
+          powersave = false;
+        };
       };
     };
+
     topology.self.interfaces = {
       lo = {
         type = "loopback";
@@ -53,9 +48,7 @@ with config.lib.topology;
         type = "wifi";
         addresses = [ hostname ];
         physicalConnections = [
-          (mkConnection "quardon-ap-downstairs" "wlan0")
-          (mkConnection "quardon-ap-upstairs" "wlan0")
-          (mkConnection "ribble-router" "wlan0")
+          (mkConnection "router" "wlan0")
           (mkConnection "pixel-9" "hotspot")
         ];
       };

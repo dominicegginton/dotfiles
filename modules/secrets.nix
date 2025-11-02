@@ -138,7 +138,7 @@ in
         gpg \
           --yes \
           --output $TEMP_DIR/secrets.json \
-          --decrypt ${../../secrets.json}
+          --decrypt ${../secrets.json}
         echo "Decrypted secrets to $TEMP_DIR/secrets.json"
         if [ ! -f $TEMP_DIR/secrets.json ]; then
           gum log --level error "Failed to decrypt secrets file."
@@ -151,25 +151,6 @@ in
         ${secrets-install}
       '';
     };
-    # systemd.services.secrets = {
-    #   wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
-    #   before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
-    #   unitConfig.DefaultDependencies = "no";
-    #   serviceConfig.Type = "oneshot";
-    #   serviceConfig.RemainAfterExit = true;
-    #   script = secrets-install;
-    # };
-    # system.activationScripts = {
-    #   secrets = {
-    #     deps = [ "specialfs" ];
-    #     text = ''
-    #       if [[ -e /run/current-system ]]; then
-    #         ./${lib.getExe secrets-sync}
-    #       fi
-    #     '';
-    #   };
-    #   users.deps = [ "secrets" ];
-    # };
     environment.systemPackages = [ secrets-sync ];
   };
 }
