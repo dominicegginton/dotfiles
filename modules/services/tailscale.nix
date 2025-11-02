@@ -26,7 +26,7 @@ with config.lib.topology;
     topology.self.interfaces.tailscale0 = {
       network = tailnet;
       type = "tailscale";
-      icon = ../../../assets/tailscale.svg;
+      icon = ../../assets/tailscale.svg;
       virtual = true;
       addresses = [
         hostname
