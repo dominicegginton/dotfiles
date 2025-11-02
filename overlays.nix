@@ -151,6 +151,16 @@ rec {
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
+    jetbrains = prev.jetbrains // {
+      webstorm = prev.jetbrains.webstorm.overrideAttrs (oldAttrs: {
+        nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
+        postInstall = (oldAttrs.postInstall or "") + ''
+          wrapProgram $out/bin/webstorm \
+            --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
+            --set NODE_PATH "${final.nodejs}/lib/node_modules";
+        '';
+      });
+    };
     vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     fleet = final.callPackage ./pkgs/fleet.nix { };
     lib = prev.lib // outputs.lib;
