@@ -60,7 +60,7 @@ mkShell rec {
       mkdir -p "$temp/import"
       mkdir -p "$temp/export"
       gcloud config set project $GCP_PROJECT_ID || gum log --level error "Failed to set gcloud project to $GCP_PROJECT_ID."
-      gsutil rsync gs://$SECRET_KEYS_GCS_BUCKET $temp/import || gum log --level error "Failed to sync GPG keys from GCS bucket $SECRET_KEYS_GCS_BUCKET." 
+      gsutil rsync gs://$SECRET_KEYS_GCS_BUCKET $temp/import || gum log --level error "Failed to sync GPG keys from GCS bucket $SECRET_KEYS_GCS_BUCKET."
       for key in $(ls "$temp/import"); do
         gum log --level info "Importing GPG key $key for current user."
         gpg --import "$temp/import/$key" || gum log --level error "Failed to import GPG key $key."
@@ -119,7 +119,7 @@ mkShell rec {
         --recipient ${lib.maintainers.dominicegginton.email} \
         --recipient root@residence \
         --output secrets.json \
-        $TEMP_DIR/secrets.json 
+        $TEMP_DIR/secrets.json
       ${lib.getExe gum} log --level info "Remember to commit and push the updated secrets.json file and switch to the new configuration on all host machines".
     '')
   ];

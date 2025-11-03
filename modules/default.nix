@@ -45,7 +45,7 @@ rec {
     # state version for nixos modules
     stateVersion = config.system.nixos.release;
 
-    # custom distro metadata 
+    # custom distro metadata
     nixos = {
       distroName = lib.mkDefault "Residence";
       distroId = lib.mkDefault "residence";
@@ -66,7 +66,7 @@ rec {
 
   # nix settings
   nix = {
-    # nix pkg 
+    # nix pkg
     package = pkgs.nix;
 
     # automatic garbage collection
@@ -89,8 +89,6 @@ rec {
     # nix settings
     settings = nixConfig // {
       # garbage collection settings
-      min-free = "8G";
-      max-free = "120G";
       min-free-check-interval = 1;
 
       # disable global registry
@@ -101,12 +99,12 @@ rec {
       keep-derivations = true; # keep derivations for faster rebuilds
 
       # performance settings
-      eval-cache = true; # enable caching 
+      eval-cache = true; # enable caching
       narinfo-cache-positive-ttl = 3600; # longer cache for existing narinfos
       narinfo-cache-negative-ttl = 60; # quicker retries on missing narinfo
       fsync-metadata = false; # faster on SSDs
-      connect-timeout = 10; # faster timeouts 
-      max-substitution-jobs = 128; # increased parallel substitutions 
+      connect-timeout = 10; # faster timeouts
+      max-substitution-jobs = 128; # increased parallel substitutions
       http-connections = 128; # increased parallel connections
       cores = 0; # use all available CPU cores
       max-jobs = "auto"; # use all available CPU cores
@@ -156,7 +154,7 @@ rec {
     # enable ssh agent for managing ssh keys
     ssh.startAgent = true;
 
-    # suggest commands when command is not found 
+    # suggest commands when command is not found
     command-not-found.enable = true;
   };
 
@@ -169,7 +167,7 @@ rec {
   # virtualisation settings for machine images
   virtualisation.vmVariant.users = {
 
-    # setup a usergroup for the test user 
+    # setup a usergroup for the test user
     groups.nixosvmtest = { };
 
     # setup the test user
@@ -192,7 +190,7 @@ rec {
   };
 
   services = {
-    openssh.enable = true; # ssh 
+    openssh.enable = true; # ssh
     dbus.enable = true; # system bus
     smartd.enable = true; # disk health monitoring
     thermald.enable = true; # thermal management
