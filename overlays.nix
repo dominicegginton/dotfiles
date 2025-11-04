@@ -10,7 +10,7 @@ rec {
   };
   bleeding = _: prev: {
     bleeding = import inputs.nixpkgs-bleeding
-      { inherit (prev) system hostPlatform config; overlays = [ default ]; }
+      { inherit (prev) system hostPlatform config; overlays = [ default unstable ]; }
     //
     {
       lib = prev.lib // outputs.lib;
