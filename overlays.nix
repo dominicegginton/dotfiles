@@ -63,9 +63,9 @@ rec {
         };
     };
   };
+
+  # default overlay
   default = final: prev: {
-    lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
-    youtube = prev.callPackage ./pkgs/youtube.nix { };
     background = final.callPackage ./pkgs/background.nix { };
     ensure-tailscale-is-connected = final.callPackage ./pkgs/ensure-tailscale-is-connected.nix { };
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };
@@ -73,6 +73,7 @@ rec {
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
     frigate-desktop = final.callPackage ./pkgs/frigate-desktop.nix { };
+    lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
     residence-installer = (outputs.lib.nixosSystem {
       hostname = "residence-installer";
       platform = final.system;
@@ -134,6 +135,7 @@ rec {
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
+    plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
     neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
     residence = final.callPackage ./pkgs/residence { inherit (inputs) ags; inherit (final) system; };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
@@ -142,7 +144,7 @@ rec {
     topology = outputs.topology.${final.system}.config.output;
     twm = (packagesFrom inputs.twm final.system).default;
     twx = final.callPackage ./pkgs/twx.nix { };
-    plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
+    youtube = prev.callPackage ./pkgs/youtube.nix { };
     vscode = prev.vscode.overrideAttrs (oldAttrs: {
       nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''
