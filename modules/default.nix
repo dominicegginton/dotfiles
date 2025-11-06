@@ -146,6 +146,15 @@ rec {
     loader = {
       systemd-boot.enable = true; # enable systemd-boot
       efi.canTouchEfiVariables = true; # allow efi variables modification
+      grub = {
+        enable = true;
+        extraConfig = ''
+          GRUB_CMDLINE_LINUX_DEFAULT="quiet loglevel=2"
+          GRUB_GFXPAYLOAD_LINUX="keep"
+          GRUB_INIT_TUNE="180 440 1 554 1 659 1"
+        '';
+        configurationLimit = 10;
+      };
     };
 
     plymouth = {

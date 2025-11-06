@@ -101,6 +101,6 @@ with pkgs.writers;
           '';
         }
       )
-      config.service.backup;
+      config.services.backup;
   };
 }
