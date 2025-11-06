@@ -45,8 +45,8 @@ rec {
     ./services/tlp.nix
     ./services/unifi.nix
     ./services/zabbix.nix
-    ./virtualisation/virtualisation.nix
     ./virtualisation/docker.nix
+    ./virtualisation/vm-variant.nix
     ./virtualisation/waydroid.nix
     ./backup.nix
     ./console.nix

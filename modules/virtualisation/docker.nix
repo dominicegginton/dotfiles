@@ -4,8 +4,10 @@
   config = lib.mkIf config.virtualisation.docker.enable {
     users.users.dom.extraGroups = [ "docker" ];
 
-    environment.persistence."/persist".directories = [ "/var/lib/docker" ];
-
+    environment = {
+      persistence."/persist".directories = [ "/var/lib/docker" ];
+      systemPackages = with pkgs; lib.mkIf config.virtualisation.docker.enable [ docker ];
+    };
     virtualisation.docker.autoPrune = {
       enable = true;
       flags = [ "--all" ];
