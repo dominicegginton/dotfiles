@@ -39,7 +39,6 @@ rec {
     ./services/printing.nix
     ./services/silverbullet.nix
     ./services/ssh.nix
-    ./services/sssd.nix
     ./services/syslog-ng.nix
     ./services/tailscale.nix
     ./services/timesyncd.nix

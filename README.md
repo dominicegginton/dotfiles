@@ -31,7 +31,7 @@ This workspace follows the following structure:
 ├── .github/workflows # GitHub Actions workflows
 ├── assets            # Static assets
 ├── home              # User HomeManager configurations
-├── hosts             # Host NixOS and NixDarwin configurations
+├── hosts             # Host NixOS configurations
 ├── infrastructure    # Terraform configuration
 ├── modules           # Nix modules
 ├── pkgs              # Package definitions
