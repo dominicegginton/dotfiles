@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, dlib, ... }:
 {
   # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268153
   environment.etc = {
@@ -28,7 +28,7 @@
         report_url=file:@@{LOGDIR}/aide.log
         report_url=stdout
         #report_url=stderr
-        #NOT IMPLEMENTED report_url=mailto:root@foo.com
+        #NOT IMPLEMENTED report_url=mailto:${dlib.maintainers.dominicegginton.email}
         #NOT IMPLEMENTED report_url=syslog:LOG_AUTH
 
         # These are the default rules.
