@@ -26,6 +26,7 @@ rec {
     ./security/pam.nix
     ./security/pwquality.nix
     ./security/sudo.nix
+    ./services/backup.nix
     ./services/calmav.nix
     ./services/cron.nix
     ./services/davfs2.nix
@@ -48,7 +49,6 @@ rec {
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
     ./virtualisation/waydroid.nix
-    ./backup.nix
     ./console.nix
     ./environment.nix
     ./networking.nix

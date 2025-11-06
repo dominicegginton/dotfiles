@@ -4,7 +4,7 @@ with lib;
 with pkgs.writers;
 
 {
-  options.backup = with types;
+  options.services.backup = with types;
 
     let
       backupConfigType = submodule {
@@ -74,7 +74,7 @@ with pkgs.writers;
           };
         }
       )
-      config.backup;
+      config.service.backup;
     systemd.services = mapAttrs
       (
         name: { project, bucket, from, to, mirror, ... }: {
@@ -101,6 +101,6 @@ with pkgs.writers;
           '';
         }
       )
-      config.backup;
+      config.service.backup;
   };
 }
