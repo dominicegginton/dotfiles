@@ -4,6 +4,10 @@ rec {
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
+    ./environment/account.nix
+    ./environment/aide.nix
+    ./environment/login.nix
+    ./environment/packages.nix
     ./display/gnome.nix
     ./display/niri.nix
     ./display/steamos.nix
@@ -11,21 +15,34 @@ rec {
     ./hardware/disks.nix
     ./programs/alacritty.nix
     ./programs/chromium.nix
+    ./programs/dconf.nix
     ./programs/firefox.nix
     ./programs/sherlock-launcher.nix
     ./programs/steam.nix
     ./programs/vscode.nix
     ./programs/zsh.nix
+    ./security/apparmor.nix
+    ./security/audit.nix
+    ./security/pam.nix
+    ./security/pwquality.nix
+    ./security/sudo.nix
     ./services/calmav.nix
+    ./services/cron.nix
     ./services/davfs2.nix
+    ./services/displaymanager.nix
     ./services/flatpak.nix
     ./services/frigate.nix
+    ./services/getty.nix
     ./services/home-assistant.nix
     ./services/mosquitto.nix
     ./services/pipewire.nix
     ./services/printing.nix
     ./services/silverbullet.nix
+    ./services/ssh.nix
+    ./services/sssd.nix
+    ./services/syslog-ng.nix
     ./services/tailscale.nix
+    ./services/timesyncd.nix
     ./services/tlp.nix
     ./services/unifi.nix
     ./services/zabbix.nix
@@ -113,10 +130,13 @@ rec {
       keep-build-log = false; # dont keep build logs
       compress-build-log = true; # compress build logs
 
-      # trusted users for nix commands
-      trusted-users = [
-        "root" # machine root user
-        "@wheel" # admin group
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268154
+      require-sigs = true;
+
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268152
+      allowed-users = [
+        "root"
+        "@wheel"
       ];
     };
   };
@@ -133,6 +153,28 @@ rec {
       enable = true;
       themePackages = [ pkgs.plymouth-theme ]; # boot theme package
       theme = "colorful"; # set boot theme
+    };
+
+    kernelParams = [
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268168
+      "fips=1"
+
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268092
+      "audit=1"
+
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268093
+      "audit_backlog_limit=8192"
+    ];
+
+    kernel.sysctl = {
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268141
+      "net.ipv4.tcp_syncookies" = "1";
+
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268160
+      "kernel.kptr_restrict" = 1;
+
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268161
+      "kernel.randomize_va_space" = 2;
     };
   };
 
@@ -183,7 +225,12 @@ rec {
     # sudo for privilege escalation
     sudo = {
       enable = true;
-      extraConfig = "Defaults lecture=never\nDefaults passwd_timeout=0\nDefaults insults";
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268156
+      wheelNeedsPassword = true;
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268155
+      extraConfig = ''
+        Defaults timestamp_timeout=0
+      '';
     };
     polkit.enable = true; # polkit for privilege escalation
     tpm2.enable = true; # tpm2 support

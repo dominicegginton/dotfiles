@@ -66,6 +66,9 @@ rec {
 
   # default overlay
   default = final: prev: {
+    aide = prev.aide.overrideAttrs (old: {
+      configureFlags = (old.configureFlags or [ ]) ++ [ "--sysconfdir=/etc/aide" ];
+    });
     background = final.callPackage ./pkgs/background.nix { };
     ensure-tailscale-is-connected = final.callPackage ./pkgs/ensure-tailscale-is-connected.nix { };
     ensure-user-is-root = final.callPackage ./pkgs/ensure-user-is-root.nix { };

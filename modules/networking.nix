@@ -9,9 +9,16 @@ with config.lib.topology;
       useDHCP = lib.mkDefault true;
       nftables.enable = lib.mkDefault true;
       firewall = {
+        # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268078
         enable = lib.mkDefault true;
         trustedInterfaces = [ "tailscale0" ];
         checkReversePath = "loose";
+        # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268158
+        # extraCommands = ''
+        #   ip46tables --append INPUT --protocol tcp --dport 22 --match hashlimit --hashlimit-name stig_byte_limit --hashlimit-mode srcip --hashlimit-above 1000000b/second --jump nixos-fw-refuse
+        #   ip46tables --append INPUT --protocol tcp --dport 80 --match hashlimit --hashlimit-name stig_conn_limit --hashlimit-mode srcip --hashlimit-above 1000/minute --jump nixos-fw-refuse
+        #   ip46tables --append INPUT --protocol tcp --dport 443 --match hashlimit --hashlimit-name stig_conn_limit --hashlimit-mode srcip --hashlimit-above 1000/minute --jump nixos-fw-refuse
+        # '';
       };
       wireless = {
         fallbackToWPA2 = true;
@@ -36,6 +43,12 @@ with config.lib.topology;
           powersave = false;
         };
       };
+
+      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268149
+      timeServers = lib.mkDefault [
+        "tick.usnogps.navy.mil"
+        "tock.usnogps.navy.mil"
+      ];
     };
 
     topology.self.interfaces = {
