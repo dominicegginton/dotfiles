@@ -1,4 +1,5 @@
 { lib, ... }:
+
 {
   # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268080
   security.auditd.enable = true;

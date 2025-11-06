@@ -1,4 +1,5 @@
 { ... }:
+
 {
   # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268155
   security.sudo.extraConfig = ''
