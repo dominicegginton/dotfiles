@@ -260,7 +260,6 @@ rec {
     backupFileExtension = "backup";
     sharedModules = [
       inputs.base16.homeManagerModule
-      inputs.ags.homeManagerModules.default
       {
         inherit scheme;
         home.stateVersion = "25.05";
@@ -270,79 +269,6 @@ rec {
           hstr.enable = true;
         };
       }
-      ({ config, osConfig, lib, ... }:
-        {
-          config = lib.mkIf osConfig.programs.alacritty.enable {
-            programs.alacritty = {
-              settings = {
-                window.dynamic_padding = false;
-                window.padding = { x = 0; y = 0; };
-                scrolling.history = 10000;
-                scrolling.multiplier = 3;
-                selection.save_to_clipboard = true;
-                font = {
-                  normal = {
-                    family = "monospace";
-                    style = "Regular";
-                  };
-                  bold = {
-                    family = "monospace";
-                    style = "Bold";
-                  };
-                  italic = {
-                    family = "monospace";
-                    style = "Italic";
-                  };
-                  bold_italic = {
-                    family = "monospace";
-                    style = "Italic";
-                  };
-                  size = 11;
-                };
-                colors = with config.scheme.withHashtag; rec {
-                  primary = { background = base00; foreground = base07; };
-                  cursor = { text = base02; cursor = base07; };
-                  normal = {
-                    inherit red green yellow blue cyan magenta;
-                    black = base00;
-                    white = base07;
-                  };
-                  bright = normal;
-                  dim = normal;
-                };
-              };
-            };
-          };
-        }
-      )
-      ({ osConfig, lib, pkgs, ... }:
-        {
-          config = lib.mkIf osConfig.display.niri.enable {
-            programs.ags = {
-              enable = true;
-              configDir = null;
-              extraPackages = [ pkgs.residence ];
-            };
-            systemd.user.services.residence = {
-              Unit = {
-                ConditionEnvironment = [ "NIRI_SOCKET" ];
-                PartOf = [ "graphical-session.target" ];
-                After = [ "graphical-session.target" ];
-                Wants = [ "graphical-session.target" ];
-              };
-              Install = {
-                WantedBy = [ "graphical-session.target" ];
-              };
-              Service = {
-                Type = "simple";
-                ExecStart = lib.getExe pkgs.residence;
-                Restart = "on-failure";
-                RestartSec = 3;
-              };
-            };
-          };
-        }
-      )
     ];
   };
 }

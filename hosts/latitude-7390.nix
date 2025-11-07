@@ -16,6 +16,8 @@
   boot.kernelModules = [ "kvm-intel" "vhost_vsock" "i2c-dev" "ddcci_backlight" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.ddcci-driver ];
 
+  display.niri.enable = true;
+
   boot.kernel.sysctl = {
     # Set swappiness to only swap if you really have to
     # The sysctl swappiness parameter determines the kernel's preference for pushing anonymous pages or page cache to disk in memory-starved situations.

@@ -65,6 +65,20 @@ with config.scheme.withHashtag;
         ibm-plex
       ];
     };
+
+    # currently fails to start
+    systemd.user.services.niri-shell = {
+      description = "Niri shell (residence)";
+      wantedBy = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      unitConfig.ConditionEnvironment = [ "NIRI_SOCKET" ];
+      serviceConfig = {
+        Type = "simple";
+        ExecStart = lib.getExe pkgs.residence;
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+    };
     environment = {
       variables = {
         NIXOS_OZONE_WL = "1";
@@ -93,10 +107,8 @@ with config.scheme.withHashtag;
         evince # Document Viewer
         gnome-font-viewer # Font Viewer
         gnome-calendar # Calendar
-        gnome-Logs # System Logs Viewer
+        gnome-logs # System Logs Viewer
         gnome-contacts # Contacts Manager
-
-        # bleeding.karren.lazy-desktop
       ];
       etc."niri/config.kdl".text = ''
         prefer-no-csd
@@ -226,7 +238,7 @@ with config.scheme.withHashtag;
         }
         window-rule {
           match is-floating=true
-          geometry-corner-radius 4 4 4 4 
+          geometry-corner-radius 4 4 4 4
           shadow {
             on
             softness 40
