@@ -74,7 +74,7 @@ with pkgs.writers;
           };
         }
       )
-      config.service.backup;
+      config.services.backup;
     systemd.services = mapAttrs
       (
         name: { project, bucket, from, to, mirror, ... }: {

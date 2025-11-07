@@ -6,8 +6,9 @@
 
     environment = {
       persistence."/persist".directories = [ "/var/lib/docker" ];
-      systemPackages = with pkgs; lib.mkIf config.virtualisation.docker.enable [ docker ];
+      systemPackages = with pkgs; [ docker ];
     };
+
     virtualisation.docker.autoPrune = {
       enable = true;
       flags = [ "--all" ];
