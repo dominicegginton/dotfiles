@@ -214,23 +214,7 @@ rec {
     amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
-  # virtualisation settings for machine images
-  virtualisation.vmVariant.users = {
-
-    # setup a usergroup for the test user
-    groups.nixosvmtest = { };
-
-    # setup the test user
-    users.nix = {
-      description = "NixOS VM Test User";
-      isNormalUser = true;
-      initialPassword = "";
-      group = "nixosvmtest";
-    };
-  };
-
   security = {
-    # sudo for privilege escalation
     sudo = {
       enable = true;
       # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268156

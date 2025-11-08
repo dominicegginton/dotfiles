@@ -35,9 +35,10 @@ in
     };
   };
 
-  config.services = lib.mkIf config.services.tlp.enable {
+  
+  config.services = lib.mkIf (config.services.tlp.enable && (config.display.gnome.enable == false)) {
     power-profiles-daemon.enable = lib.mkForce false;
-    tlp.settings = lib.mkIf (config.services.xserver.desktopManager.gnome.enable == false) {
+    tlp.settings = {
       CPU_BOOST_ON_AC = 1;
       CPU_BOOST_ON_BAT = 1;
       CPU_HWP_DYN_BOOST_ON_AC = 1;

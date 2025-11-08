@@ -6,11 +6,10 @@
   config = lib.mkIf config.display.gnome.enable {
     hardware.graphics.enable = true;
     networking.networkmanager.enable = true;
-    programs.firefox.enable = true;
     services = {
       printing.enable = true;
       pipewire.enable = true;
-      tlp.batteryThreshold.enable = lib.mkDefault false;
+      power-profiles-daemon.enable = false;
       udev.packages = [ pkgs.gnome-settings-daemon ];
       xserver = {
         enable = true;

@@ -92,52 +92,41 @@
     # Enhances security by preventing kernel replacement.
     "kernel.kexec_load_disabled" = 1;
 
-    # Increase the maximum connections
-    # The upper limit on how many connections the kernel will accept (default 4096 since kernel version 5.6):
-    "net.core.somaxconn" = 8192;
-
-    # Enable SysRQ for rebooting the machine properly if it freezes.
-    # Useful for emergency recovery.
+    # enable SysRQ for rebooting the machine properly if it freezes.
+    # useful for emergency recovery.
     "kernel.sysrq" = 1;
 
-    # Allows a large number of processes and threads to be managed
-    # Sets the maximum number of process IDs that can be allocated.
+    # allows a large number of processes and threads to be managed.
+    # sets the maximum number of process IDs that can be allocated.
     "kernel.pid_max" = 262144;
 
-    # Help prevent packet loss during high traffic periods.
-    # Defines the maximum number of packets that can be queued on the network device input queue.
+    # increase the maximum connections
+    # ihe upper limit on how many connections the kernel will accept (default 4096 since kernel version 5.6):
+    "net.core.somaxconn" = 8192;
+    # help prevent packet loss during high traffic periods.
+    # defines the maximum number of packets that can be queued on the network device input queue.
     "net.core.netdev_max_backlog" = 65536;
-
-    # Default socket receive buffer size, improve network performance & applications that use sockets. Adjusted for 8GB RAM.
+    # default socket receive buffer size, improve network performance & applications that use sockets. adjusted for 8GB RAM.
     "net.core.rmem_default" = 1048576; # 1 MB
-
-    # Maximum socket receive buffer size, determine the amount of data that can be buffered in memory for network operations. Adjusted for 8GB RAM.
+    # maximum socket receive buffer size, determine the amount of data that can be buffered in memory for network operations - adjusted for 8GB RAM.
     "net.core.rmem_max" = 67108864; # 64 MB
-
-    # Default socket send buffer size, improve network performance & applications that use sockets. Adjusted for 8GB RAM.
+    # default socket send buffer size, improve network performance & applications that use sockets. Adjusted for 8GB RAM.
     "net.core.wmem_default" = 1048576; # 1 MB
-
-    # Maximum socket send buffer size, determine the amount of data that can be buffered in memory for network operations. Adjusted for 8GB RAM.
+    # maximum socket send buffer size - ajusted for 8GB RAM.
     "net.core.wmem_max" = 67108864; # 64 MB
-
     # reduce the chances of fragmentation
     "net.ipv4.ipfrag_high_threshold" = 5242880; # 5 MB
-
     # allow tcp window size to grow beyond its default maximum value.
     "net.ipv4.tcp_window_scaling" = 1;
-
     # define the memory reserved for TCP read operations.
     "net.ipv4.tcp_rmem" = "4096 87380 67108864";
-
     # define the memory reserved for tcp write operations
     "net.ipv4.tcp_wmem" = "4096 65536 67108864";
-
     # optimizes for low latency and high throughput
     "net.ipv4.tcp_congestion_control" = "bbr";
 
     # increases the frequency at which the kernel's scheduler runs, which can improve system responsiveness.
     "kernel.hz" = 1000;
-
     # split lock mitigate can slow down performance in some applications.
     "kernel.split_lock_mitigate" = 0;
   };
