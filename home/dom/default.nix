@@ -253,7 +253,7 @@ in
     ] ++ lib.optionals gui [
       # fleet
       # jetbrains.webstorm
-      unstable.teams-for-linux
+      teams-for-linux
       chromium
       youtube
       silverbullet-desktop

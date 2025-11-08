@@ -35,7 +35,7 @@ in
     };
   };
 
-  
+
   config.services = lib.mkIf (config.services.tlp.enable && (config.display.gnome.enable == false)) {
     power-profiles-daemon.enable = lib.mkForce false;
     tlp.settings = {

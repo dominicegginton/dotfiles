@@ -58,7 +58,6 @@
         dnsutils # DNS lookup tools
         git # Version control system
         git-lfs # Git Large File Storage
-        pinentry # PIN entry program for GnuPG
         pinentry-curses # Curses-based PIN entry program
         gnupg # GNU Privacy Guard
       ];

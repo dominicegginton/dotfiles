@@ -3,69 +3,55 @@
 with outputs.lib;
 
 rec {
-  unstable = _: prev: {
-    unstable = import inputs.nixpkgs-unstable { inherit (prev) system hostPlatform config; overlays = [ default ]; }
-      //
-      { lib = prev.lib // outputs.lib; };
-  };
-  bleeding = _: prev: {
-    bleeding = import inputs.nixpkgs-bleeding
-      { inherit (prev) system hostPlatform config; overlays = [ default unstable ]; }
-    //
-    {
-      lib = prev.lib // outputs.lib;
-      karren =
-        let
-          alacrittyConiguration = (prev.formats.toml { }).generate "alacritty-config.toml" {
-            colors = {
-              primary = {
-                background = "#6c71c1";
-                foreground = "#FDF6E3";
-              };
-            };
-          };
-          karrenScript = runtimeScript: prev.writeShellScriptBin "karren" ''
-            set -efu -o pipefail
-            if [ $(${prev.toybox}/bin/pgrep -c karren) -gt 1 ]; then
-              ${prev.libnotify}/bin/notify-send --urgency=critical --app "Karren" "Karren" "Another instance of is already running." "Please close all existing Karren windows before starting a new one."
-              exit 1;
-            fi
-
-            ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConiguration}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
-          '';
-        in
-        {
-          system-manager = karrenScript ''
-            selection=$(${prev.uutils-coreutils-noprefix}/bin/printf "suspend\nreboot\nexit\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "> ")
-            if [ -z "$selection" ]; then
-              exit 1;
-            fi
-            if [ "$selection" = "shutdown" ]; then
-              ${prev.lib.getExe prev.gum} confirm "Shutdown?" && ${prev.systemd}/bin/systemctl poweroff
-            elif [ "$selection" = "reboot" ]; then
-              ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
-            elif [ "$selection" = "exit" ]; then
-              ${prev.lib.getExe prev.gum} confirm "Exit Niri?" && ${prev.niri}/bin/niri msg action quit
-            elif [ "$selection" = "suspend" ]; then
-              ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend
-            fi
-            ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
-          '';
-          clipboard-history = karrenScript ''
-            selection=$(${prev.cliphist}/bin/cliphist list | ${prev.fzf}/bin/fzf --no-sort --prompt "Select clipboard entry: ")
-            if [ -z "$selection" ]; then
-              exit 1;
-            fi
-            echo "$selection" | ${prev.cliphist}/bin/cliphist decode | ${prev.wl-clipboard}/bin/wl-copy
-            ${prev.libnotify}/bin/notify-send --app "Karren" "" "Copied clipboard entry to clipboard."
-            sleep 0.1
-          '';
-        };
-    };
-  };
-
   # default overlay
   default = final: prev: {
+    karren =
+      let
+        alacrittyConiguration = (prev.formats.toml { }).generate "alacritty-config.toml" {
+          colors = {
+            primary = {
+              background = "#6c71c1";
+              foreground = "#FDF6E3";
+            };
+          };
+        };
+        karrenScript = runtimeScript: prev.writeShellScriptBin "karren" ''
+          set -efu -o pipefail
+          if [ $(${prev.toybox}/bin/pgrep -c karren) -gt 1 ]; then
+            ${prev.libnotify}/bin/notify-send --urgency=critical --app "Karren" "Karren" "Another instance of is already running." "Please close all existing Karren windows before starting a new one."
+            exit 1;
+          fi
+
+          ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConiguration}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
+        '';
+      in
+      {
+        system-manager = karrenScript ''
+          selection=$(${prev.uutils-coreutils-noprefix}/bin/printf "suspend\nreboot\nexit\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "> ")
+          if [ -z "$selection" ]; then
+            exit 1;
+          fi
+          if [ "$selection" = "shutdown" ]; then
+            ${prev.lib.getExe prev.gum} confirm "Shutdown?" && ${prev.systemd}/bin/systemctl poweroff
+          elif [ "$selection" = "reboot" ]; then
+            ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
+          elif [ "$selection" = "exit" ]; then
+            ${prev.lib.getExe prev.gum} confirm "Exit Niri?" && ${prev.niri}/bin/niri msg action quit
+          elif [ "$selection" = "suspend" ]; then
+            ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend
+          fi
+          ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
+        '';
+        clipboard-history = karrenScript ''
+          selection=$(${prev.cliphist}/bin/cliphist list | ${prev.fzf}/bin/fzf --no-sort --prompt "Select clipboard entry: ")
+          if [ -z "$selection" ]; then
+            exit 1;
+          fi
+          echo "$selection" | ${prev.cliphist}/bin/cliphist decode | ${prev.wl-clipboard}/bin/wl-copy
+          ${prev.libnotify}/bin/notify-send --app "Karren" "" "Copied clipboard entry to clipboard."
+          sleep 0.1
+        '';
+      };
     aide = prev.aide.overrideAttrs (old: {
       configureFlags = (old.configureFlags or [ ]) ++ [ "--sysconfdir=/etc/aide" ];
     });

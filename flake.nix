@@ -1,8 +1,6 @@
 rec {
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-bleeding.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixos/nixos-hardware";
     nixos-images.url = "github:nix-community/nixos-images";
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
@@ -10,7 +8,7 @@ rec {
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
+    home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
@@ -89,8 +87,6 @@ rec {
             };
             overlays = with self.inputs; [
               overlays.default
-              overlays.unstable
-              overlays.bleeding
               niri.overlays.default
               neovim-nightly.overlays.default
               flip.overlays.default
@@ -102,11 +98,10 @@ rec {
         in
 
         {
-          formatter = pkgs.unstable.nixpkgs-fmt;
+          formatter = pkgs.nixpkgs-fmt;
           legacyPackages = pkgs;
           buildAndCachePackages = {
-            inherit (pkgs) residence niri neovim bws twm tailscale background;
-            inherit (pkgs.bleeding) sherlock-launcher;
+            inherit (pkgs) residence niri neovim bws twm tailscale background sherlock-launcher;
           };
           devShells = {
             default = pkgs.callPackage ./shell.nix { };

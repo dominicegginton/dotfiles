@@ -4,7 +4,7 @@
   options.programs.sherlock-launcher.enable = lib.mkEnableOption "Sherlock Launcher";
 
   config.environment = lib.mkIf config.programs.sherlock-launcher.enable {
-    systemPackages = [ pkgs.bleeding.sherlock-launcher ];
+    systemPackages = [ pkgs.sherlock-launcher ];
     etc = {
       "sherlock-launcher/config.toml".text = ''
         [default_apps]

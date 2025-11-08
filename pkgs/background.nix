@@ -31,7 +31,7 @@ let
         '';
         meta = with lib; {
           inherit (src.meta) license platforms;
-          description = "Darkened version of ${backgroundImage}";
+          description = "Darkened version of ${src.name} for use as a dark background";
           maintainers = with maintainers; [ dominicegginton ];
         };
       };

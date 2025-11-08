@@ -19,7 +19,6 @@ rec {
     ./programs/firefox.nix
     ./programs/sherlock-launcher.nix
     ./programs/steam.nix
-    ./programs/vscode.nix
     ./programs/zsh.nix
     ./security/apparmor.nix
     ./security/audit.nix
@@ -196,13 +195,10 @@ rec {
 
   programs = {
     # enable gpg agent for managing gpg keys
-    gnupg.agent = {
-      enable = true;
-      pinentryPackage = pkgs.pinentry; # use default pinentry
-    };
+    gnupg.agent.enable = true;
 
     # enable ssh agent for managing ssh keys
-    ssh.startAgent = true;
+    ssh.startAgent = lib.mkIf (config.services.gnome.gcr-ssh-agent.enable == false) true;
 
     # suggest commands when command is not found
     command-not-found.enable = true;
