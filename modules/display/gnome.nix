@@ -11,11 +11,8 @@
       pipewire.enable = true;
       power-profiles-daemon.enable = false;
       udev.packages = [ pkgs.gnome-settings-daemon ];
-      xserver = {
-        enable = true;
-        displayManager.gdm.enable = true;
-        desktopManager.gnome.enable = true;
-      };
+      displayManager.gdm.enable = true;
+      desktopManager.gnome.enable = true;
       gnome = {
         core-shell.enable = lib.mkDefault true;
         core-apps.enable = lib.mkDefault true;

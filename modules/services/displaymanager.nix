@@ -4,5 +4,5 @@
   services.displayManager.autoLogin.user = null;
 
   # set the banner to be the same as the getty greeting 
-  services.xserver.displayManager.gdm.banner = config.services.getty.greetingLine;
+  services.displayManager.gdm.banner = config.services.getty.greetingLine;
 }
