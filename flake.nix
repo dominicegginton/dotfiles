@@ -97,7 +97,7 @@ rec {
           formatter = pkgs.nixpkgs-fmt;
           legacyPackages = pkgs;
           buildAndCachePackages = {
-            inherit (pkgs) residence niri bws background sherlock-launcher;
+            inherit (pkgs) niri bws background sherlock-launcher;
           };
           devShells = {
             default = pkgs.callPackage ./shell.nix { };
