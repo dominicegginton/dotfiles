@@ -40,11 +40,22 @@ with lib;
       };
     };
 
-    ## TODO: implement setup logic
-    system.userActivationScripts = lib.mapAttrs
-      (username: userConfig: ''
-        echo "Setting up home directory for user: ${username}"
-      '')
+    systemd.services = lib.mapAttrs
+      (username: userConfig:
+        let
+          script = pkgs.writeShellScriptBin "${username}-setup-home" ''
+            echo "Setting up home directory for user: ${username}"
+          '';
+        in
+        {
+          description = "Setup home files for user ${username}";
+          after = [ "network.target" ];
+          wantedBy = [ "multi-user.target" ];
+          serviceConfig = {
+            Type = "oneshot";
+            ExecStart = "${script}/bin/${username}-setup-home";
+          };
+        })
       config.users.home;
   };
 }
