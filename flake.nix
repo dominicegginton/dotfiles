@@ -8,7 +8,7 @@ rec {
     impermanence.url = "github:nix-community/impermanence";
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
-    home-manager.url = "github:nix-community/home-manager";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nix-topology.url = "github:oddlama/nix-topology";
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
@@ -23,8 +23,6 @@ rec {
     niri.inputs.nixpkgs.follows = "nixpkgs";
     neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
     neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
-    twm.url = "github:vinnymeller/twm";
-    twm.inputs.nixpkgs.follows = "nixpkgs";
     todo.url = "github:dominicegginton/todo";
     todo.inputs.nixpkgs.follows = "nixpkgs";
     flip.url = "github:dominicegginton/flip";
@@ -88,9 +86,9 @@ rec {
             overlays = with self.inputs; [
               overlays.default
               niri.overlays.default
-              neovim-nightly.overlays.default
               flip.overlays.default
               roll.overlays.default
+              neovim-nightly.overlays.default
               nix-topology.overlays.default
               nix-topology.overlays.topology
             ];
@@ -101,7 +99,7 @@ rec {
           formatter = pkgs.nixpkgs-fmt;
           legacyPackages = pkgs;
           buildAndCachePackages = {
-            inherit (pkgs) residence niri neovim bws twm tailscale background sherlock-launcher;
+            inherit (pkgs) residence niri bws background sherlock-launcher;
           };
           devShells = {
             default = pkgs.callPackage ./shell.nix { };

@@ -125,13 +125,11 @@ rec {
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
-    neovim = (packagesFrom inputs.neovim-nightly final.system).neovim;
     residence = final.callPackage ./pkgs/residence { inherit (inputs) ags; inherit (final) system; };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
     todo = (packagesFrom inputs.todo final.system).default;
     topology = outputs.topology.${final.system}.config.output;
-    twm = (packagesFrom inputs.twm final.system).default;
     twx = final.callPackage ./pkgs/twx.nix { };
     youtube = prev.callPackage ./pkgs/youtube.nix { };
     vscode = prev.vscode.overrideAttrs (oldAttrs: {

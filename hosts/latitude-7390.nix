@@ -135,7 +135,7 @@
   hardware.logitech.wireless.enableGraphical = true;
   hardware.bluetooth.enable = true;
   hardware.intel-gpu-tools.enable = true;
-  services.logind.lidSwitch = "suspend";
+  services.logind.settings.Login.HandleLidSwitch = "suspend";
   services.upower.enable = true;
   services.tlp.enable = true;
   services.tlp.batteryThreshold.enable = true;
