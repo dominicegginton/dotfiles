@@ -3,12 +3,6 @@
 with lib;
 
 {
-  options.users.files = mkOption {
-    type = types.attrsOf (types.attrsOf (types.unionOf [ types.str types.path ]));
-    default = { };
-    description = "Files to be added to user home directories.";
-  };
-
   config = mkIf (hostname != "residence-installer") {
     secrets.dom = mkIf config.users.users.dom.enable "be2b6a7a-7811-4711-86f0-b24200a41bbd";
 
@@ -49,15 +43,12 @@ with lib;
       };
     };
 
+    # TODO: refactor to remove
     home-manager.users = {
       dom = mkIf config.users.users.dom.enable ../home/dom;
     };
 
-    users.files = {
-      dom."welcome.txt".text = "Welcome to your new system, dom!";
-    };
-
-
-    ## systemd service for each user to set up their files 
+    # TODO: test file in home directory
+    users.home.dom.files."welcome.txt" = "Weclome to your Residence system, dom!";
   };
 }

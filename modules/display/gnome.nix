@@ -18,6 +18,7 @@
         core-apps.enable = lib.mkDefault true;
       };
     };
+    programs.firefox.enable = true;
     environment = {
       gnome.excludePackages = with pkgs; [
         gnome-tour

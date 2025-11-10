@@ -6,6 +6,7 @@ rec {
     "${modulesPath}/profiles/qemu-guest.nix"
     ./environment/account.nix
     ./environment/aide.nix
+    ./environment/issue.nix
     ./environment/login.nix
     ./environment/packages.nix
     ./display/gnome.nix
@@ -13,6 +14,7 @@ rec {
     ./display/steamos.nix
     ./hardware/bluetooth.nix
     ./hardware/disks.nix
+    ./home/files.nix
     ./programs/alacritty.nix
     ./programs/chromium.nix
     ./programs/dconf.nix
@@ -103,6 +105,14 @@ rec {
 
     # nix settings
     settings = nixConfig // {
+      experimental-features = nixConfig.experimental-features ++ [
+        "auto-allocate-uids"
+        "cgroups"
+        "fetch-closure"
+        "parse-toml-timestamps"
+        "recursive-nix"
+        "pipe-operators"
+      ];
       # garbage collection settings
       min-free-check-interval = 1;
 

@@ -35,18 +35,7 @@ rec {
   };
 
   nixConfig = {
-    experimental-features = [
-      "configurable-impure-env"
-      "nix-command"
-      "flakes"
-      "pipe-operators"
-    ];
-    fallback = true;
-    warn-dirty = true;
-    keep-going = true;
-    keep-outputs = true;
-    keep-derivations = true;
-    auto-optimise-store = true;
+    experimental-features = [ "flakes" "nix-command" ];
     builders-use-substitutes = true;
     substituters = [
       "https://cache.nixos.org"
@@ -61,6 +50,15 @@ rec {
   outputs = { self, nixpkgs, nix-github-actions, ... }:
 
     let
+      # inherit (nixpkgs) lib;
+
+      forAllSystems = nixpkgs.lib.forAllSystems;
+
+      nixpkgsFor = forAllSystems (system: import nixpkgs {
+        inherit system;
+        config = nixConfig;
+      });
+
       lib = import ./lib.nix { inherit (self) inputs outputs; inherit nixConfig; };
       overlays = import ./overlays.nix { inherit (self) inputs outputs; };
       templates = import ./templates { };

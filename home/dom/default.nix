@@ -157,6 +157,7 @@ in
             };
           })
           ms-azuretools.vscode-docker
+          docker.docker
           bbenoist.nix
           sumneko.lua
           ms-python.python
@@ -228,10 +229,10 @@ in
         nodePackages.typescript
         terraform-lsp
         lua-language-server
+        # docker-language-server
         nodePackages.vim-language-server
         nodePackages.bash-language-server
         nodePackages.yaml-language-server
-        nodePackages.dockerfile-language-server-nodejs
         nodePackages.typescript-language-server
         nodePackages.vscode-langservers-extracted
         prettierd
@@ -251,8 +252,6 @@ in
       twm
       twx
     ] ++ lib.optionals gui [
-      # fleet
-      # jetbrains.webstorm
       teams-for-linux
       chromium
       youtube
