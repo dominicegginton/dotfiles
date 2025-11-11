@@ -96,9 +96,6 @@ rec {
         {
           formatter = pkgs.nixpkgs-fmt;
           legacyPackages = pkgs;
-          buildAndCachePackages = {
-            inherit (pkgs) niri bws background sherlock-launcher;
-          };
           devShells = {
             default = pkgs.callPackage ./shell.nix { };
             nodejs = pkgs.callPackage ./shells/nodejs.nix { };
@@ -126,10 +123,7 @@ rec {
         };
       };
       githubActions = mkGithubMatrix {
-        checks =
-          nixpkgs.lib.attrsets.recursiveUpdate
-            (getAttrs (attrNames githubPlatforms) self.devShells)
-            (getAttrs [ "x86_64-linux" ] self.buildAndCachePackages);
+        checks = getAttrs (attrNames githubPlatforms) self.devShells;
       };
     };
 }
