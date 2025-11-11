@@ -91,11 +91,11 @@ let
 in
 
 mkBackground {
-  name = "AAAABXy27SOJ7bh3yO_zA1t9flg-s8m_0J4F2oL4GqdnfdnNLOu0PwaDHZKXXe9euvWl7nAut9Rt67WWc01EOiCCpFusYoDTyL2kd60S.jpg";
+  name = "a_painting_of_people_in_traditional_clothing.jpg";
   src = fetchurl rec {
-    name = "AAAABXy27SOJ7bh3yO_zA1t9flg-s8m_0J4F2oL4GqdnfdnNLOu0PwaDHZKXXe9euvWl7nAut9Rt67WWc01EOiCCpFusYoDTyL2kd60S.jpg";
-    url = "https://occ-0-8407-2219.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABXy27SOJ7bh3yO_zA1t9flg-s8m_0J4F2oL4GqdnfdnNLOu0PwaDHZKXXe9euvWl7nAut9Rt67WWc01EOiCCpFusYoDTyL2kd60S.jpg";
-    sha256 = "1w218p6i5pi86ckfdh73inwj3rrvk0fp7vkpp2pqjyzjp3h9kv7j";
+    name = "a_painting_of_people_in_traditional_clothing.jpg";
+    url = "https://github.com/dharmx/walls/blob/main/painting/a_painting_of_people_in_traditional_clothing.jpg?raw=true";
+    sha256 = "01xrsiyrdpmgh8xjmhn0nzdwvw3s2q4h0rr9a64ks0nzmxhv9ad1";
     meta = {
       description = "Background image ${name} from ${url}";
       license = lib.licenses.free;
