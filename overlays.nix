@@ -68,56 +68,84 @@ rec {
       platform = final.system;
       extraModules = [
         (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
-        ({ pkgs, lib, modulesPath, config, ... }: {
-          roles = [ "installer" ];
-          image.baseName = lib.mkDefault "residence-installer";
-          console.earlySetup = true;
-          services = {
-            openssh = {
-              enable = true;
-              settings.PermitRootLogin = "yes";
-            };
-            getty.autologinUser = lib.mkForce "root";
-          };
-          programs.bash.interactiveShellInit = ''
-            if [[ "$(tty)" =~ /dev/(tty1|hvc0|ttyS0)$ ]]; then
-              systemctl restart systemd-vconsole-setup.service
-              watch --no-title --color ${network-status}/bin/network-status
-            fi
-          '';
-          systemd = {
-            services.log-network-status = {
-              wantedBy = [ "multi-user.target" ];
-              restartIfChanged = false;
-              serviceConfig = {
-                Type = "oneshot";
-                StandardOutput = "journal+console";
-                ExecStart = [
-                  "-${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online"
-                  "${pkgs.iproute2}/bin/ip -c addr"
-                  "${pkgs.iproute2}/bin/ip -c -6 route"
-                  "${pkgs.iproute2}/bin/ip -c -4 route"
-                  "${pkgs.systemd}/bin/networkctl status"
-                ];
+        ({ pkgs, lib, modulesPath, config, ... }:
+          let
+            flakeOutPaths =
+              let
+                collector =
+                  parent:
+                  map
+                    (
+                      child:
+                      [ child.outPath ] ++ (if child ? inputs && child.inputs != { } then (collector child) else [ ])
+                    )
+                    (lib.attrValues parent.inputs);
+              in
+              lib.unique (lib.flatten (collector self));
+
+            dependencies = [
+              self.nixosConfigurations.latitude-7390.config.system.build.toplevel
+              self.nixosConfigurations.latitude-7390.config.system.build.diskoScript
+              self.nixosConfigurations.latitude-7390.config.system.build.diskoScript.drvPath
+              self.nixosConfigurations.latitude-7390.pkgs.stdenv.drvPath
+              self.nixosConfigurations.latitude-7390.pkgs.perlPackages.ConfigIniFiles
+              self.nixosConfigurations.latitude-7390.pkgs.perlPackages.FileSlurp
+              (self.nixosConfigurations.latitude-7390.pkgs.closureInfo { rootPaths = [ ]; }).drvPath
+            ] ++ flakeOutPaths;
+
+            closureInfo = pkgs.closureInfo { rootPaths = dependencies; };
+          in
+
+          {
+            roles = [ "installer" ];
+            image.baseName = lib.mkDefault "residence-installer";
+            console.earlySetup = true;
+            services = {
+              openssh = {
+                enable = true;
+                settings.PermitRootLogin = "yes";
               };
+              getty.autologinUser = lib.mkForce "root";
             };
-            tmpfiles.rules = [ "d /var/shared 0777 root root - -" ];
-          };
-          system.activationScripts.root-password = ''
-            mkdir -p /var/shared
-            ${pkgs.xkcdpass}/bin/xkcdpass --numwords 3 --delimiter - --count 1 > /var/shared/root-password
-            echo "root:$(cat /var/shared/root-password)" | chpasswd
-          '';
-          environment.systemPackages = with pkgs; [
-            (writeShellScriptBin "install" ''
-              set -eux
-              DISKS=$(${pkgs.lsblk}/bin/lsblk -dn -o NAME,TYPE | ${pkgs.gnugrep}/bin/grep 'disk')
-              DISK_NAMES=$(echo "$DISKS" | ${pkgs.coreutils}/bin/awk '{print $1}')
-              DISK=$(${pkgs.gum}/bin/gum choose $DISK_NAMES --header="Select the target disk for NixOS installation:")
-              exec ${pkgs.disko}/bin/disko-install --flake "${self}#your-machine" --disk main /dev/$DISK --write-efi-boot-entries
-            '')
-          ];
-        })
+            programs.bash.interactiveShellInit = ''
+              if [[ "$(tty)" =~ /dev/(tty1|hvc0|ttyS0)$ ]]; then
+                systemctl restart systemd-vconsole-setup.service
+                watch --no-title --color ${network-status}/bin/network-status
+              fi
+            '';
+            systemd = {
+              services.log-network-status = {
+                wantedBy = [ "multi-user.target" ];
+                restartIfChanged = false;
+                serviceConfig = {
+                  Type = "oneshot";
+                  StandardOutput = "journal+console";
+                  ExecStart = [
+                    "-${pkgs.systemd}/lib/systemd/systemd-networkd-wait-online"
+                    "${pkgs.iproute2}/bin/ip -c addr"
+                    "${pkgs.iproute2}/bin/ip -c -6 route"
+                    "${pkgs.iproute2}/bin/ip -c -4 route"
+                    "${pkgs.systemd}/bin/networkctl status"
+                  ];
+                };
+              };
+              tmpfiles.rules = [ "d /var/shared 0777 root root - -" ];
+            };
+            system.activationScripts.root-password = ''
+              mkdir -p /var/shared
+              ${pkgs.xkcdpass}/bin/xkcdpass --numwords 3 --delimiter - --count 1 > /var/shared/root-password
+              echo "root:$(cat /var/shared/root-password)" | chpasswd
+            '';
+            environment.systemPackages = with pkgs; [
+              (writeShellScriptBin "install" ''
+                set -eux
+                DISKS=$(${pkgs.lsblk}/bin/lsblk -dn -o NAME,TYPE | ${pkgs.gnugrep}/bin/grep 'disk')
+                DISK_NAMES=$(echo "$DISKS" | ${pkgs.coreutils}/bin/awk '{print $1}')
+                DISK=$(${pkgs.gum}/bin/gum choose $DISK_NAMES --header="Select the target disk for NixOS installation:")
+                exec ${pkgs.disko}/bin/disko-install --flake "${self}#runtime" --disk main /dev/$DISK --write-efi-boot-entries
+              '')
+            ];
+          })
       ];
     });
     residence-iso = final.residence-installer.config.system.build.isoImage;
