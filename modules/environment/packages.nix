@@ -15,21 +15,22 @@
     (lib.hiPrio uutils-findutils) # Use uutils-findutils
     (lib.hiPrio uutils-diffutils) # Use uutils-diffutils
     killall # Kill processes by name
-    hwinfo # Hardware information tool 
+    hwinfo # Hardware information tool
     usbutils # USB device information
     nvme-cli # NVMe device management
     smartmontools # Disk health monitoring
     twm # Twmux window manager
-    twx # Twmux server exterminator 
+    twx # Twmux server exterminator
     neovim # Editor
     fzf # Fuzzy finder
     ripgrep # Fast text search tool
     ripgrep-all # Ripgrep with additional file support
-    less # Pager 
+    less # Pager
     tree # Directory tree viewer
+    sysz # Fzf ui for systemd
     dust # Disk usage analyzer
     fd # Fast file finder
-    file # File type identification 
+    file # File type identification
     trashy # Command-line trash utility
     dua # Disk usage analyzer
     gum # Command-line UI tooling
