@@ -5,7 +5,25 @@
 
   config = lib.mkIf config.programs.alacritty.enable {
     environment = {
-      systemPackages = [ pkgs.alacritty ];
+      systemPackages = [
+        pkgs.alacritty
+
+        ## this is just an example of how to add a custom config file
+        ## that will be linked into the home directory 
+        (pkgs.stdenv.mkDerivation {
+          name = "alacritty-config";
+          dontBuild = true;
+          installPhase =
+            let
+              config = pkgs.writeText "hello-world.txt" ''
+                Hello, Alacritty!
+              '';
+            in
+            ''
+              ln -s ${config} /home/dom/hello-world.txt
+            '';
+        })
+      ];
       etc."alacritty.toml".text = ''
         window:
           dynamic_padding: false
