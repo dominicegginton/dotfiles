@@ -30,6 +30,8 @@
       systemPackages = with pkgs; with gnomeExtensions; [
         background
         resources
+        gnome-firmware
+      ] ++ [
         status-icons
         pano
         night-theme-switcher
