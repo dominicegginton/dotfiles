@@ -32,7 +32,6 @@
         resources
         gnome-firmware
         dconf-editor
-        blackbox-terminal
         fragments
       ] ++ [
         status-icons

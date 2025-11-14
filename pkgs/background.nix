@@ -1,45 +1,29 @@
-{ lib, fetchurl, stdenv, imagemagick, writeText, ... }:
+{ lib
+, fetchurl
+, stdenv
+, imagemagick
+, writeText
+, runCommand
+, ...
+}:
 
 let
+  darken = src: runCommand "darkened-${src}" { nativeBuildInputs = [ imagemagick ]; } ''
+    convert ${src} -fill black -colorize 70% -strip $out
+  '';
 
-  mkBackground =
+  mkGnomeBackground =
     { src
+    , srcDark ? (darken src)
     , name ? src.name
+    , primaryColor ? "#333555"
+    , secondaryColor ? "#555577"
     , description ? src.meta.description
     , license ? src.meta.license
     , ...
     }:
 
     let
-
-      backgroundImageDark = stdenv.mkDerivation {
-        inherit src;
-        name = "${name}-dark";
-        preferLocalBuild = true;
-        dontUnpack = true;
-        buildInputs = [ imagemagick ];
-        buildPhase = ''
-          runHook preBuild
-
-          convert $src -fill black -colorize 70% -strip tmp.jpg
-
-          runHook postBuild
-        '';
-        installPhase = ''
-          runHook preInstall
-
-          mkdir -p $out
-          mv tmp.jpg $out/$(basename ${src}).jpg
-
-          runHook postInstall
-        '';
-        meta = with lib; {
-          inherit (src.meta) license platforms;
-          description = "Darkened version of ${src.name} for use as a dark background";
-          maintainers = with maintainers; [ dominicegginton ];
-        };
-      };
-
       gnomeBackgroundXml = writeText "gnome-background-properties-${name}" '' 
         <?xml version="1.0" encoding="UTF-8"?>
         <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
@@ -47,46 +31,51 @@ let
           <wallpaper deleted="false">
             <name>${name}</name>
             <filename>${src}</filename>
-            <filename-dark>${backgroundImageDark}/$(basename ${src}).jpg</filename-dark>
+            <filename-dark>${srcDark}</filename-dark>
             <options>zoom</options>
             <shade_type>solid</shade_type>
-            <pcolor>#ffffff</pcolor>
-            <scolor>#000000</scolor>
+            <pcolor>${primaryColor}</pcolor>
+            <scolor>${secondaryColor}</scolor>
           </wallpaper>
         </wallpapers>
       '';
 
-      background = stdenv.mkDerivation {
-        inherit name;
-        src = [ src backgroundImageDark ];
-        dontUnpack = true;
-        installPhase = ''
-          runHook preInstall
-
-          mkdir -p $out/share/backgrounds/nixos
-          mkdir -p $out/share/artwork/gnome
-          mkdir -p $out/share/gnome-background-properties/
-          ln -s ${src} $out/share/backgrounds/nixos/${src.name}
-          ln -s ${backgroundImageDark}/$(basename ${src}).jpg $out/share/backgrounds/nixos/${src.name}.dark.jpg
-          ln -s ${src} $out/share/artwork/gnome/${src.name}
-          ln -s ${backgroundImageDark}/$(basename ${src}).jpg $out/share/artwork/gnome/${src.name}.dark.jpg
-          ln -s ${gnomeBackgroundXml} $out/share/gnome-background-properties/${name}.xml
-
-          runHook postInstall
-        '';
-
-        meta = with lib; {
-          inherit description license;
-          maintainers = with maintainers; [ dominicegginton ];
-          platforms = lib.platforms.all;
-        };
-      };
     in
 
-    background;
+    stdenv.mkDerivation {
+      inherit name;
+      dontUnpack = true;
+      installPhase = ''
+        runHook preInstall
+
+        mkdir -p $out/share/backgrounds/nixos
+        mkdir -p $out/share/artwork/gnome
+        mkdir -p $out/share/gnome-background-properties/
+        ln -s ${src} $out/share/backgrounds/nixos/${src.name}
+        ln -s ${srcDark} $out/share/backgrounds/nixos/darkened-${src.name}
+        ln -s ${src} $out/share/artwork/gnome/${src.name}
+        ln -s ${srcDark} $out/share/artwork/gnome/darkened-${src.name}
+        ln -s ${gnomeBackgroundXml} $out/share/gnome-background-properties/${name}.xml
+
+        runHook postInstall
+      '';
+
+      passthru = {
+        inherit primaryColor secondaryColor;
+        backgroundImage = src;
+        darkBackgroundImage = srcDark;
+        gnomeBackgroundXml = gnomeBackgroundXml;
+      };
+
+      meta = with lib; {
+        inherit description license;
+        maintainers = with maintainers; [ dominicegginton ];
+        platforms = lib.platforms.all;
+      };
+    };
 in
 
-mkBackground {
+mkGnomeBackground {
   name = "a_painting_of_people_in_traditional_clothing";
   src = fetchurl rec {
     name = "a_painting_of_people_in_traditional_clothing";
