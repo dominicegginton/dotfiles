@@ -156,6 +156,14 @@ in
               hash = "sha256-naSH6AdAlyDSW/k250cUZGYEdKCUi63CjJBlHhkWBPs=";
             };
           })
+          (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+            mktplcRef = {
+              name = "adwaita-theme";
+              publisher = "piousdeer";
+              version = "1.1.0";
+              hash = "sha256-tKpKLUcc33YrgDS95PJu22ngxhwjqeVMC1Mhhy+IPGE=";
+            };
+          })
           ms-azuretools.vscode-docker
           docker.docker
           bbenoist.nix
@@ -164,21 +172,30 @@ in
           tekumara.typos-vscode
         ];
         userSettings = {
-          editor.minimap.enabled = false;
-          editor.renderLineHighlight = "none";
+          editor = {
+            minimap.enabled = false;
+            renderLineHighlight = "none";
+          };
           extensions.ignoreRecommendations = true;
           extensions.autoCheckUpdates = false;
           extensions.autoUpdate = false;
           terminal.integrated.defaultProfile.linux = "zsh";
           updates.mode = "none";
-          window.titleBarStyle = "custom";
-          window.commandCenter = true;
-          window.autoDetectColorScheme = true;
-          workbench.activityBar.location = "top";
-          workbench.sideBar.location = "right";
-          workbench.startupEditor = "none";
-          workbench.iconTheme = null;
-          workbench.tree.indent = 12;
+          window = {
+            titleBarStyle = "custom";
+            commandCenter = true;
+            autoDetectColorScheme = true;
+          };
+          workbench = {
+            preferredDarkColorTheme = "Adwaita Dark";
+            preferredLightColorTheme = "Adwaita Light";
+            productIconTheme = "adwaita";
+            activityBar.location = "top";
+            sideBar.location = "right";
+            startupEditor = "none";
+            iconTheme = null;
+            tree.indent = 12;
+          };
           github.copilot.enable = {
             "*" = true;
             plaintext = false;
