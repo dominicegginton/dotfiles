@@ -156,7 +156,6 @@ rec {
     residence = final.callPackage ./pkgs/residence { inherit (inputs) ags; inherit (final) system; };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
-    todo = (packagesFrom inputs.todo final.system).default;
     topology = outputs.topology.${final.system}.config.output;
     twx = final.callPackage ./pkgs/twx.nix { };
     youtube = prev.callPackage ./pkgs/youtube.nix { };
