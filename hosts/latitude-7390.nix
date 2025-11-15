@@ -81,11 +81,11 @@
     # allows a large number of processes and threads to be managed.
     # sets the maximum number of process IDs that can be allocated.
     "kernel.pid_max" = 262144;
-    
     # increase timer frequency to improve responsiveness
     "kernel.hz" = 1000;
-
-    # split lock mitigate can slow down performance on
+    # split lock mitigate can slow down performance
+    # when processing workloads that require frequent
+    # access to unaligned memory operations
     "kernel.split_lock_mitigate" = 0;
   };
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
