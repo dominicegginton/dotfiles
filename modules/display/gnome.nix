@@ -33,12 +33,6 @@
         gnome-firmware
         dconf-editor
         fragments
-      ] ++ [
-        status-icons
-        pano
-        night-theme-switcher
-        caffeine
-        tailscale-status
       ];
     };
   };
