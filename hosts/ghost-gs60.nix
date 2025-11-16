@@ -73,7 +73,7 @@
   services.mosquitto.enable = true;
   services.tlp.enable = true;
   services.frigate = {
-    enable = true;
+    enable = false;
     settings = {
       cameras = {
         "Frontdoor".ffmpeg.inputs = [
