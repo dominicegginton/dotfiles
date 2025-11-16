@@ -1,7 +1,7 @@
 { stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
-  name = "colorful";
+  name = "angular_alt";
   src = fetchFromGitHub {
     owner = "adi1090x";
     repo = "plymouth-themes";
