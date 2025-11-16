@@ -14,7 +14,6 @@ rec {
     ./display/steamos.nix
     ./hardware/bluetooth.nix
     ./hardware/disks.nix
-    ./home/files.nix
     ./programs/alacritty.nix
     ./programs/chromium.nix
     ./programs/dconf.nix
@@ -160,7 +159,7 @@ rec {
     plymouth = {
       enable = true;
       themePackages = [ pkgs.plymouth-theme ]; # boot theme package
-      theme = "colorful"; # set boot theme
+      theme = pkgs.plymouth-theme.name; # set boot theme
     };
 
     kernelParams = [

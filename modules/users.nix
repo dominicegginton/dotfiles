@@ -47,8 +47,5 @@ with lib;
     home-manager.users = {
       dom = mkIf config.users.users.dom.enable ../home/dom;
     };
-
-    # TODO: test file in home directory
-    users.home.dom.files."welcome.txt" = "Weclome to your Residence system, dom!";
   };
 }

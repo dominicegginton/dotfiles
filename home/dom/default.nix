@@ -107,10 +107,6 @@ in
       oh-my-zsh.theme = "eastwood";
     };
 
-    # home.file.".mozilla/firefox/default/chrome/firefox-gnome-theme" = lib.mkIf osConfig.programs.firefox.enable {
-    #   source = inputs.firefox-gnome-theme;
-    # };
-
     programs = {
       git.enable = true;
       gh = {
@@ -125,12 +121,6 @@ in
     };
 
     programs.firefox.profiles.default = lib.mkIf osConfig.programs.firefox.enable {
-      userChrome = ''
-        @import "firefox-gnome-theme/userChrome.css";
-      '';
-      userContent = ''
-        @import "firefox-gnome-theme/userContent.css";
-      '';
       settings = {
         "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
         "browser.uidensity" = 0;
@@ -139,7 +129,6 @@ in
       };
     };
 
-    # todo: move this into a nixos module
     programs.vscode = lib.mkIf osConfig.programs.vscode.enable {
       enable = true;
       profiles.default = {
