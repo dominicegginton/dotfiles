@@ -145,14 +145,6 @@ in
               hash = "sha256-naSH6AdAlyDSW/k250cUZGYEdKCUi63CjJBlHhkWBPs=";
             };
           })
-          (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-            mktplcRef = {
-              name = "adwaita-theme";
-              publisher = "piousdeer";
-              version = "1.1.0";
-              hash = "sha256-tKpKLUcc33YrgDS95PJu22ngxhwjqeVMC1Mhhy+IPGE=";
-            };
-          })
           ms-azuretools.vscode-docker
           docker.docker
           bbenoist.nix
@@ -176,9 +168,6 @@ in
             autoDetectColorScheme = true;
           };
           workbench = {
-            preferredDarkColorTheme = "Adwaita Dark";
-            preferredLightColorTheme = "Adwaita Light";
-            productIconTheme = "adwaita";
             activityBar.location = "top";
             sideBar.location = "right";
             startupEditor = "none";

@@ -221,7 +221,10 @@ rec {
       '';
     };
     polkit.enable = true; # polkit for privilege escalation
-    tpm2.enable = true; # tpm2 support
+    tpm2 = {
+      enable = true; # tpm2 support
+      pkcs11.enable = true; # pkcs11 support
+    };
   };
 
   services = {
