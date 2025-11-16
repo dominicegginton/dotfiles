@@ -8,6 +8,8 @@
         General = {
           MultiProfile = "multiple";
           FastConnectable = true;
+          Enable = "Source,Sink,Media,Socket";
+          Experimental = true;
         };
         LE = {
           ScanIntervalSuspend = 2240;
