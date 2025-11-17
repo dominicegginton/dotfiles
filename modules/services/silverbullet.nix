@@ -12,6 +12,7 @@
       listenPort = 8765;
       openFirewall = false;
     };
+    services.nginx.enable = true;
     services.nginx.virtualHosts."${config.services.silverbullet.hostname}" = {
       forceSSL = true;
       enableACME = true;
