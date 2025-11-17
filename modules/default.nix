@@ -112,7 +112,10 @@ rec {
         "recursive-nix"
         "pipe-operators"
       ];
+
       # garbage collection settings
+      min-free = builtins.toString (100 * 1024 * 1024); # 100 MB
+      max-free = builtins.toString (1024 * 1024 * 1024); # 1 GB
       min-free-check-interval = 1;
 
       # disable global registry
