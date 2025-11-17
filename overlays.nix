@@ -5,9 +5,10 @@ with outputs.lib;
 rec {
   # default overlay
   default = final: prev: {
+    withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
     karren =
       let
-        alacrittyConiguration = (prev.formats.toml { }).generate "alacritty-config.toml" {
+        alacrittyConfig = (prev.formats.toml { }).generate "alacritty-config.toml" {
           colors = {
             primary = {
               background = "#6c71c1";
@@ -176,7 +177,6 @@ rec {
         '';
       });
     };
-    vulnix = final.callPackage (packagesFrom inputs.vulnix).vulnix { };
     fleet = final.callPackage ./pkgs/fleet.nix { };
     lib = prev.lib // outputs.lib;
   };

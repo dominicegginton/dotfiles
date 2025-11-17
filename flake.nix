@@ -16,8 +16,6 @@ rec {
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
     ags.url = "github:aylur/ags?rev=3ed9737bdbc8fc7a7c7ceef2165c9109f336bff6";
     ags.inputs.nixpkgs.follows = "nixpkgs";
-    vulnix.url = "github:nix-community/vulnix";
-    vulnix.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
     niri.url = "github:yalter/niri?rev=b7909dbf61c7c1511b9a51ef46e1d503d5ba3d05";
     niri.inputs.nixpkgs.follows = "nixpkgs";
