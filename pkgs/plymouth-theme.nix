@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub }:
+{ lib, stdenv, fetchFromGitHub, plymouth }:
 
 stdenv.mkDerivation rec {
   name = "angular_alt";
@@ -20,4 +20,11 @@ stdenv.mkDerivation rec {
   
     runHook postInstall
   '';
+
+  meta = {
+    description = "Plymouth theme ${name}";
+    maintainers = with lib.maintainers; [ dominicegginton ];
+    platforms = plymouth.meta.platforms;
+    license = lib.licenses.free;
+  };
 }
