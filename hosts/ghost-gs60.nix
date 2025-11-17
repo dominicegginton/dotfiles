@@ -70,19 +70,18 @@
   services.logind.lidSwitch = "ignore";
   services.upower.ignoreLid = true;
   services.silverbullet.enable = true;
-  services.mosquitto.enable = true;
   services.tlp.enable = true;
-  services.frigate = {
-    enable = false;
-    settings = {
-      cameras = {
-        "Frontdoor".ffmpeg.inputs = [
-          { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main"; roles = [ "record" ]; }
-          { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub"; roles = [ "detect" ]; }
-        ];
-      };
-    };
-  };
+  # services.frigate = {
+  #   enable = true;
+  #   settings = {
+  #     cameras = {
+  #       "Frontdoor".ffmpeg.inputs = [
+  #         { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main"; roles = [ "record" ]; }
+  #         { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub"; roles = [ "detect" ]; }
+  #       ];
+  #     };
+  #   };
+  # };
   topology.self = {
     hardware.info = "MSI Ghost GS60";
     interfaces.eth0 = {
