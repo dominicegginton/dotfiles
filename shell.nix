@@ -23,6 +23,7 @@
 with lib;
 
 mkShell rec {
+  keys = [ lib.maintainers.dominicegginton.email "root@residence" ];
   name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
   GCP_PROJECT_ID = "dominicegginton-personal";
   SECRET_KEYS_GCS_BUCKET = "dominicegginton/gpg";
@@ -116,8 +117,7 @@ mkShell rec {
         --access-token $BWS_ACCESS_TOKEN \
         > $TEMP_DIR/secrets.json
       ${lib.getExe gnupg} --encrypt \
-        --recipient ${lib.maintainers.dominicegginton.email} \
-        --recipient root@residence \
+        ${toString (map (key: "--recipient " + key) keys)} \
         --output secrets.json \
         $TEMP_DIR/secrets.json
       ${lib.getExe gum} log --level info "Remember to commit and push the updated secrets.json file and switch to the new configuration on all host machines".
