@@ -21,12 +21,14 @@ let
     };
     desktopName = "Youtube via Google Chrome";
     genericName = "A video social media and online video sharing platform";
-    categories = [ "TV" "AudioVideo" "Network" "WebBrowser" ];
+    categories = [ "TV" "AudioVideo" ];
     startupNotify = true;
   };
   script = writeScriptBin name ''
     #!${runtimeShell}
-    exec ${google-chrome}/bin/${google-chrome.meta.mainProgram} ${lib.escapeShellArgs commandLineArgs} \
+
+    exec ${google-chrome}/bin/${google-chrome.meta.mainProgram} \
+      ${lib.escapeShellArgs commandLineArgs} \
       --app=https://youtube.com \
       --no-first-run \
       --no-default-browser-check \

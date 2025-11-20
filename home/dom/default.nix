@@ -248,10 +248,8 @@ in
       twx
     ] ++ lib.optionals gui [
       teams-for-linux
-      chromium
       youtube
       silverbullet-desktop
-      frigate-desktop
     ];
   };
 }

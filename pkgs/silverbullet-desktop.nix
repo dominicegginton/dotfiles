@@ -22,17 +22,15 @@ let
     };
     desktopName = "Silverbullet";
     genericName = "A tool to develop, organize and structure your personal knowledge and to make it universally accessible across all your devices.";
-    categories = [ "Office" "Network" "WebBrowser" ];
+    categories = [ "Office" ];
     startupNotify = true;
   };
   script = writeScriptBin name ''
     #!${runtimeShell}
-    if [ -z "$SB_URL" ]; then
-      ${lib.getExe gum} log --level error "The SB_URL environment variable is not set. Please set it to your Silverbullet instance URL."
-      exit 1
-    fi
-    exec ${google-chrome}/bin/${google-chrome.meta.mainProgram} ${lib.escapeShellArgs commandLineArgs} \
-      --app=$SB_URL \
+
+    exec ${google-chrome}/bin/${google-chrome.meta.mainProgram} \
+      ${lib.escapeShellArgs commandLineArgs} \
+      --app="https://sb.ghost-gs60" \
       --no-first-run \
       --no-default-browser-check \
       --no-crash-upload \

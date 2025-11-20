@@ -62,7 +62,6 @@ rec {
     ensure-user-is-not-root = final.callPackage ./pkgs/ensure-user-is-not-root.nix { };
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
-    frigate-desktop = final.callPackage ./pkgs/frigate-desktop.nix { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
     residence-installer = (outputs.lib.nixosSystem {
       hostname = "residence-installer";
