@@ -148,6 +148,7 @@ rec {
           })
       ];
     });
+    mkGnomeBackground = final.callPackage ./pkgs/mk-gnome-background.nix { };
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
