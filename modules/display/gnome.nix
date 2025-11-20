@@ -33,6 +33,8 @@
         gnome-firmware
         dconf-editor
         fragments
+        overskride
+        lock
       ];
     };
   };
