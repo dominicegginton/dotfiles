@@ -163,7 +163,7 @@ rec {
       nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/code \
-          --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
+          --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright prev.rust-analyzer prev.terraform-lsp prev.eslint_d prev.typos-lsp prev.stylua prev.nixpkgs-fmt]}" \
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
@@ -172,7 +172,7 @@ rec {
         nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
         postInstall = (oldAttrs.postInstall or "") + ''
           wrapProgram $out/bin/webstorm \
-            --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright ]}" \
+            --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright prev.rust-analyzer t]}" \
             --set NODE_PATH "${final.nodejs}/lib/node_modules";
         '';
       });
