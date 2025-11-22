@@ -4,7 +4,6 @@
 , runtimeShell
 , symlinkJoin
 , writeScriptBin
-, gum
 , google-chrome
 , commandLineArgs ? [ ]
 }:
