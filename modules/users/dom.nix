@@ -26,6 +26,6 @@ with lib;
       };
     };
 
-    home-manager.users.dom = mkIf config.users.users.dom.enable ../home/dom;
+    home-manager.users.dom = mkIf config.users.users.dom.enable ../../home/dom;
   };
 }
