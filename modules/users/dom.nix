@@ -1,0 +1,31 @@
+{ config, lib, dlib, pkgs, hostname, ... }:
+
+with lib;
+
+{
+  config = mkIf (hostname != "residence-installer") {
+    secrets.dom = mkIf config.users.users.dom.enable "be2b6a7a-7811-4711-86f0-b24200a41bbd";
+
+    users.users.dom = {
+      enable = mkDefault true;
+      isNormalUser = mkDefault true;
+      description = dlib.maintainers.dominicegginton.name;
+      hashedPasswordFile = "/run/bitwarden-secrets/dom";
+      homeMode = "0755";
+      shell = pkgs.zsh;
+      extraGroups = [
+        "users" # Standard users group
+        "wheel" # For sudo access
+        "input" # For keyboard/mouse
+        "audio" # For sound
+        "video" # For GPU access
+      ];
+      openssh = {
+        authorizedPrincipals = [ "dom@localhost" "dom@${hostname}" dlib.maintainers.dominicegginton.email ];
+        authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
+      };
+    };
+
+    home-manager.users.dom = mkIf config.users.users.dom.enable ../home/dom;
+  };
+}

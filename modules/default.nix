@@ -46,6 +46,7 @@ rec {
     ./services/tlp.nix
     ./services/unifi.nix
     ./services/zabbix.nix
+    ./users/root.nix
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
     ./virtualisation/waydroid.nix
@@ -54,7 +55,6 @@ rec {
     ./networking.nix
     ./secrets.nix
     ./upgrade.nix
-    ./users.nix
   ];
 
   system = {
