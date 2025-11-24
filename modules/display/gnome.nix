@@ -35,6 +35,7 @@
         fragments
         overskride
         lock
+        delfin
       ];
     };
   };
