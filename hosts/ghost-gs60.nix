@@ -7,13 +7,6 @@
     common-pc-laptop-hdd
     msi-gs60
   ];
-  services.immich = {
-    enable = true;
-    host = "0.0.0.0";
-  };
-  services.jellyfin = {
-    enable = true;
-  };
   disko.devices = {
     disk = {
       main = {
@@ -78,6 +71,8 @@
   services.upower.ignoreLid = true;
   services.silverbullet.enable = true;
   services.tlp.enable = true;
+  services.immich.enable = true;
+  services.jellyfin.enable = true;
   # services.frigate = {
   #   enable = true;
   #   settings = {

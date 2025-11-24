@@ -35,6 +35,8 @@ rec {
     ./services/frigate.nix
     ./services/getty.nix
     ./services/home-assistant.nix
+    ./services/immich.nix
+    ./services/jellyfin.nix
     ./services/mosquitto.nix
     ./services/pipewire.nix
     ./services/printing.nix
