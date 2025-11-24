@@ -7,6 +7,13 @@
     common-pc-laptop-hdd
     msi-gs60
   ];
+  services.immich = {
+    enable = true;
+    host = "0.0.0.0";
+  };
+  services.jellyfin = {
+    enable = true;
+  };
   disko.devices = {
     disk = {
       main = {
