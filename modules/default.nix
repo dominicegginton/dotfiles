@@ -116,8 +116,8 @@ rec {
       ];
 
       # garbage collection settings
-      min-free = builtins.toString (1024 * 1024 * 1024); # 1 GB
-      max-free = builtins.toString (4 * 1024 * 1024 * 1024); # 4 GB 
+      min-free = builtins.toString (10 * 1024 * 1024 * 1024); # 10 GB 
+      max-free = builtins.toString (20 * 1024 * 1024 * 1024); # 20 GB 
       min-free-check-interval = 1;
 
       # disable global registry

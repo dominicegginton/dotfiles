@@ -63,39 +63,12 @@ rec {
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
-    residence-installer = (outputs.lib.nixosSystem {
+    infect = (outputs.lib.nixosSystem {
       hostname = "residence-installer";
       platform = final.system;
       extraModules = [
         (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
         ({ pkgs, lib, modulesPath, config, ... }:
-          let
-            flakeOutPaths =
-              let
-                collector =
-                  parent:
-                  map
-                    (
-                      child:
-                      [ child.outPath ] ++ (if child ? inputs && child.inputs != { } then (collector child) else [ ])
-                    )
-                    (lib.attrValues parent.inputs);
-              in
-              lib.unique (lib.flatten (collector self));
-
-            dependencies = [
-              self.nixosConfigurations.latitude-7390.config.system.build.toplevel
-              self.nixosConfigurations.latitude-7390.config.system.build.diskoScript
-              self.nixosConfigurations.latitude-7390.config.system.build.diskoScript.drvPath
-              self.nixosConfigurations.latitude-7390.pkgs.stdenv.drvPath
-              self.nixosConfigurations.latitude-7390.pkgs.perlPackages.ConfigIniFiles
-              self.nixosConfigurations.latitude-7390.pkgs.perlPackages.FileSlurp
-              (self.nixosConfigurations.latitude-7390.pkgs.closureInfo { rootPaths = [ ]; }).drvPath
-            ] ++ flakeOutPaths;
-
-            closureInfo = pkgs.closureInfo { rootPaths = dependencies; };
-          in
-
           {
             roles = [ "installer" ];
             image.baseName = lib.mkDefault "residence-installer";
@@ -139,10 +112,20 @@ rec {
             environment.systemPackages = with pkgs; [
               (writeShellScriptBin "install" ''
                 set -eux
-                DISKS=$(${pkgs.lsblk}/bin/lsblk -dn -o NAME,TYPE | ${pkgs.gnugrep}/bin/grep 'disk')
-                DISK_NAMES=$(echo "$DISKS" | ${pkgs.coreutils}/bin/awk '{print $1}')
-                DISK=$(${pkgs.gum}/bin/gum choose $DISK_NAMES --header="Select the target disk for NixOS installation:")
-                exec ${pkgs.disko}/bin/disko-install --flake "${self}#runtime" --disk main /dev/$DISK --write-efi-boot-entries
+                disks=$(${pkgs.lsblk}/bin/lsblk -dn -o NAME,TYPE | ${pkgs.gnugrep}/bin/grep 'disk')
+                disk_names=$(echo "$DISKS" | ${pkgs.coreutils}/bin/awk '{print $1}')
+
+                # TODO: - evaluate configurations from github:dominicegginton/dotfiles
+                #       - ask user for configuration 
+                #       - evaluate disko for configuration
+                #       - ask user for disk names for each disko device
+                #       - confirm and install
+
+                disk=$(${pkgs.gum}/bin/gum choose $DISK_NAMES --header="Select the target disk for NixOS installation:")
+
+                configurationName="github:dominicegginton/dotfiles#residence"
+                disksFlags=[]
+                exec ${pkgs.disko}/bin/disko-install --write-efi-boot-entries --flake $configurationName # TODO: add $disksFlags 
               '')
             ];
           })
