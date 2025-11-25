@@ -116,8 +116,8 @@ rec {
       ];
 
       # garbage collection settings
-      min-free = builtins.toString (100 * 1024 * 1024); # 100 MB
-      max-free = builtins.toString (1024 * 1024 * 1024); # 1 GB
+      min-free = builtins.toString (1024 * 1024 * 1024); # 1 GB
+      max-free = builtins.toString (4 * 1024 * 1024 * 1024); # 4 GB 
       min-free-check-interval = 1;
 
       # disable global registry
@@ -213,6 +213,21 @@ rec {
   hardware.cpu = {
     intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  };
+
+  # specialisations for different cpu vendors
+  specialisation = {
+    intel.configuration = {
+      boot.kernelModules = [ "kvm-intel" ];
+      hardware.cpu.intel.updateMicrocode = lib.mkForce config.hardware.enableRedistributableFirmware;
+      hardware.cpu.amd.updateMicrocode = lib.mkForce false;
+    };
+
+    amd.configuration = {
+      boot.kernelModules = [ "kvm-amd" ];
+      hardware.cpu.amd.updateMicrocode = lib.mkForce config.hardware.enableRedistributableFirmware;
+      hardware.cpu.intel.updateMicrocode = lib.mkForce false;
+    };
   };
 
   security = {
