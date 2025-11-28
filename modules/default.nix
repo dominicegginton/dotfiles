@@ -225,7 +225,10 @@ rec {
       inputs.base16.homeManagerModule
       {
         inherit scheme;
-        home.stateVersion = "25.05";
+        home = {
+          stateVersion = "25.05";
+          enableNixpkgsReleaseCheck = false;
+        };
         programs = {
           bash.enable = true;
           info.enable = true;
