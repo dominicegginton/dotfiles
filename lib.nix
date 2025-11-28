@@ -28,7 +28,6 @@ rec {
         inputs.base16.nixosModule
         inputs.disko.nixosModules.disko
         inputs.impermanence.nixosModules.impermanence
-        inputs.nixos-wsl.nixosModules.default
         inputs.home-manager.nixosModules.default
         inputs.nix-topology.nixosModules.default
         ./modules
