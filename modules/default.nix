@@ -24,8 +24,10 @@ rec {
     ./security/apparmor.nix
     ./security/audit.nix
     ./security/pam.nix
+    ./security/polkit.nix
     ./security/pwquality.nix
     ./security/sudo.nix
+    ./security/tpm2.nix
     ./services/backup.nix
     ./services/calmav.nix
     ./services/cron.nix
@@ -146,10 +148,7 @@ rec {
       require-sigs = true;
 
       # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268152
-      allowed-users = [
-        "root"
-        "@wheel"
-      ];
+      allowed-users = [ "root" "@wheel" ];
     };
   };
 
@@ -199,52 +198,14 @@ rec {
   };
 
   programs = {
-    # enable gpg agent for managing gpg keys
     gnupg.agent.enable = true;
-
-    # enable ssh agent for managing ssh keys
     ssh.startAgent = lib.mkIf (config.services.gnome.gcr-ssh-agent.enable == false) true;
-
-    # suggest commands when command is not found
     command-not-found.enable = true;
   };
 
-  # enable microcode updates for intel/amd cpus
   hardware.cpu = {
     intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  };
-
-  # specialisations for different cpu vendors
-  specialisation = {
-    intel.configuration = {
-      boot.kernelModules = [ "kvm-intel" ];
-      hardware.cpu.intel.updateMicrocode = lib.mkForce config.hardware.enableRedistributableFirmware;
-      hardware.cpu.amd.updateMicrocode = lib.mkForce false;
-    };
-
-    amd.configuration = {
-      boot.kernelModules = [ "kvm-amd" ];
-      hardware.cpu.amd.updateMicrocode = lib.mkForce config.hardware.enableRedistributableFirmware;
-      hardware.cpu.intel.updateMicrocode = lib.mkForce false;
-    };
-  };
-
-  security = {
-    sudo = {
-      enable = true;
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268156
-      wheelNeedsPassword = true;
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268155
-      extraConfig = ''
-        Defaults timestamp_timeout=0
-      '';
-    };
-    polkit.enable = true; # polkit for privilege escalation
-    tpm2 = {
-      enable = true; # tpm2 support
-      pkcs11.enable = true; # pkcs11 support
-    };
   };
 
   services = {
@@ -257,7 +218,6 @@ rec {
     fstrim.enable = true; # periodic trim for ssd
   };
 
-  # todo: remove home manager
   home-manager = {
     useGlobalPkgs = true;
     backupFileExtension = "backup";
