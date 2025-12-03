@@ -80,6 +80,7 @@ rec {
               roll.overlays.default
               nix-topology.overlays.default
               nix-topology.overlays.topology
+              deadman.overlays.default
             ];
           };
         in
