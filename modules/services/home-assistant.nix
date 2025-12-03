@@ -56,7 +56,6 @@
         "rest_command"
         "mobile_app"
         "media_source"
-        "mqtt"
         "metoffice"
         "cast"
         "rest"
@@ -68,7 +67,6 @@
         "tod"
       ];
     };
-    services.mosquitto.enable = true;
     services.nginx.virtualHosts."homeassistant.${config.networking.hostName}" = {
       forceSSL = true;
       enableACME = true;

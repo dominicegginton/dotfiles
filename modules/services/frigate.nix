@@ -16,7 +16,6 @@
       };
     };
 
-    services.mosquitto.enable = true;
     topology.self.services.frigate = {
       name = "Frigate NVR";
       details.listen.text = config.services.frigate.hostname;

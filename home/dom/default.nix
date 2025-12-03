@@ -120,15 +120,6 @@ in
       };
     };
 
-    programs.firefox.profiles.default = lib.mkIf osConfig.programs.firefox.enable {
-      settings = {
-        "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-        "browser.uidensity" = 0;
-        "svg.context-properties.content.enabled" = true;
-        "browser.theme.dark-private-windows" = false;
-      };
-    };
-
     programs.vscode = lib.mkIf osConfig.programs.vscode.enable {
       enable = true;
       profiles.default = {
@@ -207,7 +198,6 @@ in
 
     programs.neovim = {
       enable = true;
-      package = pkgs.neovim;
       viAlias = true;
       vimAlias = true;
       extraPackages = with pkgs; [
@@ -243,13 +233,12 @@ in
       bat
       eza
       gitui
-      bitwarden-cli
       twm
       twx
     ] ++ lib.optionals gui [
       teams-for-linux
-      youtube
-      silverbullet-desktop
+      # youtube
+      # silverbullet-desktop
     ];
   };
 }

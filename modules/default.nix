@@ -5,7 +5,6 @@ rec {
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
     ./environment/account.nix
-    ./environment/aide.nix
     ./environment/issue.nix
     ./environment/login.nix
     ./environment/packages.nix
@@ -30,7 +29,6 @@ rec {
     ./security/tpm2.nix
     ./services/backup.nix
     ./services/calmav.nix
-    ./services/cron.nix
     ./services/davfs2.nix
     ./services/displaymanager.nix
     ./services/flatpak.nix
@@ -39,17 +37,14 @@ rec {
     ./services/home-assistant.nix
     ./services/immich.nix
     ./services/jellyfin.nix
-    ./services/mosquitto.nix
     ./services/pipewire.nix
     ./services/printing.nix
     ./services/silverbullet.nix
     ./services/ssh.nix
-    ./services/syslog-ng.nix
     ./services/tailscale.nix
     ./services/timesyncd.nix
     ./services/tlp.nix
     ./services/unifi.nix
-    ./services/zabbix.nix
     ./users/root.nix
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
@@ -118,16 +113,16 @@ rec {
       ];
 
       # garbage collection settings
-      min-free = builtins.toString (10 * 1024 * 1024 * 1024); # 10 GB 
-      max-free = builtins.toString (20 * 1024 * 1024 * 1024); # 20 GB 
+      min-free = builtins.toString (1 * 1024 * 1024 * 1024); # 1 GB
+      max-free = builtins.toString (120 * 1024 * 1024 * 1024); # 120 GB
       min-free-check-interval = 1;
 
       # disable global registry
       flake-registry = "";
 
       # performance optimizations for faster rebuilds
-      keep-outputs = true; # keep build outputs
-      keep-derivations = true; # keep derivations for faster rebuilds
+      # keep-outputs = true; # keep build outputs
+      # keep-derivations = true; # keep derivations for faster rebuilds
 
       # performance settings
       eval-cache = true; # enable caching
