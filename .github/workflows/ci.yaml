@@ -9,21 +9,21 @@ jobs:
   flake-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/install-nix
       - uses: determinatesystems/flake-checker-action@v12
 
   formatter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/install-nix
       - run: nix fmt -- --check .
 
   topology:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/install-nix
       - uses: cachix/cachix-action@v16
         with:
@@ -42,7 +42,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/install-nix
       - id: set-matrix
         name: Generate Nix Matrix
@@ -58,7 +58,7 @@ jobs:
     strategy:
       matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/install-nix
       - uses: cachix/cachix-action@v16
         with:
@@ -69,7 +69,7 @@ jobs:
   ghost-gs60:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
@@ -78,7 +78,7 @@ jobs:
   latitude-7390:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
