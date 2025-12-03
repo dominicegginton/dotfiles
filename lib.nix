@@ -30,6 +30,7 @@ rec {
         inputs.impermanence.nixosModules.impermanence
         inputs.home-manager.nixosModules.default
         inputs.nix-topology.nixosModules.default
+        inputs.deadman.nixosModules.default
         ./modules
       ];
     };

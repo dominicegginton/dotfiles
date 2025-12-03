@@ -196,6 +196,7 @@ rec {
     gnupg.agent.enable = true;
     ssh.startAgent = lib.mkIf (config.services.gnome.gcr-ssh-agent.enable == false) true;
     command-not-found.enable = true;
+    deadman.enable = true;
   };
 
   hardware.cpu = {
