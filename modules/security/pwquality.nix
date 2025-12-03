@@ -8,8 +8,8 @@ in
   # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268170
   security.pam.services = {
     passwd.text = lib.mkDefault password-requisite;
-    chpasswd.text = lib.mkDefault password-requisite; 
-    sudo.text = lib.mkDefault password-requisite; 
+    chpasswd.text = lib.mkDefault password-requisite;
+    sudo.text = lib.mkDefault password-requisite;
     run0.text = lib.mkDefault password-requisite;
   };
 

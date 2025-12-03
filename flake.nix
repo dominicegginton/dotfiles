@@ -17,8 +17,6 @@ rec {
     base16.url = "github:SenchoPens/base16.nix";
     niri.url = "github:yalter/niri?rev=b7909dbf61c7c1511b9a51ef46e1d503d5ba3d05";
     niri.inputs.nixpkgs.follows = "nixpkgs";
-    neovim-nightly.url = "github:nix-community/neovim-nightly-overlay";
-    neovim-nightly.inputs.nixpkgs.follows = "nixpkgs";
     todo.url = "github:dominicegginton/todo";
     todo.inputs.nixpkgs.follows = "nixpkgs";
     flip.url = "github:dominicegginton/flip";
@@ -70,7 +68,6 @@ rec {
             hostPlatform = platform;
             config = {
               joypixels.acceptLicense = true;
-              nvidia.acceptLicense = true;
               allowUnfree = true;
               allowBroken = true;
             };
@@ -79,7 +76,6 @@ rec {
               niri.overlays.default
               flip.overlays.default
               roll.overlays.default
-              neovim-nightly.overlays.default
               nix-topology.overlays.default
               nix-topology.overlays.topology
             ];
