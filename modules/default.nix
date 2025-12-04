@@ -196,7 +196,6 @@ rec {
   security.lockKernelModules = lib.mkDefault true;
   security.protectKernelImage = lib.mkDefault true;
   security.unprivilegedUsernsClone = lib.mkDefault true;
-  security.rkit.enable = lib.mkDefault true;
   security.auditd.enable = true;
 
   programs = {
