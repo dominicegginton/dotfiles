@@ -21,7 +21,6 @@ rec {
     ./programs/steam.nix
     ./programs/zsh.nix
     ./security/apparmor.nix
-    ./security/audit.nix
     ./security/pam.nix
     ./security/polkit.nix
     ./security/pwquality.nix
@@ -30,7 +29,6 @@ rec {
     ./services/backup.nix
     ./services/calmav.nix
     ./services/davfs2.nix
-    ./services/dbus.nix
     ./services/displaymanager.nix
     ./services/flatpak.nix
     ./services/frigate.nix
@@ -114,8 +112,7 @@ rec {
       ];
 
       # garbage collection settings
-      min-free = builtins.toString (1 * 1024 * 1024 * 1024); # 1 GB
-      max-free = builtins.toString (120 * 1024 * 1024 * 1024); # 120 GB
+      min-free = builtins.toString (30 * 1024 * 1024 * 1024); # 30 GB
       min-free-check-interval = 1;
 
       # disable global registry
@@ -196,7 +193,6 @@ rec {
   security.lockKernelModules = lib.mkDefault true;
   security.protectKernelImage = lib.mkDefault true;
   security.unprivilegedUsernsClone = lib.mkDefault true;
-  security.auditd.enable = true;
 
   programs = {
     gnupg.agent.enable = true;
