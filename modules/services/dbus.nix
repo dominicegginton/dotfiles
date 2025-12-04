@@ -1,0 +1,5 @@
+{ ... }:
+
+{
+  services.dbus.apparmor = "required";
+}

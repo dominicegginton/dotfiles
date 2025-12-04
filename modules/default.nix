@@ -30,6 +30,7 @@ rec {
     ./services/backup.nix
     ./services/calmav.nix
     ./services/davfs2.nix
+    ./services/dbus.nix
     ./services/displaymanager.nix
     ./services/flatpak.nix
     ./services/frigate.nix
@@ -191,6 +192,12 @@ rec {
     dev.enable = true;
     info.enable = true;
   };
+
+  security.lockKernelModules = lib.mkDefault true;
+  security.protectKernelImage = lib.mkDefault true;
+  security.unprivilegedUsernsClone = lib.mkDefault true;
+  security.rkit.enable = lib.mkDefault true;
+  security.auditd.enable = true;
 
   programs = {
     gnupg.agent.enable = true;
