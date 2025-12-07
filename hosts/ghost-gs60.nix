@@ -1,7 +1,7 @@
-{ inputs, config, lib, hostname, ... }:
+{ self, config, lib, hostname, ... }:
 
 {
-  imports = with inputs.nixos-hardware.nixosModules; [
+  imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
     common-pc-laptop-hdd

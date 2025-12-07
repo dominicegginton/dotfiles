@@ -1,11 +1,11 @@
-{ lib, dlib, pkgs, ... }:
+{ self, lib, pkgs, ... }:
 
 {
   config.system = {
     autoUpgrade = {
       enable = true;
       dates = "02:00";
-      flake = "github:${dlib.maintainers.dominicegginton.github}/dotfiles";
+      flake = "github:${self.outputs.lib.maintainers.dominicegginton.github}/dotfiles";
       operation = "switch";
       persistent = true;
     };

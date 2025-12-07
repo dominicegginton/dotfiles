@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "residence-theme";
-  src = background.filePath;
+  src = background.backgroundImage;
   dontUnpack = true;
   buildInputs = [ extract-theme ];
   LOKY_MAX_CPU_COUNT = 1;

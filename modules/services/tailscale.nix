@@ -1,4 +1,4 @@
-{ config, lib, dlib, pkgs, hostname, tailnet, ... }:
+{ self, config, lib, pkgs, hostname, tailnet, ... }:
 
 with config.lib.topology;
 
@@ -20,7 +20,7 @@ with config.lib.topology;
     };
     security.acme = {
       acceptTerms = true;
-      defaults.email = dlib.maintainers.dominicegginton.email;
+      defaults.email = self.outputs.lib.maintainers.dominicegginton.email;
     };
     environment.systemPackages = with pkgs; [ tailscale ];
     topology.self.interfaces.tailscale0 = {

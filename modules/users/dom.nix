@@ -1,4 +1,4 @@
-{ config, lib, dlib, pkgs, hostname, ... }:
+{ self, config, lib, pkgs, hostname, ... }:
 
 with lib;
 
@@ -9,7 +9,7 @@ with lib;
     users.users.dom = {
       enable = mkDefault true;
       isNormalUser = mkDefault true;
-      description = dlib.maintainers.dominicegginton.name;
+      description = self.outputs.lib.maintainers.dominicegginton.name;
       hashedPasswordFile = "/run/bitwarden-secrets/dom";
       homeMode = "0755";
       shell = pkgs.zsh;
@@ -21,8 +21,8 @@ with lib;
         "video" # For GPU access
       ];
       openssh = {
-        authorizedPrincipals = [ "dom@localhost" "dom@${hostname}" dlib.maintainers.dominicegginton.email ];
-        authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
+        authorizedPrincipals = [ "dom@localhost" "dom@${hostname}" self.outputs.lib.maintainers.dominicegginton.email ];
+        authorizedKeys.keys = self.outputs.lib.maintainers.dominicegginton.sshKeys;
       };
     };
 

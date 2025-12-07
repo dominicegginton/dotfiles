@@ -1,4 +1,4 @@
-{ lib, dlib, pkgs, hostname, ... }:
+{ self, lib, pkgs, hostname, ... }:
 
 with lib;
 
@@ -14,8 +14,8 @@ with lib;
           isSystemUser = lib.mkDefault true;
           hashedPassword = lib.mkDefault null;
           openssh = {
-            authorizedPrincipals = [ "root@localhost" "root@${hostname}" dlib.maintainers.dominicegginton.email ];
-            authorizedKeys.keys = dlib.maintainers.dominicegginton.sshKeys;
+            authorizedPrincipals = [ "root@localhost" "root@${hostname}" self.outputs.lib.maintainers.dominicegginton.email ];
+            authorizedKeys.keys = self.outputs.lib.maintainers.dominicegginton.sshKeys;
           };
         };
       };

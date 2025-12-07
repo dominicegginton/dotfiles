@@ -1,4 +1,4 @@
-{ inputs, modulesPath, config, lib, pkgs, nixConfig, ... }:
+{ self, modulesPath, config, lib, pkgs, ... }:
 
 rec {
   imports = [
@@ -63,8 +63,8 @@ rec {
     nixos = {
       distroName = lib.mkDefault "Residence";
       distroId = lib.mkDefault "residence";
-      vendorName = lib.mkDefault pkgs.lib.maintainers.dominicegginton.name;
-      vendorId = lib.mkDefault pkgs.lib.maintainers.dominicegginton.github;
+      vendorName = lib.mkDefault self.outputs.lib.maintainers.dominicegginton.name;
+      vendorId = lib.mkDefault self.outputs.lib.maintainers.dominicegginton.github;
       tags = [ (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux") ];
     };
   };
@@ -97,12 +97,14 @@ rec {
     channel.enable = false;
 
     # nix registry entries
-    registry = lib.mapAttrs (_: value: { flake = value; }) inputs;
+    registry = lib.mapAttrs (_: value: { flake = value; }) self.inputs;
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     # nix settings
-    settings = nixConfig // {
-      experimental-features = nixConfig.experimental-features ++ [
+    settings = {
+      experimental-features = [
+        "flakes"
+        "nix-command"
         "auto-allocate-uids"
         "cgroups"
         "fetch-closure"
@@ -220,7 +222,7 @@ rec {
     useGlobalPkgs = true;
     backupFileExtension = "backup";
     sharedModules = [
-      inputs.base16.homeManagerModule
+      self.inputs.base16.homeManagerModule
       {
         inherit scheme;
         home = {

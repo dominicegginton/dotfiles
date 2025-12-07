@@ -1,6 +1,10 @@
 { writers, python3Packages, ... }:
 
-writers.writePython3Bin "extract-theme" { libraries = [ python3Packages.pylette ]; } '' 
+let
+  pyletteNoTests = python3Packages.pylette.overridePythonAttrs (_: { doCheck = false; });
+in
+
+writers.writePython3Bin "extract-theme" { libraries = [ pyletteNoTests ]; } '' 
 import argparse
 from Pylette import extract_colors
 

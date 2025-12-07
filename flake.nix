@@ -43,79 +43,56 @@ rec {
   outputs = { self, nixpkgs, nix-github-actions, ... }:
 
     let
-      # inherit (nixpkgs) lib;
+      inherit (nixpkgs) lib;
 
-      forAllSystems = nixpkgs.lib.forAllSystems;
+      systems = lib.intersectLists lib.systems.flakeExposed lib.platforms.linux;
+
+      forAllSystems = lib.genAttrs systems;
 
       nixpkgsFor = forAllSystems (system: import nixpkgs {
         inherit system;
-        config = nixConfig;
+        config = nixConfig // {
+          allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+            "vscode"
+            "vscode-with-extensions"
+            "vscode-extension-github-copilot"
+            "bws"
+          ];
+        };
+        overlays = with self.inputs; [
+          self.outputs.overlays.default
+          niri.overlays.default
+          flip.overlays.default
+          roll.overlays.default
+          nix-topology.overlays.default
+          nix-topology.overlays.topology
+          deadman.overlays.default
+        ];
       });
-
-      lib = import ./lib.nix { inherit (self) inputs outputs; inherit nixConfig; };
-      overlays = import ./overlays.nix { inherit (self) inputs outputs; };
-      templates = import ./templates { };
     in
 
-    with nixpkgs.lib;
     with nix-github-actions.lib;
-    with lib;
-
-    eachPlatform platforms.all
-      (platform:
-
-        let
-          pkgs = import nixpkgs {
-            system = platform;
-            hostPlatform = platform;
-            config = {
-              joypixels.acceptLicense = true;
-              allowUnfree = true;
-              allowBroken = true;
-            };
-            overlays = with self.inputs; [
-              overlays.default
-              niri.overlays.default
-              flip.overlays.default
-              roll.overlays.default
-              nix-topology.overlays.default
-              nix-topology.overlays.topology
-              deadman.overlays.default
-            ];
-          };
-        in
-
-        {
-          formatter = pkgs.nixpkgs-fmt;
-          legacyPackages = pkgs;
-          devShells = {
-            default = pkgs.callPackage ./shell.nix { };
-            nodejs = pkgs.callPackage ./shells/nodejs.nix { };
-            python3 = pkgs.callPackage ./shells/python3.nix { };
-            python3-notebook = pkgs.callPackage ./shells/python3-notebook.nix { };
-          };
-          topology = import self.inputs.nix-topology {
-            inherit pkgs;
-            modules = [{ inherit (self) nixosConfigurations; } ./topology.nix];
-          };
-        })
-
-    //
 
     {
-      inherit lib overlays templates;
+      inherit nixpkgsFor;
+      formatter = forAllSystems (system: nixpkgsFor.${system}.nixpkgs-fmt);
+      overlays = import ./overlays.nix { inherit self; };
+      lib = import ./lib.nix { inherit self; };
+      templates = import ./templates { };
       nixosConfigurations = {
-        ghost-gs60 = nixosSystem {
-          hostname = "ghost-gs60";
+        latitude-7390 = self.outputs.lib.nixosSystem {
+          hostname = "latitude-7390";
+          platform = "x86_64-linux";
           modules = [
-            ./hosts/ghost-gs60.nix
+            ./hosts/latitude-7390.nix
             ./modules/users/dom.nix
           ];
         };
-        latitude-7390 = nixosSystem {
-          hostname = "latitude-7390";
+        ghost-gs60 = self.outputs.lib.nixosSystem {
+          hostname = "ghost-gs60";
+          platform = "x86_64-linux";
           modules = [
-            ./hosts/latitude-7390.nix
+            ./hosts/ghost-gs60.nix
             ./modules/users/dom.nix
           ];
         };
@@ -123,5 +100,12 @@ rec {
       githubActions = mkGithubMatrix {
         checks = getAttrs (attrNames githubPlatforms) self.devShells;
       };
+
+      devShells = nixpkgs.lib.mkDevShells {
+        default = import ./dev-shells/default.nix { inherit (self) inputs outputs; };
+      };
     };
 }
+
+
+

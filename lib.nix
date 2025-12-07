@@ -1,11 +1,11 @@
-{ inputs, outputs, nixConfig }:
+{ self }:
 
 rec {
   tailnet = "soay-puffin.ts.net";
-  nixosHostnames = inputs.nixpkgs.lib.attrNames outputs.nixosConfigurations;
-  darwinHostnames = inputs.nixpkgs.lib.attrNames outputs.darwinConfigurations;
+  nixosHostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.nixosConfigurations;
+  darwinHostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.darwinConfigurations;
   hostnames = nixosHostnames ++ darwinHostnames;
-  maintainers = inputs.nixpkgs.lib.maintainers // {
+  maintainers = self.inputs.nixpkgs.lib.maintainers // {
     dominicegginton = {
       name = "Dominic Egginton";
       email = "dominic.egginton@gmail.com";
@@ -17,20 +17,17 @@ rec {
   eachPlatformMerge = op: platforms: f: builtins.foldl' (op f) { } (if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then platforms else platforms ++ [ builtins.currentSystem ]);
   eachPlatform = eachPlatformMerge (f: attrs: platform: let ret = f platform; in builtins.foldl' (attrs: key: attrs // { ${key} = (attrs.${key} or { }) // { ${platform} = ret.${key}; }; }) attrs (builtins.attrNames ret));
   packagesFrom = module: platform: module.packages.${platform};
-  nixosSystem = { hostname, platform ? "x86_64-linux", modules ? [ ], ... } @attrs:
-    inputs.nixpkgs.lib.nixosSystem {
-      pkgs = outputs.legacyPackages.${platform};
-      specialArgs = {
-        inherit inputs outputs tailnet hostname nixConfig;
-        dlib = outputs.lib;
-      };
-      modules = modules ++ [
-        inputs.base16.nixosModule
-        inputs.disko.nixosModules.disko
-        inputs.impermanence.nixosModules.impermanence
-        inputs.home-manager.nixosModules.default
-        inputs.nix-topology.nixosModules.default
-        inputs.deadman.nixosModules.default
+  nixosSystem = { hostname, platform ? "x86_64-linux", modules ? [ ], ... }:
+    self.inputs.nixpkgs.lib.nixosSystem {
+      pkgs = self.outputs.nixpkgsFor.${platform};
+      specialArgs = { inherit self tailnet hostname; };
+      modules = with self.inputs; modules ++ [
+        base16.nixosModule
+        disko.nixosModules.disko
+        impermanence.nixosModules.impermanence
+        home-manager.nixosModules.default
+        nix-topology.nixosModules.default
+        deadman.nixosModules.default
         ./modules
       ];
     };

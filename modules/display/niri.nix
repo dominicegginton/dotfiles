@@ -22,7 +22,6 @@ with config.scheme.withHashtag;
         configPackages = [ pkgs.niri ];
       };
     };
-    display.gnome.enable = lib.mkForce true;
     services = {
       hardware.bolt.enable = true;
       graphical-desktop.enable = true;
@@ -30,9 +29,7 @@ with config.scheme.withHashtag;
       pipewire.enable = true;
       gnome.gnome-keyring.enable = true;
       displayManager.sessionPackages = [ pkgs.niri ];
-      xserver.desktopManager.runXdgAutostartIfNone = lib.mkDefault true;
       geoclue2.enableDemoAgent = lib.mkDefault true;
-      blueman.enable = true;
     };
     programs = {
       niri.enable = true;
@@ -61,7 +58,7 @@ with config.scheme.withHashtag;
       packages = with pkgs; [
         font-manager
         nerd-fonts.noto
-        noto-fonts-emoji
+        noto-fonts-color-emoji
         ibm-plex
       ];
     };
@@ -112,7 +109,7 @@ with config.scheme.withHashtag;
       ];
       etc."niri/config.kdl".text = ''
         prefer-no-csd
-        spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background.light}" "--mode" "fill"
+        spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background.backgroundImage}" "--mode" "fill"
         spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
         spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
         spawn-at-startup "${lib.getExe pkgs.wlsunset}" "-S" "08:00" "-s" "19:00"

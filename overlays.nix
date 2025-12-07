@@ -1,9 +1,8 @@
-{ inputs, outputs }:
+{ self }:
 
-with outputs.lib;
+with self.outputs.lib;
 
 rec {
-  # default overlay
   default = final: prev: {
     withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
     karren =
@@ -23,7 +22,7 @@ rec {
             exit 1;
           fi
 
-          ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConiguration}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
+          ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConfig}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
         '';
       in
       {
@@ -63,12 +62,12 @@ rec {
     ensure-workspace-is-clean = final.callPackage ./pkgs/ensure-workspace-is-clean.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
-    infect = (outputs.lib.nixosSystem {
+    infect = (self.outputs.lib.nixosSystem {
       hostname = "residence-installer";
       platform = final.system;
       extraModules = [
         (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
-        ({ pkgs, lib, modulesPath, config, ... }:
+        ({ pkgs, lib, ... }:
           {
             roles = [ "installer" ];
             image.baseName = lib.mkDefault "residence-installer";
@@ -136,7 +135,7 @@ rec {
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
-    residence = final.callPackage ./pkgs/residence { inherit (inputs) ags; inherit (final) system; };
+    residence = final.callPackage ./pkgs/residence { inherit (self.inputs) ags; inherit (final) system; };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
     topology = outputs.topology.${final.system}.config.output;
@@ -161,6 +160,5 @@ rec {
       });
     };
     fleet = final.callPackage ./pkgs/fleet.nix { };
-    lib = prev.lib // outputs.lib;
   };
 }
