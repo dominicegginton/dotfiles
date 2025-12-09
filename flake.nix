@@ -96,6 +96,13 @@ rec {
             ./modules/users/dom.nix
           ];
         };
+        residence-installer = self.outputs.lib.nixosSystem {
+          hostname = "residence-installer";
+          platform = "x86_64-linux";
+          modules = [
+            ./hosts/residence-installer.nix
+          ];
+        };
       };
       githubActions = mkGithubMatrix {
         checks = getAttrs (attrNames githubPlatforms) self.devShells;
