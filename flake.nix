@@ -101,6 +101,7 @@ rec {
           platform = "x86_64-linux";
           modules = [
             ./hosts/residence-installer.nix
+            ./modules/users/dom.nix
           ];
         };
       };

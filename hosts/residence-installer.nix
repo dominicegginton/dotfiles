@@ -5,15 +5,11 @@
     (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
   ];
 
-  roles = [ "installer" ];
   image.baseName = lib.mkDefault "residence-installer";
   console.earlySetup = true;
 
   services = {
-    openssh = {
-      enable = true;
-      settings.PermitRootLogin = "yes";
-    };
+    openssh.enable = true;
     getty.autologinUser = lib.mkForce "root";
     tailscale.enable = true;
   };
@@ -80,30 +76,9 @@
         ${pkgs.gum}/bin/gum style --bold --foreground 196 "✗ No disko devices found in configuration. Aborting."
         exit 1
       fi
-      
-      # Get available physical disks
-      physical_disks=$(${pkgs.lsblk}/bin/lsblk -dn -o NAME,SIZE,TYPE | ${pkgs.gnugrep}/bin/grep 'disk')
-      physical_disk_names=$(echo "$physical_disks" | ${pkgs.coreutils}/bin/awk '{print $1}')
-      
-      # Map each disko device to a physical disk
-      disk_flags=""
-      while IFS= read -r disko_device; do
-        ${pkgs.gum}/bin/gum style --bold --foreground 212 "Select physical disk for disko device '$disko_device':"
-        echo "$physical_disks"
-        physical_disk=$(echo "$physical_disk_names" | ${pkgs.gum}/bin/gum choose --header="Select physical disk for '$disko_device':")
-        
-        if [ -z "$physical_disk" ]; then
-          ${pkgs.gum}/bin/gum style --bold --foreground 196 "✗ No disk selected for '$disko_device'. Aborting."
-          exit 1
-        fi
-        
-        disk_flags="$disk_flags --disk $disko_device /dev/$physical_disk"
-      done <<< "$disko_devices"
 
-      # Confirm installation
-      ${pkgs.gum}/bin/gum style --bold --foreground 214 "Configuration: $configuration"
-      ${pkgs.gum}/bin/gum style --bold --foreground 214 "Disk mappings:$disk_flags"
-      ${pkgs.gum}/bin/gum confirm "Install NixOS? This will erase all data on the selected disks." || exit 1
+      ## TODO: finish multi-disk support
+      disk_flags=""
 
       # Install NixOS
       exec ${pkgs.disko}/bin/disko-install --write-efi-boot-entries --flake "$configurationName" $disk_flags
