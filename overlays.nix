@@ -66,6 +66,7 @@ rec {
     mkShell = final.callPackage ./pkgs/mk-shell.nix { };
     network-filters-disable = final.callPackage ./pkgs/network-filters-disable.nix { };
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
+    nix-github-authentication = final.callPackage ./pkgs/nix-github-authentication.nix { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
     residence = final.callPackage ./pkgs/residence { inherit (self.inputs) ags; inherit (final) system; };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };

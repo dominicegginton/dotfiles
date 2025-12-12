@@ -5,7 +5,6 @@ with lib;
 {
   config = {
     users = {
-      defaultUserShell = pkgs.zsh;
       users = {
         root = {
           enable = lib.mkDefault true;

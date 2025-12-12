@@ -97,16 +97,6 @@ in
         - "~/playgrounds"
     '';
 
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestion.enable = true;
-      autocd = true;
-      defaultKeymap = "viins";
-      oh-my-zsh.enable = true;
-      oh-my-zsh.theme = "eastwood";
-    };
-
     programs = {
       git.enable = true;
       gh = {
@@ -151,7 +141,6 @@ in
           extensions.ignoreRecommendations = true;
           extensions.autoCheckUpdates = false;
           extensions.autoUpdate = false;
-          terminal.integrated.defaultProfile.linux = "zsh";
           updates.mode = "none";
           window = {
             titleBarStyle = "custom";
@@ -184,7 +173,6 @@ in
     services.gpg-agent = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
       enableSshSupport = true;
-      enableZshIntegration = true;
     };
 
     home.sessionVariables = {

@@ -12,7 +12,6 @@ with lib;
       description = self.outputs.lib.maintainers.dominicegginton.name;
       hashedPasswordFile = "/run/bitwarden-secrets/dom";
       homeMode = "0755";
-      shell = pkgs.zsh;
       extraGroups = [
         "users" # Standard users group
         "wheel" # For sudo access

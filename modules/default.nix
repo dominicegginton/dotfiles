@@ -18,7 +18,6 @@ rec {
     ./programs/firefox.nix
     ./programs/sherlock-launcher.nix
     ./programs/steam.nix
-    ./programs/zsh.nix
     ./security/apparmor.nix
     ./security/pam.nix
     ./security/polkit.nix
@@ -76,6 +75,7 @@ rec {
 
   # system locale
   i18n.defaultLocale = "en_GB.UTF-8";
+  nixpkgs.overlays = [ self.outputs.overlays.default ];
 
   # nix settings
   nix = {
