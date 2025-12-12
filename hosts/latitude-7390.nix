@@ -1,6 +1,7 @@
 { self, lib, config, ... }:
 
 {
+  display.wio.enable = true;
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd

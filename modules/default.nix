@@ -11,6 +11,7 @@ rec {
     ./display/gnome.nix
     ./display/niri.nix
     ./display/steamos.nix
+    ./display/wio.nix
     ./hardware/bluetooth.nix
     ./hardware/disks.nix
     ./programs/alacritty.nix
