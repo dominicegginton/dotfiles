@@ -1,5 +1,18 @@
 { lib, pkgs, modulesPath, ... }:
 
+let
+  installerName = builtins.getEnv "RESIDENCE_INSTALLER_NAME";
+in
+
+# assert installerName != "";  # Ensure 
+
+let
+  installer = pkgs.writeShellScriptBin "residence-installer" ''
+    echo "This is the Residence installer."
+    echo "${installerName}"
+  '';
+in
+
 {
   imports = [
     (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
@@ -50,6 +63,9 @@
   environment.systemPackages = with pkgs; [
     (writeShellScriptBin "install" ''
       set -eux
+
+      # TODO: test network connectivity and exit if not online
+      # TODO: import gpg key for scrects decryption (root user)
       
       # Get available configurations from the flake
       ${pkgs.gum}/bin/gum style --bold --foreground 212 "Fetching available NixOS configurations..."

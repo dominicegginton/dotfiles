@@ -71,14 +71,32 @@ rec {
       });
     in
 
-    with nix-github-actions.lib;
-
     {
       inherit nixpkgsFor;
+
       formatter = forAllSystems (system: nixpkgsFor.${system}.nixpkgs-fmt);
-      overlays = import ./overlays.nix { inherit self; };
+
       lib = import ./lib.nix { inherit self; };
+
+      overlays = import ./overlays.nix { inherit self; };
+
       templates = import ./templates { };
+
+      githubActions = with nix-github-actions.lib; mkGithubMatrix { checks = getAttrs (attrNames githubPlatforms) self.outputs.devShells; };
+
+      legacyPackages = forAllSystems (system: nixpkgsFor.${system});
+
+      devShells = forAllSystems (system: let pkgs = nixpkgsFor.${system}; in { default = pkgs.callPackage ./shell.nix { }; });
+
+      topology = forAllSystems (system:
+        let pkgs = nixpkgsFor.${system}; in import self.inputs.nix-topology {
+          inherit pkgs;
+          modules = [
+            ./topology.nix
+            { nixosConfigurations = self.outputs.nixosConfigurations; }
+          ];
+        });
+
       nixosConfigurations = {
         latitude-7390 = self.outputs.lib.nixosSystem {
           hostname = "latitude-7390";
@@ -88,14 +106,7 @@ rec {
             ./modules/users/dom.nix
           ];
         };
-        ghost-gs60 = self.outputs.lib.nixosSystem {
-          hostname = "ghost-gs60";
-          platform = "x86_64-linux";
-          modules = [
-            ./hosts/ghost-gs60.nix
-            ./modules/users/dom.nix
-          ];
-        };
+
         residence-installer = self.outputs.lib.nixosSystem {
           hostname = "residence-installer";
           platform = "x86_64-linux";
@@ -104,13 +115,6 @@ rec {
             ./modules/users/dom.nix
           ];
         };
-      };
-      githubActions = mkGithubMatrix {
-        checks = getAttrs (attrNames githubPlatforms) self.devShells;
-      };
-
-      devShells = nixpkgs.lib.mkDevShells {
-        default = import ./dev-shells/default.nix { inherit (self) inputs outputs; };
       };
     };
 }

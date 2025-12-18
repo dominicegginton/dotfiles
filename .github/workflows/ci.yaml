@@ -66,15 +66,6 @@ jobs:
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix build -L '.#${{ matrix.attr }}'
 
-  ghost-gs60:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./.github/actions/install-nix
-        with:
-          free-disk-space: true
-      - run: nix build -L .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
-
   latitude-7390:
     runs-on: ubuntu-latest
     steps:
