@@ -1,11 +1,11 @@
 { lib, fetchurl, mkGnomeBackground, ... }:
 
 mkGnomeBackground {
-  name = "a_snow_covered_houses_and_a_street_light";
+  name = "green-trees-near-body-of-water-during-daytime";
   src = fetchurl rec {
-    name = "a_snow_covered_houses_and_a_street_light.png";
-    url = "https://github.com/dharmx/walls/blob/main/cold/a_snow_covered_houses_and_a_street_light.png?raw=true";
-    sha256 = "sha256-7rzLoY0Bh6xUfn7cVsNpBJnJ4/vVdwCRK5afziEnlWk=";
+    name = "green-trees-near-body-of-water-during-daytime.jpg";
+    url = "https://images.unsplash.com/photo-1597157153515-028fa3d4bd69?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=eric-lee-ss8Dka_Tvwg-unsplash.jpg";
+    sha256 = "sha256-O/RE/82J9t0vgsrNBofTYd8qjflYeCqjeEvyGshec9E=";
     meta = {
       description = "Background image ${name} from ${url}";
       license = lib.licenses.free;
