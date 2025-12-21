@@ -17,7 +17,9 @@ rec {
     ags.url = "github:aylur/ags?rev=3ed9737bdbc8fc7a7c7ceef2165c9109f336bff6";
     ags.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
-    niri.url = "github:yalter/niri?rev=b7909dbf61c7c1511b9a51ef46e1d503d5ba3d05";
+    run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
+    run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
+    niri.url = "github:yalter/niri";
     niri.inputs.nixpkgs.follows = "nixpkgs";
     todo.url = "github:dominicegginton/todo";
     todo.inputs.nixpkgs.follows = "nixpkgs";
@@ -30,14 +32,8 @@ rec {
   nixConfig = {
     experimental-features = [ "flakes" "nix-command" ];
     builders-use-substitutes = true;
-    substituters = [
-      "https://cache.nixos.org"
-      "https://dominicegginton-dotfiles.cachix.org"
-    ];
-    trusted-public-keys = [
-      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "dominicegginton-dotfiles.cachix.org-1:gm9nclRacSnrdXSPqXso3Abg2TTuo3PrGUJFGlhAzDU="
-    ];
+    substituters = [ "https://cache.nixos.org" ];
+    trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
   };
 
   outputs = { self, nixpkgs, nix-github-actions, ... }:
@@ -67,6 +63,7 @@ rec {
           nix-topology.overlays.default
           nix-topology.overlays.topology
           deadman.overlays.default
+          run0-sudo-shim.overlays.default
         ];
       });
     in

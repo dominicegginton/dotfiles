@@ -7,6 +7,8 @@
     # # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268136
     opencryptoki
 
+    run0-sudo-shim # Provide sudo functionality on systems without sudo
+
     (lib.hiPrio uutils-coreutils-noprefix) # Use uutils-coreutils
     (lib.hiPrio uutils-findutils) # Use uutils-findutils
     (lib.hiPrio uutils-diffutils) # Use uutils-diffutils

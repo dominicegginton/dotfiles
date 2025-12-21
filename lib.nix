@@ -22,11 +22,12 @@ rec {
       pkgs = self.outputs.nixpkgsFor.${platform};
       specialArgs = { inherit self tailnet hostname; };
       modules = with self.inputs; modules ++ [
+        nix-topology.nixosModules.default
         base16.nixosModule
         disko.nixosModules.disko
         impermanence.nixosModules.impermanence
         home-manager.nixosModules.default
-        nix-topology.nixosModules.default
+        run0-sudo-shim.nixosModules.default
         deadman.nixosModules.default
         ./modules
       ];
