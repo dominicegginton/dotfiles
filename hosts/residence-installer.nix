@@ -4,7 +4,7 @@ let
   installerName = builtins.getEnv "RESIDENCE_INSTALLER_NAME";
 in
 
-# assert installerName != "";  # Ensure 
+# assert installerName != "";  # Ensure
 
 let
   installer = pkgs.writeShellScriptBin "residence-installer" ''
@@ -66,28 +66,28 @@ in
 
       # TODO: test network connectivity and exit if not online
       # TODO: import gpg key for scrects decryption (root user)
-      
+
       # Get available configurations from the flake
       ${pkgs.gum}/bin/gum style --bold --foreground 212 "Fetching available NixOS configurations..."
       flake_url="github:dominicegginton/dotfiles"
-      
+
       # Evaluate and extract nixosConfigurations, excluding the installer
       configs=$(${pkgs.nix}/bin/nix eval "$flake_url#nixosConfigurations" --apply 'configs: builtins.concatStringsSep "\n" (builtins.filter (name: name != "residence-installer") (builtins.attrNames configs))' --raw)
-      
+
       # Select configuration
       ${pkgs.gum}/bin/gum style --bold --foreground 212 "Select NixOS configuration to install:"
       configuration=$(echo "$configs" | ${pkgs.gum}/bin/gum choose --header="Available configurations:")
-      
+
       if [ -z "$configuration" ]; then
         ${pkgs.gum}/bin/gum style --bold --foreground 196 "✗ No configuration selected. Aborting."
         exit 1
       fi
-      
+
       # Get disko device names from the selected configuration
       ${pkgs.gum}/bin/gum style --bold --foreground 212 "Evaluating disko configuration..."
       configurationName="$flake_url#$configuration"
       disko_devices=$(${pkgs.nix}/bin/nix eval "$configurationName.config.disko.devices.disk" --apply 'disks: builtins.concatStringsSep "\n" (builtins.attrNames disks)' --raw 2>/dev/null || echo "")
-      
+
       if [ -z "$disko_devices" ]; then
         ${pkgs.gum}/bin/gum style --bold --foreground 196 "✗ No disko devices found in configuration. Aborting."
         exit 1
@@ -100,4 +100,6 @@ in
       exec ${pkgs.disko}/bin/disko-install --write-efi-boot-entries --flake "$configurationName" $disk_flags
     '')
   ];
+
+  display.gnome.enable = true;
 }
