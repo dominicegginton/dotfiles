@@ -25,6 +25,7 @@ rec {
     ./security/sudo.nix
     ./security/tpm2.nix
     ./services/backup.nix
+    ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/davfs2.nix
     ./services/displaymanager.nix
