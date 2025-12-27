@@ -9,34 +9,27 @@ Declarative System, Package & Home Configurations - WIP Always
 ## Features
 
 - **Nix Flakes** - 100% _Nix Flakes_-based configuration, no Nix channels.
-- **Bispoke Wayland Desktop** - Built on top of _niri_, _residence_ provides a scrolling desktop environment.
+- **Gnome Desktop Environment** - Full featured Gnome desktop environment.
 - **GPG Encrypted & Bitwarden Managed Secrets** - System wide encrypted secrets managed by _bsm_ & _bw_.
-- **CVS Scanning & AV** - Automatic CVS vulnerability scanning using _Vulnix_ and AV providded by _CalmAV_.
 - **Comprehensive Backups** - Automated backups to _Google Cloud Storage Buckets_.
 - **Peer-to-peer secure VPN** - _Tailscale_ zero config virtual private mesh networking.
 - **Private DNS Service** - Prvicy-fixused and security-oriented domain name service provided by _NextDNS_.
 - **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
-- **Binary Caching** - Binaries are cached on _Cachix_ for fast builds of development shells and packages.
-- **Topology Diagrams** - Automated infrastructure and network diagrams using _nix-topology_.
-- **Nix Overlays** - Overlays for packages, utils, and tooling.
-- **Ad-hoc Shell Environments** - Predefined ad-hoc shell environments for common tools and tasks.
-- **Development Workspace Templates** - _Flake_ templates for bootstrapping common development workspaces.
 
 ## Workspace
 
 This workspace follows the following structure:
 
 ```
-├── .github/workflows # GitHub Actions workflows
 ├── assets            # Static assets
-├── home              # User HomeManager configurations
-├── hosts             # Host NixOS configurations
-├── infrastructure    # Terraform configuration
-├── modules           # Nix modules
+├── home              # User HomeManager modules 
+├── hosts             # Host NixOS modules 
+├── infrastructure    # Terraform infrastructure
+├── modules           # NixOS modules
 ├── pkgs              # Package definitions
 ├── shells            # Ad-hoc shells environments
-├── templates         # Development workspace Templates
-├── flake.nix         # Nix flake inputs & outputs
+├── templates         # Nix flake templates
+├── flake.nix         # Nix flake
 ├── lib.nix           # Nix utils
 ├── overlays.nix      # Package overlays
 ├── shell.nix         # Workspace development shell
