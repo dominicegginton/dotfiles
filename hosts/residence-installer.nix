@@ -14,9 +14,7 @@ let
 in
 
 {
-  imports = [
-    (modulesPath + "/installer/cd-dvd/installation-cd-base.nix")
-  ];
+  imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-base.nix") ];
 
   image.baseName = lib.mkDefault "residence-installer";
   console.earlySetup = true;

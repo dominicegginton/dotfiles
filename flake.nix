@@ -112,6 +112,15 @@ rec {
             ./modules/users/dom.nix
           ];
         };
+
+        walsgrave = self.outputs.lib.nixosSystem {
+          hostname = "walsgrave";
+          platform = "x86_64-linux";
+          modules = [
+            ./hosts/walsgrave.nix
+            ./modules/users/dom.nix
+          ];
+        };
       };
     };
 }

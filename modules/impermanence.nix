@@ -7,8 +7,8 @@
 {
   config = {
     boot.initrd = {
-      supportedFilesystems = [ "btrfs" ]; # ensure btrfs is supported in initrd
-      kernelModules = [ "btrfs" "dm-mod" "dm-crypt" ]; # load necessary kernel modules 
+      supportedFilesystems = [ "btrfs" ];
+      kernelModules = [ "btrfs" "dm-mod" "dm-crypt" ];
       systemd = {
         enable = true;
         services.impermanence-rollback = {
@@ -18,11 +18,26 @@
           unitConfig.DefaultDependencies = "no";
           serviceConfig.Type = "oneshot";
           script = ''
-            echo "Performing impermanence rollback..."
+            echo "Rolling back BTRFS root subvolume to a pristine state..."
+
+            mkdir -p /mnt
+            mount -o subvol=/ /dev/mapper/enc /mnt
+
+            btrfs subvolume list -o /mnt/root |
+              cut -f9 -d' ' |
+              while read subvolume; do
+                btrfs subvolume delete "/mnt/$subvolume"
+              done &&
+              btrfs subvolume delete /mnt/root
+
+            echo "Restoring blank /root subvolume..."
+            btrfs subvolume snapshot /mnt/root-blank /mnt/root
+            umount /mnt          
           '';
         };
       };
     };
+
     environment.persistence = {
       "/persist" = {
         files = [

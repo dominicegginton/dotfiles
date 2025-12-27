@@ -18,7 +18,6 @@
         core-apps.enable = lib.mkDefault true;
       };
     };
-    programs.firefox.enable = true;
     programs.dconf.profiles.user.databases = [
       {
         settings = {

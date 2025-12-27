@@ -217,16 +217,6 @@ in
       ];
     };
 
-    home.packages = with pkgs; [
-      bat
-      eza
-      gitui
-      twm
-      twx
-    ] ++ lib.optionals gui [
-      teams-for-linux
-      # youtube
-      # silverbullet-desktop
-    ];
+    home.packages = with pkgs; [ bat eza twm twx ];
   };
 }
