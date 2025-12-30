@@ -1,22 +1,9 @@
 { lib, pkgs, modulesPath, ... }:
 
-let
-  installerName = builtins.getEnv "RESIDENCE_INSTALLER_NAME";
-in
-
-# assert installerName != "";  # Ensure
-
-let
-  installer = pkgs.writeShellScriptBin "residence-installer" ''
-    echo "This is the Residence installer."
-    echo "${installerName}"
-  '';
-in
-
 {
   imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-base.nix") ];
 
-  image.baseName = lib.mkDefault "residence-installer";
+  image.baseName = lib.mkDefault "infecter";
   console.earlySetup = true;
 
   services = {
@@ -70,7 +57,7 @@ in
       flake_url="github:dominicegginton/dotfiles"
 
       # Evaluate and extract nixosConfigurations, excluding the installer
-      configs=$(${pkgs.nix}/bin/nix eval "$flake_url#nixosConfigurations" --apply 'configs: builtins.concatStringsSep "\n" (builtins.filter (name: name != "residence-installer") (builtins.attrNames configs))' --raw)
+      configs=$(${pkgs.nix}/bin/nix eval "$flake_url#nixosConfigurations" --apply 'configs: builtins.concatStringsSep "\n" (builtins.filter (name: name != "infector") (builtins.attrNames configs))' --raw)
 
       # Select configuration
       ${pkgs.gum}/bin/gum style --bold --foreground 212 "Select NixOS configuration to install:"

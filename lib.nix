@@ -20,7 +20,7 @@ rec {
   nixosSystem = { hostname, platform ? "x86_64-linux", modules ? [ ], ... }:
     self.inputs.nixpkgs.lib.nixosSystem {
       pkgs = self.outputs.nixpkgsFor.${platform};
-      specialArgs = { inherit self tailnet hostname; };
+      specialArgs = { inherit self tailnet hostname platform; };
       modules = with self.inputs; modules ++ [
         nix-topology.nixosModules.default
         base16.nixosModule

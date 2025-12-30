@@ -26,17 +26,17 @@
 
         # https://github.com/NixOS/nixpkgs/pull/419588
         systemd-run0 = {
-          setLoginUid = true;
-          pamMount = false;
+          setLoginUid = lib.mkDefault true;
+          pamMount = lib.mkDefault true;
         };
       };
 
     # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268177
-    p11.enable = true;
+    p11.enable = lib.mkDefault true;
 
 
     # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268085
-    loginLimits = [
+    loginLimits = lib.mkDefault [
       {
         domain = "*";
         item = "maxlogins";

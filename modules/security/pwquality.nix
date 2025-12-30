@@ -13,7 +13,7 @@ in
     run0.text = lib.mkDefault password-requisite;
   };
 
-  environment.etc."/security/pwquality.conf".text = lib.strings.concatLines [
+  environment.etc."/security/pwquality.conf".text = lib.mkDefault (lib.strings.concatLines [
     # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268126
     ''
       ucredit=-1
@@ -42,5 +42,5 @@ in
     ''
       dictcheck=1
     ''
-  ];
+  ]);
 }

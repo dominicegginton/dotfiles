@@ -121,7 +121,7 @@ in
       };
       description = "Attribute set of secrets to be installed.";
     };
-  config = lib.mkIf (hostname != "residence-installer") {
+  config = lib.mkIf (hostname != "infector") {
     systemd.services.decrypt-secrets = {
       wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
       before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];

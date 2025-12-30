@@ -97,25 +97,22 @@ rec {
       nixosConfigurations = {
         latitude-7390 = self.outputs.lib.nixosSystem {
           hostname = "latitude-7390";
-          platform = "x86_64-linux";
           modules = [
             ./hosts/latitude-7390.nix
             ./modules/users/dom.nix
           ];
         };
 
-        residence-installer = self.outputs.lib.nixosSystem {
-          hostname = "residence-installer";
-          platform = "x86_64-linux";
+        infector = self.outputs.lib.nixosSystem {
+          hostname = "infector";
           modules = [
-            ./hosts/residence-installer.nix
+            ./hosts/infector.nix
             ./modules/users/dom.nix
           ];
         };
 
         walsgrave = self.outputs.lib.nixosSystem {
           hostname = "walsgrave";
-          platform = "x86_64-linux";
           modules = [
             ./hosts/walsgrave.nix
             ./modules/users/dom.nix

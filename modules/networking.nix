@@ -3,7 +3,7 @@
 with config.lib.topology;
 
 {
-  config = lib.mkIf (hostname != "residence-installer") {
+  config = {
     networking = {
       hostName = hostname;
       useDHCP = lib.mkDefault true;
@@ -11,15 +11,10 @@ with config.lib.topology;
       firewall = {
         # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268078
         enable = lib.mkDefault true;
-        trustedInterfaces = [ "tailscale0" ];
-        checkReversePath = "loose";
-        # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268158
-        # extraCommands = ''
-        #   ip46tables --append INPUT --protocol tcp --dport 22 --match hashlimit --hashlimit-name stig_byte_limit --hashlimit-mode srcip --hashlimit-above 1000000b/second --jump nixos-fw-refuse
-        #   ip46tables --append INPUT --protocol tcp --dport 80 --match hashlimit --hashlimit-name stig_conn_limit --hashlimit-mode srcip --hashlimit-above 1000/minute --jump nixos-fw-refuse
-        #   ip46tables --append INPUT --protocol tcp --dport 443 --match hashlimit --hashlimit-name stig_conn_limit --hashlimit-mode srcip --hashlimit-above 1000/minute --jump nixos-fw-refuse
-        # '';
+        trustedInterfaces = lib.mkDefault [ "tailscale0" ];
+        checkReversePath = lib.mkDefault "loose";
       };
+
       wireless = {
         fallbackToWPA2 = true;
         userControlled.enable = true;

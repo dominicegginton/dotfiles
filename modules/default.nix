@@ -42,7 +42,7 @@ rec {
     ./services/tailscale.nix
     ./services/timesyncd.nix
     ./services/tlp.nix
-    ./services/unifi.nix
+    ./services/usbguard.nix
     ./users/root.nix
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix

@@ -37,7 +37,10 @@
         gnome-user-docs
         gnome-backgrounds
         gnome-text-editor
+        gnome-connections
+        gnome-music
         yelp
+        geary
       ];
       systemPackages = with pkgs; with gnomeExtensions; [
         background
