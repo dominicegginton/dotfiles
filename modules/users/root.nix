@@ -1,4 +1,4 @@
-{ self, lib, pkgs, hostname, ... }:
+{ self, lib, hostname, ... }:
 
 with lib;
 

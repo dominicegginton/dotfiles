@@ -44,10 +44,21 @@
     usbguard.rules = ''
       allow id 1d6b:0002 serial "0000:00:14.0" name "xHCI Host Controller" hash "jEP/6WzviqdJ5VSeTUY8PatCNBKeaREvo2OqdplND/o=" parent-hash "rV9bfLq7c2eA4tYjVjwO4bxhm+y6GgZpl9J60L0fBkY=" with-interface 09:00:00 with-connect-type ""
       allow id 1d6b:0003 serial "0000:00:14.0" name "xHCI Host Controller" hash "3Wo3XWDgen1hD5xM3PSNl3P98kLp1RUTgGQ5HSxtf8k=" parent-hash "rV9bfLq7c2eA4tYjVjwO4bxhm+y6GgZpl9J60L0fBkY=" with-interface 09:00:00 with-connect-type ""
+      allow id 1d6b:0002 serial "0000:37:00.0" name "xHCI Host Controller" hash "Nqe34Aq1aYNBGK8WI2u5jL//Ivps6Bd/RXF8a8HhC5U=" parent-hash "OuhpyIUyVyDxrPnYaGwYTrUHnTrAheAsRygYxrOT+H0=" with-interface 09:00:00 with-connect-type ""
+      allow id 1d6b:0003 serial "0000:37:00.0" name "xHCI Host Controller" hash "zRY266loBH7GIz2ifvCWu1vhsoT5HODoGjsUGUJzTKQ=" parent-hash "OuhpyIUyVyDxrPnYaGwYTrUHnTrAheAsRygYxrOT+H0=" with-interface 09:00:00 with-connect-type ""
       allow id 0bda:58f6 serial "200901010001" name "Integrated_Webcam_HD" hash "63/xld67bmuT9aMNMx5KZ8ZzjbIYhD2g7y7tr9NuJVY=" parent-hash "jEP/6WzviqdJ5VSeTUY8PatCNBKeaREvo2OqdplND/o=" with-interface { 0e:01:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:01:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 0e:02:00 } with-connect-type "hardwired"
       allow id 8087:0a2b serial "" name "" hash "TtRMrWxJil9GOY/JzidUEOz0yUiwwzbLm8D7DJvGxdg=" parent-hash "jEP/6WzviqdJ5VSeTUY8PatCNBKeaREvo2OqdplND/o=" via-port "1-7" with-interface { e0:01:01 e0:01:01 e0:01:01 e0:01:01 e0:01:01 e0:01:01 e0:01:01 } with-connect-type "hardwired"
       allow id 0bda:0328 serial "28203008282014000" name "USB3.0-CRW" hash "+rdt/gUNicD/8xJnaFeMXunM1SNJu2bCHm5XxuDZ3uQ=" parent-hash "3Wo3XWDgen1hD5xM3PSNl3P98kLp1RUTgGQ5HSxtf8k=" with-interface 08:06:50 with-connect-type "hardwired"
+      allow id 0451:8442 serial "390208512ACF" name "" hash "i8BVhpRxFr+upCHicKe82gWWmI2sPV2rLolRpTNPwhc=" parent-hash "Nqe34Aq1aYNBGK8WI2u5jL//Ivps6Bd/RXF8a8HhC5U=" with-interface { 09:00:01 09:00:02 } with-connect-type "hotplug"
+      allow id 0451:8442 serial "9A0208412ACF" name "" hash "DlsTh2GxGfnUXPXVK1SOudjsyGxMnQ/btuHJocDjTlY=" parent-hash "Nqe34Aq1aYNBGK8WI2u5jL//Ivps6Bd/RXF8a8HhC5U=" with-interface { 09:00:01 09:00:02 } with-connect-type "hotplug"
+      allow id 0451:8440 serial "" name "" hash "zSE9+mL7oNP12rU6WvaME9/ZcSl28k+JavUbxtxzYdQ=" parent-hash "zRY266loBH7GIz2ifvCWu1vhsoT5HODoGjsUGUJzTKQ=" via-port "4-1" with-interface 09:00:00 with-connect-type "hotplug"
+      allow id 0451:8440 serial "" name "" hash "zSE9+mL7oNP12rU6WvaME9/ZcSl28k+JavUbxtxzYdQ=" parent-hash "zRY266loBH7GIz2ifvCWu1vhsoT5HODoGjsUGUJzTKQ=" via-port "4-2" with-interface 09:00:00 with-connect-type "hotplug"
       allow id 0a5c:5834 serial "0123456789ABCD" name "5880" hash "+YH06PbcYGU42XrDqMUVVHrSxEvBe75boTfjxlh6cnQ=" parent-hash "jEP/6WzviqdJ5VSeTUY8PatCNBKeaREvo2OqdplND/o=" with-interface { fe:00:00 0b:00:00 0b:00:00 ff:00:00 } with-connect-type "hardwired"
+      allow id 046d:c52b serial "" name "USB Receiver" hash "djeL7wNsJBQMuBiqUyWflgupndhsbPkbOih8g3L6OeA=" parent-hash "i8BVhpRxFr+upCHicKe82gWWmI2sPV2rLolRpTNPwhc=" via-port "3-1.1" with-interface { 03:01:01 03:01:02 03:00:00 } with-connect-type "unknown"
+      allow id 05ac:0250 serial "" name "Keychron K2" hash "qa1ZDUxjwXfYDXW+dQY8ySd/TwHubB4ON8qrFsXKn4E=" parent-hash "i8BVhpRxFr+upCHicKe82gWWmI2sPV2rLolRpTNPwhc=" via-port "3-1.2" with-interface { 03:01:01 03:01:02 } with-connect-type "unknown"
+      allow id 0451:82ff serial "" name "" hash "y1IP3wHahAPyS1jcoBvVlQZSGWFT0qVh95RW4FG/W68=" parent-hash "i8BVhpRxFr+upCHicKe82gWWmI2sPV2rLolRpTNPwhc=" via-port "3-1.5" with-interface 03:00:00 with-connect-type "unknown"
+      allow id b58e:0005 serial "8839B14181040506" name "Yeti Nano" hash "iaKO0NXnK1mGu/OU2CX6mGogszjA44Bcy+XsNjwgbOM=" parent-hash "DlsTh2GxGfnUXPXVK1SOudjsyGxMnQ/btuHJocDjTlY=" with-interface { 01:01:00 01:02:00 01:02:00 01:02:00 01:02:00 03:00:00 } with-connect-type "unknown"
+      allow id 0451:82ff serial "" name "" hash "y1IP3wHahAPyS1jcoBvVlQZSGWFT0qVh95RW4FG/W68=" parent-hash "DlsTh2GxGfnUXPXVK1SOudjsyGxMnQ/btuHJocDjTlY=" via-port "3-2.5" with-interface 03:00:00 with-connect-type "unknown"
     '';
   };
 
