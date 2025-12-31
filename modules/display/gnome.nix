@@ -13,11 +13,13 @@
       udev.packages = [ pkgs.gnome-settings-daemon ];
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
+      flatpak.enable = true;
       gnome = {
         core-shell.enable = lib.mkDefault true;
         core-apps.enable = lib.mkDefault true;
       };
     };
+    xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     programs.dconf.profiles.user.databases = [
       {
         settings = {
