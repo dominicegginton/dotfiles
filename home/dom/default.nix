@@ -122,7 +122,6 @@
               hash = "sha256-naSH6AdAlyDSW/k250cUZGYEdKCUi63CjJBlHhkWBPs=";
             };
           })
-          ms-azuretools.vscode-docker
           docker.docker
           bbenoist.nix
           sumneko.lua
