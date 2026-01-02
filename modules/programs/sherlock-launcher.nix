@@ -8,7 +8,6 @@
     etc = {
       "sherlock-launcher/config.toml".text = ''
         [default_apps]
-        teams = "${lib.getExe pkgs.teams-for-linux} --enable-features=UseOzonePlatform --ozone-platform=wayland --url {meeting_url}"
         calendar_client = "${lib.getExe pkgs.gnome-calendar}"
         terminal = "${lib.getExe pkgs.alacritty}"
         browser = "${lib.getExe pkgs.firefox} --name firefox %U"

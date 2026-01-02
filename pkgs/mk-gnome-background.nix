@@ -22,7 +22,7 @@ in
 }:
 
 let
-  gnomeBackgroundXml = writeText "gnome-background-properties-${name}" '' 
+  gnomeBackgroundXml = writeText "gnome-background-properties-${name}" ''
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
     <wallpapers>

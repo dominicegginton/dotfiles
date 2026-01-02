@@ -4,6 +4,7 @@
 , modulesPath
 , ...
 }:
+
 {
   config = {
     boot.initrd = {
@@ -54,8 +55,9 @@
           "/etc/NetworkManager/system-connections"
           "/var/lib/NetworkManager"
           "/var/lib/iwd"
-          "/var/lib/bluetooth"
           "/var/lib/AccountsService"
+          "/var/lib/flatpak"
+          "/var/lib/boltd"
           "/root"
           "/home/dom"
         ];

@@ -57,7 +57,7 @@ with config.scheme.withHashtag;
       };
       packages = with pkgs; [
         font-manager
-        nerd-fonts.noto
+        nerd-fonts
         noto-fonts-color-emoji
         ibm-plex
       ];

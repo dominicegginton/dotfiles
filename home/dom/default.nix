@@ -1,9 +1,5 @@
 { lib, osConfig, pkgs, ... }:
 
-let
-  gui = osConfig.display.niri.enable || osConfig.display.gnome.enable;
-in
-
 {
   config = {
     home.file = {

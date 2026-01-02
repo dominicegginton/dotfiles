@@ -20,6 +20,18 @@
       };
     };
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    fonts = {
+      enableDefaultPackages = false;
+      fontDir.enable = true;
+      fontconfig = {
+        enable = true;
+        antialias = true;
+        defaultFonts.emoji = [ "Noto Color Emoji" ];
+        hinting.autohint = true;
+        hinting.enable = true;
+      };
+      packages = with pkgs; [ noto-fonts-color-emoji ];
+    };
     programs.dconf.profiles.user.databases = [
       {
         settings = {
@@ -50,15 +62,17 @@
         gnome-music
         yelp
         geary
+        gnome-system-monitor
+        gnome-disk-utility
       ];
       systemPackages = with pkgs; with gnomeExtensions; [
         background
         resources
         gnome-firmware
         dconf-editor
-        fragments
         overskride
         lock
+        fragments
         delfin
       ];
     };
