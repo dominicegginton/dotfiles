@@ -57,7 +57,7 @@ let
       if [ ! -f ${directory}/secrets.env ]; then
         write_secrets_env
       fi
-      source ${directory}/secrets.env 
+      source ${directory}/secrets.env
       gum log --level info "Fetching secrets from Bitwarden Secrets $BWS_PROJECT_ID"
       bws secret list "$BWS_PROJECT_ID" \
         --output json \
@@ -144,6 +144,7 @@ in
           gum log --level error "Failed to decrypt secrets file."
           exit 1
         fi
+        mkdir -p /root/bitwarden-secrets
         mv $TEMP_DIR/secrets.json /root/bitwarden-secrets/secrets.json
         gum log --level info "Moved decrypted secrets to /root/bitwarden-secrets/secrets.json"
         chown root:root /root/bitwarden-secrets/secrets.json

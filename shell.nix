@@ -9,7 +9,6 @@
 , nix-tree
 , nix-health
 , nix-index
-, clamav
 , google-cloud-sdk
 , opentofu
 , coreutils
@@ -23,7 +22,7 @@
 with lib;
 
 mkShell rec {
-  keys = [ lib.maintainers.dominicegginton.email "root@residence" ];
+  keys = [ "root@dominicegginton.dev" ];
   name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
   GCP_PROJECT_ID = "dominicegginton-personal";
   SECRET_KEYS_GCS_BUCKET = "dominicegginton/gpg";
@@ -38,7 +37,6 @@ mkShell rec {
     nix-tree
     nix-health
     nix-index
-    clamav
     google-cloud-sdk
     opentofu
     coreutils
@@ -120,7 +118,5 @@ mkShell rec {
         ${toString (map (key: "--recipient " + key) keys)} \
         --output secrets.json \
         $TEMP_DIR/secrets.json
-      ${lib.getExe gum} log --level info "Remember to commit and push the updated secrets.json file and switch to the new configuration on all host machines".
     '')
-  ];
-}
+    }

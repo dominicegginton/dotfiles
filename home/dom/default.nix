@@ -180,7 +180,7 @@
     };
 
     programs.neovim = {
-      enable = true;
+      enable = false;
       viAlias = true;
       vimAlias = true;
       extraPackages = with pkgs; [

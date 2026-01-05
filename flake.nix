@@ -21,12 +21,6 @@ rec {
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
     niri.url = "github:yalter/niri";
     niri.inputs.nixpkgs.follows = "nixpkgs";
-    todo.url = "github:dominicegginton/todo";
-    todo.inputs.nixpkgs.follows = "nixpkgs";
-    flip.url = "github:dominicegginton/flip";
-    flip.inputs.nixpkgs.follows = "nixpkgs";
-    roll.url = "github:dominicegginton/roll";
-    roll.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -58,8 +52,6 @@ rec {
         overlays = with self.inputs; [
           self.outputs.overlays.default
           niri.overlays.default
-          flip.overlays.default
-          roll.overlays.default
           nix-topology.overlays.default
           nix-topology.overlays.topology
           deadman.overlays.default

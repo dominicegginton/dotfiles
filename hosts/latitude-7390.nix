@@ -5,25 +5,16 @@
 
   imports = with self.inputs.nixos-hardware.nixosModules; [ common-pc-laptop common-pc-laptop-ssd dell-latitude-7390 ];
 
-  # TODO: swap to btrfs
-  fileSystems."/".device = "/dev/disk/by-uuid/2d59d3c7-44f3-4fd3-9c7a-64b2ec9f21a0";
-  fileSystems."/".fsType = "ext4";
-  fileSystems."/boot".device = "/dev/disk/by-uuid/8543-16DB";
-  fileSystems."/boot".fsType = "vfat";
-  swapDevices = [{ device = "/dev/disk/by-uuid/4e74fa9d-47d7-4a43-9cec-01d4fdd1a1a2"; }];
+  fileSystems."/" = { device = "/dev/disk/by-uuid/591e8f6a-01bb-4a7b-8f9d-546400359853"; fsType = "ext4"; };
+  fileSystems."/boot" = { device = "/dev/disk/by-uuid/5D74-0ED5"; fsType = "vfat"; options = [ "fmask=0077" "dmask=0077" ]; };
 
+  swapDevices = [ ];
   hardware = {
     # TODO: swap to btrfs 
     # disks.root.id = "/dev/sda";
 
     bluetooth.enable = true;
     intel-gpu-tools.enable = true;
-    logitech = {
-      wireless = {
-        enable = true;
-        enableGraphical = true;
-      };
-    };
   };
 
   boot = {
@@ -61,13 +52,6 @@
       allow id 0451:82ff serial "" name "" hash "y1IP3wHahAPyS1jcoBvVlQZSGWFT0qVh95RW4FG/W68=" parent-hash "DlsTh2GxGfnUXPXVK1SOudjsyGxMnQ/btuHJocDjTlY=" via-port "3-2.5" with-interface 03:00:00 with-connect-type "unknown"
     '';
   };
-
-  programs = {
-    vscode.enable = true;
-    firefox.enable = true;
-  };
-
-  virtualisation.docker.enable = true;
 
   topology.self.hardware.info = "Workstation";
 }
