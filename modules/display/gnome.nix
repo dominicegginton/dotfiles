@@ -66,16 +66,13 @@
         gnome-disk-utility
         baobab
         gnome-software
+        simple-scan
       ];
       systemPackages = with pkgs; with gnomeExtensions; [
         background
         mission-center
         gnome-firmware
-        dconf-editor
-        overskride
         lock
-        fragments
-        delfin
       ];
     };
   };

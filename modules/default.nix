@@ -182,14 +182,6 @@ rec {
     };
   };
 
-  documentation = {
-    enable = true;
-    man.enable = true;
-    doc.enable = true;
-    dev.enable = true;
-    info.enable = true;
-  };
-
   security.lockKernelModules = lib.mkDefault true;
   security.protectKernelImage = lib.mkDefault true;
   security.unprivilegedUsernsClone = lib.mkDefault true;
