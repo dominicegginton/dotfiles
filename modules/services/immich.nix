@@ -1,4 +1,4 @@
-{ config, lib, hostname, ... }:
+{ config, lib, hostname, pkgs, ... }:
 
 {
   config = lib.mkIf config.services.immich.enable {
@@ -20,13 +20,18 @@
       before = [ "immich.service" ];
       wantedBy = [ "immich.service" ];
       serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = "yes";
+        Type = "forking";
+        Restart= "always";
+        Environment = {
+          BUCKET = "immich-data-c3c7e5776e8ad852";
+          MOUNT_POINT = "/var/lib/immich";
+        };
         ExecStart = ''
-          echo "Mounting GCS bucket for Immich data..."
+          ${pkgs.coreutils}/bin/mkdir -p $MOUNT_POINT 
+          ${pkgs.gcsfuse}/bin/gcsfuse $BUCKET $MOUNT_POINT
         '';
         ExecStop = ''
-          echo "Unmounting GCS bucket for Immich data..."
+          ${pkgs.fusermount}/bin/fusermount -u $MOUNT_POINT
         '';
       };
     };
