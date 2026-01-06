@@ -54,8 +54,30 @@ resource "google_storage_bucket" "dominicegginton" {
   }
 }
 
+resource "google_storage_bucket" "silverbullet_data" {
+  name                        = "silverbullet-data-${random_id.terraform-remote-backend.hex}"
+  location                    = "EUROPE-WEST2"
+  force_destroy               = false
+  public_access_prevention    = "enforced"
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
+}
+
 resource "google_storage_bucket" "immich_data" {
   name                        = "immich-data-${random_id.terraform-remote-backend.hex}"
+  location                    = "EUROPE-WEST2"
+  force_destroy               = false
+  public_access_prevention    = "enforced"
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
+}
+
+resource "google_storage_bucket" "frigate_data" {
+  name                        = "frigate-data-${random_id.terraform-remote-backend.hex}"
   location                    = "EUROPE-WEST2"
   force_destroy               = false
   public_access_prevention    = "enforced"
