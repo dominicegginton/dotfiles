@@ -64,11 +64,12 @@
         geary
         gnome-system-monitor
         gnome-disk-utility
+        baobab
         gnome-software
       ];
       systemPackages = with pkgs; with gnomeExtensions; [
         background
-        resources
+        mission-center
         gnome-firmware
         dconf-editor
         overskride
