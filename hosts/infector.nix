@@ -12,10 +12,6 @@
     tailscale.enable = true;
   };
 
-  programs.bash.interactiveShellInit = ''
-    cat /var/shared/root-password | ${pkgs.qrencode}/bin/qrencode -t ANSIUTF8
-  '';
-
   systemd.tmpfiles.rules = [ "d /var/shared 0777 root root - -" ];
 
   system.activationScripts.root-password = ''
@@ -24,7 +20,12 @@
     echo "root:$(cat /var/shared/root-password)" | chpasswd
   '';
 
-  environment.systemPackages = with pkgs; [ disko ];
+  environment.systemPackages = with pkgs; [
+    disko
+    (writeShellScriptBin "echo-root-password" ''
+      cat /var/shared/root-password | ${pkgs.qrencode}/bin/qrencode -t ANSIUTF8
+    '')
+  ];
 
   display.gnome.enable = false;
 }

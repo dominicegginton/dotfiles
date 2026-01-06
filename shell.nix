@@ -3,7 +3,6 @@
 , writeShellScriptBin
 , nix
 , nix-output-monitor
-, nixpkgs-fmt
 , deadnix
 , nix-diff
 , nix-tree
@@ -11,34 +10,24 @@
 , nix-index
 , google-cloud-sdk
 , opentofu
-, coreutils
 , gum
 , jq
 , gnupg
 , bws
-, qrencode
+, neovim
 }:
-
-let
-  GCP_PROJECT_ID = builtins.getEnv "GCP_PROJECT_ID";
-  BWS_PROJECT_ID = builtins.getEnv "BWS_PROJECT_ID";
-  BWS_ACCESS_TOKEN = builtins.getEnv "BWS_ACCESS_TOKEN";
-in
-
-assert GCP_PROJECT_ID != "";
-assert BWS_PROJECT_ID != "";
-assert BWS_ACCESS_TOKEN != "";
 
 mkShell rec {
   name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
   keys = [ "root@dominicegginton.dev" ];
 
-  inherit GCP_PROJECT_ID BWS_PROJECT_ID BWS_ACCESS_TOKEN;
+  GCP_PROJECT_ID = builtins.getEnv "GCP_PROJECT_ID";
+  BWS_PROJECT_ID = builtins.getEnv "BWS_PROJECT_ID";
+  BWS_ACCESS_TOKEN = builtins.getEnv "BWS_ACCESS_TOKEN";
 
   packages = [
     nix
     nix-output-monitor
-    nixpkgs-fmt
     deadnix
     nix-diff
     nix-tree
@@ -46,15 +35,6 @@ mkShell rec {
     nix-index
     google-cloud-sdk
     opentofu
-    coreutils
-    gum
-    jq
-    gnupg
-    qrencode
-    (writeShellScriptBin "advertise-ssh" ''
-      root_password=$(openssl rand -base64 32)
-      echo "Root password: $root_password" | qrencode -t ANSIUTF8
-    '')
     (writeShellScriptBin "sync-secrets" ''
       TEMP_DIR=$(mktemp -d)
       trap "rm -rf $TEMP_DIR" EXIT
@@ -62,6 +42,24 @@ mkShell rec {
         --output json \
         --access-token $BWS_ACCESS_TOKEN \
         > $TEMP_DIR/secrets.json
+      ${lib.getExe gnupg} --encrypt \
+        ${toString (map (key: "--recipient " + key) keys)} \
+        --output secrets.json \
+        $TEMP_DIR/secrets.json
+    '')
+
+    # TODO: complete (define a common schema in the screts module and use it both here and in systemd secret decryption service)
+    (writeShellScriptBin "open-secrets" ''
+      TEMP_DIR=$(mktemp -d)
+      trap "rm -rf $TEMP_DIR" EXIT
+      ${lib.getExe gnupg} --decrypt \
+        --output $TEMP_DIR/secrets.json \
+        secrets.json
+      ${lib.getExe neovim} $TEMP_DIR/secrets.json
+      if ! ${lib.getExe jq} -e 'all(.[]; has("name") and has("value") and (.name | type == "string") and (.value | type == "string"))' $TEMP_DIR/secrets.json > /dev/null; then
+        ${lib.getExe gum} log --level error "Invalid secrets.json schema. Aborting encryption."
+        exit 1
+      fi
       ${lib.getExe gnupg} --encrypt \
         ${toString (map (key: "--recipient " + key) keys)} \
         --output secrets.json \
