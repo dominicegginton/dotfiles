@@ -21,7 +21,7 @@
       wantedBy = [ "immich.service" ];
       serviceConfig = {
         Type = "forking";
-        Restart= "always";
+        Restart = "always";
         Environment = {
           BUCKET = "immich-data-c3c7e5776e8ad852";
           MOUNT_POINT = "/var/lib/immich";
