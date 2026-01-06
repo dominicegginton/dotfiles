@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hostname, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 with pkgs.writers;
@@ -121,7 +121,7 @@ in
       };
       description = "Attribute set of secrets to be installed.";
     };
-  config = lib.mkIf (hostname != "infector") {
+  config = {
     systemd.services.decrypt-secrets = {
       wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
       before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];

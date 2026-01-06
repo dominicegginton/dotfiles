@@ -2,8 +2,6 @@
 
 {
   config = lib.mkIf config.virtualisation.docker.enable {
-    users.users.dom.extraGroups = lib.mkIf config.users.users.dom.enable [ "docker" ];
-
     environment = {
       persistence."/persist".directories = [ "/var/lib/docker" ];
       systemPackages = with pkgs; [ docker ];

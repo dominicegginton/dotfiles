@@ -18,6 +18,9 @@ with lib;
         "input" # For keyboard/mouse
         "audio" # For sound
         "video" # For GPU access
+        "dav2fs" # For davfs2
+        "lpadmin" # For printer admin
+        "docker" # For docker access
       ];
       openssh = {
         authorizedPrincipals = [ "dom@localhost" "dom@${hostname}" self.outputs.lib.maintainers.dominicegginton.email ];

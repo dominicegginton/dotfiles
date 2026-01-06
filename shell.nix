@@ -19,14 +19,22 @@
 , qrencode
 }:
 
-mkShell rec {
-  name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
-  keys = [ "root@dominicegginton.dev" ];
-  
+let
   GCP_PROJECT_ID = builtins.getEnv "GCP_PROJECT_ID";
   BWS_PROJECT_ID = builtins.getEnv "BWS_PROJECT_ID";
   BWS_ACCESS_TOKEN = builtins.getEnv "BWS_ACCESS_TOKEN";
-  
+in
+
+assert GCP_PROJECT_ID != "";
+assert BWS_PROJECT_ID != "";
+assert BWS_ACCESS_TOKEN != "";
+
+mkShell rec {
+  name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
+  keys = [ "root@dominicegginton.dev" ];
+
+  inherit GCP_PROJECT_ID BWS_PROJECT_ID BWS_ACCESS_TOKEN;
+
   packages = [
     nix
     nix-output-monitor
@@ -59,7 +67,7 @@ mkShell rec {
         --output secrets.json \
         $TEMP_DIR/secrets.json
     '')
-    ];
-    
-    meta.maintainers = [ lib.maintainers.dominicegginton ];
+  ];
+
+  meta.maintainers = [ lib.maintainers.dominicegginton ];
 }

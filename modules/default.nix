@@ -27,7 +27,6 @@ rec {
     ./services/backup.nix
     ./services/bitmagnet.nix
     ./services/calmav.nix
-    ./services/davfs2.nix
     ./services/displaymanager.nix
     ./services/flatpak.nix
     ./services/frigate.nix
@@ -36,7 +35,6 @@ rec {
     ./services/immich.nix
     ./services/jellyfin.nix
     ./services/pipewire.nix
-    ./services/printing.nix
     ./services/silverbullet.nix
     ./services/ssh.nix
     ./services/tailscale.nix

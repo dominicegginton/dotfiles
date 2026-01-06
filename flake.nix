@@ -75,16 +75,15 @@ rec {
 
       legacyPackages = forAllSystems (system: nixpkgsFor.${system});
 
-      devShells = forAllSystems (system: let pkgs = nixpkgsFor.${system}; in { default = pkgs.callPackage ./shell.nix { }; });
+      devShells = forAllSystems (system: { default = nixpkgsFor.${system}.callPackage ./shell.nix { }; });
 
-      topology = forAllSystems (system:
-        let pkgs = nixpkgsFor.${system}; in import self.inputs.nix-topology {
-          inherit pkgs;
-          modules = [
-            ./topology.nix
-            { nixosConfigurations = self.outputs.nixosConfigurations; }
-          ];
-        });
+      topology = forAllSystems (system: import self.inputs.nix-topology {
+        pkgs = nixpkgsFor.${system};
+        modules = [
+          ./topology.nix
+          { nixosConfigurations = self.outputs.nixosConfigurations; }
+        ];
+      });
 
       nixosConfigurations = {
         latitude-7390 = self.outputs.lib.nixosSystem {
@@ -99,7 +98,6 @@ rec {
           hostname = "infector";
           modules = [
             ./hosts/infector.nix
-            ./modules/users/dom.nix
           ];
         };
 
