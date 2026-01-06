@@ -64,6 +64,7 @@
         geary
         gnome-system-monitor
         gnome-disk-utility
+        gnome-software
       ];
       systemPackages = with pkgs; with gnomeExtensions; [
         background
