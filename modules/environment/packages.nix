@@ -12,5 +12,6 @@
     git
     pinentry-curses
     gnupg
+    clamav
   ];
 }

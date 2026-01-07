@@ -8,11 +8,7 @@
   fileSystems."/" = { device = "/dev/disk/by-uuid/591e8f6a-01bb-4a7b-8f9d-546400359853"; fsType = "ext4"; };
   fileSystems."/boot" = { device = "/dev/disk/by-uuid/5D74-0ED5"; fsType = "vfat"; options = [ "fmask=0077" "dmask=0077" ]; };
 
-  swapDevices = [ ];
   hardware = {
-    # TODO: swap to btrfs
-    # disks.root.id = "/dev/sda";
-
     bluetooth.enable = true;
     intel-gpu-tools.enable = true;
   };

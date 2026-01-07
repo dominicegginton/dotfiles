@@ -197,8 +197,20 @@ rec {
     amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
+  environment.defaultPackages = lib.mkForce [ ];
+
   services = {
-    openssh.enable = true; # ssh
+    openssh = {
+      enable = true; # ssh
+      allowSFTP = false; # enable sftp
+      challengeResponseAuthentication = false; # disable challenge response auth
+      extraConfig = ''
+        AllowTcpForwarding yes
+        X11Forwarding no
+        AllowAgentForwarding no
+        AllowStreamLocalForwarding no
+      '';
+    };
     dbus.enable = true; # system bus
     smartd.enable = true; # disk health monitoring
     thermald.enable = true; # thermal management

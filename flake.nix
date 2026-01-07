@@ -94,11 +94,9 @@ rec {
           ];
         };
 
-        infector = self.outputs.lib.nixosSystem {
-          hostname = "infector";
-          modules = [
-            ./hosts/infector.nix
-          ];
+        installer = self.outputs.lib.nixosSystem {
+          hostname = "installer";
+          modules = [ ./hosts/installer.nix ];
         };
 
         walsgrave = self.outputs.lib.nixosSystem {
