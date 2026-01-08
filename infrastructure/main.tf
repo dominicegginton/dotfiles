@@ -195,7 +195,7 @@ resource "github_actions_secret" "gcp_service_account" {
 resource "github_actions_secret" "gcp_project_id" {
   repository      = "dotfiles"
   secret_name     = "GCP_PROJECT_ID"
-  plaintext_value = var.gcp_project_id
+  plaintext_value = google_project_service.iam.project 
 }
 
 output "gcp_workload_identity_provider" {
