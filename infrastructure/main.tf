@@ -180,6 +180,12 @@ resource "google_project_iam_member" "github_actions_service_account_admin" {
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
+resource "google_project_iam_member" "github_actions_project_iam_admin" {
+  project = var.gcp_project_id
+  role    = "roles/resourcemanager.projectIamAdmin"
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
+}
+
 resource "github_actions_secret" "gcp_workload_identity_provider" {
   count           = var.github_token != null ? 1 : 0
   repository      = "dotfiles"
