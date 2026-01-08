@@ -27,16 +27,6 @@ jobs:
       - name: Set up Nix
         uses: ./.github/actions/install-nix
 
-      - name: Verify secrets
-        run: |
-          if [ -z "$TF_VAR_gcp_project_id" ]; then
-            echo "ERROR: GCP_PROJECT_ID secret is empty or not set"
-            exit 1
-          fi
-          echo "GCP_PROJECT_ID is set (length: ${#TF_VAR_gcp_project_id})"
-        env:
-          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-
       - name: Tofu Init
         run: nix develop .#infrastructure --command tofu init
         working-directory: infrastructure
