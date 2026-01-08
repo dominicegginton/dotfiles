@@ -10,6 +10,7 @@ on:
 permissions:
   contents: read
   id-token: write
+  secrets: write
 
 jobs:
   deploy:
@@ -32,18 +33,18 @@ jobs:
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-          TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
+          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tofu Plan
         run: nix develop .#infrastructure --command tofu plan
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-          TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
+          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tofu Apply
         run: nix develop .#infrastructure --command tofu apply -auto-approve
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-          TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
+          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
