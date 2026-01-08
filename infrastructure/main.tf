@@ -198,7 +198,7 @@ resource "github_actions_secret" "gcp_project_id" {
   count           = var.github_token != null ? 1 : 0
   repository      = "dotfiles"
   secret_name     = "GCP_PROJECT_ID"
-  plaintext_value = google_project_service.iam.project 
+  plaintext_value = google_project_service.iam.project
 }
 
 output "gcp_workload_identity_provider" {
