@@ -197,3 +197,44 @@ resource "github_actions_secret" "gcp_project_id" {
   secret_name     = "GCP_PROJECT_ID"
   plaintext_value = var.gcp_project_id
 }
+
+output "gcp_workload_identity_provider" {
+  description = "Workload Identity Provider resource name for GitHub Actions"
+  value       = google_iam_workload_identity_pool_provider.github.name
+}
+
+output "gcp_service_account" {
+  description = "Service account email for GitHub Actions"
+  value       = google_service_account.github_actions.email
+}
+
+output "gcp_project_id" {
+  description = "GCP Project ID"
+  value       = var.gcp_project_id
+}
+
+output "terraform_backend_bucket" {
+  description = "GCS Bucket name for Terraform remote backend"
+  value       = google_storage_bucket.terraform-remote-backend.name
+}
+
+output "dominicegginton_bucket" {
+  description = "GCS Bucket name for dominicegginton"
+  value       = google_storage_bucket.dominicegginton.name
+}
+
+output "silverbullet_data_bucket" {
+  description = "GCS Bucket name for SilverBullet data"
+  value       = google_storage_bucket.silverbullet_data.name
+}
+
+output "immich_data_bucket" {
+  description = "GCS Bucket name for Immich data"
+  value       = google_storage_bucket.immich_data.name
+}
+
+output "frigate_data_bucket" {
+  description = "GCS Bucket name for Frigate data"
+  value       = google_storage_bucket.frigate_data.name
+}
+
