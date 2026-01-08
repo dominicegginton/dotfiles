@@ -22,6 +22,7 @@
   display.gnome.enable = true;
 
   services = {
+    silverbullet.enable = true;
     logind.settings.Login.HandleLidSwitchDocked = "suspend";
     upower.enable = true;
     tlp = {

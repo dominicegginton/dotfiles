@@ -99,6 +99,11 @@ rec {
           modules = [ ./hosts/installer.nix ];
         };
 
+        bellgrade = self.outputs.lib.nixosSystem {
+          hostname = "bellgrade";
+          modules = [ ./hosts/bellgrade.nix ];
+        };
+
         walsgrave = self.outputs.lib.nixosSystem {
           hostname = "walsgrave";
           modules = [

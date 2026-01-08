@@ -15,26 +15,22 @@
       locations."/".proxyPass = "http://${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
     };
 
+    users.users.silverbullet.extraGroups = [ "fuse" ];
+
     systemd.services.silverbullet-gcs-mount = {
       description = "Mount GCS bucket for Silverbullet data";
       after = [ "network-online.target" "decrypt-secrets.service" ];
-      requires = [ "decrypt-secrets.service" ];
+      requires = [ "decrypt-secrets.service" "network-online.target" ];
       before = [ "silverbullet.service" ];
       wantedBy = [ "silverbullet.service" ];
+      path = [ pkgs.util-linux pkgs.gcsfuse pkgs.coreutils pkgs.fuse ];
+      preStart = lib.mkIf (!lib.hasPrefix "/var/lib/" config.services.silverbullet.spaceDir) ''mkdir -p ${config.services.silverbullet.spaceDir}''; 
       serviceConfig = {
-        Type = "forking";
-        Restart = "always";
-        Environment = {
-          BUCKET = "silverbullet-data-c3c7e5776e8ad852";
-          MOUNT_POINT = "/var/lib/silverbullet";
-        };
-        ExecStart = ''
-          ${pkgs.coreutils}/bin/mkdir -p $MOUNT_POINT 
-          ${pkgs.gcsfuse}/bin/gcsfuse $BUCKET $MOUNT_POINT
-        '';
-        ExecStop = ''
-          ${pkgs.fusermount}/bin/fusermount -u $MOUNT_POINT
-        '';
+        Type = "simple";
+        User = config.services.silverbullet.user;
+        Groups = config.services.silverbullet.group;
+        ExecStart = "${pkgs.gcsfuse}/bin/gcsfuse --foreground silverbullet-data-c3c7e5776e8ad852 ${config.services.silverbullet.spaceDir}";
+        Restart = "on-failure";
       };
     };
 
