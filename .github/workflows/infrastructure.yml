@@ -32,18 +32,25 @@ jobs:
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tofu fmt
+        run: nix develop .#infrastructure --command tofu fmt -check
+        working-directory: infrastructure
+
+      - name: Tofu validate
+        run: nix develop .#infrastructure --command tofu validate
+        working-directory: infrastructure
+        env:
+          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Tofu Plan
         run: nix develop .#infrastructure --command tofu plan
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Tofu Apply
         run: nix develop .#infrastructure --command tofu apply -auto-approve
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
-          TF_VAR_github_token: ${{ secrets.GITHUB_TOKEN }}
