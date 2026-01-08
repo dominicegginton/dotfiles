@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Authenticate to Google Cloud
+      - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -28,21 +28,21 @@ jobs:
         uses: ./.github/actions/install-nix
 
       - name: Tofu Init
-        run: nix develop --command tofu init
+        run: nix develop .#infrastructure --command tofu init
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
           TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
 
       - name: Tofu Plan
-        run: nix develop --command tofu plan
+        run: nix develop .#infrastructure --command tofu plan
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
           TF_VAR_github_token: ${{ secrets.GH_TOKEN }}
 
       - name: Tofu Apply
-        run: nix develop --command tofu apply -auto-approve
+        run: nix develop .#infrastructure --command tofu apply -auto-approve
         working-directory: infrastructure
         env:
           TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
