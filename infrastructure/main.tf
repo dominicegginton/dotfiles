@@ -28,6 +28,7 @@ provider "google" {
 
 provider "github" {
   owner = "dominicegginton"
+  token = var.github_token
 }
 
 resource "google_project_service" "iam" {
