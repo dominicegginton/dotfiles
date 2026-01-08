@@ -5,7 +5,7 @@ on:
       - main
     paths:
       - 'infrastructure/**'
-      - '.github/workflows/terraform-tofu.yml'
+      - '.github/workflows/infrastructure.yml'
 
 permissions:
   contents: read
