@@ -7,6 +7,10 @@ on:
       - 'infrastructure/**'
       - '.github/workflows/infrastructure.yml'
 
+concurrency:
+  group: deploy-infrastructure
+  cancel-in-progress: false
+
 permissions:
   contents: read
   id-token: write
