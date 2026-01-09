@@ -3,9 +3,8 @@ variable "gcp_project_id" {
   type        = string
 }
 
-variable "github_token" {
-  description = "GitHub Personal Access Token for managing repository secrets (only needed for local runs)"
+variable "github_pat" {
+  description = "GitHub Personal Access Token"
   type        = string
   sensitive   = true
-  default     = null
 }

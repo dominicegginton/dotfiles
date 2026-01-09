@@ -28,7 +28,7 @@ provider "google" {
 
 provider "github" {
   owner = "dominicegginton"
-  token = var.github_token
+  token = var.github_pat
 }
 
 resource "google_project_service" "iam" {
@@ -202,6 +202,12 @@ resource "github_actions_secret" "gcp_project_id" {
   repository      = "dotfiles"
   secret_name     = "GCP_PROJECT_ID"
   plaintext_value = google_project_service.iam.project
+}
+
+resource "github_actions_secret" "github_pat" {
+  repository      = "dotfiles"
+  secret_name     = "GH_PAT"
+  plaintext_value = var.github_pat
 }
 
 output "gcp_workload_identity_provider" {
