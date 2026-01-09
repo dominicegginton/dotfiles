@@ -1,4 +1,4 @@
-{ lib, pkgs, modulesPath, ... }:
+{ lib, pkgs, config, modulesPath, ... }:
 
 {
   imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-base.nix") ];
