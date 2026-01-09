@@ -34,6 +34,7 @@ rec {
     ./services/home-assistant.nix
     ./services/immich.nix
     ./services/jellyfin.nix
+    ./services/nginx.nix
     ./services/pipewire.nix
     ./services/silverbullet.nix
     ./services/ssh.nix
@@ -49,7 +50,6 @@ rec {
     ./environment.nix
     ./networking.nix
     ./secrets.nix
-    ./upgrade.nix
   ];
 
   system = {
