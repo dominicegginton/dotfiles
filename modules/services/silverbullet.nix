@@ -24,7 +24,7 @@
       before = [ "silverbullet.service" ];
       wantedBy = [ "silverbullet.service" ];
       path = [ pkgs.util-linux pkgs.gcsfuse pkgs.coreutils pkgs.fuse ];
-      preStart = lib.mkIf (!lib.hasPrefix "/var/lib/" config.services.silverbullet.spaceDir) ''mkdir -p ${config.services.silverbullet.spaceDir}''; 
+      preStart = lib.mkIf (!lib.hasPrefix "/var/lib/" config.services.silverbullet.spaceDir) ''mkdir -p ${config.services.silverbullet.spaceDir}'';
       serviceConfig = {
         Type = "simple";
         User = config.services.silverbullet.user;

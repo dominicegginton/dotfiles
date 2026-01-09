@@ -75,10 +75,11 @@ rec {
 
       legacyPackages = forAllSystems (system: nixpkgsFor.${system});
 
-      devShells = forAllSystems (system: let pkgs = nixpkgsFor.${system}; in {
-        default = pkgs.callPackage ./shell.nix { };
-        infrastructure = pkgs.callPackage ./infrastructure/shell.nix { };
-      });
+      devShells = forAllSystems (system:
+        let pkgs = nixpkgsFor.${system}; in {
+          default = pkgs.callPackage ./shell.nix { };
+          infrastructure = pkgs.callPackage ./infrastructure/shell.nix { };
+        });
 
       topology = forAllSystems (system: import self.inputs.nix-topology {
         pkgs = nixpkgsFor.${system};
