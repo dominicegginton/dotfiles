@@ -191,6 +191,12 @@ resource "google_project_iam_member" "github_actions_project_iam_admin" {
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
+resource "google_project_iam_member" "github_actions_secret_manager_accessor" {
+  project = var.gcp_project_id
+  role    = "roles/secretmanager.secretAccessor"
+  member  = "serviceAccount:${google_service_account.github_actions.email}"
+}
+
 resource "github_actions_secret" "gcp_workload_identity_provider" {
   repository      = "dotfiles"
   secret_name     = "GCP_WORKLOAD_IDENTITY_PROVIDER"
