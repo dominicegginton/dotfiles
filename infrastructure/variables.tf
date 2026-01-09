@@ -3,7 +3,7 @@ variable "gcp_project_id" {
   type        = string
 }
 
-variable "github_pat" {
+variable "github_token" {
   description = "GitHub Personal Access Token"
   type        = string
   sensitive   = true

@@ -28,7 +28,7 @@ provider "google" {
 
 provider "github" {
   owner = "dominicegginton"
-  token = var.github_pat
+  token = var.github_token
 }
 
 resource "google_project_service" "iam" {
@@ -111,6 +111,11 @@ resource "google_storage_bucket" "frigate_data" {
 resource "google_project_service" "iamcredentials" {
   project = var.gcp_project_id
   service = "iamcredentials.googleapis.com"
+}
+
+resource "google_project_service" "secretmanager" {
+  project = var.gcp_project_id
+  service = "secretmanager.googleapis.com"
 }
 
 resource "google_iam_workload_identity_pool" "github" {
@@ -204,10 +209,27 @@ resource "github_actions_secret" "gcp_project_id" {
   plaintext_value = google_project_service.iam.project
 }
 
-resource "github_actions_secret" "github_pat" {
-  repository      = "dotfiles"
-  secret_name     = "GH_PAT"
-  plaintext_value = var.github_pat
+resource "google_secret_manager_secret" "github_token" {
+  project   = var.gcp_project_id
+  secret_id = "github-token"
+
+  replication {
+    auto {}
+  }
+
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret_version" "github_token" {
+  secret      = google_secret_manager_secret.github_token.id
+  secret_data = var.github_token
+}
+
+resource "google_secret_manager_secret_iam_member" "github_actions_github_token" {
+  project   = var.gcp_project_id
+  secret_id = google_secret_manager_secret.github_token.secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
 output "gcp_workload_identity_provider" {
