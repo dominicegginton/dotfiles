@@ -71,7 +71,7 @@ rec {
 
       templates = import ./templates { };
 
-      githubActions = with nix-github-actions.lib; mkGithubMatrix { checks = lib.getAttrs (lib.attrNames githubPlatforms) self.outputs.devShells; };
+      githubActions = with nix-github-actions.lib; mkGithubMatrix { checks = lib.getAttrs (lib.intersectLists systems (lib.attrNames githubPlatforms)) self.outputs.devShells; };
 
       legacyPackages = forAllSystems (system: nixpkgsFor.${system});
 
