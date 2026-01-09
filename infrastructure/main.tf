@@ -191,9 +191,9 @@ resource "google_project_iam_member" "github_actions_project_iam_admin" {
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
-resource "google_project_iam_member" "github_actions_secret_manager_accessor" {
+resource "google_project_iam_member" "github_actions_secret_manager_admin" {
   project = var.gcp_project_id
-  role    = "roles/secretmanager.secretAccessor"
+  role    = "roles/secretmanager.admin"
   member  = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
