@@ -31,7 +31,7 @@
           ${pkgs.gcsfuse}/bin/gcsfuse $BUCKET $MOUNT_POINT
         '';
         ExecStop = ''
-          ${pkgs.fusermount}/bin/fusermount -u $MOUNT_POINT
+          ${pkgs.fuse}/bin/fusermount -u $MOUNT_POINT
         '';
       };
     };

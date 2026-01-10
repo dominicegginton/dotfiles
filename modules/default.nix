@@ -34,6 +34,7 @@ rec {
     ./services/home-assistant.nix
     ./services/immich.nix
     ./services/jellyfin.nix
+    ./services/journald.nix
     ./services/nginx.nix
     ./services/pipewire.nix
     ./services/silverbullet.nix
@@ -203,7 +204,7 @@ rec {
     openssh = {
       enable = true; # ssh
       allowSFTP = false; # enable sftp
-      challengeResponseAuthentication = false; # disable challenge response auth
+      settings.KbdInteractiveAuthentication = false; # disable challenge response auth
       extraConfig = ''
         AllowTcpForwarding yes
         X11Forwarding no
