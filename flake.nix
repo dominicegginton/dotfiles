@@ -69,8 +69,6 @@ rec {
 
       overlays = import ./overlays.nix { inherit self; };
 
-      templates = import ./templates { };
-
       githubActions = with nix-github-actions.lib; mkGithubMatrix { checks = lib.getAttrs (lib.intersectLists systems (lib.attrNames githubPlatforms)) self.outputs.devShells; };
 
       legacyPackages = forAllSystems (system: nixpkgsFor.${system});
