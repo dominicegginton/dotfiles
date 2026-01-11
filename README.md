@@ -9,12 +9,10 @@ Declarative System, Package & Home Configurations - WIP Always
 ## Features
 
 - **Nix Flakes** - 100% _Nix Flakes_-based configuration, no Nix channels.
-- **Gnome Desktop Environment** - Full featured Gnome desktop environment.
+- **Hybrid Infrastructure** - Local bearmetal hosts combined with cloud resources. 
+- **Centralized Identity Management** - Unified identity across all systems via _LDAP_ and _SSSD_.
 - **GPG Encrypted & Bitwarden Managed Secrets** - System wide encrypted secrets managed by _bsm_ & _bw_.
-- **Comprehensive Backups** - Automated backups to _Google Cloud Storage Buckets_.
-- **Peer-to-peer secure VPN** - _Tailscale_ zero config virtual private mesh networking.
-- **Private DNS Service** - Prvicy-fixused and security-oriented domain name service provided by _NextDNS_.
-- **Continuous Integration** - Backed by continuous integration workflows on _GitHub Actions_ runners.
+- **Secure By Default Operating System** - Hardened _NixOS_ linux based operating system.
 
 ## Workspace
 
@@ -28,10 +26,9 @@ This workspace follows the following structure:
 ├── modules           # NixOS modules
 ├── pkgs              # Package definitions
 ├── shells            # Ad-hoc shells environments
-├── templates         # Nix flake templates
 ├── flake.nix         # Nix flake
 ├── lib.nix           # Nix utils
 ├── overlays.nix      # Package overlays
 ├── shell.nix         # Workspace development shell
-└── topology.nix      # Topology diagram configuration
+└── topology.nix      # Topology module configuration
 ```
