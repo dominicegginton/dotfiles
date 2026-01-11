@@ -31,250 +31,49 @@ provider "github" {
   token = var.github_token
 }
 
-resource "google_project_service" "iam" {
+module "gcp_infrastructure" {
+  source = "./modules/gcp-infrastructure"
+
+  project_id        = var.gcp_project_id
+  github_owner      = "dominicegginton"
+  backend_file_path = path.module
+}
+
+module "secrets" {
+  source = "./modules/secrets"
+
+  project_id                     = var.gcp_project_id
+  github_actions_service_account = module.gcp_infrastructure.service_account_email
+  secretmanager_service          = module.gcp_infrastructure.secretmanager_service
+  github_token                   = var.github_token
+  tailscale_api_key              = var.tailscale_api_key
+  tailscale_auth_key             = var.tailscale_auth_key
+}
+
+data "google_secret_manager_secret_version" "tailscale_api_key" {
+  secret  = module.secrets.tailscale_api_key_secret_id
   project = var.gcp_project_id
-  service = "iam.googleapis.com"
 }
 
-resource "random_id" "terraform-remote-backend" {
-  byte_length = 8
-}
-
-resource "google_storage_bucket" "terraform-remote-backend" {
-  name                        = "${random_id.terraform-remote-backend.hex}-terraform-remote-backend"
-  location                    = "EUROPE-WEST2"
-  force_destroy               = false
-  public_access_prevention    = "enforced"
-  uniform_bucket_level_access = true
-  versioning {
-    enabled = true
-  }
-}
-
-resource "local_file" "terraform-remote-backend" {
-  file_permission = "0644"
-  filename        = "${path.module}/backend.tf"
-
-  content = <<-EOT
-  terraform {
-    backend "gcs" {
-      bucket = "${google_storage_bucket.terraform-remote-backend.name}"
-    }
-  }
-  EOT
-}
-
-resource "google_storage_bucket" "dominicegginton" {
-  name                        = "dominicegginton"
-  location                    = "EUROPE-WEST2"
-  force_destroy               = false
-  public_access_prevention    = "enforced"
-  uniform_bucket_level_access = true
-  versioning {
-    enabled = true
-  }
-}
-
-resource "google_storage_bucket" "silverbullet_data" {
-  name                        = "silverbullet-data-${random_id.terraform-remote-backend.hex}"
-  location                    = "EUROPE-WEST2"
-  force_destroy               = false
-  public_access_prevention    = "enforced"
-  uniform_bucket_level_access = true
-  versioning {
-    enabled = true
-  }
-}
-
-resource "google_storage_bucket" "immich_data" {
-  name                        = "immich-data-${random_id.terraform-remote-backend.hex}"
-  location                    = "EUROPE-WEST2"
-  force_destroy               = false
-  public_access_prevention    = "enforced"
-  uniform_bucket_level_access = true
-  versioning {
-    enabled = true
-  }
-}
-
-resource "google_storage_bucket" "frigate_data" {
-  name                        = "frigate-data-${random_id.terraform-remote-backend.hex}"
-  location                    = "EUROPE-WEST2"
-  force_destroy               = false
-  public_access_prevention    = "enforced"
-  uniform_bucket_level_access = true
-  versioning {
-    enabled = true
-  }
-}
-
-resource "google_project_service" "iamcredentials" {
+data "google_secret_manager_secret_version" "tailscale_auth_key" {
+  secret  = module.secrets.tailscale_auth_key_secret_id
   project = var.gcp_project_id
-  service = "iamcredentials.googleapis.com"
 }
 
-resource "google_project_service" "secretmanager" {
-  project = var.gcp_project_id
-  service = "secretmanager.googleapis.com"
+provider "tailscale" {
+  api_key = data.google_secret_manager_secret_version.tailscale_api_key.secret_data
+  tailnet = "dominic.egginton@gmail.com"
 }
 
-resource "google_iam_workload_identity_pool" "github" {
-  project                   = var.gcp_project_id
-  workload_identity_pool_id = "github-actions"
-  display_name              = "GitHub Actions Pool"
-  description               = "Workload Identity Pool for GitHub Actions"
+module "github_actions" {
+  source = "./modules/github-actions"
 
-  depends_on = [google_project_service.iamcredentials]
+  repository_name            = "dotfiles"
+  workload_identity_provider = module.gcp_infrastructure.workload_identity_provider
+  service_account_email      = module.gcp_infrastructure.service_account_email
+  project_id                 = module.gcp_infrastructure.project_id
 }
 
-resource "google_iam_workload_identity_pool_provider" "github" {
-  project                            = var.gcp_project_id
-  workload_identity_pool_id          = google_iam_workload_identity_pool.github.workload_identity_pool_id
-  workload_identity_pool_provider_id = "github-actions-provider"
-  display_name                       = "GitHub Actions Provider"
-  description                        = "OIDC identity pool provider for GitHub Actions"
-
-  attribute_mapping = {
-    "google.subject"       = "assertion.sub"
-    "attribute.actor"      = "assertion.actor"
-    "attribute.repository" = "assertion.repository"
-    "attribute.owner"      = "assertion.repository_owner"
-  }
-
-  attribute_condition = "assertion.repository_owner == 'dominicegginton'"
-
-  oidc {
-    issuer_uri = "https://token.actions.githubusercontent.com"
-  }
+module "tailscale" {
+  source = "./modules/tailscale"
 }
-
-resource "google_service_account" "github_actions" {
-  project      = var.gcp_project_id
-  account_id   = "github-actions"
-  display_name = "GitHub Actions Service Account"
-  description  = "Service account for GitHub Actions workflows"
-}
-
-resource "google_service_account_iam_member" "github_actions_workload_identity" {
-  service_account_id = google_service_account.github_actions.name
-  role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.owner/dominicegginton"
-}
-
-resource "google_project_iam_member" "github_actions_storage_admin" {
-  project = var.gcp_project_id
-  role    = "roles/storage.admin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_service_usage_admin" {
-  project = var.gcp_project_id
-  role    = "roles/serviceusage.serviceUsageAdmin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_iam_workload_identity_pool_admin" {
-  project = var.gcp_project_id
-  role    = "roles/iam.workloadIdentityPoolAdmin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_service_account_admin" {
-  project = var.gcp_project_id
-  role    = "roles/iam.serviceAccountAdmin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_project_iam_admin" {
-  project = var.gcp_project_id
-  role    = "roles/resourcemanager.projectIamAdmin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "google_project_iam_member" "github_actions_secret_manager_admin" {
-  project = var.gcp_project_id
-  role    = "roles/secretmanager.admin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-resource "github_actions_secret" "gcp_workload_identity_provider" {
-  repository      = "dotfiles"
-  secret_name     = "GCP_WORKLOAD_IDENTITY_PROVIDER"
-  plaintext_value = google_iam_workload_identity_pool_provider.github.name
-}
-
-resource "github_actions_secret" "gcp_service_account" {
-  repository      = "dotfiles"
-  secret_name     = "GCP_SERVICE_ACCOUNT"
-  plaintext_value = google_service_account.github_actions.email
-}
-
-resource "github_actions_secret" "gcp_project_id" {
-  repository      = "dotfiles"
-  secret_name     = "GCP_PROJECT_ID"
-  plaintext_value = google_project_service.iam.project
-}
-
-resource "google_secret_manager_secret" "github_token" {
-  project   = var.gcp_project_id
-  secret_id = "github-token"
-
-  replication {
-    auto {}
-  }
-
-  depends_on = [google_project_service.secretmanager]
-}
-
-resource "google_secret_manager_secret_version" "github_token" {
-  secret      = google_secret_manager_secret.github_token.id
-  secret_data = var.github_token
-}
-
-resource "google_secret_manager_secret_iam_member" "github_actions_github_token" {
-  project   = var.gcp_project_id
-  secret_id = google_secret_manager_secret.github_token.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.github_actions.email}"
-}
-
-output "gcp_workload_identity_provider" {
-  description = "Workload Identity Provider resource name for GitHub Actions"
-  value       = google_iam_workload_identity_pool_provider.github.name
-}
-
-output "gcp_service_account" {
-  description = "Service account email for GitHub Actions"
-  value       = google_service_account.github_actions.email
-}
-
-output "gcp_project_id" {
-  description = "GCP Project ID"
-  value       = var.gcp_project_id
-}
-
-output "terraform_backend_bucket" {
-  description = "GCS Bucket name for Terraform remote backend"
-  value       = google_storage_bucket.terraform-remote-backend.name
-}
-
-output "dominicegginton_bucket" {
-  description = "GCS Bucket name for dominicegginton"
-  value       = google_storage_bucket.dominicegginton.name
-}
-
-output "silverbullet_data_bucket" {
-  description = "GCS Bucket name for SilverBullet data"
-  value       = google_storage_bucket.silverbullet_data.name
-}
-
-output "immich_data_bucket" {
-  description = "GCS Bucket name for Immich data"
-  value       = google_storage_bucket.immich_data.name
-}
-
-output "frigate_data_bucket" {
-  description = "GCS Bucket name for Frigate data"
-  value       = google_storage_bucket.frigate_data.name
-}
-

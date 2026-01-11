@@ -52,7 +52,7 @@ with config.lib.topology;
         virtual = true;
         addresses = [ "localhost" "127.0.0.1" ];
       };
-      wlp108s0 = lib.mkIf config.networking.wireless.enable {
+      wlp108s0 = lib.mkIf config.networking.wireless.iwd.enable {
         type = "wifi";
         addresses = [ hostname ];
         physicalConnections = [
