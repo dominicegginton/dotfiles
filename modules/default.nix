@@ -35,6 +35,7 @@ rec {
     ./services/immich.nix
     ./services/jellyfin.nix
     ./services/journald.nix
+    ./services/lldap.nix
     ./services/nginx.nix
     ./services/pipewire.nix
     ./services/silverbullet.nix
@@ -43,6 +44,7 @@ rec {
     ./services/timesyncd.nix
     ./services/tlp.nix
     ./services/usbguard.nix
+    ./users/ldap.nix
     ./users/root.nix
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
