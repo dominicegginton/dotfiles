@@ -32,7 +32,7 @@
       useTLS = false;
       daemon.enable = true;
       bind = {
-        distinguishedName = "uid=${config.services.lldap.settings.ldap_user_dn},ou=people,dc=${config.services.lldap.settings.ldap_base_dn}";
+        distinguishedName = "uid=id,ou=people,dc=dominicegginton,dc=dev";
         passwordFile = "/run/nslcd/bind-password";
       };
       daemon.extraConfig = ''
