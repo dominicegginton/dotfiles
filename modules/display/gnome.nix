@@ -51,6 +51,10 @@
           "org/gnome/desktop/wm/keybindings" = {
             close = [ "<Super><Shift>q" ];
           };
+          "org/gnome/desktop/background" = {
+            picture-uri = "file://" + pkgs.background.backgroundImage;
+            picture-uri-dark = "file://" + pkgs.background.darkBackgroundImage;
+          };
         };
       }
     ];

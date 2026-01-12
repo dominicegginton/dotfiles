@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ self, config, lib, pkgs, ... }:
 
 {
   config = lib.mkIf config.services.lldap.enable {
@@ -27,18 +27,16 @@
     users.ldap = {
       enable = true;
       # TODO: update address when moving to real server 
-      server = "ldap://127.0.0.1:3890";
+      # server = "ldap://${config.services.lldap.settings.ldap_host}:${config.services.lldap.settings.ldap_port}/";
+      server = "ldap://${self.outputs.nixosConfigurations.latitude-7390.config.networking.hostName}:${toString config.services.lldap.settings.ldap_port}/";
       base = config.services.lldap.settings.ldap_base_dn;
-      useTLS = false;
       daemon.enable = true;
+
+      # TODO: replace with machine-specific account
       bind = {
-        distinguishedName = "uid=id,ou=people,dc=dominicegginton,dc=dev";
+        distinguishedName = "uid=admin,ou=people,dc=dominicegginton,dc=dev";
         passwordFile = "/run/nslcd/bind-password";
       };
-      daemon.extraConfig = ''
-        ssl off
-        tls_reqcert never
-      '';
     };
 
     security.pam.services = {

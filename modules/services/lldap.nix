@@ -1,4 +1,4 @@
-# TDOO: replace this with kanidm or keycloak
+# TDOO: replace this with kanidm, keycloak or self build ldap implementation
 #       llap does not provide posix account schemas out of the box
 
 { config, lib, hostname, pkgs, ... }:
@@ -44,17 +44,19 @@
     services.lldap = {
       silenceForceUserPassResetWarning = true;
       settings = {
-        ldap_host = "127.0.0.1";
+        ldap_host = "0.0.0.0";
         ldap_port = 3890;
-        http_host = "127.0.0.1";
+        http_host = "0.0.0.0";
         http_port = 17170;
-        http_url = "http://127.0.0.1:17170";
+        http_url = "http://0.0.0.0:17170/";
         ldap_base_dn = "dc=dominicegginton,dc=dev";
         ldap_user_dn = "admin";
         ldap_user_email = "admin@dominicegginton.dev";
         database_url = "sqlite:///var/lib/lldap/users.db?mode=rwc";
+        force_ldap_user_pass_reset = "always";
       };
       environment = {
+        LLDAP_LDAPS_OPTIONS_ENABLED = "true";
         LLDAP_JWT_SECRET_FILE = "/var/lib/lldap/jwt_secret";
         LLDAP_LDAP_USER_PASS_FILE = "/var/lib/lldap/user_password";
       };
