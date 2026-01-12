@@ -18,6 +18,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -31,6 +33,8 @@ jobs:
       - name: Get secrets from Secret Manager
         run: |
           echo "TF_VAR_github_token=$(gcloud secrets versions access latest --secret=github-token)" >> $GITHUB_ENV
+          echo "TF_VAR_tailscale_api_key=$(gcloud secrets versions access latest --secret=tailscale-api-key)" >> $GITHUB_ENV
+          echo "TF_VAR_tailscale_auth_key=$(gcloud secrets versions access latest --secret=tailscale-auth-key)" >> $GITHUB_ENV
 
       - name: Set up Nix
         uses: ./.github/actions/install-nix
@@ -38,8 +42,6 @@ jobs:
       - name: Tofu Init
         run: nix develop .#infrastructure --command tofu init
         working-directory: infrastructure
-        env:
-          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Tofu fmt
         run: nix develop .#infrastructure --command tofu fmt -check
@@ -48,17 +50,11 @@ jobs:
       - name: Tofu validate
         run: nix develop .#infrastructure --command tofu validate
         working-directory: infrastructure
-        env:
-          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Tofu Plan
         run: nix develop .#infrastructure --command tofu plan
         working-directory: infrastructure
-        env:
-          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       - name: Tofu Apply
         run: nix develop .#infrastructure --command tofu apply -auto-approve
         working-directory: infrastructure
-        env:
-          TF_VAR_gcp_project_id: ${{ secrets.GCP_PROJECT_ID }}
