@@ -1,7 +1,7 @@
 { config, lib, ... }:
 
 {
-  openssh = {
+  services.openssh = {
     enable = true;
     allowSFTP = false;
     banner = lib.mkDefault config.services.getty.greetingLine;

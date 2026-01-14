@@ -62,8 +62,6 @@
       };
     };
 
-    services.llap.wants = [ "lldap-jwt-secret.service" "lldap-user-password.service" "tailscale.service" ];
-
     services.nginx.enable = true;
     services.nginx.virtualHosts."ldap.${hostname}" = {
       enableACME = true;
