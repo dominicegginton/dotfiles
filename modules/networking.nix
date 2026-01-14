@@ -9,7 +9,6 @@ with config.lib.topology;
       useDHCP = lib.mkDefault true;
       nftables.enable = lib.mkDefault true;
       firewall = {
-        # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268078
         enable = lib.mkDefault true;
         trustedInterfaces = lib.mkDefault [ "tailscale0" ];
         checkReversePath = lib.mkDefault "loose";
@@ -39,10 +38,11 @@ with config.lib.topology;
         };
       };
 
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268149
       timeServers = lib.mkDefault [
-        "tick.usnogps.navy.mil"
-        "tock.usnogps.navy.mil"
+        "0.pool.ntp.org"
+        "1.pool.ntp.org"
+        "2.pool.ntp.org"
+        "3.pool.ntp.org"
       ];
     };
 

@@ -11,6 +11,7 @@ rec {
     ./display/gnome.nix
     ./display/niri.nix
     ./hardware/bluetooth.nix
+    ./hardware/cpu.nix
     ./hardware/disks.nix
     ./programs/alacritty.nix
     ./programs/chromium.nix
@@ -23,6 +24,7 @@ rec {
     ./security/polkit.nix
     ./security/pwquality.nix
     ./security/sudo.nix
+    ./security/run0.nix
     ./security/tpm2.nix
     ./services/backup.nix
     ./services/bitmagnet.nix
@@ -135,15 +137,9 @@ rec {
       http-connections = 128; # increased parallel connections
       cores = 0; # use all available CPU cores
       max-jobs = "auto"; # use all available CPU cores
-
-      # redunce storage overhead
       keep-build-log = false; # dont keep build logs
       compress-build-log = true; # compress build logs
-
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268154
       require-sigs = true;
-
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268152
       allowed-users = [ "root" "@wheel" ];
     };
   };
@@ -163,24 +159,14 @@ rec {
     };
 
     kernelParams = [
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268168
       "fips=1"
-
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268092
       "audit=1"
-
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268093
       "audit_backlog_limit=8192"
     ];
 
     kernel.sysctl = {
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268141
       "net.ipv4.tcp_syncookies" = "1";
-
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268160
       "kernel.kptr_restrict" = 1;
-
-      # https://stigui.com/stigs/Anduril_NixOS_STIG/groups/V-268161
       "kernel.randomize_va_space" = 2;
     };
   };
@@ -195,25 +181,9 @@ rec {
     deadman.enable = true;
   };
 
-  hardware.cpu = {
-    intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-    amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  };
-
   environment.defaultPackages = lib.mkForce [ ];
 
   services = {
-    openssh = {
-      enable = true; # ssh
-      allowSFTP = false; # enable sftp
-      settings.KbdInteractiveAuthentication = false; # disable challenge response auth
-      extraConfig = ''
-        AllowTcpForwarding yes
-        X11Forwarding no
-        AllowAgentForwarding no
-        AllowStreamLocalForwarding no
-      '';
-    };
     dbus.enable = true; # system bus
     smartd.enable = true; # disk health monitoring
     thermald.enable = true; # thermal management
