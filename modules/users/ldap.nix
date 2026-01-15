@@ -25,12 +25,10 @@
 
     users.ldap = {
       enable = true;
-      # TODO: update address when moving to real server
       server = "ldap://${self.outputs.nixosConfigurations.latitude-7390.config.networking.hostName}:${toString config.services.lldap.settings.ldap_port}/";
       base = config.services.lldap.settings.ldap_base_dn;
       daemon.enable = true;
       bind = {
-        # TODO: replace with machine-specific account
         distinguishedName = "uid=admin,ou=people,dc=dominicegginton,dc=dev";
         passwordFile = "/run/nslcd/bind-password";
       };
@@ -93,7 +91,5 @@
         '';
       };
     };
-
-    # TODO: mount the ldap user home directory from gcp storage bucket using gcsfuse or similar
   };
 }

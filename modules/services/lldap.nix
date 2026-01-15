@@ -62,11 +62,13 @@
       };
     };
 
-    services.nginx.enable = true;
-    services.nginx.virtualHosts."ldap.${hostname}" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/".proxyPass = "http://${toString config.services.lldap.settings.http_host}:${toString config.services.lldap.settings.http_port}";
+    services.nginx = {
+      enable = true;
+      virtualHosts."ldap.${hostname}" = {
+        enableACME = true;
+        forceSSL = true;
+        locations."/".proxyPass = "http://${toString config.services.lldap.settings.http_host}:${toString config.services.lldap.settings.http_port}";
+      };
     };
 
     topology.self.services.lldap = {
