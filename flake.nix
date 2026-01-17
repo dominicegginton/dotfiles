@@ -47,6 +47,9 @@ rec {
             "vscode-with-extensions"
             "vscode-extension-github-copilot"
             "bws"
+            "youtube-via-google-chrome"
+            "google-chrome"
+            "YouTube_full_color_icon_2017.svg"
           ];
         };
         overlays = with self.inputs; [
