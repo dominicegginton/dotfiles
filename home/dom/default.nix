@@ -212,6 +212,6 @@
       ];
     };
 
-    home.packages = with pkgs; [ bat eza twm twx ];
+    home.packages = with pkgs; [ bat eza twm twx vscode vacuum-tube ];
   };
 }

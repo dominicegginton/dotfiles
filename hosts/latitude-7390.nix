@@ -30,6 +30,8 @@
       enable = true;
       batteryThreshold.enable = true;
     };
+
+    flatpak.enable = true;
   };
 
   topology.self.hardware.info = "Workstation";
