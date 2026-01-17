@@ -26,7 +26,7 @@ with config.lib.topology;
       useRoutingFeatures = "both";
       authKeyFile = "/run/bitwarden-secrets/tailscale";
       authKeyParameters.ephemeral = true;
-      extraUpFlags = [ "--ssh" "--accept-dns" ];
+      extraUpFlags = [ "--ssh" "--accept-dns" "--accept-routes" ];
       extraSetFlags = [ "--posture-checking=true" ];
       interfaceName = "tailscale0";
     };
