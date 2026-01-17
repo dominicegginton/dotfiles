@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  config.services.journald.extraConfig = ''
+  config.services.journald.extraConfig = lib.mkDefault ''
     MaxRetentionSec=1d
   '';
 }

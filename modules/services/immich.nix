@@ -1,4 +1,4 @@
-{ config, lib, hostname, pkgs, ... }:
+{ config, lib, hostname, ... }:
 
 {
   config = lib.mkIf config.services.immich.enable {
