@@ -9,12 +9,9 @@
         flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
       '';
     };
-    environment.systemPackages = [
-      pkgs.bazaar
-    ];
 
-    systemd.packages = [
-      pkgs.bazaar
-    ];
+    environment.systemPackages = with pkgs; [ flatpak bazaar ];
+
+    systemd.packages = with pkgs; [ flatpak bazaar ];
   };
 }

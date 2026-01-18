@@ -1,9 +1,5 @@
 { fetchurl
-, stdenv
-, writeText
 , google-chrome
-, wayland-utils
-, wlr-randr
 , lib
 , makeDesktopItem
 , runtimeShell
@@ -13,13 +9,13 @@
 }:
 
 let
-  name = "youtube-via-google-chrome";
+  name = "youtube-tv";
   url = "https://www.youtube.com/tv";
 
   desktopItem = makeDesktopItem {
     inherit name;
     exec = name;
-    desktopName = "Youtube via Google Chrome";
+    desktopName = "Youtube TV";
     genericName = "A video social media and online video sharing platform";
     categories = [ "TV" "AudioVideo" ];
     startupNotify = true;
@@ -34,7 +30,6 @@ let
   script = writeScriptBin name ''
     #!${runtimeShell}
 
-    # launch chrome with the unpacked extension and wait, then cleanup
     "${google-chrome}/bin/${google-chrome.meta.mainProgram}" \
       ${lib.escapeShellArgs commandLineArgs} \
       --app=${url} \
@@ -43,11 +38,9 @@ let
       --window-size=4096,2160 \
       --force-device-scale-factor=1 \
       --start-fullscreen \
-      -force-dev-mode-highlighting
       --no-default-browser-check \
       --no-crash-upload \
       --no-first-run \
-      -force-dev-mode-highlighting \
       "$@" &
 
     CHROME_PID=$!
@@ -60,14 +53,10 @@ symlinkJoin {
   inherit name;
   paths = [ script desktopItem ];
   meta = {
-    description = "Open Youtube in Google Chrome app mode";
-    longDescription = ''
-      YouTube is an American social media and online video sharing platform owned by Google. See https://www.youtube.com.
-
-      This package installs an application launcher item that opens YouTube in a dedicated Google Chrome window. If your preferred browser doesn't support YouTube's DRM, this package provides a quick and easy way to launch YouTube on a supported browser, without polluting your application list with a redundant, single-purpose browser.
-    '';
+    description = "Open Youtube TV via Google Chrome app mode";
+    longDescription = "YouTube is an American subscription streaming service operated by YouTube, a subsidiary of Google. See https://www.youtube.com/about";
     homepage = url;
     maintainers = [ lib.maintainers.dominicegginton ];
-    platforms = google-chrome.meta.platforms or lib.platforms.all;
+    platforms = google-chrome.meta.platforms;
   };
 }
