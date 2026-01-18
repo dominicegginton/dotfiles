@@ -3,6 +3,10 @@
 
 { config, lib, hostname, pkgs, ... }:
 
+let
+  virtualHost = "users.${hostname}";
+in
+
 {
   config = lib.mkIf config.services.lldap.enable {
     systemd.services.lldap-jwt-secret = {
@@ -64,7 +68,11 @@
 
     services.nginx = {
       enable = true;
-      virtualHosts."ldap.${hostname}" = {
+      tailscaleAuth = {
+        enable = true;
+        virtualHosts = [ virtualHost ];
+      };
+      virtualHosts."${virtualHost}" = {
         enableACME = true;
         forceSSL = true;
         locations."/".proxyPass = "http://${toString config.services.lldap.settings.http_host}:${toString config.services.lldap.settings.http_port}";
@@ -72,8 +80,8 @@
     };
 
     topology.self.services.lldap = {
-      name = "LLDAP";
-      details.listen.text = "ldap.${hostname}";
+      name = config.services.systemd.llap.serviceName;
+      details.listen.text = virtualHost;
     };
   };
 }

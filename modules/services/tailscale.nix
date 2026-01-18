@@ -1,4 +1,4 @@
-{ self, config, lib, pkgs, hostname, tailnet, ... }:
+{ self, config, pkgs, hostname, tailnet, ... }:
 
 with config.lib.topology;
 
@@ -18,20 +18,12 @@ with config.lib.topology;
     wantedBy = [ "multi-user.target" ];
   };
 
-  secrets.tailscale = "15536836-a306-471a-b64c-b27300c683ea";
-
-  services = {
-    tailscale = {
-      enable = true;
-      useRoutingFeatures = "both";
-      authKeyFile = "/run/bitwarden-secrets/tailscale";
-      authKeyParameters.ephemeral = true;
-      extraUpFlags = [ "--ssh" "--accept-dns" "--accept-routes" ];
-      extraSetFlags = [ "--posture-checking=true" ];
-      interfaceName = "tailscale0";
-    };
-    tailscaleAuth.enable = true;
-    davfs2.enable = true;
+  services.tailscale = {
+    enable = true;
+    useRoutingFeatures = "both";
+    extraUpFlags = [ "--ssh" "--accept-dns" "--accept-routes" ];
+    extraSetFlags = [ "--posture-checking=true" ];
+    interfaceName = "tailscale0";
   };
 
   security.acme = {
