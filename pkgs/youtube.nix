@@ -39,15 +39,15 @@ let
       ${lib.escapeShellArgs commandLineArgs} \
       --app=${url} \
       --new-window \
-      --user-agent="Mozilla/5.0 (Linux; Android 9; BRAVIA 4K GB) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36" \
+      --user-agent="Mozilla/5.0 (Linux; Android 16; BRAVIA 4K GB) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36" \
       --window-size=4096,2160 \
       --force-device-scale-factor=1 \
       --start-fullscreen \
-      --touch-events=enabled \
-      --no-first-run \
+      -force-dev-mode-highlighting
       --no-default-browser-check \
       --no-crash-upload \
-      -force-dev-mode-highlighting
+      --no-first-run \
+      -force-dev-mode-highlighting \
       "$@" &
 
     CHROME_PID=$!
