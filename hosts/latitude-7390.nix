@@ -26,11 +26,6 @@
     silverbullet.enable = true; # move to a server - testing only
     logind.settings.Login.HandleLidSwitchDocked = "suspend";
     upower.enable = true;
-    tlp = {
-      enable = true;
-      batteryThreshold.enable = true;
-    };
-
     flatpak.enable = true;
   };
 

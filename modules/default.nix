@@ -44,7 +44,6 @@ rec {
     ./services/ssh.nix
     ./services/tailscale.nix
     ./services/timesyncd.nix
-    ./services/tlp.nix
     ./services/usbguard.nix
     ./users/ldap.nix
     ./users/root.nix

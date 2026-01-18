@@ -4,36 +4,37 @@
   options.display.gnome.enable = lib.mkEnableOption "Gnome";
 
   config = lib.mkIf config.display.gnome.enable {
-    hardware.graphics.enable = true;
+    hardware.graphics.enable = lib.mkDefault true;
 
     networking.networkmanager.enable = true;
 
     services = {
       pipewire.enable = true;
-      power-profiles-daemon.enable = false;
+      power-profiles-daemon.enable = true;
       udev.packages = [ pkgs.gnome-settings-daemon ];
       displayManager.gdm.enable = true;
       desktopManager.gnome.enable = true;
       gnome = {
-        core-shell.enable = lib.mkDefault true;
-        core-apps.enable = lib.mkDefault true;
+        core-shell.enable = true;
+        core-apps.enable = true;
       };
     };
 
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
     fonts = {
-      enableDefaultPackages = false;
-      fontDir.enable = true;
-      fontconfig = {
-        enable = true;
-        antialias = true;
-        defaultFonts.emoji = [ "Noto Color Emoji" ];
-        hinting.autohint = true;
-        hinting.enable = true;
-      };
+      enableDefaultPackages = lib.mkForce false;
       packages = with pkgs; [ noto-fonts-color-emoji ];
+      fontDir.enable = lib.mkForce true;
+      fontconfig = {
+        enable = lib.mkForce true;
+        antialias = lib.mkForce true;
+        defaultFonts.emoji = [ "Noto Color Emoji" ];
+        hinting.autohint = lib.mkForce true;
+        hinting.enable = lib.mkForce true;
+      };
     };
+
     programs.dconf.profiles.user.databases = [
       {
         settings = {
@@ -54,6 +55,16 @@
           "org/gnome/desktop/background" = {
             picture-uri = "file://" + pkgs.background.backgroundImage;
             picture-uri-dark = "file://" + pkgs.background.darkBackgroundImage;
+          };
+          "org/gnome/shell" = {
+            favorite-apps = [
+              "org.gnome.Epiphany.desktop"
+              "org.gnome.Nautilus.desktop"
+              "org.gnome.Terminal.desktop"
+            ];
+          };
+          "org/gnome/desktop/interface" = {
+            enable-hot-corners = false;
           };
         };
       }

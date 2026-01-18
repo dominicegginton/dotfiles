@@ -1,7 +1,7 @@
 { self, lib, pkgs, ... }:
 
 {
-  config.system = {
+  system = {
     autoUpgrade = {
       enable = true;
       dates = "02:00";
