@@ -1,6 +1,0 @@
-{
-  "name": "residence",
-  "dependencies": {
-    "astal": "$HOME/.local/share/ags"
-  }
-}

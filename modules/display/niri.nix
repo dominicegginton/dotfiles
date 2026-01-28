@@ -70,19 +70,6 @@ with config.scheme.withHashtag;
     #   ];
     # };
 
-    # currently fails to start
-    # systemd.user.services.niri-shell = {
-    #   description = "Niri shell (residence)";
-    #   wantedBy = [ "graphical-session.target" ];
-    #   after = [ "graphical-session.target" ];
-    #   unitConfig.ConditionEnvironment = [ "NIRI_SOCKET" ];
-    #   serviceConfig = {
-    #     Type = "simple";
-    #     ExecStart = lib.getExe pkgs.residence;
-    #     Restart = "on-failure";
-    #     RestartSec = 3;
-    #   };
-    # };
     environment = {
       variables = {
         NIXOS_OZONE_WL = "1";
@@ -94,25 +81,23 @@ with config.scheme.withHashtag;
         MOZ_USE_XINPUT2_BY_DEFAULT = "1";
       };
       systemPackages = with pkgs; [
-        niri # Niri
-        wlsunset # Screen Color Temperature Adjuster
-        resources # System Monitor
+        niri
+        wlsunset
 
-        wpa_supplicant_gui # Wi-Fi Connection Manager
-        wdisplays # Display Manager
-        swaysettings # Sway Settings
+        mission-center
+        wdisplays
+        swaysettings
 
         ## replace with base gnome apps
-        nautilus # File Manager
-        sushi # File Previewer
-        clapper # Media Player
-        loupe # Image Viewer
-        file-roller # Archive Manager
-        evince # Document Viewer
-        gnome-font-viewer # Font Viewer
-        gnome-calendar # Calendar
-        gnome-logs # System Logs Viewer
-        gnome-contacts # Contacts Manager
+        nautilus
+        sushi
+        clapper
+        loupe
+        evince
+        gnome-font-viewer
+        gnome-calendar
+        gnome-logs
+        gnome-contacts
       ];
       etc."niri/config.kdl".text = ''
         prefer-no-csd
@@ -134,25 +119,12 @@ with config.scheme.withHashtag;
           mod-key-nested "Alt"
           warp-mouse-to-focus
           workspace-auto-back-and-forth
-        tablet {
-          map-to-output "eDP-1"
-        }
-        touch {
-          map-to-output "eDP-1"
-        }
-          keyboard {
-            numlock
-            xkb {
-              layout "US"
-            }
+          mouse {
+            accel-profile "flat"
           }
           touchpad {
             tap
             natural-scroll
-            scroll-method "two-finger"
-          }
-          mouse {
-            accel-profile "flat"
           }
           trackpoint {
             natural-scroll
@@ -232,13 +204,6 @@ with config.scheme.withHashtag;
             active-color "${red}"
             inactive-color "${red}"
           }
-        }
-        window-rule {
-          match app-id="^dropdown$"
-          open-floating true
-          default-floating-position x=0 y=0 relative-to="top"
-          default-window-height { proportion 0.5; }
-          default-column-width { proportion 0.8; }
         }
         window-rule {
           match is-floating=true

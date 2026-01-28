@@ -14,8 +14,6 @@ rec {
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
     deadman.url = "github:dominicegginton/deadman";
     deadman.inputs.nixpkgs.follows = "nixpkgs";
-    ags.url = "github:aylur/ags?rev=3ed9737bdbc8fc7a7c7ceef2165c9109f336bff6";
-    ags.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";

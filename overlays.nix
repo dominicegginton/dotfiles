@@ -28,22 +28,6 @@ rec {
           '';
       in
       {
-        system-manager = karrenScript ''
-          selection=$(${prev.uutils-coreutils-noprefix}/bin/printf "suspend\nreboot\nexit\nshutdown" | ${prev.lib.getExe prev.fzf} --no-sort --prompt "> ")
-          if [ -z "$selection" ]; then
-            exit 1;
-          fi
-          if [ "$selection" = "shutdown" ]; then
-            ${prev.lib.getExe prev.gum} confirm "Shutdown?" && ${prev.systemd}/bin/systemctl poweroff
-          elif [ "$selection" = "reboot" ]; then
-            ${prev.lib.getExe prev.gum} confirm "Reboot?" && ${prev.systemd}/bin/systemctl reboot
-          elif [ "$selection" = "exit" ]; then
-            ${prev.lib.getExe prev.gum} confirm "Exit Niri?" && ${prev.niri}/bin/niri msg action quit
-          elif [ "$selection" = "suspend" ]; then
-            ${prev.lib.getExe prev.gum} confirm "Suspend?" && ${prev.systemd}/bin/systemctl suspend
-          fi
-          ${prev.uutils-coreutils-noprefix}/bin/sleep 0.1
-        '';
         clipboard-history = karrenScript ''
           selection=$(${prev.cliphist}/bin/cliphist list | ${prev.fzf}/bin/fzf --no-sort --prompt "Select clipboard entry: ")
           if [ -z "$selection" ]; then
@@ -70,10 +54,6 @@ rec {
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     nix-github-authentication = final.callPackage ./pkgs/nix-github-authentication.nix { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
-    residence = final.callPackage ./pkgs/residence {
-      inherit (self.inputs) ags;
-      inherit (final) system;
-    };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
     topology = self.outputs.topology.${final.system}.config.output;
