@@ -21,6 +21,8 @@
 
   display.gnome.enable = true;
 
+  programs.firefox.enable = true;
+
   services = {
     lldap.enable = true; # move to a server - testing only
     silverbullet.enable = true; # move to a server - testing only
