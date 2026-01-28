@@ -1,4 +1,9 @@
-{ config, lib, hostname, ... }:
+{
+  config,
+  lib,
+  hostname,
+  ...
+}:
 
 let
   virtualHost = "sb.${hostname}";
@@ -21,7 +26,8 @@ in
       virtualHosts."${virtualHost}" = {
         enableACME = true;
         forceSSL = true;
-        locations."/".proxyPass = "http://${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
+        locations."/".proxyPass =
+          "http://${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
       };
     };
 

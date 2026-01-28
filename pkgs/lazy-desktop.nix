@@ -1,4 +1,9 @@
-{ lib, stdenv, nix-index, desktop-file-utils }:
+{
+  lib,
+  stdenv,
+  nix-index,
+  desktop-file-utils,
+}:
 
 let
   nix-index-database = builtins.fetchurl {
@@ -10,7 +15,10 @@ in
 
 stdenv.mkDerivation {
   name = "karren.lazy-desktop";
-  buildInputs = [ nix-index desktop-file-utils ];
+  buildInputs = [
+    nix-index
+    desktop-file-utils
+  ];
   dontUnpack = true;
   dontBuild = true;
   installPhase = ''

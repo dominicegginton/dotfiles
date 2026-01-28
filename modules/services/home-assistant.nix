@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   config = lib.mkIf config.services.home-assistant.enable {
@@ -73,7 +78,8 @@
       virtualHosts."homeassistant.${config.networking.hostName}" = {
         forceSSL = true;
         enableACME = true;
-        locations."/".proxyPass = "http://${builtins.elemAt config.services.home-assistant.config.http.server_host 0}:${toString config.services.home-assistant.config.http.server_port}";
+        locations."/".proxyPass =
+          "http://${builtins.elemAt config.services.home-assistant.config.http.server_host 0}:${toString config.services.home-assistant.config.http.server_port}";
       };
     };
   };

@@ -1,4 +1,11 @@
-{ self, modulesPath, config, lib, pkgs, ... }:
+{
+  self,
+  modulesPath,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 rec {
   imports = [
@@ -139,7 +146,10 @@ rec {
       keep-build-log = false; # dont keep build logs
       compress-build-log = true; # compress build logs
       require-sigs = true;
-      allowed-users = [ "root" "@wheel" ];
+      allowed-users = [
+        "root"
+        "@wheel"
+      ];
     };
   };
 

@@ -48,25 +48,23 @@
         };
       };
     };
-  } // lib.mapAttrs
-    (name: id: {
-      type = "disk";
-      device = id;
-      content = {
-        type = "gpt";
-        partitions = {
-          data = {
-            size = "100%";
-            content = {
-              type = "btrfs";
-              extraArgs = [ "-f" ];
-              mountpoint = "/mnt/${name}";
-              mountOptions = [ "noatime" ];
-            };
+  }
+  // lib.mapAttrs (name: id: {
+    type = "disk";
+    device = id;
+    content = {
+      type = "gpt";
+      partitions = {
+        data = {
+          size = "100%";
+          content = {
+            type = "btrfs";
+            extraArgs = [ "-f" ];
+            mountpoint = "/mnt/${name}";
+            mountOptions = [ "noatime" ];
           };
         };
       };
-    })
-    config.hardware.disks.extra;
+    };
+  }) config.hardware.disks.extra;
 }
-

@@ -1,4 +1,9 @@
-{ lib, osConfig, pkgs, ... }:
+{
+  lib,
+  osConfig,
+  pkgs,
+  ...
+}:
 
 {
   config = {
@@ -212,6 +217,13 @@
       ];
     };
 
-    home.packages = with pkgs; [ bat eza twm twx vscode youtube ];
+    home.packages = with pkgs; [
+      bat
+      eza
+      twm
+      twx
+      vscode
+      youtube
+    ];
   };
 }

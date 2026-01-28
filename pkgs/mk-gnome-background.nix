@@ -1,24 +1,28 @@
-{ lib
-, stdenv
-, imagemagick
-, writeText
-, runCommand
-, ...
+{
+  lib,
+  stdenv,
+  imagemagick,
+  writeText,
+  runCommand,
+  ...
 }:
 
 let
-  darken = src: runCommand "darkened-${src}" { nativeBuildInputs = [ imagemagick ]; } ''
-    convert ${src} -fill black -colorize 70% -strip $out
-  '';
+  darken =
+    src:
+    runCommand "darkened-${src}" { nativeBuildInputs = [ imagemagick ]; } ''
+      convert ${src} -fill black -colorize 70% -strip $out
+    '';
 in
-{ src
-, srcDark ? (darken src)
-, name ? src.name
-, primaryColor ? "#333555"
-, secondaryColor ? "#555577"
-, description ? src.meta.description
-, license ? src.meta.license
-, ...
+{
+  src,
+  srcDark ? (darken src),
+  name ? src.name,
+  primaryColor ? "#333555",
+  secondaryColor ? "#555577",
+  description ? src.meta.description,
+  license ? src.meta.license,
+  ...
 }:
 
 let

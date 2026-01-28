@@ -1,11 +1,12 @@
-{ fetchurl
-, lib
-, makeDesktopItem
-, runtimeShell
-, symlinkJoin
-, writeScriptBin
-, google-chrome
-, commandLineArgs ? [ ]
+{
+  fetchurl,
+  lib,
+  makeDesktopItem,
+  runtimeShell,
+  symlinkJoin,
+  writeScriptBin,
+  google-chrome,
+  commandLineArgs ? [ ],
 }:
 
 let
@@ -39,7 +40,10 @@ in
 
 symlinkJoin {
   inherit name;
-  paths = [ script desktopItem ];
+  paths = [
+    script
+    desktopItem
+  ];
   meta = {
     description = "Silverbullet Desktop";
     longDescription = ''

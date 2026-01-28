@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 with types;
@@ -7,11 +12,16 @@ let
   directory = "/root/bitwarden-secrets";
   mountpoint = "/run/bitwarden-secrets";
 
-  secret-install = { name, secret }:
+  secret-install =
+    { name, secret }:
     let
       id = if (isString secret) then secret else secret.id;
       user = if (isString secret) then "root" else (if secret.user == "" then "root" else secret.user);
-      permissions = if (isString secret) then "700" else (if secret.permissions == "" then "700" else secret.permissions);
+      permissions =
+        if (isString secret) then
+          "700"
+        else
+          (if secret.permissions == "" then "700" else secret.permissions);
     in
     ''
       value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
@@ -60,20 +70,41 @@ in
     default = { };
     example = {
       foo = "foo-secret";
-      bar = { id = "secret-bar"; user = "bar"; permissions = "700"; };
+      bar = {
+        id = "secret-bar";
+        user = "bar";
+        permissions = "700";
+      };
     };
     description = "Attribute set of secrets to be installed.";
   };
 
   config = {
     systemd.services.decrypt-secrets = {
-      wantedBy = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
-      before = [ "systemd-sysusers.service" "systemd-tmpfiles-setup.service" "network.target" "network-setup.service" ];
+      wantedBy = [
+        "systemd-sysusers.service"
+        "systemd-tmpfiles-setup.service"
+        "network.target"
+        "network-setup.service"
+      ];
+      before = [
+        "systemd-sysusers.service"
+        "systemd-tmpfiles-setup.service"
+        "network.target"
+        "network-setup.service"
+      ];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
       serviceConfig.RemainAfterExit = true;
       script = ''
-        export PATH=${makeBinPath [ pkgs.toybox pkgs.gum pkgs.jq pkgs.gnupg ]}:$PATH
+        export PATH=${
+          makeBinPath [
+            pkgs.toybox
+            pkgs.gum
+            pkgs.jq
+            pkgs.gnupg
+          ]
+        }:$PATH
         TEMP_DIR=$(mktemp -d)
         trap 'rm -rf $TEMP_DIR' EXIT
         export GPG_TTY=$(tty)
@@ -102,7 +133,9 @@ in
         chown root:root ${directory}
         chown root:root ${directory}/secrets
         chown root:root ${mountpoint}
-        ${lib.concatStringsSep "\n" (mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.secrets)}
+        ${lib.concatStringsSep "\n" (
+          mapAttrsToList (name: secret: secret-install { inherit name secret; }) config.secrets
+        )}
       '';
     };
   };

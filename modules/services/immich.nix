@@ -1,4 +1,9 @@
-{ config, lib, hostname, ... }:
+{
+  config,
+  lib,
+  hostname,
+  ...
+}:
 
 let
   virtualHost = "immich.${hostname}";
@@ -27,4 +32,3 @@ in
     };
   };
 }
-

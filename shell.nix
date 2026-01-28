@@ -1,20 +1,21 @@
-{ lib
-, mkShell
-, writeShellScriptBin
-, nix
-, nix-output-monitor
-, deadnix
-, nix-diff
-, nix-tree
-, nix-health
-, nix-index
-, google-cloud-sdk
-, opentofu
-, gum
-, jq
-, gnupg
-, bws
-, neovim
+{
+  lib,
+  mkShell,
+  writeShellScriptBin,
+  nix,
+  nix-output-monitor,
+  deadnix,
+  nix-diff,
+  nix-tree,
+  nix-health,
+  nix-index,
+  google-cloud-sdk,
+  opentofu,
+  gum,
+  jq,
+  gnupg,
+  bws,
+  neovim,
 }:
 
 mkShell rec {

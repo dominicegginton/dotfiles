@@ -1,4 +1,10 @@
-{ self, config, lib, pkgs, ... }:
+{
+  self,
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   config = lib.mkIf config.services.lldap.enable {
@@ -10,7 +16,10 @@
       description = "Setup nslcd LDAP bind password";
       wantedBy = [ "nslcd.service" ];
       before = [ "nslcd.service" ];
-      after = [ "lldap.service" "lldap-user-password.service" ];
+      after = [
+        "lldap.service"
+        "lldap-user-password.service"
+      ];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;

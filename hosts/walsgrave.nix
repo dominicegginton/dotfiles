@@ -1,4 +1,9 @@
-{ self, lib, platform, ... }:
+{
+  self,
+  lib,
+  platform,
+  ...
+}:
 
 {
   nixpkgs.hostPlatform = lib.mkDefault platform;

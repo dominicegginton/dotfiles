@@ -1,4 +1,9 @@
-{ config, lib, hostname, ... }:
+{
+  config,
+  lib,
+  hostname,
+  ...
+}:
 
 with config.lib.topology;
 
@@ -49,7 +54,10 @@ with config.lib.topology;
     lo = {
       type = "loopback";
       virtual = true;
-      addresses = [ "localhost" "127.0.0.1" ];
+      addresses = [
+        "localhost"
+        "127.0.0.1"
+      ];
     };
     wlp108s0 = lib.mkIf config.networking.wireless.iwd.enable {
       type = "wifi";

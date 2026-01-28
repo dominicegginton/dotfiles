@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 {
   options.programs.sherlock-launcher.enable = lib.mkEnableOption "Sherlock Launcher";
@@ -134,4 +139,3 @@
     };
   };
 }
-

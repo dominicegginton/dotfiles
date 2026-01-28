@@ -24,13 +24,22 @@ rec {
   };
 
   nixConfig = {
-    experimental-features = [ "flakes" "nix-command" ];
+    experimental-features = [
+      "flakes"
+      "nix-command"
+    ];
     builders-use-substitutes = true;
     substituters = [ "https://cache.nixos.org" ];
     trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
   };
 
-  outputs = { self, nixpkgs, nix-github-actions, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nix-github-actions,
+      ...
+    }:
 
     let
       inherit (nixpkgs) lib;
@@ -39,56 +48,73 @@ rec {
 
       forAllSystems = lib.genAttrs systems;
 
-      nixpkgsFor = forAllSystems (system: import nixpkgs {
-        inherit system;
-        config = nixConfig // {
-          allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-            "vscode"
-            "vscode-with-extensions"
-            "vscode-extension-github-copilot"
-            "bws"
-            "youtube-via-google-chrome"
-            "google-chrome"
-            "YouTube_full_color_icon_2017.svg"
+      nixpkgsFor = forAllSystems (
+        system:
+        import nixpkgs {
+          inherit system;
+          config = nixConfig // {
+            allowUnfreePredicate =
+              pkg:
+              builtins.elem (lib.getName pkg) [
+                "vscode"
+                "vscode-with-extensions"
+                "vscode-extension-github-copilot"
+                "bws"
+                "youtube-via-google-chrome"
+                "google-chrome"
+                "YouTube_full_color_icon_2017.svg"
+              ];
+          };
+          overlays = with self.inputs; [
+            self.outputs.overlays.default
+            niri.overlays.default
+            nix-topology.overlays.default
+            nix-topology.overlays.topology
+            deadman.overlays.default
+            run0-sudo-shim.overlays.default
           ];
-        };
-        overlays = with self.inputs; [
-          self.outputs.overlays.default
-          niri.overlays.default
-          nix-topology.overlays.default
-          nix-topology.overlays.topology
-          deadman.overlays.default
-          run0-sudo-shim.overlays.default
-        ];
-      });
+        }
+      );
     in
 
     {
       inherit nixpkgsFor;
 
-      formatter = forAllSystems (system: nixpkgsFor.${system}.nixpkgs-fmt);
+      formatter = forAllSystems (system: nixpkgsFor.${system}.nixfmt-tree);
 
       lib = import ./lib.nix { inherit self; };
 
       overlays = import ./overlays.nix { inherit self; };
 
-      githubActions = with nix-github-actions.lib; mkGithubMatrix { checks = lib.getAttrs (lib.intersectLists systems (lib.attrNames githubPlatforms)) self.outputs.devShells; };
+      githubActions =
+        with nix-github-actions.lib;
+        mkGithubMatrix {
+          checks = lib.getAttrs (lib.intersectLists systems (lib.attrNames githubPlatforms)) self.outputs.devShells;
+        };
 
       legacyPackages = forAllSystems (system: nixpkgsFor.${system});
 
-      devShells = forAllSystems (system:
-        let pkgs = nixpkgsFor.${system}; in {
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
+        {
           default = pkgs.callPackage ./shell.nix { };
           infrastructure = pkgs.callPackage ./infrastructure/shell.nix { };
-        });
+        }
+      );
 
-      topology = forAllSystems (system: import self.inputs.nix-topology {
-        pkgs = nixpkgsFor.${system};
-        modules = [
-          ./topology.nix
-          { nixosConfigurations = self.outputs.nixosConfigurations; }
-        ];
-      });
+      topology = forAllSystems (
+        system:
+        import self.inputs.nix-topology {
+          pkgs = nixpkgsFor.${system};
+          modules = [
+            ./topology.nix
+            { nixosConfigurations = self.outputs.nixosConfigurations; }
+          ];
+        }
+      );
 
       nixosConfigurations = {
         latitude-7390 = self.outputs.lib.nixosSystem {
@@ -119,6 +145,3 @@ rec {
       };
     };
 }
-
-
-

@@ -48,7 +48,13 @@ with config.lib.topology;
       info = "EE Bright Box 2 Router";
       interfaceGroups = [
         [ "eth0" ]
-        [ "wlan0" "eth1" "eth2" "eth3" "eth4" ]
+        [
+          "wlan0"
+          "eth1"
+          "eth2"
+          "eth3"
+          "eth4"
+        ]
       ];
       interfaces.eth0 = {
         network = "internet";
@@ -173,7 +179,10 @@ with config.lib.topology;
         type = "tailscale";
         icon = ./assets/tailscale.svg;
         virtual = true;
-        addresses = [ "pixel-9" "pixel-9.${tailnet}" ];
+        addresses = [
+          "pixel-9"
+          "pixel-9.${tailnet}"
+        ];
       };
     };
     steamdeck = mkDevice "steamdeck" {
@@ -188,7 +197,10 @@ with config.lib.topology;
         type = "tailscale";
         icon = ./assets/tailscale.svg;
         virtual = true;
-        addresses = [ "steamdeck" "steamdeck.${tailnet}" ];
+        addresses = [
+          "steamdeck"
+          "steamdeck.${tailnet}"
+        ];
       };
     };
   };

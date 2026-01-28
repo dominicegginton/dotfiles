@@ -1,4 +1,11 @@
-{ self, config, pkgs, hostname, tailnet, ... }:
+{
+  self,
+  config,
+  pkgs,
+  hostname,
+  tailnet,
+  ...
+}:
 
 with config.lib.topology;
 
@@ -21,7 +28,11 @@ with config.lib.topology;
   services.tailscale = {
     enable = true;
     useRoutingFeatures = "both";
-    extraUpFlags = [ "--ssh" "--accept-dns" "--accept-routes" ];
+    extraUpFlags = [
+      "--ssh"
+      "--accept-dns"
+      "--accept-routes"
+    ];
     extraSetFlags = [ "--posture-checking=true" ];
     interfaceName = "tailscale0";
   };
@@ -38,6 +49,9 @@ with config.lib.topology;
     type = "tailscale";
     icon = ../../assets/tailscale.svg;
     virtual = true;
-    addresses = [ hostname "${hostname}.${tailnet}" ];
+    addresses = [
+      hostname
+      "${hostname}.${tailnet}"
+    ];
   };
 }

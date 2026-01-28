@@ -1,15 +1,20 @@
-{ config
-, lib
-, pkgs
-, modulesPath
-, ...
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  ...
 }:
 
 {
   config = {
     boot.initrd = {
       supportedFilesystems = [ "btrfs" ];
-      kernelModules = [ "btrfs" "dm-mod" "dm-crypt" ];
+      kernelModules = [
+        "btrfs"
+        "dm-mod"
+        "dm-crypt"
+      ];
       systemd = {
         enable = true;
         services.impermanence-rollback = {

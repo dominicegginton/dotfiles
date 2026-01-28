@@ -1,4 +1,9 @@
-{ self, lib, pkgs, ... }:
+{
+  self,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   nixpkgs.hostPlatform = lib.mkDefault pkgs.stdenv.hostPlatform;

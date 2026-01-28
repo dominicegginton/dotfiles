@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with config.scheme.withHashtag;
 
@@ -47,7 +52,10 @@ with config.scheme.withHashtag;
         antialias = true;
         defaultFonts.serif = [ "Ibm Plex Serif" ];
         defaultFonts.sansSerif = [ "Ibm Plex Sans" ];
-        defaultFonts.monospace = [ "Ibm Plex Mono" "Noto Nerd Font Mono" ];
+        defaultFonts.monospace = [
+          "Ibm Plex Mono"
+          "Noto Nerd Font Mono"
+        ];
         defaultFonts.emoji = [ "Noto Color Emoji" ];
         hinting.autohint = true;
         hinting.enable = true;
@@ -294,7 +302,14 @@ with config.scheme.withHashtag;
           Mod+Space            hotkey-overlay-title="Launcher"           { spawn "${lib.getExe pkgs.sherlock-launcher}" "--config-dir" "/etc/sherlock-launcher/"; }
           Mod+Shift+Escape     hotkey-overlay-title="System Manager"     { spawn "${lib.getExe pkgs.karren.system-manager}"; }
           Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock-effects}" "-S" "--effect-blur" "10x10"; }
-          Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-output" ''PATH=${lib.makeBinPath [ pkgs.uutils-coreutils-noprefix pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -'')}"; }
+          Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (
+            pkgs.writeShellScriptBin "screenshot-output" "PATH=${
+              lib.makeBinPath [
+                pkgs.uutils-coreutils-noprefix
+                pkgs.wl-clipboard
+              ]
+            } ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -"
+          )}"; }
           Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-region" ''PATH=${lib.makeBinPath [ pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.swappy} -f -'')}"; }
           Mod+Shift+E                                                    { quit; }
           Mod+Shift+P                                                    { power-off-monitors; }

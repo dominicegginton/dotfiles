@@ -6,5 +6,3 @@
     pkcs11.enable = lib.mkDefault true;
   };
 }
-
-

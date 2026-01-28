@@ -1,4 +1,8 @@
-{ lib, writeShellScriptBin, tmux }:
+{
+  lib,
+  writeShellScriptBin,
+  tmux,
+}:
 
 writeShellScriptBin "twx" ''
   export PATH=${lib.makeBinPath [ tmux ]}

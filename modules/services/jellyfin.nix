@@ -1,4 +1,9 @@
-{ config, lib, hostname, ... }:
+{
+  config,
+  lib,
+  hostname,
+  ...
+}:
 
 {
   config = lib.mkIf config.services.jellyfin.enable {
@@ -12,4 +17,3 @@
     };
   };
 }
-

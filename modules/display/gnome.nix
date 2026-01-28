@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   options.display.gnome.enable = lib.mkEnableOption "Gnome";
@@ -125,12 +130,15 @@
         gnome-software
         simple-scan
       ];
-      systemPackages = with pkgs; with gnomeExtensions; [
-        background
-        mission-center
-        gnome-firmware
-        lock
-      ];
+      systemPackages =
+        with pkgs;
+        with gnomeExtensions;
+        [
+          background
+          mission-center
+          gnome-firmware
+          lock
+        ];
     };
   };
 }

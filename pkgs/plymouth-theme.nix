@@ -1,4 +1,9 @@
-{ lib, stdenv, fetchFromGitHub, plymouth }:
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  plymouth,
+}:
 
 stdenv.mkDerivation rec {
   name = "angular_alt";
@@ -17,7 +22,7 @@ stdenv.mkDerivation rec {
     cp *png ${name}.script ${name}.plymouth $out/share/plymouth/themes/${name}/
     chmod +x $out/share/plymouth/themes/${name}/${name}.plymouth $out/share/plymouth/themes/${name}/${name}.script
     sed -i "s@/usr/@$out/@" $out/share/plymouth/themes/${name}/${name}.plymouth
-  
+
     runHook postInstall
   '';
 

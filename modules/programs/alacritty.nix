@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   options.programs.alacritty.enable = lib.mkEnableOption "Alacritty terminal emulator";
@@ -9,7 +14,7 @@
         pkgs.alacritty
 
         ## this is just an example of how to add a custom config file
-        ## that will be linked into the home directory 
+        ## that will be linked into the home directory
         (pkgs.stdenv.mkDerivation {
           name = "alacritty-config";
           dontBuild = true;
@@ -49,41 +54,44 @@
             family: monospace
             style: Italic
           size: 11.0
-        colors: ${with config.scheme.withHashtag; ''
-          primary:
-            background: "${base00}"
-            foreground: "${base07}"
-          cursor:
-            text: "${base02}"
-            cursor: "${base07}"
-          normal:
-            black:   "${base00}"
-            red:     "${red}"
-            green:   "${green}"
-            yellow:  "${yellow}"
-            blue:    "${blue}"
-            magenta: "${magenta}"
-            cyan:    "${cyan}"
-            white:   "${base07}"
-          bright:
-            black:   "${base00}"
-            red:     "${red}"
-            green:   "${green}"
-            yellow:  "${yellow}"
-            blue:    "${blue}"
-            magenta: "${magenta}"
-            cyan:    "${cyan}"
-            white:   "${base07}"
-          dim:
-            black:   "${base00}"
-            red:     "${red}"
-            green:   "${green}"
-            yellow:  "${yellow}"
-            blue:    "${blue}"
-            magenta: "${magenta}"
-            cyan:    "${cyan}"
-            white:   "${base07}"
-        ''};
+        colors: ${
+          with config.scheme.withHashtag;
+          ''
+            primary:
+              background: "${base00}"
+              foreground: "${base07}"
+            cursor:
+              text: "${base02}"
+              cursor: "${base07}"
+            normal:
+              black:   "${base00}"
+              red:     "${red}"
+              green:   "${green}"
+              yellow:  "${yellow}"
+              blue:    "${blue}"
+              magenta: "${magenta}"
+              cyan:    "${cyan}"
+              white:   "${base07}"
+            bright:
+              black:   "${base00}"
+              red:     "${red}"
+              green:   "${green}"
+              yellow:  "${yellow}"
+              blue:    "${blue}"
+              magenta: "${magenta}"
+              cyan:    "${cyan}"
+              white:   "${base07}"
+            dim:
+              black:   "${base00}"
+              red:     "${red}"
+              green:   "${green}"
+              yellow:  "${yellow}"
+              blue:    "${blue}"
+              magenta: "${magenta}"
+              cyan:    "${cyan}"
+              white:   "${base07}"
+          ''
+        };
       '';
     };
   };

@@ -1,8 +1,11 @@
-{ stdenv, writeShellApplication, ensure-user-is-root }:
+{
+  stdenv,
+  writeShellApplication,
+  ensure-user-is-root,
+}:
 
-
-if (!stdenv.isDarwin)
-then throw "This script can only be run on darwin hosts"
+if (!stdenv.isDarwin) then
+  throw "This script can only be run on darwin hosts"
 else
 
   writeShellApplication {

@@ -1,10 +1,11 @@
-{ lib
-, pkgs
-, ags
-, system
-, curl
-, systemd
-, ...
+{
+  lib,
+  pkgs,
+  ags,
+  system,
+  curl,
+  systemd,
+  ...
 }:
 
 ags.lib.bundle {

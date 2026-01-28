@@ -15,15 +15,17 @@ rec {
             };
           };
         };
-        karrenScript = runtimeScript: prev.writeShellScriptBin "karren" ''
-          set -efu -o pipefail
-          if [ $(${prev.toybox}/bin/pgrep -c karren) -gt 1 ]; then
-            ${prev.libnotify}/bin/notify-send --urgency=critical --app "Karren" "Karren" "Another instance of is already running." "Please close all existing Karren windows before starting a new one."
-            exit 1;
-          fi
+        karrenScript =
+          runtimeScript:
+          prev.writeShellScriptBin "karren" ''
+            set -efu -o pipefail
+            if [ $(${prev.toybox}/bin/pgrep -c karren) -gt 1 ]; then
+              ${prev.libnotify}/bin/notify-send --urgency=critical --app "Karren" "Karren" "Another instance of is already running." "Please close all existing Karren windows before starting a new one."
+              exit 1;
+            fi
 
-          ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConfig}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
-        '';
+            ${prev.toybox}/bin/nohup sh -c "${prev.lib.getExe prev.alacritty} --title 'karren' --class 'karren' --config-file '${alacrittyConfig}' --command ${prev.lib.getExe (prev.writeShellScriptBin "karren-runtime" runtimeScript)}" > /dev/null 2>&1 &
+          '';
       in
       {
         system-manager = karrenScript ''
@@ -68,7 +70,10 @@ rec {
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     nix-github-authentication = final.callPackage ./pkgs/nix-github-authentication.nix { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
-    residence = final.callPackage ./pkgs/residence { inherit (self.inputs) ags; inherit (final) system; };
+    residence = final.callPackage ./pkgs/residence {
+      inherit (self.inputs) ags;
+      inherit (final) system;
+    };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
     topology = self.outputs.topology.${final.system}.config.output;
@@ -78,7 +83,21 @@ rec {
       nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''
         wrapProgram $out/bin/code \
-          --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright prev.rust-analyzer prev.terraform-lsp prev.eslint_d prev.typos-lsp prev.stylua prev.nixpkgs-fmt]}" \
+          --prefix PATH : "${
+            final.lib.makeBinPath [
+              prev.github-cli
+              prev.nodejs
+              prev.nodePackages.typescript
+              prev.python3
+              prev.pyright
+              prev.rust-analyzer
+              prev.terraform-lsp
+              prev.eslint_d
+              prev.typos-lsp
+              prev.stylua
+              prev.nixpkgs-fmt
+            ]
+          }" \
           --set NODE_PATH "${final.nodejs}/lib/node_modules";
       '';
     });
@@ -87,7 +106,17 @@ rec {
         nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
         postInstall = (oldAttrs.postInstall or "") + ''
           wrapProgram $out/bin/webstorm \
-            --prefix PATH : "${final.lib.makeBinPath [ prev.github-cli prev.nodejs prev.nodePackages.typescript prev.python3 prev.pyright prev.rust-analyzer t]}" \
+            --prefix PATH : "${
+              final.lib.makeBinPath [
+                prev.github-cli
+                prev.nodejs
+                prev.nodePackages.typescript
+                prev.python3
+                prev.pyright
+                prev.rust-analyzer
+                t
+              ]
+            }" \
             --set NODE_PATH "${final.nodejs}/lib/node_modules";
         '';
       });

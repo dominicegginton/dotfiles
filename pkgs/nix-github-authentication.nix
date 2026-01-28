@@ -1,7 +1,21 @@
-{ lib, writeShellScriptBin, coreutils, nix, gh, gum }:
+{
+  lib,
+  writeShellScriptBin,
+  coreutils,
+  nix,
+  gh,
+  gum,
+}:
 
-writeShellScriptBin "nix-github-authentication" '' 
-  PATH=${lib.makeBinPath [ coreutils nix gh gum ]}
+writeShellScriptBin "nix-github-authentication" ''
+  PATH=${
+    lib.makeBinPath [
+      coreutils
+      nix
+      gh
+      gum
+    ]
+  }
   set -euo pipefail
 
   user=$(id -u)

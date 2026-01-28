@@ -1,4 +1,9 @@
-{ self, lib, hostname, ... }:
+{
+  self,
+  lib,
+  hostname,
+  ...
+}:
 
 with lib;
 
@@ -23,7 +28,11 @@ with lib;
         "docker" # For docker access
       ];
       openssh = {
-        authorizedPrincipals = [ "dom@localhost" "dom@${hostname}" self.outputs.lib.maintainers.dominicegginton.email ];
+        authorizedPrincipals = [
+          "dom@localhost"
+          "dom@${hostname}"
+          self.outputs.lib.maintainers.dominicegginton.email
+        ];
         authorizedKeys.keys = self.outputs.lib.maintainers.dominicegginton.sshKeys;
       };
     };

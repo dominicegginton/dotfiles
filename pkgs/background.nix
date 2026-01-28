@@ -1,4 +1,9 @@
-{ lib, fetchurl, mkGnomeBackground, ... }:
+{
+  lib,
+  fetchurl,
+  mkGnomeBackground,
+  ...
+}:
 
 mkGnomeBackground {
   name = "green-trees-near-body-of-water-during-daytime";

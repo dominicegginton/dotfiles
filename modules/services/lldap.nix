@@ -1,7 +1,13 @@
 # TDOO: replace this with kanidm, keycloak or self build ldap implementation
 #       llap does not provide posix account schemas out of the box
 
-{ config, lib, hostname, pkgs, ... }:
+{
+  config,
+  lib,
+  hostname,
+  pkgs,
+  ...
+}:
 
 let
   virtualHost = "users.${hostname}";
@@ -75,7 +81,8 @@ in
       virtualHosts."${virtualHost}" = {
         enableACME = true;
         forceSSL = true;
-        locations."/".proxyPass = "http://${toString config.services.lldap.settings.http_host}:${toString config.services.lldap.settings.http_port}";
+        locations."/".proxyPass =
+          "http://${toString config.services.lldap.settings.http_host}:${toString config.services.lldap.settings.http_port}";
       };
     };
 

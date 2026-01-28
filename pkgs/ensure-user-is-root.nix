@@ -1,7 +1,17 @@
-{ lib, writeShellScriptBin, coreutils, gum }:
+{
+  lib,
+  writeShellScriptBin,
+  coreutils,
+  gum,
+}:
 
 writeShellScriptBin "ensure-user-is-root" ''
-  export PATH=${lib.makeBinPath [ coreutils gum ]}
+  export PATH=${
+    lib.makeBinPath [
+      coreutils
+      gum
+    ]
+  }
   if [ "$(id -u)" != "0" ]; then
     gum log --level error "must be run as root"
     exit 1

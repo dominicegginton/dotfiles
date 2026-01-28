@@ -1,19 +1,19 @@
-{ lib
-, stdenv
-, fetchzip
-, autoPatchelfHook
-, makeWrapper
-, makeDesktopItem
-, copyDesktopItems
-, jetbrains
-, fontconfig
-, libgcc
-, xorg
-, libGL
-, alsa-lib
-, wayland
-, imagemagick
-,
+{
+  lib,
+  stdenv,
+  fetchzip,
+  autoPatchelfHook,
+  makeWrapper,
+  makeDesktopItem,
+  copyDesktopItems,
+  jetbrains,
+  fontconfig,
+  libgcc,
+  xorg,
+  libGL,
+  alsa-lib,
+  wayland,
+  imagemagick,
 }:
 stdenv.mkDerivation (finalAttrs: {
   pname = "jetbrains-fleet";

@@ -9,4 +9,3 @@
     daemon.enable = true;
   };
 }
-

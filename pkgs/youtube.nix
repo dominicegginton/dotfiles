@@ -1,11 +1,12 @@
-{ fetchurl
-, google-chrome
-, lib
-, makeDesktopItem
-, runtimeShell
-, symlinkJoin
-, writeScriptBin
-, commandLineArgs ? [ ]
+{
+  fetchurl,
+  google-chrome,
+  lib,
+  makeDesktopItem,
+  runtimeShell,
+  symlinkJoin,
+  writeScriptBin,
+  commandLineArgs ? [ ],
 }:
 
 let
@@ -17,7 +18,10 @@ let
     exec = name;
     desktopName = "Youtube TV";
     genericName = "A video social media and online video sharing platform";
-    categories = [ "TV" "AudioVideo" ];
+    categories = [
+      "TV"
+      "AudioVideo"
+    ];
     startupNotify = true;
     icon = fetchurl {
       name = "YouTube_full_color_icon_2017.svg";
@@ -51,7 +55,10 @@ in
 
 symlinkJoin {
   inherit name;
-  paths = [ script desktopItem ];
+  paths = [
+    script
+    desktopItem
+  ];
   meta = {
     description = "Open Youtube TV via Google Chrome app mode";
     longDescription = "YouTube is an American subscription streaming service operated by YouTube, a subsidiary of Google. See https://www.youtube.com/about";

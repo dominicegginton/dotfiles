@@ -1,4 +1,9 @@
-{ lib, config, hostname, ... }:
+{
+  lib,
+  config,
+  hostname,
+  ...
+}:
 
 let
   virtualHost = "bitmagnet.${hostname}";
@@ -15,7 +20,8 @@ in
       virtualHosts."${virtualHost}" = {
         forceSSL = true;
         enableACME = true;
-        locations."/".proxyPass = "http://localhost:${toString config.services.bitmagnet.settings.http_server.port}";
+        locations."/".proxyPass =
+          "http://localhost:${toString config.services.bitmagnet.settings.http_server.port}";
       };
     };
 

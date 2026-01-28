@@ -1,4 +1,9 @@
-{ lib, config, pkgs, ... }:
+{
+  lib,
+  config,
+  pkgs,
+  ...
+}:
 
 {
   config = lib.mkIf config.services.flatpak.enable {
@@ -10,8 +15,14 @@
       '';
     };
 
-    environment.systemPackages = with pkgs; [ flatpak bazaar ];
+    environment.systemPackages = with pkgs; [
+      flatpak
+      bazaar
+    ];
 
-    systemd.packages = with pkgs; [ flatpak bazaar ];
+    systemd.packages = with pkgs; [
+      flatpak
+      bazaar
+    ];
   };
 }
