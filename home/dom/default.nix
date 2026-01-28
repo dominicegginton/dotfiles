@@ -223,7 +223,7 @@
       twm
       twx
       vscode
-      youtube
+      youtube-tv
     ];
   };
 }

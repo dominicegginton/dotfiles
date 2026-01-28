@@ -78,7 +78,7 @@ rec {
     theme = final.callPackage ./pkgs/theme.nix { };
     topology = self.outputs.topology.${final.system}.config.output;
     twx = final.callPackage ./pkgs/twx.nix { };
-    youtube = prev.callPackage ./pkgs/youtube.nix { };
+    youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
     vscode = prev.vscode.overrideAttrs (oldAttrs: {
       nativeBuildInputs = oldAttrs.nativeBuildInputs or [ ] ++ [ final.makeWrapper ];
       postInstall = (oldAttrs.postInstall or "") + ''
