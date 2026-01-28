@@ -19,8 +19,6 @@ rec {
     base16.url = "github:SenchoPens/base16.nix";
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
-    niri.url = "github:yalter/niri";
-    niri.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   nixConfig = {
@@ -67,7 +65,6 @@ rec {
           };
           overlays = with self.inputs; [
             self.outputs.overlays.default
-            niri.overlays.default
             nix-topology.overlays.default
             nix-topology.overlays.topology
             deadman.overlays.default
@@ -100,7 +97,7 @@ rec {
           pkgs = nixpkgsFor.${system};
         in
         {
-          default = pkgs.callPackage ./shell.nix { };
+          default = pkgs.callPackage ./shell.nix { inherit self; };
           infrastructure = pkgs.callPackage ./infrastructure/shell.nix { };
         }
       );

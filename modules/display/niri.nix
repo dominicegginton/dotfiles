@@ -28,7 +28,6 @@ with config.scheme.withHashtag;
       };
     };
     services = {
-      hardware.bolt.enable = true;
       graphical-desktop.enable = true;
       printing.enable = true;
       pipewire.enable = true;
@@ -44,46 +43,46 @@ with config.scheme.withHashtag;
       xwayland.enable = lib.mkDefault true;
       sherlock-launcher.enable = true;
     };
-    fonts = {
-      enableDefaultPackages = false;
-      fontDir.enable = true;
-      fontconfig = {
-        enable = true;
-        antialias = true;
-        defaultFonts.serif = [ "Ibm Plex Serif" ];
-        defaultFonts.sansSerif = [ "Ibm Plex Sans" ];
-        defaultFonts.monospace = [
-          "Ibm Plex Mono"
-          "Noto Nerd Font Mono"
-        ];
-        defaultFonts.emoji = [ "Noto Color Emoji" ];
-        hinting.autohint = true;
-        hinting.enable = true;
-        hinting.style = "full";
-        subpixel.rgba = "rgb";
-        subpixel.lcdfilter = "light";
-      };
-      packages = with pkgs; [
-        font-manager
-        nerd-fonts
-        noto-fonts-color-emoji
-        ibm-plex
-      ];
-    };
+    # fonts = {
+    #   enableDefaultPackages = false;
+    #   fontDir.enable = true;
+    #   fontconfig = {
+    #     enable = true;
+    #     antialias = true;
+    #     defaultFonts.serif = [ "Ibm Plex Serif" ];
+    #     defaultFonts.sansSerif = [ "Ibm Plex Sans" ];
+    #     defaultFonts.monospace = [
+    #       "Ibm Plex Mono"
+    #       "Noto Nerd Font Mono"
+    #     ];
+    #     defaultFonts.emoji = [ "Noto Color Emoji" ];
+    #     hinting.autohint = true;
+    #     hinting.enable = true;
+    #     hinting.style = "full";
+    #     subpixel.rgba = "rgb";
+    #     subpixel.lcdfilter = "light";
+    #   };
+    #   packages = with pkgs; [
+    #     font-manager
+    #     nerd-fonts
+    #     noto-fonts-color-emoji
+    #     ibm-plex
+    #   ];
+    # };
 
     # currently fails to start
-    systemd.user.services.niri-shell = {
-      description = "Niri shell (residence)";
-      wantedBy = [ "graphical-session.target" ];
-      after = [ "graphical-session.target" ];
-      unitConfig.ConditionEnvironment = [ "NIRI_SOCKET" ];
-      serviceConfig = {
-        Type = "simple";
-        ExecStart = lib.getExe pkgs.residence;
-        Restart = "on-failure";
-        RestartSec = 3;
-      };
-    };
+    # systemd.user.services.niri-shell = {
+    #   description = "Niri shell (residence)";
+    #   wantedBy = [ "graphical-session.target" ];
+    #   after = [ "graphical-session.target" ];
+    #   unitConfig.ConditionEnvironment = [ "NIRI_SOCKET" ];
+    #   serviceConfig = {
+    #     Type = "simple";
+    #     ExecStart = lib.getExe pkgs.residence;
+    #     Restart = "on-failure";
+    #     RestartSec = 3;
+    #   };
+    # };
     environment = {
       variables = {
         NIXOS_OZONE_WL = "1";

@@ -50,7 +50,7 @@
   };
 
   display.gnome.enable = true;
-
+  display.niri.enable = true;
   programs.firefox.enable = true;
 
   services = {
@@ -59,6 +59,7 @@
     logind.settings.Login.HandleLidSwitchDocked = "suspend";
     upower.enable = true;
     flatpak.enable = true;
+    hardware.bolt.enable = true;
   };
 
   topology.self.hardware.info = "Workstation";
