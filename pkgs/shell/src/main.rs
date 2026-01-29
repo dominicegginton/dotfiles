@@ -1,12 +1,40 @@
 use libadwaita as adw;
 
 use adw::gio::Settings;
+use adw::gtk::Label;
 use adw::gtk::{Application, Box, Orientation};
 use adw::prelude::*;
 use adw::ApplicationWindow;
 use gtk4_layer_shell::{Edge, Layer, LayerShell};
+use libadwaita::glib;
+use std::ops::ControlFlow;
 
 const APP_ID: &str = "dev.dominicegginton.Shell";
+
+fn render_clock(label: &Label) {
+    println!("Updating clock...");
+    let now = chrono::Local::now();
+    label.set_text(&now.format("%H:%M:%S").to_string());
+}
+
+fn render_battery(label: &Label) {
+    println!("Updating battery status...");
+
+    let output = std::process::Command::new("upower")
+        .args(&["-i", "/org/freedesktop/UPower/devices/battery_BAT0"])
+        .output()
+        .expect("Failed to execute upower command");
+
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    for line in stdout.lines() {
+        if line.trim_start().starts_with("percentage:") {
+            let percentage = line.trim_start().split_whitespace().nth(1).unwrap_or("N/A");
+            label.set_text(&format!("Battery: {}", percentage));
+            return;
+        }
+    }
+    label.set_text("Battery: N/A");
+}
 
 fn main() {
     let _ = Settings::new("org.gnome.desktop.interface");
@@ -18,6 +46,22 @@ fn main() {
 
     application.connect_activate(|app| {
         let content = Box::new(Orientation::Vertical, 0);
+
+        let clock = Label::new(None);
+        content.append(&clock);
+        render_clock(&clock);
+        glib::timeout_add_seconds_local(1, move || {
+            render_clock(&clock);
+            ControlFlow::Continue(()).into()
+        });
+
+        let battery = Label::new(Some("Battery: 100%"));
+        content.append(&battery);
+        render_battery(&battery);
+        glib::timeout_add_seconds_local(10, move || {
+            render_battery(&battery);
+            ControlFlow::Continue(()).into()
+        });
 
         let window = ApplicationWindow::builder()
             .application(app)

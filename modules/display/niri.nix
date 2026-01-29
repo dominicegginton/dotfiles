@@ -5,6 +5,44 @@
   ...
 }:
 
+let
+  screenLock = pkgs.writeShellScriptBin "screen-lock" ''
+    PATH=${
+      lib.makeBinPath [
+        pkgs.swaylock-effects
+        pkgs.maim
+        pkgs.imagemagick
+        pkgs.ffmpegthumbnailer
+        pkgs.xclip
+      ]
+    }
+    TEMP_IMG=$(mktemp /tmp/screen-lock-XXXXXX.png)
+    maim -u | convert - -blur 0x8 -scale 10% -scale 1000% $TEMP_IMG
+    swaylock-effects -f -i $TEMP_IMG --effect-blur 10x10
+    rm $TEMP_IMG
+  '';
+
+  screenshotOutput = pkgs.writeShellScriptBin "screenshot-output" ''
+    PATH=${
+      lib.makeBinPath [
+        pkgs.wl-clipboard
+        pkgs.gradia
+      ]
+    }
+    gradia --screenshot=FULL
+  '';
+
+  screenshotRegion = pkgs.writeShellScriptBin "screenshot-region" ''
+    PATH=${
+      lib.makeBinPath [
+        pkgs.wl-clipboard
+        pkgs.gradia
+      ]
+    }
+    gradia --screenshot
+  '';
+in
+
 with config.scheme.withHashtag;
 
 {
@@ -43,6 +81,7 @@ with config.scheme.withHashtag;
       xwayland.enable = lib.mkDefault true;
       sherlock-launcher.enable = true;
     };
+
     # fonts = {
     #   enableDefaultPackages = false;
     #   fontDir.enable = true;
@@ -82,7 +121,6 @@ with config.scheme.withHashtag;
       };
       systemPackages = with pkgs; [
         niri
-        wlsunset
         gnome-keyring
 
         mission-center
@@ -102,12 +140,10 @@ with config.scheme.withHashtag;
       ];
       etc."niri/config.kdl".text = ''
         prefer-no-csd
+        spawn-at-startup "${lib.getExe pkgs.my-shell}"
         spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background.backgroundImage}" "--mode" "fill"
-        spawn-at-startup "${pkgs.swaysettings}/bin/sway-autostart"
         spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
-        spawn-at-startup "${lib.getExe pkgs.wlsunset}" "-S" "08:00" "-s" "19:00"
         spawn-at-startup "${lib.getExe pkgs.xwayland-satellite}"
-        ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.tlp}/bin/bluetooth" "on"''}
         ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
         ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsd" "-l"''}
         ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsenable"''}
@@ -230,7 +266,6 @@ with config.scheme.withHashtag;
         }
         window-rule {
           match app-id="^org.gnome.Nautilus$"
-          match app-id="^org.gnome.FileRoller$"
           match app-id="^org.gnome.Evince$"
           match app-id="^org.gnome.Calendar$"
           match app-id="^org.gnome.FontViewer$"
@@ -244,21 +279,12 @@ with config.scheme.withHashtag;
           match app-id="^org.gnome.Cheese$"
           match app-id="^org.gnome.Music$"
           match app-id="^org.gnome.Videos$"
-          match app-id="^net.nokyan.Resources$"
-          match app-id="^org.erikreider.swaysettings$"
-          match app-id="^dconf-editor$"
           match app-id="^wdisplays$"
           match app-id="^com.jaoushingan.WaydroidHelper$"
-          match app-id="^.blueman-manager-wrapped$"
           open-floating true
           open-focused true
           default-column-width { proportion 0.4; }
           default-window-height { proportion 0.4; }
-        }
-        window-rule {
-          match app-id="^waydroid.com.*$"
-          open-floating true
-          tiled-state false
         }
         binds {
           Mod+Shift+Slash                                                { show-hotkey-overlay; }
@@ -266,21 +292,13 @@ with config.scheme.withHashtag;
           Mod+Shift+Q                                                    { close-window; }
           Mod+Return           hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
           Mod+Space            hotkey-overlay-title="Launcher"           { spawn "${lib.getExe pkgs.sherlock-launcher}" "--config-dir" "/etc/sherlock-launcher/"; }
-          Mod+Shift+Escape     hotkey-overlay-title="System Manager"     { spawn "${lib.getExe pkgs.karren.system-manager}"; }
-          Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe pkgs.swaylock-effects}" "-S" "--effect-blur" "10x10"; }
-          Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe (
-            pkgs.writeShellScriptBin "screenshot-output" "PATH=${
-              lib.makeBinPath [
-                pkgs.uutils-coreutils-noprefix
-                pkgs.wl-clipboard
-              ]
-            } ${lib.getExe pkgs.grim} -o $(${lib.getExe pkgs.niri} msg focused-output | grep Output | awk -F '[()]' '{print $2}') - | ${lib.getExe pkgs.swappy} -f -"
-          )}"; }
-          Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe (pkgs.writeShellScriptBin "screenshot-region" ''PATH=${lib.makeBinPath [ pkgs.wl-clipboard ]} ${lib.getExe pkgs.grim} -g "$(${lib.getExe pkgs.slurp})" - | ${lib.getExe pkgs.swappy} -f -'')}"; }
+          Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe screenLock}"; }
+          Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe screenshotOutput}"; }
+          Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe screenshotRegion}"; }
           Mod+Shift+E                                                    { quit; }
           Mod+Shift+P                                                    { power-off-monitors; }
           Mod+Shift+H          hotkey-overlay-title="Karren: Clip Hist"  { spawn "${lib.getExe pkgs.karren.clipboard-history}"; }
-          Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.resources}"; }
+          Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
           XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
           XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
           XF86AudioNext        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "next"; }
