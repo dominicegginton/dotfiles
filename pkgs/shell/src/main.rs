@@ -1,16 +1,16 @@
 use libadwaita as adw;
 
+use adw::gio::Settings;
+use adw::gtk::{Application, Box, Orientation};
 use adw::prelude::*;
-use adw::{ActionRow, ApplicationWindow, HeaderBar};
-use adw::gtk::{Application, Box, ListBox, Orientation};
+use adw::ApplicationWindow;
 use gtk4_layer_shell::{Edge, Layer, LayerShell};
 
 const APP_ID: &str = "dev.dominicegginton.Shell";
 
 fn main() {
-    let application = Application::builder()
-        .application_id(APP_ID)
-        .build();
+    let _ = Settings::new("org.gnome.desktop.interface");
+    let application = Application::builder().application_id(APP_ID).build();
 
     application.connect_startup(|_| {
         adw::init().unwrap();
@@ -21,12 +21,12 @@ fn main() {
 
         let window = ApplicationWindow::builder()
             .application(app)
-            .default_width(350)
             .content(&content)
             .build();
         window.init_layer_shell();
         window.set_layer(Layer::Overlay);
         window.auto_exclusive_zone_enable();
+        window.set_size_request(0, 50);
 
         let anchors = [
             (Edge::Left, true),
