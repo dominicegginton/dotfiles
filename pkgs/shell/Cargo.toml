@@ -1,0 +1,11 @@
+[package]
+name = "shell"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+libadwaita = "0.8.0"
+tracing = "0.1.37"
+tracing-log = "0.2.0"
+tracing-subscriber = "0.3.16"
+gtk4-layer-shell = "0.7.1"

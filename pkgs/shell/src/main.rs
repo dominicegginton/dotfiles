@@ -1,0 +1,45 @@
+use libadwaita as adw;
+
+use adw::prelude::*;
+use adw::{ActionRow, ApplicationWindow, HeaderBar};
+use adw::gtk::{Application, Box, ListBox, Orientation};
+use gtk4_layer_shell::{Edge, Layer, LayerShell};
+
+const APP_ID: &str = "dev.dominicegginton.Shell";
+
+fn main() {
+    let application = Application::builder()
+        .application_id(APP_ID)
+        .build();
+
+    application.connect_startup(|_| {
+        adw::init().unwrap();
+    });
+
+    application.connect_activate(|app| {
+        let content = Box::new(Orientation::Vertical, 0);
+
+        let window = ApplicationWindow::builder()
+            .application(app)
+            .default_width(350)
+            .content(&content)
+            .build();
+        window.init_layer_shell();
+        window.set_layer(Layer::Overlay);
+        window.auto_exclusive_zone_enable();
+
+        let anchors = [
+            (Edge::Left, true),
+            (Edge::Right, true),
+            (Edge::Top, false),
+            (Edge::Bottom, true),
+        ];
+        for (anchor, state) in anchors {
+            window.set_anchor(anchor, state);
+        }
+
+        window.show();
+    });
+
+    application.run();
+}

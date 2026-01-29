@@ -54,6 +54,7 @@ rec {
     network-filters-enable = final.callPackage ./pkgs/network-filters-enable.nix { };
     nix-github-authentication = final.callPackage ./pkgs/nix-github-authentication.nix { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
+    my-shell = final.callPackage ./pkgs/shell { };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
     topology = self.outputs.topology.${final.system}.config.output;
