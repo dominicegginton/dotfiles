@@ -125,6 +125,7 @@ with config.scheme.withHashtag;
           touchpad {
             tap
             natural-scroll
+            accel-profile "flat"
           }
           trackpoint {
             natural-scroll

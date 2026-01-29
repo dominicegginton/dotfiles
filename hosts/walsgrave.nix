@@ -15,7 +15,6 @@
   };
 
   services = {
-    lldap.enable = true; # move to a server - testing only
     bitmagnet.enable = true;
     frigate.enable = true;
     jellyfin.enable = true;
