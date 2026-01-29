@@ -50,10 +50,12 @@ with config.scheme.withHashtag;
 
   config = lib.mkIf config.display.niri.enable {
     hardware.graphics.enable = true;
-    security = {
-      polkit.enable = true;
-      pam.services.swaylock = { };
-    };
+
+    hardware.bluetooth.enable = true;
+
+    security.polkit.enable = true;
+    security.pam.services.swaylock = { };
+
     xdg = {
       autostart.enable = true;
       menus.enable = true;
@@ -61,18 +63,27 @@ with config.scheme.withHashtag;
       portal = {
         wlr.enable = true;
         enable = true;
-        extraPortals = [ pkgs.xdg-desktop-portal-gnome ];
+        extraPortals = [
+          pkgs.xdg-desktop-portal-gnome
+          pkgs.xdg-desktop-portal-gtk
+        ];
         configPackages = [ pkgs.niri ];
       };
     };
+
     services = {
       graphical-desktop.enable = true;
       printing.enable = true;
       pipewire.enable = true;
       gnome.gnome-keyring.enable = true;
-      displayManager.sessionPackages = [ pkgs.niri ];
+      power-profiles-daemon.enable = true;
+      displayManager = {
+        gdm.enable = true;
+        sessionPackages = [ pkgs.niri ];
+      };
       geoclue2.enableDemoAgent = lib.mkDefault true;
     };
+
     programs = {
       niri.enable = true;
       dconf.enable = true;
@@ -82,32 +93,30 @@ with config.scheme.withHashtag;
       sherlock-launcher.enable = true;
     };
 
-    # fonts = {
-    #   enableDefaultPackages = false;
-    #   fontDir.enable = true;
-    #   fontconfig = {
-    #     enable = true;
-    #     antialias = true;
-    #     defaultFonts.serif = [ "Ibm Plex Serif" ];
-    #     defaultFonts.sansSerif = [ "Ibm Plex Sans" ];
-    #     defaultFonts.monospace = [
-    #       "Ibm Plex Mono"
-    #       "Noto Nerd Font Mono"
-    #     ];
-    #     defaultFonts.emoji = [ "Noto Color Emoji" ];
-    #     hinting.autohint = true;
-    #     hinting.enable = true;
-    #     hinting.style = "full";
-    #     subpixel.rgba = "rgb";
-    #     subpixel.lcdfilter = "light";
-    #   };
-    #   packages = with pkgs; [
-    #     font-manager
-    #     nerd-fonts
-    #     noto-fonts-color-emoji
-    #     ibm-plex
-    #   ];
-    # };
+    fonts = {
+      enableDefaultPackages = lib.mkForce false;
+      fontDir.enable = lib.mkForce true;
+      packages = with pkgs; [
+        font-manager
+        noto-fonts-color-emoji
+        ibm-plex
+      ];
+      fontconfig = {
+        enable = lib.mkForce true;
+        antialias = lib.mkForce true;
+        hinting.autohint = lib.mkForce true;
+        hinting.enable = lib.mkForce true;
+        defaultFonts = {
+          emoji = [ "Noto Color Emoji" ];
+          serif = [ "Ibm Plex Serif" ];
+          sansSerif = [ "Ibm Plex Sans" ];
+          monospace = [
+            "Ibm Plex Mono"
+            "Noto Nerd Font Mono"
+          ];
+        };
+      };
+    };
 
     environment = {
       variables = {
@@ -127,7 +136,8 @@ with config.scheme.withHashtag;
         wdisplays
         swaysettings
 
-        ## replace with base gnome apps
+        lock
+
         nautilus
         sushi
         clapper
@@ -137,7 +147,9 @@ with config.scheme.withHashtag;
         gnome-calendar
         gnome-logs
         gnome-contacts
+        gnome-firmware
       ];
+
       etc."niri/config.kdl".text = ''
         prefer-no-csd
         spawn-at-startup "${lib.getExe pkgs.my-shell}"

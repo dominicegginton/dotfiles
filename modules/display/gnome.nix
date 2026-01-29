@@ -29,14 +29,26 @@
 
     fonts = {
       enableDefaultPackages = lib.mkForce false;
-      packages = with pkgs; [ noto-fonts-color-emoji ];
       fontDir.enable = lib.mkForce true;
+      packages = with pkgs; [
+        font-manager
+        noto-fonts-color-emoji
+        ibm-plex
+      ];
       fontconfig = {
         enable = lib.mkForce true;
         antialias = lib.mkForce true;
-        defaultFonts.emoji = [ "Noto Color Emoji" ];
         hinting.autohint = lib.mkForce true;
         hinting.enable = lib.mkForce true;
+        defaultFonts = {
+          emoji = [ "Noto Color Emoji" ];
+          serif = [ "Ibm Plex Serif" ];
+          sansSerif = [ "Ibm Plex Sans" ];
+          monospace = [
+            "Ibm Plex Mono"
+            "Noto Nerd Font Mono"
+          ];
+        };
       };
     };
 
