@@ -83,6 +83,7 @@ with config.scheme.withHashtag;
       systemPackages = with pkgs; [
         niri
         wlsunset
+        gnome-keyring
 
         mission-center
         wdisplays
