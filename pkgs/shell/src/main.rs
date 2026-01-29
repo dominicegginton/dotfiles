@@ -1,8 +1,7 @@
 use libadwaita as adw;
 
 use adw::gio::Settings;
-use adw::gtk::Label;
-use adw::gtk::{Application, Box, Orientation};
+use adw::gtk::{Application, Box, Button, Label, Orientation};
 use adw::prelude::*;
 use adw::ApplicationWindow;
 use gtk4_layer_shell::{Edge, Layer, LayerShell};
@@ -12,14 +11,11 @@ use std::ops::ControlFlow;
 const APP_ID: &str = "dev.dominicegginton.Shell";
 
 fn render_clock(label: &Label) {
-    println!("Updating clock...");
     let now = chrono::Local::now();
     label.set_text(&now.format("%H:%M:%S").to_string());
 }
 
 fn render_battery(label: &Label) {
-    println!("Updating battery status...");
-
     let output = std::process::Command::new("upower")
         .args(&["-i", "/org/freedesktop/UPower/devices/battery_BAT0"])
         .output()
@@ -37,7 +33,6 @@ fn render_battery(label: &Label) {
 }
 
 fn main() {
-    let _ = Settings::new("org.gnome.desktop.interface");
     let application = Application::builder().application_id(APP_ID).build();
 
     application.connect_startup(|_| {
@@ -46,6 +41,10 @@ fn main() {
 
     application.connect_activate(|app| {
         let content = Box::new(Orientation::Vertical, 0);
+
+        // GSettings for changing GTK theme (created here to avoid moving into the
+        // `connect_activate` closure's environment which must be 'static)
+        let settings = Settings::new("org.gnome.desktop.interface");
 
         let clock = Label::new(None);
         content.append(&clock);
@@ -63,6 +62,19 @@ fn main() {
             ControlFlow::Continue(()).into()
         });
 
+        let theme_button = Button::with_label("Toggle Light/Dark Theme");
+        theme_button.set_margin_top(10);
+        theme_button.set_margin_bottom(10);
+        theme_button.add_css_class("suggested-action");
+        content.append(&theme_button);
+        theme_button.connect_clicked(move |_| {
+            if settings.get::<String>("color-scheme") == "prefer-dark" {
+                let _ = settings.set_string("color-scheme", "default");
+            } else {
+                let _ = settings.set_string("color-scheme", "prefer-dark");
+            }
+        });
+
         let window = ApplicationWindow::builder()
             .application(app)
             .content(&content)
@@ -70,7 +82,7 @@ fn main() {
         window.init_layer_shell();
         window.set_layer(Layer::Overlay);
         window.auto_exclusive_zone_enable();
-        window.set_size_request(0, 50);
+        window.set_size_request(0, 10);
 
         let anchors = [
             (Edge::Left, true),
