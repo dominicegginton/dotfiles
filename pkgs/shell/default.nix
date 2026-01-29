@@ -14,7 +14,9 @@
 rustPlatform.buildRustPackage rec {
   name = "shell";
   src = ./.;
+
   cargoLock.lockFile = ./Cargo.lock;
+
   nativeBuildInputs = [
     rustfmt
     pkg-config
@@ -27,4 +29,12 @@ rustPlatform.buildRustPackage rec {
     libadwaita
     cairo
   ];
+
+  meta = with lib; {
+    description = "Shell";
+    mainProgram = name;
+    license = licenses.mit;
+    maintainers = with maintainers; [ dominicegginton ];
+    platforms = platforms.linux;
+  };
 }
