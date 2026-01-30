@@ -135,6 +135,7 @@ with config.scheme.withHashtag;
         mission-center
         wdisplays
         swaysettings
+        my-shell-settings
 
         lock
 

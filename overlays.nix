@@ -55,6 +55,7 @@ rec {
     nix-github-authentication = final.callPackage ./pkgs/nix-github-authentication.nix { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
     my-shell = final.callPackage ./pkgs/shell { };
+    my-shell-settings = final.callPackage ./pkgs/shell-settings { };
     silverbullet-desktop = final.callPackage ./pkgs/silverbullet-desktop.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
     topology = self.outputs.topology.${final.system}.config.output;
