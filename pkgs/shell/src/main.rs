@@ -10,20 +10,54 @@ use std::ops::ControlFlow;
 
 const APP_ID: &str = "dev.dominicegginton.Shell";
 
+fn set_background(image_path: &str) {
+    // Get the currently running process of swaybg
+    let swaybg_processes = std::process::Command::new("pgrep")
+        .arg("swaybg")
+        .output();
+
+    // Start a new swaybg process with the specified image
+    let _ = std::process::Command::new("swaybg")
+        .args(&["-i", image_path, "-m", "fill"])
+        .spawn();
+
+    // Wait for 100 milliseconds to ensure swaybg starts before killing previous instances
+    std::thread::sleep(std::time::Duration::from_millis(1000));
+
+    // Kill previous swaybg processes
+    if let Ok(output) = swaybg_processes {
+        // Parse the output to get PIDs
+        let pids = String::from_utf8_lossy(&output.stdout);
+
+        // Kill each PID
+        for pid in pids.lines() {
+            let _ = std::process::Command::new("kill")
+                .arg(pid)
+                .status();
+        }
+    }
+}
+
 fn get_time() -> String {
+    // Get the current local time
     let now = chrono::Local::now();
+
+    // Format the time as HH:MM:SS
     now.format("%H:%M:%S").to_string()
 }
 
 fn get_battery_percentage() -> String {
+    // Use upower to get battery information
     let output = std::process::Command::new("upower")
         .args(&["-i", "/org/freedesktop/UPower/devices/battery_BAT0"])
         .output()
         .expect("Failed to execute upower command");
 
+    // Parse the output to find the percentage line
     let stdout = String::from_utf8_lossy(&output.stdout);
     for line in stdout.lines() {
         if line.trim_start().starts_with("percentage:") {
+            // Extract and return the percentage value
             return line
                 .trim_start()
                 .split_whitespace()
@@ -32,16 +66,88 @@ fn get_battery_percentage() -> String {
                 .to_string();
         }
     }
+
+    // If percentage not found, return N/A
     "N/A".to_string()
 }
 
+fn get_power_state() -> String {
+    // Use upower to get battery information
+    let output = std::process::Command::new("upower")
+        .args(&["-i", "/org/freedesktop/UPower/devices/battery_BAT0"])
+        .output()
+        .expect("Failed to execute upower command");
+
+    // Parse the output to find the state line
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    for line in stdout.lines() {
+        if line.trim_start().starts_with("state:") {
+            // Extract and return the state value
+            return line
+                .trim_start()
+                .split_whitespace()
+                .nth(1)
+                .unwrap_or("N/A")
+                .to_string();
+        }
+    }
+
+    // If state not found, return N/A
+    "N/A".to_string()
+}
+
+fn get_network_status() -> String {
+    // Use nmcli to get network status
+    let output = std::process::Command::new("nmcli")
+        .args(&["-t", "-f", "ACTIVE,SSID", "dev", "wifi"])
+        .output()
+        .expect("Failed to execute nmcli command");
+
+    // Parse the output to find the active connection
+    let stdout = String::from_utf8_lossy(&output.stdout);
+    for line in stdout.lines() {
+        let parts: Vec<&str> = line.split(':').collect();
+        if parts.len() == 2 && parts[0] == "yes" {
+            // Return the SSID of the active connection
+            return parts[1].to_string();
+        }
+    }
+
+    // If no active connection found, return Disconnected
+    "Disconnected".to_string()
+}
+
 fn main() {
+    // Create GTK application
     let application = Application::builder().application_id(APP_ID).build();
 
+    // On startup
     application.connect_startup(|_| {
+        // Initialize libadwaita
         adw::init().unwrap();
+
+        // Get the current theme
+        let settings = Settings::new("org.gnome.desktop.interface");
+        let current_theme = settings.get::<String>("color-scheme");
+
+        // Get the background settings
+        let desktop_background = Settings::new("org.gnome.desktop.background");
+        let light_background_image_uri: String = desktop_background
+            .get::<String>("picture-uri")
+            .replace("file://", "");
+        let dark_background_image_uri: String = desktop_background
+            .get::<String>("picture-uri-dark")
+            .replace("file://", "");
+
+        // Set the initial background based on the current theme
+        if current_theme == "prefer-dark" {
+            set_background(&dark_background_image_uri);
+        } else {
+            set_background(&light_background_image_uri);
+        }
     });
 
+    // Set up the application when activated
     application.connect_activate(|app| {
         // Margin
         let margin = 10;
@@ -55,9 +161,6 @@ fn main() {
         content.set_margin_start(margin);
         content.set_margin_end(margin);
 
-        // GSettings for changing GTK theme
-        let settings = Settings::new("org.gnome.desktop.interface");
-
         // Clock label
         let clock = Label::new(None);
         clock.set_text(&get_time());
@@ -66,6 +169,57 @@ fn main() {
         // Update clock every second
         glib::timeout_add_seconds_local(1, move || {
             clock.set_text(&get_time());
+            ControlFlow::Continue(()).into()
+        });
+
+        // Network button
+        let network_button = Button::with_label(&format!("Network: {}", get_network_status()));
+        content.append(&network_button);
+        network_button.connect_clicked(move |btn| {
+            let on = std::process::Command::new("nmcli")
+                .args(&["radio", "wifi"])
+                .output();
+            if let Ok(output) = on {
+                let stdout = String::from_utf8_lossy(&output.stdout);
+                if stdout.contains("enabled") {
+                    let _ = std::process::Command::new("nmcli")
+                        .args(&["radio", "wifi", "off"])
+                        .status();
+                    btn.remove_css_class("suggested-action");
+                } else {
+                    let _ = std::process::Command::new("nmcli")
+                        .args(&["radio", "wifi", "on"])
+                        .status();
+                    btn.add_css_class("suggested-action");
+                }
+            }
+        });
+
+        // Update network status every 1 seconds
+        glib::timeout_add_seconds_local(1, move || {
+            let on = std::process::Command::new("nmcli")
+                .args(&["radio", "wifi"])
+                .output();
+            if let Ok(output) = on {
+                let stdout = String::from_utf8_lossy(&output.stdout);
+                if stdout.contains("enabled") {
+                    network_button.add_css_class("suggested-action");
+                } else {
+                    network_button.remove_css_class("suggested-action");
+                }
+            }
+            network_button.set_label(&format!("Network: {}", get_network_status()));
+            ControlFlow::Continue(()).into()
+        });
+
+        // Power state label
+        let power_state = Label::new(Some("Power: N/A"));
+        power_state.set_text(&format!("Power: {}", get_power_state()));
+        content.append(&power_state);
+
+        // Update power state every 30 seconds
+        glib::timeout_add_seconds_local(30, move || {
+            power_state.set_text(&format!("Power: {}", get_power_state()));
             ControlFlow::Continue(()).into()
         });
 
@@ -82,17 +236,31 @@ fn main() {
 
         // Theme toggle button
         let theme_button = Button::with_label("Toggle Light/Dark Theme");
-
-        // Style the button
         theme_button.add_css_class("suggested-action");
 
         // Connect button click to toggle theme
         content.append(&theme_button);
         theme_button.connect_clicked(move |_| {
-            if settings.get::<String>("color-scheme") == "prefer-dark" {
-                let _ = settings.set_string("color-scheme", "default");
+            // Get current theme settings
+            let settings = Settings::new("org.gnome.desktop.interface");
+            let current_theme = settings.get::<String>("color-scheme");
+
+            // Get the background settings
+            let desktop_background = Settings::new("org.gnome.desktop.background");
+            let light_background_image_uri: String = desktop_background
+                .get::<String>("picture-uri")
+                .replace("file://", "");
+            let dark_background_image_uri: String = desktop_background
+                .get::<String>("picture-uri-dark")
+                .replace("file://", "");
+
+            // Toggle the theme and update background
+            if current_theme == "prefer-dark" {
+                settings.set("color-scheme", &"prefer-light").unwrap();
+                set_background(&light_background_image_uri);
             } else {
-                let _ = settings.set_string("color-scheme", "prefer-dark");
+                settings.set("color-scheme", &"prefer-dark").unwrap();
+                set_background(&dark_background_image_uri);
             }
         });
 

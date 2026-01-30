@@ -9,6 +9,7 @@
   gtk4-layer-shell,
   libadwaita,
   cairo,
+  swaybg,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -22,6 +23,7 @@ rustPlatform.buildRustPackage rec {
     pkg-config
     gcc
     glib
+    swaybg
   ];
   buildInputs = [
     gtk4

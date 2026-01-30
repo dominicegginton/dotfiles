@@ -36,7 +36,8 @@
   cairo,
 }:
 
-rustPlatform.buildRustPackage rec {
+let
+pkg = rustPlatform.buildRustPackage rec {
   name = "shell-settings";
   src = ./.;
 
@@ -61,4 +62,27 @@ rustPlatform.buildRustPackage rec {
     maintainers = with maintainers; [ dominicegginton ];
     platforms = platforms.linux;
   };
-}
+};
+
+desktopFile = makeDesktopItem rec {
+    name = "dev.dominicegginton.${pkg.name}";
+    desktopName = pkg.name;
+    comment = pkg.meta.description;
+    exec = lib.getExe pkg;
+    icon = name;
+    categories = [ "Utility" ];
+  };
+
+  desktopIcon = ./src/icon.svg;
+
+in
+pkg.overrideAttrs (_: {
+  postInstall = ''
+    mkdir -p $out/share/applications
+    mkdir -p $out/share/icons/hicolor/scalable/apps
+
+    cp ${desktopFile}/share/applications/dev.dominicegginton.${pkg.name}.desktop $out/share/applications/dev.dominicegginton.${pkg.name}.desktop
+    cp ${desktopIcon} $out/share/icons/hicolor/scalable/apps/dev.dominicegginton.${pkg.name}.svg
+
+  '';
+})
