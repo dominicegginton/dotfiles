@@ -10,12 +10,12 @@ use std::ops::ControlFlow;
 
 const APP_ID: &str = "dev.dominicegginton.Shell";
 
-fn render_clock(label: &Label) {
+fn get_time() -> String {
     let now = chrono::Local::now();
-    label.set_text(&now.format("%H:%M:%S").to_string());
+    now.format("%H:%M:%S").to_string()
 }
 
-fn render_battery(label: &Label) {
+fn get_battery_percentage() -> String {
     let output = std::process::Command::new("upower")
         .args(&["-i", "/org/freedesktop/UPower/devices/battery_BAT0"])
         .output()
@@ -24,12 +24,15 @@ fn render_battery(label: &Label) {
     let stdout = String::from_utf8_lossy(&output.stdout);
     for line in stdout.lines() {
         if line.trim_start().starts_with("percentage:") {
-            let percentage = line.trim_start().split_whitespace().nth(1).unwrap_or("N/A");
-            label.set_text(&format!("Battery: {}", percentage));
-            return;
+            return line
+                .trim_start()
+                .split_whitespace()
+                .nth(1)
+                .unwrap_or("N/A")
+                .to_string();
         }
     }
-    label.set_text("Battery: N/A");
+    "N/A".to_string()
 }
 
 fn main() {
@@ -40,32 +43,50 @@ fn main() {
     });
 
     application.connect_activate(|app| {
-        let content = Box::new(Orientation::Vertical, 0);
+        // Margin
+        let margin = 10;
 
-        // GSettings for changing GTK theme (created here to avoid moving into the
-        // `connect_activate` closure's environment which must be 'static)
+        // Main content box
+        let content = Box::new(Orientation::Horizontal, margin);
+
+        // Set content margins
+        content.set_margin_top(margin / 2);
+        content.set_margin_bottom(margin / 2);
+        content.set_margin_start(margin);
+        content.set_margin_end(margin);
+
+        // GSettings for changing GTK theme
         let settings = Settings::new("org.gnome.desktop.interface");
 
+        // Clock label
         let clock = Label::new(None);
+        clock.set_text(&get_time());
         content.append(&clock);
-        render_clock(&clock);
+
+        // Update clock every second
         glib::timeout_add_seconds_local(1, move || {
-            render_clock(&clock);
+            clock.set_text(&get_time());
             ControlFlow::Continue(()).into()
         });
 
+        // Battery label
         let battery = Label::new(Some("Battery: 100%"));
+        battery.set_text(&format!("Battery: {}", get_battery_percentage()));
         content.append(&battery);
-        render_battery(&battery);
+
+        // Update battery every 10 seconds
         glib::timeout_add_seconds_local(10, move || {
-            render_battery(&battery);
+            battery.set_text(&format!("Battery: {}", get_battery_percentage()));
             ControlFlow::Continue(()).into()
         });
 
+        // Theme toggle button
         let theme_button = Button::with_label("Toggle Light/Dark Theme");
-        theme_button.set_margin_top(10);
-        theme_button.set_margin_bottom(10);
+
+        // Style the button
         theme_button.add_css_class("suggested-action");
+
+        // Connect button click to toggle theme
         content.append(&theme_button);
         theme_button.connect_clicked(move |_| {
             if settings.get::<String>("color-scheme") == "prefer-dark" {
@@ -75,25 +96,36 @@ fn main() {
             }
         });
 
+        // Create the application window
         let window = ApplicationWindow::builder()
             .application(app)
             .content(&content)
             .build();
+
+        // Layer shell setup
         window.init_layer_shell();
+
+        // Set the layer to overlay so it appears above other windows
         window.set_layer(Layer::Overlay);
+
+        // Push other windows out of the way
         window.auto_exclusive_zone_enable();
-        window.set_size_request(0, 10);
 
-        let anchors = [
-            (Edge::Left, true),
-            (Edge::Right, true),
-            (Edge::Top, false),
-            (Edge::Bottom, true),
-        ];
-        for (anchor, state) in anchors {
-            window.set_anchor(anchor, state);
-        }
+        // Anchor the window to the edges of the screen
+        window.set_anchor(Edge::Left, true);
+        window.set_anchor(Edge::Right, true);
+        window.set_anchor(Edge::Top, true);
+        window.set_anchor(Edge::Bottom, false);
 
+        // Set the size and margins of the window
+        let margin = 0;
+        window.set_size_request(0, 0);
+        window.set_margin(Edge::Left, margin);
+        window.set_margin(Edge::Right, margin);
+        window.set_margin(Edge::Top, margin);
+        window.set_margin(Edge::Bottom, margin);
+
+        // Show the window
         window.show();
     });
 

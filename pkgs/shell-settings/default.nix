@@ -1,3 +1,28 @@
+# features to be added:
+# - appearance settings
+#   - light / dark mode
+#   - accent color
+# - power settings
+#   - screen blanking time
+#   - suspend time
+#   - power profile
+# - network manager settings
+#   - preferred wifi networks
+# - bluetooth settings
+#   - paired devices
+#   - pairable devices
+# - sound settings
+#   - output volume per device
+#   - input volume per device
+#   - output device selection
+#   - input device selection
+# - display output settings
+#   - resolution
+#   - scaling
+#   - refresh rate
+#   - brightness
+#   - multiple monitors configuration
+
 {
   lib,
   rustPlatform,
