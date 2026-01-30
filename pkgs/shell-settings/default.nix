@@ -25,6 +25,7 @@
 
 {
   lib,
+  makeDesktopItem,
   rustPlatform,
   rustfmt,
   pkg-config,
@@ -37,34 +38,34 @@
 }:
 
 let
-pkg = rustPlatform.buildRustPackage rec {
-  name = "shell-settings";
-  src = ./.;
+  pkg = rustPlatform.buildRustPackage rec {
+    name = "shell-settings";
+    src = ./.;
 
-  cargoLock.lockFile = ./Cargo.lock;
+    cargoLock.lockFile = ./Cargo.lock;
 
-  nativeBuildInputs = [
-    rustfmt
-    pkg-config
-    gcc
-    glib
-  ];
-  buildInputs = [
-    gtk4
-    libadwaita
-    cairo
-  ];
+    nativeBuildInputs = [
+      rustfmt
+      pkg-config
+      gcc
+      glib
+    ];
+    buildInputs = [
+      gtk4
+      libadwaita
+      cairo
+    ];
 
-  meta = with lib; {
-    description = "Shell Settings";
-    mainProgram = name;
-    license = licenses.mit;
-    maintainers = with maintainers; [ dominicegginton ];
-    platforms = platforms.linux;
+    meta = with lib; {
+      description = "Shell Settings";
+      mainProgram = name;
+      license = licenses.mit;
+      maintainers = with maintainers; [ dominicegginton ];
+      platforms = platforms.linux;
+    };
   };
-};
 
-desktopFile = makeDesktopItem rec {
+  desktopFile = makeDesktopItem rec {
     name = "dev.dominicegginton.${pkg.name}";
     desktopName = pkg.name;
     comment = pkg.meta.description;

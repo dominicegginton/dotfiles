@@ -1,20 +1,35 @@
 use libadwaita as adw;
 
 use adw::gio::Settings;
-use adw::gtk::{Application, Box, Button, Label, Orientation};
+use adw::gtk::{
+    Application, Box, Button, CssProvider, Label, Orientation, StyleContext,
+    STYLE_PROVIDER_PRIORITY_APPLICATION,
+};
 use adw::prelude::*;
 use adw::ApplicationWindow;
 use gtk4_layer_shell::{Edge, Layer, LayerShell};
 use libadwaita::glib;
 use std::ops::ControlFlow;
+use std::thread;
+
+use niri_ipc::{socket::Socket, Event, Request, Response};
 
 const APP_ID: &str = "dev.dominicegginton.Shell";
 
+const STYLE: &str = "
+    .rounded-corners {
+        border-radius: 15px;
+
+        background-color: rgba(30, 30, 30, 0.8);
+        backdrop-filter: blur(80px);
+
+        color: white;
+    }
+";
+
 fn set_background(image_path: &str) {
     // Get the currently running process of swaybg
-    let swaybg_processes = std::process::Command::new("pgrep")
-        .arg("swaybg")
-        .output();
+    let swaybg_processes = std::process::Command::new("pgrep").arg("swaybg").output();
 
     // Start a new swaybg process with the specified image
     let _ = std::process::Command::new("swaybg")
@@ -25,15 +40,23 @@ fn set_background(image_path: &str) {
     std::thread::sleep(std::time::Duration::from_millis(1000));
 
     // Kill previous swaybg processes
+    // TODO: Fix this - dont kill process - migrate from swaybg to setting background via wlroots protocol
     if let Ok(output) = swaybg_processes {
         // Parse the output to get PIDs
         let pids = String::from_utf8_lossy(&output.stdout);
 
+        println!("Killing swaybg PIDs: {}", pids);
         // Kill each PID
         for pid in pids.lines() {
-            let _ = std::process::Command::new("kill")
-                .arg(pid)
+            println!("Killing swaybg PID: {}", pid);
+            let status = std::process::Command::new("kill")
+                .args(&["-9", "-P", pid])
                 .status();
+            if let Ok(s) = status {
+                println!("Killed swaybg PID: {} with status: {}", pid, s);
+            } else {
+                eprintln!("Failed to kill swaybg PID: {}", pid);
+            }
         }
     }
 }
@@ -42,8 +65,32 @@ fn get_time() -> String {
     // Get the current local time
     let now = chrono::Local::now();
 
-    // Format the time as HH:MM:SS
-    now.format("%H:%M:%S").to_string()
+    // Get user preferences for time format
+    let settings = Settings::new("org.gnome.desktop.interface");
+    let show_date = settings.get::<bool>("clock-show-date");
+    let show_weekday = settings.get::<bool>("clock-show-weekday");
+    let use_24_hour = settings.get::<String>("clock-format") == "24h";
+    let show_seconds = settings.get::<bool>("clock-show-seconds");
+
+    // Format the time based on user preferences
+    let mut format = String::new();
+    if show_weekday {
+        format.push_str("%a ");
+    }
+    if show_date {
+        format.push_str("%Y-%m-%d ");
+    }
+    if use_24_hour {
+        format.push_str("%H:%M");
+    } else {
+        format.push_str("%I:%M %p");
+    }
+    if show_seconds {
+        format.push_str(":%S");
+    }
+
+    // Return the formatted time string
+    now.format(&format).to_string()
 }
 
 fn get_battery_percentage() -> String {
@@ -150,7 +197,7 @@ fn main() {
     // Set up the application when activated
     application.connect_activate(|app| {
         // Margin
-        let margin = 10;
+        let margin = 20;
 
         // Main content box
         let content = Box::new(Orientation::Horizontal, margin);
@@ -160,17 +207,6 @@ fn main() {
         content.set_margin_bottom(margin / 2);
         content.set_margin_start(margin);
         content.set_margin_end(margin);
-
-        // Clock label
-        let clock = Label::new(None);
-        clock.set_text(&get_time());
-        content.append(&clock);
-
-        // Update clock every second
-        glib::timeout_add_seconds_local(1, move || {
-            clock.set_text(&get_time());
-            ControlFlow::Continue(()).into()
-        });
 
         // Network button
         let network_button = Button::with_label(&format!("Network: {}", get_network_status()));
@@ -217,8 +253,8 @@ fn main() {
         power_state.set_text(&format!("Power: {}", get_power_state()));
         content.append(&power_state);
 
-        // Update power state every 30 seconds
-        glib::timeout_add_seconds_local(30, move || {
+        // Update power state every 1 second
+        glib::timeout_add_seconds_local(1, move || {
             power_state.set_text(&format!("Power: {}", get_power_state()));
             ControlFlow::Continue(()).into()
         });
@@ -228,8 +264,8 @@ fn main() {
         battery.set_text(&format!("Battery: {}", get_battery_percentage()));
         content.append(&battery);
 
-        // Update battery every 10 seconds
-        glib::timeout_add_seconds_local(10, move || {
+        // Update battery every 0 second
+        glib::timeout_add_seconds_local(1, move || {
             battery.set_text(&format!("Battery: {}", get_battery_percentage()));
             ControlFlow::Continue(()).into()
         });
@@ -264,6 +300,17 @@ fn main() {
             }
         });
 
+        // Clock label
+        let clock = Label::new(None);
+        clock.set_text(&get_time());
+        content.append(&clock);
+
+        // Update clock every second
+        glib::timeout_add_seconds_local(1, move || {
+            clock.set_text(&get_time());
+            ControlFlow::Continue(()).into()
+        });
+
         // Create the application window
         let window = ApplicationWindow::builder()
             .application(app)
@@ -273,28 +320,100 @@ fn main() {
         // Layer shell setup
         window.init_layer_shell();
 
+        // Apply the rounded corners CSS class to the window
+        window.add_css_class("rounded-corners");
+
         // Set the layer to overlay so it appears above other windows
         window.set_layer(Layer::Overlay);
 
         // Push other windows out of the way
-        window.auto_exclusive_zone_enable();
+        // window.auto_exclusive_zone_enable();
 
         // Anchor the window to the edges of the screen
-        window.set_anchor(Edge::Left, true);
+        window.set_anchor(Edge::Left, false);
         window.set_anchor(Edge::Right, true);
         window.set_anchor(Edge::Top, true);
         window.set_anchor(Edge::Bottom, false);
 
         // Set the size and margins of the window
-        let margin = 0;
+        let margin = 20;
         window.set_size_request(0, 0);
         window.set_margin(Edge::Left, margin);
         window.set_margin(Edge::Right, margin);
         window.set_margin(Edge::Top, margin);
         window.set_margin(Edge::Bottom, margin);
 
-        // Show the window
-        window.show();
+        // Round the corners of the window
+        window.add_css_class("rounded-corners");
+
+        // Start hidden; only show when overlay is open
+        window.hide();
+
+        // Apply CSS styling
+        let provider = CssProvider::new();
+        let _ = provider.load_from_data(STYLE);
+        StyleContext::add_provider_for_display(
+            &adw::gtk::gdk::Display::default().expect("Could not connect to a display."),
+            &provider,
+            STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
+
+        // Channel to receive overview open/close events from the background thread
+        let (tx, rx) = std::sync::mpsc::channel::<bool>();
+
+        // Spawn a thread to connect to niri's IPC socket and read events
+        thread::spawn(move || {
+            // Connect to the niri IPC socket
+            let mut socket = match Socket::connect() {
+                Ok(s) => s,
+                Err(e) => {
+                    eprintln!("Failed to connect to niri socket: {}", e);
+                    return;
+                }
+            };
+
+            // Request the EventStream
+            match socket.send(Request::EventStream) {
+                Ok(Ok(response)) => match response {
+                    Response::Handled => {
+                        // Start reading events
+                        let mut read_event = socket.read_events();
+                        loop {
+                            match read_event() {
+                                Ok(event) => {
+                                    // Check for OverviewOpenedOrClosed events
+                                    if let Event::OverviewOpenedOrClosed { is_open } = event {
+                                        let _ = tx.send(is_open);
+                                    }
+                                }
+                                Err(e) => {
+                                    eprintln!("Error reading niri event: {:?}", e);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    other => {
+                        eprintln!("Unexpected response to EventStream request: {:?}", other);
+                    }
+                },
+                Ok(Err(msg)) => eprintln!("niri rejected EventStream request: {}", msg),
+                Err(e) => eprintln!("Failed to request EventStream: {}", e),
+            }
+        });
+
+        // Poll the receiver in the main loop and show/hide the window accordingly.
+        let window_for_ipc = window.clone();
+        glib::idle_add_local(move || {
+            while let Ok(is_open) = rx.try_recv() {
+                if is_open {
+                    window_for_ipc.show();
+                } else {
+                    window_for_ipc.hide();
+                }
+            }
+            ControlFlow::Continue(()).into()
+        });
     });
 
     application.run();

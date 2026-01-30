@@ -154,9 +154,8 @@ with config.scheme.withHashtag;
       etc."niri/config.kdl".text = ''
         prefer-no-csd
         spawn-at-startup "${lib.getExe pkgs.my-shell}"
-        spawn-at-startup "${lib.getExe pkgs.swaybg}" "--image" "${pkgs.background.backgroundImage}" "--mode" "fill"
-        spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
         spawn-at-startup "${lib.getExe pkgs.xwayland-satellite}"
+        spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
         ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}
         ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsd" "-l"''}
         ${lib.optionalString config.services.printing.enable ''spawn-at-startup "${pkgs.cups}/bin/cupsenable"''}
