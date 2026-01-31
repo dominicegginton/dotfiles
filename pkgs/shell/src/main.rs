@@ -2,7 +2,7 @@ use libadwaita as adw;
 
 use adw::gio::Settings;
 use adw::gtk::{
-    Application, Box, Button, CssProvider, Label, Orientation,
+    Align, Application, Box, Button, CssProvider, Label, Orientation,
     STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
 use adw::prelude::*;
@@ -19,10 +19,13 @@ const APP_ID: &str = "dev.dominicegginton.Shell";
 const STYLE: &str = "
     .rounded-corners {
         border-radius: 15px;
-
-        background-color: rgba(30, 30, 30, 0.8);
-        backdrop-filter: blur(80px);
-
+    }
+    .dark-background {
+        background-color: #101011;
+        color: white;
+    }
+    .transparent-background {
+        background-color: rgba(0, 0, 0, 0);
         color: white;
     }
 ";
@@ -143,27 +146,6 @@ fn get_power_state() -> String {
     "N/A".to_string()
 }
 
-fn get_network_status() -> String {
-    // Use nmcli to get network status
-    let output = std::process::Command::new("nmcli")
-        .args(&["-t", "-f", "ACTIVE,SSID", "dev", "wifi"])
-        .output()
-        .expect("Failed to execute nmcli command");
-
-    // Parse the output to find the active connection
-    let stdout = String::from_utf8_lossy(&output.stdout);
-    for line in stdout.lines() {
-        let parts: Vec<&str> = line.split(':').collect();
-        if parts.len() == 2 && parts[0] == "yes" {
-            // Return the SSID of the active connection
-            return parts[1].to_string();
-        }
-    }
-
-    // If no active connection found, return Disconnected
-    "Disconnected".to_string()
-}
-
 fn main() {
     // Create GTK application
     let application = Application::builder().application_id(APP_ID).build();
@@ -202,15 +184,26 @@ fn main() {
         // Apply CSS styling once for the display
         let provider = CssProvider::new();
         let _ = provider.load_from_data(STYLE);
-        let display_for_style = adw::gtk::gdk::Display::default().expect("Could not connect to a display.");
+        let display_for_style =
+            adw::gtk::gdk::Display::default().expect("Could not connect to a display.");
         adw::gtk::style_context_add_provider_for_display(
             &display_for_style,
             &provider,
             STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
 
-        // Helper to build a single window with its own content and timeouts
-        let make_window = |app: &Application| {
+        // Channel to receive overview open/close events from the background thread
+        let (tx, rx) = std::sync::mpsc::channel::<bool>();
+
+        // Helper to build a single window with its own content and timeouts.
+        // Accept an optional monitor so quick-menu windows can be placed on the same screen.
+        let make_window = |app: &Application,
+                           monitor: Option<adw::gtk::gdk::Monitor>,
+                           tx: std::sync::mpsc::Sender<bool>|
+         -> (
+            ApplicationWindow,
+            std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>>,
+        ) {
             // Main content box
             let content = Box::new(Orientation::Horizontal, margin);
 
@@ -220,47 +213,7 @@ fn main() {
             content.set_margin_start(margin);
             content.set_margin_end(margin);
 
-            // Network button
-            let network_button = Button::with_label(&format!("Network: {}", get_network_status()));
-            content.append(&network_button);
-            let nb_for_click = network_button.clone();
-            network_button.connect_clicked(move |btn| {
-                let on = std::process::Command::new("nmcli")
-                    .args(&["radio", "wifi"])
-                    .output();
-                if let Ok(output) = on {
-                    let stdout = String::from_utf8_lossy(&output.stdout);
-                    if stdout.contains("enabled") {
-                        let _ = std::process::Command::new("nmcli")
-                            .args(&["radio", "wifi", "off"])
-                            .status();
-                        btn.remove_css_class("suggested-action");
-                    } else {
-                        let _ = std::process::Command::new("nmcli")
-                            .args(&["radio", "wifi", "on"])
-                            .status();
-                        btn.add_css_class("suggested-action");
-                    }
-                }
-            });
-
-            // Update network status every 1 seconds
-            let nb_for_timeout = nb_for_click.clone();
-            glib::timeout_add_seconds_local(1, move || {
-                let on = std::process::Command::new("nmcli")
-                    .args(&["radio", "wifi"])
-                    .output();
-                if let Ok(output) = on {
-                    let stdout = String::from_utf8_lossy(&output.stdout);
-                    if stdout.contains("enabled") {
-                        nb_for_timeout.add_css_class("suggested-action");
-                    } else {
-                        nb_for_timeout.remove_css_class("suggested-action");
-                    }
-                }
-                nb_for_timeout.set_label(&format!("Network: {}", get_network_status()));
-                ControlFlow::Continue(()).into()
-            });
+            // Network button removed; quick settings now hold network controls
 
             // Power state label
             let power_state = Label::new(Some("Power: N/A"));
@@ -286,45 +239,16 @@ fn main() {
                 ControlFlow::Continue(()).into()
             });
 
-            // Theme toggle button
-            let theme_button = Button::with_label("Toggle Light/Dark Theme");
-            theme_button.add_css_class("suggested-action");
-
-            // Connect button click to toggle theme
-            content.append(&theme_button);
-            theme_button.connect_clicked(move |_| {
-                // Get current theme settings
-                let settings = Settings::new("org.gnome.desktop.interface");
-                let current_theme = settings.get::<String>("color-scheme");
-
-                // Get the background settings
-                let desktop_background = Settings::new("org.gnome.desktop.background");
-                let light_background_image_uri: String = desktop_background
-                    .get::<String>("picture-uri")
-                    .replace("file://", "");
-                let dark_background_image_uri: String = desktop_background
-                    .get::<String>("picture-uri-dark")
-                    .replace("file://", "");
-
-                // Toggle the theme and update background
-                if current_theme == "prefer-dark" {
-                    settings.set("color-scheme", &"prefer-light").unwrap();
-                    set_background(&light_background_image_uri);
-                } else {
-                    settings.set("color-scheme", &"prefer-dark").unwrap();
-                    set_background(&dark_background_image_uri);
-                }
-            });
-
-            // Clock label
-            let clock = Label::new(None);
-            clock.set_text(&get_time());
+            // Clock button (clickable to open quick menu)
+            let clock = Button::with_label(&get_time());
+            // Make it visually similar to a label
+            clock.add_css_class("flat");
             content.append(&clock);
 
             // Update clock every second
             let clk = clock.clone();
             glib::timeout_add_seconds_local(1, move || {
-                clk.set_text(&get_time());
+                clk.set_label(&get_time());
                 ControlFlow::Continue(()).into()
             });
 
@@ -334,11 +258,121 @@ fn main() {
                 .content(&content)
                 .build();
 
+            // Quick-menu holder (lazy-created)
+            let quick_win_cell: std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>> =
+                std::rc::Rc::new(std::cell::RefCell::new(None));
+            let quick_win_for_click = quick_win_cell.clone();
+            let app_for_quick = app.clone();
+            // If we have a monitor, clone it for placement
+            let monitor_for_quick = monitor.clone();
+
+            // Clock click toggles the quick menu
+            clock.connect_clicked(move |_| {
+                let mut q = quick_win_for_click.borrow_mut();
+                if let Some(existing) = q.as_ref() {
+                    existing.hide();
+                    *q = None;
+                    return;
+                }
+
+                // Build quick menu content
+                let margin = 20;
+                let quick_content = Box::new(Orientation::Vertical, margin);
+                quick_content.set_margin_top(margin);
+                quick_content.set_margin_bottom(margin);
+                quick_content.set_margin_start(margin);
+                quick_content.set_margin_end(margin);
+
+                // First row
+                let first_row = Box::new(Orientation::Horizontal, margin);
+                quick_content.append(&first_row);
+
+                // Second row could hold more quick settings in future
+                let second_row = Box::new(Orientation::Horizontal, margin);
+                quick_content.append(&second_row);
+
+                // Theme toggle moved here from main bar
+                // Settings button: opens the `shell-settings` app (show first)
+                let settings_btn = Button::with_label("⚙");
+                settings_btn.add_css_class("flat");
+                first_row.append(&settings_btn);
+                let tx_for_settings = tx.clone();
+                settings_btn.connect_clicked(move |_| {
+                    let _ = std::process::Command::new("shell-settings").spawn();
+                    let _ = tx_for_settings.send(false);
+
+                    // Also request niri to close the overview via IPC.
+                    if let Ok(mut s) = Socket::connect() {
+                        let _ = s.send(Request::Action(niri_ipc::Action::CloseOverview {}));
+                    }
+                });
+
+                let quick_theme = Button::with_label("Toggle Light/Dark Theme");
+                quick_theme.add_css_class("suggested-action");
+                // Make second-row buttons expand to full width
+                quick_theme.set_hexpand(true);
+                quick_theme.set_halign(Align::Fill);
+                second_row.append(&quick_theme);
+                quick_theme.connect_clicked(move |_| {
+                    // Get current theme settings
+                    let settings = Settings::new("org.gnome.desktop.interface");
+                    let current_theme = settings.get::<String>("color-scheme");
+
+                    // Get the background settings
+                    let desktop_background = Settings::new("org.gnome.desktop.background");
+                    let light_background_image_uri: String = desktop_background
+                        .get::<String>("picture-uri")
+                        .replace("file://", "");
+                    let dark_background_image_uri: String = desktop_background
+                        .get::<String>("picture-uri-dark")
+                        .replace("file://", "");
+
+                    // Toggle the theme and update background
+                    if current_theme == "prefer-dark" {
+                        settings.set("color-scheme", &"prefer-light").unwrap();
+                        set_background(&light_background_image_uri);
+                    } else {
+                        settings.set("color-scheme", &"prefer-dark").unwrap();
+                        set_background(&dark_background_image_uri);
+                    }
+                });
+
+                // Create the quick menu window
+                let quick = ApplicationWindow::builder()
+                    .application(&app_for_quick)
+                    .content(&quick_content)
+                    .build();
+
+                // Layer shell setup for quick menu
+                quick.init_layer_shell();
+                quick.add_css_class("rounded-corners");
+                quick.add_css_class("dark-background");
+                quick.set_layer(Layer::Overlay);
+                quick.set_size_request(300, 200);
+                // Anchor the quick menu near the top-right so it appears below the clock
+                quick.set_anchor(Edge::Left, false);
+                quick.set_anchor(Edge::Right, true);
+                quick.set_anchor(Edge::Top, true);
+                quick.set_anchor(Edge::Bottom, false);
+                // Offset from the top so the quick menu appears below the clock button
+                quick.set_margin(Edge::Top, margin * 4);
+                quick.set_margin(Edge::Right, margin);
+                if let Some(ref mon) = monitor_for_quick {
+                    #[allow(unused_must_use)]
+                    {
+                        let _ = quick.set_monitor(Some(mon));
+                    }
+                }
+                quick.show();
+                *q = Some(quick);
+            });
+
             // Layer shell setup
             window.init_layer_shell();
 
             // Apply the rounded corners CSS class to the window
             window.add_css_class("rounded-corners");
+            window.add_css_class("transparent-background");
 
             // Set the layer to overlay so it appears above other windows
             window.set_layer(Layer::Overlay);
@@ -359,13 +393,11 @@ fn main() {
             // Start hidden; only show when overlay is open
             window.hide();
 
-            window
+            (window, quick_win_cell)
         };
 
-        // Channel to receive overview open/close events from the background thread
-        let (tx, rx) = std::sync::mpsc::channel::<bool>();
-
         // Spawn a thread to connect to niri's IPC socket and read events
+        let tx_thread = tx.clone();
         thread::spawn(move || {
             // Connect to the niri IPC socket
             let mut socket = match Socket::connect() {
@@ -387,7 +419,7 @@ fn main() {
                                 Ok(event) => {
                                     // Check for OverviewOpenedOrClosed events
                                     if let Event::OverviewOpenedOrClosed { is_open } = event {
-                                        let _ = tx.send(is_open);
+                                        let _ = tx_thread.send(is_open);
                                     }
                                 }
                                 Err(e) => {
@@ -410,11 +442,14 @@ fn main() {
         let display = adw::gtk::gdk::Display::default().expect("Could not connect to a display.");
         let monitors = display.monitors();
         let n_monitors = monitors.n_items();
-        let mut windows: Vec<ApplicationWindow> = Vec::new();
+        let mut windows: Vec<(
+            ApplicationWindow,
+            std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>>,
+        )> = Vec::new();
         for i in 0..n_monitors {
             if let Some(obj) = monitors.item(i) {
                 if let Ok(monitor) = obj.downcast::<adw::gtk::gdk::Monitor>() {
-                    let window = make_window(app);
+                    let (window, quick_cell) = make_window(app, Some(monitor.clone()), tx.clone());
                     #[allow(unused_must_use)]
                     {
                         let _ = window.set_monitor(Some(&monitor));
@@ -422,19 +457,29 @@ fn main() {
                     // Use the existing margin/anchor rules from `make_window`.
                     // Keep size request flexible so margins and content determine sizing.
                     window.set_size_request(0, 0);
-                    windows.push(window);
+                    windows.push((window, quick_cell));
                 }
             }
         }
         // Poll the receiver in the main loop and show/hide all windows accordingly.
-        let windows_for_ipc = windows.iter().map(|w| w.clone()).collect::<Vec<_>>();
+        let windows_for_ipc = windows
+            .iter()
+            .map(|(w, q)| (w.clone(), q.clone()))
+            .collect::<Vec<_>>();
         glib::idle_add_local(move || {
             while let Ok(is_open) = rx.try_recv() {
-                for w in &windows_for_ipc {
+                for (w, qcell) in &windows_for_ipc {
                     if is_open {
                         w.show();
                     } else {
+                        // Hide main window
                         w.hide();
+                        // Close quick-menu if open
+                        let mut maybe_q = qcell.borrow_mut();
+                        if let Some(qwin) = maybe_q.as_ref() {
+                            qwin.hide();
+                        }
+                        *maybe_q = None;
                     }
                 }
             }
