@@ -2,7 +2,7 @@ use libadwaita as adw;
 
 use adw::gio::Settings;
 use adw::gtk::{
-    Application, Box, Button, CssProvider, Label, Orientation, StyleContext,
+    Application, Box, Button, CssProvider, Label, Orientation,
     STYLE_PROVIDER_PRIORITY_APPLICATION,
 };
 use adw::prelude::*;
@@ -196,167 +196,171 @@ fn main() {
 
     // Set up the application when activated
     application.connect_activate(|app| {
-        // Margin
+        // Margin used for content
         let margin = 20;
 
-        // Main content box
-        let content = Box::new(Orientation::Horizontal, margin);
-
-        // Set content margins
-        content.set_margin_top(margin / 2);
-        content.set_margin_bottom(margin / 2);
-        content.set_margin_start(margin);
-        content.set_margin_end(margin);
-
-        // Network button
-        let network_button = Button::with_label(&format!("Network: {}", get_network_status()));
-        content.append(&network_button);
-        network_button.connect_clicked(move |btn| {
-            let on = std::process::Command::new("nmcli")
-                .args(&["radio", "wifi"])
-                .output();
-            if let Ok(output) = on {
-                let stdout = String::from_utf8_lossy(&output.stdout);
-                if stdout.contains("enabled") {
-                    let _ = std::process::Command::new("nmcli")
-                        .args(&["radio", "wifi", "off"])
-                        .status();
-                    btn.remove_css_class("suggested-action");
-                } else {
-                    let _ = std::process::Command::new("nmcli")
-                        .args(&["radio", "wifi", "on"])
-                        .status();
-                    btn.add_css_class("suggested-action");
-                }
-            }
-        });
-
-        // Update network status every 1 seconds
-        glib::timeout_add_seconds_local(1, move || {
-            let on = std::process::Command::new("nmcli")
-                .args(&["radio", "wifi"])
-                .output();
-            if let Ok(output) = on {
-                let stdout = String::from_utf8_lossy(&output.stdout);
-                if stdout.contains("enabled") {
-                    network_button.add_css_class("suggested-action");
-                } else {
-                    network_button.remove_css_class("suggested-action");
-                }
-            }
-            network_button.set_label(&format!("Network: {}", get_network_status()));
-            ControlFlow::Continue(()).into()
-        });
-
-        // Power state label
-        let power_state = Label::new(Some("Power: N/A"));
-        power_state.set_text(&format!("Power: {}", get_power_state()));
-        content.append(&power_state);
-
-        // Update power state every 1 second
-        glib::timeout_add_seconds_local(1, move || {
-            power_state.set_text(&format!("Power: {}", get_power_state()));
-            ControlFlow::Continue(()).into()
-        });
-
-        // Battery label
-        let battery = Label::new(Some("Battery: 100%"));
-        battery.set_text(&format!("Battery: {}", get_battery_percentage()));
-        content.append(&battery);
-
-        // Update battery every 0 second
-        glib::timeout_add_seconds_local(1, move || {
-            battery.set_text(&format!("Battery: {}", get_battery_percentage()));
-            ControlFlow::Continue(()).into()
-        });
-
-        // Theme toggle button
-        let theme_button = Button::with_label("Toggle Light/Dark Theme");
-        theme_button.add_css_class("suggested-action");
-
-        // Connect button click to toggle theme
-        content.append(&theme_button);
-        theme_button.connect_clicked(move |_| {
-            // Get current theme settings
-            let settings = Settings::new("org.gnome.desktop.interface");
-            let current_theme = settings.get::<String>("color-scheme");
-
-            // Get the background settings
-            let desktop_background = Settings::new("org.gnome.desktop.background");
-            let light_background_image_uri: String = desktop_background
-                .get::<String>("picture-uri")
-                .replace("file://", "");
-            let dark_background_image_uri: String = desktop_background
-                .get::<String>("picture-uri-dark")
-                .replace("file://", "");
-
-            // Toggle the theme and update background
-            if current_theme == "prefer-dark" {
-                settings.set("color-scheme", &"prefer-light").unwrap();
-                set_background(&light_background_image_uri);
-            } else {
-                settings.set("color-scheme", &"prefer-dark").unwrap();
-                set_background(&dark_background_image_uri);
-            }
-        });
-
-        // Clock label
-        let clock = Label::new(None);
-        clock.set_text(&get_time());
-        content.append(&clock);
-
-        // Update clock every second
-        glib::timeout_add_seconds_local(1, move || {
-            clock.set_text(&get_time());
-            ControlFlow::Continue(()).into()
-        });
-
-        // Create the application window
-        let window = ApplicationWindow::builder()
-            .application(app)
-            .content(&content)
-            .build();
-
-        // Layer shell setup
-        window.init_layer_shell();
-
-        // Apply the rounded corners CSS class to the window
-        window.add_css_class("rounded-corners");
-
-        // Set the layer to overlay so it appears above other windows
-        window.set_layer(Layer::Overlay);
-
-        // Push other windows out of the way
-        // window.auto_exclusive_zone_enable();
-
-        // Anchor the window to the edges of the screen
-        window.set_anchor(Edge::Left, false);
-        window.set_anchor(Edge::Right, true);
-        window.set_anchor(Edge::Top, true);
-        window.set_anchor(Edge::Bottom, false);
-
-        // Set the size and margins of the window
-        let margin = 20;
-        window.set_size_request(0, 0);
-        window.set_margin(Edge::Left, margin);
-        window.set_margin(Edge::Right, margin);
-        window.set_margin(Edge::Top, margin);
-        window.set_margin(Edge::Bottom, margin);
-
-        // Round the corners of the window
-        window.add_css_class("rounded-corners");
-
-        // Start hidden; only show when overlay is open
-        window.hide();
-
-        // Apply CSS styling
+        // Apply CSS styling once for the display
         let provider = CssProvider::new();
         let _ = provider.load_from_data(STYLE);
-        StyleContext::add_provider_for_display(
-            &adw::gtk::gdk::Display::default().expect("Could not connect to a display."),
+        let display_for_style = adw::gtk::gdk::Display::default().expect("Could not connect to a display.");
+        adw::gtk::style_context_add_provider_for_display(
+            &display_for_style,
             &provider,
             STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
+
+        // Helper to build a single window with its own content and timeouts
+        let make_window = |app: &Application| {
+            // Main content box
+            let content = Box::new(Orientation::Horizontal, margin);
+
+            // Set content margins
+            content.set_margin_top(margin / 2);
+            content.set_margin_bottom(margin / 2);
+            content.set_margin_start(margin);
+            content.set_margin_end(margin);
+
+            // Network button
+            let network_button = Button::with_label(&format!("Network: {}", get_network_status()));
+            content.append(&network_button);
+            let nb_for_click = network_button.clone();
+            network_button.connect_clicked(move |btn| {
+                let on = std::process::Command::new("nmcli")
+                    .args(&["radio", "wifi"])
+                    .output();
+                if let Ok(output) = on {
+                    let stdout = String::from_utf8_lossy(&output.stdout);
+                    if stdout.contains("enabled") {
+                        let _ = std::process::Command::new("nmcli")
+                            .args(&["radio", "wifi", "off"])
+                            .status();
+                        btn.remove_css_class("suggested-action");
+                    } else {
+                        let _ = std::process::Command::new("nmcli")
+                            .args(&["radio", "wifi", "on"])
+                            .status();
+                        btn.add_css_class("suggested-action");
+                    }
+                }
+            });
+
+            // Update network status every 1 seconds
+            let nb_for_timeout = nb_for_click.clone();
+            glib::timeout_add_seconds_local(1, move || {
+                let on = std::process::Command::new("nmcli")
+                    .args(&["radio", "wifi"])
+                    .output();
+                if let Ok(output) = on {
+                    let stdout = String::from_utf8_lossy(&output.stdout);
+                    if stdout.contains("enabled") {
+                        nb_for_timeout.add_css_class("suggested-action");
+                    } else {
+                        nb_for_timeout.remove_css_class("suggested-action");
+                    }
+                }
+                nb_for_timeout.set_label(&format!("Network: {}", get_network_status()));
+                ControlFlow::Continue(()).into()
+            });
+
+            // Power state label
+            let power_state = Label::new(Some("Power: N/A"));
+            power_state.set_text(&format!("Power: {}", get_power_state()));
+            content.append(&power_state);
+
+            // Update power state every 1 second
+            let ps = power_state.clone();
+            glib::timeout_add_seconds_local(1, move || {
+                ps.set_text(&format!("Power: {}", get_power_state()));
+                ControlFlow::Continue(()).into()
+            });
+
+            // Battery label
+            let battery = Label::new(Some("Battery: 100%"));
+            battery.set_text(&format!("Battery: {}", get_battery_percentage()));
+            content.append(&battery);
+
+            // Update battery every 1 second
+            let batt = battery.clone();
+            glib::timeout_add_seconds_local(1, move || {
+                batt.set_text(&format!("Battery: {}", get_battery_percentage()));
+                ControlFlow::Continue(()).into()
+            });
+
+            // Theme toggle button
+            let theme_button = Button::with_label("Toggle Light/Dark Theme");
+            theme_button.add_css_class("suggested-action");
+
+            // Connect button click to toggle theme
+            content.append(&theme_button);
+            theme_button.connect_clicked(move |_| {
+                // Get current theme settings
+                let settings = Settings::new("org.gnome.desktop.interface");
+                let current_theme = settings.get::<String>("color-scheme");
+
+                // Get the background settings
+                let desktop_background = Settings::new("org.gnome.desktop.background");
+                let light_background_image_uri: String = desktop_background
+                    .get::<String>("picture-uri")
+                    .replace("file://", "");
+                let dark_background_image_uri: String = desktop_background
+                    .get::<String>("picture-uri-dark")
+                    .replace("file://", "");
+
+                // Toggle the theme and update background
+                if current_theme == "prefer-dark" {
+                    settings.set("color-scheme", &"prefer-light").unwrap();
+                    set_background(&light_background_image_uri);
+                } else {
+                    settings.set("color-scheme", &"prefer-dark").unwrap();
+                    set_background(&dark_background_image_uri);
+                }
+            });
+
+            // Clock label
+            let clock = Label::new(None);
+            clock.set_text(&get_time());
+            content.append(&clock);
+
+            // Update clock every second
+            let clk = clock.clone();
+            glib::timeout_add_seconds_local(1, move || {
+                clk.set_text(&get_time());
+                ControlFlow::Continue(()).into()
+            });
+
+            // Create the application window
+            let window = ApplicationWindow::builder()
+                .application(app)
+                .content(&content)
+                .build();
+
+            // Layer shell setup
+            window.init_layer_shell();
+
+            // Apply the rounded corners CSS class to the window
+            window.add_css_class("rounded-corners");
+
+            // Set the layer to overlay so it appears above other windows
+            window.set_layer(Layer::Overlay);
+
+            // Anchor the window to the edges of the screen
+            window.set_anchor(Edge::Left, false);
+            window.set_anchor(Edge::Right, true);
+            window.set_anchor(Edge::Top, true);
+            window.set_anchor(Edge::Bottom, false);
+
+            // Set the size and margins of the window
+            window.set_size_request(0, 0);
+            window.set_margin(Edge::Left, margin);
+            window.set_margin(Edge::Right, margin);
+            window.set_margin(Edge::Top, margin);
+            window.set_margin(Edge::Bottom, margin);
+
+            // Start hidden; only show when overlay is open
+            window.hide();
+
+            window
+        };
 
         // Channel to receive overview open/close events from the background thread
         let (tx, rx) = std::sync::mpsc::channel::<bool>();
@@ -402,14 +406,36 @@ fn main() {
             }
         });
 
-        // Poll the receiver in the main loop and show/hide the window accordingly.
-        let window_for_ipc = window.clone();
+        // Build one window per monitor so the overlay appears on all screens
+        let display = adw::gtk::gdk::Display::default().expect("Could not connect to a display.");
+        let monitors = display.monitors();
+        let n_monitors = monitors.n_items();
+        let mut windows: Vec<ApplicationWindow> = Vec::new();
+        for i in 0..n_monitors {
+            if let Some(obj) = monitors.item(i) {
+                if let Ok(monitor) = obj.downcast::<adw::gtk::gdk::Monitor>() {
+                    let window = make_window(app);
+                    #[allow(unused_must_use)]
+                    {
+                        let _ = window.set_monitor(Some(&monitor));
+                    }
+                    // Use the existing margin/anchor rules from `make_window`.
+                    // Keep size request flexible so margins and content determine sizing.
+                    window.set_size_request(0, 0);
+                    windows.push(window);
+                }
+            }
+        }
+        // Poll the receiver in the main loop and show/hide all windows accordingly.
+        let windows_for_ipc = windows.iter().map(|w| w.clone()).collect::<Vec<_>>();
         glib::idle_add_local(move || {
             while let Ok(is_open) = rx.try_recv() {
-                if is_open {
-                    window_for_ipc.show();
-                } else {
-                    window_for_ipc.hide();
+                for w in &windows_for_ipc {
+                    if is_open {
+                        w.show();
+                    } else {
+                        w.hide();
+                    }
                 }
             }
             ControlFlow::Continue(()).into()

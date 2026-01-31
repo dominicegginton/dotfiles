@@ -9,16 +9,20 @@
 # - network
 # - volume
 # quick settings for shell (popup on click of right aligned widgets):
-# - button to open system setting - mission center and logout menu
-# - adjust brightness slider
-# - adjust volume slider
-# - toggle wifi on/off (dropdown to select network)
-# - toggle bluetooth on/off (dropdown to select device)
-# - toggle do not disturb mode on/off (dropdown to set duration)
-# - toggle theme light/dark/auto
-# left aligned widgets for shell:
-# - workspace indicator
-# - media player controls (play/pause, next, previous)
+# - top line of buttons:
+#   - battery icon and percentage (opens battery settings)
+#   - screenshot button (opens screenshot tool)
+#   - settings button (opens system settings)
+#   - power button (dropdown with logout, restart, shutdown)
+# - second line of toggles/sliders:
+#   - brightnes
+#   - volume (icon toggles mute on/off, dropdown selects default output device)
+# - large toggles with dropdowns for:
+#   - wifi on/off (dropdown to select network)
+#   - bluetooth on/off (dropdown to select device)
+#   - do not disturb mode on/off (dropdown to set duration)
+#   - theme light/dark (dropdown to select theme light/dark/auto)
+#   - power saver mode on/off (dropdown to select profile)
 
 {
   lib,
