@@ -87,7 +87,7 @@ with config.scheme.withHashtag;
     programs = {
       niri.enable = true;
       dconf.enable = true;
-      alacritty.enable = true;
+      # alacritty.enable = true;
       firefox.enable = true;
       xwayland.enable = lib.mkDefault true;
       sherlock-launcher.enable = true;
@@ -302,7 +302,7 @@ with config.scheme.withHashtag;
           Mod+Shift+Slash                                                { show-hotkey-overlay; }
           Mod+O                repeat=false                              { toggle-overview; }
           Mod+Shift+Q                                                    { close-window; }
-          Mod+Return           hotkey-overlay-title="Alacritty"          { spawn "${lib.getExe pkgs.alacritty}"; }
+          Mod+Return           hotkey-overlay-title="Blackbox"           { spawn "${lib.getExe pkgs.blackbox-terminal}"; }
           Mod+Space            hotkey-overlay-title="Launcher"           { spawn "${lib.getExe pkgs.sherlock-launcher}" "--config-dir" "/etc/sherlock-launcher/"; }
           Mod+Shift+L          hotkey-overlay-title="Lock the Screen"    { spawn "${lib.getExe screenLock}"; }
           Mod+Shift+3          hotkey-overlay-title="Screenshot: Output" { spawn "${lib.getExe screenshotOutput}"; }

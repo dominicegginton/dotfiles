@@ -12,10 +12,6 @@ let
 in
 
 {
-  environment.etc."pam_pkcs11/pam_pkcs11.conf".text = lib.mkDefault ''
-    cert_policy = ca,signature,ocsp_on,crl_auto;
-  '';
-
   security.pam = {
     services = {
       login.text = lib.mkDefault pamfile;
@@ -25,8 +21,6 @@ in
         pamMount = lib.mkDefault true;
       };
     };
-
-    p11.enable = lib.mkDefault true;
 
     loginLimits = lib.mkDefault [
       {

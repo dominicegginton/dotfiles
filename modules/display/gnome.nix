@@ -81,10 +81,12 @@
               "org.gnome.Epiphany.desktop"
               "org.gnome.Nautilus.desktop"
               "org.gnome.Terminal.desktop"
+              "com.raggesilver.BlackboxTerminal"
             ];
           };
           "org/gnome/desktop/interface" = {
             enable-hot-corners = false;
+            color-theme = "prefer-light";
           };
           "org/gnome/desktop/notifications" = {
             show-banners = true;
@@ -141,11 +143,14 @@
         baobab
         gnome-software
         simple-scan
+        gnome-console
       ];
+
       systemPackages =
         with pkgs;
         with gnomeExtensions;
         [
+          blackbox-terminal
           background
           mission-center
           gnome-firmware
