@@ -18,15 +18,18 @@ const APP_ID: &str = "dev.dominicegginton.Shell";
 
 const STYLE: &str = "
     .rounded-corners {
-        border-radius: 15px;
-    }
-    .dark-background {
-        background-color: #101011;
-        color: white;
+        border-radius: 30px;
     }
     .transparent-background {
         background-color: rgba(0, 0, 0, 0);
         color: white;
+        transition: background-color 200ms ease;
+    }
+    .transparent-background:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .transparent-background:active {
+        background-color: rgba(255, 255, 255, 0.2);
     }
 ";
 
@@ -213,8 +216,6 @@ fn main() {
             content.set_margin_start(margin);
             content.set_margin_end(margin);
 
-            // Network button removed; quick settings now hold network controls
-
             // Power state label
             let power_state = Label::new(Some("Power: N/A"));
             power_state.set_text(&format!("Power: {}", get_power_state()));
@@ -239,21 +240,8 @@ fn main() {
                 ControlFlow::Continue(()).into()
             });
 
-            // Clock button (clickable to open quick menu)
-            let clock = Button::with_label(&get_time());
-            // Make it visually similar to a label
-            clock.add_css_class("flat");
-            content.append(&clock);
-
-            // Update clock every second
-            let clk = clock.clone();
-            glib::timeout_add_seconds_local(1, move || {
-                clk.set_label(&get_time());
-                ControlFlow::Continue(()).into()
-            });
-
             // Create the application window
-            let window = ApplicationWindow::builder()
+            let right_window = ApplicationWindow::builder()
                 .application(app)
                 .content(&content)
                 .build();
@@ -266,9 +254,15 @@ fn main() {
             // If we have a monitor, clone it for placement
             let monitor_for_quick = monitor.clone();
 
-            // Clock click toggles the quick menu
-            clock.connect_clicked(move |_| {
-                let mut q = quick_win_for_click.borrow_mut();
+            // Attach a click gesture to the bar content so clicking the right window
+            // toggles the quick-settings menu.
+            let gesture = adw::gtk::GestureClick::new();
+            let q_for_click = quick_win_for_click.clone();
+            let app_for_quick = app_for_quick.clone();
+            let monitor_for_quick = monitor_for_quick.clone();
+            let tx_for_outer = tx.clone();
+            gesture.connect_pressed(move |_, _, _, _| {
+                let mut q = q_for_click.borrow_mut();
                 if let Some(existing) = q.as_ref() {
                     existing.hide();
                     *q = None;
@@ -291,12 +285,11 @@ fn main() {
                 let second_row = Box::new(Orientation::Horizontal, margin);
                 quick_content.append(&second_row);
 
-                // Theme toggle moved here from main bar
                 // Settings button: opens the `shell-settings` app (show first)
                 let settings_btn = Button::with_label("⚙");
                 settings_btn.add_css_class("flat");
                 first_row.append(&settings_btn);
-                let tx_for_settings = tx.clone();
+                let tx_for_settings = tx_for_outer.clone();
                 settings_btn.connect_clicked(move |_| {
                     let _ = std::process::Command::new("shell-settings").spawn();
                     let _ = tx_for_settings.send(false);
@@ -346,54 +339,58 @@ fn main() {
                 // Layer shell setup for quick menu
                 quick.init_layer_shell();
                 quick.add_css_class("rounded-corners");
-                quick.add_css_class("dark-background");
                 quick.set_layer(Layer::Overlay);
-                quick.set_size_request(300, 200);
-                // Anchor the quick menu near the top-right so it appears below the clock
+
+                // Position the quick menu under the right window
                 quick.set_anchor(Edge::Left, false);
                 quick.set_anchor(Edge::Right, true);
                 quick.set_anchor(Edge::Top, true);
                 quick.set_anchor(Edge::Bottom, false);
-                // Offset from the top so the quick menu appears below the clock button
-                quick.set_margin(Edge::Top, margin * 4);
+                quick.set_size_request(300, 0);
                 quick.set_margin(Edge::Right, margin);
+                quick.set_margin(Edge::Top, margin * 4);
+
+                // If we have a monitor, set it for the quick menu
                 if let Some(ref mon) = monitor_for_quick {
                     #[allow(unused_must_use)]
                     {
                         let _ = quick.set_monitor(Some(mon));
                     }
                 }
+
                 quick.show();
                 *q = Some(quick);
             });
 
+            content.add_controller(gesture);
+
             // Layer shell setup
-            window.init_layer_shell();
+            right_window.init_layer_shell();
 
             // Apply the rounded corners CSS class to the window
-            window.add_css_class("rounded-corners");
-            window.add_css_class("transparent-background");
+            right_window.add_css_class("rounded-corners");
+            right_window.add_css_class("transparent-background");
 
             // Set the layer to overlay so it appears above other windows
-            window.set_layer(Layer::Overlay);
+            right_window.set_layer(Layer::Overlay);
 
             // Anchor the window to the edges of the screen
-            window.set_anchor(Edge::Left, false);
-            window.set_anchor(Edge::Right, true);
-            window.set_anchor(Edge::Top, true);
-            window.set_anchor(Edge::Bottom, false);
+            right_window.set_anchor(Edge::Left, false);
+            right_window.set_anchor(Edge::Right, true);
+            right_window.set_anchor(Edge::Top, true);
+            right_window.set_anchor(Edge::Bottom, false);
 
             // Set the size and margins of the window
-            window.set_size_request(0, 0);
-            window.set_margin(Edge::Left, margin);
-            window.set_margin(Edge::Right, margin);
-            window.set_margin(Edge::Top, margin);
-            window.set_margin(Edge::Bottom, margin);
+            right_window.set_size_request(0, 0);
+            right_window.set_margin(Edge::Left, margin);
+            right_window.set_margin(Edge::Right, margin);
+            right_window.set_margin(Edge::Top, margin);
+            right_window.set_margin(Edge::Bottom, margin);
 
             // Start hidden; only show when overlay is open
-            window.hide();
+            right_window.hide();
 
-            (window, quick_win_cell)
+            (right_window, quick_win_cell)
         };
 
         // Spawn a thread to connect to niri's IPC socket and read events
@@ -446,6 +443,12 @@ fn main() {
             ApplicationWindow,
             std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>>,
         )> = Vec::new();
+        // Build one window per monitor so the overlay appears on all screens
+        // Also create a centered time window per monitor which toggles a notification window on click.
+        let mut center_windows: Vec<(
+            ApplicationWindow,
+            std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>>,
+        )> = Vec::new();
         for i in 0..n_monitors {
             if let Some(obj) = monitors.item(i) {
                 if let Ok(monitor) = obj.downcast::<adw::gtk::gdk::Monitor>() {
@@ -458,12 +461,116 @@ fn main() {
                     // Keep size request flexible so margins and content determine sizing.
                     window.set_size_request(0, 0);
                     windows.push((window, quick_cell));
+
+                    // --- Center time window (per-monitor) ---
+                    let center_content = Box::new(Orientation::Vertical, margin);
+                    // Match the right window content padding: top/bottom half, start/end full
+                    center_content.set_margin_top(margin / 2);
+                    center_content.set_margin_bottom(margin / 2);
+                    center_content.set_margin_start(margin);
+                    center_content.set_margin_end(margin);
+
+                    let time_label = Label::new(Some(get_time().as_str()));
+                    center_content.append(&time_label);
+
+                    // Update center time every second
+                    let time_label_clone = time_label.clone();
+                    glib::timeout_add_seconds_local(1, move || {
+                        time_label_clone.set_label(&get_time());
+                        ControlFlow::Continue(()).into()
+                    });
+
+                    let center_win = ApplicationWindow::builder()
+                        .application(app)
+                        .content(&center_content)
+                        .build();
+
+                    // Notification window holder (lazy)
+                    let notif_cell: std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>> =
+                        std::rc::Rc::new(std::cell::RefCell::new(None));
+                    let notif_cell_for_click = notif_cell.clone();
+                    let app_for_notif = app.clone();
+                    let monitor_for_center = monitor.clone();
+
+                    center_win.add_controller({
+                        let notif_cell_for_click = notif_cell_for_click.clone();
+                        let app_for_notif = app_for_notif.clone();
+                        let monitor_for_center = monitor_for_center.clone();
+                        let gesture = adw::gtk::GestureClick::new();
+                        gesture.connect_pressed(move |_, _, _, _| {
+                            let mut ncell = notif_cell_for_click.borrow_mut();
+                            if let Some(existing) = ncell.as_ref() {
+                                existing.hide();
+                                *ncell = None;
+                                return;
+                            }
+
+                            // Build notification content
+                            let notif_content = Box::new(Orientation::Vertical, margin);
+                            notif_content.set_margin_top(margin);
+                            notif_content.set_margin_bottom(margin);
+                            notif_content.set_margin_start(margin);
+                            notif_content.set_margin_end(margin);
+
+                            // Create the notification window
+                            let notif_win = ApplicationWindow::builder()
+                                .application(&app_for_notif)
+                                .content(&notif_content)
+                                .build();
+
+                            // Layer shell setup for notification
+                            notif_win.init_layer_shell();
+                            notif_win.add_css_class("rounded-corners");
+                            notif_win.add_css_class("dark-background");
+                            notif_win.set_layer(Layer::Overlay);
+                            notif_win.set_size_request(300, 100);
+                            // Anchor the notification near the top-center
+                            notif_win.set_anchor(Edge::Left, false);
+                            notif_win.set_anchor(Edge::Right, false);
+                            notif_win.set_anchor(Edge::Top, true);
+                            notif_win.set_anchor(Edge::Bottom, false);
+                            // Offset from the top
+                            notif_win.set_margin(Edge::Top, margin * 4);
+                            #[allow(unused_must_use)]
+                            {
+                                let _ = notif_win.set_monitor(Some(&monitor_for_center));
+                            }
+                            notif_win.show();
+                            *ncell = Some(notif_win);
+                        });
+                        gesture
+                    });
+
+                    center_win.init_layer_shell();
+                    center_win.add_css_class("rounded-corners");
+                    center_win.add_css_class("transparent-background");
+                    center_win.set_layer(Layer::Overlay);
+                    center_win.set_size_request(0, 0);
+                    // Anchor to the top and keep centered horizontally
+                    center_win.set_anchor(Edge::Left, false);
+                    center_win.set_anchor(Edge::Right, false);
+                    center_win.set_anchor(Edge::Top, true);
+                    center_win.set_anchor(Edge::Bottom, false);
+                    // Window margins — match the right window so padding is consistent
+                    center_win.set_margin(Edge::Left, margin);
+                    center_win.set_margin(Edge::Right, margin);
+                    center_win.set_margin(Edge::Top, margin);
+                    center_win.set_margin(Edge::Bottom, margin);
+                    #[allow(unused_must_use)]
+                    {
+                        let _ = center_win.set_monitor(Some(&monitor));
+                    }
+                    // Start hidden; only show when overlay is open
+                    center_win.hide();
+
+                    center_windows.push((center_win, notif_cell));
                 }
             }
         }
         // Poll the receiver in the main loop and show/hide all windows accordingly.
         let windows_for_ipc = windows
             .iter()
+            .chain(center_windows.iter())
             .map(|(w, q)| (w.clone(), q.clone()))
             .collect::<Vec<_>>();
         glib::idle_add_local(move || {
