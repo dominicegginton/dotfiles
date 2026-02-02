@@ -220,11 +220,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1769018862,
-        "narHash": "sha256-x3eMpPQhZwEDunyaUos084Hx41XwYTi2uHY4Yc4YNlk=",
+        "lastModified": 1769958578,
+        "narHash": "sha256-pCcbwLT8LOKu4dF2+E4+h3XVdbVtfuYTItIjtTp1XHs=",
         "owner": "oddlama",
         "repo": "nix-topology",
-        "rev": "a15cac71d3399a4c2d1a3482ae62040a3a0aa07f",
+        "rev": "94da80636a89380e4a596ec8b91b04df57f46f68",
         "type": "github"
       },
       "original": {
@@ -334,11 +334,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1769461804,
-        "narHash": "sha256-msG8SU5WsBUfVVa/9RPLaymvi5bI8edTavbIq3vRlhI=",
+        "lastModified": 1769789167,
+        "narHash": "sha256-kKB3bqYJU5nzYeIROI82Ef9VtTbu4uA3YydSk/Bioa8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "bfc1b8a4574108ceef22f02bafcf6611380c100d",
+        "rev": "62c8382960464ceb98ea593cb8321a2cf8f9e3e5",
         "type": "github"
       },
       "original": {
@@ -374,11 +374,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1766568576,
-        "narHash": "sha256-4XMfEw0ugVIzYOOVZ17ctikK1zjoP6UJ/r7/A1buxn4=",
+        "lastModified": 1769894065,
+        "narHash": "sha256-u8hioiUsIxUsjHhgA59ADaYWKNf5PcFAlY6/T0G1JtE=",
         "owner": "lordgrimmauld",
         "repo": "run0-sudo-shim",
-        "rev": "63684c217162b94ce15fed68d579e1109ed2753b",
+        "rev": "8b2946a8c150766648ec89d5df780822b888775e",
         "type": "github"
       },
       "original": {
