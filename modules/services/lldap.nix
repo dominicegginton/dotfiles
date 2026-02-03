@@ -4,14 +4,10 @@
 {
   config,
   lib,
-  hostname,
+  tailnet,
   pkgs,
   ...
 }:
-
-let
-  virtualHost = "users.${hostname}";
-in
 
 {
   config = lib.mkIf config.services.lldap.enable {
@@ -72,23 +68,9 @@ in
       };
     };
 
-    services.nginx = {
-      enable = true;
-      tailscaleAuth = {
-        enable = true;
-        virtualHosts = [ virtualHost ];
-      };
-      virtualHosts."${virtualHost}" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/".proxyPass =
-          "http://${toString config.services.lldap.settings.http_host}:${toString config.services.lldap.settings.http_port}";
-      };
-    };
-
     topology.self.services.lldap = {
       name = config.services.systemd.llap.serviceName;
-      details.listen.text = virtualHost;
+      details.listen.text = "https://ldap.${tailnet}";
     };
   };
 }

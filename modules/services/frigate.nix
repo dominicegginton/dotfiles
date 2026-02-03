@@ -21,6 +21,11 @@
       };
     };
 
+    services.tailscale.serve = {
+      enable = true;
+      services."fg".endpoints."tcp:443" = "http://127.0.0.1:${toString 5000}";
+    };
+
     topology.self.services.frigate = {
       name = "Frigate NVR";
       details.listen.text = config.services.frigate.hostname;

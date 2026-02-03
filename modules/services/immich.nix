@@ -1,34 +1,22 @@
 {
   config,
   lib,
-  hostname,
+  tailnet,
   ...
 }:
-
-let
-  virtualHost = "immich.${hostname}";
-in
 
 {
   config = lib.mkIf config.services.immich.enable {
     services.immich.host = "0.0.0.0";
 
-    services.nginx = {
+    services.tailscale.serve = {
       enable = true;
-      tailscaleAuth = {
-        enable = true;
-        virtualHosts = [ virtualHost ];
-      };
-      virtualHosts."${virtualHost}" = {
-        forceSSL = true;
-        enableACME = true;
-        locations."/".proxyPass = "http://localhost:${toString 2283}";
-      };
+      services."immich".endpoints."tcp:443" = "http://127.0.0.1:${toString 2283}";
     };
 
     topology.self.services.immich = {
       name = "Immich";
-      details.listen.text = virtualHost;
+      details.listen.text = "https://immich.${tailnet}";
     };
   };
 }

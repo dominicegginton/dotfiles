@@ -1,13 +1,9 @@
 {
   config,
   lib,
-  hostname,
+  tailnet,
   ...
 }:
-
-let
-  virtualHost = "sb.${hostname}";
-in
 
 {
   config = lib.mkIf config.services.silverbullet.enable {
@@ -17,23 +13,15 @@ in
       openFirewall = false;
     };
 
-    services.nginx = {
+    services.tailscale.serve = {
       enable = true;
-      tailscaleAuth = {
-        enable = true;
-        virtualHosts = [ virtualHost ];
-      };
-      virtualHosts."${virtualHost}" = {
-        enableACME = true;
-        forceSSL = true;
-        locations."/".proxyPass =
-          "http://${config.services.silverbullet.listenAddress}:${toString config.services.silverbullet.listenPort}";
-      };
+      services."sb".endpoints."tcp:443" =
+        "http://127.0.0.1:${builtins.toString config.services.silverbullet.listenPort}";
     };
 
     topology.self.services.silverbullet = {
       name = "Silverbullet";
-      details.listen.text = virtualHost;
+      details.listen.text = "https://sb.${tailnet}";
     };
   };
 }
