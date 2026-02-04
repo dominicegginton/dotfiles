@@ -55,7 +55,6 @@
 
   services = {
     lldap.enable = true; # move to a server - testing only
-    silverbullet.enable = true; # move to a server - testing only
     logind.settings.Login.HandleLidSwitchDocked = "suspend";
     upower.enable = true;
     flatpak.enable = true;

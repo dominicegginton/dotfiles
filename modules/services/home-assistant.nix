@@ -72,9 +72,10 @@
         "tod"
       ];
     };
+
     services.tailscale.serve = {
       enable = true;
-      services."ha".endpoints."tcp:443" = "https://localhost:${toString 8123}";
+      services."ha".endpoints."tcp:80" = "http://localhost:${toString 8123}";
     };
   };
 }

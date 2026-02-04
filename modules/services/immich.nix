@@ -11,7 +11,7 @@
 
     services.tailscale.serve = {
       enable = true;
-      services."immich".endpoints."tcp:443" = "http://127.0.0.1:${toString 2283}";
+      services."immich".endpoints."tcp:443" = "https+insecure://127.0.0.1:${toString 2283}";
     };
 
     topology.self.services.immich = {

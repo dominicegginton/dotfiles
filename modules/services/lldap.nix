@@ -68,6 +68,12 @@
       };
     };
 
+    services.tailscale.serve = {
+      enable = true;
+      services."ldap".endpoints."tcp:80" =
+        "http://127.0.0.1:${toString config.services.lldap.settings.http_port}";
+    };
+
     topology.self.services.lldap = {
       name = config.services.systemd.llap.serviceName;
       details.listen.text = "https://ldap.${tailnet}";
