@@ -120,9 +120,9 @@ rec {
           ];
         };
 
-        installer = self.outputs.lib.nixosSystem {
-          hostname = "installer";
-          modules = [ ./hosts/installer.nix ];
+        infector = self.outputs.lib.nixosSystem {
+          hostname = "infector";
+          modules = [ ./hosts/infector.nix ];
         };
 
         bellgrade = self.outputs.lib.nixosSystem {

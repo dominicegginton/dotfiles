@@ -81,7 +81,6 @@
               "org.gnome.Epiphany.desktop"
               "org.gnome.Nautilus.desktop"
               "org.gnome.Terminal.desktop"
-              "com.raggesilver.BlackboxTerminal"
             ];
           };
           "org/gnome/desktop/interface" = {
@@ -143,18 +142,16 @@
         baobab
         gnome-software
         simple-scan
-        gnome-console
       ];
 
       systemPackages =
         with pkgs;
         with gnomeExtensions;
         [
-          blackbox-terminal
           background
-          mission-center
           gnome-firmware
           lock
+          resources
         ];
     };
   };
