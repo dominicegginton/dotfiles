@@ -17,7 +17,7 @@
   services.cage = {
     enable = true;
     package = pkgs.cage;
-    program = "${pkgs.youtube}/bin/youtube-via-google-chrome";
+    program = pkgs.lib.getExe pkgs.youtube-tv;
     extraArguments = [ "-f" ];
     user = "dom";
   };

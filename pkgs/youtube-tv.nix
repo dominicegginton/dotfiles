@@ -63,6 +63,7 @@ symlinkJoin {
     description = "Open Youtube TV via Google Chrome app mode";
     longDescription = "YouTube is an American subscription streaming service operated by YouTube, a subsidiary of Google. See https://www.youtube.com/about";
     homepage = url;
+    mainProgram = name;
     maintainers = [ lib.maintainers.dominicegginton ];
     platforms = google-chrome.meta.platforms;
   };

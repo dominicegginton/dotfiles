@@ -15,17 +15,20 @@
     dell-latitude-7390
   ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/591e8f6a-01bb-4a7b-8f9d-546400359853";
-    fsType = "ext4";
-  };
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/5D74-0ED5";
-    fsType = "vfat";
-    options = [
-      "fmask=0077"
-      "dmask=0077"
-    ];
+  # TODO: move to disko configuration
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/591e8f6a-01bb-4a7b-8f9d-546400359853";
+      fsType = "ext4";
+    };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/5D74-0ED5";
+      fsType = "vfat";
+      options = [
+        "fmask=0077"
+        "dmask=0077"
+      ];
+    };
   };
 
   hardware = {
@@ -50,7 +53,6 @@
   };
 
   display.gnome.enable = true;
-  display.niri.enable = true;
   programs.firefox.enable = true;
 
   services = {
