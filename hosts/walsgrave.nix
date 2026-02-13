@@ -14,13 +14,5 @@
     disks.root.id = "/dev/sda";
   };
 
-  services = {
-    bitmagnet.enable = true;
-    frigate.enable = true;
-    jellyfin.enable = true;
-    immich.enable = true;
-    silverbullet.enable = true;
-  };
-
   topology.self.hardware.info = "Server";
 }

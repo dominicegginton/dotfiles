@@ -31,10 +31,8 @@
     };
   };
 
-  hardware = {
-    bluetooth.enable = true;
-    intel-gpu-tools.enable = true;
-  };
+  hardware.bluetooth.enable = true;
+  hardware.intel-gpu-tools.enable = true;
 
   boot = {
     kernelModules = [
@@ -53,6 +51,7 @@
   };
 
   display.gnome.enable = true;
+
   programs.firefox.enable = true;
 
   services = {
