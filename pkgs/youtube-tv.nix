@@ -38,7 +38,7 @@ let
       ${lib.escapeShellArgs commandLineArgs} \
       --app=${url} \
       --new-window \
-      --user-agent="Mozilla/5.0 (Linux; Android 16; BRAVIA 4K GB) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36" \
+      --user-agent="Mozilla/5.0 (PS4; Leanback Shell) Gecko/20100101 Firefox/65.0 LeanbackShell/01.00.01.75 Sony PS4/ (PS4, , no, CH)" \
       --window-size=4096,2160 \
       --force-device-scale-factor=1 \
       --start-fullscreen \
