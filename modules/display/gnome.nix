@@ -77,6 +77,10 @@
           };
           "org/gnome/shell" = {
             allow-extension-installation = false;
+            enabled-extensions = [
+              "rounded-window-corners@fxgn"
+              "light-style@gnome-shell-extensions.gcampax.github.com"
+            ];
             favorite-apps = [
               "org.gnome.Epiphany.desktop"
               "org.gnome.Nautilus.desktop"
@@ -152,6 +156,8 @@
           gnome-firmware
           lock
           resources
+          gnome-shell-extensions
+          rounded-window-corners-reborn
         ];
     };
   };
