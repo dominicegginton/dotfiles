@@ -158,6 +158,8 @@
           resources
           gnome-shell-extensions
           rounded-window-corners-reborn
+          dynamic-panel
+          blur-my-shell
         ];
     };
   };
