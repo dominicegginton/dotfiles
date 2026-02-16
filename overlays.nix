@@ -53,5 +53,9 @@ rec {
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
     withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
     lib = prev.lib // self.outputs.lib;
+
+    gnomeExtensions = prev.gnomeExtensions // {
+      dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
+    };
   };
 }
