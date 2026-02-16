@@ -15,6 +15,103 @@ let
       inode/directory=nautilus.desktop;org.gnome.Nautilus.desktop
     '';
   };
+
+  # Create dconf settings bottom level attributes
+  dconfSettings = name: settings: {
+    settings = {
+      name = settings;
+    };
+  };
+
+  orgGnomeMutterSettings = dconfSettings "org/gnome/mutter" {
+    experimental-features = [
+      "scale-monitor-framebuffer" # Enables fractional scaling (125% 150% 175%)
+      "kms-modifiers" # Allows changing display settings with keyboard shortcuts (e.g., Super+P)
+      "auto-close-xwayland" # Automatically closes Xwayland sessions when not needed
+      "variable-refresh-rate" # Enables Variable Refresh Rate (VRR) on compatible displays
+      "xwayland-native-scaling" # Scales Xwayland applications to look crisp on HiDPI screens
+    ];
+  };
+
+  # Gnome keybindings for window management
+  orgGnomeDesktopWmKeybindingsSettings = dconfSettings "org/gnome/desktop/wm/keybindings" {
+    close = [ "<Super><Shift>q" ];
+  };
+
+  # Gnome desktop background
+  orgGnomeDesktopBackgroundSettings = dconfSettings "org/gnome/desktop/background" {
+    picture-uri = "file://" + pkgs.background.backgroundImage;
+    picture-uri-dark = "file://" + pkgs.background.darkBackgroundImage;
+  };
+
+  # Desktop notifications configuration
+  orgGnomeDesktopNotificationsSettings = dconfSettings "org/gnome/desktop/notifications" {
+    show-banners = true;
+    show-in-lock-screen = false;
+  };
+
+  # Gnome shell interface settings
+  orgGnomeDesktopInterfaceSettings = dconfSettings "org/gnome/desktop/interface" {
+    enable-hot-corners = false;
+    color-theme = "prefer-light";
+  };
+
+  # Touchpad configuration
+  orgGnomeDesktopPeripheralsTouchpadSettings =
+    dconfSettings "org/gnome/desktop/peripherals/touchpad"
+      {
+        click-method = "fingers";
+        natural-scroll = true;
+        tap-to-click = true;
+        two-finger-scrolling-enabled = true;
+      };
+
+  # Privacy preserving defaults
+  orgGnomeDesktopPrivacySettings = dconfSettings "org/gnome/desktop/privacy" {
+    remember-recent-files = false;
+    remove-old-temp-files = true;
+    remove-old-trash-files = true;
+    report-technical-problems = false;
+    send-software-usage-stats = false;
+    show-full-name-in-top-bar = true;
+    usb-protection = true;
+    usb-protection-level = "lockscreen";
+  };
+
+  # Lockscreen configuration
+  orgGnomeDesktopLockscreenSettings = dconfSettings "org/gnome/desktop/lockscreen" {
+    idle-activation-enabled = true;
+    lock-delay = lib.gvariant.mkInt32 0;
+    lock-enabled = true;
+    logout-enabled = false;
+    picture-uri = "file://" + pkgs.background.backgroundImage;
+    restart-enabled = false;
+    user-switch-enabled = false;
+  };
+
+  # Gnome Shell configuration
+  orgGnomeShellSettings = dconfSettings "org/gnome/shell" {
+    allow-extension-installation = false;
+    enabled-extensions = [
+      "rounded-window-corners@fxgn"
+      "light-style@gnome-shell-extensions.gcampax.github.com"
+    ];
+    favorite-apps = [
+      "org.gnome.Epiphany.desktop"
+      "org.gnome.Nautilus.desktop"
+      "org.gnome.Terminal.desktop"
+    ];
+  };
+
+  orgGnomeTerminalLockdownSettings = dconfSettings "org/gnome/terminal/lockdown" {
+    disable-user-switching = true;
+    disable-user-administration = true;
+  };
+
+  # Default Gnome console
+  orgGnomeConsoleSettings = dconfSettings "org/gnome/Console" {
+    theme = "auto";
+  };
 in
 
 with lib;
@@ -32,8 +129,6 @@ with lib;
     services.displayManager.gdm.enable = true;
 
     # Enable required Gnome services and features
-    services.gnome.core-shell.enable = true;
-    services.gnome.core-apps.enable = true;
     i18n.inputMethod.enable = mkDefault true;
     i18n.inputMethod.type = mkDefault "ibus";
     programs.dconf.enable = mkDefault true;
@@ -54,7 +149,7 @@ with lib;
     services.upower.enable = mkDefault true;
     services.libinput.enable = mkDefault true;
 
-    # Explicitly enabled since GNOME will be severely broken without these.
+    # Enable XDG features
     xdg.mime.enable = mkDefault true;
     xdg.icons.enable = mkDefault true;
     xdg.portal.enable = mkDefault true;
@@ -69,6 +164,7 @@ with lib;
     # Gnome relies on NetworkManager for network configuration
     networking.networkmanager.enable = mkDefault true;
 
+    # Gnome Shell relies on D-Bus environment variables to be set for the session
     services.xserver.updateDbusEnvironment = mkDefault true;
 
     # Required for themes and backgrounds
@@ -118,6 +214,18 @@ with lib;
     # Gnome has its own geoclue agent
     services.geoclue2.enable = mkDefault true;
     services.geoclue2.enableDemoAgent = false;
+    services.geoclue2.appConfig.gnome-datetime-panel = {
+      isAllowed = true;
+      isSystem = true;
+    };
+    services.geoclue2.appConfig.gnome-color-panel = {
+      isAllowed = true;
+      isSystem = true;
+    };
+    services.geoclue2.appConfig."org.gnome.Shell" = {
+      isAllowed = true;
+      isSystem = true;
+    };
 
     # VTE shell integration for gnome-console
     programs.bash.vteIntegration = mkDefault true;
@@ -154,83 +262,19 @@ with lib;
       };
     };
 
+    # Configure dconf Gnome settings
     programs.dconf.profiles.user.databases = [
-      {
-        settings = {
-          "org/gnome/mutter" = {
-            experimental-features = [
-              "scale-monitor-framebuffer" # Enables fractional scaling (125% 150% 175%)
-              "kms-modifiers" # Allows changing display settings with keyboard shortcuts (e.g., Super+P)
-              "auto-close-xwayland" # Automatically closes Xwayland sessions when not needed
-              "variable-refresh-rate" # Enables Variable Refresh Rate (VRR) on compatible displays
-              "xwayland-native-scaling" # Scales Xwayland applications to look crisp on HiDPI screens
-            ];
-          };
-        };
-      }
-      {
-        settings = {
-          "org/gnome/desktop/wm/keybindings" = {
-            close = [ "<Super><Shift>q" ];
-          };
-          "org/gnome/desktop/background" = {
-            picture-uri = "file://" + pkgs.background.backgroundImage;
-            picture-uri-dark = "file://" + pkgs.background.darkBackgroundImage;
-          };
-          "org/gnome/shell" = {
-            allow-extension-installation = false;
-            enabled-extensions = [
-              "rounded-window-corners@fxgn"
-              "light-style@gnome-shell-extensions.gcampax.github.com"
-            ];
-            favorite-apps = [
-              "org.gnome.Epiphany.desktop"
-              "org.gnome.Nautilus.desktop"
-              "org.gnome.Terminal.desktop"
-            ];
-          };
-          "org/gnome/desktop/interface" = {
-            enable-hot-corners = false;
-            color-theme = "prefer-light";
-          };
-          "org/gnome/desktop/notifications" = {
-            show-banners = true;
-            show-in-lock-screen = false;
-          };
-          "org/gnome/desktop/peripherals/touchpad" = {
-            click-method = "fingers";
-            natural-scroll = true;
-            tap-to-click = true;
-            two-finger-scrolling-enabled = true;
-          };
-          "org/gnome/desktop/privacy" = {
-            remember-recent-files = false;
-            remove-old-temp-files = true;
-            remove-old-trash-files = true;
-            report-technical-problems = false;
-            send-software-usage-stats = false;
-            show-full-name-in-top-bar = true;
-            usb-protection = true;
-            usb-protection-level = "lockscreen";
-          };
-          "org/gnome/desktop/lockscreen" = {
-            idle-activation-enabled = true;
-            lock-delay = lib.gvariant.mkInt32 0;
-            lock-enabled = true;
-            logout-enabled = false;
-            picture-uri = "file://" + pkgs.background.backgroundImage;
-            restart-enabled = false;
-            user-switch-enabled = false;
-          };
-          "org/gnome/terminal/lockdown" = {
-            disable-user-switching = true;
-            disable-user-administration = true;
-          };
-          "org/gnome/Console" = {
-            theme = "auto";
-          };
-        };
-      }
+      orgGnomeMutterSettings
+      orgGnomeDesktopWmKeybindingsSettings
+      orgGnomeDesktopBackgroundSettings
+      orgGnomeDesktopNotificationsSettings
+      orgGnomeDesktopInterfaceSettings
+      orgGnomeDesktopPeripheralsTouchpadSettings
+      orgGnomeDesktopPrivacySettings
+      orgGnomeDesktopLockscreenSettings
+      orgGnomeShellSettings
+      orgGnomeTerminalLockdownSettings
+      orgGnomeConsoleSettings
     ];
 
     environment.systemPackages = with pkgs; [
@@ -239,6 +283,9 @@ with lib;
 
       # Default Gnome Packages
       epiphany
+      gnome-control-center
+      gnome-bluetooth
+      gnome-color-manager
       gnome-text-editor
       gnome-calculator
       gnome-calendar
@@ -254,15 +301,23 @@ with lib;
       gnome-firmware
       lock
       resources
+      glib
+      gnome-menus
+      gtk3.out # for gtk-launch program
+      xdg-user-dirs # Update user dirs as described in https://freedesktop.org/wiki/Software/xdg-user-dirs/
+      xdg-user-dirs-gtk # Used to create the default bookmarks
 
       # Background
       background
+
+      # Icon Theme
+      adwaita-icon-theme
 
       # Sound Theme as Gnome's default alert sound theme still inherits from it
       sound-theme-freedesktop
 
       # Gnome Shell Extensions
-      gnomeExtensions.gnome-shell-extensions
+      gnome-shell-extensions
       gnomeExtensions.rounded-window-corners-reborn
       gnomeExtensions.dynamic-music-pill
     ];
