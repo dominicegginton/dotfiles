@@ -49,6 +49,7 @@ rec {
     ./services/jellyfin.nix
     ./services/journald.nix
     ./services/lldap.nix
+    ./services/logind.nix
     ./services/nginx.nix
     ./services/pipewire.nix
     ./services/silverbullet.nix

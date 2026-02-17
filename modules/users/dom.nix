@@ -26,6 +26,7 @@ with lib;
         "dav2fs" # For davfs2
         "lpadmin" # For printer admin
         "docker" # For docker access
+        "fuse" # For FUSE filesystems
       ];
       openssh = {
         authorizedPrincipals = [

@@ -16,14 +16,10 @@ let
     '';
   };
 
-  # Create dconf settings bottom level attributes
-  dconfSettings = name: settings: {
-    settings = {
-      name = settings;
-    };
-  };
+  settingWrapper = settings: { settings = settings; };
+  settings = name: settings: settingWrapper { "${name}" = settings; };
 
-  orgGnomeMutterSettings = dconfSettings "org/gnome/mutter" {
+  orgGnomeMutterSettings = settings "org/gnome/mutter" {
     experimental-features = [
       "scale-monitor-framebuffer" # Enables fractional scaling (125% 150% 175%)
       "kms-modifiers" # Allows changing display settings with keyboard shortcuts (e.g., Super+P)
@@ -34,40 +30,38 @@ let
   };
 
   # Gnome keybindings for window management
-  orgGnomeDesktopWmKeybindingsSettings = dconfSettings "org/gnome/desktop/wm/keybindings" {
+  orgGnomeDesktopWmKeybindingsSettings = settings "org/gnome/desktop/wm/keybindings" {
     close = [ "<Super><Shift>q" ];
   };
 
   # Gnome desktop background
-  orgGnomeDesktopBackgroundSettings = dconfSettings "org/gnome/desktop/background" {
+  orgGnomeDesktopBackgroundSettings = settings "org/gnome/desktop/background" {
     picture-uri = "file://" + pkgs.background.backgroundImage;
     picture-uri-dark = "file://" + pkgs.background.darkBackgroundImage;
   };
 
   # Desktop notifications configuration
-  orgGnomeDesktopNotificationsSettings = dconfSettings "org/gnome/desktop/notifications" {
+  orgGnomeDesktopNotificationsSettings = settings "org/gnome/desktop/notifications" {
     show-banners = true;
     show-in-lock-screen = false;
   };
 
   # Gnome shell interface settings
-  orgGnomeDesktopInterfaceSettings = dconfSettings "org/gnome/desktop/interface" {
+  orgGnomeDesktopInterfaceSettings = settings "org/gnome/desktop/interface" {
     enable-hot-corners = false;
     color-theme = "prefer-light";
   };
 
   # Touchpad configuration
-  orgGnomeDesktopPeripheralsTouchpadSettings =
-    dconfSettings "org/gnome/desktop/peripherals/touchpad"
-      {
-        click-method = "fingers";
-        natural-scroll = true;
-        tap-to-click = true;
-        two-finger-scrolling-enabled = true;
-      };
+  orgGnomeDesktopPeripheralsTouchpadSettings = settings "org/gnome/desktop/peripherals/touchpad" {
+    click-method = "fingers";
+    natural-scroll = true;
+    tap-to-click = true;
+    two-finger-scrolling-enabled = true;
+  };
 
   # Privacy preserving defaults
-  orgGnomeDesktopPrivacySettings = dconfSettings "org/gnome/desktop/privacy" {
+  orgGnomeDesktopPrivacySettings = settings "org/gnome/desktop/privacy" {
     remember-recent-files = false;
     remove-old-temp-files = true;
     remove-old-trash-files = true;
@@ -79,7 +73,7 @@ let
   };
 
   # Lockscreen configuration
-  orgGnomeDesktopLockscreenSettings = dconfSettings "org/gnome/desktop/lockscreen" {
+  orgGnomeDesktopLockscreenSettings = settings "org/gnome/desktop/lockscreen" {
     idle-activation-enabled = true;
     lock-delay = lib.gvariant.mkInt32 0;
     lock-enabled = true;
@@ -90,7 +84,7 @@ let
   };
 
   # Gnome Shell configuration
-  orgGnomeShellSettings = dconfSettings "org/gnome/shell" {
+  orgGnomeShellSettings = settings "org/gnome/shell" {
     allow-extension-installation = false;
     enabled-extensions = [
       "rounded-window-corners@fxgn"
@@ -103,13 +97,13 @@ let
     ];
   };
 
-  orgGnomeTerminalLockdownSettings = dconfSettings "org/gnome/terminal/lockdown" {
+  orgGnomeTerminalLockdownSettings = settings "org/gnome/terminal/lockdown" {
     disable-user-switching = true;
     disable-user-administration = true;
   };
 
   # Default Gnome console
-  orgGnomeConsoleSettings = dconfSettings "org/gnome/Console" {
+  orgGnomeConsoleSettings = settings "org/gnome/Console" {
     theme = "auto";
   };
 in
@@ -117,9 +111,9 @@ in
 with lib;
 
 {
-  options.display.gnome.enable = lib.mkEnableOption "Gnome";
+  options.display.gnome.enable = mkEnableOption "Gnome";
 
-  config = lib.mkIf config.display.gnome.enable {
+  config = mkIf config.display.gnome.enable {
     # Enable hardware support
     hardware.graphics.enable = mkDefault true;
     hardware.bluetooth.enable = mkDefault true;
@@ -209,7 +203,7 @@ with lib;
     programs.gnome-disks.enable = mkDefault true;
 
     # Enable system-config-printer if printing is enabled, since Gnome's printer settings rely on it
-    services.system-config-printer.enable = (lib.mkIf config.services.printing.enable (mkDefault true));
+    services.system-config-printer.enable = (mkIf config.services.printing.enable (mkDefault true));
 
     # Enable geoclue2 for location service,
     # Gnome has its own geoclue agent
@@ -239,8 +233,8 @@ with lib;
     environment.sessionVariables.XDG_DATA_DIRS = [ "${mimeAppsList}/share" ];
 
     # Font configuration
-    fonts.enableDefaultPackages = lib.mkForce false;
-    fonts.fontDir.enable = lib.mkForce true;
+    fonts.enableDefaultPackages = mkForce false;
+    fonts.fontDir.enable = mkForce true;
     fonts.packages = with pkgs; [
       adwaita-fonts
       font-manager
@@ -248,10 +242,10 @@ with lib;
       ibm-plex
     ];
     fonts.fontconfig = {
-      enable = lib.mkForce true;
-      antialias = lib.mkForce true;
-      hinting.autohint = lib.mkForce true;
-      hinting.enable = lib.mkForce true;
+      enable = mkForce true;
+      antialias = mkForce true;
+      hinting.autohint = mkForce true;
+      hinting.enable = mkForce true;
       defaultFonts = {
         emoji = [ "Noto Color Emoji" ];
         serif = [ "Ibm Plex Serif" ];

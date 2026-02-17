@@ -50,17 +50,17 @@
     ];
   };
 
+  # Enable Gnome desktop environment
   display.gnome.enable = true;
 
+  # Enable Firefox web browser
   programs.firefox.enable = true;
 
-  services = {
-    lldap.enable = true; # move to a server - testing only
-    logind.settings.Login.HandleLidSwitchDocked = "suspend";
-    upower.enable = true;
-    flatpak.enable = true;
-    hardware.bolt.enable = true;
-  };
+  # Enable Flatpak for additional application installations
+  services.flatpak.enable = true;
+
+  # LDAP - testing only, move to a server
+  services.lldap.enable = true;
 
   topology.self.hardware.info = "Workstation";
 }

@@ -10,9 +10,8 @@
 
   imports = with self.inputs.nixos-hardware.nixosModules; [ ];
 
-  hardware = {
-    disks.root.id = "/dev/sda";
-  };
+  hardware.disks.device = "/dev/sda";
+  hardware.disks.swapSize = "16G";
 
   topology.self.hardware.info = "Server";
 }
