@@ -126,7 +126,7 @@ with lib;
     services.hardware.bolt.enable = mkDefault true;
 
     # Enable GDM display manager
-    services.displayManager.gdm.enable = true;
+    services.displayManager.gdm.enable = mkDefault true;
 
     # Enable required Gnome services and features
     i18n.inputMethod.enable = mkDefault true;
@@ -185,6 +185,7 @@ with lib;
     # are also appended to ensure user directories are created and
     # available in the session.
     systemd.packages = with pkgs; [
+      gdm
       gnome-session
       gnome-shell
       xdg-user-dirs

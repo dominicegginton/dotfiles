@@ -7,6 +7,10 @@
   ...
 }:
 
+let
+  selfRef = value: { "self" = value; };
+in
+
 rec {
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
@@ -106,7 +110,7 @@ rec {
     channel.enable = false;
 
     # nix registry entries
-    registry = lib.mapAttrs (_: value: { flake = value; }) self.inputs;
+    registry = lib.mapAttrs (_: value: { flake = value; }) (self.inputs // selfRef self);
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
     # nix settings
@@ -193,12 +197,12 @@ rec {
   environment.defaultPackages = lib.mkForce [ ];
 
   services = {
-    dbus.enable = true; # system bus
-    smartd.enable = true; # disk health monitoring
-    thermald.enable = true; # thermal management
-    upower.enable = true; # power management
-    fwupd.enable = true; # firmware updates
-    fstrim.enable = true; # periodic trim for ssd
+    dbus.enable = true;
+    smartd.enable = true;
+    thermald.enable = true;
+    upower.enable = true;
+    fwupd.enable = true;
+    fstrim.enable = true;
   };
 
   home-manager = {
