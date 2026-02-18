@@ -1,7 +1,7 @@
 {
-    "theme": "sync-with-os",
-    "git.push.confirm": false,
-    "editor.renderWhitespace": "All",
-    "vimEmulationEnabled": true,
-    "fus.sendAllowed": false
+  "theme": "sync-with-os",
+  "git.push.confirm": false,
+  "editor.renderWhitespace": "All",
+  "vimEmulationEnabled": true,
+  "fus.sendAllowed": false
 }
