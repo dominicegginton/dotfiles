@@ -1,5 +1,4 @@
 {
-  self,
   lib,
   mkShell,
   writeShellScriptBin,
@@ -17,7 +16,6 @@
   gnupg,
   # bws,
   neovim,
-  disko,
 }:
 
 mkShell rec {

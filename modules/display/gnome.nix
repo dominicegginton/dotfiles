@@ -16,6 +16,21 @@ let
     '';
   };
 
+  # Default favorite apps
+  defaultFavoriteAppsOverride = ''
+    [org.gnome.shell]
+    favorite-apps=[ 'org.gnome.Epiphany.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop', 'org.gnome.Nautilus.desktop' ]
+  '';
+
+  # Gnome settings overrides
+  nixos-gsettings-desktop-schemas = pkgs.gnome.nixos-gsettings-overrides.override {
+    inherit (config.display.gnome)
+      extraGSettingsOverrides
+      extraGSettingsOverridePackages
+      favoriteAppsOverride
+      ;
+  };
+
   settingWrapper = settings: { settings = settings; };
   settings = name: settings: settingWrapper { "${name}" = settings; };
 
@@ -113,7 +128,73 @@ with lib;
 {
   options.display.gnome.enable = mkEnableOption "Gnome";
 
+  options.display.gnome.favoriteAppsOverride = mkOption {
+    internal = true; # this is messy
+    default = defaultFavoriteAppsOverride;
+    type = types.lines;
+    example = literalExpression ''
+      '''
+        [org.gnome.shell]
+        favorite-apps=[ 'firefox.desktop', 'org.gnome.Calendar.desktop' ]
+      '''
+    '';
+    description = "List of desktop files to put as favorite apps into pkgs.gnome-shell. These need to be installed somehow globally.";
+  };
+
+  options.display.gnome.extraGSettingsOverrides = mkOption {
+    default = "";
+    type = types.lines;
+    description = "Additional gsettings overrides.";
+  };
+
+  options.display.gnome.extraGSettingsOverridePackages = mkOption {
+    default = [ ];
+    type = types.listOf types.path;
+    description = "List of packages for which gsettings are overridden.";
+  };
+
+  options.display.gnome.sessionPath = mkOption {
+    default = [ ];
+    type = types.listOf types.package;
+    example = literalExpression "[ pkgs.gpaste ]";
+    description = ''
+      Additional list of packages to be added to the session search path.
+      Useful for GNOME Shell extensions or GSettings-conditional autostart.
+
+      Note that this should be a last resort; patching the package is preferred (see GPaste).
+    '';
+  };
+
   config = mkIf config.display.gnome.enable {
+    system.nixos-generate-config.desktopConfiguration = [
+      ''
+        # Enable the GNOME Desktop Environment.
+        services.displayManager.gdm.enable = true;
+        services.desktopManager.gnome.enable = true;
+      ''
+    ];
+
+    services.gnome.core-os-services.enable = true;
+    services.gnome.core-shell.enable = true;
+    services.gnome.core-apps.enable = mkDefault true;
+
+    services.displayManager.sessionPackages = [ pkgs.gnome-session.sessions ];
+
+    environment.extraInit = ''
+      ${lib.concatMapStrings (p: ''
+        if [ -d "${p}/share/gsettings-schemas/${p.name}" ]; then
+          export XDG_DATA_DIRS=$XDG_DATA_DIRS''${XDG_DATA_DIRS:+:}${p}/share/gsettings-schemas/${p.name}
+        fi
+
+        if [ -d "${p}/lib/girepository-1.0" ]; then
+          export GI_TYPELIB_PATH=$GI_TYPELIB_PATH''${GI_TYPELIB_PATH:+:}${p}/lib/girepository-1.0
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH''${LD_LIBRARY_PATH:+:}${p}/lib
+        fi
+      '') config.display.gnome.sessionPath}
+    '';
+
+    environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = "${nixos-gsettings-desktop-schemas}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+
     # Enable hardware support
     hardware.graphics.enable = mkDefault true;
     hardware.bluetooth.enable = mkDefault true;
@@ -272,49 +353,54 @@ with lib;
       orgGnomeConsoleSettings
     ];
 
-    environment.systemPackages = with pkgs; [
-      # Gnome Shell
-      gnome-shell
+    environment.systemPackages =
+      with pkgs;
+      [
+        # Gnome Shell
+        gnome-shell
 
-      # Default Gnome Packages
-      epiphany
-      gnome-control-center
-      gnome-bluetooth
-      gnome-color-manager
-      gnome-text-editor
-      gnome-calculator
-      gnome-calendar
-      gnome-characters
-      gnome-clocks
-      gnome-console
-      gnome-contacts
-      gnome-font-viewer
-      gnome-weather
-      loupe
-      nautilus
-      papers
-      gnome-firmware
-      lock
-      resources
-      glib
-      gnome-menus
-      gtk3.out # for gtk-launch program
-      xdg-user-dirs # Update user dirs as described in https://freedesktop.org/wiki/Software/xdg-user-dirs/
-      xdg-user-dirs-gtk # Used to create the default bookmarks
+        # Default Gnome Packages
+        epiphany
+        gnome-control-center
+        gnome-bluetooth
+        gnome-color-manager
+        gnome-text-editor
+        gnome-calculator
+        gnome-calendar
+        gnome-characters
+        gnome-clocks
+        gnome-console
+        gnome-contacts
+        gnome-font-viewer
+        gnome-weather
+        loupe
+        nautilus
+        papers
+        gnome-firmware
+        lock
+        resources
+        glib
+        gnome-menus
+        gtk3.out # for gtk-launch program
+        xdg-user-dirs # Update user dirs as described in https://freedesktop.org/wiki/Software/xdg-user-dirs/
+        xdg-user-dirs-gtk # Used to create the default bookmarks
 
-      # Background
-      background
+        # Background
+        background
 
-      # Icon Theme
-      adwaita-icon-theme
+        # Icon Theme
+        adwaita-icon-theme
 
-      # Sound Theme as Gnome's default alert sound theme still inherits from it
-      sound-theme-freedesktop
+        # Sound Theme as Gnome's default alert sound theme still inherits from it
+        sound-theme-freedesktop
 
-      # Gnome Shell Extensions
-      gnome-shell-extensions
-      gnomeExtensions.rounded-window-corners-reborn
-      gnomeExtensions.dynamic-music-pill
-    ];
+        # Gnome Shell Extensions
+        gnome-shell-extensions
+        gnomeExtensions.rounded-window-corners-reborn
+        gnomeExtensions.dynamic-music-pill
+      ]
+
+      # Ensure sessionPath packages are available
+      ++ config.display.gnome.sessionPath;
   };
 }

@@ -32,7 +32,6 @@
   gcc,
   glib,
   gtk4,
-  gtk4-layer-shell,
   libadwaita,
   cairo,
 }:

@@ -4,8 +4,8 @@ on:
     branches:
       - main
     paths:
-      - 'infrastructure/**'
-      - '.github/workflows/infrastructure.yml'
+      - "infrastructure/**"
+      - ".github/workflows/infrastructure.yml"
 
 concurrency:
   group: deploy-infrastructure

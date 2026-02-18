@@ -11,8 +11,6 @@ let
   nixosConfiguration = builtins.getEnv "NIXOS_CONFIGURATION";
 in
 
-assert nixosConfiguration != null && nixosConfiguration != "";
-
 let
   childInputs = child: if child ? inputs && child.inputs != { } then (collector child) else [ ];
 
@@ -62,11 +60,16 @@ in
     (pkgs.writeShellScriptBin "unattended-install" ''
       set -eux
 
+      ${pkgs.networkmanager}/bin/nmcli device wifi connect --ask
+
       exec ${pkgs.disko}/bin/disko-install \
         --flake "${self}#${nixosConfiguration}" \
         --disk main /dev/sda
 
-      # TODO: authenticate with google cloud, download private gpg key, chroot into the infected system and import the key into the root keyring
+      ${pkgs.google-cloud-sdk}/bin/gcloud auth login --brief --no-launch-browser
+
+      ${pkgs.gsutil}/bin/gsutil cp gs://installer-secrets/installer-gpg-key /mnt/root-gpg-key.asc
+      ${pkgs.coreutils}/bin/chroot /mnt /bin/bash -c "gpg --import /root-gpg-key.asc && rm /root-gpg-key.asc"
     '')
   ];
 }
