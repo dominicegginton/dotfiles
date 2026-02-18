@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  tailnet,
   ...
 }:
 
@@ -75,7 +76,11 @@
 
     services.tailscale.serve = {
       enable = true;
-      services."ha".endpoints."tcp:80" = "http://localhost:${toString 8123}";
+      services."home-assistant".endpoints."tcp:80" = "http://127.0.0.1:${toString 8123}";
+    };
+
+    topology.self.services.home-assistant = {
+      details.listen.text = "http://home-assistant.${tailnet}";
     };
   };
 }

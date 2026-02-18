@@ -9,7 +9,7 @@
   config = lib.mkIf config.services.bitmagnet.enable {
     services.tailscale.serve = {
       enable = true;
-      services."bitmagnet".endpoints."tcp:443" =
+      services."bitmagnet".endpoints."tcp:80" =
         "http://127.0.0.1:${toString config.services.bitmagnet.settings.http_server.port}";
     };
 
