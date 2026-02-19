@@ -71,7 +71,7 @@
     services.tailscale.serve = {
       enable = true;
       services."ldap".endpoints."tcp:80" =
-        "http://127.0.0.1:${toString config.services.lldap.settings.http_port}";
+        "http://${config.networking.hostName}:${toString config.services.lldap.settings.http_port}";
     };
 
     topology.self.services.lldap = {

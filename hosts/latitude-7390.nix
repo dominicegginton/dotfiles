@@ -62,7 +62,6 @@
   # LDAP - testing only, move to a server
   services.lldap.enable = true;
   services.immich.enable = true;
-  services.silverbullet.enable = true;
 
   topology.self.hardware.info = "Workstation";
 }

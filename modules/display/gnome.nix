@@ -174,10 +174,6 @@ with lib;
       ''
     ];
 
-    services.gnome.core-os-services.enable = true;
-    services.gnome.core-shell.enable = true;
-    services.gnome.core-apps.enable = mkDefault true;
-
     services.displayManager.sessionPackages = [ pkgs.gnome-session.sessions ];
 
     environment.extraInit = ''
