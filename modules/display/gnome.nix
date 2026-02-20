@@ -335,7 +335,7 @@ with lib;
     };
 
     # Configure dconf Gnome settings
-    programs.dconf.profiles.user.databases = [
+    programs.dconf.profiles.user.databases = with lib.gvariant; [
       orgGnomeMutterSettings
       orgGnomeDesktopWmKeybindingsSettings
       orgGnomeDesktopBackgroundSettings

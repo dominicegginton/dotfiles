@@ -23,7 +23,7 @@ with lib;
   };
 
   config.disko.devices = lib.mkIf (config.hardware.disks.device != null) {
-    main = {
+    disk.main = {
       device = config.hardware.disks.device;
       type = "disk";
       content = {

@@ -132,7 +132,10 @@ rec {
 
         walsgrave = self.outputs.lib.nixosSystem {
           hostname = "walsgrave";
-          modules = [ ./hosts/walsgrave.nix ];
+          modules = [
+            ./hosts/walsgrave.nix
+            ./modules/users/dom.nix
+          ];
         };
       };
     };
