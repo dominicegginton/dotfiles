@@ -19,10 +19,11 @@ let
     desktopName = "Youtube TV";
     genericName = "A video social media and online video sharing platform";
     categories = [
-      "TV"
+      "Video"
       "AudioVideo"
     ];
     startupNotify = true;
+    startupWMClass = "youtube-tv";
     icon = fetchurl {
       name = "YouTube_full_color_icon_2017.svg";
       url = "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg";
@@ -37,6 +38,7 @@ let
     "${google-chrome}/bin/${google-chrome.meta.mainProgram}" \
       ${lib.escapeShellArgs commandLineArgs} \
       --app=${url} \
+      --class=youtube-tv \
       --new-window \
       --user-agent="Mozilla/5.0 (PS4; Leanback Shell) Gecko/20100101 Firefox/65.0 LeanbackShell/01.00.01.75 Sony PS4/ (PS4, , no, CH)" \
       --window-size=4096,2160 \

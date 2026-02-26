@@ -3,8 +3,7 @@
 rec {
   tailnet = "soay-puffin.ts.net";
   nixosHostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.nixosConfigurations;
-  darwinHostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.darwinConfigurations;
-  hostnames = nixosHostnames ++ darwinHostnames;
+  hostnames = nixosHostnames;
   maintainers = self.inputs.nixpkgs.lib.maintainers // {
     dominicegginton = {
       name = "Dominic Egginton";

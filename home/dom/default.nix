@@ -18,6 +18,12 @@
       ".gitignore".source = ./sources/.gitignore;
       ".gitmessage".source = ./sources/.gitmessage;
       ".ideavimrc".source = ./sources/.ideavimrc;
+      ".config/twm/twm.yaml".text = ''
+        search_paths:
+          - "~/.dotfiles"
+          - "~/dev"
+          - "~/playgrounds"
+      '';
     };
 
     programs.tmux = {
@@ -91,12 +97,6 @@
         bind-key -T copy-mode-vi 'C-\' select-pane -l
       '';
     };
-    home.file.".config/twm/twm.yaml".text = ''
-      search_paths:
-        - "~/.dotfiles"
-        - "~/dev"
-        - "~/playgrounds"
-    '';
 
     programs = {
       git.enable = true;
@@ -224,6 +224,7 @@
       twx
       vscode
       youtube-tv
+      github-copilot-cli
     ];
   };
 }

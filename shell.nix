@@ -1,10 +1,12 @@
 {
+  self,
   lib,
   mkShell,
   writeShellScriptBin,
   nix,
   nix-output-monitor,
   deadnix,
+  statix,
   nix-diff,
   nix-tree,
   nix-health,
@@ -30,6 +32,7 @@ mkShell rec {
     nix
     nix-output-monitor
     deadnix
+    statix
     nix-diff
     nix-tree
     nix-health

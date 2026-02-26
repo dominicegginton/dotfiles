@@ -37,7 +37,6 @@ rec {
     ./security/sudo.nix
     ./security/run0.nix
     ./security/tpm2.nix
-    ./services/backup.nix
     ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/displaymanager.nix
@@ -92,7 +91,6 @@ rec {
   i18n.defaultLocale = "en_GB.UTF-8";
   nixpkgs.overlays = [ self.outputs.overlays.default ];
 
-  # nix settings
   nix = {
     # nix pkg
     package = pkgs.nix;
