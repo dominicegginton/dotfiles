@@ -225,6 +225,7 @@
       vscode
       youtube-tv
       github-copilot-cli
+      gaphor
     ];
   };
 }
