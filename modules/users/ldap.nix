@@ -1,44 +1,21 @@
 {
-  self,
   config,
   lib,
   pkgs,
+  hostname,
+  tailnet,
   ...
 }:
 
 {
   config = lib.mkIf config.services.lldap.enable {
-    # TODO: replace this service with a better method of ensuring the password file exists on
-    #       all systems before nslcd starts (maybe using secrets module?) - llap service is not
-    #       guaranteed to be present on all systems using ldap users
-    systemd.services.nslcd.serviceConfig.ReadWritePaths = [ "/var/lib/lldap" ];
-    systemd.services.nslcd-password-setup = {
-      description = "Setup nslcd LDAP bind password";
-      wantedBy = [ "nslcd.service" ];
-      before = [ "nslcd.service" ];
-      after = [
-        "lldap.service"
-        "lldap-user-password.service"
-      ];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-      };
-      script = ''
-        mkdir -p /run/nslcd
-        cp /var/lib/lldap/user_password /run/nslcd/bind-password
-        chown nslcd:nslcd /run/nslcd/bind-password
-        chmod 400 /run/nslcd/bind-password
-      '';
-    };
-
     users.ldap = {
       enable = true;
-      server = "ldap://${self.outputs.nixosConfigurations.latitude-7390.config.networking.hostName}:${toString config.services.lldap.settings.ldap_port}/";
+      server = "ldap://dit.${tailnet}";
       base = config.services.lldap.settings.ldap_base_dn;
       daemon.enable = true;
       bind = {
-        distinguishedName = "uid=admin,ou=people,dc=dominicegginton,dc=dev";
+        distinguishedName = "uid=${hostname},ou=machines,dc=T2YHuJgy2121CNTRL";
         passwordFile = "/run/nslcd/bind-password";
       };
     };

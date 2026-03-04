@@ -63,9 +63,7 @@
   services.lldap.enable = true;
   services.immich.enable = true;
   services.silverbullet.enable = true;
-
   services.tsidp.enable = true;
-  services.tsidp.settings.enableSts = true;
 
   topology.self.hardware.info = "Workstation";
 }
