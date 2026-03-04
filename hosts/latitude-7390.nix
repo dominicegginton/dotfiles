@@ -59,8 +59,8 @@
   # Enable Flatpak for additional application installations
   services.flatpak.enable = true;
 
-  # LDAP - testing only, move to a server
-  services.lldap.enable = true;
+  # testing only, move to a server
+  services.lldap.enable = true; # replace with tsdit
   services.immich.enable = true;
   services.silverbullet.enable = true;
   services.tsidp.enable = true;

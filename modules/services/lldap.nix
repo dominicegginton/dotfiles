@@ -75,7 +75,7 @@
     };
 
     topology.self.services.lldap = {
-      name = config.services.systemd.llap.serviceName;
+      name = "lldap";
       details.listen.text = "https://ldap.${tailnet}";
     };
   };

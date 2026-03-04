@@ -1,6 +1,7 @@
 {
   config,
   tailnet,
+  lib,
   ...
 }:
 

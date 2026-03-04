@@ -54,6 +54,7 @@ rec {
     ./services/silverbullet.nix
     ./services/ssh.nix
     ./services/tailscale.nix
+    ./services/tsidp.nix
     ./services/timesyncd.nix
     ./services/usbguard.nix
     ./users/ldap.nix
