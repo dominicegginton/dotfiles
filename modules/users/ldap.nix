@@ -7,17 +7,18 @@
   ...
 }:
 
+let
+  tailnetId = "T2YHuJgy2121CNTRL";
+in
+
 {
   config = lib.mkIf config.services.lldap.enable {
     users.ldap = {
       enable = true;
       server = "ldap://dit.${tailnet}";
-      base = config.services.lldap.settings.ldap_base_dn;
+      base = "dc=${tailnetId}";
       daemon.enable = true;
-      bind = {
-        distinguishedName = "uid=${hostname},ou=machines,dc=T2YHuJgy2121CNTRL";
-        passwordFile = "/run/nslcd/bind-password";
-      };
+      bind.distinguishedName = "uid=${hostname},ou=machines,dc=${tailnetId}";
     };
 
     security.pam.services = {
@@ -34,6 +35,9 @@
           # Authentication management.
           auth sufficient ${pkgs.pam}/lib/security/pam_rootok.so
           auth required ${pkgs.pam}/lib/security/pam_faillock.so
+
+          # OTP authentication
+          auth required ${pkgs.pam}/lib/security/pam_oath.so usersfile=/etc/users.oath window=10 digits=6
           auth sufficient ${pkgs.pam}/lib/security/pam_unix.so likeauth try_first_pass
           auth sufficient ${pkgs.nss_pam_ldapd}/lib/security/pam_ldap.so use_first_pass
           auth required ${pkgs.pam}/lib/security/pam_deny.so
