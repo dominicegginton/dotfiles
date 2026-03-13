@@ -12,7 +12,7 @@ let
 in
 
 {
-  config = lib.mkIf config.services.lldap.enable {
+  config = {
     users.ldap = {
       enable = true;
       server = "ldap://dit.${tailnet}";
