@@ -14,11 +14,11 @@ in
 {
   config = {
     users.ldap = {
-      enable = true;
-      server = "ldap://dit.${tailnet}";
+      enable = lib.mkForce true;
+      server = "ldap://dit.${tailnet}:636";
+      useTLS = lib.mkForce true;
       base = "dc=${tailnetId}";
-      daemon.enable = true;
-      bind.distinguishedName = "uid=${hostname},ou=machines,dc=${tailnetId}";
+      daemon.enable = lib.mkForce true;
     };
 
     security.pam.services = {
