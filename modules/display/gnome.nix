@@ -300,8 +300,8 @@ with lib;
     };
 
     # VTE shell integration for gnome-console
-    programs.bash.vteIntegration = mkDefault true;
-    programs.zsh.vteIntegration = mkDefault true;
+    # programs.bash.vteIntegration = mkDefault true;
+    # programs.zsh.vteIntegration = mkDefault true;
 
     # Let nautilus find extensions
     environment.sessionVariables.NAUTILUS_4_EXTENSION_DIR = "${config.system.path}/lib/nautilus/extensions-4";
@@ -393,7 +393,7 @@ with lib;
         # Gnome Shell Extensions
         gnome-shell-extensions
         gnomeExtensions.rounded-window-corners-reborn
-        gnomeExtensions.dynamic-music-pill
+        # gnomeExtensions.dynamic-music-pill
       ]
 
       # Ensure sessionPath packages are available

@@ -15,7 +15,7 @@ in
   config = {
     users.ldap = {
       enable = lib.mkForce true;
-      server = "ldap://dit.${tailnet}:636";
+      server = "ldaps://dit0.${tailnet}:636";
       useTLS = lib.mkForce true;
       base = "dc=${tailnetId}";
       daemon.enable = lib.mkForce true;
