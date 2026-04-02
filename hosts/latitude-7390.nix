@@ -62,6 +62,7 @@
   # testing only, move to a server
   services.immich.enable = true;
   services.tsidp.enable = true;
+  services.dit0.enable = true;
 
   topology.self.hardware.info = "Workstation";
 }

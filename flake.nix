@@ -14,6 +14,8 @@ rec {
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
     deadman.url = "github:dominicegginton/deadman";
     deadman.inputs.nixpkgs.follows = "nixpkgs";
+    dit0.url = "github:dominicegginton/dit0";
+    dit0.inputs.nixpkgs.follows = "nixpkgs";
     base16.url = "github:SenchoPens/base16.nix";
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
@@ -67,6 +69,7 @@ rec {
             nix-topology.overlays.default
             nix-topology.overlays.topology
             deadman.overlays.default
+            dit0.overlays.default
             run0-sudo-shim.overlays.default
           ];
         }

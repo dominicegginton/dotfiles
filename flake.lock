@@ -58,6 +58,26 @@
         "type": "github"
       }
     },
+    "dit0": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775147412,
+        "narHash": "sha256-drxn/+ZQMBZvr7XllcdUszYGRsgTpyZiK/WU/agwTqc=",
+        "owner": "dominicegginton",
+        "repo": "dit0",
+        "rev": "272999b9c32c036582e7591fc70f7d7effb7d885",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dominicegginton",
+        "repo": "dit0",
+        "type": "github"
+      }
+    },
     "flake-parts": {
       "inputs": {
         "nixpkgs-lib": "nixpkgs-lib"
@@ -353,6 +373,7 @@
         "base16": "base16",
         "deadman": "deadman",
         "disko": "disko",
+        "dit0": "dit0",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
         "nix-github-actions": "nix-github-actions",

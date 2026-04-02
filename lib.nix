@@ -65,6 +65,7 @@ rec {
           home-manager.nixosModules.default
           run0-sudo-shim.nixosModules.default
           deadman.nixosModules.default
+          dit0.nixosModules.default
           ./modules
         ];
     };
