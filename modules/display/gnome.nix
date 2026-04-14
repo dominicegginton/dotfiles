@@ -309,14 +309,14 @@ with lib;
     # Override default mimeapps for nautilus
     environment.sessionVariables.XDG_DATA_DIRS = [ "${mimeAppsList}/share" ];
 
-    # Font configuration
+    # Font Definitions
     fonts.enableDefaultPackages = mkForce false;
     fonts.fontDir.enable = mkForce true;
     fonts.packages = with pkgs; [
-      adwaita-fonts
-      font-manager
-      nerd-fonts.blex-mono
-      ibm-plex
+      font-manager # Font Manager Application
+      adwaita-fonts # Default Gnome Fonts
+      ibm-plex # IBM Plex Fonts
+      nerd-fonts.blex-mono # Nerd Font Mono
     ];
     fonts.fontconfig = {
       enable = mkForce true;
@@ -349,54 +349,48 @@ with lib;
       orgGnomeConsoleSettings
     ];
 
+    # Firefox Web Browser
+    programs.firefox.enable = mkDefault true;
+
+    # Flatpak for additional application installations
+    services.flatpak.enable = mkDefault true;
+
     environment.systemPackages =
       with pkgs;
       [
-        # Gnome Shell
-        gnome-shell
-
-        # Default Gnome Packages
-        epiphany
-        gnome-control-center
-        gnome-bluetooth
-        gnome-color-manager
-        gnome-text-editor
-        gnome-calculator
-        gnome-calendar
-        gnome-characters
-        gnome-clocks
-        gnome-console
-        gnome-contacts
-        gnome-font-viewer
-        gnome-weather
-        loupe
-        nautilus
-        papers
-        gnome-firmware
-        lock
-        resources
-        glib
-        gnome-menus
-        gtk3.out # for gtk-launch program
-        xdg-user-dirs # Update user dirs as described in https://freedesktop.org/wiki/Software/xdg-user-dirs/
-        xdg-user-dirs-gtk # Used to create the default bookmarks
-
-        # Background
-        background
-
-        # Icon Theme
-        adwaita-icon-theme
-
-        # Sound Theme as Gnome's default alert sound theme still inherits from it
-        sound-theme-freedesktop
-
-        # Gnome Shell Extensions
-        gnome-shell-extensions
-        gnomeExtensions.rounded-window-corners-reborn
-        # gnomeExtensions.dynamic-music-pill
+        adwaita-icon-theme # Icon Theme - Required by Gnome Application
+        sound-theme-freedesktop # Sound Theme - Gnome's default alert sound theme still inherits from it
+        glib # GLib Library - Required by Gnome Applications
+        gtk3.out # GTK3 Library - Required by gtk-launch program
+        xdg-user-dirs # Updates User Directories
+        xdg-user-dirs-gtk # Updates User Directories - GTK Integration
+        gnome-shell # Shell
+        gnome-menus # Gnome Menus
+        background # Background Definition
+        epiphany # Web Browser
+        gnome-control-center # Control Center
+        gnome-bluetooth # Bluetooth Settings - Required by Gnome Control Center
+        gnome-color-manager # Color Management - Required by Gnome Control Center
+        gnome-text-editor # Text Editor Applet
+        gnome-calculator # Calculator Applet
+        gnome-calendar # Calendar Applet
+        gnome-characters # Characters Applet
+        gnome-clocks # Clocks and Alarms Applet
+        gnome-console # Console
+        gnome-contacts # Contacts Applet
+        gnome-font-viewer # Font Viewer Applet
+        gnome-weather # Weather Applet
+        loupe # Magnifier Applet
+        nautilus # File Manager
+        papers # Papers Applet
+        gnome-firmware # Firmware Updater Applet
+        lock # Encrypt / Decrypt Applet
+        resources # System Monitor
+        gnome-shell-extensions # Shell Extension Applet
+        gnomeExtensions.rounded-window-corners-reborn # Round All Window Corners Extension
       ]
 
-      # Ensure sessionPath packages are available
+      # Session Path Packages
       ++ config.display.gnome.sessionPath;
   };
 }

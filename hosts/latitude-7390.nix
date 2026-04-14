@@ -7,86 +7,61 @@
 }:
 
 {
+  # Host Platform Definition
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
+  # Host Specific Modules
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
     dell-latitude-7390
   ];
 
-  # TODO: move to disko configuration
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-uuid/591e8f6a-01bb-4a7b-8f9d-546400359853";
-      fsType = "ext4";
-    };
-    "/boot" = {
-      device = "/dev/disk/by-uuid/5D74-0ED5";
-      fsType = "vfat";
-      options = [
-        "fmask=0077"
-        "dmask=0077"
-      ];
-    };
+  # Host File System Definition
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/591e8f6a-01bb-4a7b-8f9d-546400359853";
+    fsType = "ext4";
+  };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/5D74-0ED5";
+    fsType = "vfat";
+    options = [
+      "fmask=0077" # Restrict file permissions
+      "dmask=0077" # Restrict directory permissions
+    ];
   };
 
+  # Host Kernel Modules
+  boot.kernelModules = [
+    "kvm-intel" # Intel Virtualization
+    "vhost_vsock" # Virtio Socket Support
+    "i2c-dev" # I2C Device Support
+    "ddcci_backlight" # DDC/CI Backlight Control
+  ];
+
+  # Host Extra Module Packages
+  boot.extraModulePackages = [
+    config.boot.kernelPackages.ddcci-driver # DDC/CI Driver
+  ];
+
+  # Host Initrd Kernel Modules
+  boot.initrd.availableKernelModules = [
+    "xhci_pci" # USB 3.0 Support
+    "ahci" # SATA Support
+    "usb_storage" # USB Storage Support
+    "sd_mod" # SD Card Support
+    "nvme" # NVMe Support
+  ];
+
+  # Bluetooth Support
   hardware.bluetooth.enable = true;
-  hardware.intel-gpu-tools.enable = true;
 
-  boot = {
-    kernelModules = [
-      "kvm-intel"
-      "vhost_vsock"
-      "i2c-dev"
-      "ddcci_backlight"
-    ];
-    extraModulePackages = [ config.boot.kernelPackages.ddcci-driver ];
-    initrd.availableKernelModules = [
-      "xhci_pci"
-      "ahci"
-      "usb_storage"
-      "sd_mod"
-    ];
-  };
-
-  # Enable Gnome desktop environment
+  # Gnome Desktop Environment
   display.gnome.enable = true;
 
-  # Enable Firefox web browser
-  programs.firefox.enable = true;
+  services.immich.enable = true; # TODO: REMOVE
+  services.tsidp.enable = true; # TODO: REMOVE
 
-  # Enable Flatpak for additional application installations
-  services.flatpak.enable = true;
-
-  # testing only, move to a server
-  services.immich.enable = true;
-  services.tsidp.enable = true;
-  services.ollama = {
-    enable = true;
-    # Optional: preload models, see https://ollama.com/library
-    loadModels = [
-      "llama3.2:3b"
-      "deepseek-r1:1.5b"
-      "DeepSeek-Coder:6.7b"
-    ];
-  };
-  services.open-webui.enable = true;
-
-  # services.dit0 = {
-  #   enable = true;
-  #   base_dn = "dc=T2YHuJgy2121CNTRL,dc=com";
-  #   ldap_port = 636;
-  #   web_port = 443;
-  #   data_dir = "/var/lib/dit0";
-  #   otp_hmac_key_file = "/run/secrets/otp_hmac_key";
-  #   tailscale = {
-  #     id = "T2YHuJgy2121CNTRL";
-  #     hostname = "dit0";
-  #     api_base_url = "https://api.tailscale.com/api/v2";
-  #     api_key_file = "/run/secrets/ts_api_key";
-  #   };
-  # };
-
+  # Topology Host Definition
   topology.self.hardware.info = "Workstation";
 }
