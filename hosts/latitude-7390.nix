@@ -62,7 +62,31 @@
   # testing only, move to a server
   services.immich.enable = true;
   services.tsidp.enable = true;
-  services.dit0.enable = true;
+  services.ollama = {
+    enable = true;
+    # Optional: preload models, see https://ollama.com/library
+    loadModels = [
+      "llama3.2:3b"
+      "deepseek-r1:1.5b"
+      "DeepSeek-Coder:6.7b"
+    ];
+  };
+  services.open-webui.enable = true;
+
+  # services.dit0 = {
+  #   enable = true;
+  #   base_dn = "dc=T2YHuJgy2121CNTRL,dc=com";
+  #   ldap_port = 636;
+  #   web_port = 443;
+  #   data_dir = "/var/lib/dit0";
+  #   otp_hmac_key_file = "/run/secrets/otp_hmac_key";
+  #   tailscale = {
+  #     id = "T2YHuJgy2121CNTRL";
+  #     hostname = "dit0";
+  #     api_base_url = "https://api.tailscale.com/api/v2";
+  #     api_key_file = "/run/secrets/ts_api_key";
+  #   };
+  # };
 
   topology.self.hardware.info = "Workstation";
 }

@@ -1,6 +1,6 @@
 local lspconfig = require('lspconfig')
 
-local capabilities = lspconfig.util.default_config
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 local function default_on_attach(client, bufnr)
   local navigator_lspclient_mapping = require('navigator.lspclient.mapping')
@@ -29,7 +29,7 @@ lspconfig['angularls'].setup(default_config)
 lspconfig['pyright'].setup(default_config)
 lspconfig['rust_analyzer'].setup({
   capabilities = capabilities,
-  ssettings = { ['rust-analyzer'] = { diagnostics = { enable = false } } },
+  settings = { ['rust-analyzer'] = { diagnostics = { enable = false } } },
   on_attach = default_on_attach,
 })
 lspconfig['lua_ls'].setup({

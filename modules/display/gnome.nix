@@ -315,7 +315,7 @@ with lib;
     fonts.packages = with pkgs; [
       adwaita-fonts
       font-manager
-      noto-fonts-color-emoji
+      nerd-fonts.blex-mono
       ibm-plex
     ];
     fonts.fontconfig = {
@@ -324,12 +324,12 @@ with lib;
       hinting.autohint = mkForce true;
       hinting.enable = mkForce true;
       defaultFonts = {
-        emoji = [ "Noto Color Emoji" ];
+        emoji = [ "Nerd Font Emoji" ];
         serif = [ "Ibm Plex Serif" ];
         sansSerif = [ "Ibm Plex Sans" ];
         monospace = [
           "Ibm Plex Mono"
-          "Noto Nerd Font Mono"
+          "Nerd Font Mono"
         ];
       };
     };

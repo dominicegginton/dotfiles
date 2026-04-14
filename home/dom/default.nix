@@ -43,6 +43,7 @@
         set -g history-limit 50000
         set -g display-time 4000
         set -g status-interval 5
+        set -g set-clipboard on
         set -g focus-events on
         set -g window-size latest
         set -g base-index 1

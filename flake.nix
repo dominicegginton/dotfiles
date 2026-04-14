@@ -62,6 +62,7 @@ rec {
                 "google-chrome"
                 "YouTube_full_color_icon_2017.svg"
                 "github-copilot-cli"
+                "open-webui"
               ];
           };
           overlays = with self.inputs; [
