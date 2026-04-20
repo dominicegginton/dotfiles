@@ -1,6 +1,4 @@
 {
-  # Host: Latitude 7390
-  # Simple host configuration header
   self,
   lib,
   config,
