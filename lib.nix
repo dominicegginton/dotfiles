@@ -1,10 +1,20 @@
 { self }:
 
 rec {
+  # Domain identification.
+  domain = "dominicegginton.dev";
+
+  # Tailnet domain identification.
   tailnet = "soay-puffin.ts.net";
-  nixosHostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.nixosConfigurations;
-  hostnames = nixosHostnames;
-  maintainers = self.inputs.nixpkgs.lib.maintainers // {
+
+  # Hostnames derived from each NixOS configuration.
+  hostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.nixosConfigurations;
+
+  # Define and merge additional maintainers with the existing nixpkgs maintainers.
+  maintainers = self.inputs.nixpkgs.lib.recursiveUpdate self.inputs.nixpkgs.lib.maintainers {
+
+    # Dominic Egginton.
+    # Roles: Owner, Admin, User.
     dominicegginton = {
       name = "Dominic Egginton";
       email = "dominic.egginton@gmail.com";
@@ -13,39 +23,24 @@ rec {
       sshKeys = [ "ssh-rsa4096/4C79CE4F82847A9F" ];
     };
   };
-  eachPlatformMerge =
-    op: platforms: f:
-    builtins.foldl' (op f) { } (
-      if !builtins ? currentSystem || builtins.elem builtins.currentSystem platforms then
-        platforms
-      else
-        platforms ++ [ builtins.currentSystem ]
-    );
-  eachPlatform = eachPlatformMerge (
-    f: attrs: platform:
-    let
-      ret = f platform;
-    in
-    builtins.foldl' (
-      attrs: key:
-      attrs
-      // {
-        ${key} = (attrs.${key} or { }) // {
-          ${platform} = ret.${key};
-        };
-      }
-    ) attrs (builtins.attrNames ret)
-  );
-  packagesFrom = module: platform: module.packages.${platform};
+
+  # Function to construct a NixOS system using the flake inputs/outputs.
   nixosSystem =
     {
+      # Hostname of the NixOS system.
       hostname,
+      # Platform of the NixOS system.
       platform ? "x86_64-linux",
+      # Extra NixOS modules to include for this system.
       modules ? [ ],
       ...
     }:
     self.inputs.nixpkgs.lib.nixosSystem {
+      # Set the Nix packages for this system to the appropriate platform.
       pkgs = self.outputs.nixpkgsFor.${platform};
+
+      # Set special arguments for the NixOS system, so that includes nix
+      # modules have access to these arguments.
       specialArgs = {
         inherit
           self
@@ -54,6 +49,8 @@ rec {
           platform
           ;
       };
+
+      # Define list of NixOS modules to include for all systems.
       modules =
         with self.inputs;
         modules
@@ -65,7 +62,7 @@ rec {
           home-manager.nixosModules.default
           run0-sudo-shim.nixosModules.default
           deadman.nixosModules.default
-          dit0.nixosModules.default
+          # dit0.nixosModules.default
           ./modules
         ];
     };

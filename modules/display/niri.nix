@@ -49,40 +49,62 @@ with config.scheme.withHashtag;
   options.display.niri.enable = lib.mkEnableOption "Niri";
 
   config = lib.mkIf config.display.niri.enable {
-    hardware.graphics.enable = true;
+    # Enable hardware accelerated graphics drivers
+    hardware.graphics.enable = lib.mkDefault true;
 
-    hardware.bluetooth.enable = true;
+    # Enable hardware bluetooth support
+    hardware.bluetooth.enable = lib.mkDefault true;
 
-    security.polkit.enable = true;
-    security.pam.services.swaylock = { };
+    # Enable UNIX application-level authorizations via Polkit
+    security.polkit.enable = lib.mkDefault true;
 
-    xdg = {
-      autostart.enable = true;
-      menus.enable = true;
-      icons.enable = true;
-      portal = {
-        wlr.enable = true;
-        enable = true;
-        extraPortals = [
-          pkgs.xdg-desktop-portal-gnome
-          pkgs.xdg-desktop-portal-gtk
-        ];
-        configPackages = [ pkgs.niri ];
-      };
+    # Enable Swaylock PAM service
+    security.pam.services.swaylock = lib.mkDefault { };
+
+    xdg.portal = {
+      # Enable Cross-Desktop Group integration
+      enable = lib.mkDefault true;
+
+      # Enable Cross-Desktop Group integration for wlroots-based desktops.
+      wlr.enable = lib.mkDefault true;
+
+      # Add Niri to the list of packages that provide XDG portal configurations.
+      configPackages = lib.mkDefault [ pkgs.niri ];
+
+      # Add both gnome and gtk portals to the list of additional portals to add
+      # enabling interaction with system.
+      extraPortals = lib.mkDefault [
+        pkgs.xdg-desktop-portal-gnome
+        pkgs.xdg-desktop-portal-gtk
+      ];
     };
 
-    services = {
-      graphical-desktop.enable = true;
-      printing.enable = true;
-      pipewire.enable = true;
-      gnome.gnome-keyring.enable = true;
-      power-profiles-daemon.enable = true;
-      displayManager = {
-        gdm.enable = true;
-        sessionPackages = [ pkgs.niri ];
-      };
-      geoclue2.enableDemoAgent = lib.mkDefault true;
-    };
+    # Install files to enable XDG autostart support
+    xdg.autostart.enable = lib.mkDefault true;
+
+    # Install files to enable XDG menu support
+    xdg.menus.enable = lib.mkDefault true;
+
+    # Install files to enable XDG icon support
+    xdg.icons.enable = lib.mkDefault true;
+
+    services.graphical-desktop.enable = true;
+
+    # Enable printing support via the CUPS daemon.
+    services.printing.enable = true;
+
+    # Enable pipewire services.
+    services.pipewire.enable = true;
+
+    # Enable gnome-keyring services for user credential management.
+    services.gnome.gnome-keyring.enable = true;
+
+    # Enable user selected power profiles via power-profile service.
+    services.power-profiles-daemon.enable = true;
+
+    services.displayManager.gdm.enable = true;
+    services.displayManager.sessionPackages = [ pkgs.niri ];
+    services.geoclue2.enableDemoAgent = lib.mkDefault true;
 
     programs = {
       niri.enable = true;

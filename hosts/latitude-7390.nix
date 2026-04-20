@@ -1,4 +1,6 @@
 {
+  # Host: Latitude 7390
+  # Simple host configuration header
   self,
   lib,
   config,
@@ -7,21 +9,23 @@
 }:
 
 {
-  # Host Platform Definition
+  # Set host platform (default from `platform`)
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
-  # Host Specific Modules
+  # Hardware-specific modules for this laptop
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
     dell-latitude-7390
   ];
 
-  # Host File System Definition
+  # Filesystems
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/591e8f6a-01bb-4a7b-8f9d-546400359853";
     fsType = "ext4";
   };
+
+  # Boot partition (EFI)
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/5D74-0ED5";
     fsType = "vfat";
@@ -39,7 +43,7 @@
     "ddcci_backlight" # DDC/CI Backlight Control
   ];
 
-  # Host Extra Module Packages
+  # Extra kernel module packages
   boot.extraModulePackages = [
     config.boot.kernelPackages.ddcci-driver # DDC/CI Driver
   ];
@@ -53,15 +57,14 @@
     "nvme" # NVMe Support
   ];
 
-  # Bluetooth Support
   hardware.bluetooth.enable = true;
 
   # Gnome Desktop Environment
   display.gnome.enable = true;
+  display.niri.enable = true;
 
   services.immich.enable = true; # TODO: REMOVE
   services.tsidp.enable = true; # TODO: REMOVE
 
-  # Topology Host Definition
   topology.self.hardware.info = "Workstation";
 }

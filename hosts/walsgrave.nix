@@ -1,3 +1,5 @@
+# Host: Walsgrave Server
+# Simple host configuration header
 {
   self,
   lib,
@@ -27,7 +29,7 @@
   services.open-webui.enable = true;
 
   # Directory Information Tree & LDAP Services
-  services.dit0.enable = true;
+  # services.dit0.enable = true;
 
   # NVR & OD Services
   services.frigate = {

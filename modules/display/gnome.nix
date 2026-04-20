@@ -1,3 +1,5 @@
+## Modules: display/gnome.nix
+## Simple module header
 {
   config,
   lib,
@@ -351,9 +353,6 @@ with lib;
 
     # Firefox Web Browser
     programs.firefox.enable = mkDefault true;
-
-    # Flatpak for additional application installations
-    services.flatpak.enable = mkDefault true;
 
     environment.systemPackages =
       with pkgs;

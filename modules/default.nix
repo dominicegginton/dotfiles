@@ -1,3 +1,5 @@
+## Modules: default.nix
+## Simple module header
 {
   self,
   modulesPath,
@@ -40,7 +42,7 @@ rec {
     ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/displaymanager.nix
-    ./services/dit0.nix
+    # ./services/dit0.nix
     ./services/flatpak.nix
     ./services/frigate.nix
     ./services/getty.nix

@@ -14,10 +14,12 @@ in
 {
   config = {
     users.ldap = {
-      enable = lib.mkForce true;
+      enable = lib.mkForce false;
       server = "ldaps://dit0.${tailnet}:636";
+      # server = lib.mkForce "ldaps://${config.services.dit0.tailnet.hostname}.${tailnet}:${config.services.dit0.ldap_port}";
       useTLS = lib.mkForce true;
       base = "dc=${tailnetId}";
+      # base = lib.mkForce config.services.dit0.base_dn;
       daemon.enable = lib.mkForce true;
     };
 

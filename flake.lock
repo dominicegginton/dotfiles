@@ -65,11 +65,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1775147412,
-        "narHash": "sha256-drxn/+ZQMBZvr7XllcdUszYGRsgTpyZiK/WU/agwTqc=",
+        "lastModified": 1775498859,
+        "narHash": "sha256-dytW2fEcTHz+03/aQWVqrWhk+NIllMycQwizjq2FD90=",
         "owner": "dominicegginton",
         "repo": "dit0",
-        "rev": "272999b9c32c036582e7591fc70f7d7effb7d885",
+        "rev": "169cf2da9f8c70256edb0523228dca7ef2f83648",
         "type": "github"
       },
       "original": {
