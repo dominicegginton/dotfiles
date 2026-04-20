@@ -200,15 +200,15 @@
         cargo
         rust-analyzer
         nodejs
-        nodePackages.typescript
+        typescript
         terraform-lsp
         lua-language-server
         # docker-language-server
-        nodePackages.vim-language-server
-        nodePackages.bash-language-server
-        nodePackages.yaml-language-server
-        nodePackages.typescript-language-server
-        nodePackages.vscode-langservers-extracted
+        vim-language-server
+        bash-language-server
+        yaml-language-server
+        typescript-language-server
+        vscode-langservers-extracted
         prettierd
         eslint_d
         nixpkgs-fmt
