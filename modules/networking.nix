@@ -51,7 +51,7 @@ with config.lib.topology;
   };
 
   topology.self.interfaces = {
-    lo = {
+    loopback = {
       type = "loopback";
       virtual = true;
       addresses = [
@@ -59,11 +59,18 @@ with config.lib.topology;
         "127.0.0.1"
       ];
     };
-    wlp108s0 = lib.mkIf config.networking.wireless.iwd.enable {
+    wlp108s0-router-wlan0 = lib.mkIf config.networking.wireless.iwd.enable {
       type = "wifi";
       addresses = [ hostname ];
       physicalConnections = [
         (mkConnection "router" "wlan0")
+      ];
+    };
+
+    wlp108s0-pixel-9-hotspot = lib.mkIf config.networking.wireless.iwd.enable {
+      type = "wifi";
+      addresses = [ hostname ];
+      physicalConnections = [
         (mkConnection "pixel-9" "hotspot")
       ];
     };

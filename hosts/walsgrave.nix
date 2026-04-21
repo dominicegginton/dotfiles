@@ -54,14 +54,5 @@
   services.silverbullet.enable = true;
 
   # Topology Definition
-  topology.self = {
-    hardware.info = "Walsgrave Server";
-
-    # Connection Directly
-    interfaces.eth0 = {
-      network = "ribble";
-      type = "ethernet";
-      addresses = [ hostname ];
-    };
-  };
+  topology.self.hardware.info = "Walsgrave Server";
 }

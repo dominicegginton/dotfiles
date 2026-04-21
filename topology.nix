@@ -4,14 +4,19 @@ with pkgs.lib;
 with config.lib.topology;
 
 {
+  # Define a attribute set of networks across infrastructure.
   networks = {
+
+    # Public Internet.
     internet = {
-      name = "WAN Internet";
+      name = "Internet";
       style = {
         primaryColor = "#ff0000ff";
         pattern = "solid";
       };
     };
+
+    # Private local home network.
     ribble = {
       name = "LAN Ribble";
       cidrv4 = "192.168.1.0/24";
@@ -21,16 +26,20 @@ with config.lib.topology;
         pattern = "solid";
       };
     };
+
+    # Private mobile hotspot network.
     pixel-9 = {
       name = "Pixel 9 Hotspot";
       cidrv4 = "100.100.100.100/24";
       cidrv6 = "fd00:2::/64";
       style = {
-        primaryColor = "#50c878ff";
+        primaryColor = "rgb(200, 80, 132)";
         secondaryColor = "transparent";
         pattern = "solid";
       };
     };
+
+    # Private tailscale tailnet based network.
     "${tailnet}" = {
       name = tailnet;
       cidrv4 = "100.100.100.100/24";
@@ -42,8 +51,13 @@ with config.lib.topology;
       };
     };
   };
+
+  # Define attribute set of network nodes (outside of auto defined nixosConfiguration nodes).
   nodes = {
+
+    # Public Internet.
     internet = mkInternet { };
+
     router = mkRouter "EE Router" {
       info = "EE Bright Box 2 Router";
       interfaceGroups = [
