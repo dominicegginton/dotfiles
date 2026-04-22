@@ -1,21 +1,29 @@
 {
   lib,
   config,
-  tailnet,
   ...
 }:
 
 {
   config = lib.mkIf config.services.ollama.enable {
-    # LLM AI Services
+    assertions = [
+      {
+        assertion = config.services.tailscale.enable;
+        message = "services.tailscale.enable must be set to true";
+      }
+    ];
+
     services.ollama = {
-      loadModels = [ ]; # TODO
+      host = lib.mkDefault "0.0.0.0";
+      port = lib.mkDefault 2824;
+      openFirewall = lib.mkDefault false;
+      loadModels = lib.mkDefault [ ]; # TODO
     };
 
-    # Tailscale Service Definition
     services.tailscale.serve = {
-      enable = true;
-      services."ollama".endpoints."tcp:443" = "https+insecure://127.0.0.1:${builtins.toString 8080}";
+      enable = lib.mkDefault true;
+      services."ollama".endpoints."tcp:443" =
+        lib.mkDefault "https+insecure://127.0.0.1:${builtins.toString config.services.ollama.port}";
     };
   };
 }

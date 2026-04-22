@@ -1,13 +1,14 @@
-{ ... }:
+{ lib, ... }:
 
 {
   config.virtualisation.vmVariant = {
-    users.groups.nixosvmtest = { };
+    users.groups.nixosvmtest = lib.mkDefault { };
+
     users.users.nix = {
-      description = "NixOS VM Test User";
-      isNormalUser = true;
-      initialPassword = "";
-      group = "nixosvmtest";
+      description = lib.mkDefault "NixOS VM Test User";
+      isNormalUser = lib.mkDefault true;
+      initialPassword = lib.mkDefault "";
+      group = lib.mkDefault "nixosvmtest";
     };
   };
 }

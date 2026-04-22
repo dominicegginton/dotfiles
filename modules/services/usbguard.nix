@@ -1,11 +1,11 @@
-{ ... }:
+{ lib, ... }:
 
 {
   services.usbguard = {
-    enable = true;
-    presentControllerPolicy = "allow";
-    dbus.enable = true;
-    IPCAllowedGroups = [
+    enable = lib.mkForce true;
+    presentControllerPolicy = lib.mkDefault "allow";
+    dbus.enable = lib.mkDefault true;
+    IPCAllowedGroups = lib.mkDefault [
       "usbguard"
       "wheel"
     ];

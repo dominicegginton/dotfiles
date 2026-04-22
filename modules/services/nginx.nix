@@ -2,9 +2,9 @@
 
 {
   config.services.nginx = lib.mkIf config.services.nginx.enable {
-    recommendedGzipSettings = true;
-    recommendedOptimisation = true;
-    recommendedTlsSettings = true;
-    recommendedProxySettings = true;
+    recommendedGzipSettings = lib.mkDefault true;
+    recommendedOptimisation = lib.mkDefault true;
+    recommendedTlsSettings = lib.mkDefault true;
+    recommendedProxySettings = lib.mkDefault true;
   };
 }

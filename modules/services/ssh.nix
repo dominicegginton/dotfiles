@@ -1,10 +1,10 @@
-{ config, lib, ... }:
+{ lib, ... }:
 
 {
   services.openssh = {
-    enable = true;
-    allowSFTP = false;
-    banner = lib.mkDefault config.services.getty.greetingLine;
+    enable = lib.mkForce true;
+    allowSFTP = lib.mkForce false;
+    authorizedKeysInHomedir = lib.mkForce false;
     settings = {
       KbdInteractiveAuthentication = lib.mkForce false;
       LogLevel = lib.mkForce "VERBOSE";

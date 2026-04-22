@@ -7,7 +7,7 @@
 
 {
   config = lib.mkIf config.services.tsidp.enable {
-    services.tsidp.settings.enableSts = true;
+    services.tsidp.settings.enableSts = lib.mkDefault true;
 
     topology.self.services.tsidp = {
       name = "tsidp";

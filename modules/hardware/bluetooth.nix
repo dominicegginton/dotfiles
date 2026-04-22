@@ -8,17 +8,17 @@
 {
   config = lib.mkIf config.hardware.bluetooth.enable {
     hardware.bluetooth = {
-      package = pkgs.bluez;
+      package = lib.mkForce pkgs.bluez;
       settings = {
         General = {
-          MultiProfile = "multiple";
-          FastConnectable = true;
-          Enable = "Source,Sink,Media,Socket";
-          Experimental = true;
+          MultiProfile = lib.mkDefault "multiple";
+          FastConnectable = lib.mkDefault true;
+          Enable = lib.mkDefault "Source,Sink,Media,Socket";
+          Experimental = lib.mkDefault true;
         };
         LE = {
-          ScanIntervalSuspend = 2240;
-          ScanWindowSuspend = 224;
+          ScanIntervalSuspend = lib.mkDefault 2240;
+          ScanWindowSuspend = lib.mkDefault 224;
         };
       };
     };

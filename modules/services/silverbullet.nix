@@ -2,15 +2,21 @@
   config,
   lib,
   tailnet,
-  pkgs,
   ...
 }:
 
 {
   config = lib.mkIf config.services.silverbullet.enable {
+    assertions = [
+      {
+        assertion = config.services.tailscale.enable;
+        message = "services.tailscale.enable must be set to true";
+      }
+    ];
+
     services.silverbullet = {
-      listenAddress = "0.0.0.0";
-      listenPort = 8765;
+      listenAddress = lib.mkDefault "0.0.0.0";
+      listenPort = lib.mkDefault 8765;
       openFirewall = lib.mkDefault false;
       user = lib.mkDefault "silverbullet";
       spaceDir = lib.mkDefault "/var/lib/silverbullet";

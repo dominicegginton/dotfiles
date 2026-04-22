@@ -73,44 +73,44 @@ rec {
 
   system = {
     # state version for nixos modules
-    stateVersion = config.system.nixos.release;
+    stateVersion = lib.mkForce config.system.nixos.release;
 
     # custom distro metadata
     nixos = {
-      distroName = lib.mkDefault "Residence";
-      distroId = lib.mkDefault "residence";
-      vendorName = lib.mkDefault self.outputs.lib.maintainers.dominicegginton.name;
-      vendorId = lib.mkDefault self.outputs.lib.maintainers.dominicegginton.github;
-      tags = [ (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux") ];
+      distroName = lib.mkForce "Residence";
+      distroId = lib.mkForce "residence";
+      vendorName = lib.mkForce self.outputs.lib.maintainers.dominicegginton.name;
+      vendorId = lib.mkForce self.outputs.lib.maintainers.dominicegginton.github;
+      tags = lib.mkForce [ (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux") ];
     };
   };
 
   # system color scheme
-  scheme = "${pkgs.theme}/residence-theme.yaml";
+  scheme = lib.mkForce "${pkgs.theme}/residence-theme.yaml";
 
   # system time zone
-  time.timeZone = "Europe/London";
+  time.timeZone = lib.mkDefault "Europe/London";
 
   # system locale
-  i18n.defaultLocale = "en_GB.UTF-8";
-  nixpkgs.overlays = [ self.outputs.overlays.default ];
+  i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
+  nixpkgs.overlays = lib.mkForce [ self.outputs.overlays.default ];
 
   nix = {
     # nix pkg
-    package = pkgs.nix;
+    package = lib.mkForce pkgs.nix;
 
     # automatic garbage collection
     gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
+      automatic = lib.mkForce true;
+      dates = lib.mkForce "weekly";
+      options = lib.mkForce "--delete-older-than 7d";
     };
 
     # automatic optimise of the nix store
-    optimise.automatic = lib.mkDefault true;
+    optimise.automatic = lib.mkForce true;
 
     # disable channel updates
-    channel.enable = false;
+    channel.enable = lib.mkForce false;
 
     # nix registry entries
     registry = lib.mapAttrs (_: value: { flake = value; }) (self.inputs // selfRef self);
@@ -131,29 +131,29 @@ rec {
 
       # garbage collection settings
       min-free = builtins.toString (30 * 1024 * 1024 * 1024); # 30 GB
-      min-free-check-interval = 1;
+      min-free-check-interval = lib.mkForce 1;
 
       # disable global registry
-      flake-registry = "";
+      flake-registry = lib.mkDefault "";
 
       # performance optimizations for faster rebuilds
       # keep-outputs = true; # keep build outputs
       # keep-derivations = true; # keep derivations for faster rebuilds
 
       # performance settings
-      eval-cache = true; # enable caching
-      narinfo-cache-positive-ttl = 3600; # longer cache for existing narinfos
-      narinfo-cache-negative-ttl = 60; # quicker retries on missing narinfo
-      fsync-metadata = false; # faster on SSDs
-      connect-timeout = 10; # faster timeouts
-      max-substitution-jobs = 128; # increased parallel substitutions
-      http-connections = 128; # increased parallel connections
-      cores = 0; # use all available CPU cores
-      max-jobs = "auto"; # use all available CPU cores
-      keep-build-log = false; # dont keep build logs
-      compress-build-log = true; # compress build logs
-      require-sigs = true;
-      allowed-users = [
+      eval-cache = lib.mkForce true; # enable caching
+      narinfo-cache-positive-ttl = lib.mkForce 3600; # longer cache for existing narinfos
+      narinfo-cache-negative-ttl = lib.mkForce 60; # quicker retries on missing narinfo
+      fsync-metadata = lib.mkForce false; # faster on SSDs
+      connect-timeout = lib.mkForce 10; # faster timeouts
+      max-substitution-jobs = lib.mkForce 128; # increased parallel substitutions
+      http-connections = lib.mkForce 128; # increased parallel connections
+      cores = lib.mkForce 0; # use all available CPU cores
+      max-jobs = lib.mkForce "auto"; # use all available CPU cores
+      keep-build-log = lib.mkForce false; # dont keep build logs
+      compress-build-log = lib.mkForce true; # compress build logs
+      require-sigs = lib.mkForce true;
+      allowed-users = lib.mkForce [
         "root"
         "@wheel"
       ];
@@ -161,17 +161,21 @@ rec {
   };
 
   boot = {
-    consoleLogLevel = 0; # log all boot messages
-    initrd.verbose = false; # disable verbose initrd
+    consoleLogLevel = lib.mkForce 0; # log all boot messages
+    initrd.verbose = lib.mkForce false; # disable verbose initrd
     loader = {
-      systemd-boot.enable = true; # enable systemd-boot
-      efi.canTouchEfiVariables = true; # allow efi variables modification
+      grub = {
+
+      };
+      systemd-boot.enable = lib.mkForce true; # enable systemd-boot
+      efi.canTouchEfiVariables = lib.mkForce true; # allow efi variables modification
+      efi.efiSysMountPoint = lib.mkForce "/boot";
     };
 
     plymouth = {
-      enable = true;
-      themePackages = [ pkgs.plymouth-theme ]; # boot theme package
-      theme = pkgs.plymouth-theme.name; # set boot theme
+      enable = lib.mkForce true;
+      theme = lib.mkForce pkgs.plymouth-theme.name; # set boot theme
+      themePackages = lib.mkForce [ pkgs.plymouth-theme ]; # boot theme package
     };
 
     kernelParams = [
@@ -192,37 +196,37 @@ rec {
   security.unprivilegedUsernsClone = lib.mkDefault true;
 
   programs = {
-    gnupg.agent.enable = true;
+    gnupg.agent.enable = lib.mkForce true;
     ssh.startAgent = lib.mkIf (config.services.gnome.gcr-ssh-agent.enable == false) true;
-    deadman.enable = true;
+    deadman.enable = lib.mkForce true;
   };
 
   environment.defaultPackages = lib.mkForce [ ];
 
   services = {
-    dbus.enable = true;
-    smartd.enable = true;
-    thermald.enable = true;
-    upower.enable = true;
-    fwupd.enable = true;
-    fstrim.enable = true;
+    dbus.enable = lib.mkForce true;
+    smartd.enable = lib.mkForce true;
+    thermald.enable = lib.mkForce true;
+    upower.enable = lib.mkForce true;
+    fwupd.enable = lib.mkForce true;
+    fstrim.enable = lib.mkForce true;
   };
 
   home-manager = {
-    useGlobalPkgs = true;
-    backupFileExtension = "backup";
+    useGlobalPkgs = lib.mkForce true;
+    backupFileExtension = lib.mkForce "backup";
     sharedModules = [
       self.inputs.base16.homeManagerModule
       {
         inherit scheme;
         home = {
-          stateVersion = "25.05";
-          enableNixpkgsReleaseCheck = false;
+          stateVersion = lib.mkForce "25.05";
+          enableNixpkgsReleaseCheck = lib.mkForce false;
         };
         programs = {
-          bash.enable = true;
-          info.enable = true;
-          hstr.enable = true;
+          bash.enable = lib.mkForce true;
+          info.enable = lib.mkForce true;
+          hstr.enable = lib.mkForce true;
         };
       }
     ];

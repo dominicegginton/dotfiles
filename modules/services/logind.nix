@@ -1,8 +1,8 @@
-{ ... }:
+{ lib, ... }:
 
 {
   services.logind.settings.Login = {
-    HandleLidSwitch = "suspend";
-    HandleLidSwitchDocked = "ignore";
+    HandleLidSwitch = lib.mkDefault "suspend";
+    HandleLidSwitchDocked = lib.mkDefault "ignore";
   };
 }

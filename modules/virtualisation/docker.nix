@@ -8,14 +8,14 @@
 {
   config = lib.mkIf config.virtualisation.docker.enable {
     environment = {
-      persistence."/persist".directories = [ "/var/lib/docker" ];
+      persistence."/persist".directories = lib.mkDefault [ "/var/lib/docker" ];
       systemPackages = with pkgs; [ docker ];
     };
 
     virtualisation.docker.autoPrune = {
-      enable = true;
-      flags = [ "--all" ];
-      dates = "daily";
+      enable = lib.mkDefault true;
+      flags = lib.mkDefault [ "--all" ];
+      dates = lib.mkDefault "daily";
     };
 
     topology.self.interfaces.docker = {

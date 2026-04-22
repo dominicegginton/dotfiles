@@ -2,7 +2,7 @@
 {
   services.timesyncd = {
     enable = lib.mkForce true;
-    extraConfig = ''
+    extraConfig = lib.mkDefault ''
       PollIntervalMaxSec=60
     '';
   };

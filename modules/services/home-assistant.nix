@@ -8,9 +8,16 @@
 
 {
   config = lib.mkIf config.services.home-assistant.enable {
+    assertions = [
+      {
+        assertion = config.services.tailscale.enable;
+        message = "services.tailscale.enable must be set to true";
+      }
+    ];
+
     services.home-assistant = {
       package = pkgs.home-assistant;
-      openFirewall = true;
+      openFirewall = lib.mkDefault true;
       lovelaceConfigWritable = true;
       configWritable = true;
       config = {
@@ -25,7 +32,10 @@
         default_config = { };
         mobile_app = { };
         history = { };
-        http = { };
+        http = {
+          server_host = [ "0.0.0.0" ];
+          server_port = 8123;
+        };
       };
       customComponents = with pkgs.home-assistant-custom-components; [
         adaptive_lighting
@@ -75,8 +85,9 @@
     };
 
     services.tailscale.serve = {
-      enable = true;
-      services."home-assistant".endpoints."tcp:80" = "http://127.0.0.1:${toString 8123}";
+      enable = lib.mkDefault true;
+      services."home-assistant".endpoints."tcp:80" =
+        lib.mkDefault "http://127.0.0.1:${toString config.services.home-assistant.config.http.server-port}";
     };
 
     topology.self.services.home-assistant = {

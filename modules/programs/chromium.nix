@@ -3,7 +3,7 @@
 {
   config = lib.mkIf config.programs.chromium.enable {
     programs.chromium = {
-      extraOpts = {
+      extraOpts = lib.mkDefault {
         "BrowserSignin" = 0;
         "SyncDisabled" = true;
         "PasswordManagerEnabled" = false;

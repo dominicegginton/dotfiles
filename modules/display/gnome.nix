@@ -204,7 +204,7 @@ with lib;
     # Enable required Gnome services and features
     i18n.inputMethod.enable = mkDefault true;
     i18n.inputMethod.type = mkDefault "ibus";
-    programs.dconf.enable = mkDefault true;
+    programs.dconf.enable = mkForce true;
     security.polkit.enable = mkDefault true;
     security.rtkit.enable = mkDefault true;
     services.pipewire.enable = mkDefault true;
@@ -266,9 +266,9 @@ with lib;
     ];
 
     # Enable required Gnome services
-    services.colord.enable = mkDefault true;
-    services.gnome.glib-networking.enable = mkDefault true;
-    services.gnome.gnome-browser-connector.enable = mkDefault true;
+    services.colord.enable = mkForce true;
+    services.gnome.glib-networking.enable = mkForce true;
+    services.gnome.gnome-browser-connector.enable = mkForce true;
     services.gnome.gnome-initial-setup.enable = mkDefault true;
     services.gnome.gnome-remote-desktop.enable = mkDefault true;
     services.gnome.gnome-settings-daemon.enable = mkDefault true;
@@ -286,30 +286,32 @@ with lib;
 
     # Enable geoclue2 for location service,
     # Gnome has its own geoclue agent
-    services.geoclue2.enable = mkDefault true;
-    services.geoclue2.enableDemoAgent = false;
-    services.geoclue2.appConfig.gnome-datetime-panel = {
-      isAllowed = true;
-      isSystem = true;
-    };
-    services.geoclue2.appConfig.gnome-color-panel = {
-      isAllowed = true;
-      isSystem = true;
-    };
-    services.geoclue2.appConfig."org.gnome.Shell" = {
-      isAllowed = true;
-      isSystem = true;
-    };
+    services.geoclue2 = {
+      enable = mkDefault true;
+      enableDemoAgent = (lib.mkIf config.services.geoclue2.enable (mkForce false));
+      appConfig = lib.mkIf config.services.geoclue2.enable {
+        gnome-datetime-panel = lib.mkForce {
+          isAllowed = true;
+          isSystem = true;
+        };
 
-    # VTE shell integration for gnome-console
-    # programs.bash.vteIntegration = mkDefault true;
-    # programs.zsh.vteIntegration = mkDefault true;
+        gnome-color-panel = lib.mkForce {
+          isAllowed = true;
+          isSystem = true;
+        };
+
+        "org.gnome.Shell" = lib.mkForce {
+          isAllowed = true;
+          isSystem = true;
+        };
+      };
+    };
 
     # Let nautilus find extensions
-    environment.sessionVariables.NAUTILUS_4_EXTENSION_DIR = "${config.system.path}/lib/nautilus/extensions-4";
+    environment.sessionVariables.NAUTILUS_4_EXTENSION_DIR = lib.mkForce "${config.system.path}/lib/nautilus/extensions-4";
 
     # Override default mimeapps for nautilus
-    environment.sessionVariables.XDG_DATA_DIRS = [ "${mimeAppsList}/share" ];
+    environment.sessionVariables.XDG_DATA_DIRS = lib.mkForce [ "${mimeAppsList}/share" ];
 
     # Font Definitions
     fonts.enableDefaultPackages = mkForce false;
@@ -337,19 +339,21 @@ with lib;
     };
 
     # Configure dconf Gnome settings
-    programs.dconf.profiles.user.databases = with lib.gvariant; [
-      orgGnomeMutterSettings
-      orgGnomeDesktopWmKeybindingsSettings
-      orgGnomeDesktopBackgroundSettings
-      orgGnomeDesktopNotificationsSettings
-      orgGnomeDesktopInterfaceSettings
-      orgGnomeDesktopPeripheralsTouchpadSettings
-      orgGnomeDesktopPrivacySettings
-      orgGnomeDesktopLockscreenSettings
-      orgGnomeShellSettings
-      orgGnomeTerminalLockdownSettings
-      orgGnomeConsoleSettings
-    ];
+    programs.dconf.profiles.user.databases =
+      with lib.gvariant;
+      lib.mkForce [
+        orgGnomeMutterSettings
+        orgGnomeDesktopWmKeybindingsSettings
+        orgGnomeDesktopBackgroundSettings
+        orgGnomeDesktopNotificationsSettings
+        orgGnomeDesktopInterfaceSettings
+        orgGnomeDesktopPeripheralsTouchpadSettings
+        orgGnomeDesktopPrivacySettings
+        orgGnomeDesktopLockscreenSettings
+        orgGnomeShellSettings
+        orgGnomeTerminalLockdownSettings
+        orgGnomeConsoleSettings
+      ];
 
     # Firefox Web Browser
     programs.firefox.enable = mkDefault true;

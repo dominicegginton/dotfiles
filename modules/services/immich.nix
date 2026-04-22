@@ -7,7 +7,8 @@
 
 {
   config = lib.mkIf config.services.immich.enable {
-    services.immich.host = "0.0.0.0";
+    services.immich.host = lib.mkDefault "0.0.0.0";
+    services.immich.port = lib.mkDefault 2283;
 
     services.tailscale.serve = {
       enable = true;

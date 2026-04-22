@@ -108,7 +108,7 @@ with config.scheme.withHashtag;
 
     programs = {
       niri.enable = true;
-      dconf.enable = true;
+      dconf.enable = lib.mkForce true;
       # alacritty.enable = true;
       firefox.enable = true;
       xwayland.enable = lib.mkDefault true;

@@ -38,6 +38,8 @@ with lib;
       };
     };
 
+    services.clamav.daemon.settings.OnAccessIncludePath = lib.mkDefault "/home/dom/Downloads";
+
     home-manager.users.dom = ../../home/dom;
   };
 }

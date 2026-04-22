@@ -1,5 +1,5 @@
-{ ... }:
+{ lib, ... }:
 
 {
-  security.apparmor.enable = true;
+  security.apparmor.enable = lib.mkForce false;
 }

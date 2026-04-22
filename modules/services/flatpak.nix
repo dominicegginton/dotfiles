@@ -7,7 +7,7 @@
 
 {
   config = lib.mkIf config.services.flatpak.enable {
-    systemd.services.flatpak-repo = {
+    systemd.services.flatpak-repo = lib.mkDefault {
       wantedBy = [ "multi-user.target" ];
       path = [ pkgs.flatpak ];
       script = ''

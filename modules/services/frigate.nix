@@ -7,6 +7,13 @@
 
 {
   config = lib.mkIf config.services.frigate.enable {
+    assertions = [
+      {
+        assertion = config.services.tailscale.enable;
+        message = "services.tailsclae.enable must be set to true";
+      }
+    ];
+
     services.frigate = {
       hostname = "frigate.${hostname}";
       settings = {

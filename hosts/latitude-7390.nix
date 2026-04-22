@@ -61,7 +61,8 @@
   display.gnome.enable = true;
   display.niri.enable = true;
 
-  services.immich.enable = true; # TODO: REMOVE
+  # services.immich.enable = true; # TODO: REMOVE
+  services.silverbullet.enable = true;
   services.tsidp.enable = true; # TODO: REMOVE
 
   topology.self.hardware.info = "Workstation";

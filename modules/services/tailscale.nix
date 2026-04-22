@@ -38,8 +38,8 @@ with config.lib.topology;
   };
 
   security.acme = {
-    acceptTerms = true;
-    defaults.email = self.outputs.lib.maintainers.dominicegginton.email;
+    acceptTerms = lib.mkDefault true;
+    defaults.email = lib.mkDefault self.outputs.lib.maintainers.dominicegginton.email;
   };
 
   environment.systemPackages = with pkgs; [ tailscale ];
