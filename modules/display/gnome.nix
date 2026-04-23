@@ -1,5 +1,3 @@
-## Modules: display/gnome.nix
-## Simple module header
 {
   config,
   lib,
@@ -204,7 +202,7 @@ with lib;
     # Enable required Gnome services and features
     i18n.inputMethod.enable = mkDefault true;
     i18n.inputMethod.type = mkDefault "ibus";
-    programs.dconf.enable = mkForce true;
+    programs.dconf.enable = mkDefault true;
     security.polkit.enable = mkDefault true;
     security.rtkit.enable = mkDefault true;
     services.pipewire.enable = mkDefault true;
@@ -339,21 +337,19 @@ with lib;
     };
 
     # Configure dconf Gnome settings
-    programs.dconf.profiles.user.databases =
-      with lib.gvariant;
-      lib.mkForce [
-        orgGnomeMutterSettings
-        orgGnomeDesktopWmKeybindingsSettings
-        orgGnomeDesktopBackgroundSettings
-        orgGnomeDesktopNotificationsSettings
-        orgGnomeDesktopInterfaceSettings
-        orgGnomeDesktopPeripheralsTouchpadSettings
-        orgGnomeDesktopPrivacySettings
-        orgGnomeDesktopLockscreenSettings
-        orgGnomeShellSettings
-        orgGnomeTerminalLockdownSettings
-        orgGnomeConsoleSettings
-      ];
+    programs.dconf.profiles.user.databases = with lib.gvariant; [
+      orgGnomeMutterSettings
+      orgGnomeDesktopWmKeybindingsSettings
+      orgGnomeDesktopBackgroundSettings
+      orgGnomeDesktopNotificationsSettings
+      orgGnomeDesktopInterfaceSettings
+      orgGnomeDesktopPeripheralsTouchpadSettings
+      orgGnomeDesktopPrivacySettings
+      orgGnomeDesktopLockscreenSettings
+      orgGnomeShellSettings
+      orgGnomeTerminalLockdownSettings
+      orgGnomeConsoleSettings
+    ];
 
     # Firefox Web Browser
     programs.firefox.enable = mkDefault true;
