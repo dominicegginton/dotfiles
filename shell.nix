@@ -1,4 +1,5 @@
 {
+  self,
   lib,
   mkShell,
   writeShellScriptBin,
@@ -15,7 +16,7 @@
   gum,
   jq,
   gnupg,
-  # bws,
+  bws,
   neovim,
 }:
 
@@ -38,18 +39,18 @@ mkShell rec {
     nix-index
     google-cloud-sdk
     opentofu
-    # (writeShellScriptBin "sync-secrets" ''
-    #   TEMP_DIR=$(mktemp -d)
-    #   trap "rm -rf $TEMP_DIR" EXIT
-    #   ${lib.getExe bws} secret list $BWS_PROJECT_ID \
-    #     --output json \
-    #     --access-token $BWS_ACCESS_TOKEN \
-    #     > $TEMP_DIR/secrets.json
-    #   ${lib.getExe gnupg} --encrypt \
-    #     ${toString (map (key: "--recipient " + key) keys)} \
-    #     --output secrets.json \
-    #     $TEMP_DIR/secrets.json
-    # '')
+    (writeShellScriptBin "sync-secrets" ''
+      TEMP_DIR=$(mktemp -d)
+      trap "rm -rf $TEMP_DIR" EXIT
+      ${lib.getExe bws} secret list $BWS_PROJECT_ID \
+        --output json \
+        --access-token $BWS_ACCESS_TOKEN \
+        > $TEMP_DIR/secrets.json
+      ${lib.getExe gnupg} --encrypt \
+        ${toString (map (key: "--recipient " + key) keys)} \
+        --output secrets.json \
+        $TEMP_DIR/secrets.json
+    '')
     # TODO: complete (define a common schema in the screts module and use it both here and in systemd secret decryption service)
     (writeShellScriptBin "open-secrets" ''
       TEMP_DIR=$(mktemp -d)
