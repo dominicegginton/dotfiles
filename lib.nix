@@ -1,13 +1,13 @@
 { self }:
 
 rec {
-  # Domain identification.
+  # Set domain identification.
   domain = "dominicegginton.dev";
 
-  # Tailnet domain identification.
+  # Set Tailnet domain identification.
   tailnet = "soay-puffin.ts.net";
 
-  # Hostnames derived from each NixOS configuration.
+  # Names of hosts derived from each NixOS configuration.
   hostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.nixosConfigurations;
 
   # Define and merge additional maintainers with the existing nixpkgs maintainers.
@@ -24,23 +24,28 @@ rec {
     };
   };
 
-  # Function to construct a NixOS system using the flake inputs/outputs.
+  # Function to construct a NixOS host system using the flake inputs/outputs.
   nixosSystem =
     {
-      # Hostname of the NixOS system.
+      # Name of the host for the NixOS configuration.
       hostname,
-      # Platform of the NixOS system.
+      # The platform architecture for the NixOS configuration.
+      # Default to `x86_64-linux`.
       platform ? "x86_64-linux",
-      # Extra NixOS modules to include for this system.
+      # Extra NixOS modules to be included for this NixOS
+      # configuration.
       modules ? [ ],
       ...
     }:
+
     self.inputs.nixpkgs.lib.nixosSystem {
-      # Set the Nix packages for this system to the appropriate platform.
+      # Set the Nix packages for the NixOS configuration
+      # modules to use by default to the appropriate platform
+      # nixpkgs defined by this flake.
       pkgs = self.outputs.nixpkgsFor.${platform};
 
-      # Set special arguments for the NixOS system, so that includes nix
-      # modules have access to these arguments.
+      # Set special arguments for the NixOS configuration
+      # modules to be called with these arguments.
       specialArgs = {
         inherit
           self
@@ -53,8 +58,7 @@ rec {
       # Define list of NixOS modules to include for all systems.
       modules =
         with self.inputs;
-        modules
-        ++ [
+        [
           nix-topology.nixosModules.default
           base16.nixosModule
           disko.nixosModules.disko
@@ -64,6 +68,7 @@ rec {
           deadman.nixosModules.default
           # dit0.nixosModules.default
           ./modules
-        ];
+        ]
+        ++ modules;
     };
 }

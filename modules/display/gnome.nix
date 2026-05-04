@@ -387,6 +387,9 @@ with lib;
         resources # System Monitor
         gnome-shell-extensions # Shell Extension Applet
         gnomeExtensions.rounded-window-corners-reborn # Round All Window Corners Extension
+        gnomeExtensions.vscode-search-provider # VSCode Search Provider Extension
+        gnomeExtensions.all-in-one-clipboard # All-in-One Clipboard Extension
+        gnomeExtensions.night-theme-switcher # Automatic Theme Switcher Extension
       ]
 
       # Session Path Packages
