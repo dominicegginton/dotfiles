@@ -103,7 +103,10 @@
       git.enable = true;
       gh = {
         enable = true;
-        extensions = with pkgs; [ gh-markdown-preview ];
+        extensions = with pkgs; [
+          gh-markdown-preview
+          github-copilot-cli
+        ];
         settings = {
           editor = "nvim";
           git_protocol = "https";
@@ -120,14 +123,6 @@
           github.vscode-pull-request-github
           github.vscode-github-actions
           github.copilot
-          (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-            mktplcRef = {
-              name = "vscode-jest";
-              publisher = "orta";
-              version = "6.4.3";
-              hash = "sha256-naSH6AdAlyDSW/k250cUZGYEdKCUi63CjJBlHhkWBPs=";
-            };
-          })
           docker.docker
           bbenoist.nix
           sumneko.lua
@@ -177,8 +172,6 @@
     };
 
     home.sessionVariables = {
-      SB_URL = "https://sb.ghost-gs60";
-      FG_URL = "http://fg.ghost-gs60";
       EDITOR = "nvim";
       VISUAL = "nvim";
       SYSTEMD_EDITOR = "nvim";
@@ -226,7 +219,6 @@
       vscode
       youtube-tv
       github-copilot-cli
-      gaphor
     ];
   };
 }

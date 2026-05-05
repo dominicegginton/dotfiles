@@ -386,6 +386,7 @@ with lib;
         lock # Encrypt / Decrypt Applet
         resources # System Monitor
         gnome-shell-extensions # Shell Extension Applet
+        gnomeExtensions.lock-guard # Enhanced lockscreen security and privacy
         gnomeExtensions.rounded-window-corners-reborn # Round All Window Corners Extension
         gnomeExtensions.vscode-search-provider # VSCode Search Provider Extension
         gnomeExtensions.all-in-one-clipboard # All-in-One Clipboard Extension
