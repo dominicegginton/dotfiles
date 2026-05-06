@@ -1,0 +1,15 @@
+{
+  "name": "Rounded Window Corners",
+  "description": "Rounds all window decoration corners to the default GNOME radius (12px)",
+  "uuid": "rounded-window-corners-default@dominicegginton",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "version": 1,
+  "url": "https://github.com/dominicegginton/dotfiles"
+}

@@ -7,6 +7,8 @@ rec {
     background = final.callPackage ./pkgs/background.nix { };
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
+    solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
+    rounded-window-corners-default = final.callPackage ./pkgs/rounded-window-corners-default { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
     mkGnomeBackground = final.callPackage ./pkgs/mk-gnome-background.nix { };
     my-shell = final.callPackage ./pkgs/shell { };
@@ -20,6 +22,8 @@ rec {
     lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
     gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
       inherit (prev) dynamic-music-pill;
+      inherit (final) solar-theme-switcher;
+      inherit (final) rounded-window-corners-default;
     };
   };
 }
