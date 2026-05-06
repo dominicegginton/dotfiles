@@ -1,6 +1,7 @@
 import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
 import GLib from 'gi://GLib';
 import Geoclue from 'gi://Geoclue';
+import Gio from 'gi://Gio';
 import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
@@ -89,12 +90,18 @@ function getSunTimes(lat, lon, date) {
 export default class SolarThemeSwitcher extends Extension {
   enable() {
     this._savedColorScheme = Main.sessionMode.colorScheme;
+    this._interfaceSettings = new Gio.Settings({
+      schema_id: 'org.gnome.desktop.interface',
+    });
+    this._savedInterfaceColorScheme = this._interfaceSettings.get_string('color-scheme');
     this._lat = null;
     this._lon = null;
     this._timerId = null;
     this._geoclue = null;
     this._locationChangedId = null;
 
+    // Apply immediately on enable, then refine using geolocation.
+    this._applyFallbackScheme();
     this._startGeoclue();
   }
 
@@ -110,6 +117,17 @@ export default class SolarThemeSwitcher extends Extension {
     }
 
     this._updateColorScheme(this._savedColorScheme);
+
+    if (this._interfaceSettings && this._savedInterfaceColorScheme) {
+      try {
+        this._interfaceSettings.set_string('color-scheme', this._savedInterfaceColorScheme);
+      } catch (e) {
+        console.warn(`[SolarThemeSwitcher] Failed to restore interface color-scheme: ${e.message}`);
+      }
+    }
+
+    this._interfaceSettings = null;
+    this._savedInterfaceColorScheme = null;
     this._lat = null;
     this._lon = null;
   }
@@ -217,9 +235,25 @@ export default class SolarThemeSwitcher extends Extension {
   _updateColorScheme(scheme) {
     Main.sessionMode.colorScheme = scheme;
     St.Settings.get().notify('color-scheme');
+
+    if (!this._interfaceSettings) return;
+
+    try {
+      // GNOME interface setting reliably accepts default/prefer-dark.
+      const interfaceScheme = scheme === 'prefer-dark' ? 'prefer-dark' : 'default';
+      this._interfaceSettings.set_string('color-scheme', interfaceScheme);
+    } catch (e) {
+      console.warn(`[SolarThemeSwitcher] Failed to set interface color-scheme: ${e.message}`);
+    }
   }
 
   _applyScheme(scheme) {
     this._updateColorScheme(scheme);
+  }
+
+  _applyFallbackScheme() {
+    const hour = new Date().getHours();
+    const isDark = hour < 7 || hour >= 19;
+    this._applyScheme(isDark ? 'prefer-dark' : 'prefer-light');
   }
 }

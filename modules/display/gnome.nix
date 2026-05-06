@@ -102,7 +102,6 @@ let
   orgGnomeShellSettings = settings "org/gnome/shell" {
     allow-extension-installation = false;
     enabled-extensions = [
-      "rounded-window-corners-default@dominicegginton"
       "solar-theme-switcher@dominicegginton"
     ];
     favorite-apps = [
@@ -385,11 +384,10 @@ with lib;
         gnome-firmware # Firmware Updater Applet
         lock # Encrypt / Decrypt Applet
         resources # System Monitor
-        gnomeExtensions.lock-guard # Enhanced lockscreen security and privacy
-        gnomeExtensions.rounded-window-corners-default # Round All Window Corners Extension
-        gnomeExtensions.vscode-search-provider # VSCode Search Provider Extension
         gnomeExtensions.all-in-one-clipboard # All-in-One Clipboard Extension
+        # gnomeExtensions.rounded-window-corners-default # Round All Window Corners Extension
         gnomeExtensions.solar-theme-switcher # Solar sunrise/sunset theme switcher
+        gnomeExtensions.vscode-search-provider # VSCode Search Provider Extension
       ]
 
       # Session Path Packages
