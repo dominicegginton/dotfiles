@@ -70,7 +70,7 @@ stdenv.mkDerivation {
 
   meta = with lib; {
     inherit description license;
-    maintainers = with maintainers; [ dominicegginton ];
-    platforms = lib.platforms.all;
+    platforms = lib.platforms.linux;
+    maintainers = with lib.maintainers; [ dominicegginton ];
   };
 }

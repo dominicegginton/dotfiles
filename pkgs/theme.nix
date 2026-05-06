@@ -27,8 +27,8 @@ stdenv.mkDerivation rec {
   '';
   meta = {
     description = "Residence theme extracted from ${background.name} using ${extract-theme.name}";
-    maintainers = with lib.maintainers; [ dominicegginton ];
-    platforms = lib.platforms.all;
     license = lib.licenses.free;
+    platforms = lib.platforms.all;
+    maintainers = with lib.maintainers; [ dominicegginton ];
   };
 }

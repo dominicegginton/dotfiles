@@ -15,15 +15,19 @@ in
 
 stdenv.mkDerivation {
   name = "karren.lazy-desktop";
+
+  dontUnpack = true;
+  dontBuild = true;
+
   buildInputs = [
     nix-index
     desktop-file-utils
   ];
-  dontUnpack = true;
-  dontBuild = true;
+
   installPhase = ''
     mkdir -p $out/share/applications
     ln -s ${nix-index-database} files
+
     nix-locate \
       --db . \
       --minimal \
@@ -44,14 +48,10 @@ stdenv.mkDerivation {
         desktop-file-validate $out/share/applications/"$package.desktop"
       done
   '';
-  meta = {
-    deskscription = "A package with desktop files for all packages in the nix-index database";
-    longDescription = ''
-      A package with desktop files for all packages in the nix-index database.
 
-      When a .desktop is executed it will run the package using `nix run nixpkgs#package`.
-    '';
-    maintainers = [ lib.maintainers.dominicegginton ];
-    platforms = [ "x86_64-linux" ];
+  meta = {
+    description = "A package with desktop files for all packages in the nix-index database";
+    platforms = lib.platforms.linux;
+    maintainers = with lib.maintainers; [ dominicegginton ];
   };
 }

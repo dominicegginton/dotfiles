@@ -28,8 +28,8 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Plymouth theme ${name}";
-    maintainers = with lib.maintainers; [ dominicegginton ];
-    platforms = plymouth.meta.platforms;
     license = lib.licenses.free;
+    platforms = plymouth.meta.platforms;
+    maintainers = with lib.maintainers; [ dominicegginton ];
   };
 }

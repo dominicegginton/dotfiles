@@ -14,8 +14,8 @@ mkGnomeBackground {
     meta = {
       description = "Background image ${name} from ${url}";
       license = lib.licenses.free;
-      maintainers = with lib.maintainers; [ dominicegginton ];
       platforms = lib.platforms.all;
+      maintainers = with lib.maintainers; [ dominicegginton ];
     };
   };
 }

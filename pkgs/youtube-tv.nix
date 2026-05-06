@@ -15,15 +15,20 @@ let
 
   desktopItem = makeDesktopItem {
     inherit name;
+
     exec = name;
+
     desktopName = "Youtube TV";
     genericName = "A video social media and online video sharing platform";
+
     categories = [
       "Video"
       "AudioVideo"
     ];
+
     startupNotify = true;
     startupWMClass = "youtube-tv";
+
     icon = fetchurl {
       name = "YouTube_full_color_icon_2017.svg";
       url = "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg";
@@ -57,16 +62,19 @@ in
 
 symlinkJoin {
   inherit name;
+
   paths = [
     script
     desktopItem
   ];
+
   meta = {
     description = "Open Youtube TV via Google Chrome app mode";
     longDescription = "YouTube is an American subscription streaming service operated by YouTube, a subsidiary of Google. See https://www.youtube.com/about";
     homepage = url;
     mainProgram = name;
-    maintainers = [ lib.maintainers.dominicegginton ];
     platforms = google-chrome.meta.platforms;
+    license = google-chrome.meta.license;
+    maintainers = with lib.maintainers; [ dominicegginton ];
   };
 }

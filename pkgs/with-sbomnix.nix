@@ -1,7 +1,7 @@
 { writeShellScriptBin, sbomnix }:
 
 pkg:
-pkg.overrideAttrs (_: {
+pkg.overrideAttrs (old: {
   passthru.sbomnix = writeShellScriptBin "sbomnix" ''
     ${sbomnix}/bin/sbomnix ${pkg.out} "$@"
   '';

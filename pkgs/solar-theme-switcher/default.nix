@@ -22,6 +22,7 @@ stdenv.mkDerivation rec {
     description = "Automatically switch between light and dark mode based on local sunrise and sunset times";
     license = lib.licenses.gpl3;
     platforms = lib.platforms.linux;
+    maintainers = with lib.maintainers; [ dominicegginton ];
   };
 
   uuid = "solar-theme-switcher@dominicegginton";
