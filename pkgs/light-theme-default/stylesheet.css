@@ -1,0 +1,926 @@
+#panel.light-theme-default-panel {
+  background-color: #f0f0f0;
+  font-weight: bold;
+  transition-duration: 250ms;
+}
+
+#panel.light-theme-default-panel .panel-button {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  background-color: transparent;
+  border-radius: 999px;
+  font-weight: bold;
+  color: #222226;
+  box-shadow: inset 0 0 0 100px transparent;
+}
+
+#panel.light-theme-default-panel .panel-button:focus,
+#panel.light-theme-default-panel .panel-button:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.17);
+}
+
+#panel.light-theme-default-panel .panel-button:active,
+#panel.light-theme-default-panel .panel-button:checked {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.28);
+}
+
+#panel.light-theme-default-panel .panel-button:active:hover,
+#panel.light-theme-default-panel .panel-button:checked:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.32);
+}
+
+#panel.light-theme-default-panel .panel-button#panelActivities .workspace-dot {
+  border-radius: 999px;
+  background-color: #222226;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-recording-indicator {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  background-color: transparent;
+  border-radius: 999px;
+  font-weight: bold;
+  color: #fafafb;
+  box-shadow: inset 0 0 0 100px #c01c28;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-recording-indicator:focus,
+#panel.light-theme-default-panel .panel-button.screen-recording-indicator:hover {
+  box-shadow: inset 0 0 0 100px #aa1923;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-recording-indicator:active,
+#panel.light-theme-default-panel .panel-button.screen-recording-indicator:checked {
+  box-shadow: inset 0 0 0 100px #981620;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-recording-indicator:active:hover,
+#panel.light-theme-default-panel .panel-button.screen-recording-indicator:checked:hover {
+  box-shadow: inset 0 0 0 100px #8f151e;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-sharing-indicator {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  background-color: transparent;
+  border-radius: 999px;
+  font-weight: bold;
+  color: #fafafb;
+  box-shadow: inset 0 0 0 100px #e66100;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-sharing-indicator:focus,
+#panel.light-theme-default-panel .panel-button.screen-sharing-indicator:hover {
+  box-shadow: inset 0 0 0 100px #cd5600;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-sharing-indicator:active,
+#panel.light-theme-default-panel .panel-button.screen-sharing-indicator:checked {
+  box-shadow: inset 0 0 0 100px #b84e00;
+}
+
+#panel.light-theme-default-panel .panel-button.screen-sharing-indicator:active:hover,
+#panel.light-theme-default-panel .panel-button.screen-sharing-indicator:checked:hover {
+  box-shadow: inset 0 0 0 100px #ae4900;
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  background-color: transparent;
+  border-radius: 999px;
+  font-weight: bold;
+  color: #222226;
+  box-shadow: inset 0 0 0 100px transparent;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display:focus,
+#panel.light-theme-default-panel .panel-button.clock-display:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.17);
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display:active,
+#panel.light-theme-default-panel .panel-button.clock-display:checked {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.28);
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display:active:hover,
+#panel.light-theme-default-panel .panel-button.clock-display:checked:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.32);
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display .clock {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  border-radius: 999px;
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display:focus .clock,
+#panel.light-theme-default-panel .panel-button.clock-display:hover .clock {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.17);
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display:active .clock,
+#panel.light-theme-default-panel .panel-button.clock-display:checked .clock {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.28);
+}
+
+#panel.light-theme-default-panel .panel-button.clock-display:active .clock:hover,
+#panel.light-theme-default-panel .panel-button.clock-display:checked .clock:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.32);
+}
+
+#panel.light-theme-default-panel:overview {
+  background-color: transparent;
+}
+
+#panel.light-theme-default-panel:overview .panel-button {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  background-color: transparent;
+  border-radius: 999px;
+  font-weight: bold;
+  color: #222226;
+  box-shadow: inset 0 0 0 100px transparent;
+}
+
+#panel.light-theme-default-panel:overview .panel-button:focus,
+#panel.light-theme-default-panel:overview .panel-button:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.17);
+}
+
+#panel.light-theme-default-panel:overview .panel-button:active,
+#panel.light-theme-default-panel:overview .panel-button:checked {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.28);
+}
+
+#panel.light-theme-default-panel:overview .panel-button:active:hover,
+#panel.light-theme-default-panel:overview .panel-button:checked:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.32);
+}
+
+#panel.light-theme-default-panel:overview .panel-button#panelActivities .workspace-dot {
+  background-color: #222226;
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  background-color: transparent;
+  border-radius: 999px;
+  font-weight: bold;
+  color: #222226;
+  box-shadow: inset 0 0 0 100px transparent;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display:focus,
+#panel.light-theme-default-panel:overview .panel-button.clock-display:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.17);
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display:active,
+#panel.light-theme-default-panel:overview .panel-button.clock-display:checked {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.28);
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display:active:hover,
+#panel.light-theme-default-panel:overview .panel-button.clock-display:checked:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.32);
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display .clock {
+  transition-duration: 150ms;
+  border: 3px solid transparent;
+  border-radius: 999px;
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display:focus .clock,
+#panel.light-theme-default-panel:overview .panel-button.clock-display:hover .clock {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.17);
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display:active .clock,
+#panel.light-theme-default-panel:overview .panel-button.clock-display:checked .clock {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.28);
+}
+
+#panel.light-theme-default-panel:overview .panel-button.clock-display:active .clock:hover,
+#panel.light-theme-default-panel:overview .panel-button.clock-display:checked .clock:hover {
+  box-shadow: inset 0 0 0 100px rgba(34, 34, 38, 0.32);
+}
+
+#panel.light-theme-default-panel .privacy-indicator {
+  color: #e66100;
+}
+
+#overviewGroup.light-theme-default-overview #dash {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-background {
+  background-color: #cecece;
+  border-radius: 28px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .placeholder {
+  background-image: none;
+  background-size: contain;
+  height: 32px;
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .empty-dash-drop-target {
+  width: 32px;
+  height: 32px;
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result {
+  margin: 0 2px;
+  padding-bottom: 0;
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result .overview-icon {
+  color: #222226;
+  background-color: transparent;
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:focus .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:focus .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:focus .overview-icon {
+  color: #222226;
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+  background-color: st-mix(-st-accent-color, rgba(206, 206, 206, 0.25), 5%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:focus .overview-icon:hover,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:focus .overview-icon:hover,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:focus .overview-icon:hover {
+  background-color: st-mix(-st-accent-color, st-darken(#cecece, 7%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:hover .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:hover .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:hover .overview-icon {
+  color: #222226;
+  background-color: st-darken(#cecece, 7%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:active .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:active .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:active .overview-icon {
+  color: #222226;
+  background-color: st-darken(#cecece, 9%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:active .overview-icon:hover,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:active .overview-icon:hover,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:active .overview-icon:hover {
+  background-color: st-darken(st-darken(#cecece, 9%), 7%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:active .overview-icon:focus,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:active .overview-icon:focus,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:active .overview-icon:focus {
+  background-color: st-mix(-st-accent-color, st-darken(#cecece, 9%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:checked .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:checked .overview-icon,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:checked .overview-icon {
+  color: #222226;
+  background-color: st-darken(#cecece, 8%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:checked .overview-icon:hover,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:checked .overview-icon:hover,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:checked .overview-icon:hover {
+  background-color: st-darken(st-darken(#cecece, 8%), 7%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .show-apps:checked .overview-icon:active,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .overview-tile:checked .overview-icon:active,
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .grid-search-result:checked .overview-icon:active {
+  background-color: st-darken(st-darken(#cecece, 8%), 9%);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-item-container .app-grid-running-dot {
+  offset-y: 0;
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-separator {
+  width: 1px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background-color: rgba(34, 34, 38, 0.1);
+}
+
+#overviewGroup.light-theme-default-overview #dash .dash-separator,
+#overviewGroup.light-theme-default-overview #dash .dash-background {
+  margin-bottom: 12px;
+}
+
+#overviewGroup.light-theme-default-overview .dash-label {
+  -y-offset: 8px;
+}
+
+#overviewGroup.light-theme-default-overview {
+  background-color: #e1e1e1;
+}
+
+#overviewGroup.light-theme-default-overview .secondary-monitor-workspaces {
+  spacing: 12px;
+}
+
+#overviewGroup.light-theme-default-overview .window-picker {
+  spacing: 6px;
+}
+
+#overviewGroup.light-theme-default-overview .window-close,
+#overviewGroup.light-theme-default-overview .screenshot-ui-close-button {
+  background-color: rgba(51, 51, 57, 0.7);
+  color: #eeeeee;
+  border-radius: 999px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  padding: 3px;
+  height: 32px;
+  width: 32px;
+  transition-duration: 100ms;
+  border: 2px solid transparent;
+}
+
+#overviewGroup.light-theme-default-overview .window-close StIcon,
+#overviewGroup.light-theme-default-overview .screenshot-ui-close-button StIcon {
+  icon-size: 24px;
+}
+
+#overviewGroup.light-theme-default-overview .window-close:hover,
+#overviewGroup.light-theme-default-overview .screenshot-ui-close-button:hover {
+  background-color: rgba(68, 68, 76, 0.7);
+}
+
+#overviewGroup.light-theme-default-overview .window-close:active,
+#overviewGroup.light-theme-default-overview .screenshot-ui-close-button:active {
+  background-color: rgba(82, 82, 92, 0.7);
+}
+
+#overviewGroup.light-theme-default-overview .workspace-background {
+  border-radius: 30px;
+  background-color: rgba(3, 2, 1, 0);
+  box-shadow: 0 4px 16px 4px rgba(0, 0, 0, 0.05);
+}
+
+#overviewGroup.light-theme-default-overview .search-entry {
+  background-color: #d5d5d6;
+  color: rgba(34, 34, 38, 0.7);
+  border-radius: 999px;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  width: 24em;
+}
+
+#overviewGroup.light-theme-default-overview .search-entry:hover {
+  background-color: #cbcbcc;
+  color: #222226;
+}
+
+#overviewGroup.light-theme-default-overview .search-entry:focus {
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+  background-color: st-mix(-st-accent-color, #d5d5d6, 5%);
+  color: #222226;
+}
+
+#overviewGroup.light-theme-default-overview .search-entry:insensitive {
+  background-color: #ddddde;
+  color: rgba(34, 34, 38, 0.5);
+}
+
+#overviewGroup.light-theme-default-overview .search-entry StLabel.hint-text {
+  color: rgba(34, 34, 38, 0.7);
+}
+
+#overviewGroup.light-theme-default-overview .search-entry .search-entry-icon {
+  icon-size: 1.091em;
+  margin-top: 2px;
+  padding: 0 4px;
+}
+
+#overviewGroup.light-theme-default-overview #searchResults {
+  margin: 0 4px;
+}
+
+#overviewGroup.light-theme-default-overview #searchResultsContent {
+  max-width: 1044px;
+}
+
+#overviewGroup.light-theme-default-overview .search-section {
+  spacing: 18px;
+}
+
+#overviewGroup.light-theme-default-overview .search-section .search-section-separator {
+  height: 8px;
+  background-color: transparent;
+}
+
+#overviewGroup.light-theme-default-overview .search-section-content {
+  background-color: #cecece;
+  color: #222226;
+  border-radius: 24px;
+  padding: 12px;
+  margin: 0 12px;
+  border: 2px solid transparent;
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result,
+#overviewGroup.light-theme-default-overview .search-provider-icon {
+  color: #222226;
+  background-color: #cecece;
+  background-color: transparent;
+  border-radius: 13.2px;
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:focus,
+#overviewGroup.light-theme-default-overview .search-provider-icon:focus {
+  color: #222226;
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+  background-color: st-mix(-st-accent-color, rgba(206, 206, 206, 0.25), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:focus:hover,
+#overviewGroup.light-theme-default-overview .search-provider-icon:focus:hover {
+  background-color: st-mix(-st-accent-color, st-darken(#cecece, 7%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:hover,
+#overviewGroup.light-theme-default-overview .search-provider-icon:hover {
+  color: #222226;
+  background-color: st-darken(#cecece, 7%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:active,
+#overviewGroup.light-theme-default-overview .search-provider-icon:active {
+  color: #222226;
+  background-color: st-darken(#cecece, 9%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:active:hover,
+#overviewGroup.light-theme-default-overview .search-provider-icon:active:hover {
+  background-color: st-darken(st-darken(#cecece, 9%), 7%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:active:focus,
+#overviewGroup.light-theme-default-overview .search-provider-icon:active:focus {
+  background-color: st-mix(-st-accent-color, st-darken(#cecece, 9%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:highlighted,
+#overviewGroup.light-theme-default-overview .search-provider-icon:highlighted,
+#overviewGroup.light-theme-default-overview .list-search-result:selected,
+#overviewGroup.light-theme-default-overview .search-provider-icon:selected,
+#overviewGroup.light-theme-default-overview .list-search-result:checked,
+#overviewGroup.light-theme-default-overview .search-provider-icon:checked {
+  color: #222226;
+  background-color: st-darken(#cecece, 8%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:highlighted:hover,
+#overviewGroup.light-theme-default-overview .search-provider-icon:highlighted:hover,
+#overviewGroup.light-theme-default-overview .list-search-result:selected:hover,
+#overviewGroup.light-theme-default-overview .search-provider-icon:selected:hover,
+#overviewGroup.light-theme-default-overview .list-search-result:checked:hover,
+#overviewGroup.light-theme-default-overview .search-provider-icon:checked:hover {
+  background-color: st-darken(st-darken(#cecece, 8%), 7%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:highlighted:active,
+#overviewGroup.light-theme-default-overview .search-provider-icon:highlighted:active,
+#overviewGroup.light-theme-default-overview .list-search-result:selected:active,
+#overviewGroup.light-theme-default-overview .search-provider-icon:selected:active,
+#overviewGroup.light-theme-default-overview .list-search-result:checked:active,
+#overviewGroup.light-theme-default-overview .search-provider-icon:checked:active {
+  background-color: st-darken(st-darken(#cecece, 8%), 9%);
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:insensitive,
+#overviewGroup.light-theme-default-overview .search-provider-icon:insensitive {
+  color: st-transparentize(#222226, 0.6);
+  background-color: #cecece;
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result:drop,
+#overviewGroup.light-theme-default-overview .search-provider-icon:drop {
+  background-color: st-transparentize(-st-accent-color, 0.8);
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2);
+}
+
+#overviewGroup.light-theme-default-overview .search-statusbox {
+  spacing: 24px;
+}
+
+#overviewGroup.light-theme-default-overview .search-statustext {
+  color: rgba(34, 34, 38, 0.8);
+}
+
+#overviewGroup.light-theme-default-overview .grid-search-results {
+  spacing: 30px;
+}
+
+#overviewGroup.light-theme-default-overview .search-provider-icon:ltr {
+  margin-right: 4px;
+}
+
+#overviewGroup.light-theme-default-overview .search-provider-icon:rtl {
+  margin-left: 4px;
+}
+
+#overviewGroup.light-theme-default-overview .search-provider-icon .list-search-provider-content {
+  spacing: 12px;
+}
+
+#overviewGroup.light-theme-default-overview .search-provider-icon .list-search-provider-content .list-search-provider-details {
+  width: 120px;
+  color: #222226;
+}
+
+#overviewGroup.light-theme-default-overview .list-search-results {
+  spacing: 6px;
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result .list-search-result-content {
+  spacing: 6px;
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result .list-search-result-title {
+  spacing: 12px;
+}
+
+#overviewGroup.light-theme-default-overview .list-search-result .list-search-result-description {
+  color: #606063;
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile,
+#overviewGroup.light-theme-default-overview .grid-search-result {
+  color: #222226;
+  background-color: #e1e1e1;
+  background-color: transparent;
+  border-radius: 24px;
+  padding: 12px;
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:focus,
+#overviewGroup.light-theme-default-overview .grid-search-result:focus {
+  color: #222226;
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+  background-color: st-mix(-st-accent-color, rgba(225, 225, 225, 0.25), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:focus:hover,
+#overviewGroup.light-theme-default-overview .grid-search-result:focus:hover {
+  background-color: st-mix(-st-accent-color, st-darken(#e1e1e1, 7%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:hover,
+#overviewGroup.light-theme-default-overview .grid-search-result:hover {
+  color: #222226;
+  background-color: st-darken(#e1e1e1, 7%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:active,
+#overviewGroup.light-theme-default-overview .grid-search-result:active {
+  color: #222226;
+  background-color: st-darken(#e1e1e1, 9%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:active:hover,
+#overviewGroup.light-theme-default-overview .grid-search-result:active:hover {
+  background-color: st-darken(st-darken(#e1e1e1, 9%), 7%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:active:focus,
+#overviewGroup.light-theme-default-overview .grid-search-result:active:focus {
+  background-color: st-mix(-st-accent-color, st-darken(#e1e1e1, 9%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:highlighted,
+#overviewGroup.light-theme-default-overview .grid-search-result:highlighted,
+#overviewGroup.light-theme-default-overview .overview-tile:selected,
+#overviewGroup.light-theme-default-overview .grid-search-result:selected,
+#overviewGroup.light-theme-default-overview .overview-tile:checked,
+#overviewGroup.light-theme-default-overview .grid-search-result:checked {
+  color: #222226;
+  background-color: st-darken(#e1e1e1, 8%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:highlighted:hover,
+#overviewGroup.light-theme-default-overview .grid-search-result:highlighted:hover,
+#overviewGroup.light-theme-default-overview .overview-tile:selected:hover,
+#overviewGroup.light-theme-default-overview .grid-search-result:selected:hover,
+#overviewGroup.light-theme-default-overview .overview-tile:checked:hover,
+#overviewGroup.light-theme-default-overview .grid-search-result:checked:hover {
+  background-color: st-darken(st-darken(#e1e1e1, 8%), 7%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:highlighted:active,
+#overviewGroup.light-theme-default-overview .grid-search-result:highlighted:active,
+#overviewGroup.light-theme-default-overview .overview-tile:selected:active,
+#overviewGroup.light-theme-default-overview .grid-search-result:selected:active,
+#overviewGroup.light-theme-default-overview .overview-tile:checked:active,
+#overviewGroup.light-theme-default-overview .grid-search-result:checked:active {
+  background-color: st-darken(st-darken(#e1e1e1, 8%), 9%);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:insensitive,
+#overviewGroup.light-theme-default-overview .grid-search-result:insensitive {
+  color: st-transparentize(#222226, 0.6);
+  background-color: #e1e1e1;
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile:drop,
+#overviewGroup.light-theme-default-overview .grid-search-result:drop {
+  background-color: st-transparentize(-st-accent-color, 0.8);
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2);
+}
+
+#overviewGroup.light-theme-default-overview .overview-tile .overview-icon.overview-icon-with-label>StBoxLayout,
+#overviewGroup.light-theme-default-overview .grid-search-result .overview-icon.overview-icon-with-label>StBoxLayout {
+  spacing: 6px;
+}
+
+#overviewGroup.light-theme-default-overview .app-folder {
+  color: #222226;
+  background-color: st-mix(#222226, #e1e1e1, 12%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:focus {
+  color: #222226;
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+  background-color: st-mix(-st-accent-color, st-mix(#222226, #e1e1e1, 12%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:focus:hover {
+  background-color: st-mix(-st-accent-color, st-darken(st-mix(#222226, #e1e1e1, 12%), 4%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:hover {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, #e1e1e1, 12%), 4%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:active {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, #e1e1e1, 12%), 9%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:active:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, #e1e1e1, 12%), 9%), 4%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:active:focus {
+  background-color: st-mix(-st-accent-color, st-darken(st-mix(#222226, #e1e1e1, 12%), 9%), 5%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:highlighted,
+#overviewGroup.light-theme-default-overview .app-folder:selected,
+#overviewGroup.light-theme-default-overview .app-folder:checked {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, #e1e1e1, 12%), 8%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:highlighted:hover,
+#overviewGroup.light-theme-default-overview .app-folder:selected:hover,
+#overviewGroup.light-theme-default-overview .app-folder:checked:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, #e1e1e1, 12%), 8%), 4%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:highlighted:active,
+#overviewGroup.light-theme-default-overview .app-folder:selected:active,
+#overviewGroup.light-theme-default-overview .app-folder:checked:active {
+  background-color: st-darken(st-darken(st-mix(#222226, #e1e1e1, 12%), 8%), 9%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:insensitive {
+  color: st-transparentize(#222226, 0.6);
+  background-color: st-lighten(st-mix(#222226, #e1e1e1, 12%), 3%);
+}
+
+#overviewGroup.light-theme-default-overview .app-folder:drop {
+  background-color: st-transparentize(-st-accent-color, 0.8);
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2);
+}
+
+.light-theme-default-keyboard #keyboard {
+  background-color: #f5f5f5;
+  box-shadow: inset 0 1px 0 0 rgba(34, 34, 38, 0.02);
+}
+
+.light-theme-default-keyboard #keyboard .page-indicator {
+  padding: 6px;
+}
+
+.light-theme-default-keyboard #keyboard .page-indicator .page-indicator-icon {
+  width: 8px;
+  height: 8px;
+}
+
+.light-theme-default-keyboard .key-container {
+  padding: 4px;
+  spacing: 4px;
+}
+
+.light-theme-default-keyboard .keyboard-key {
+  font-size: 1.455em;
+  font-weight: bold;
+  border-radius: 0.546em;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.05);
+  color: #222226;
+  background-color: st-mix(#222226, white, 12%);
+}
+
+.light-theme-default-keyboard .keyboard-key:focus {
+  color: #222226;
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+  background-color: st-mix(-st-accent-color, st-mix(#222226, #fafafb, 12%), 5%);
+}
+
+.light-theme-default-keyboard .keyboard-key:focus:hover {
+  background-color: st-mix(-st-accent-color, st-darken(st-mix(#222226, #fafafb, 12%), 4%), 5%);
+}
+
+.light-theme-default-keyboard .keyboard-key:hover {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, white, 12%), 4%);
+}
+
+.light-theme-default-keyboard .keyboard-key:active {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, white, 12%), 9%);
+}
+
+.light-theme-default-keyboard .keyboard-key:active:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, white, 12%), 9%), 4%);
+}
+
+.light-theme-default-keyboard .keyboard-key:active:focus {
+  background-color: st-mix(-st-accent-color, st-darken(st-mix(#222226, white, 12%), 9%), 5%);
+}
+
+.light-theme-default-keyboard .keyboard-key:checked {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, white, 12%), 8%);
+}
+
+.light-theme-default-keyboard .keyboard-key:checked:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, white, 12%), 8%), 4%);
+}
+
+.light-theme-default-keyboard .keyboard-key:checked:active {
+  background-color: st-darken(st-darken(st-mix(#222226, white, 12%), 8%), 9%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key {
+  color: #222226;
+  background-color: st-mix(#222226, #e3e3e3, 12%);
+  border: none;
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:hover {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, #e3e3e3, 12%), 4%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:active {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, #e3e3e3, 12%), 9%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:active:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, #e3e3e3, 12%), 9%), 4%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:active:focus {
+  background-color: st-mix(-st-accent-color, st-darken(st-mix(#222226, #e3e3e3, 12%), 9%), 5%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:checked {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, #e3e3e3, 12%), 8%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:checked:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, #e3e3e3, 12%), 8%), 4%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:checked:active {
+  background-color: st-darken(st-darken(st-mix(#222226, #e3e3e3, 12%), 8%), 9%);
+}
+
+.light-theme-default-keyboard .keyboard-key.default-key:latched {
+  background-color: -st-accent-color;
+}
+
+.light-theme-default-keyboard .keyboard-key StIcon {
+  icon-size: 1.6365em;
+}
+
+.light-theme-default-keyboard .keyboard-subkeys-boxpointer {
+  -arrow-border-radius: 22px;
+  -arrow-background-color: #dcdcdc;
+  -arrow-border-width: 1px;
+  -arrow-border-color: #f3f3f3;
+  -arrow-base: 20px;
+  -arrow-rise: 10px;
+  -boxpointer-gap: 4px;
+  border-radius: 22px;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+.light-theme-default-keyboard .keyboard-subkeys-boxpointer .key-container {
+  padding: 12px;
+  spacing: 8px;
+}
+
+.light-theme-default-keyboard .emoji-page .keyboard-key {
+  background-color: transparent;
+  border: none;
+  color: initial;
+}
+
+.light-theme-default-keyboard .emoji-panel .keyboard-key:latched {
+  border-color: st-lighten(-st-accent-color, 5%);
+  background-color: -st-accent-color;
+}
+
+.light-theme-default-keyboard .word-suggestions {
+  spacing: 12px;
+  min-height: 17pt;
+  padding: 12px;
+  color: #222226;
+}
+
+.light-theme-default-keyboard .word-suggestions StButton {
+  margin: 0 3px;
+  min-width: 32px;
+  border-radius: 4px;
+  padding: 6px 18px;
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:insensitive {
+  background-color: transparent !important;
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:focus {
+  color: #222226;
+  box-shadow: inset 0 0 0 2px st-transparentize(-st-accent-color, 0.2) !important;
+  background-color: st-mix(-st-accent-color, st-mix(#222226, #fafafb, 12%), 5%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:focus:hover {
+  background-color: st-mix(-st-accent-color, st-darken(st-mix(#222226, #fafafb, 12%), 4%), 5%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:hover {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, white, 12%), 4%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:active {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, white, 12%), 9%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:active:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, white, 12%), 9%), 4%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:active:focus {
+  background-color: st-mix(-st-accent-color, st-darken(st-mix(#222226, white, 12%), 9%), 5%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:checked {
+  color: #222226;
+  background-color: st-darken(st-mix(#222226, white, 12%), 8%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:checked:hover {
+  background-color: st-darken(st-darken(st-mix(#222226, white, 12%), 8%), 4%);
+}
+
+.light-theme-default-keyboard .word-suggestions StButton:checked:active {
+  background-color: st-darken(st-darken(st-mix(#222226, white, 12%), 8%), 9%);
+}

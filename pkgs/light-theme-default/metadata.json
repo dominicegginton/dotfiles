@@ -1,0 +1,15 @@
+{
+  "name": "Light Theme Default",
+  "description": "Forces GNOME Shell to use the light theme while enabled.",
+  "uuid": "light-theme-default@dominicegginton",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "version": 1,
+  "url": "https://github.com/dominicegginton/dotfiles"
+}

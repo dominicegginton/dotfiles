@@ -58,7 +58,7 @@ rec {
                 "vscode-with-extensions"
                 "vscode-extension-github-copilot"
                 "bws"
-                "youtube-via-google-chrome"
+                "youtube-tv"
                 "google-chrome"
                 "YouTube_full_color_icon_2017.svg"
                 "github-copilot-cli"

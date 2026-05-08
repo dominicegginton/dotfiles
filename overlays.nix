@@ -6,6 +6,7 @@ rec {
   default = final: prev: {
     background = final.callPackage ./pkgs/background.nix { };
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
+    light-theme-default = final.callPackage ./pkgs/light-theme-default { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
     solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
     rounded-window-corners-default = final.callPackage ./pkgs/rounded-window-corners-default { };
@@ -21,7 +22,8 @@ rec {
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
     lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
     gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
-      inherit (prev) dynamic-music-pill;
+      inherit (final) dynamic-music-pill;
+      inherit (final) light-theme-default;
       inherit (final) solar-theme-switcher;
       inherit (final) rounded-window-corners-default;
     };
