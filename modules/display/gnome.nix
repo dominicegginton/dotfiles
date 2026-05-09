@@ -100,22 +100,28 @@ let
 
   extensions = with pkgs.gnomeExtensions; [
     all-in-one-clipboard # All-in-One Clipboard Extension
-    # rounded-window-corners-default # Round All Window Corners Extension
+    lock-guard # Lock Guard - Enhanced lock screen security
+    rounded-window-corners-reborn # Rounded Window Corners Reborn
+    smart-transparent-top-bar # Smart transparent top bar
     solar-theme-switcher # Solar sunrise/sunset theme switcher
-    # light-theme-default # Force light theme extension
     vscode-search-provider # VSCode Search Provider Extension
   ];
 
-  uuid = ext: lib.attrByPath [ "extensionUuid" ] (lib.attrByPath [ "uuid" ] (lib.attrByPath [
-    "passthru"
-    "extensionUuid"
-  ] null ext) ext) ext;
+  uuid =
+    ext:
+    lib.attrByPath [ "extensionUuid" ] (lib.attrByPath [ "uuid" ] (lib.attrByPath [
+      "passthru"
+      "extensionUuid"
+    ] null ext) ext) ext;
 
   extensionUuid = ext: uuid ext;
 
   # Gnome Shell configuration
   orgGnomeShellSettings = settings "org/gnome/shell" {
     allow-extension-installation = false;
+    development-tools = false;
+    disable-extension-change = true;
+    disable-user-extensions = true;
     enabled-extensions = lib.map extensionUuid extensions;
     favorite-apps = [
       "org.gnome.Epiphany.desktop"

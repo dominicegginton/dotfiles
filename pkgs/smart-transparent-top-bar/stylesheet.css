@@ -1,0 +1,16 @@
+.panel.sttb-transparent {
+    background-color: transparent !important;
+    transition-duration: 0.25s;
+}
+
+.panel.sttb-transparent .panel-button,
+.panel.sttb-transparent .panel-button:hover,
+.panel.sttb-transparent .clock-display .clock,
+.panel.sttb-transparent StLabel,
+.panel.sttb-transparent StIcon {
+    color: white !important;
+}
+
+.panel:not(.sttb-transparent) {
+    transition-duration: 0.25s;
+}
