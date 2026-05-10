@@ -102,7 +102,6 @@ let
     all-in-one-clipboard # All-in-One Clipboard Extension
     lock-guard # Lock Guard - Enhanced lock screen security
     rounded-window-corners-reborn # Rounded Window Corners Reborn
-    smart-transparent-top-bar # Smart transparent top bar
     solar-theme-switcher # Solar sunrise/sunset theme switcher
     vscode-search-provider # VSCode Search Provider Extension
   ];
