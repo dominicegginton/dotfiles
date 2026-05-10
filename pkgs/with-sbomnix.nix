@@ -1,4 +1,9 @@
-{ writeShellScriptBin, sbomnix }:
+{
+  lib,
+  stdenv,
+  writeShellScriptBin,
+  sbomnix,
+}:
 
 pkg:
 pkg.overrideAttrs (old: {

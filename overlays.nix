@@ -21,9 +21,7 @@ rec {
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
     lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
     gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
-      inherit (final) dynamic-music-pill;
-      inherit (final) solar-theme-switcher;
-      inherit (final) smart-transparent-top-bar;
+      inherit (final) dynamic-music-pill solar-theme-switcher smart-transparent-top-bar;
     };
   };
 }

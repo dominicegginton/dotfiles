@@ -119,14 +119,14 @@ rec {
     # nix settings
     settings = {
       experimental-features = [
-        "flakes"
-        "nix-command"
-        "auto-allocate-uids"
-        "cgroups"
-        "fetch-closure"
-        "parse-toml-timestamps"
-        "recursive-nix"
-        "pipe-operators"
+        "flakes" # Flake support
+        "nix-command" # Nix-command support
+        "auto-allocate-uids" # Automatically allocate UIDs
+        "cgroups" # Leverage cgroups for resource management
+        "fetch-closure" # Enable fetch-closure support
+        "parse-toml-timestamps" # Enable parse-toml-timestamps support
+        "recursive-nix" # Enable recursive-nix support
+        "pipe-operators" # Enable pipe-operators support
       ];
 
       # garbage collection settings
@@ -164,9 +164,6 @@ rec {
     consoleLogLevel = lib.mkForce 0; # log all boot messages
     initrd.verbose = lib.mkForce false; # disable verbose initrd
     loader = {
-      grub = {
-
-      };
       systemd-boot.enable = lib.mkForce true; # enable systemd-boot
       efi.canTouchEfiVariables = lib.mkForce true; # allow efi variables modification
       efi.efiSysMountPoint = lib.mkForce "/boot";
