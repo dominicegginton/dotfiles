@@ -28,6 +28,7 @@ in
         "input" # For keyboard/mouse
         "audio" # For sound
         "video" # For GPU access
+        "bluetooth" # For Bluetooth access
         "dav2fs" # For davfs2
         "lpadmin" # For printer admin
         "docker" # For docker access
