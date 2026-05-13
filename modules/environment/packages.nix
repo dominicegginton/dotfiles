@@ -13,5 +13,6 @@
     pinentry-curses
     gnupg
     clamav
+    nix-gc-dangling-links
   ];
 }

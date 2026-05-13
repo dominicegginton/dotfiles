@@ -11,6 +11,7 @@ rec {
     smart-transparent-top-bar = final.callPackage ./pkgs/smart-transparent-top-bar { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
     mkGnomeBackground = final.callPackage ./pkgs/mk-gnome-background.nix { };
+    nix-gc-dangling-links = final.callPackage ./pkgs/nix-gc-dangling-links.nix { };
     my-shell = final.callPackage ./pkgs/shell { };
     my-shell-settings = final.callPackage ./pkgs/shell-settings { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
