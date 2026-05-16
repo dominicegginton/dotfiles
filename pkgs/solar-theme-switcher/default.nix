@@ -20,7 +20,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Automatically switch between light and dark mode based on local sunrise and sunset times";
-    license = lib.licenses.gpl3;
+    license = lib.licenses.mit;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ dominicegginton ];
   };

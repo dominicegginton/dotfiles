@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist>
+  <schema id="org.gnome.shell.extensions.intelli" path="/org/gnome/shell/extensions/intelli/">
+    <key name="shortcut-intelli" type="as">
+      <default>['&lt;Super&gt;space']</default>
+      <summary>Shortcut to open Intelli</summary>
+      <description>Keyboard shortcut to toggle the intelli widget near the cursor.</description>
+    </key>
+  </schema>
+</schemalist>

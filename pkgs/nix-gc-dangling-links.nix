@@ -1,8 +1,17 @@
-{ writeShellApplication, findutils, gum, coreutils }:
+{
+  writeShellApplication,
+  findutils,
+  gum,
+  coreutils,
+}:
 
 writeShellApplication {
   name = "nix-gc-dangling-links";
-  runtimeInputs = [ findutils gum coreutils ];
+  runtimeInputs = [
+    findutils
+    gum
+    coreutils
+  ];
   text = ''
     gum log --level info "Searching for dangling Nix store symlinks..."
 

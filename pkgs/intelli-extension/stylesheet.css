@@ -1,0 +1,23 @@
+.intelli-layout {
+  padding: 12px;
+  min-width: 250px;
+}
+
+.intelli-label {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.intelli-entry {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #ffffff;
+}
+
+.intelli-entry:focus {
+  border-color: #3584e4;
+}

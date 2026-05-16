@@ -124,6 +124,7 @@ in
         extensions = with pkgs; [
           gh-markdown-preview
           github-copilot-cli
+          gh-stack
         ];
         settings = {
           editor = "nvim";

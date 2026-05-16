@@ -8,7 +8,7 @@ rec {
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
     solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
-    smart-transparent-top-bar = final.callPackage ./pkgs/smart-transparent-top-bar { };
+    intelli-extension = final.callPackage ./pkgs/intelli-extension { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
     mkGnomeBackground = final.callPackage ./pkgs/mk-gnome-background.nix { };
     nix-gc-dangling-links = final.callPackage ./pkgs/nix-gc-dangling-links.nix { };
@@ -22,7 +22,11 @@ rec {
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
     lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
     gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
-      inherit (final) dynamic-music-pill solar-theme-switcher smart-transparent-top-bar;
+      inherit (final)
+        dynamic-music-pill
+        solar-theme-switcher
+        intelli-extension
+        ;
     };
   };
 }

@@ -1,0 +1,9 @@
+{
+  "name": "Intelli",
+  "description": "A simple intelli extension with a text box",
+  "uuid": "intelli@dominicegginton",
+  "settings-schema": "org.gnome.shell.extensions.intelli",
+  "shell-version": ["45", "46", "47", "48", "49", "50"],
+  "url": "https://github.com/dominicegginton/dotfiles",
+  "version": 1
+}

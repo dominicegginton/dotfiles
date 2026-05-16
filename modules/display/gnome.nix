@@ -100,6 +100,7 @@ let
 
   extensions = with pkgs.gnomeExtensions; [
     all-in-one-clipboard # All-in-One Clipboard Extension
+    intelli-extension # Intelli Extension
     lock-guard # Lock Guard - Enhanced lock screen security
     rounded-window-corners-reborn # Rounded Window Corners Reborn
     solar-theme-switcher # Solar sunrise/sunset theme switcher
