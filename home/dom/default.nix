@@ -215,11 +215,12 @@ in
         typescript
         terraform-lsp
         lua-language-server
-        # docker-language-server
+        docker-language-server
         vim-language-server
         bash-language-server
         yaml-language-server
         typescript-language-server
+        angular-language-server
         vscode-langservers-extracted
         prettierd
         eslint_d
