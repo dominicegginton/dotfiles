@@ -46,5 +46,4 @@ require('dom.modules.mini-surround')
 require('dom.modules.mini-visits')
 require('dom.modules.cmd-palette')
 
--- TODO: fix this
-cmd('colorscheme minischeme')
+vim.cmd('colorscheme minischeme')
