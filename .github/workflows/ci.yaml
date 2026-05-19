@@ -2,6 +2,9 @@ on:
   pull_request:
   push:
 
+permissions:
+  contents: read
+
 env:
   NIX_CONFIG: "accept-flake-config = true"
 
@@ -74,3 +77,16 @@ jobs:
         with:
           free-disk-space: true
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
+
+  wsl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: ./.github/actions/install-nix
+        with:
+          free-disk-space: true
+      - uses: cachix/cachix-action@v17
+        with:
+          name: dominicegginton-dotfiles
+          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
+      - run: nix build -L .#nixosConfigurations.wsl.config.system.build.toplevel

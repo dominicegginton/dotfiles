@@ -19,6 +19,7 @@ rec {
     base16.url = "github:SenchoPens/base16.nix";
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
   nixConfig = {
@@ -27,8 +28,14 @@ rec {
       "nix-command"
     ];
     builders-use-substitutes = true;
-    substituters = [ "https://cache.nixos.org" ];
-    trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+    substituters = [
+      "https://cache.nixos.org"
+      "https://dominicegginton-dotfiles.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "dominicegginton-dotfiles.cachix.org-1:gm9nclRacSnrdXSPqXso3Abg2TTuo3PrGUJFGlhAzDU="
+    ];
   };
 
   outputs =
@@ -36,6 +43,7 @@ rec {
       self,
       nixpkgs,
       nix-github-actions,
+      nixos-wsl,
       ...
     }:
 
@@ -63,6 +71,7 @@ rec {
                 "YouTube_full_color_icon_2017.svg"
                 "github-copilot-cli"
                 "open-webui"
+                "gateway"
               ];
           };
           overlays = with self.inputs; [
@@ -140,6 +149,14 @@ rec {
           modules = [
             ./hosts/walsgrave.nix
             ./modules/users/dom.nix
+          ];
+        };
+
+        wsl = self.outputs.lib.nixosSystem {
+          hostname = "wsl";
+          modules = [
+            ./modules/users/dom.nix
+            { wsl.enable = true; }
           ];
         };
       };

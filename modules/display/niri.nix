@@ -290,15 +290,6 @@ with config.scheme.withHashtag;
           }
         }
         window-rule {
-          match app-id="karren"
-          open-floating true
-          open-focused true
-          min-width 880
-          max-width 880
-          default-column-width { proportion 0.5; }
-          default-window-height { proportion 0.3; }
-        }
-        window-rule {
           match app-id="^org.gnome.Nautilus$"
           match app-id="^org.gnome.Evince$"
           match app-id="^org.gnome.Calendar$"
@@ -331,7 +322,6 @@ with config.scheme.withHashtag;
           Mod+Shift+4          hotkey-overlay-title="Screenshot: Region" { spawn "${lib.getExe screenshotRegion}"; }
           Mod+Shift+E                                                    { quit; }
           Mod+Shift+P                                                    { power-off-monitors; }
-          Mod+Shift+H          hotkey-overlay-title="Karren: Clip Hist"  { spawn "${lib.getExe pkgs.karren.clipboard-history}"; }
           Ctrl+Alt+Delete      hotkey-overlay-title="System Monitor"     { spawn "${lib.getExe pkgs.mission-center}"; }
           XF86AudioPlay        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "play-pause"; }
           XF86AudioStop        allow-when-locked=true                    { spawn "${pkgs.playerctl}/bin/playerctl" "stop"; }
