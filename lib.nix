@@ -60,6 +60,7 @@ rec {
         with self.inputs;
         [
           nix-topology.nixosModules.default
+          nixos-wsl.nixosModules.default
           base16.nixosModule
           disko.nixosModules.disko
           impermanence.nixosModules.impermanence

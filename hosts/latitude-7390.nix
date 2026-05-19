@@ -59,6 +59,7 @@
 
   # Gnome Desktop Environment
   display.gnome.enable = true;
+  display.niri.enable = true;
 
   services.tsidp.enable = true; # TODO: REMOVE
 

@@ -1,5 +1,3 @@
-## Modules: default.nix
-## Simple module header
 {
   self,
   modulesPath,
@@ -65,6 +63,7 @@ rec {
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
     ./virtualisation/waydroid.nix
+    ./virtualisation/wsl.nix
     ./console.nix
     ./environment.nix
     ./networking.nix
@@ -81,7 +80,10 @@ rec {
       distroId = lib.mkForce "residence";
       vendorName = lib.mkForce self.outputs.lib.maintainers.dominicegginton.name;
       vendorId = lib.mkForce self.outputs.lib.maintainers.dominicegginton.github;
-      tags = lib.mkForce [ (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux") ];
+      tags = lib.mkForce [
+        (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux")
+        (lib.optionalString config.wsl.enable "wsl")
+      ];
     };
   };
 
@@ -164,13 +166,13 @@ rec {
     consoleLogLevel = lib.mkForce 0; # log all boot messages
     initrd.verbose = lib.mkForce false; # disable verbose initrd
     loader = {
-      systemd-boot.enable = lib.mkForce true; # enable systemd-boot
-      efi.canTouchEfiVariables = lib.mkForce true; # allow efi variables modification
+      systemd-boot.enable = lib.mkDefault true; # enable systemd-boot
+      efi.canTouchEfiVariables = lib.mkDefault true; # allow efi variables modification
       efi.efiSysMountPoint = lib.mkForce "/boot";
     };
 
     plymouth = {
-      enable = lib.mkForce true;
+      enable = lib.mkDefault true;
       theme = lib.mkForce pkgs.plymouth-theme.name; # set boot theme
       themePackages = lib.mkForce [ pkgs.plymouth-theme ]; # boot theme package
     };

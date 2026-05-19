@@ -19,6 +19,7 @@ rec {
     base16.url = "github:SenchoPens/base16.nix";
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
   nixConfig = {
@@ -36,6 +37,7 @@ rec {
       self,
       nixpkgs,
       nix-github-actions,
+      nixos-wsl,
       ...
     }:
 
@@ -63,6 +65,7 @@ rec {
                 "YouTube_full_color_icon_2017.svg"
                 "github-copilot-cli"
                 "open-webui"
+                "gateway"
               ];
           };
           overlays = with self.inputs; [
@@ -140,6 +143,14 @@ rec {
           modules = [
             ./hosts/walsgrave.nix
             ./modules/users/dom.nix
+          ];
+        };
+
+        wsl = self.outputs.lib.nixosSystem {
+          hostname = "wsl";
+          modules = [
+            ./modules/users/dom.nix
+            { wsl.enable = true; }
           ];
         };
       };
