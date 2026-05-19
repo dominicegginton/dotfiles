@@ -28,8 +28,14 @@ rec {
       "nix-command"
     ];
     builders-use-substitutes = true;
-    substituters = [ "https://cache.nixos.org" ];
-    trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+    substituters = [
+      "https://cache.nixos.org"
+      "https://dominicegginton-dotfiles.cachix.org"
+    ];
+    trusted-public-keys = [
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+      "dominicegginton-dotfiles.cachix.org-1:gm9nclRacSnrdXSPqXso3Abg2TTuo3PrGUJFGlhAzDU="
+    ];
   };
 
   outputs =
