@@ -17,7 +17,6 @@
       ".editorconfig".source = ./sources/.editorconfig;
       ".gitconfig".source = ./sources/.gitconfig;
       ".gitignore".source = ./sources/.gitignore;
-      ".gitmessage".source = ./sources/.gitmessage;
       ".ideavimrc".source = ./sources/.ideavimrc;
       ".config/twm/twm.yaml".text = ''
         search_paths:

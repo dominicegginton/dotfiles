@@ -19,7 +19,6 @@
   program = gpg
 [commit]
   gpgsign = true
-  template = ~/.gitmessage
 [tag]
   gpgsign = true
 [pull]
