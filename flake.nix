@@ -134,6 +134,14 @@ rec {
           ];
         };
 
+        ghost-gs60 = self.outputs.lib.nixosSystem {
+          hostname = "ghost-gs60";
+          modules = [
+            ./hosts/ghost-gs60.nix
+            ./modules/users/dom.nix
+          ];
+        };
+
         infector = self.outputs.lib.nixosSystem {
           hostname = "infector";
           modules = [ ./hosts/infector.nix ];
