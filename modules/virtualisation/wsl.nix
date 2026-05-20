@@ -12,16 +12,22 @@
       useWindowsDriver = lib.mkForce true;
     };
 
-    environment.systemPackages = [
-      pkgs.wget
-      pkgs.jetbrains.gateway
-    ];
+    environment.systemPackages = with pkgs; [ jetbrains.gateway ];
 
-    programs.nix-ld.enable = true;
+    programs.nix-ld.enable = lib.mkForce true;
 
     users.users.dom = {
       hashedPasswordFile = lib.mkForce null;
       initialPassword = "";
+    };
+
+    programs.deadman.enable = lib.mkForce false;
+    services = {
+      smartd.enable = lib.mkForce false;
+      thermald.enable = lib.mkForce false;
+      upower.enable = lib.mkForce false;
+      fwupd.enable = lib.mkForce false;
+      fstrim.enable = lib.mkForce false;
     };
 
     security.run0.wheelNeedsPassword = lib.mkForce false;

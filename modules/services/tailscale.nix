@@ -1,6 +1,7 @@
 {
   self,
   config,
+  lib,
   pkgs,
   hostname,
   tailnet,
@@ -12,7 +13,7 @@ with config.lib.topology;
 {
   systemd.tmpfiles.rules = [ "d /etc/ssl/tailscale 0755 root root -" ];
 
-  systemd.services.tailscale-cert = {
+  systemd.services.tailscale-cert = lib.mkIf (!config.wsl.enable) {
     description = "Generate Tailscale HTTPS certificate";
     after = [ "tailscaled.service" ];
     wants = [ "tailscaled.service" ];

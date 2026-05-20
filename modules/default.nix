@@ -201,18 +201,18 @@ rec {
   programs = {
     gnupg.agent.enable = lib.mkForce true;
     ssh.startAgent = lib.mkIf (config.services.gnome.gcr-ssh-agent.enable == false) true;
-    deadman.enable = lib.mkForce true;
+    deadman.enable = lib.mkDefault true;
   };
 
   environment.defaultPackages = lib.mkForce [ ];
 
   services = {
     dbus.enable = lib.mkForce true;
-    smartd.enable = lib.mkForce true;
-    thermald.enable = lib.mkForce true;
-    upower.enable = lib.mkForce true;
-    fwupd.enable = lib.mkForce true;
-    fstrim.enable = lib.mkForce true;
+    smartd.enable = lib.mkDefault true;
+    thermald.enable = lib.mkDefault true;
+    upower.enable = lib.mkDefault true;
+    fwupd.enable = lib.mkDefault true;
+    fstrim.enable = lib.mkDefault true;
   };
 
   home-manager = {
