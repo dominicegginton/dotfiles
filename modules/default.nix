@@ -159,6 +159,10 @@ rec {
         "root"
         "@wheel"
       ];
+      trusted-users = lib.mkForce [
+        "root"
+        "@wheel"
+      ];
     };
   };
 
@@ -219,7 +223,7 @@ rec {
       {
         inherit scheme;
         home = {
-          stateVersion = lib.mkForce "25.05";
+          stateVersion = lib.mkForce "25.11";
           enableNixpkgsReleaseCheck = lib.mkForce false;
         };
         programs = {

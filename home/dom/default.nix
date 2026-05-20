@@ -6,23 +6,6 @@
   ...
 }:
 
-let
-  tex = (
-    pkgs.texlive.combine {
-      inherit (pkgs.texlive)
-        scheme-basic
-        dvisvgm
-        dvipng
-        wrapfig
-        amsmath
-        ulem
-        hyperref
-        capt-of
-        ;
-    }
-  );
-in
-
 {
   config = {
     home.file = {
@@ -134,7 +117,7 @@ in
       };
     };
 
-    programs.vscode = lib.mkIf osConfig.programs.vscode.enable {
+    programs.vscode = lib.mkIf (osConfig.programs.vscode.enable && !osConfig.wsl.enable) {
       enable = true;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
@@ -231,15 +214,14 @@ in
       ];
     };
 
-    home.packages = with pkgs; [
-      bat
-      eza
-      twm
-      twx
-      vscode
-      youtube-tv
-      github-copilot-cli
-      tex
-    ];
+    home.packages =
+      with pkgs;
+      [
+        bat
+        eza
+        twm
+        twx
+      ]
+      ++ (if osConfig.wsl.enable then [ ] else [ youtube-tv ]);
   };
 }
