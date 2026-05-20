@@ -90,23 +90,23 @@
   services.upower.ignoreLid = true;
 
   # Enable Tailscale Identity Provider (IdP)
-  services.tsidp.enable = true;
+  # services.tsidp.enable = true;
 
   # Enable Immich Photos/Video Management Services
-  services.immich.enable = true;
+  # services.immich.enable = true;
 
   # Enable Ollama Large Language Model (LLM) AI Services
-  services.ollama.enable = true;
+  # services.ollama.enable = true;
 
   # Enable Open-WebUI Large Language Model (LLM) AI Web Interface
-  services.open-webui.enable = true;
+  # services.open-webui.enable = true;
 
   # Enable Directory Information Tree & LDAP Services
   # services.dit0.enable = true;
 
   # Enable Frigate NVR & OD Services
   services.frigate = {
-    enable = true;
+    # enable = true;
     settings = {
       cameras = {
         "Frontdoor".ffmpeg.inputs = [
@@ -124,7 +124,7 @@
   };
 
   # Enable SilverBullet Notes Services
-  services.silverbullet.enable = true;
+  # services.silverbullet.enable = true;
 
   # Topology Definition
   topology.self = {
