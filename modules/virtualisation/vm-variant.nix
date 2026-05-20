@@ -1,7 +1,7 @@
 { lib, ... }:
 
 {
-  config.virtualisation.vmVariant = {
+  virtualisation.vmVariant = {
     users.groups.nixosvmtest = lib.mkDefault { };
 
     users.users.nix = {

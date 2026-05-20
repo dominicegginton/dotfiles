@@ -53,6 +53,8 @@
         };
       };
     };
+
+    # Enable Geoclue2 and permit Firefox to access location information.
     services.geoclue2 = {
       enable = lib.mkDefault true;
       appConfig.firefox = {

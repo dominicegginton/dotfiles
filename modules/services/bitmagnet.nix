@@ -14,6 +14,7 @@
       }
     ];
 
+    # Tailscale Service Configuration for BitMagnet
     services.tailscale.serve = {
       enable = true;
       services."bitmagnet".endpoints."tcp:80" =

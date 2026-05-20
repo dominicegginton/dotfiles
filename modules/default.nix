@@ -167,8 +167,8 @@ rec {
   };
 
   boot = {
-    consoleLogLevel = lib.mkForce 0; # log all boot messages
-    initrd.verbose = lib.mkForce false; # disable verbose initrd
+    consoleLogLevel = lib.mkDefault 0; # log all boot messages
+    initrd.verbose = lib.mkDefault false; # disable verbose initrd
     loader = {
       systemd-boot.enable = lib.mkDefault true; # enable systemd-boot
       efi.canTouchEfiVariables = lib.mkDefault true; # allow efi variables modification

@@ -84,6 +84,10 @@ rec {
           ];
         }
       );
+
+      githubPLatforms = lib.attrNames nix-github-actions.lib.githubPlatforms;
+
+      githubPlatformsForSystems = lib.intersectLists systems githubPLatforms;
     in
 
     {
@@ -95,11 +99,9 @@ rec {
 
       overlays = import ./overlays.nix { inherit self; };
 
-      githubActions =
-        with nix-github-actions.lib;
-        mkGithubMatrix {
-          checks = lib.getAttrs (lib.intersectLists systems (lib.attrNames githubPlatforms)) self.outputs.devShells;
-        };
+      githubActions = nix-github-actions.lib.mkGithubMatrix {
+        checks = lib.getAttrs githubPlatformsForSystems self.outputs.devShells;
+      };
 
       legacyPackages = forAllSystems (system: nixpkgsFor.${system});
 

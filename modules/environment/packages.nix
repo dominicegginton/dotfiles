@@ -2,7 +2,7 @@
 
 {
   environment.systemPackages = with pkgs; [
-    vlock
+    vlock # Terminal locking utility for enhanced security when stepping away from the computer, preventing unauthorized access to the terminal session.
     opencryptoki
     run0-sudo-shim
     openssl

@@ -13,18 +13,22 @@ with config.lib.topology;
 {
   systemd.tmpfiles.rules = [ "d /etc/ssl/tailscale 0755 root root -" ];
 
-  systemd.services.tailscale-cert = let notWSL = !config.wsl.enable; in lib.mkIf notWSL {
-    description = "Generate Tailscale HTTPS certificate";
-    after = [ "tailscaled.service" ];
-    wants = [ "tailscaled.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      ExecStart = "${pkgs.tailscale}/bin/tailscale cert --cert-file=/etc/ssl/tailscale/${hostname}.${tailnet}.crt --key-file=/etc/ssl/tailscale/${hostname}.${tailnet}.key ${hostname}.${tailnet}";
-      User = "root";
-      Group = "root";
+  systemd.services.tailscale-cert =
+    let
+      notWSL = !config.wsl.enable;
+    in
+    lib.mkIf notWSL {
+      description = "Generate Tailscale HTTPS certificate";
+      after = [ "tailscaled.service" ];
+      wants = [ "tailscaled.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.tailscale}/bin/tailscale cert --cert-file=/etc/ssl/tailscale/${hostname}.${tailnet}.crt --key-file=/etc/ssl/tailscale/${hostname}.${tailnet}.key ${hostname}.${tailnet}";
+        User = "root";
+        Group = "root";
+      };
+      wantedBy = [ "multi-user.target" ];
     };
-    wantedBy = [ "multi-user.target" ];
-  };
 
   services.tailscale = {
     enable = lib.mkForce true;
