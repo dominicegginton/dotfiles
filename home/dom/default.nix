@@ -9,7 +9,6 @@
 {
   config = {
     home.file = {
-      ".aws/config".source = ./sources/.aws/config;
       ".face".source = ./face.jpg;
       ".config".source = ./sources/.config;
       ".config".recursive = true;
