@@ -54,3 +54,7 @@
   pruneverifyremotealways = true
 [includeIf "gitdir:~/dev/arup-group/**"]
   path = .arup.gitconfig
+[includeIf "gitdir:~/dev/pe-digitised-design/**"]
+  path = .arup.gitconfig
+[includeIf "gitdir:~/dev/arup-emu/**"]
+  path = .arup.gitconfig
