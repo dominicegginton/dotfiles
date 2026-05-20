@@ -1,3 +1,4 @@
+" Enable plugins
 set NERDTree
 set surround
 set multiple-cursors
@@ -5,15 +6,22 @@ set commentary
 set argtextobj
 set textobj-entire
 set ReplaceWithRegister
+
+" General settings
 set showmode
 set so=5
 set incsearch
 set nu
+
+" IntelliJ-specific settings
 set ideajoin
 set ideastatusicon=gray
 set idearefactormode=keep
 set idearefactormode=visual
+
+" Leader key
 let mapleader = "\<Space>"
+
+" Mappings
 map <leader>fo <Action>(GotoFile)
 map <leader>fg <Action>(FindInPath)
-map <leader>te :NERDTreeToggle

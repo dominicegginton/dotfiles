@@ -155,8 +155,8 @@ rec {
         wsl = self.outputs.lib.nixosSystem {
           hostname = "wsl";
           modules = [
+            ./hosts/wsl.nix
             ./modules/users/dom.nix
-            { wsl.enable = true; }
           ];
         };
       };
