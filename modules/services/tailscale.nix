@@ -13,7 +13,7 @@ with config.lib.topology;
 {
   systemd.tmpfiles.rules = [ "d /etc/ssl/tailscale 0755 root root -" ];
 
-  systemd.services.tailscale-cert = lib.mkIf (!config.wsl.enable) {
+  systemd.services.tailscale-cert = let notWSL = !config.wsl.enable; in lib.mkIf notWSL {
     description = "Generate Tailscale HTTPS certificate";
     after = [ "tailscaled.service" ];
     wants = [ "tailscaled.service" ];
@@ -27,15 +27,15 @@ with config.lib.topology;
   };
 
   services.tailscale = {
-    enable = true;
-    useRoutingFeatures = "both";
+    enable = lib.mkForce true;
+    useRoutingFeatures = lib.mkForce "both";
     extraUpFlags = [
       "--ssh"
       "--accept-dns"
       "--accept-routes"
     ];
     extraSetFlags = [ "--posture-checking=true" ];
-    interfaceName = "tailscale0";
+    interfaceName = lib.mkForce "tailscale0";
   };
 
   security.acme = {

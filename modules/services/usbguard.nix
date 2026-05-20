@@ -1,7 +1,7 @@
 { lib, config, ... }:
 
 {
-  services.usbguard = lib.mkIf (!config.wsl.enable) {
+  services.usbguard = let notWSL = !config.wsl.enable; in lib.mkIf notWSL {
     enable = lib.mkForce true;
     presentControllerPolicy = lib.mkDefault "allow";
     dbus.enable = lib.mkDefault true;

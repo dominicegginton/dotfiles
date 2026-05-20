@@ -55,8 +55,10 @@
     "nvme" # NVMe Support
   ];
 
+  # Enable Bluetooth
   hardware.bluetooth.enable = true;
 
+  programs.vscode.enable = true;
   # Gnome Desktop Environment
   display.gnome.enable = true;
   display.niri.enable = true;

@@ -126,14 +126,6 @@ rec {
       );
 
       nixosConfigurations = {
-        latitude-7390 = self.outputs.lib.nixosSystem {
-          hostname = "latitude-7390";
-          modules = [
-            ./hosts/latitude-7390.nix
-            ./modules/users/dom.nix
-          ];
-        };
-
         ghost-gs60 = self.outputs.lib.nixosSystem {
           hostname = "ghost-gs60";
           modules = [
@@ -142,22 +134,17 @@ rec {
           ];
         };
 
+        latitude-7390 = self.outputs.lib.nixosSystem {
+          hostname = "latitude-7390";
+          modules = [
+            ./hosts/latitude-7390.nix
+            ./modules/users/dom.nix
+          ];
+        };
+
         infector = self.outputs.lib.nixosSystem {
           hostname = "infector";
           modules = [ ./hosts/infector.nix ];
-        };
-
-        bellgrade = self.outputs.lib.nixosSystem {
-          hostname = "bellgrade";
-          modules = [ ./hosts/bellgrade.nix ];
-        };
-
-        walsgrave = self.outputs.lib.nixosSystem {
-          hostname = "walsgrave";
-          modules = [
-            ./hosts/walsgrave.nix
-            ./modules/users/dom.nix
-          ];
         };
 
         wsl = self.outputs.lib.nixosSystem {

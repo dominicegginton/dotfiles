@@ -115,7 +115,7 @@
       };
     };
 
-    programs.vscode = lib.mkIf (osConfig.programs.vscode.enable && !osConfig.wsl.enable) {
+    programs.vscode = lib.mkIf osConfig.programs.vscode.enable {
       enable = true;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [

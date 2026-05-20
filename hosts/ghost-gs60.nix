@@ -7,12 +7,15 @@
 }:
 
 {
+  nixpkgs.hostPlatform = lib.mkDefault platform;
+
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
     common-pc-laptop-hdd
     msi-gs60
   ];
+
   disko.devices = {
     disk = {
       main = {
@@ -74,31 +77,60 @@
     "sd_mod"
     "sr_mod"
   ];
+
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+
+  # Ignore events from the lid switch
   services.logind.settings.Login.HandleLidSwitch = "ignore";
   services.upower.ignoreLid = true;
-  services.silverbullet.enable = true;
-  services.tlp.enable = true;
+
+  # Enable Tailscale Identity Provider (IdP)
+  services.tsidp.enable = true;
+
+  # Enable Immich Photos/Video Management Services
   services.immich.enable = true;
-  services.jellyfin.enable = true;
-  # services.frigate = {
-  #   enable = true;
-  #   settings = {
-  #     cameras = {
-  #       "Frontdoor".ffmpeg.inputs = [
-  #         { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main"; roles = [ "record" ]; }
-  #         { path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub"; roles = [ "detect" ]; }
-  #       ];
-  #     };
-  #   };
-  # };
+
+  # Enable Ollama Large Language Model (LLM) AI Services
+  services.ollama.enable = true;
+
+  # Enable Open-WebUI Large Language Model (LLM) AI Web Interface
+  services.open-webui.enable = true;
+
+  # Enable Directory Information Tree & LDAP Services
+  # services.dit0.enable = true;
+
+  # Enable Frigate NVR & OD Services
+  services.frigate = {
+    enable = true;
+    settings = {
+      cameras = {
+        "Frontdoor".ffmpeg.inputs = [
+          {
+            path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";
+            roles = [ "record" ];
+          }
+          {
+            path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub";
+            roles = [ "detect" ];
+          }
+        ];
+      };
+    };
+  };
+
+  # Enable SilverBullet Notes Services
+  services.silverbullet.enable = true;
+
+  # Topology Definition
   topology.self = {
     hardware.info = "MSI Ghost GS60";
+
+    # Network Interface Configuration
     interfaces.eth0 = {
       network = "ribble";
       type = "ethernet";
