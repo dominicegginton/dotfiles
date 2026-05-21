@@ -15,7 +15,7 @@
     ];
 
     services.silverbullet = {
-      listenAddress = lib.mkDefault "silverbullet.${tailnet}";
+      listenAddress = lib.mkDefault "127.0.0.1";
       listenPort = lib.mkDefault 8765;
       openFirewall = lib.mkDefault false;
       user = lib.mkDefault "silverbullet";
@@ -30,7 +30,7 @@
 
     topology.self.services.silverbullet = {
       name = "Silverbullet";
-      details.listen.text = "http://silverbullet.${tailnet}";
+      details.listen.text = "https://silverbullet.${tailnet}";
     };
   };
 }
