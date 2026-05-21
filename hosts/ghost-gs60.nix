@@ -3,6 +3,7 @@
   config,
   lib,
   hostname,
+  platform,
   ...
 }:
 
