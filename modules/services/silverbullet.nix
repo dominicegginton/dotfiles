@@ -15,7 +15,7 @@
     ];
 
     services.silverbullet = {
-      listenAddress = lib.mkDefault "127.0.0.1";
+      listenAddress = lib.mkDefault "0.0.0.0";
       listenPort = lib.mkDefault 8765;
       openFirewall = lib.mkDefault false;
       user = lib.mkDefault "silverbullet";
