@@ -3,6 +3,7 @@
 with lib;
 
 {
+  # Root user configuration
   config.users.users.root = {
     enable = lib.mkDefault true;
     description = "System administrator";

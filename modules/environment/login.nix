@@ -21,12 +21,12 @@
     TTYGROUP     tty
     TTYPERM      0620
 
-    # Ensure privacy for newly created home directories.
+    # Ensure privacy for newly created home directories
     UMASK        077
 
     # Uncomment this and install chfn SUID to allow nonroot
-    # users to change their account GECOS information.
-    # This should be made configurable.
+    # users to change their account GECOS information
+    # This should be made configurable
     #CHFN_RESTRICT frwh
   '';
 }

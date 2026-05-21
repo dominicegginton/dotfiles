@@ -8,8 +8,10 @@
 }:
 
 {
+  # Set host platform
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
+  # Hardware-specific modules
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
@@ -17,6 +19,7 @@
     msi-gs60
   ];
 
+  # Disko configuration for storage layout
   disko.devices = {
     disk = {
       main = {
@@ -25,6 +28,7 @@
         content = {
           type = "gpt";
           partitions = {
+            # EFI System Partition
             ESP = {
               priority = 1;
               name = "ESP";
@@ -38,6 +42,7 @@
                 mountOptions = [ "umask=0077" ];
               };
             };
+            # Btrfs root partition
             root = {
               size = "100%";
               content = {

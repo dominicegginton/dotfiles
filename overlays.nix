@@ -3,6 +3,7 @@
 with self.outputs.lib;
 
 rec {
+  # Default overlay containing custom packages and library extensions
   default = final: prev: {
     background = final.callPackage ./pkgs/background.nix { };
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
@@ -20,7 +21,11 @@ rec {
     twx = final.callPackage ./pkgs/twx.nix { };
     withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
+
+    # Merge custom library with nixpkgs lib
     lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
+
+    # Extend GNOME extensions with custom ones
     gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
       inherit (final)
         dynamic-music-pill

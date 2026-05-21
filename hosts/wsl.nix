@@ -7,14 +7,15 @@
 }:
 
 {
-  # Set host platform (default from `platform`)
+  # Set host platform
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
-  # Enable WSL support
+  # Enable WSL compatibility
   wsl.enable = true;
 
-  # Enable Docker support in WSL
+  # Enable Docker integration
   virtualisation.docker.enable = true;
 
+  # Topology information
   topology.self.hardware.info = "Windows Subsystem for Linux";
 }

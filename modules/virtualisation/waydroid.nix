@@ -14,6 +14,7 @@
       unzip
     ];
 
+    # Network bridge for Waydroid
     topology.self.interfaces.waydroid = {
       type = "bridge";
       virtual = true;

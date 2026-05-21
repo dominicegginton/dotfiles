@@ -11,8 +11,10 @@
 with config.lib.topology;
 
 {
+  # Ensure tailscale SSL directory exists
   systemd.tmpfiles.rules = [ "d /etc/ssl/tailscale 0755 root root -" ];
 
+  # Auto-generate HTTPS certificates using Tailscale
   systemd.services.tailscale-cert =
     let
       notWSL = !config.wsl.enable;
@@ -30,6 +32,7 @@ with config.lib.topology;
       wantedBy = [ "multi-user.target" ];
     };
 
+  # Tailscale service configuration
   services.tailscale = {
     enable = lib.mkForce true;
     useRoutingFeatures = lib.mkForce "both";
@@ -42,6 +45,7 @@ with config.lib.topology;
     interfaceName = lib.mkForce "tailscale0";
   };
 
+  # ACME configuration for SSL certificates
   security.acme = {
     acceptTerms = lib.mkDefault true;
     defaults.email = lib.mkDefault self.outputs.lib.maintainers.dominicegginton.email;
@@ -49,6 +53,7 @@ with config.lib.topology;
 
   environment.systemPackages = with pkgs; [ tailscale ];
 
+  # Topology metadata for Tailscale interface
   topology.self.interfaces.tailscale0 = {
     network = tailnet;
     type = "tailscale";

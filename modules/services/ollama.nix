@@ -6,6 +6,7 @@
 
 {
   config = lib.mkIf config.services.ollama.enable {
+    # Ensure Tailscale is available for secure remote access
     assertions = [
       {
         assertion = config.services.tailscale.enable;
@@ -13,13 +14,15 @@
       }
     ];
 
+    # Ollama AI service configuration
     services.ollama = {
       host = lib.mkDefault "0.0.0.0";
       port = lib.mkDefault 2824;
       openFirewall = lib.mkDefault false;
-      loadModels = lib.mkDefault [ ]; # TODO
+      loadModels = lib.mkDefault [ ];
     };
 
+    # Expose Ollama via Tailscale Serve
     services.tailscale.serve = {
       enable = lib.mkDefault true;
       services."ollama".endpoints."tcp:443" =

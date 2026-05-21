@@ -30,11 +30,11 @@ in
       systemd-run0 = {
         makeHomeDir = true;
         text = lib.mkForce ''
-          # Account management.
+          # Account management
           account sufficient ${pkgs.nss_pam_ldapd}/lib/security/pam_ldap.so
           account required ${pkgs.pam}/lib/security/pam_unix.so
 
-          # Authentication management.
+          # Authentication management
           auth sufficient ${pkgs.pam}/lib/security/pam_rootok.so
           auth required ${pkgs.pam}/lib/security/pam_faillock.so
 
@@ -44,7 +44,7 @@ in
           auth sufficient ${pkgs.nss_pam_ldapd}/lib/security/pam_ldap.so use_first_pass
           auth required ${pkgs.pam}/lib/security/pam_deny.so
 
-          # Password management.
+          # Password management
           password sufficient ${pkgs.pam}/lib/security/pam_unix.so nullok yescrypt
           password sufficient ${pkgs.nss_pam_ldapd}/lib/security/pam_ldap.so
 

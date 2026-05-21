@@ -8,6 +8,7 @@
 
 {
   config = {
+    # Home directory file symlinks
     home.file = {
       ".face".source = ./face.jpg;
       ".config".source = ./sources/.config;
@@ -17,6 +18,7 @@
       ".gitconfig".source = ./sources/.gitconfig;
       ".gitignore".source = ./sources/.gitignore;
       ".ideavimrc".source = ./sources/.ideavimrc;
+      # Custom tool configuration for TWM
       ".config/twm/twm.yaml".text = ''
         search_paths:
           - "~/.dotfiles"
@@ -25,6 +27,7 @@
       '';
     };
 
+    # Tmux terminal multiplexer configuration
     programs.tmux = {
       enable = true;
       shortcut = "a";
@@ -33,6 +36,7 @@
       newSession = true;
       escapeTime = 0;
       aggressiveResize = true;
+      # Detailed tmux appearance and keybindings
       extraConfig = ''
         set -g status on
         set -g default-terminal "tmux-256color"
@@ -71,21 +75,33 @@
         set -g window-status-current-format " #I #W "
         set -g clock-mode-colour blue
         set -g mode-style fg=brightwhite,bg=red,bold
+
+        # Vim-like pane navigation
         bind h select-pane -L
         bind j select-pane -D
         bind k select-pane -U
         bind l select-pane -R
+
+        # Window navigation
         bind -r C-h select-window -t :-
         bind -r C-l select-window -t :+
+
+        # Pane resizing
         bind -r H resize-pane -L 5
         bind -r J resize-pane -D 5
         bind -r K resize-pane -U 5
         bind -r L resize-pane -R 5
+
+        # Window splitting
         bind % split-window -h -c "#{pane_current_path}"
         bind '"' split-window -v -c "#{pane_current_path}"
+
+        # Custom script bindings
         bind-key -r f run-shell "tmux neww twm"
         bind-key -r F run-shell "tmux neww twm -g"
         bind-key -r e run-shell "tmux neww twm -n shell -p $HOME"
+
+        # Copy mode keybindings
         bind-key -T copy-mode-vi v send-keys -X begin-selection
         bind-key -T copy-mode-vi V send-keys -X select-line
         bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle

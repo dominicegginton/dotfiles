@@ -24,10 +24,12 @@ mkShell rec {
   name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
   keys = [ "root@dominicegginton.dev" ];
 
+  # Project specific environment variables
   GCP_PROJECT_ID = builtins.getEnv "GCP_PROJECT_ID";
   BWS_PROJECT_ID = builtins.getEnv "BWS_PROJECT_ID";
   BWS_ACCESS_TOKEN = builtins.getEnv "BWS_ACCESS_TOKEN";
 
+  # Development tools
   packages = [
     nix
     nix-output-monitor
@@ -39,6 +41,7 @@ mkShell rec {
     nix-index
     google-cloud-sdk
     opentofu
+    # Script to sync secrets from Bitwarden to the repository
     (writeShellScriptBin "sync-secrets" ''
       TEMP_DIR=$(mktemp -d)
       trap "rm -rf $TEMP_DIR" EXIT

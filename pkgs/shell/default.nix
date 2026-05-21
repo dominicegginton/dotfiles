@@ -1,28 +1,8 @@
-# center widget for shell:
-# - time and date
-# - notification indicator
-# notification center for shell (popup on click of center widget):
-# - list of notifications
-# - button to clear all notifications
-# right aligned widgets for shell:
-# - battery
-# - network
-# - volume
-# quick settings for shell (popup on click of right aligned widgets):
-# - top line of buttons:
-#   - battery icon and percentage (opens battery settings)
-#   - screenshot button (opens screenshot tool)
-#   - settings button (opens system settings)
-#   - power button (dropdown with logout, restart, shutdown)
-# - second line of toggles/sliders:
-#   - brightnes
-#   - volume (icon toggles mute on/off, dropdown selects default output device)
-# - large toggles with dropdowns for:
-#   - wifi on/off (dropdown to select network)
-#   - bluetooth on/off (dropdown to select device)
-#   - do not disturb mode on/off (dropdown to set duration)
-#   - theme light/dark (dropdown to select theme light/dark/auto)
-#   - power saver mode on/off (dropdown to select profile)
+# Shell component features:
+# - Center widget: Time, date, and notification indicator
+# - Notification center: List and management of notifications
+# - Right-aligned widgets: Battery, network, volume
+# - Quick settings: System controls, toggles, and sliders
 
 {
   lib,
@@ -44,6 +24,7 @@ rustPlatform.buildRustPackage rec {
 
   cargoLock.lockFile = ./Cargo.lock;
 
+  # Build requirements and runtime dependencies
   runtimeInputs = [ swaybg ];
   nativeBuildInputs = [
     rustfmt

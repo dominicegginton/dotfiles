@@ -11,10 +11,13 @@ with config.lib.topology;
   networking = {
     hostName = hostname;
     useDHCP = lib.mkDefault true;
+    # Use modern nftables for firewall backend
     nftables.enable = lib.mkDefault true;
     firewall = {
       enable = lib.mkDefault true;
+      # Trust all traffic from the Tailscale interface
       trustedInterfaces = lib.mkDefault [ "tailscale0" ];
+      # Loose reverse path filtering for Tailscale compatibility
       checkReversePath = lib.mkDefault "loose";
     };
 
@@ -22,12 +25,13 @@ with config.lib.topology;
       fallbackToWPA2 = true;
       userControlled.enable = true;
       userControlled.group = "wheel";
+      # Use iwd for modern wireless management
       iwd = {
         enable = true;
         settings = {
           IPv6.Enabled = true;
           Settings.AutoConnect = true;
-          General.PowerSave = false;
+          General.PowerSave = false; # Prioritize performance over battery
         };
       };
     };
@@ -42,6 +46,7 @@ with config.lib.topology;
       };
     };
 
+    # Regional NTP servers
     timeServers = lib.mkDefault [
       "0.uk.pool.ntp.org"
       "1.uk.pool.ntp.org"

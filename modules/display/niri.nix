@@ -65,38 +65,33 @@ with config.scheme.withHashtag;
       # Enable Cross-Desktop Group integration
       enable = lib.mkDefault true;
 
-      # Enable Cross-Desktop Group integration for wlroots-based desktops.
+      # Enable Cross-Desktop Group integration for wlroots-based desktops
       wlr.enable = lib.mkDefault true;
 
-      # Add Niri to the list of packages that provide XDG portal configurations.
+      # Packages providing XDG portal configurations
       configPackages = lib.mkDefault [ pkgs.niri ];
 
-      # Add both gnome and gtk portals to the list of additional portals to add
-      # enabling interaction with system.
+      # Additional portals for system interaction
       extraPortals = lib.mkDefault [
         pkgs.xdg-desktop-portal-gnome
         pkgs.xdg-desktop-portal-gtk
       ];
     };
 
-    # Install files to enable XDG autostart support
+    # Install files for XDG standard support
     xdg.autostart.enable = lib.mkDefault true;
-
-    # Install files to enable XDG menu support
     xdg.menus.enable = lib.mkDefault true;
-
-    # Install files to enable XDG icon support
     xdg.icons.enable = lib.mkDefault true;
 
     services.graphical-desktop.enable = true;
 
-    # Enable printing support via the CUPS daemon.
+    # Enable printing support via CUPS
     services.printing.enable = true;
 
-    # Enable pipewire services.
+    # Enable audio and video services via Pipewire
     services.pipewire.enable = true;
 
-    # Enable gnome-keyring services for user credential management.
+    # Enable GNOME Keyring for credential management
     services.gnome.gnome-keyring.enable = true;
 
     # Enable user selected power profiles via power-profile service.
@@ -157,7 +152,7 @@ with config.scheme.withHashtag;
         mission-center
         wdisplays
         swaysettings
-        my-shell-settings
+        # my-shell-settings
 
         lock
 
@@ -175,7 +170,6 @@ with config.scheme.withHashtag;
 
       etc."niri/config.kdl".text = ''
         prefer-no-csd
-        spawn-at-startup "${lib.getExe pkgs.my-shell}"
         spawn-at-startup "${lib.getExe pkgs.xwayland-satellite}"
         spawn-at-startup "${pkgs.wl-clipboard}/bin/wl-paste" "--watch" "${lib.getExe pkgs.cliphist}" "store"
         ${lib.optionalString config.hardware.bluetooth.enable ''spawn-at-startup "${pkgs.blueman}/bin/blueman-applet"''}

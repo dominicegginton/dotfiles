@@ -15,7 +15,7 @@ in
 
 stdenv.mkDerivation {
   name = "karren.lazy-desktop";
-
+  # Generate desktop entries for all packages in the nix-index database
   dontUnpack = true;
   dontBuild = true;
 
@@ -28,6 +28,7 @@ stdenv.mkDerivation {
     mkdir -p $out/share/applications
     ln -s ${nix-index-database} files
 
+    # Scan for desktop files and create shim launchers using 'nix run'
     nix-locate \
       --db . \
       --minimal \

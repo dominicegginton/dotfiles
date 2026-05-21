@@ -49,7 +49,7 @@ let
     close = [ "<Super><Shift>q" ];
   };
 
-  # Gnome desktop background
+  # Gnome desktop background settings
   orgGnomeDesktopBackgroundSettings = settings "org/gnome/desktop/background" {
     picture-uri = "file://" + pkgs.background.backgroundImage;
     picture-uri-dark = "file://" + pkgs.background.darkBackgroundImage;
@@ -61,7 +61,7 @@ let
     show-in-lock-screen = false;
   };
 
-  # Gnome shell interface settings
+  # Gnome shell interface appearance
   orgGnomeDesktopInterfaceSettings = settings "org/gnome/desktop/interface" {
     enable-hot-corners = false;
     color-theme = "prefer-light";

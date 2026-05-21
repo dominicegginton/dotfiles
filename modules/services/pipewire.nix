@@ -1,6 +1,7 @@
 { config, lib, ... }:
 
 {
+  # Audio service configuration via Pipewire
   config.services.pipewire = lib.mkIf config.services.pipewire.enable {
     alsa.enable = lib.mkDefault true;
     alsa.support32Bit = lib.mkDefault true;

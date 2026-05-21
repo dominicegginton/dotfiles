@@ -7,7 +7,7 @@
 
 {
   config = lib.mkIf config.services.flatpak.enable {
-    # Systemd Service to Add Flathub Repository at Boot
+    # Systemd service to add Flathub repository at boot
     systemd.services.flatpak-repo = lib.mkDefault {
       wantedBy = [ "multi-user.target" ];
       path = [ pkgs.flatpak ];

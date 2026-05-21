@@ -16,6 +16,7 @@ stdenv.mkDerivation rec {
 
   buildPhase = ''
     runHook preBuild
+    # Compile GSettings schemas for the extension
     glib-compile-schemas --strict schemas
     runHook postBuild
   '';
@@ -25,7 +26,7 @@ stdenv.mkDerivation rec {
     mkdir -p $out/share/gnome-shell/extensions/${uuid}
     cp -r metadata.json extension.js stylesheet.css schemas $out/share/gnome-shell/extensions/${uuid}/
 
-    # Install schema to global schemas dir for GSettings
+    # Install schema to global directory for system-wide access
     mkdir -p $out/share/glib-2.0/schemas
     cp schemas/org.gnome.shell.extensions.intelli.gschema.xml $out/share/glib-2.0/schemas/
     runHook postInstall

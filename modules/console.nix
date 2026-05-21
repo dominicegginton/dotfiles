@@ -1,6 +1,7 @@
 { lib, pkgs, ... }:
 
 {
+  # TTY console configuration
   config.console = {
     enable = lib.mkForce true;
     earlySetup = lib.mkForce true;

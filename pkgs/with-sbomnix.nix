@@ -5,6 +5,7 @@
   sbomnix,
 }:
 
+# Wrapper to add sbomnix utilities to a package
 pkg:
 pkg.overrideAttrs (old: {
   passthru.sbomnix = writeShellScriptBin "sbomnix" ''

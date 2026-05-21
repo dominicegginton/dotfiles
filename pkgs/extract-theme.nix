@@ -1,11 +1,13 @@
 { writers, python3Packages, ... }:
 
 let
+  # Override Pylette to disable tests, which require additional dependencies and are not needed for the binary
   pyletteNoTests = python3Packages.pylette.overridePythonAttrs (_: {
     doCheck = false;
   });
 in
 
+# Define a Python script to extract a color palette from an image and write it in a Base16 theme format
 writers.writePython3Bin "extract-theme" { libraries = [ pyletteNoTests ]; } ''
   import argparse
   from Pylette import extract_colors

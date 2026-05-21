@@ -7,10 +7,10 @@
 }:
 
 {
-  # Set host platform (default from `platform`)
+  # Set host platform
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
-  # Hardware-specific modules for this laptop
+  # Hardware-specific modules
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
@@ -33,37 +33,48 @@
     ];
   };
 
-  # Host Kernel Modules
+  # Swap configuration
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 8192;
+    }
+  ];
+
+  boot.loader.systemd-boot.enable = lib.mkDefault true;
+  boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
+
+  # Kernel modules for hardware support
   boot.kernelModules = [
-    "kvm-intel" # Intel Virtualization
-    "vhost_vsock" # Virtio Socket Support
-    "i2c-dev" # I2C Device Support
-    "ddcci_backlight" # DDC/CI Backlight Control
+    "kvm-intel" # Virtualization
+    "vhost_vsock" # Virtio socket support
+    "i2c-dev" # I2C device access
+    "ddcci_backlight" # DDC/CI monitor control
   ];
 
-  # Extra kernel module packages
+  # Additional kernel drivers
   boot.extraModulePackages = [
-    config.boot.kernelPackages.ddcci-driver # DDC/CI Driver
+    config.boot.kernelPackages.ddcci-driver # DDC/CI driver
   ];
 
-  # Host Initrd Kernel Modules
+  # Initrd modules for boot-time hardware access
   boot.initrd.availableKernelModules = [
-    "xhci_pci" # USB 3.0 Support
-    "ahci" # SATA Support
-    "usb_storage" # USB Storage Support
-    "sd_mod" # SD Card Support
-    "nvme" # NVMe Support
+    "xhci_pci" # USB 3.0
+    "ahci" # SATA
+    "usb_storage" # USB storage
+    "sd_mod" # SD card
+    "nvme" # NVMe storage
   ];
 
-  # Enable Bluetooth
+  # Enable host-specific features
   hardware.bluetooth.enable = true;
-
   programs.vscode.enable = true;
-  # Gnome Desktop Environment
+
+  # Graphical desktop environments
   display.gnome.enable = true;
   display.niri.enable = true;
 
-  services.tsidp.enable = true; # TODO: REMOVE
+  services.tsidp.enable = true;
 
   topology.self.hardware.info = "Workstation";
 }

@@ -1,15 +1,14 @@
 { lib, ... }:
 
 {
-  # TODO: remove one applies by dit0
-  # Configure password quality requirements for PAM.
-  # - ucredit: require at least one uppercase character
-  # - lcredit: require at least one lowercase character
-  # - dcredit: require at least one digit
-  # - ocredit: require at least one special character
-  # - difok: require at least 8 different characters from the old password
-  # - minlen: require a minimum length of 15 characters
-  # - dictcheck: enable dictionary checks to prevent common passwords from being used
+  # Password quality requirements for PAM
+  # - ucredit: At least one uppercase character
+  # - lcredit: At least one lowercase character
+  # - dcredit: At least one digit
+  # - ocredit: At least one special character
+  # - difok: At least 8 different characters from old password
+  # - minlen: Minimum length of 15 characters
+  # - dictcheck: Prevent common dictionary words
   environment.etc."/security/pwquality.conf".text = lib.mkDefault ''
     ucredit=-1
     lcredit=-1

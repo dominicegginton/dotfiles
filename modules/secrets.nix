@@ -9,9 +9,12 @@ with lib;
 with types;
 
 let
+  # Persistent directory for decrypted secrets
   directory = "/root/bitwarden-secrets";
+  # Runtime mountpoint for secret symlinks
   mountpoint = "/run/bitwarden-secrets";
 
+  # Helper script to install a secret from the decrypted JSON file
   secret-install =
     { name, secret }:
     let
@@ -24,17 +27,22 @@ let
           (if secret.permissions == "" then "700" else secret.permissions);
     in
     ''
+      # Extract secret value using jq, handle newlines, and set permissions
       value=$(jq -r ".[] | select(.id == \"${id}\") | .value" ${directory}/secrets.json)
       rm -f ${directory}/secrets/${name}
       echo $value | sed 's/\\n/\n/g' > ${directory}/secrets/${name}
       chown ${user}:${user} ${directory}/secrets/${name}
       chmod ${permissions} ${directory}/secrets/${name}
+
+      # Symlink to runtime mountpoint
       ln -sf ${directory}/secrets/${name} ${mountpoint}/${name}
       chown ${user}:${user} ${mountpoint}/${name}
       chmod ${permissions} ${mountpoint}/${name}
+
       gum log --level info "Installed secret ${name} (${id}) [${user}:${permissions}]"
     '';
 
+  # Definition of the secret option type
   secretType = submodule rec {
     options = {
       id = mkOption {

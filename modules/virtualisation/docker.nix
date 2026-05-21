@@ -12,7 +12,7 @@
       systemPackages = with pkgs; [ docker ];
     };
 
-    # Configure automatic pruning of unused Docker resources.
+    # Automatic pruning of unused Docker resources
     virtualisation.docker.autoPrune = {
       enable = lib.mkDefault true;
       flags = lib.mkDefault [ "--all" ];

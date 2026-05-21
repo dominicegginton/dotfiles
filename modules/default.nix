@@ -12,6 +12,7 @@ let
 in
 
 rec {
+  # Base imports for all systems
   imports = [
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
@@ -23,7 +24,6 @@ rec {
     ./display/niri.nix
     ./hardware/bluetooth.nix
     ./hardware/cpu.nix
-    ./hardware/disks.nix
     ./programs/alacritty.nix
     ./programs/chromium.nix
     ./programs/dconf.nix
@@ -71,10 +71,10 @@ rec {
   ];
 
   system = {
-    # state version for nixos modules
+    # NixOS state version
     stateVersion = lib.mkForce config.system.nixos.release;
 
-    # custom distro metadata
+    # Custom distribution metadata
     nixos = {
       distroName = lib.mkForce "Residence";
       distroId = lib.mkForce "residence";
@@ -87,14 +87,14 @@ rec {
     };
   };
 
-  # system color scheme
+  # System-wide color scheme
   scheme = lib.mkForce "${pkgs.theme}/residence-theme.yaml";
 
-  # system time zone
+  # Default localization settings
   time.timeZone = lib.mkDefault "Europe/London";
-
-  # system locale
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
+
+  # Default overlays
   nixpkgs.overlays = lib.mkForce [ self.outputs.overlays.default ];
 
   nix = {

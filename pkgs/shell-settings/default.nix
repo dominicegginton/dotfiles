@@ -1,27 +1,9 @@
-# features to be added:
-# - appearance settings
-#   - light / dark mode
-#   - accent color
-# - power settings
-#   - screen blanking time
-#   - suspend time
-#   - power profile
-# - network manager settings
-#   - preferred wifi networks
-# - bluetooth settings
-#   - paired devices
-#   - pairable devices
-# - sound settings
-#   - output volume per device
-#   - input volume per device
-#   - output device selection
-#   - input device selection
-# - display output settings
-#   - resolution
-#   - scaling
-#   - refresh rate
-#   - brightness
-#   - multiple monitors configuration
+# Features to be implemented:
+# - Appearance: Light/dark mode, accent colors
+# - Power: Screen blanking, suspend times, profiles
+# - Connectivity: WiFi and Bluetooth device management
+# - Audio: Volume and device selection per input/output
+# - Display: Resolution, scaling, refresh rate, brightness
 
 {
   lib,
@@ -37,6 +19,7 @@
 }:
 
 let
+  # Build the shell-settings application
   pkg = rustPlatform.buildRustPackage rec {
     name = "shell-settings";
     src = ./.;

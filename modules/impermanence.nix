@@ -9,6 +9,7 @@
     boot.initrd.supportedFilesystems = [ "btrfs" ];
     boot.initrd.kernelModules = [ "btrfs" ];
     fileSystems."/persist".neededForBoot = true;
+    # Rollback root filesystem to a blank state on every boot
     boot.initrd.postDeviceCommands = lib.mkAfter /* bash */ ''
       mkdir /btrfs_tmp
       mount /dev/root_vg/root /btrfs_tmp
@@ -27,6 +28,7 @@
           btrfs subvolume delete "$1"
       }
 
+      # Cleanup old root subvolumes older than 14 days
       for i in $(find /btrfs_tmp/old_roots/ -maxdepth 1 -mtime +14); do
           delete_subvolume_recursively "$i"
       done
@@ -35,6 +37,7 @@
       umount /btrfs_tmp
     '';
 
+    # Persistent files and directories across reboots
     environment.persistence."/persist" = {
       files = [
         "/etc/machine-id"

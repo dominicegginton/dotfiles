@@ -7,13 +7,16 @@
 
 stdenv.mkDerivation rec {
   name = "angular_alt";
+
   src = fetchFromGitHub {
     owner = "adi1090x";
     repo = "plymouth-themes";
     rev = "master";
     sha256 = "sha256-e3lRgIBzDkKcWEp5yyRCzQJM6yyTjYC5XmNUZZroDuw=";
   };
+
   pack = "pack_1";
+
   installPhase = ''
     runHook preInstall
 
