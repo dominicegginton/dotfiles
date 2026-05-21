@@ -1,7 +1,7 @@
 {
   config,
   lib,
-  hostname,
+  tailnet,
   ...
 }:
 
@@ -10,12 +10,12 @@
     assertions = [
       {
         assertion = config.services.tailscale.enable;
-        message = "services.tailsclae.enable must be set to true";
+        message = "services.tailscale.enable must be set to true";
       }
     ];
 
     services.frigate = {
-      hostname = "frigate.${hostname}";
+      hostname = "frigate.${tailnet}";
       settings = {
         auth.enabled = false;
         motion.enabled = true;
@@ -36,7 +36,7 @@
 
     topology.self.services.frigate = {
       name = "Frigate NVR";
-      details.listen.text = "http://frigate.${hostname}";
+      details.listen.text = "http://frigate.${tailnet}";
     };
   };
 }
