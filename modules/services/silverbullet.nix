@@ -24,8 +24,8 @@
 
     services.tailscale.serve = {
       enable = true;
-      services."silverbullet".endpoints."tcp:80" =
-        "http://127.0.0.1:${toString config.services.silverbullet.listenPort}";
+      services."silverbullet".endpoints."tcp:443" =
+        "https+insecure://127.0.0.1:${toString config.services.silverbullet.listenPort}";
     };
 
     topology.self.services.silverbullet = {
