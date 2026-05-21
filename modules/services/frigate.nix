@@ -31,7 +31,7 @@
     # Tailscale Service Configuration for Frigate.
     services.tailscale.serve = {
       enable = true;
-      services."frigate".endpoints."tcp:80" = "http://127.0.0.1:${toString 5000}";
+      services."frigate".endpoints."tcp:443" = "https+insecure://127.0.0.1:${toString 5000}";
     };
 
     topology.self.services.frigate = {
