@@ -43,10 +43,10 @@ with config.lib.topology;
     };
 
     timeServers = lib.mkDefault [
-      "0.pool.ntp.org"
-      "1.pool.ntp.org"
-      "2.pool.ntp.org"
-      "3.pool.ntp.org"
+      "0.uk.pool.ntp.org"
+      "1.uk.pool.ntp.org"
+      "2.uk.pool.ntp.org"
+      "3.uk.pool.ntp.org"
     ];
   };
 
