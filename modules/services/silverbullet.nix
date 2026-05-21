@@ -17,7 +17,7 @@
     services.silverbullet = {
       listenAddress = lib.mkDefault "0.0.0.0";
       listenPort = lib.mkDefault 8765;
-      openFirewall = lib.mkDefault false;
+      openFirewall = lib.mkDefault true;
       user = lib.mkDefault "silverbullet";
       spaceDir = lib.mkDefault "/var/lib/silverbullet";
     };
