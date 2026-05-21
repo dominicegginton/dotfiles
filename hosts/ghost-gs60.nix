@@ -91,7 +91,7 @@
   services.upower.ignoreLid = true;
 
   # Enable Tailscale Identity Provider (IdP)
-  # services.tsidp.enable = true;
+  services.tsidp.enable = true;
 
   # Enable Immich Photos/Video Management Services
   # services.immich.enable = true;
@@ -107,7 +107,7 @@
 
   # Enable Frigate NVR & OD Services
   services.frigate = {
-    # enable = true;
+    enable = true;
     settings = {
       cameras = {
         "Frontdoor".ffmpeg.inputs = [
@@ -125,7 +125,7 @@
   };
 
   # Enable SilverBullet Notes Services
-  # services.silverbullet.enable = true;
+  services.silverbullet.enable = true;
 
   # Topology Definition
   topology.self = {
