@@ -1,12 +1,4 @@
-output "gcp_workload_identity_provider" {
-  description = "Workload Identity Provider resource name for GitHub Actions"
-  value       = module.gcp_infrastructure.workload_identity_provider
-}
 
-output "gcp_service_account" {
-  description = "Service account email for GitHub Actions"
-  value       = module.gcp_infrastructure.service_account_email
-}
 
 output "gcp_project_id" {
   description = "GCP Project ID"
