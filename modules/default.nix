@@ -1,4 +1,8 @@
 {
+  # modules/default.nix
+  #
+  # Base system module imports and core configuration for all NixOS systems in this flake.
+  # Groups hardware, environment, security, service, and user modules for maintainability.
   self,
   modulesPath,
   config,
@@ -14,29 +18,50 @@ in
 rec {
   # Base imports for all systems
   imports = [
+    # Installer and VM profiles
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
+
+    # Console and display environments
+    ./console.nix
+    ./display/gnome.nix
+    ./display/niri.nix
+
+    # Environment modules
+    ./environment.nix
     ./environment/account.nix
     ./environment/issue.nix
     ./environment/login.nix
     ./environment/packages.nix
-    ./display/gnome.nix
-    ./display/niri.nix
+
+    # Hardware modules
     ./hardware/bluetooth.nix
     ./hardware/cpu.nix
+
+    # Networking
+    ./networking.nix
+
+    # Program modules
     ./programs/alacritty.nix
     ./programs/chromium.nix
     ./programs/dconf.nix
     ./programs/firefox.nix
     ./programs/sherlock-launcher.nix
     ./programs/steam.nix
+
+    # Secrets
+    ./secrets.nix
+
+    # Security modules
     ./security/apparmor.nix
     ./security/pam.nix
     ./security/polkit.nix
     ./security/pwquality.nix
-    ./security/sudo.nix
     ./security/run0.nix
+    ./security/sudo.nix
     ./security/tpm2.nix
+
+    # Service modules
     ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/displaymanager.nix
@@ -55,19 +80,19 @@ rec {
     ./services/silverbullet.nix
     ./services/ssh.nix
     ./services/tailscale.nix
-    ./services/tsidp.nix
     ./services/timesyncd.nix
+    ./services/tsidp.nix
     ./services/usbguard.nix
+
+    # User modules
     ./users/ldap.nix
     ./users/root.nix
+
+    # Virtualisation
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
     ./virtualisation/waydroid.nix
     ./virtualisation/wsl.nix
-    ./console.nix
-    ./environment.nix
-    ./networking.nix
-    ./secrets.nix
   ];
 
   system = {

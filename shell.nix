@@ -1,4 +1,7 @@
 {
+  # shell.nix
+  #
+  # Development shell for the dotfiles project, providing tools for Nix development, secrets management, and project automation.
   self,
   lib,
   mkShell,

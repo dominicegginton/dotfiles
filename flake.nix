@@ -70,27 +70,27 @@ rec {
             allowUnfreePredicate =
               pkg:
               builtins.elem (lib.getName pkg) [
-                "vscode"
-                "vscode-with-extensions"
-                "vscode-extension-github-copilot"
-                "bws"
-                "youtube-tv"
-                "google-chrome"
                 "YouTube_full_color_icon_2017.svg"
-                "github-copilot-cli"
-                "open-webui"
+                "bws"
                 "gateway"
+                "github-copilot-cli"
+                "google-chrome"
+                "open-webui"
+                "vscode"
+                "vscode-extension-github-copilot"
+                "vscode-with-extensions"
+                "youtube-tv"
               ];
           };
           # Apply system-wide overlays
           overlays = with self.inputs; [
-            self.outputs.overlays.default
-            self.outputs.overlays.withSbom
-            nix-topology.overlays.default
-            nix-topology.overlays.topology
             deadman.overlays.default
             dit0.overlays.default
+            nix-topology.overlays.default
+            nix-topology.overlays.topology
             run0-sudo-shim.overlays.default
+            self.outputs.overlays.default
+            self.outputs.overlays.withSbom
           ];
         }
       );

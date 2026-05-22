@@ -8,15 +8,22 @@ Declarative System, Package & Home Configurations - WIP Always
 
 ## Features
 
-- **Nix Flakes** - 100% _Nix Flakes_-based configuration, no Nix channels.
-- **Hybrid Infrastructure** - _Nix_ & _Terraform_ defined local bearmetal hosts and cloud resources.
-- **Centralized Identity Management** (_testing_) - Globally unified user identity via _LDAP_ and _SSSD_.
-- **User Home Management** (_legacy_) - Per-user declarative configuration via _HomeManager_.
-- **Zero Trust Networking** - _Tailscale_ provided private mesh networking across all infrastructure nodes.
-- **Secret Management** (_testing_) - _Google Secret Manager_ based secret storage and distribution.
-- **Bitwarden Managed Secrets** (_legacy_) - System wide encrypted secrets managed by _bsm_ & _bw_.
-- **Secure By Default Operating System** - Hardened _NixOS_ linux based operating system.
-- **Desktop Environments** - Fully featured wayland _GNOME_ desktop environment.
+- **Nix Flakes & Reproducibility** – 100% _Nix Flakes_-based, reproducible builds, no channels required.
+- **Hybrid Infrastructure** – _Nix_ and _Terraform_ define bare-metal, VMs, and cloud (GCP) resources.
+- **Automated Topology** – _nix-topology_ visualizes and manages network and host relationships.
+- **Custom Package Overlays** – Overlays override upstream packages and define custom ones.
+- **Multi-Platform Support** – Supports bare-metal, VMs, and WSL environments.
+- **User Home Management** – Per-user declarative config with _HomeManager_.
+- **Centralized Identity** (_testing_) – Unified user management via _LDAP_ and _SSSD_.
+- **Zero Trust Networking** – _Tailscale_ mesh VPN links all nodes securely.
+- **Secrets Management** (_testing_) – _Google Secret Manager_ for secure secrets distribution.
+- **Bitwarden Secrets** – System-wide encrypted secrets via _Bitwarden CLI_.
+- **Secrets Encryption** – All secrets are encrypted at rest and in transit.
+- **Security & Compliance** – SBOM generation, vuln scanning, and system hardening by default.
+- **Continuous Integration** – Automated builds and checks with _GitHub Actions_.
+- **Automated Garbage Collection** – System prunes old Nix store paths automatically.
+- **Fast Local Development** – Dev shells with all required tools and formatters.
+- **Desktop Environments** – Wayland _GNOME_ (and _Niri_) desktop environments.
 
 ## Workspace
 

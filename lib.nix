@@ -1,4 +1,7 @@
 { self }:
+# lib.nix
+#
+# Custom library functions and helpers for use throughout the dotfiles flake.
 
 rec {
   # Primary domain for the infrastructure
