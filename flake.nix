@@ -85,6 +85,7 @@ rec {
           # Apply system-wide overlays
           overlays = with self.inputs; [
             self.outputs.overlays.default
+            self.outputs.overlays.withSbom
             nix-topology.overlays.default
             nix-topology.overlays.topology
             deadman.overlays.default

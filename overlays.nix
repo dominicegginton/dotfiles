@@ -1,10 +1,21 @@
 { self }:
 
+# Import the custom lib for use in overlays
 with self.outputs.lib;
 
+let
+  # Helper function to map withSbomnix over a set of packages
+  wrapWithSbomnix = withSbomnix: pkgs: (builtins.mapAttrs (_: pkg: withSbomnix pkg) pkgs);
+in
+
 rec {
-  # Default overlay containing custom packages and library extensions
-  default = final: prev: {
+
+  # Default overlay containing custom packages, library extensions, and sbomnix passthru wrappers
+  default = final: prev: rec {
+    # Import the withSbomnix wrapper function
+    withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
+
+    # Custom packages available in all systems
     background = final.callPackage ./pkgs/background.nix { };
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
@@ -17,15 +28,18 @@ rec {
     my-shell-settings = final.callPackage ./pkgs/shell-settings { };
     plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
     theme = final.callPackage ./pkgs/theme.nix { };
-    topology = self.outputs.topology.${final.system}.config.output;
     twx = final.callPackage ./pkgs/twx.nix { };
-    withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
 
+    # Topology output is not a package, so it is not wrapped
+    topology = self.outputs.topology.${final.system}.config.output;
+
     # Merge custom library with nixpkgs lib
+    # This allows you to extend or override lib functions
     lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
 
     # Extend GNOME extensions with custom ones
+    # These are also wrapped with sbomnix utilities
     gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
       inherit (final)
         dynamic-music-pill
@@ -33,5 +47,12 @@ rec {
         intelli-extension
         ;
     };
+  };
+
+  withSbom = final: prev: {
+    # This overlay is meant to be applied on top of the default overlay to add sbomnix passthru utilities to all packages
+    # It does not add any new packages, but wraps existing ones with sbomnix utilities
+    # This allows you to generate SBOMs, dependency graphs, provenance, and vulnerability scans for any package in the system
+    withSbom = wrapWithSbomnix (final.withSbomnix) prev;
   };
 }
