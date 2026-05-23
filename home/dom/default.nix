@@ -131,7 +131,7 @@
       };
     };
 
-    programs.vscode = lib.mkIf osConfig.programs.vscode.enable {
+    programs.vscode = lib.mkIf (osConfig ? programs && osConfig.programs.vscode.enable) {
       enable = true;
       profiles.default = {
         extensions = with pkgs.vscode-extensions; [
@@ -236,6 +236,6 @@
         twm
         twx
       ]
-      ++ (if osConfig.wsl.enable then [ ] else [ youtube-tv ]);
+      ++ (if (osConfig ? wsl && osConfig.wsl.enable) then [ ] else [ youtube-tv ]);
   };
 }

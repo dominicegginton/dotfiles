@@ -1,25 +1,48 @@
-rec {
+{
   # External flake inputs
   inputs = {
+    # NixOS official package collection
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+
+    # Hardware-specific configurations for better device support
     nixos-hardware.url = "github:nixos/nixos-hardware";
+
+    # Pre-built NixOS images and installation tools
     nixos-images.url = "github:nix-community/nixos-images";
+
+    # Persistence for impermanent systems (e.g., tmpfs root)
     impermanence.url = "github:nix-community/impermanence";
+
+    # Declarative disk partitioning and formatting
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    # User environment management
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Network topology visualization
     nix-topology.url = "github:oddlama/nix-topology";
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Matrix generation for GitHub Actions
     nix-github-actions.url = "github:nix-community/nix-github-actions";
     nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Custom inputs for personal projects
     deadman.url = "github:dominicegginton/deadman";
     deadman.inputs.nixpkgs.follows = "nixpkgs";
     dit0.url = "github:dominicegginton/dit0";
     dit0.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Theming support (base16)
     base16.url = "github:SenchoPens/base16.nix";
+
+    # Sudo shim for run0
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Windows Subsystem for Linux support
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
   };
 
@@ -46,6 +69,7 @@ rec {
     {
       self,
       nixpkgs,
+      home-manager,
       nix-github-actions,
       nixos-wsl,
       ...
@@ -60,27 +84,28 @@ rec {
       # Helper to generate attributes for all systems
       forAllSystems = lib.genAttrs systems;
 
+      # List of unfree packages allowed in the system
+      unfreePackages = [
+        "YouTube_full_color_icon_2017.svg"
+        "bws"
+        "gateway"
+        "github-copilot-cli"
+        "google-chrome"
+        "open-webui"
+        "vscode"
+        "vscode-extension-github-copilot"
+        "vscode-with-extensions"
+        "youtube-tv"
+      ];
+
       # Configured nixpkgs instances for each system
       nixpkgsFor = forAllSystems (
         system:
         import nixpkgs {
           inherit system;
-          config = nixConfig // {
+          config = {
             # Allow specific unfree packages
-            allowUnfreePredicate =
-              pkg:
-              builtins.elem (lib.getName pkg) [
-                "YouTube_full_color_icon_2017.svg"
-                "bws"
-                "gateway"
-                "github-copilot-cli"
-                "google-chrome"
-                "open-webui"
-                "vscode"
-                "vscode-extension-github-copilot"
-                "vscode-with-extensions"
-                "youtube-tv"
-              ];
+            allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
           };
           # Apply system-wide overlays
           overlays = with self.inputs; [
@@ -95,20 +120,30 @@ rec {
         }
       );
 
-      githubPLatforms = lib.attrNames nix-github-actions.lib.githubPlatforms;
+      githubPlatforms = lib.attrNames nix-github-actions.lib.githubPlatforms;
 
       # Systems supported by both this flake and GitHub Actions
-      githubPlatformsForSystems = lib.intersectLists systems githubPLatforms;
+      githubPlatformsForSystems = lib.intersectLists systems githubPlatforms;
     in
 
     {
-      inherit nixpkgsFor;
-
       # Auto-formatter for all nix files in the repository
       formatter = forAllSystems (system: nixpkgsFor.${system}.nixfmt-tree);
 
       # Custom library functions
       lib = import ./lib.nix { inherit self; };
+
+      # Standalone home-manager configurations
+      homeConfigurations = {
+        dom = home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgsFor.x86_64-linux;
+          modules = [ ./home/dom/default.nix ];
+          extraSpecialArgs = {
+            inherit self;
+            username = "dom";
+          };
+        };
+      };
 
       # Custom package overlays
       overlays = import ./overlays.nix { inherit self; };
@@ -118,8 +153,33 @@ rec {
         checks = lib.getAttrs githubPlatformsForSystems self.outputs.devShells;
       };
 
+      # Continuous integration checks
+      checks = forAllSystems (system: {
+        # Check that the flake and its outputs are valid
+        formatter = self.outputs.formatter.${system};
+      });
+
       # Legacy packages for backward compatibility
-      legacyPackages = forAllSystems (system: nixpkgsFor.${system});
+      legacyPackages = nixpkgsFor;
+
+      # System-specific packages (like network topology and ISO images)
+      packages = forAllSystems (
+        system: {
+          # Network topology diagram
+          topology =
+            (import self.inputs.nix-topology {
+              pkgs = nixpkgsFor.${system};
+              modules = [
+                ./topology.nix
+                { nixosConfigurations = self.outputs.nixosConfigurations; }
+              ];
+            }).config.output;
+
+          # Custom live installer ISO (infector)
+          # Only buildable on x86_64-linux by default
+          infector-iso = lib.mkIf (system == "x86_64-linux") self.nixosConfigurations.infector.config.system.build.isoImage;
+        }
+      );
 
       # Development shells for various tasks
       devShells = forAllSystems (
@@ -133,52 +193,22 @@ rec {
         }
       );
 
-      # Network topology diagram generation
-      topology = forAllSystems (
-        system:
-        import self.inputs.nix-topology {
-          pkgs = nixpkgsFor.${system};
-          modules = [
-            ./topology.nix
-            { nixosConfigurations = self.outputs.nixosConfigurations; }
-          ];
-        }
-      );
-
       # NixOS host configurations
       nixosConfigurations = {
         # MSI GS60 Ghost Laptop
-        ghost-gs60 = self.outputs.lib.nixosSystem {
-          hostname = "ghost-gs60";
-          modules = [
-            ./hosts/ghost-gs60.nix
-            ./modules/users/dom.nix
-          ];
-        };
+        ghost-gs60 = self.outputs.lib.nixosSystem { hostname = "ghost-gs60"; };
 
         # Dell Latitude 7390 Laptop
-        latitude-7390 = self.outputs.lib.nixosSystem {
-          hostname = "latitude-7390";
-          modules = [
-            ./hosts/latitude-7390.nix
-            ./modules/users/dom.nix
-          ];
-        };
+        latitude-7390 = self.outputs.lib.nixosSystem { hostname = "latitude-7390"; };
 
-        # Primary server / Infector
+        # Custom unattended installation media (Live ISO)
         infector = self.outputs.lib.nixosSystem {
           hostname = "infector";
-          modules = [ ./hosts/infector.nix ];
+          user = null;
         };
 
         # Windows Subsystem for Linux environment
-        wsl = self.outputs.lib.nixosSystem {
-          hostname = "wsl";
-          modules = [
-            ./hosts/wsl.nix
-            ./modules/users/dom.nix
-          ];
-        };
+        wsl = self.outputs.lib.nixosSystem { hostname = "wsl"; };
       };
     };
 }

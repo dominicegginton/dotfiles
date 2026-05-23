@@ -1,3 +1,8 @@
+# overlays.nix
+#
+# System-wide overlays to extend nixpkgs with custom packages and library functions.
+# These overlays are applied to the nixpkgs instance used by each host.
+
 { self }:
 
 # Import the custom lib for use in overlays
@@ -31,8 +36,8 @@ rec {
     twx = final.callPackage ./pkgs/twx.nix { };
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
 
-    # Topology output is not a package, so it is not wrapped
-    topology = self.outputs.topology.${final.system}.config.output;
+    # Topology output is now a package
+    topology = self.outputs.packages.${final.system}.topology;
 
     # Merge custom library with nixpkgs lib
     # This allows you to extend or override lib functions

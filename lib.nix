@@ -1,19 +1,23 @@
-{ self }:
 # lib.nix
 #
 # Custom library functions and helpers for use throughout the dotfiles flake.
+# These functions extend the standard nixpkgs library and provide domain-specific
+# logic for managing infrastructure, hostnames, and system configurations.
+
+{ self }:
 
 rec {
   # Primary domain for the infrastructure
   domain = "dominicegginton.dev";
 
-  # Tailscale network domain
+  # Tailscale network domain used for mesh networking
   tailnet = "soay-puffin.ts.net";
 
-  # Hostnames defined in the flake outputs
+  # Hostnames defined in the flake outputs, extracted from nixosConfigurations
   hostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.nixosConfigurations;
 
-  # Custom maintainer definitions merged with nixpkgs
+  # Custom maintainer definitions merged with nixpkgs.
+  # This allows using personal maintainer info in package definitions.
   maintainers = self.inputs.nixpkgs.lib.recursiveUpdate self.inputs.nixpkgs.lib.maintainers {
 
     # Dominic Egginton
@@ -34,12 +38,18 @@ rec {
       platform ? "x86_64-linux",
       # Extra modules to include
       modules ? [ ],
+      # Default user to include
+      user ? "dom",
       ...
     }:
 
-    self.inputs.nixpkgs.lib.nixosSystem {
+    let
+      lib = self.inputs.nixpkgs.lib;
+    in
+
+    lib.nixosSystem {
       # Use nixpkgs instance from flake outputs
-      pkgs = self.outputs.nixpkgsFor.${platform};
+      pkgs = self.outputs.legacyPackages.${platform};
 
       # Pass self, inputs, and lib to all modules
       specialArgs = {
@@ -65,7 +75,9 @@ rec {
           deadman.nixosModules.default
           # dit0.nixosModules.default
           ./modules
+          ./hosts/${hostname}.nix
         ]
+        ++ (lib.optional (user != null) ./modules/users/${user}.nix)
         ++ modules;
     };
 }
