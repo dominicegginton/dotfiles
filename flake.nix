@@ -1,49 +1,51 @@
 {
   # External flake inputs
   inputs = {
-    # NixOS official package collection
+    # Core NixOS and Nixpkgs source
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
-    # Hardware-specific configurations for better device support
+    # Collection of NixOS modules for common hardware devices
     nixos-hardware.url = "github:nixos/nixos-hardware";
 
-    # Pre-built NixOS images and installation tools
+    # Integration for running NixOS as a WSL2 distribution
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+
+    # Community-maintained collection of various NixOS images
     nixos-images.url = "github:nix-community/nixos-images";
 
-    # Persistence for impermanent systems (e.g., tmpfs root)
-    impermanence.url = "github:nix-community/impermanence";
-
-    # Declarative disk partitioning and formatting
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
-
-    # User environment management
+    # Declarative configuration and state management for user environments
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Network topology visualization
-    nix-topology.url = "github:oddlama/nix-topology";
-    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
+    # Declarative disk partitioning, formatting, and mounting tools
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Matrix generation for GitHub Actions
-    nix-github-actions.url = "github:nix-community/nix-github-actions";
-    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+    # Tools for managing persistent files on ephemeral/impermanent root filesystems
+    impermanence.url = "github:nix-community/impermanence";
 
-    # Custom inputs for personal projects
+    # USB user session native systemd deadmans kill switch for emergency system lockdown
     deadman.url = "github:dominicegginton/deadman";
     deadman.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Dit0 is a tailnet native LDAP directory server for managing users, groups, and devices in a Tailscale network
     dit0.url = "github:dominicegginton/dit0";
     dit0.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Theming support (base16)
-    base16.url = "github:SenchoPens/base16.nix";
+    # Generate network and infrastructure topology diagrams from NixOS configurations
+    nix-topology.url = "github:oddlama/nix-topology";
+    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Sudo shim for run0
+    # Generate matrix configurations for GitHub Actions workflows
+    nix-github-actions.url = "github:nix-community/nix-github-actions";
+    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+
+    # Compatibility shim for run0 to support legacy sudo-style commands
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Windows Subsystem for Linux support
-    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    # Theming system following the Base16 architecture
+    base16.url = "github:SenchoPens/base16.nix";
   };
 
   # Flake configuration for nix commands
