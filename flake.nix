@@ -46,6 +46,9 @@
 
     # Theming system following the Base16 architecture
     base16.url = "github:SenchoPens/base16.nix";
+
+    # Niri flake for latest features and modules
+    niri.url = "github:niri-wm/niri";
   };
 
   # Flake configuration for nix commands
@@ -165,23 +168,23 @@
       legacyPackages = nixpkgsFor;
 
       # System-specific packages (like network topology and ISO images)
-      packages = forAllSystems (
-        system: {
-          # Network topology diagram
-          topology =
-            (import self.inputs.nix-topology {
-              pkgs = nixpkgsFor.${system};
-              modules = [
-                ./topology.nix
-                { nixosConfigurations = self.outputs.nixosConfigurations; }
-              ];
-            }).config.output;
+      packages = forAllSystems (system: {
+        # Network topology diagram
+        topology =
+          (import self.inputs.nix-topology {
+            pkgs = nixpkgsFor.${system};
+            modules = [
+              ./topology.nix
+              { nixosConfigurations = self.outputs.nixosConfigurations; }
+            ];
+          }).config.output;
 
-          # Custom live installer ISO (infector)
-          # Only buildable on x86_64-linux by default
-          infector-iso = lib.mkIf (system == "x86_64-linux") self.nixosConfigurations.infector.config.system.build.isoImage;
-        }
-      );
+        # Custom live installer ISO (infector)
+        # Only buildable on x86_64-linux by default
+        infector-iso = lib.mkIf (
+          system == "x86_64-linux"
+        ) self.nixosConfigurations.infector.config.system.build.isoImage;
+      });
 
       # Development shells for various tasks
       devShells = forAllSystems (

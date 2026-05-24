@@ -1,24 +1,33 @@
 {
   lib,
-  fetchurl,
+  runCommand,
+  imagemagick,
   mkGnomeBackground,
   ...
 }:
 
+let
+  # Solid build background image
+  blueImage =
+    runCommand "background.png"
+      {
+        nativeBuildInputs = [ imagemagick ];
+        meta = {
+          description = "Generated blue solid background";
+          license = lib.licenses.free;
+          platforms = lib.platforms.all;
+          maintainers = with lib.maintainers; [ dominicegginton ];
+        };
+      }
+      ''
+        convert -size 3840x2160 \
+          gradient:#4682B4-#94a1ac \
+          $out
+      '';
+in
 mkGnomeBackground {
   name = "background";
-
-  # Fetch the background image.
-  src = fetchurl rec {
-    name = "background.jpg";
-    url = "https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?ixlib=rb-4.1.0&q=85&fm=jpg&crop=entropy&cs=srgb&dl=andreas-gucklhorn-mawU2PoJWfU-unsplash.jpg";
-    sha256 = "sha256-6uqftKcWMiU81t9wiIF/2v9+VXJWBhOA9NVaQF/SD/8=";
-
-    meta = {
-      description = "Background image ${name} from ${url}";
-      license = lib.licenses.free;
-      platforms = lib.platforms.all;
-      maintainers = with lib.maintainers; [ dominicegginton ];
-    };
-  };
+  src = blueImage;
+  primaryColor = "#4682B4";
+  secondaryColor = "#94a1ac";
 }
