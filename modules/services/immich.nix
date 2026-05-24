@@ -10,6 +10,16 @@
     services.immich = {
       host = lib.mkDefault "0.0.0.0";
       port = lib.mkDefault 2283;
+      settings = {
+        server.externalDomain = lib.mkDefault "https://immich.${tailnet}";
+        oauth = {
+          enabled = lib.mkDefault true;
+          issuerUrl = lib.mkDefault "https://idp.${tailnet}";
+          clientId = lib.mkDefault "immich";
+          clientSecret._secret = lib.mkDefault "/run/bitwarden-secrets/immich-oauth-secret";
+          autoRegister = lib.mkDefault true;
+        };
+      };
     };
 
     services.tailscale.serve = {

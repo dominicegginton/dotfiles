@@ -4,6 +4,7 @@
   lib,
   hostname,
   platform,
+  tailnet,
   ...
 }:
 
@@ -99,7 +100,7 @@
   services.tsidp.enable = true;
 
   # Enable Immich Photos/Video Management Services
-  # services.immich.enable = true;
+  services.immich.enable = true;
 
   # Enable Ollama Large Language Model (LLM) AI Services
   # services.ollama.enable = true;
