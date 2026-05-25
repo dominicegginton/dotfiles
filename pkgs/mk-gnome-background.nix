@@ -1,3 +1,6 @@
+# mk-gnome-background is a helper function to create a GNOME background package
+# from a source image. It automatically generates a darkened version of the image
+# if one is not provided and creates the necessary GNOME background XML properties.
 {
   lib,
   stdenv,
@@ -8,6 +11,7 @@
 }:
 
 let
+  # darken is a helper function that uses imagemagick to darken an image
   darken =
     src:
     runCommand "darkened-${src}" { nativeBuildInputs = [ imagemagick ]; } ''
@@ -15,17 +19,23 @@ let
     '';
 in
 {
+  # The source image for the background
   src,
+  # The dark version of the source image, defaults to a darkened version of src
   srcDark ? (darken src),
+  # The name of the background package
   name ? src.name,
+  # Primary and secondary colors for the background properties
   primaryColor ? "#333555",
   secondaryColor ? "#555577",
+  # Metadata descriptions and licenses
   description ? src.meta.description,
   license ? src.meta.license,
   ...
 }:
 
 let
+  # gnomeBackgroundXml generates the XML configuration required by GNOME to recognize the wallpaper
   gnomeBackgroundXml = writeText "gnome-background-properties-${name}" ''
     <?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
@@ -46,6 +56,8 @@ in
 stdenv.mkDerivation {
   inherit name;
   dontUnpack = true;
+
+  # Install the background images and the XML properties file into the appropriate directories
   installPhase = ''
     runHook preInstall
 
@@ -61,6 +73,7 @@ stdenv.mkDerivation {
     runHook postInstall
   '';
 
+  # Export useful attributes for other modules to consume
   passthru = {
     inherit primaryColor secondaryColor;
     backgroundImage = src;
