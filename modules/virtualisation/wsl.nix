@@ -17,11 +17,9 @@
 
     environment.systemPackages = with pkgs; [ jetbrains.gateway ];
 
-    networking = {
-      nftables.enable = lib.mkForce false; # Disable nftables in WSL
-      networkmanager.enable = lib.mkForce false; # Disable NetworkManager in WSL
-      firewall.enable = lib.mkForce false; # Disable firewall in WSL since Windows handles it
-    };
+    # Disable kernel module locking in WSL as it prevents Docker port mapping
+    security.lockKernelModules = lib.mkForce false;
+    security.protectKernelImage = lib.mkForce false;
 
     # Enable nix-ld to run unpatched Linux binaries
     programs.nix-ld.enable = lib.mkForce true;

@@ -120,7 +120,7 @@ rec {
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
 
   # Default overlays
-  nixpkgs.overlays = lib.mkForce [ self.outputs.overlays.default ];
+  nixpkgs.overlays = lib.mkDefault [ self.outputs.overlays.default ];
 
   nix = {
     # nix pkg
