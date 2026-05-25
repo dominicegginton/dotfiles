@@ -1,13 +1,15 @@
-# lib.nix
+## lib.nix
 #
 # Custom library functions and helpers for use throughout the dotfiles flake.
 # These functions extend the standard nixpkgs library and provide domain-specific
 # logic for managing infrastructure, hostnames, and system configurations.
+#
+# This file is imported as self.outputs.lib and merged with nixpkgs lib in overlays.nix.
 
 { self }:
 
 rec {
-  # Primary domain for the infrastructure
+  # Primary domain for the infrastructure (used for FQDNs, certs, etc.)
   domain = "dominicegginton.dev";
 
   # Tailscale network domain used for mesh networking
@@ -17,7 +19,7 @@ rec {
   hostnames = self.inputs.nixpkgs.lib.attrNames self.outputs.nixosConfigurations;
 
   # Custom maintainer definitions merged with nixpkgs.
-  # This allows using personal maintainer info in package definitions.
+  # This allows using personal maintainer info in package definitions and overlays.
   maintainers = self.inputs.nixpkgs.lib.recursiveUpdate self.inputs.nixpkgs.lib.maintainers {
 
     # Dominic Egginton
@@ -31,6 +33,7 @@ rec {
   };
 
   # Helper to define a NixOS system with standard defaults
+  # Used in flake.nix for all host definitions
   nixosSystem =
     {
       hostname,

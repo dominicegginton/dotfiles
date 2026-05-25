@@ -2,6 +2,8 @@
   # shell.nix
   #
   # Development shell for the dotfiles project, providing tools for Nix development, secrets management, and project automation.
+  #
+  # This shell is intended for use with `nix develop` and provides all tools needed for working on this repository.
   self,
   lib,
   mkShell,
@@ -27,12 +29,12 @@ mkShell rec {
   name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
   keys = [ "root@dominicegginton.dev" ];
 
-  # Project specific environment variables
+  # Project specific environment variables (injected from host environment)
   GCP_PROJECT_ID = builtins.getEnv "GCP_PROJECT_ID";
   BWS_PROJECT_ID = builtins.getEnv "BWS_PROJECT_ID";
   BWS_ACCESS_TOKEN = builtins.getEnv "BWS_ACCESS_TOKEN";
 
-  # Development tools
+  # Development tools and project scripts
   packages = [
     nix
     nix-output-monitor
@@ -57,7 +59,7 @@ mkShell rec {
         --output secrets.json \
         $TEMP_DIR/secrets.json
     '')
-    # TODO: complete (define a common schema in the screts module and use it both here and in systemd secret decryption service)
+    # TODO: complete (define a common schema in the secrets module and use it both here and in systemd secret decryption service)
     (writeShellScriptBin "open-secrets" ''
       TEMP_DIR=$(mktemp -d)
       trap "rm -rf $TEMP_DIR" EXIT
@@ -76,5 +78,6 @@ mkShell rec {
     '')
   ];
 
+  # Maintainer info for shell.nix
   meta.maintainers = [ lib.maintainers.dominicegginton ];
 }

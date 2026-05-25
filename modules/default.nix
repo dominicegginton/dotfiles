@@ -18,30 +18,30 @@ in
 rec {
   # Base imports for all systems
   imports = [
-    # Installer and VM profiles
-    "${modulesPath}/installer/scan/not-detected.nix"
-    "${modulesPath}/profiles/qemu-guest.nix"
+    # Core hardware detection and VM support
+    "${modulesPath}/installer/scan/not-detected.nix" # Hardware scan for installer
+    "${modulesPath}/profiles/qemu-guest.nix" # QEMU VM profile
 
-    # Console and display environments
+    # Console and display environments (GNOME, Niri)
     ./console.nix
     ./display/gnome.nix
     ./display/niri.nix
 
-    # Environment modules
+    # Environment modules (user shell, login, packages)
     ./environment.nix
     ./environment/account.nix
     ./environment/issue.nix
     ./environment/login.nix
     ./environment/packages.nix
 
-    # Hardware modules
+    # Hardware modules (Bluetooth, CPU microcode)
     ./hardware/bluetooth.nix
     ./hardware/cpu.nix
 
-    # Networking
+    # Networking stack
     ./networking.nix
 
-    # Program modules
+    # Program modules (user applications)
     ./programs/alacritty.nix
     ./programs/chromium.nix
     ./programs/dconf.nix
@@ -49,10 +49,10 @@ rec {
     ./programs/sherlock-launcher.nix
     ./programs/steam.nix
 
-    # Secrets
+    # Secrets management (Bitwarden, Google Secret Manager, etc.)
     ./secrets.nix
 
-    # Security modules
+    # Security modules (AppArmor, PAM, Polkit, etc.)
     ./security/apparmor.nix
     ./security/pam.nix
     ./security/polkit.nix
@@ -61,11 +61,11 @@ rec {
     ./security/sudo.nix
     ./security/tpm2.nix
 
-    # Service modules
+    # Service modules (system daemons, servers)
     ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/displaymanager.nix
-    # ./services/dit0.nix
+    # ./services/dit0.nix # Disabled: experimental LDAP server
     ./services/flatpak.nix
     ./services/frigate.nix
     ./services/getty.nix
@@ -84,11 +84,11 @@ rec {
     ./services/tsidp.nix
     ./services/usbguard.nix
 
-    # User modules
+    # User modules (user accounts, LDAP)
     ./users/ldap.nix
     ./users/root.nix
 
-    # Virtualisation
+    # Virtualisation (Docker, VMs, WSL, Android)
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
     ./virtualisation/waydroid.nix
@@ -96,15 +96,15 @@ rec {
   ];
 
   system = {
-    # NixOS state version
+    # NixOS state version (enforced for system compatibility)
     stateVersion = lib.mkForce config.system.nixos.release;
 
-    # Custom distribution metadata
+    # Enforce branding for all systems
     nixos = {
-      distroName = lib.mkForce "Residence";
-      distroId = lib.mkForce "residence";
-      vendorName = lib.mkForce self.outputs.lib.maintainers.dominicegginton.name;
-      vendorId = lib.mkForce self.outputs.lib.maintainers.dominicegginton.github;
+      distroName = lib.mkForce "Residence"; # Branding: always "Residence"
+      distroId = lib.mkForce "residence"; # Branding: always "residence"
+      vendorName = lib.mkForce self.outputs.lib.maintainers.dominicegginton.name; # Branding
+      vendorId = lib.mkForce self.outputs.lib.maintainers.dominicegginton.github; # Branding
       tags = lib.mkForce [
         (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux")
         (lib.optionalString config.wsl.enable "wsl")
@@ -112,39 +112,40 @@ rec {
     };
   };
 
-  # System-wide color scheme
+  # System-wide color scheme (used by Home Manager and theming modules)
   scheme = lib.mkForce "${pkgs.theme}/residence-theme.yaml";
 
   # Default localization settings
   time.timeZone = lib.mkDefault "Europe/London";
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
 
-  # Default overlays
+  # Default overlays (allows user overlays to be appended)
   nixpkgs.overlays = lib.mkDefault [ self.outputs.overlays.default ];
 
   nix = {
-    # nix pkg
+    # Pin the Nix package version for reproducibility
     package = lib.mkForce pkgs.nix;
 
-    # automatic garbage collection
+    # Enable automatic garbage collection (GC)
     gc = {
-      automatic = lib.mkForce true;
-      dates = lib.mkForce "weekly";
-      options = lib.mkForce "--delete-older-than 7d";
+      automatic = lib.mkForce true; # Always enable GC
+      dates = lib.mkForce "weekly"; # Run GC weekly
+      options = lib.mkForce "--delete-older-than 7d"; # Remove store paths older than 7 days
     };
 
-    # automatic optimise of the nix store
+    # Enable automatic store optimisation
     optimise.automatic = lib.mkForce true;
 
-    # disable channel updates
+    # Disable legacy channel updates (flakes only)
     channel.enable = lib.mkForce false;
 
-    # nix registry entries
+    # Nix registry and nixPath for flake-based workflows
     registry = lib.mapAttrs (_: value: { flake = value; }) (self.inputs // selfRef self);
     nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
 
-    # nix settings
+    # Nix daemon and CLI settings
     settings = {
+      # Enable experimental features for modern Nix workflows
       experimental-features = [
         "flakes" # Flake support
         "nix-command" # Nix-command support
@@ -156,105 +157,111 @@ rec {
         "pipe-operators" # Enable pipe-operators support
       ];
 
-      # garbage collection settings
+      # Minimum free space for builds (30GB)
       min-free = builtins.toString (30 * 1024 * 1024 * 1024); # 30 GB
-      min-free-check-interval = lib.mkForce 1;
+      min-free-check-interval = lib.mkForce 1; # Check every 1s
 
-      # disable global registry
+      # Disable global registry (flake registry only)
       flake-registry = lib.mkDefault "";
 
-      # performance optimizations for faster rebuilds
+      # Performance optimizations (uncomment to keep outputs/derivations)
       # keep-outputs = true; # keep build outputs
       # keep-derivations = true; # keep derivations for faster rebuilds
 
-      # performance settings
-      eval-cache = lib.mkForce true; # enable caching
-      narinfo-cache-positive-ttl = lib.mkForce 3600; # longer cache for existing narinfos
-      narinfo-cache-negative-ttl = lib.mkForce 60; # quicker retries on missing narinfo
-      fsync-metadata = lib.mkForce false; # faster on SSDs
-      connect-timeout = lib.mkForce 10; # faster timeouts
-      max-substitution-jobs = lib.mkForce 128; # increased parallel substitutions
-      http-connections = lib.mkForce 128; # increased parallel connections
-      cores = lib.mkForce 0; # use all available CPU cores
-      max-jobs = lib.mkForce "auto"; # use all available CPU cores
-      keep-build-log = lib.mkForce false; # dont keep build logs
-      compress-build-log = lib.mkForce true; # compress build logs
-      require-sigs = lib.mkForce true;
+      # Performance and reliability settings
+      eval-cache = lib.mkForce true; # Enable evaluation cache
+      narinfo-cache-positive-ttl = lib.mkForce 3600; # Cache narinfos for 1h
+      narinfo-cache-negative-ttl = lib.mkForce 60; # Retry missing narinfos after 1m
+      fsync-metadata = lib.mkForce false; # Faster on SSDs
+      connect-timeout = lib.mkForce 10; # 10s connection timeout
+      max-substitution-jobs = lib.mkForce 128; # Parallel substitutions
+      http-connections = lib.mkForce 128; # Parallel HTTP connections
+      cores = lib.mkForce 0; # Use all CPU cores
+      max-jobs = lib.mkForce "auto"; # Use all CPU cores
+      keep-build-log = lib.mkForce false; # Don't keep build logs
+      compress-build-log = lib.mkForce true; # Compress build logs
+      require-sigs = lib.mkForce true; # Require signatures for substitutes
       allowed-users = lib.mkForce [
         "root"
         "@wheel"
-      ];
+      ]; # Only allow root and wheel
       trusted-users = lib.mkForce [
         "root"
         "@wheel"
-      ];
+      ]; # Only trust root and wheel
     };
   };
 
   boot = {
-    consoleLogLevel = lib.mkDefault 0; # log all boot messages
-    initrd.verbose = lib.mkDefault false; # disable verbose initrd
+    # Boot verbosity and logging
+    consoleLogLevel = lib.mkDefault 0; # Log all boot messages
+    initrd.verbose = lib.mkDefault false; # Disable verbose initrd
+
     loader = {
-      systemd-boot.enable = lib.mkDefault true; # enable systemd-boot
-      efi.canTouchEfiVariables = lib.mkDefault true; # allow efi variables modification
-      efi.efiSysMountPoint = lib.mkForce "/boot";
+      systemd-boot.enable = lib.mkDefault true; # Enable systemd-boot by default
+      efi.canTouchEfiVariables = lib.mkDefault true; # Allow EFI variable modification
+      efi.efiSysMountPoint = lib.mkForce "/boot"; # Enforce /boot as EFI mount point
     };
 
     plymouth = {
-      enable = lib.mkDefault true;
-      theme = lib.mkForce pkgs.plymouth-theme.name; # set boot theme
-      themePackages = lib.mkForce [ pkgs.plymouth-theme ]; # boot theme package
+      enable = lib.mkDefault true; # Enable plymouth boot splash
+      theme = lib.mkForce pkgs.plymouth-theme.name; # Enforce custom boot theme
+      themePackages = lib.mkForce [ pkgs.plymouth-theme ]; # Enforce theme package
     };
 
+    # Kernel parameters for security and auditing
     kernelParams = [
-      "fips=1"
-      "audit=1"
-      "audit_backlog_limit=8192"
+      "fips=1" # Enable FIPS mode
+      "audit=1" # Enable auditing
+      "audit_backlog_limit=8192" # Increase audit backlog
     ];
 
     kernel.sysctl = {
-      "net.ipv4.tcp_syncookies" = "1";
-      "kernel.kptr_restrict" = 1;
-      "kernel.randomize_va_space" = 2;
+      "net.ipv4.tcp_syncookies" = "1"; # Enable TCP SYN cookies
+      "kernel.kptr_restrict" = 1; # Restrict kernel pointer exposure
+      "kernel.randomize_va_space" = 2; # Enable full ASLR
     };
   };
 
+  # Harden kernel security by default
   security.lockKernelModules = lib.mkDefault true;
   security.protectKernelImage = lib.mkDefault true;
   security.unprivilegedUsernsClone = lib.mkDefault true;
 
   programs = {
-    gnupg.agent.enable = lib.mkForce true;
+    gnupg.agent.enable = lib.mkForce true; # Always enable GnuPG agent
+    # Only start SSH agent if GNOME gcr-ssh-agent is disabled
     ssh.startAgent = lib.mkIf (config.services.gnome.gcr-ssh-agent.enable == false) true;
-    deadman.enable = lib.mkDefault true;
+    deadman.enable = lib.mkDefault true; # Enable deadman switch by default
   };
 
-  environment.defaultPackages = lib.mkForce [ ];
+  # Use mkDefault so users can extend or override default packages
+  environment.defaultPackages = lib.mkDefault [ ];
 
   services = {
-    dbus.enable = lib.mkForce true;
-    smartd.enable = lib.mkDefault true;
-    thermald.enable = lib.mkDefault true;
-    upower.enable = lib.mkDefault true;
-    fwupd.enable = lib.mkDefault true;
-    fstrim.enable = lib.mkDefault true;
+    dbus.enable = lib.mkForce true; # Always enable D-Bus system bus
+    smartd.enable = lib.mkDefault true; # Enable SMART disk monitoring by default
+    thermald.enable = lib.mkDefault true; # Enable thermal management by default
+    upower.enable = lib.mkDefault true; # Enable power management by default
+    fwupd.enable = lib.mkDefault true; # Enable firmware updates by default
+    fstrim.enable = lib.mkDefault true; # Enable periodic SSD TRIM by default
   };
 
   home-manager = {
-    useGlobalPkgs = lib.mkForce true;
-    backupFileExtension = lib.mkForce "backup";
+    useGlobalPkgs = lib.mkForce true; # Always use global pkgs for Home Manager
+    backupFileExtension = lib.mkForce "backup"; # Set backup extension for Home Manager
     sharedModules = [
-      self.inputs.base16.homeManagerModule
+      self.inputs.base16.homeManagerModule # Base16 theming for Home Manager
       {
         inherit scheme;
         home = {
-          stateVersion = lib.mkForce "25.11";
-          enableNixpkgsReleaseCheck = lib.mkForce false;
+          stateVersion = lib.mkForce "25.11"; # Pin Home Manager state version
+          enableNixpkgsReleaseCheck = lib.mkForce false; # Disable release check
         };
         programs = {
-          bash.enable = lib.mkForce true;
-          info.enable = lib.mkForce true;
-          hstr.enable = lib.mkForce true;
+          bash.enable = lib.mkForce true; # Always enable bash
+          info.enable = lib.mkForce true; # Always enable info
+          hstr.enable = lib.mkForce true; # Always enable hstr
         };
       }
     ];

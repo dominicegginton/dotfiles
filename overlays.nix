@@ -1,21 +1,25 @@
-# overlays.nix
+## overlays.nix
 #
 # System-wide overlays to extend nixpkgs with custom packages and library functions.
 # These overlays are applied to the nixpkgs instance used by each host.
+#
+# Overlays allow you to add, override, or extend packages and library functions in nixpkgs for all systems in this flake.
 
 { self }:
 
-# Import the custom lib for use in overlays
+## Import the custom lib for use in overlays
 with self.outputs.lib;
 
 let
   # Helper function to map withSbomnix over a set of packages
+  # This is used to add SBOM and provenance utilities to all packages in a set
   wrapWithSbomnix = withSbomnix: pkgs: (builtins.mapAttrs (_: pkg: withSbomnix pkg) pkgs);
 in
 
 rec {
 
   # Default overlay containing custom packages, library extensions, and sbomnix passthru wrappers
+  # This overlay is always applied to all systems
   default = final: prev: rec {
     # Import the withSbomnix wrapper function
     withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
@@ -40,11 +44,11 @@ rec {
     topology = self.outputs.packages.${final.system}.topology;
 
     # Merge custom library with nixpkgs lib
-    # This allows you to extend or override lib functions
+    # This allows you to extend or override lib functions globally
     lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
 
     # Extend GNOME extensions with custom ones
-    # These are also wrapped with sbomnix utilities
+    # These are also wrapped with sbomnix utilities for SBOM/provenance
     gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
       inherit (final)
         dynamic-music-pill
