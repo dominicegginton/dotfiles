@@ -47,6 +47,10 @@
     # Theming system following the Base16 architecture
     base16.url = "github:SenchoPens/base16.nix";
 
+    # Secret management with SOPS
+    sops-nix.url = "github:Mic92/sops-nix";
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     # Niri flake for latest features and modules
     niri.url = "github:niri-wm/niri";
   };

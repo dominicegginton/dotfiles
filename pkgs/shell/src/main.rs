@@ -33,40 +33,6 @@ const STYLE: &str = "
     }
 ";
 
-fn set_background(image_path: &str) {
-    // Get the currently running process of swaybg
-    let swaybg_processes = std::process::Command::new("pgrep").arg("swaybg").output();
-
-    // Start a new swaybg process with the specified image
-    let _ = std::process::Command::new("swaybg")
-        .args(&["-i", image_path, "-m", "fill"])
-        .spawn();
-
-    // Wait for 100 milliseconds to ensure swaybg starts before killing previous instances
-    std::thread::sleep(std::time::Duration::from_millis(1000));
-
-    // Kill previous swaybg processes
-    // TODO: Fix this - dont kill process - migrate from swaybg to setting background via wlroots protocol
-    if let Ok(output) = swaybg_processes {
-        // Parse the output to get PIDs
-        let pids = String::from_utf8_lossy(&output.stdout);
-
-        println!("Killing swaybg PIDs: {}", pids);
-        // Kill each PID
-        for pid in pids.lines() {
-            println!("Killing swaybg PID: {}", pid);
-            let status = std::process::Command::new("kill")
-                .args(&["-9", "-P", pid])
-                .status();
-            if let Ok(s) = status {
-                println!("Killed swaybg PID: {} with status: {}", pid, s);
-            } else {
-                eprintln!("Failed to kill swaybg PID: {}", pid);
-            }
-        }
-    }
-}
-
 fn get_time() -> String {
     // Get the current local time
     let now = chrono::Local::now();
@@ -160,23 +126,10 @@ fn main() {
 
         // Get the current theme
         let settings = Settings::new("org.gnome.desktop.interface");
-        let current_theme = settings.get::<String>("color-scheme");
-
-        // Get the background settings
-        let desktop_background = Settings::new("org.gnome.desktop.background");
-        let light_background_image_uri: String = desktop_background
-            .get::<String>("picture-uri")
-            .replace("file://", "");
-        let dark_background_image_uri: String = desktop_background
-            .get::<String>("picture-uri-dark")
-            .replace("file://", "");
+        let _current_theme = settings.get::<String>("color-scheme");
 
         // Set the initial background based on the current theme
-        if current_theme == "prefer-dark" {
-            set_background(&dark_background_image_uri);
-        } else {
-            set_background(&light_background_image_uri);
-        }
+        // (Initial set is now handled by the sway-wallpaper systemd service)
     });
 
     // Set up the application when activated
@@ -311,22 +264,11 @@ fn main() {
                     let settings = Settings::new("org.gnome.desktop.interface");
                     let current_theme = settings.get::<String>("color-scheme");
 
-                    // Get the background settings
-                    let desktop_background = Settings::new("org.gnome.desktop.background");
-                    let light_background_image_uri: String = desktop_background
-                        .get::<String>("picture-uri")
-                        .replace("file://", "");
-                    let dark_background_image_uri: String = desktop_background
-                        .get::<String>("picture-uri-dark")
-                        .replace("file://", "");
-
                     // Toggle the theme and update background
                     if current_theme == "prefer-dark" {
                         settings.set("color-scheme", &"prefer-light").unwrap();
-                        set_background(&light_background_image_uri);
                     } else {
                         settings.set("color-scheme", &"prefer-dark").unwrap();
-                        set_background(&dark_background_image_uri);
                     }
                 });
 

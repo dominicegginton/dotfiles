@@ -15,7 +15,6 @@
   gtk4-layer-shell,
   libadwaita,
   cairo,
-  swaybg,
 }:
 
 rustPlatform.buildRustPackage rec {
@@ -25,13 +24,11 @@ rustPlatform.buildRustPackage rec {
   cargoLock.lockFile = ./Cargo.lock;
 
   # Build requirements and runtime dependencies
-  runtimeInputs = [ swaybg ];
   nativeBuildInputs = [
     rustfmt
     pkg-config
     gcc
     glib
-    swaybg
   ];
   buildInputs = [
     gtk4

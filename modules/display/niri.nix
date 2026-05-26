@@ -48,6 +48,45 @@ let
     }
     gradia --screenshot
   '';
+
+  # Helper script to sync GNOME background settings with swaybg
+  swayWallpaper = pkgs.writeShellScriptBin "sway-wallpaper" ''
+    PATH=${
+      lib.makeBinPath [
+        pkgs.glib
+        pkgs.swaybg
+        pkgs.procps
+        pkgs.coreutils
+        pkgs.gnugrep
+        pkgs.findutils
+      ]
+    }
+
+    update_wallpaper() {
+      THEME=$(gsettings get org.gnome.desktop.interface color-scheme | tr -d "'")
+      if [ "$THEME" = "prefer-dark" ]; then
+        IMAGE=$(gsettings get org.gnome.desktop.background picture-uri-dark | tr -d "'" | sed 's/file:\/\///')
+      else
+        IMAGE=$(gsettings get org.gnome.desktop.background picture-uri | tr -d "'" | sed 's/file:\/\///')
+      fi
+
+      if [ -f "$IMAGE" ]; then
+        # Use pkill to clear old instances, then start new one
+        pkill swaybg || true
+        swaybg -i "$IMAGE" -m fill &
+      fi
+    }
+
+    # Initial set
+    update_wallpaper
+
+    # Monitor for changes and update
+    gsettings monitor org.gnome.desktop.interface color-scheme | while read -r _; do update_wallpaper; done &
+    gsettings monitor org.gnome.desktop.background picture-uri | while read -r _; do update_wallpaper; done &
+    gsettings monitor org.gnome.desktop.background picture-uri-dark | while read -r _; do update_wallpaper; done &
+
+    wait
+  '';
 in
 
 with config.scheme.withHashtag;
@@ -95,6 +134,18 @@ with config.scheme.withHashtag;
     # Display manager configuration
     services.displayManager.gdm.enable = true;
     services.geoclue2.enableDemoAgent = lib.mkDefault true;
+
+    # Systemd service to sync GNOME wallpaper settings to swaybg
+    systemd.user.services.sway-wallpaper = {
+      description = "Sync GNOME wallpaper settings to swaybg";
+      wantedBy = [ "graphical-session.target" ];
+      partOf = [ "graphical-session.target" ];
+      after = [ "graphical-session.target" ];
+      serviceConfig = {
+        ExecStart = "${swayWallpaper}/bin/sway-wallpaper";
+        Restart = "on-failure";
+      };
+    };
 
     programs.niri = {
       enable = true;

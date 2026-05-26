@@ -73,6 +73,7 @@ rec {
           base16.nixosModule
           disko.nixosModules.disko
           impermanence.nixosModules.impermanence
+          sops-nix.nixosModules.sops
           home-manager.nixosModules.default
           run0-sudo-shim.nixosModules.default
           deadman.nixosModules.default

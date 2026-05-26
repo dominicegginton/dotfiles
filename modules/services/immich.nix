@@ -16,7 +16,7 @@
           enabled = lib.mkDefault true;
           issuerUrl = lib.mkDefault "https://idp.${tailnet}";
           clientId = lib.mkDefault "immich";
-          clientSecret._secret = lib.mkDefault "/run/bitwarden-secrets/immich-oauth-secret";
+          clientSecret._secret = config.sops.secrets."services/immich/oauth-secret".path;
           autoRegister = lib.mkDefault true;
         };
       };

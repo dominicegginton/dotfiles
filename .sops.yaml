@@ -1,0 +1,17 @@
+keys:
+  - &dom_key C11BEB9007709C34FABBB5314C79CE4F82847A9F # dominic.egginton@gmail.com (GPG)
+  
+  # Host SSH keys (convert with: ssh-to-age < /etc/ssh/ssh_host_ed25519_key.pub)
+  - &ghost_gs60 age1w60ja93482gldvnf86707u4290pxtjfmwq6z3fnupuz4jkdhcytscujrjt
+  - &latitude_7390 age102fsxz33ww9cqdh95s4yzshuvnnjq7eneczm3nctapakntc4jvzqvfr06u
+  # - &wsl age1...
+
+creation_rules:
+  - path_regex: secrets/.*\.yaml$
+    key_groups:
+      - pgp:
+        - *dom_key
+      - age:
+        - *ghost_gs60
+        - *latitude_7390
+        # - *wsl

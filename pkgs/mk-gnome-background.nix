@@ -74,6 +74,7 @@ stdenv.mkDerivation {
   '';
 
   # Export useful attributes for other modules to consume
+  # These can be accessed via pkgs.background (e.g., pkgs.background.backgroundImage)
   passthru = {
     inherit primaryColor secondaryColor;
     backgroundImage = src;
