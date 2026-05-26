@@ -10,8 +10,8 @@ creation_rules:
   - path_regex: secrets/.*\.yaml$
     key_groups:
       - pgp:
-        - *dom_key
-      - age:
-        - *ghost_gs60
-        - *latitude_7390
-        # - *wsl
+          - *dom_key
+        age:
+          - *ghost_gs60
+          - *latitude_7390
+          # - *wsl
