@@ -72,7 +72,6 @@
 
   # Graphical desktop environments
   display.gnome.enable = true;
-  display.niri.enable = true;
 
   services.tsidp.enable = true;
 
