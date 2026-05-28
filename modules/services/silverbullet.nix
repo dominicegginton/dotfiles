@@ -33,6 +33,7 @@
       bucket = "gs://silverbullet-backup";
       directories = [ config.services.silverbullet.spaceDir ];
       interval = "daily";
+      delete = true;
       serviceAccountKeyFile = config.sops.secrets."services/silverbullet/gcs-backup-key".path;
       wantedBy = [ "silverbullet.service" ];
       wants = [ "silverbullet.service" ];

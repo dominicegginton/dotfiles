@@ -29,9 +29,10 @@
 
     services.gcs-backup.immich = {
       enable = true;
-      bucket = "gs://immich-data-66ea520add6c51fb";
+      bucket = "gs://immich-backup-66ea520add6c51fb";
       directories = [ config.services.immich.mediaLocation ];
       interval = "daily";
+      delete = true;
       serviceAccountKeyFile = config.sops.secrets."services/immich/gcs-backup-key".path;
       wantedBy = [ "immich-server.service" ];
       wants = [ "immich-server.service" ];
