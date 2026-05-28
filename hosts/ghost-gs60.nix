@@ -105,8 +105,8 @@
   # Enable Ollama Large Language Model (LLM) AI Services
   # services.ollama.enable = true;
 
-  # Enable Open-WebUI Large Language Model (LLM) AI Web Interface
-  # services.open-webui.enable = true;
+  # Enable Hermes Agent AI service
+  services.hermes-agent.enable = true;
 
   # Enable Directory Information Tree & LDAP Services
   # services.dit0.enable = true;

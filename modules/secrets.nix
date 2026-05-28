@@ -17,6 +17,7 @@
       "services/immich/gcs-backup-key" = { };
       "services/silverbullet/gcs-backup-key" = { };
       "services/frigate/gcs-backup-key" = { };
+      "services/hermes/env" = { };
     };
   };
 }

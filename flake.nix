@@ -53,6 +53,9 @@
 
     # Niri flake for latest features and modules
     niri.url = "github:niri-wm/niri";
+
+    # Hermes Agent is a community-driven, locally-controlled AI agent
+    hermes-agent.url = "github:NousResearch/hermes-agent";
   };
 
   # Flake configuration for nix commands
