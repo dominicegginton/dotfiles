@@ -28,6 +28,14 @@
         "https://127.0.0.1:${toString config.services.silverbullet.listenPort}";
     };
 
+    services.gcs-backup.silverbullet = {
+      enable = true;
+      bucket = "gs://silverbullet-backup";
+      directories = [ config.services.silverbullet.spaceDir ];
+      interval = "daily";
+      serviceAccountKeyFile = config.sops.secrets."services/silverbullet/gcs-backup-key".path;
+    };
+
     topology.self.services.silverbullet = {
       name = "Silverbullet";
       details.listen.text = "https://silverbullet.${tailnet}";

@@ -14,6 +14,9 @@
         neededForUsers = true;
       };
       "services/immich/oauth-secret" = { };
+      "services/immich/gcs-backup-key" = { };
+      "services/silverbullet/gcs-backup-key" = { };
+      "services/frigate/gcs-backup-key" = { };
     };
   };
 }

@@ -68,6 +68,7 @@ rec {
     # ./services/dit0.nix # Disabled: experimental LDAP server
     ./services/flatpak.nix
     ./services/frigate.nix
+    ./services/gcs-backup.nix
     ./services/getty.nix
     ./services/home-assistant.nix
     ./services/immich.nix

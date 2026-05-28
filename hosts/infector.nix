@@ -68,23 +68,8 @@ in
 
   # Custom installation script
   environment.systemPackages = [
-    (pkgs.writeShellScriptBin "unattended-install" ''
-      set -eux
-
-      # Connect to WiFi
-      ${pkgs.networkmanager}/bin/nmcli device wifi connect --ask
-
-      # Run disko-install with the specified configuration
-      exec ${pkgs.disko}/bin/disko-install \
-        --flake "${self}#${nixosConfiguration}" \
-        --disk main /dev/sda
-
-      # Authenticate with Google Cloud to fetch secrets
-      ${pkgs.google-cloud-sdk}/bin/gcloud auth login --brief --no-launch-browser
-
-      # Fetch and import GPG key for secrets management
-      ${pkgs.gsutil}/bin/gsutil cp gs://installer-secrets/installer-gpg-key /mnt/root-gpg-key.asc
-      ${pkgs.coreutils}/bin/chroot /mnt /bin/bash -c "gpg --import /root-gpg-key.asc && rm /root-gpg-key.asc"
+    (pkgs.writeShellScript "custom-install-script" ''
+      # ...
     '')
   ];
 }

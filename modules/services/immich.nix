@@ -27,6 +27,14 @@
       services."immich".endpoints."tcp:80" = "http://127.0.0.1:${toString config.services.immich.port}";
     };
 
+    services.gcs-backup.immich = {
+      enable = true;
+      bucket = "gs://immich-data-66ea520add6c51fb";
+      directories = [ config.services.immich.mediaLocation ];
+      interval = "daily";
+      serviceAccountKeyFile = config.sops.secrets."services/immich/gcs-backup-key".path;
+    };
+
     topology.self.services.immich = {
       name = "Immich";
       details.listen.text = "https://immich.${tailnet}";

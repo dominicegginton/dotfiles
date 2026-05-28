@@ -23,7 +23,35 @@ output "frigate_data_bucket" {
   value       = google_storage_bucket.frigate_data.name
 }
 
+output "immich_backup_bucket" {
+  description = "GCS Bucket name for Immich backups"
+  value       = google_storage_bucket.immich_backup.name
+}
 
+output "immich_backup_service_account" {
+  description = "Service account email for Immich backups"
+  value       = google_service_account.immich_backup.email
+}
+
+output "silverbullet_backup_bucket" {
+  description = "GCS Bucket name for Silverbullet backups"
+  value       = google_storage_bucket.silverbullet_backup.name
+}
+
+output "silverbullet_backup_service_account" {
+  description = "Service account email for Silverbullet backups"
+  value       = google_service_account.silverbullet_backup.email
+}
+
+output "frigate_backup_bucket" {
+  description = "GCS Bucket name for Frigate backups"
+  value       = google_storage_bucket.frigate_backup.name
+}
+
+output "frigate_backup_service_account" {
+  description = "Service account email for Frigate backups"
+  value       = google_service_account.frigate_backup.email
+}
 
 output "project_id" {
   description = "GCP Project ID"
