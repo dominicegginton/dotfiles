@@ -61,6 +61,18 @@ in
                 ".*\\.tmp"
               ];
             };
+
+            wantedBy = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "List of systemd units that should want this backup service.";
+            };
+
+            wants = lib.mkOption {
+              type = lib.types.listOf lib.types.str;
+              default = [ ];
+              description = "List of systemd units that this backup service should want.";
+            };
           };
         }
       )
@@ -78,8 +90,9 @@ in
         name: job:
         lib.nameValuePair "gcs-backup-${name}" {
           description = "Backup job '${name}' to Google Cloud Storage";
-          after = [ "network-online.target" ];
-          wants = [ "network-online.target" ];
+          after = [ "network-online.target" ] ++ job.wantedBy ++ job.wants;
+          wants = [ "network-online.target" ] ++ job.wants;
+          wantedBy = job.wantedBy;
           path = [ pkgs.google-cloud-sdk ];
           environment = {
             CLOUDSDK_CONFIG = "/var/lib/gcs-backup/${name}";

@@ -33,6 +33,8 @@
       directories = [ config.services.immich.mediaLocation ];
       interval = "daily";
       serviceAccountKeyFile = config.sops.secrets."services/immich/gcs-backup-key".path;
+      wantedBy = [ "immich-server.service" ];
+      wants = [ "immich-server.service" ];
     };
 
     topology.self.services.immich = {

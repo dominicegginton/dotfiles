@@ -34,6 +34,8 @@
       directories = [ config.services.silverbullet.spaceDir ];
       interval = "daily";
       serviceAccountKeyFile = config.sops.secrets."services/silverbullet/gcs-backup-key".path;
+      wantedBy = [ "silverbullet.service" ];
+      wants = [ "silverbullet.service" ];
     };
 
     topology.self.services.silverbullet = {

@@ -40,6 +40,8 @@
       directories = [ "/var/lib/frigate" ]; # Default storage for Frigate recordings
       interval = "daily";
       serviceAccountKeyFile = config.sops.secrets."services/frigate/gcs-backup-key".path;
+      wantedBy = [ "frigate.service" ];
+      wants = [ "frigate.service" ];
     };
 
     topology.self.services.frigate = {
