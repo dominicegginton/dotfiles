@@ -47,6 +47,16 @@
       smartd.enable = lib.mkForce false;
     };
 
+    networking.wireless.enable = lib.mkForce false;
+
+    # Avoid boot/login delays from network-online waits in virtualized WSL networking.
+    systemd.services = {
+      NetworkManager-wait-online.enable = lib.mkForce false;
+      systemd-networkd-wait-online.enable = lib.mkForce false;
+      # Supplicant is not used in WSL and may fail when no Wi-Fi device exists.
+      wpa_supplicant.enable = lib.mkForce false;
+    };
+
     boot = {
       loader = {
         systemd-boot.enable = lib.mkForce false;

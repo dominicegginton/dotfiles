@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, config, ... }:
 
 let
   # Custom PAM profile with brute-force protection using pam_faillock
@@ -17,8 +17,8 @@ in
   security.pam = {
     # Apply custom fail-lock protection to login and SSH services
     services = {
-      login.text = lib.mkDefault pamfile;
-      sshd.text = lib.mkDefault pamfile;
+      login.text = lib.mkIf (!config.wsl.enable) (lib.mkDefault pamfile);
+      sshd.text = lib.mkIf (!config.wsl.enable) (lib.mkDefault pamfile);
       systemd-run0 = {
         setLoginUid = lib.mkDefault true;
         pamMount = lib.mkDefault true;

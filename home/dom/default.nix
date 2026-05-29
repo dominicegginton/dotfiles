@@ -225,6 +225,7 @@
         stylua
         typos-lsp
         pyright
+
       ];
     };
 
@@ -235,6 +236,9 @@
         eza
         twm
         twx
+        gh-markdown-preview
+        github-copilot-cli
+        gh-stack
       ]
       ++ (if (osConfig ? wsl && osConfig.wsl.enable) then [ ] else [ youtube-tv ]);
   };

@@ -20,7 +20,9 @@ in
       enable = lib.mkDefault true;
       isNormalUser = lib.mkDefault true;
       description = self.outputs.lib.maintainers.dominicegginton.name;
-      hashedPasswordFile = config.sops.secrets."users/${username}/password".path;
+      hashedPasswordFile = lib.mkIf (
+        !config.wsl.enable
+      ) config.sops.secrets."users/${username}/password".path;
       homeMode = "0755";
       # Group memberships
       extraGroups = [

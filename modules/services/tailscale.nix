@@ -10,6 +10,10 @@
 
 with config.lib.topology;
 
+let
+  isWSL = config.wsl.enable;
+  tailscaleInterface = if isWSL then "userspace-networking" else "tailscale0";
+in
 {
   # Ensure tailscale SSL directory exists
   systemd.tmpfiles.rules = [ "d /etc/ssl/tailscale 0755 root root -" ];
@@ -17,7 +21,7 @@ with config.lib.topology;
   # Auto-generate HTTPS certificates using Tailscale
   systemd.services.tailscale-cert =
     let
-      notWSL = !config.wsl.enable;
+      notWSL = !isWSL;
     in
     lib.mkIf notWSL {
       description = "Generate Tailscale HTTPS certificate";
@@ -35,14 +39,14 @@ with config.lib.topology;
   # Tailscale service configuration
   services.tailscale = {
     enable = lib.mkForce true;
-    useRoutingFeatures = lib.mkForce "both";
+    useRoutingFeatures = lib.mkForce (if isWSL then "client" else "both");
     extraUpFlags = [
       "--ssh"
       "--accept-dns"
-      "--accept-routes"
-    ];
+    ]
+    ++ lib.optionals (!isWSL) [ "--accept-routes" ];
     extraSetFlags = [ "--posture-checking=true" ];
-    interfaceName = lib.mkForce "tailscale0";
+    interfaceName = lib.mkForce tailscaleInterface;
   };
 
   # ACME configuration for SSL certificates
@@ -54,7 +58,7 @@ with config.lib.topology;
   environment.systemPackages = with pkgs; [ tailscale ];
 
   # Topology metadata for Tailscale interface
-  topology.self.interfaces.tailscale0 = {
+  topology.self.interfaces.${tailscaleInterface} = {
     network = tailnet;
     type = "tailscale";
     icon = ../../assets/tailscale.svg;

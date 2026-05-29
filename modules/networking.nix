@@ -16,12 +16,16 @@ with config.lib.topology;
     firewall = {
       enable = lib.mkDefault true;
       # Trust all traffic from the Tailscale interface
-      trustedInterfaces = lib.mkDefault [ "tailscale0" ];
+      trustedInterfaces = lib.mkDefault (
+        lib.optional (
+          config.services.tailscale.interfaceName != "userspace-networking"
+        ) config.services.tailscale.interfaceName
+      );
       # Loose reverse path filtering for Tailscale compatibility
       checkReversePath = lib.mkDefault "loose";
     };
 
-    wireless = {
+    wireless = lib.mkIf (!config.wsl.enable) {
       fallbackToWPA2 = true;
       userControlled.enable = true;
       userControlled.group = "wheel";
@@ -39,8 +43,8 @@ with config.lib.topology;
     networkmanager = {
       enable = true;
       dns = "systemd-resolved";
-      unmanaged = [ "wlp108s0" ];
-      wifi = {
+      unmanaged = lib.mkIf (!config.wsl.enable) [ "wlp108s0" ];
+      wifi = lib.mkIf (!config.wsl.enable) {
         backend = "iwd";
         powersave = false;
       };
