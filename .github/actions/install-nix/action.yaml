@@ -4,7 +4,7 @@ description: Install Nix package manager, optionally freeing disk space from the
 inputs:
   free-disk-space:
     description: "Free disk space"
-    default: false
+    default: "false"
 
 runs:
   using: "composite"
@@ -12,14 +12,49 @@ runs:
     - name: free-disk-space
       if: ${{ inputs.free-disk-space == 'true' && runner.os == 'Linux' && runner.arch == 'x64' }}
       run: |
-        sudo apt clean
-        docker image prune -af
-        sudo apt-get remove -y azure-cli google-cloud-cli google-cloud-cli-anthoscli
-        sudo apt-get autoremove -y
+        set -euxo pipefail
+
+        # Prune Docker to reclaim layered image/cache space first.
+        docker system prune -af || true
+
+        # Remove large, preinstalled language/toolchain packages when present.
+        sudo apt-get -y remove --purge \
+          azure-cli \
+          google-cloud-cli \
+          google-cloud-cli-anthoscli \
+          dotnet-sdk-* \
+          temurin-* \
+          openjdk-* \
+          llvm-* \
+          firefox \
+          powershell \
+          mono-* \
+          php* \
+          mysql* \
+          postgresql* \
+          mongodb* \
+          snapd || true
+
+        # Remove large hosted-toolcache and SDK directories from the runner image.
+        sudo rm -rf \
+          "$AGENT_TOOLSDIRECTORY" \
+          /opt/hostedtoolcache \
+          /usr/local/.ghcup \
+          /usr/local/julia* \
+          /usr/local/lib/android \
+          /usr/local/share/chromium \
+          /usr/local/share/powershell \
+          /usr/local/share/boost \
+          /usr/share/dotnet \
+          /usr/lib/jvm \
+          /opt/ghc \
+          /opt/pipx || true
+
+        # Final package/cache cleanup.
+        sudo apt-get -y autoremove --purge
         sudo apt-get clean
-        sudo rm -rf "/usr/local/share/boost"
-        sudo rm -rf "$AGENT_TOOLSDIRECTORY"
-        sudo rm -rf /usr/share/dotnet/
+        sudo rm -rf /var/lib/apt/lists/*
+
       shell: bash
     - name: Install Nix
       uses: cachix/install-nix-action@v31
