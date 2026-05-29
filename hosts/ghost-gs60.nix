@@ -108,6 +108,18 @@
   # Enable Hermes Agent AI service
   services.hermes-agent.enable = true;
 
+  # Enable GitHub Actions self-hosted runner
+  services.residence.githubRunner = {
+    enable = true;
+    extraLabels = [
+      "self-hosted"
+      "linux"
+      "x64"
+      "ghost-gs60"
+      "nix"
+    ];
+  };
+
   # Enable Directory Information Tree & LDAP Services
   # services.dit0.enable = true;
 

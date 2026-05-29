@@ -69,6 +69,7 @@ rec {
     ./services/flatpak.nix
     ./services/frigate.nix
     ./services/gcs-backup.nix
+    ./services/github-runner.nix
     ./services/hermes-agent.nix
     ./services/getty.nix
     ./services/home-assistant.nix
