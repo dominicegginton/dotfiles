@@ -110,7 +110,7 @@
 
   # Enable GitHub Actions self-hosted runner
   services.residence.githubRunner = {
-    enable = true;
+    enable = false;
     extraLabels = [
       "self-hosted"
       "linux"

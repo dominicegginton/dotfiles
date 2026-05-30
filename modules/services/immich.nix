@@ -12,12 +12,14 @@
       port = lib.mkDefault 2283;
       settings = {
         server.externalDomain = lib.mkDefault "https://immich.${tailnet}";
+        passwordLogin.enabled = lib.mkDefault false;
         oauth = {
           enabled = lib.mkDefault true;
           issuerUrl = lib.mkDefault "https://idp.${tailnet}";
           clientId = lib.mkDefault "d256edd52e37846b4aae2e485c1d823e";
           clientSecret._secret = config.sops.secrets."services/immich/oauth-secret".path;
           autoRegister = lib.mkDefault true;
+          autoLaunch = lib.mkDefault true;
         };
       };
     };
