@@ -11,6 +11,9 @@
       # Use the BlueZ Bluetooth stack
       package = lib.mkForce pkgs.bluez;
 
+      # Automatically power on the Bluetooth controller at boot
+      powerOnBoot = lib.mkDefault true;
+
       # Configure Bluetooth settings for improved performance and compatibility
       settings = {
         General = {

@@ -266,6 +266,7 @@ with lib;
     services.udev.packages = with pkgs; [
       mutter
       gnome-settings-daemon
+      gnome-bluetooth
     ];
 
     # Append Gnome session and shell to system packages

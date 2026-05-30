@@ -103,7 +103,7 @@
   services.immich.enable = true;
 
   # Enable Ollama Large Language Model (LLM) AI Services
-  # services.ollama.enable = true;
+  services.ollama.enable = false;
 
   # Enable Hermes Agent AI service
   services.hermes-agent.enable = false;
@@ -121,7 +121,7 @@
   };
 
   # Enable Directory Information Tree & LDAP Services
-  # services.dit0.enable = true;
+  services.dit0.enable = false;
 
   # Enable Frigate NVR & OD Services
   services.frigate = {
@@ -143,7 +143,7 @@
   };
 
   # Enable SilverBullet Notes Services
-  # services.silverbullet.enable = true;
+  services.silverbullet.enable = false;
 
   # Topology Definition
   topology.self = {
