@@ -106,7 +106,7 @@
   # services.ollama.enable = true;
 
   # Enable Hermes Agent AI service
-  services.hermes-agent.enable = true;
+  services.hermes-agent.enable = false;
 
   # Enable GitHub Actions self-hosted runner
   services.residence.githubRunner = {
