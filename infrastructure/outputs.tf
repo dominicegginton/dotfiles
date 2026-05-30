@@ -1,5 +1,3 @@
-
-
 output "gcp_project_id" {
   description = "GCP Project ID"
   value       = module.gcp_infrastructure.project_id
