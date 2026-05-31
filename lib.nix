@@ -78,7 +78,7 @@ rec {
           run0-sudo-shim.nixosModules.default
           deadman.nixosModules.default
           hermes-agent.nixosModules.default
-          # dit0.nixosModules.default
+          dit0.nixosModules.default
           ./modules
           ./hosts/${hostname}.nix
         ]
