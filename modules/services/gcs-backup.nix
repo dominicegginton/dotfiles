@@ -104,7 +104,7 @@ in
 
             ${lib.concatMapStringsSep "\n" (dir: ''
               echo "Backing up ${dir} to ${job.bucket}..."
-              gsutil -m rsync -r ${lib.optionalString job.delete "-d"} ${lib.escapeShellArgs job.extraArgs} "${dir}" "${job.bucket}/${config.networking.hostName}/${name}${dir}"
+              gcloud storage rsync -r ${lib.optionalString job.delete "--delete-unmatched-destination-objects"} ${lib.escapeShellArgs job.extraArgs} "${dir}" "${job.bucket}/${config.networking.hostName}/${name}${dir}"
             '') job.directories}
           '';
           serviceConfig = {
