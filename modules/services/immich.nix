@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  hostname,
   tailnet,
   ...
 }:
@@ -11,7 +12,7 @@
       host = lib.mkDefault "0.0.0.0";
       port = lib.mkDefault 2283;
       settings = {
-        server.externalDomain = lib.mkDefault "https://immich.${tailnet}";
+        server.externalDomain = lib.mkDefault "http://immich.${tailnet}";
         passwordLogin.enabled = lib.mkDefault false;
         oauth = {
           enabled = lib.mkDefault true;
@@ -42,7 +43,7 @@
 
     topology.self.services.immich = {
       name = "Immich";
-      details.listen.text = "https://immich.${tailnet}";
+      details.listen.text = "https://${hostname}.${tailnet}";
     };
   };
 }
