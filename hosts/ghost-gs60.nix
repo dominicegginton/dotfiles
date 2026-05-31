@@ -121,7 +121,7 @@
   };
 
   # Enable Directory Information Tree & LDAP Services
-  services.dit0.enable = false;
+  # services.dit0.enable = false;
 
   # Enable Frigate NVR & OD Services
   services.frigate = {
