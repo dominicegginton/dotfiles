@@ -61,6 +61,21 @@ resource "google_storage_bucket" "immich_backup" {
   versioning {
     enabled = true
   }
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      days_since_noncurrent_time = 30
+    }
+  }
+  soft_delete_policy {
+    retention_duration_seconds = 604800
+  }
+  retention_policy {
+    retention_period = 2592000
+    is_locked        = false
+  }
 }
 
 resource "google_service_account" "immich_backup" {
@@ -87,6 +102,21 @@ resource "google_storage_bucket" "silverbullet_backup" {
   versioning {
     enabled = true
   }
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      days_since_noncurrent_time = 30
+    }
+  }
+  soft_delete_policy {
+    retention_duration_seconds = 604800
+  }
+  retention_policy {
+    retention_period = 2592000
+    is_locked        = false
+  }
 }
 
 resource "google_service_account" "silverbullet_backup" {
@@ -112,6 +142,21 @@ resource "google_storage_bucket" "frigate_backup" {
   uniform_bucket_level_access = true
   versioning {
     enabled = true
+  }
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      days_since_noncurrent_time = 30
+    }
+  }
+  soft_delete_policy {
+    retention_duration_seconds = 604800
+  }
+  retention_policy {
+    retention_period = 2592000
+    is_locked        = false
   }
 }
 

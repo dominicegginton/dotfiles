@@ -41,6 +41,18 @@ output "frigate_backup_key" {
   sensitive   = true
 }
 
+output "immich_retention_policy" {
+  value = google_storage_bucket.immich_backup.retention_policy
+}
+
+output "silverbullet_retention_policy" {
+  value = google_storage_bucket.silverbullet_backup.retention_policy
+}
+
+output "frigate_retention_policy" {
+  value = google_storage_bucket.frigate_backup.retention_policy
+}
+
 output "immich_backup_service_account" {
   description = "Service account email for Immich backups"
   value       = google_service_account.immich_backup.email
