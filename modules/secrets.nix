@@ -1,6 +1,18 @@
 { config, lib, ... }:
 
+let
+  userPasswordDefined = (config.users.users.dom.hashedPasswordFile or null) != null;
+  userPasswordSet = userPasswordDefined && (config.users.users.dom.hashedPasswordFile != "");
+  secretsDefined = (config.sops.secrets or { }) != { };
+in
+
 {
+  assertions = [
+    {
+      assertion = !secretsDefined || userPasswordSet;
+      message = "Secrets must not be deployed to hosts where the user password is not set.";
+    }
+  ];
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
