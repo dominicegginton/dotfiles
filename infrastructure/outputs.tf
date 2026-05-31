@@ -27,3 +27,21 @@ output "frigate_data_bucket" {
   description = "GCS Bucket name for Frigate data"
   value       = module.gcp_infrastructure.frigate_data_bucket
 }
+
+output "immich_backup_key" {
+  description = "GCP Service Account Key for Immich backup (base64 encoded)"
+  value       = module.gcp_infrastructure.immich_backup_key
+  sensitive   = true
+}
+
+output "silverbullet_backup_key" {
+  description = "GCP Service Account Key for SilverBullet backup (base64 encoded)"
+  value       = module.gcp_infrastructure.silverbullet_backup_key
+  sensitive   = true
+}
+
+output "frigate_backup_key" {
+  description = "GCP Service Account Key for Frigate backup (base64 encoded)"
+  value       = module.gcp_infrastructure.frigate_backup_key
+  sensitive   = true
+}

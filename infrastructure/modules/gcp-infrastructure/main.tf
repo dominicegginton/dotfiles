@@ -100,6 +100,10 @@ resource "google_service_account" "immich_backup" {
   display_name = "Immich Backup Service Account"
 }
 
+resource "google_service_account_key" "immich_backup" {
+  service_account_id = google_service_account.immich_backup.name
+}
+
 resource "google_storage_bucket_iam_member" "immich_backup" {
   bucket = google_storage_bucket.immich_backup.name
   role   = "roles/storage.objectAdmin"
@@ -122,6 +126,10 @@ resource "google_service_account" "silverbullet_backup" {
   display_name = "Silverbullet Backup Service Account"
 }
 
+resource "google_service_account_key" "silverbullet_backup" {
+  service_account_id = google_service_account.silverbullet_backup.name
+}
+
 resource "google_storage_bucket_iam_member" "silverbullet_backup" {
   bucket = google_storage_bucket.silverbullet_backup.name
   role   = "roles/storage.objectAdmin"
@@ -142,6 +150,10 @@ resource "google_storage_bucket" "frigate_backup" {
 resource "google_service_account" "frigate_backup" {
   account_id   = "frigate-backup"
   display_name = "Frigate Backup Service Account"
+}
+
+resource "google_service_account_key" "frigate_backup" {
+  service_account_id = google_service_account.frigate_backup.name
 }
 
 resource "google_storage_bucket_iam_member" "frigate_backup" {

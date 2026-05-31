@@ -18,14 +18,42 @@ output "immich_data_bucket" {
   value       = google_storage_bucket.immich_data.name
 }
 
+output "immich_backup_bucket" {
+  description = "GCS Bucket name for Immich backup"
+  value       = google_storage_bucket.immich_backup.name
+}
+
+output "immich_backup_key" {
+  description = "GCP Service Account Key for Immich backup (base64 encoded)"
+  value       = google_service_account_key.immich_backup.private_key
+  sensitive   = true
+}
+
+output "silverbullet_backup_bucket" {
+  description = "GCS Bucket name for SilverBullet backup"
+  value       = google_storage_bucket.silverbullet_backup.name
+}
+
+output "silverbullet_backup_key" {
+  description = "GCP Service Account Key for SilverBullet backup (base64 encoded)"
+  value       = google_service_account_key.silverbullet_backup.private_key
+  sensitive   = true
+}
+
+output "frigate_backup_bucket" {
+  description = "GCS Bucket name for Frigate backup"
+  value       = google_storage_bucket.frigate_backup.name
+}
+
+output "frigate_backup_key" {
+  description = "GCP Service Account Key for Frigate backup (base64 encoded)"
+  value       = google_service_account_key.frigate_backup.private_key
+  sensitive   = true
+}
+
 output "frigate_data_bucket" {
   description = "GCS Bucket name for Frigate data"
   value       = google_storage_bucket.frigate_data.name
-}
-
-output "immich_backup_bucket" {
-  description = "GCS Bucket name for Immich backups"
-  value       = google_storage_bucket.immich_backup.name
 }
 
 output "immich_backup_service_account" {
@@ -33,19 +61,9 @@ output "immich_backup_service_account" {
   value       = google_service_account.immich_backup.email
 }
 
-output "silverbullet_backup_bucket" {
-  description = "GCS Bucket name for Silverbullet backups"
-  value       = google_storage_bucket.silverbullet_backup.name
-}
-
 output "silverbullet_backup_service_account" {
   description = "Service account email for Silverbullet backups"
   value       = google_service_account.silverbullet_backup.email
-}
-
-output "frigate_backup_bucket" {
-  description = "GCS Bucket name for Frigate backups"
-  value       = google_storage_bucket.frigate_backup.name
 }
 
 output "frigate_backup_service_account" {
