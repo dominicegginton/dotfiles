@@ -30,7 +30,7 @@
 
     services.gcs-backup.silverbullet = {
       enable = true;
-      bucket = "gs://silverbullet-backup";
+      bucket = "gs://silverbullet-backup-66ea520add6c51fb";
       directories = [ config.services.silverbullet.spaceDir ];
       interval = "daily";
       delete = true;

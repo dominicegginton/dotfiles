@@ -13,21 +13,6 @@ output "dominicegginton_bucket" {
   value       = module.gcp_infrastructure.dominicegginton_bucket
 }
 
-output "silverbullet_data_bucket" {
-  description = "GCS Bucket name for SilverBullet data"
-  value       = module.gcp_infrastructure.silverbullet_data_bucket
-}
-
-output "immich_data_bucket" {
-  description = "GCS Bucket name for Immich data"
-  value       = module.gcp_infrastructure.immich_data_bucket
-}
-
-output "frigate_data_bucket" {
-  description = "GCS Bucket name for Frigate data"
-  value       = module.gcp_infrastructure.frigate_data_bucket
-}
-
 output "immich_backup_key" {
   description = "GCP Service Account Key for Immich backup (base64 encoded)"
   value       = module.gcp_infrastructure.immich_backup_key

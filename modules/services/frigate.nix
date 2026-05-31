@@ -36,7 +36,7 @@
 
     services.gcs-backup.frigate = {
       enable = true;
-      bucket = "gs://frigate-backup";
+      bucket = "gs://frigate-backup-66ea520add6c51fb";
       directories = [ "/var/lib/frigate" ]; # Default storage for Frigate recordings
       interval = "daily";
       delete = true;

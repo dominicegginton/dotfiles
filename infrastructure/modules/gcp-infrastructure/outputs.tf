@@ -8,16 +8,6 @@ output "dominicegginton_bucket" {
   value       = google_storage_bucket.dominicegginton.name
 }
 
-output "silverbullet_data_bucket" {
-  description = "GCS Bucket name for SilverBullet data"
-  value       = google_storage_bucket.silverbullet_data.name
-}
-
-output "immich_data_bucket" {
-  description = "GCS Bucket name for Immich data"
-  value       = google_storage_bucket.immich_data.name
-}
-
 output "immich_backup_bucket" {
   description = "GCS Bucket name for Immich backup"
   value       = google_storage_bucket.immich_backup.name
@@ -49,11 +39,6 @@ output "frigate_backup_key" {
   description = "GCP Service Account Key for Frigate backup (base64 encoded)"
   value       = google_service_account_key.frigate_backup.private_key
   sensitive   = true
-}
-
-output "frigate_data_bucket" {
-  description = "GCS Bucket name for Frigate data"
-  value       = google_storage_bucket.frigate_data.name
 }
 
 output "immich_backup_service_account" {
