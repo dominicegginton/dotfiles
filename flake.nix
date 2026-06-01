@@ -51,6 +51,10 @@
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
+    # tsnsrv is a reverse proxy on your tailnet
+    tsnsrv.url = "github:boinkor-net/tsnsrv";
+    tsnsrv.inputs.nixpkgs.follows = "nixpkgs";
+
     # Niri flake for latest features and modules
     niri.url = "github:niri-wm/niri";
 

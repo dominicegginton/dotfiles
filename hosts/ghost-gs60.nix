@@ -143,7 +143,7 @@
   };
 
   # Enable SilverBullet Notes Services
-  services.silverbullet.enable = false;
+  services.silverbullet.enable = true;
 
   # Topology Definition
   topology.self = {

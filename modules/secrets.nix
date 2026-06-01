@@ -28,6 +28,7 @@ in
       "services/immich/oauth-secret" = { };
       "services/immich/gcs-backup-key" = { };
       "services/silverbullet/gcs-backup-key" = { };
+      "services/tsnsrv/auth-key" = { };
       "services/frigate/gcs-backup-key" = { };
       "services/hermes/env" = { };
       "services/github/runner-token" = {

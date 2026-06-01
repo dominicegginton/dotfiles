@@ -22,10 +22,12 @@
       spaceDir = lib.mkDefault "/var/lib/silverbullet";
     };
 
-    services.tailscale.serve = {
+    services.tsnsrv = {
       enable = true;
-      services."silverbullet".endpoints."tcp:443" =
-        "https://127.0.0.1:${toString config.services.silverbullet.listenPort}";
+      defaults.authKeyPath = config.sops.secrets."services/tsnsrv/auth-key".path;
+      services."silverbullet" = {
+        toURL = "http://127.0.0.1:${toString config.services.silverbullet.listenPort}";
+      };
     };
 
     services.gcs-backup.silverbullet = {
