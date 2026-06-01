@@ -52,6 +52,12 @@ in
     defaults.email = lib.mkDefault self.outputs.lib.maintainers.dominicegginton.email;
   };
 
+  # tsnsrv configuration
+  services.tsnsrv = {
+    enable = lib.mkDefault true;
+    defaults.authKeyPath = config.sops.secrets."services/tsnsrv/auth-key".path;
+  };
+
   environment.systemPackages = with pkgs; [ tailscale ];
 
   # Topology metadata for Tailscale interface

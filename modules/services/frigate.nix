@@ -29,9 +29,8 @@
     };
 
     # Tailscale Service Configuration for Frigate
-    services.tailscale.serve = {
-      enable = true;
-      services."frigate".endpoints."tcp:80" = "http://127.0.0.1:${toString 5000}";
+    services.tsnsrv.services."frigate" = {
+      toURL = "http://127.0.0.1:${toString 5000}";
     };
 
     services.gcs-backup.frigate = {
@@ -47,7 +46,7 @@
 
     topology.self.services.frigate = {
       name = "Frigate NVR";
-      details.listen.text = "http://frigate.${tailnet}";
+      details.listen.text = "https://frigate.${tailnet}";
     };
   };
 }

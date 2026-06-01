@@ -25,9 +25,8 @@
       };
     };
 
-    services.tailscale.serve = {
-      enable = true;
-      services."immich".endpoints."tcp:80" = "http://127.0.0.1:${toString config.services.immich.port}";
+    services.tsnsrv.services."immich" = {
+      toURL = "http://127.0.0.1:${toString config.services.immich.port}";
     };
 
     services.gcs-backup.immich = {
@@ -43,7 +42,7 @@
 
     topology.self.services.immich = {
       name = "Immich";
-      details.listen.text = "https://${hostname}.${tailnet}";
+      details.listen.text = "https://immich.${tailnet}";
     };
   };
 }
