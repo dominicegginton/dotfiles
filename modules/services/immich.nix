@@ -12,7 +12,7 @@
       host = lib.mkDefault "0.0.0.0";
       port = lib.mkDefault 2283;
       settings = {
-        server.externalDomain = lib.mkDefault "http://immich.${tailnet}";
+        server.externalDomain = lib.mkDefault "https://immich.${tailnet}";
         passwordLogin.enabled = lib.mkDefault false;
         oauth = {
           enabled = lib.mkDefault true;
