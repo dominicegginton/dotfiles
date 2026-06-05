@@ -7,7 +7,7 @@
     allowSFTP = lib.mkForce false; # Disable SFTP for improved security
     authorizedKeysInHomedir = lib.mkForce false; # Keep keys in a central location
     settings = {
-      KbdInteractiveAuthentication = lib.mkForce false; # Disable interactive passwords
+      KbdInteractiveAuthentication = lib.mkDefault false; # Disable interactive passwords by default
       LogLevel = lib.mkForce "VERBOSE";
       PermitRootLogin = lib.mkForce "no"; # Never allow root login via SSH
       UsePAM = lib.mkForce true;

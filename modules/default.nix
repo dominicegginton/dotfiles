@@ -87,8 +87,9 @@ rec {
     ./services/tsidp.nix
     ./services/usbguard.nix
 
-    # User modules (user accounts, LDAP)
+    # User modules (user accounts, LDAP, SSSD)
     ./users/ldap.nix
+    ./users/sssd.nix
     ./users/root.nix
 
     # Virtualisation (Docker, VMs, WSL, Android)

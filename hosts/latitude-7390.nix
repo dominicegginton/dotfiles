@@ -73,7 +73,11 @@
   # Graphical desktop environments
   display.gnome.enable = true;
 
-  services.tsidp.enable = true;
+  users.sssd = {
+    enable = true;
+    clientId = "e69b15fb09f5e9c840949d9f2ef5095d";
+    userMap = "dominic.egginton@gmail.com:dom";
+  };
 
   topology.self.hardware.info = "Workstation";
 }
