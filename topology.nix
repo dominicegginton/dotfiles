@@ -132,6 +132,16 @@ with config.lib.topology;
         type = "wifi";
         physicalConnections = [ (mkConnection "router" "wlan0") ];
       };
+      interfaces.tailscale0 = {
+        network = tailnet;
+        type = "tailscale";
+        icon = ./assets/tailscale.svg;
+        virtual = true;
+        addresses = [
+          "google-tv"
+          "google-tv.${tailnet}"
+        ];
+      };
     };
     livingroom-lamp-switch = mkDevice "Lamp" {
       info = "Sonoff Living Room Lamp Switch";
