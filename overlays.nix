@@ -64,4 +64,15 @@ rec {
     # This allows you to generate SBOMs, dependency graphs, provenance, and vulnerability scans for any package in the system
     withSbom = wrapWithSbomnix (final.withSbomnix) prev;
   };
+
+  wsl = final: prev: {
+    jetbrains = final.lib.recursiveUpdate prev.jetbrains {
+      sdk = final.jetbrains.sdk.overrideAttrs (oldAttrs: {
+        installPhase = (oldAttrs.installPhase or "") + ''
+          wrapProgram $out/bin/sdk \
+            --prefix PATH : ${final.lib.makeBinPath [ final.wslpath ]}/bin:\$PATH
+        '';
+      });
+    };
+  };
 }

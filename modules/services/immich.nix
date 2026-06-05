@@ -40,9 +40,16 @@
       wants = [ "immich-server.service" ];
     };
 
-    topology.self.services.immich = {
-      name = "Immich";
-      details.listen.text = "https://immich.${tailnet}";
+    topology.self = {
+      interfaces.tsnsrv-immich = {
+        network = tailnet;
+        addresses = [ "https://immich.${tailnet}" ];
+      };
+
+      services.immich = {
+        name = "Immich";
+        details.listen.text = config.services.immich.host + ":" + toString config.services.immich.port;
+      };
     };
   };
 }

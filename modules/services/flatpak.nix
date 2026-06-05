@@ -16,6 +16,27 @@
       '';
     };
 
+    # Systemd service and timer to update Flatpak apps daily
+    systemd.services.flatpak-update = lib.mkDefault {
+      description = "Update Flatpak applications";
+      after = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      path = [ pkgs.flatpak ];
+      script = ''
+        flatpak update -y
+      '';
+    };
+
+    systemd.timers.flatpak-update = lib.mkDefault {
+      description = "Timer to update Flatpak applications daily";
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "daily";
+        Persistent = true;
+      };
+    };
+
     environment.systemPackages = with pkgs; [
       flatpak
       bazaar

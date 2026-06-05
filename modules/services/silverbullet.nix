@@ -37,9 +37,17 @@
       wants = [ "silverbullet.service" ];
     };
 
-    topology.self.services.silverbullet = {
-      name = "Silverbullet";
-      details.listen.text = "https://silverbullet.${tailnet}";
+    topology.self = {
+      interfaces.tsnsrv-silverbullet = {
+        network = tailnet;
+        addresses = [ "https://silverbullet.${tailnet}" ];
+      };
+
+      services.silverbullet = {
+        name = "Silverbullet";
+        details.listen.text =
+          config.services.silverbullet.listenAddress + ":" + toString config.services.silverbullet.listenPort;
+      };
     };
   };
 }

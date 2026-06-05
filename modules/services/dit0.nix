@@ -22,10 +22,16 @@
       };
     };
 
-    # Topology Service Definition
-    topology.self.services.dit0 = {
-      name = "dit0";
-      details.listen.text = "https://dit0.${tailnet}";
+    topology.self = {
+      interfaces.tsnsrv-dit0 = {
+        network = tailnet;
+        addresses = [ "https://dit0.${tailnet}" ];
+      };
+
+      services.dit0 = {
+        name = "Dit0";
+        details.listen.text = "https://dit0.${tailnet}";
+      };
     };
   };
 }

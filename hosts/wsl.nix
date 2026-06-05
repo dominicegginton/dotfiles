@@ -16,6 +16,9 @@
   # Enable Docker integration
   virtualisation.docker.enable = true;
 
+  # Disable Tailscale on WSL as blocked by host environment
+  services.tailscale.enable = lib.mkForce false;
+
   # Topology information
   topology.self.hardware.info = "Windows Subsystem for Linux";
 }

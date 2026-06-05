@@ -68,7 +68,8 @@ with config.lib.topology;
         "127.0.0.1"
       ];
     };
-    wlp108s0-router-wlan0 = lib.mkIf config.networking.wireless.iwd.enable {
+
+    wlp108s0-router-wlan0 = lib.mkIf (config.networking.wireless.iwd.enable && !config.wsl.enable) {
       type = "wifi";
       addresses = [ hostname ];
       physicalConnections = [
@@ -76,7 +77,7 @@ with config.lib.topology;
       ];
     };
 
-    wlp108s0-pixel-9-hotspot = lib.mkIf config.networking.wireless.iwd.enable {
+    wlp108s0-pixel-9-hotspot = lib.mkIf (config.networking.wireless.iwd.enable && !config.wsl.enable) {
       type = "wifi";
       addresses = [ hostname ];
       physicalConnections = [

@@ -83,15 +83,5 @@
         "tod"
       ];
     };
-
-    services.tailscale.serve = {
-      enable = lib.mkDefault true;
-      services."home-assistant".endpoints."tcp:80" =
-        lib.mkDefault "http://127.0.0.1:${toString config.services.home-assistant.config.http.server-port}";
-    };
-
-    topology.self.services.home-assistant = {
-      details.listen.text = "http://home-assistant.${tailnet}";
-    };
   };
 }

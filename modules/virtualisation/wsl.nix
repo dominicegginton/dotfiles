@@ -1,4 +1,5 @@
 {
+  self,
   lib,
   config,
   pkgs,
@@ -7,6 +8,9 @@
 
 {
   config = lib.mkIf config.wsl.enable {
+    # Apply the WSL overlay to add WSL-specific configurations and packages
+    nixpkgs.overlays = [ self.outputs.overlays.wsl ];
+
     wsl = {
       # Default user for WSL environment
       defaultUser = "dom";

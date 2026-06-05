@@ -35,7 +35,7 @@ in
 
   # Tailscale service configuration
   services.tailscale = {
-    enable = lib.mkForce true;
+    enable = lib.mkDefault true;
     useRoutingFeatures = lib.mkForce (if notWSL then "both" else "client");
     extraUpFlags = [
       "--ssh"

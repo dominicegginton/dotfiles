@@ -16,11 +16,5 @@
 
     # Keep the local firewall closed as we use Tailscale Serve
     services.jellyfin.openFirewall = lib.mkDefault false;
-
-    # Expose Jellyfin via Tailscale Serve on the standard HTTP port
-    services.tailscale.serve = {
-      enable = true;
-      services."jellyfin".endpoints."tcp:80" = "http://127.0.0.1:${toString 8096}";
-    };
   };
 }

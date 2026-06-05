@@ -44,9 +44,16 @@
       wants = [ "frigate.service" ];
     };
 
-    topology.self.services.frigate = {
-      name = "Frigate NVR";
-      details.listen.text = "https://frigate.${tailnet}";
+    topology.self = {
+      interfaces.tsnsrv-frigate = {
+        network = tailnet;
+        addresses = [ "https://frigate.${tailnet}" ];
+      };
+
+      services.frigate = {
+        name = "Frigate";
+        details.listen.text = config.services.frigate.hostname + ":5000";
+      };
     };
   };
 }
