@@ -7,7 +7,7 @@
 
 {
   config = lib.mkIf config.services.tsidp.enable {
-    services.tsidp.settings {
+    services.tsidp.settings = {
       # Enable OAuth token exchange using RFC 8693
       enableSts = lib.mkDefault true;
       funnel = lib.mkDefault true;
