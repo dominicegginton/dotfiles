@@ -242,6 +242,14 @@
         github-copilot-cli
         gh-stack
       ]
-      ++ (if (osConfig ? wsl && osConfig.wsl.enable) then [ ] else [ youtube-tv ]);
+      ++ (if (osConfig ? wsl && osConfig.wsl.enable) then [ jira-cli-go ] else [ youtube-tv ]);
+
+    # Load JIRA API token from a local secrets file on WSL (within user home)
+    # Create the file manually with: `echo "token" > ~/.secrets/jira-api-token`
+    home.sessionVariableExtra = lib.mkIf (osConfig ? wsl && osConfig.wsl.enable)''
+      if [ -f "$HOME/.secrets/jira-api-token" ]; then
+        export JIRA_API_TOKEN=$(cat "$HOME/.secrets/jira-api-token")
+      fi
+    '';
   };
 }
