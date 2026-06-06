@@ -99,6 +99,10 @@
   # Enable Tailscale Identity Provider (IdP)
   services.tsidp.enable = true;
 
+  # Enable Beszel monitoring (Hub and Agent)
+  services.beszel.hub.enable = true;
+  services.beszel.agent.enable = true;
+
   # Enable Immich Photos/Video Management Services
   services.immich.enable = true;
 

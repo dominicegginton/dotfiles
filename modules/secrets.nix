@@ -37,6 +37,7 @@ in
         owner = "root";
         group = "root";
       };
+      "services/beszel/agent" = { };
     });
   };
 }

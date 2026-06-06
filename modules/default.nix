@@ -62,6 +62,7 @@ rec {
     ./security/tpm2.nix
 
     # Service modules (system daemons, servers)
+    ./services/beszel.nix
     ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/displaymanager.nix
@@ -115,6 +116,9 @@ rec {
       ];
     };
   };
+
+  # System-wide monitoring
+  services.beszel.enable = true;
 
   # System-wide color scheme (used by Home Manager and theming modules)
   scheme = lib.mkForce "${pkgs.theme}/residence-theme.yaml";

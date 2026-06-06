@@ -72,4 +72,7 @@ in
       # ...
     '')
   ];
+
+  # Enable Beszel monitoring (Agent)
+  services.beszel.agent.enable = true;
 }
