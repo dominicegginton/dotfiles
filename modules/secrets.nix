@@ -38,6 +38,7 @@ in
         group = "root";
       };
       "services/beszel/agent" = { };
+      "services/beszel/hub" = { };
     });
   };
 }
