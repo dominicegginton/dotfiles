@@ -13,11 +13,6 @@
       enableFunnel = lib.mkDefault true;
     };
 
-    # Persistent storage for Tailscale IDP data
-    environment.persistence."/persist".directories = [
-      "/var/lib/tsidp"
-    ];
-
     topology.self = {
       interfaces.tsidp = {
         network = tailnet;

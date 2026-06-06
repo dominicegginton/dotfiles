@@ -103,16 +103,10 @@
 
   # Enable Beszel monitoring (Hub and Agent)
   services.beszel.hub.enable = true;
-  services.beszel.agent.enable = true;
+  services.beszel.agent.enable = false;
 
   # Enable Immich Photos/Video Management Services
   services.immich.enable = true;
-
-  # Enable GitHub Actions self-hosted runner
-  services.residence.githubRunner.enable = true;
-
-  # Enable Directory Information Tree & LDAP Services
-  # services.dit0.enable = false;
 
   # Enable Frigate NVR & OD Services
   services.frigate = {
