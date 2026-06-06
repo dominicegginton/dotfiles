@@ -13,5 +13,10 @@
         message = "services.tailsclae.enable must be set to true";
       }
     ];
+
+    # Persistent storage for Bitmagnet data
+    environment.persistence."/persist".directories = [
+      "/var/lib/bitmagnet"
+    ];
   };
 }

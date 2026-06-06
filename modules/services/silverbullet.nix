@@ -22,6 +22,11 @@
       spaceDir = lib.mkDefault "/var/lib/silverbullet";
     };
 
+    # Persistent storage for Silverbullet data
+    environment.persistence."/persist".directories = [
+      config.services.silverbullet.spaceDir
+    ];
+
     services.tsnsrv.services."silverbullet" = {
       toURL = "http://127.0.0.1:${toString config.services.silverbullet.listenPort}";
     };

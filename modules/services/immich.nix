@@ -25,6 +25,11 @@
       };
     };
 
+    # Persistent storage for Immich media and metadata 
+    environment.persistence."/persist".directories = [
+      "/var/lib/immich"
+    ];
+
     services.tsnsrv.services."immich" = {
       toURL = "http://127.0.0.1:${toString config.services.immich.port}";
       funnel = lib.mkDefault true;

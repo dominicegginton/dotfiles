@@ -11,9 +11,7 @@ let
 in
 
 {
-  options.services.beszel = {
-    enable = lib.mkEnableOption "Beszel monitoring";
-  };
+  options.services.beszel.enable = lib.mkEnableOption "Beszel monitoring";
 
   config = lib.mkIf (cfg.enable && !config.wsl.enable) {
     assertions = [

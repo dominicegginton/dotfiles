@@ -21,7 +21,7 @@ in
     # sops-nix will look for this key on the system
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-    secrets = lib.mkIf (!config.wsl.enable) ({
+    secrets = lib.mkIf (!config.wsl.enable && config.users.users ? dom) ({
       "users/dom/password" = {
         neededForUsers = true;
       };

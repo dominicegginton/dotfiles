@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  pkgs,
   hostname,
   ...
 }:
@@ -34,6 +35,9 @@ in
     extraLabels = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [
+        "self-hosted"
+        "linux"
+        (if pkgs.stdenv.hostPlatform.isx86_64 then "x64" else if pkgs.stdenv.hostPlatform.isAarch64 then "arm64" else pkgs.stdenv.hostPlatform.cpu.name)
         "nix"
         hostname
       ];
@@ -56,12 +60,22 @@ in
   config = lib.mkIf cfg.enable {
     services.github-runners.${cfg.runnerName} = {
       enable = true;
-      url = cfg.url;
-      tokenFile = cfg.tokenFile;
-      name = cfg.runnerName;
-      extraLabels = cfg.extraLabels;
-      ephemeral = cfg.ephemeral;
-      replace = cfg.replace;
+      url = lib.mkDefault cfg.url;
+      tokenFile = lib.mkDefault cfg.tokenFile;
+      name = lib.mkDefault cfg.runnerName;
+      extraLabels = lib.mkDefault cfg.extraLabels;
+      ephemeral = lib.mkDefault cfg.ephemeral;
+      replace = lib.mkDefault cfg.replace;
+    };
+
+    # Persistent storage for GitHub Runner state
+    environment.persistence."/persist".directories = [
+      "/var/lib/github-runners"
+    ];
+
+    topology.self.services.github-runner = {
+      name = "GitHub Runner";
+      details.url.text = cfg.url;
     };
   };
 }

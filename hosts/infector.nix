@@ -73,6 +73,6 @@ in
     '')
   ];
 
-  # Enable Beszel monitoring (Agent)
-  services.beszel.agent.enable = true;
+  # Disable Beszel monitoring for the installer
+  services.beszel.enable = lib.mkForce false;
 }

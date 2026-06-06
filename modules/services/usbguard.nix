@@ -1,10 +1,12 @@
 { lib, config, ... }:
+
 let
   notWSL = !config.wsl.enable;
 in
+
 {
   services.usbguard = lib.mkIf notWSL {
-    enable = lib.mkForce true;
+    enable = lib.mkDefault true;
     presentControllerPolicy = lib.mkDefault "allow";
     dbus.enable = lib.mkDefault true;
     IPCAllowedGroups = lib.mkDefault [

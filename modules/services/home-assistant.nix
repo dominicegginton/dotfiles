@@ -83,5 +83,11 @@
         "tod"
       ];
     };
+
+    # Persistent storage for Home Assistant configuration and data
+    environment.persistence."/persist".directories = [
+      config.services.home-assistant.configDir
+      config.services.home-assistant.dataDir
+     ];
   };
 }

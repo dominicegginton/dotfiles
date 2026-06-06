@@ -71,7 +71,6 @@ rec {
     ./services/frigate.nix
     ./services/gcs-backup.nix
     ./services/github-runner.nix
-    ./services/hermes-agent.nix
     ./services/getty.nix
     ./services/home-assistant.nix
     ./services/immich.nix
@@ -79,7 +78,6 @@ rec {
     ./services/journald.nix
     ./services/logind.nix
     ./services/nginx.nix
-    ./services/ollama.nix
     ./services/pipewire.nix
     ./services/silverbullet.nix
     ./services/ssh.nix

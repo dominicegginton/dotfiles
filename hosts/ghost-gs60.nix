@@ -92,6 +92,8 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  programs.deadman.enable = false; # Disable deadman switch. 
+
   # Ignore events from the lid switch
   services.logind.settings.Login.HandleLidSwitch = "ignore";
   services.upower.ignoreLid = true;
@@ -107,16 +109,7 @@
   services.immich.enable = true;
 
   # Enable GitHub Actions self-hosted runner
-  services.residence.githubRunner = {
-    enable = true;
-    extraLabels = [
-      "self-hosted"
-      "linux"
-      "x64"
-      "ghost-gs60"
-      "nix"
-    ];
-  };
+  services.residence.githubRunner.enable = true;
 
   # Enable Directory Information Tree & LDAP Services
   # services.dit0.enable = false;

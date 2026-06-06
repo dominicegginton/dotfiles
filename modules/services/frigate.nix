@@ -28,6 +28,11 @@
       };
     };
 
+    # Persistent storage for Frigate recordings and snapshots
+    environment.persistence."/persist".directories = lib.mkIf config.services.frigate.enable [
+      "/var/lib/frigate"
+    ];
+
     # Tailscale Service Configuration for Frigate
     services.tsnsrv.services."frigate" = {
       toURL = "http://127.0.0.1:${toString 5000}";

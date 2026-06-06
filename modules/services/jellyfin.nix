@@ -16,5 +16,10 @@
 
     # Keep the local firewall closed as we use Tailscale Serve
     services.jellyfin.openFirewall = lib.mkDefault false;
+
+    # Persistent storage for Jellyfin media and metadata
+    environment.persistence."/persist".directories = [
+      "/var/lib/jellyfin"
+    ];
   };
 }
