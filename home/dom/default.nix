@@ -241,6 +241,8 @@
         gh-markdown-preview
         github-copilot-cli
         gh-stack
+        jellyfin-mpv-shim
+        nocturne
       ]
       ++ (if (osConfig ? wsl && osConfig.wsl.enable) then [ jira-cli-go ] else [ youtube-tv ]);
 

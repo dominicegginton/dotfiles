@@ -1,6 +1,7 @@
 {
   config,
   lib,
+  tailnet,
   ...
 }:
 
@@ -17,9 +18,21 @@
     # Keep the local firewall closed as we use Tailscale Serve
     services.jellyfin.openFirewall = lib.mkDefault false;
 
-    # Persistent storage for Jellyfin media and metadata
-    environment.persistence."/persist".directories = [
-      "/var/lib/jellyfin"
-    ];
+    services.tsnsrv.services."jellyfin" = {
+      toURL = "http://127.0.0.1:8096";
+      funnel = lib.mkDefault true;
+    };
+
+    topology.self = {
+      interfaces.tsnsrv-jellyfin = {
+        network = tailnet;
+        addresses = [ "https://jellyfin.${tailnet}" ];
+      };
+
+      services.jellyfin = {
+        name = "Jellyfin";
+        details.listen.text = "127.0.0.1:8096";
+      };
+    };
   };
 }

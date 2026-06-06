@@ -107,6 +107,9 @@
   # Enable Immich Photos/Video Management Services
   services.immich.enable = true;
 
+  # Enable Jellyfin Media Server Services
+  services.jellyfin.enable = true;
+
   # Enable Frigate NVR & OD Services
   services.frigate = {
     enable = true;
