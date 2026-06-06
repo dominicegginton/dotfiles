@@ -92,7 +92,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  programs.deadman.enable = false; # Disable deadman switch. 
+  programs.deadman.enable = false; # Disable deadman switch.
 
   # Ignore events from the lid switch
   services.logind.settings.Login.HandleLidSwitch = "ignore";

@@ -22,7 +22,7 @@
       };
     };
 
-    # Persistent storage for the Dit0 LDAP server 
+    # Persistent storage for the Dit0 LDAP server
     environment.persistence."/persist".directories = [
       config.services.dit0.data_dir
     ];

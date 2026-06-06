@@ -23,7 +23,7 @@
         "aes128-ctr"
       ];
     };
-    
+
     # Allow TCP forwarding
     # Disable X11 and agent forwarding for security
     # Agent forwarding is disabled to prevent credential theft

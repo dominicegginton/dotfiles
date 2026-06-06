@@ -88,6 +88,6 @@
     environment.persistence."/persist".directories = [
       config.services.home-assistant.configDir
       config.services.home-assistant.dataDir
-     ];
+    ];
   };
 }

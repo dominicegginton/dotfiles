@@ -25,7 +25,7 @@
       };
     };
 
-    # Persistent storage for Immich media and metadata 
+    # Persistent storage for Immich media and metadata
     environment.persistence."/persist".directories = [
       "/var/lib/immich"
     ];

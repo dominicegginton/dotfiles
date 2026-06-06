@@ -37,7 +37,14 @@ in
       default = [
         "self-hosted"
         "linux"
-        (if pkgs.stdenv.hostPlatform.isx86_64 then "x64" else if pkgs.stdenv.hostPlatform.isAarch64 then "arm64" else pkgs.stdenv.hostPlatform.cpu.name)
+        (
+          if pkgs.stdenv.hostPlatform.isx86_64 then
+            "x64"
+          else if pkgs.stdenv.hostPlatform.isAarch64 then
+            "arm64"
+          else
+            pkgs.stdenv.hostPlatform.cpu.name
+        )
         "nix"
         hostname
       ];
