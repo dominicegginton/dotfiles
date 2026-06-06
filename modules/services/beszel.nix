@@ -35,11 +35,6 @@ in
       environmentFile = lib.mkDefault config.sops.secrets."services/beszel/agent".path;
     };
 
-    # Persistent storage for the Beszel Hub
-    environment.persistence."/persist".directories = lib.mkIf config.services.beszel.hub.enable [
-      "/var/lib/beszel"
-    ];
-
     topology.self = lib.mkIf config.services.beszel.hub.enable {
       interfaces.tsnsrv-beszel = {
         network = tailnet;
