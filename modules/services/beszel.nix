@@ -40,9 +40,12 @@ in
     };
 
     services.beszel.agent = {
+      enable = lib.mkDefault true;
       openFirewall = lib.mkDefault true;
       environmentFile = lib.mkDefault config.sops.secrets."services/beszel/agent".path;
     };
+
+    environment.persistence."/persist".directories = lib.optional config.services.beszel.hub.enable "/var/lib/beszel-hub";
 
     topology.self = lib.mkIf config.services.beszel.hub.enable {
       interfaces.tsnsrv-beszel = {

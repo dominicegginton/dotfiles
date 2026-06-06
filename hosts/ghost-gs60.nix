@@ -103,7 +103,6 @@
 
   # Enable Beszel monitoring (Hub and Agent)
   services.beszel.hub.enable = true;
-  services.beszel.agent.enable = false;
 
   # Enable Immich Photos/Video Management Services
   services.immich.enable = true;

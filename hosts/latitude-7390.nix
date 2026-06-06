@@ -80,7 +80,4 @@
   };
 
   topology.self.hardware.info = "Workstation";
-
-  # Enable Beszel monitoring (Agent)
-  services.beszel.agent.enable = true;
 }

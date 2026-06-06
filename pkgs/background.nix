@@ -29,5 +29,5 @@ mkGnomeBackground {
   name = "background";
   src = blueImage;
   primaryColor = "#4682B4";
-  secondaryColor = "#94a1ac";
+  secondaryColor = "#468294";
 }
