@@ -18,12 +18,10 @@ Declarative System, Package & Home Configurations - WIP Always
 - **SOPS Secrets Management** – Host secrets managed declaratively with _sops-nix_ and age/SSH keys.
 - **Automated Cloud Backups** – Service data backups to _Google Cloud Storage_ via systemd timers.
 - **Self-Hosted CI Runners** – Declarative _GitHub Actions_ self-hosted runner support on NixOS hosts.
-- **AI Services** – Local/edge AI stack support including _Hermes Agent_ and optional _Ollama_.
 - **Media & Home Services** – Declarative modules for _Immich_, _Frigate_, _Jellyfin_, _Home Assistant_, and more.
 - **Security & Compliance** – Hardened defaults, run0 integration, and SBOM-enabled package workflows.
 - **Continuous Integration** – Automated checks and workflows with _GitHub Actions_ and flake-native outputs.
 - **Automated Garbage Collection** – System prunes old Nix store paths automatically.
-- **Fast Local Development** – Dev shells with all required tools and formatters.
 - **Desktop Environments** – Wayland _GNOME_ (and _Niri_) desktop environments.
 
 ## Workspace
