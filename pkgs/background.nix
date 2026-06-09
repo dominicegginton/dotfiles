@@ -21,7 +21,7 @@ let
       }
       ''
         convert -size 3840x2160 \
-          gradient:#4682B4-#94a1ac \
+          gradient:#4682B4-#4682B1 \
           $out
       '';
 in
@@ -29,5 +29,5 @@ mkGnomeBackground {
   name = "background";
   src = blueImage;
   primaryColor = "#4682B4";
-  secondaryColor = "#468294";
+  secondaryColor = "#4682B1";
 }
