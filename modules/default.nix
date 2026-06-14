@@ -234,6 +234,9 @@ rec {
   security.protectKernelImage = lib.mkDefault true;
   security.unprivilegedUsernsClone = lib.mkDefault true;
 
+  # Enable redistributable firmware for hardware support
+  hardware.enableRedistributableFirmware = lib.mkDefault true;
+
   programs = {
     gnupg.agent.enable = lib.mkForce true; # Always enable GnuPG agent
     # Only start SSH agent if GNOME gcr-ssh-agent is disabled

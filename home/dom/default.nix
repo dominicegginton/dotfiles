@@ -234,6 +234,8 @@
     home.packages =
       with pkgs;
       [
+        aseprite
+        krita
         bat
         eza
         twm

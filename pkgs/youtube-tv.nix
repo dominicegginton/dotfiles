@@ -13,6 +13,13 @@ let
   name = "youtube-tv";
   url = "https://www.youtube.com/tv";
 
+  icon = fetchurl {
+    name = "YouTube_full_color_icon_2017.svg";
+    url = "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg";
+    sha256 = "sha256-fROAuewbDLM/ZhsgM9E77KfETCxAiabRTElVX/4/Ir8=";
+    meta.license = lib.licenses.unfree;
+  };
+
   desktopItem = makeDesktopItem {
     inherit name;
 
@@ -27,14 +34,9 @@ let
     ];
 
     startupNotify = true;
-    startupWMClass = "youtube-tv";
+    startupWMClass = name;
 
-    icon = fetchurl {
-      name = "YouTube_full_color_icon_2017.svg";
-      url = "https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg";
-      sha256 = "sha256-fROAuewbDLM/ZhsgM9E77KfETCxAiabRTElVX/4/Ir8=";
-      meta.license = lib.licenses.unfree;
-    };
+    icon = name;
   };
 
   script = writeScriptBin name ''
@@ -67,6 +69,11 @@ symlinkJoin {
     script
     desktopItem
   ];
+
+  postBuild = ''
+    mkdir -p $out/share/icons/hicolor/scalable/apps
+    ln -s ${icon} $out/share/icons/hicolor/scalable/apps/${name}.svg
+  '';
 
   meta = {
     description = "Open Youtube TV via Google Chrome app mode";

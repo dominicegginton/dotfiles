@@ -101,10 +101,12 @@
       # List of unfree packages allowed in the system
       unfreePackages = [
         "YouTube_full_color_icon_2017.svg"
+        "aseprite"
         "bws"
         "gateway"
         "github-copilot-cli"
         "google-chrome"
+        "linux-firmware"
         "open-webui"
         "vscode"
         "vscode-extension-github-copilot"
