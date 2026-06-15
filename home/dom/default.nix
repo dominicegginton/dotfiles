@@ -234,6 +234,7 @@
     home.packages =
       with pkgs;
       [
+        rnote
         aseprite
         krita
         bat
