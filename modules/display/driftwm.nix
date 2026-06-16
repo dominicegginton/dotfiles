@@ -6,6 +6,47 @@
   ...
 }:
 
+let
+  # Helper script for screen locking using swaylock-effects
+  screenLock = pkgs.writeShellScriptBin "screen-lock" ''
+    PATH=${
+      lib.makeBinPath [
+        pkgs.swaylock-effects
+        pkgs.maim
+        pkgs.imagemagick
+        pkgs.ffmpegthumbnailer
+        pkgs.xclip
+      ]
+    }
+    TEMP_IMG=$(mktemp /tmp/screen-lock-XXXXXX.png)
+    maim -u | convert - -blur 0x8 -scale 10% -scale 1000% $TEMP_IMG
+    swaylock-effects -f -i $TEMP_IMG --effect-blur 10x10
+    rm $TEMP_IMG
+  '';
+
+  # Helper script for taking full-output screenshots
+  screenshotOutput = pkgs.writeShellScriptBin "screenshot-output" ''
+    PATH=${
+      lib.makeBinPath [
+        pkgs.wl-clipboard
+        pkgs.gradia
+      ]
+    }
+    gradia --screenshot=FULL
+  '';
+
+  # Helper script for taking region screenshots
+  screenshotRegion = pkgs.writeShellScriptBin "screenshot-region" ''
+    PATH=${
+      lib.makeBinPath [
+        pkgs.wl-clipboard
+        pkgs.gradia
+      ]
+    }
+    gradia --screenshot
+  '';
+in
+
 {
   options.display.driftwm.enable = lib.mkEnableOption "DriftWM";
 
@@ -52,6 +93,11 @@
       services.displayManager.sessionPackages = [ pkgs.driftwm ];
 
       systemd.packages = [ pkgs.driftwm ];
+      systemd.user.services.driftwm = {
+        environment = {
+          DRIFTWM_CONFIG = "/etc/driftwm/config.toml";
+        };
+      };
 
       # Typography and icon configuration
       fonts = {
@@ -85,6 +131,7 @@
           MOZ_DBUS_REMOTE = "1";
           MOZ_USE_XINPUT2 = "1";
           MOZ_USE_XINPUT2_BY_DEFAULT = "1";
+          DRIFTWM_CONFIG = "/etc/driftwm/config.toml";
         };
         systemPackages = with pkgs; [
           gnome-keyring
@@ -103,6 +150,8 @@
           gnome-logs
           gnome-contacts
           gnome-firmware
+
+          sc
         ];
       };
 
@@ -122,7 +171,7 @@
         [decorations]
         bg_color = "${base00}"
         fg_color = "${base05}"
-        corner_radius = 0
+        corner_radius = 15 
         shadow = true
         border_width = 1
         border_color = "${base01}"
@@ -134,6 +183,10 @@
         "mod+shift+q" = "close-window"
         "mod+shift+e" = "quit"
         "ctrl+alt+delete" = "spawn ${lib.getExe pkgs.mission-center}"
+
+        "Mod+shift+l" = "spawn ${lib.getExe screenLock}"
+        "Mod+shift+3" = "spawn ${lib.getExe screenshotOutput}"
+        "Mod+shift+4" = "spawn ${lib.getExe screenshotRegion}"
 
         "XF86AudioPlay" = "spawn ${pkgs.playerctl}/bin/playerctl play-pause"
         "XF86AudioPause" = "spawn ${pkgs.playerctl}/bin/playerctl play-pause"

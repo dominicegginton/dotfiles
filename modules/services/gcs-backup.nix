@@ -129,7 +129,8 @@ in
           timerConfig = {
             OnCalendar = job.interval;
             Persistent = true;
-          } // lib.optionalAttrs (job.randomizedDelaySec != null) {
+          }
+          // lib.optionalAttrs (job.randomizedDelaySec != null) {
             RandomizedDelaySec = job.randomizedDelaySec;
           };
         }

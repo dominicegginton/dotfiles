@@ -81,12 +81,9 @@
 
   # Graphical desktop environments
   display.gnome.enable = true;
+  display.driftwm.enable = true;
 
-  users.sssd = {
-    enable = true;
-    clientId = "e69b15fb09f5e9c840949d9f2ef5095d";
-    userMap = "dominic.egginton@gmail.com:dom";
-  };
+  users.sssd.enable = false;
 
   topology.self.hardware.info = "Workstation";
 }
