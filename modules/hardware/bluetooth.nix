@@ -17,6 +17,12 @@
       );
     }
     (lib.mkIf config.hardware.bluetooth.enable {
+      # Enable uinput and uhid modules to allow BlueZ to create input devices in userspace
+      boot.kernelModules = [
+        "uinput"
+        "uhid"
+      ];
+
       hardware.bluetooth = {
         # Use the BlueZ Bluetooth stack
         package = lib.mkDefault pkgs.bluez;
@@ -29,8 +35,13 @@
           General = {
             MultiProfile = lib.mkDefault "multiple"; # Allow multiple Bluetooth profiles simultaneously
             FastConnectable = lib.mkDefault true; # Quicker pairing and reconnection
-            Enable = lib.mkDefault "Source,Sink,Media,Socket"; # Enable audio and media control profiles
+            Enable = lib.mkDefault "Source,Sink,Media,Socket,Input,Hogp"; # Enable audio, media control, input, and BLE HID profiles
             Experimental = lib.mkDefault true; # Enable experimental BlueZ features
+          };
+
+          # Configure Input settings for Bluetooth keyboards and mice
+          Input = {
+            UserspaceHID = lib.mkDefault true; # Enable userspace HID for better compatibility with some devices
           };
 
           # Configure Bluetooth Low Energy (BLE) settings

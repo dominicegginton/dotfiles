@@ -30,12 +30,20 @@ writers.writePython3Bin "extract-theme" { libraries = [ pyletteNoTests ]; } ''
       theme_file.write('name: "Residence"\n')
       theme_file.write('author: "Dominic Egginton"\n')
       theme_file.write('variant: "custom"\n')
-      theme_file.write('palette:\n')
-      for i, color in list(enumerate(palette)):
-          rgb = color.rgb
+
+      # Always output 16 colors, padding with the last color if necessary
+      for i in range(16):
+          if i < len(palette):
+              color = palette[i]
+              rgb = color.rgb
+          elif len(palette) > 0:
+              color = palette[-1]
+              rgb = color.rgb
+          else:
+              rgb = (0, 0, 0)
+
           hex_color = '#%02x%02x%02x' % (rgb[0], rgb[1], rgb[2])
-          index_as_hex = hex(i)[2:].zfill(2)
-          last_two_digits = hex(i)[2:].zfill(2)[-2:]
-          last_two_digits_as_upper = (hex(i)[2:].zfill(2)[-2:]).upper()
-          theme_file.write(f'  base{last_two_digits_as_upper}: "{hex_color}"\n')
+          index_as_hex = hex(i)[2:].zfill(2).upper()
+          # Use uppercase for base16 compatibility (e.g. base0A)
+          theme_file.write(f'base{index_as_hex}: "{hex_color}"\n')
 ''

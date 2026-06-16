@@ -52,6 +52,7 @@
         "/etc/ssl"
         "/etc/NetworkManager/system-connections"
         "/var/lib/NetworkManager"
+        "/var/lib/bluetooth"
         "/var/lib/iwd"
         "/var/lib/AccountsService"
         "/var/lib/flatpak"

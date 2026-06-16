@@ -37,8 +37,9 @@
       enable = true;
       bucket = "gs://frigate-backup-66ea520add6c51fb";
       directories = [ "/var/lib/frigate" ]; # Default storage for Frigate recordings
-      interval = "daily";
+      interval = "04:00:00";
       delete = true;
+      extraArgs = [ "--exclude=^(recordings|\\.cache|\.keras)/.*|.*\\.db-(shm|wal)$" ];
       serviceAccountKeyFile = config.sops.secrets."services/frigate/gcs-backup-key".path;
       wantedBy = [ "frigate.service" ];
       wants = [ "frigate.service" ];

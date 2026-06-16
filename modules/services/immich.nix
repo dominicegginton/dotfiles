@@ -34,8 +34,9 @@
       enable = true;
       bucket = "gs://immich-backup-66ea520add6c51fb";
       directories = [ config.services.immich.mediaLocation ];
-      interval = "daily";
+      interval = "02:00:00";
       delete = true;
+      extraArgs = [ "--exclude=^(thumbs|encoded-video)/.*" ];
       serviceAccountKeyFile = config.sops.secrets."services/immich/gcs-backup-key".path;
       wantedBy = [ "immich-server.service" ];
       wants = [ "immich-server.service" ];

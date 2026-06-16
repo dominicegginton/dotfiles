@@ -40,6 +40,9 @@ rec {
     twx = final.callPackage ./pkgs/twx.nix { };
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
 
+    # DriftWM — a trackpad-first infinite canvas Wayland compositor
+    driftwm = self.inputs.driftwm.packages.${prev.system}.default;
+
     # Topology output is now a package
     topology = self.outputs.packages.${final.system}.topology;
 

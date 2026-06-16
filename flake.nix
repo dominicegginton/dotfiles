@@ -58,6 +58,10 @@
     # Niri flake for latest features and modules
     niri.url = "github:niri-wm/niri";
 
+    # DriftWM — a trackpad-first infinite canvas Wayland compositor
+    driftwm.url = "github:malbiruk/driftwm";
+    driftwm.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   # Flake configuration for nix commands

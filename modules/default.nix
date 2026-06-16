@@ -26,6 +26,7 @@ rec {
     ./console.nix
     ./display/gnome.nix
     ./display/niri.nix
+    ./display/driftwm.nix
 
     # Environment modules (user shell, login, packages)
     ./environment.nix

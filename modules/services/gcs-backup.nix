@@ -46,6 +46,13 @@ in
               example = "hourly";
             };
 
+            randomizedDelaySec = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = "1h";
+              description = "Delay the timer by a random amount of time up to this value (systemd.timer RandomizedDelaySec expression).";
+              example = "45min";
+            };
+
             delete = lib.mkOption {
               type = lib.types.bool;
               default = false;
@@ -55,10 +62,9 @@ in
             extraArgs = lib.mkOption {
               type = lib.types.listOf lib.types.str;
               default = [ ];
-              description = "Extra arguments to pass to gsutil rsync.";
+              description = "Extra arguments to pass to gcloud storage rsync.";
               example = [
-                "-x"
-                ".*\\.tmp"
+                "--exclude=.*\\.tmp"
               ];
             };
 
@@ -123,6 +129,8 @@ in
           timerConfig = {
             OnCalendar = job.interval;
             Persistent = true;
+          } // lib.optionalAttrs (job.randomizedDelaySec != null) {
+            RandomizedDelaySec = job.randomizedDelaySec;
           };
         }
       ) enabledJobs;
