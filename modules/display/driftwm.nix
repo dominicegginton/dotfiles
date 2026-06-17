@@ -206,19 +206,18 @@ in
       };
 
       environment.etc."driftwm/wallpapers/dot_grid.glsl".text = ''
-        // Dot grid background — evenly spaced dots that scroll with the canvas.
         precision highp float;
 
         varying vec2 v_coords;
         uniform vec2 size;
         uniform vec2 u_camera;
 
-        // --- Styled with Base16 colors ---
         const vec3 BG_COLOR = ${hexToFloat base0D};
         const vec3 DOT_COLOR = ${hexToFloat "#ffffff"};
+
         const float DOT_SPACING = 80.0; // canvas pixels between dots
-        const float DOT_RADIUS = 1.0; // dot radius in canvas pixels
-        // -------------------
+        const float OUTER_RADIUS = 2.5; // outer dot radius in canvas pixels
+        const float INNER_RADIUS = 1.5; // inner dot radius in canvas pixels
 
         void main() {
             vec2 screen_pixel = v_coords * size;
@@ -228,7 +227,9 @@ in
             vec2 dist = min(grid, DOT_SPACING - grid);
             float d = length(dist);
 
-            float dot_alpha = 1.0 - smoothstep(DOT_RADIUS - 0.5, DOT_RADIUS + 0.5, d);
+            float outer_dot = 1.0 - smoothstep(OUTER_RADIUS - 0.5, OUTER_RADIUS + 0.5, d);
+            float inner_dot = 1.0 - smoothstep(INNER_RADIUS - 0.5, INNER_RADIUS + 0.5, d);
+            float dot_alpha = outer_dot - inner_dot;
 
             gl_FragColor = vec4(mix(BG_COLOR, DOT_COLOR, dot_alpha), 1.0);
         }
