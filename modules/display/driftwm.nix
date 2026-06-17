@@ -317,6 +317,7 @@ in
               "mod+shift+4" = "spawn ${lib.getExe screenshotRegion}";
               "mod+1" = "go-to 0 1500";
               "mod+shift+escape" = "quit";
+              "mod+shift+q" = "close-window";
             };
 
             gestures = {
