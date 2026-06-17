@@ -45,6 +45,50 @@ let
     }
     gradia --screenshot
   '';
+
+  hexToDec =
+    c:
+    {
+      "0" = 0;
+      "1" = 1;
+      "2" = 2;
+      "3" = 3;
+      "4" = 4;
+      "5" = 5;
+      "6" = 6;
+      "7" = 7;
+      "8" = 8;
+      "9" = 9;
+      "a" = 10;
+      "b" = 11;
+      "c" = 12;
+      "d" = 13;
+      "e" = 14;
+      "f" = 15;
+      "A" = 10;
+      "B" = 11;
+      "C" = 12;
+      "D" = 13;
+      "E" = 14;
+      "F" = 15;
+    }
+    .${c};
+
+  hexToFloat =
+    h:
+    let
+      clean = lib.removePrefix "#" h;
+      r1 = hexToDec (lib.substring 0 1 clean);
+      r2 = hexToDec (lib.substring 1 1 clean);
+      g1 = hexToDec (lib.substring 2 1 clean);
+      g2 = hexToDec (lib.substring 3 1 clean);
+      b1 = hexToDec (lib.substring 4 1 clean);
+      b2 = hexToDec (lib.substring 5 1 clean);
+      r = (r1 * 16 + r2) / 255.0;
+      g = (g1 * 16 + g2) / 255.0;
+      b = (b1 * 16 + b2) / 255.0;
+    in
+    "vec3(${toString r}, ${toString g}, ${toString b})";
 in
 
 {
@@ -73,6 +117,7 @@ in
         extraPortals = lib.mkDefault [
           pkgs.xdg-desktop-portal-gnome
           pkgs.xdg-desktop-portal-gtk
+          pkgs.xdg-desktop-portal-wlr
         ];
       };
 
@@ -152,88 +197,157 @@ in
           gnome-firmware
 
           sc
+
+          waybar
+          swaynotificationcenter
+          swayosd
+          wl-clipboard
         ];
       };
 
-      environment.etc."driftwm/config.toml".text = ''
-        mod_key = "super"
+      environment.etc."driftwm/wallpapers/dot_grid.glsl".text = ''
+        // Dot grid background — evenly spaced dots that scroll with the canvas.
+        precision highp float;
 
-        autostart = [
-          "${lib.getExe pkgs.xwayland-satellite}",
-          "${pkgs.wl-clipboard}/bin/wl-paste --watch ${lib.getExe pkgs.cliphist} store",
-          "${pkgs.blueman}/bin/blueman-applet"
-        ]
+        varying vec2 v_coords;
+        uniform vec2 size;
+        uniform vec2 u_camera;
 
-        [input.trackpad]
-        tap_to_click = true
-        natural_scroll = true
+        // --- Styled with Base16 colors ---
+        const vec3 BG_COLOR = ${hexToFloat base0D};
+        const vec3 DOT_COLOR = ${hexToFloat "#ffffff"};
+        const float DOT_SPACING = 80.0; // canvas pixels between dots
+        const float DOT_RADIUS = 1.0; // dot radius in canvas pixels
+        // -------------------
 
-        [decorations]
-        bg_color = "${base00}"
-        fg_color = "${base05}"
-        corner_radius = 15 
-        shadow = true
-        border_width = 1
-        border_color = "${base01}"
-        border_color_focused = "${base0D}"
+        void main() {
+            vec2 screen_pixel = v_coords * size;
+            vec2 canvas_pos = screen_pixel + mod(u_camera, DOT_SPACING);
 
-        [keybindings]
-        "mod+return" = "exec ${lib.getExe pkgs.blackbox-terminal}"
-        "mod+space" = "exec ${lib.getExe pkgs.sherlock-launcher} --config-dir /etc/sherlock-launcher/"
-        "mod+shift+q" = "close-window"
-        "mod+shift+e" = "quit"
-        "ctrl+alt+delete" = "spawn ${lib.getExe pkgs.mission-center}"
+            vec2 grid = mod(canvas_pos, DOT_SPACING);
+            vec2 dist = min(grid, DOT_SPACING - grid);
+            float d = length(dist);
 
-        "Mod+shift+l" = "spawn ${lib.getExe screenLock}"
-        "Mod+shift+3" = "spawn ${lib.getExe screenshotOutput}"
-        "Mod+shift+4" = "spawn ${lib.getExe screenshotRegion}"
+            float dot_alpha = 1.0 - smoothstep(DOT_RADIUS - 0.5, DOT_RADIUS + 0.5, d);
 
-        "XF86AudioPlay" = "spawn ${pkgs.playerctl}/bin/playerctl play-pause"
-        "XF86AudioPause" = "spawn ${pkgs.playerctl}/bin/playerctl play-pause"
-        "XF86AudioStop" = "spawn ${pkgs.playerctl}/bin/playerctl stop"
-        "XF86AudioNext" = "spawn ${pkgs.playerctl}/bin/playerctl next"
-        "XF86AudioPrev" = "spawn ${pkgs.playerctl}/bin/playerctl previous"
-        "XF86AudioRaiseVolume" = "spawn ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +5%"
-        "XF86AudioLowerVolume" = "spawn ${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -5%"
-        "XF86AudioMute" = "spawn ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"
-
-        "mod+left" = "center-nearest left"
-        "mod+right" = "center-nearest right"
-        "mod+up" = "center-nearest up"
-        "mod+down" = "center-nearest down"
-        "mod+h" = "center-nearest left"
-        "mod+l" = "center-nearest right"
-        "mod+k" = "center-nearest up"
-        "mod+j" = "center-nearest down"
-
-        "mod+shift+left" = "nudge-window left"
-        "mod+shift+right" = "nudge-window right"
-        "mod+shift+up" = "nudge-window up"
-        "mod+shift+down" = "nudge-window down"
-        "mod+shift+h" = "nudge-window left"
-        "mod+shift+l" = "nudge-window right"
-        "mod+shift+k" = "nudge-window up"
-        "mod+shift+j" = "nudge-window down"
-
-        "mod+ctrl+left" = "pan-viewport left"
-        "mod+ctrl+right" = "pan-viewport right"
-        "mod+ctrl+up" = "pan-viewport up"
-        "mod+ctrl+down" = "pan-viewport down"
-        "mod+ctrl+h" = "pan-viewport left"
-        "mod+ctrl+l" = "pan-viewport right"
-        "mod+ctrl+k" = "pan-viewport up"
-        "mod+ctrl+j" = "pan-viewport down"
-
-        "mod+equal" = "zoom-in"
-        "mod+minus" = "zoom-out"
-        "mod+0" = "zoom-reset"
-        "mod+f" = "toggle-fullscreen"
-        "mod+m" = "fit-window"
-
-        [[window_rules]]
-        app_id = "/^(org.gnome.Nautilus|org.gnome.Evince|org.gnome.Calendar|org.gnome.FontViewer|org.gnome.Sushi|org.gnome.Clocks|org.gnome.Logs|org.gnome.Todo|org.gnome.Maps|org.gnome.Contacts|org.gnome.Photos|org.gnome.Cheese|org.gnome.Music|org.gnome.Videos|wdisplays|com.jaoushingan.WaydroidHelper)$/"
-        decoration = "client"
+            gl_FragColor = vec4(mix(BG_COLOR, DOT_COLOR, dot_alpha), 1.0);
+        }
       '';
+
+      environment.etc."driftwm/config.toml".source =
+        (pkgs.formats.toml { }).generate "driftwm-config.toml"
+          {
+            mod_key = "super";
+
+            focus_follows_mouse = true;
+            window_placement = "auto";
+
+            autostart = [
+              (lib.getExe pkgs.xwayland-satellite)
+              "${pkgs.wl-clipboard}/bin/wl-paste --watch ${lib.getExe pkgs.cliphist} store"
+              "${pkgs.blueman}/bin/blueman-applet"
+            ];
+
+            env = {
+              QT_QPA_PLATFORMTHEME = "qt6ct";
+            };
+
+            zoom = {
+              reset_on_new_window = false;
+            };
+
+            cursor = {
+              theme = "elementary";
+            };
+
+            decorations = {
+              bg_color = base00;
+              fg_color = base05;
+              corner_radius = 10;
+              border_width = 1;
+              border_color = base01;
+              border_color_focused = base0D;
+              shadow = true;
+            };
+
+            background = {
+              type = "shader";
+              path = "/etc/driftwm/wallpapers/dot_grid.glsl";
+              cache_shader = true;
+            };
+
+            xwayland = {
+              enabled = true;
+              path = lib.getExe pkgs.xwayland-satellite;
+            };
+
+            output = {
+              outline = {
+                color = base00;
+              };
+            };
+
+            mouse = {
+              decoration_resize_snapped = true;
+              decoration_fit_snapped = true;
+            };
+
+            snap = {
+              gap = 10;
+              distance = 20;
+              same_edge = true;
+              edge_center = true;
+            };
+
+            keybindings = {
+              "mod+return" = "exec ${lib.getExe pkgs.blackbox-terminal}";
+              "mod+space" = "exec ${lib.getExe pkgs.sherlock-launcher} --config-dir /etc/sherlock-launcher/";
+              "XF86LaunchA" = "home-toggle";
+              "mod+l" = "spawn ${lib.getExe screenLock}";
+              "mod+n" = "spawn swaync-client -t";
+              "XF86AudioRaiseVolume" = "spawn swayosd-client --output-volume raise";
+              "XF86AudioLowerVolume" = "spawn swayosd-client --output-volume lower";
+              "XF86AudioMute" = "spawn swayosd-client --output-volume mute-toggle";
+              "XF86MonBrightnessUp" = "spawn swayosd-client --brightness raise";
+              "XF86MonBrightnessDown" = "spawn swayosd-client --brightness lower";
+              "mod+m" = "fit-window-snapped";
+              "mod+shift+m" = "fit-window";
+              "mod+shift+3" = "spawn ${lib.getExe screenshotOutput}";
+              "mod+shift+4" = "spawn ${lib.getExe screenshotRegion}";
+              "mod+1" = "go-to 0 1500";
+              "mod+shift+escape" = "quit";
+            };
+
+            gestures = {
+              "on-window" = {
+                "alt+3-finger-swipe" = "resize-window-snapped";
+                "alt+shift+3-finger-swipe" = "resize-window";
+              };
+            };
+
+            window_rules = [
+              {
+                app_id = "waybar";
+                position = [
+                  (-269)
+                  19
+                ];
+                widget = true;
+                border_width = 2;
+                corner_radius = 10;
+              }
+              {
+                app_id = "waybar";
+                position = [
+                  132
+                  (-247)
+                ];
+                widget = true;
+                border_width = 2;
+                corner_radius = 10;
+              }
+            ];
+          };
     }
   );
 }
