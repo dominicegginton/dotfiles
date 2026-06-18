@@ -202,6 +202,8 @@ in
           swaynotificationcenter
           swayosd
           wl-clipboard
+          my-shell
+          my-shell-settings
         ];
       };
 
@@ -247,6 +249,7 @@ in
               (lib.getExe pkgs.xwayland-satellite)
               "${pkgs.wl-clipboard}/bin/wl-paste --watch ${lib.getExe pkgs.cliphist} store"
               "${pkgs.blueman}/bin/blueman-applet"
+              (lib.getExe pkgs.my-shell)
             ];
 
             env = {

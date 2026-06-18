@@ -10,9 +10,6 @@ use adw::ApplicationWindow;
 use gtk4_layer_shell::{Edge, Layer, LayerShell};
 use libadwaita::glib;
 use std::ops::ControlFlow;
-use std::thread;
-
-use niri_ipc::{socket::Socket, Event, Request, Response};
 
 const APP_ID: &str = "dev.dominicegginton.Shell";
 
@@ -148,14 +145,10 @@ fn main() {
             STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
 
-        // Channel to receive overview open/close events from the background thread
-        let (tx, rx) = std::sync::mpsc::channel::<bool>();
-
         // Helper to build a single window with its own content and timeouts.
         // Accept an optional monitor so quick-menu windows can be placed on the same screen.
         let make_window = |app: &Application,
-                           monitor: Option<adw::gtk::gdk::Monitor>,
-                           tx: std::sync::mpsc::Sender<bool>|
+                           monitor: Option<adw::gtk::gdk::Monitor>|
          -> (
             ApplicationWindow,
             std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>>,
@@ -213,7 +206,6 @@ fn main() {
             let q_for_click = quick_win_for_click.clone();
             let app_for_quick = app_for_quick.clone();
             let monitor_for_quick = monitor_for_quick.clone();
-            let tx_for_outer = tx.clone();
             gesture.connect_pressed(move |_, _, _, _| {
                 let mut q = q_for_click.borrow_mut();
                 if let Some(existing) = q.as_ref() {
@@ -238,19 +230,12 @@ fn main() {
                 let second_row = Box::new(Orientation::Horizontal, margin);
                 quick_content.append(&second_row);
 
-                // Settings button: opens the `shell-settings` app (show first)
+                // Settings button: opens the `shell-settings` app
                 let settings_btn = Button::with_label("⚙");
                 settings_btn.add_css_class("flat");
                 first_row.append(&settings_btn);
-                let tx_for_settings = tx_for_outer.clone();
                 settings_btn.connect_clicked(move |_| {
                     let _ = std::process::Command::new("shell-settings").spawn();
-                    let _ = tx_for_settings.send(false);
-
-                    // Also request niri to close the overview via IPC.
-                    if let Ok(mut s) = Socket::connect() {
-                        let _ = s.send(Request::Action(niri_ipc::Action::CloseOverview {}));
-                    }
                 });
 
                 let quick_theme = Button::with_label("Toggle Light/Dark Theme");
@@ -329,53 +314,11 @@ fn main() {
             right_window.set_margin(Edge::Top, margin);
             right_window.set_margin(Edge::Bottom, margin);
 
-            // Start hidden; only show when overlay is open
-            right_window.hide();
+            // Always show the shell bar
+            right_window.show();
 
             (right_window, quick_win_cell)
         };
-
-        // Spawn a thread to connect to niri's IPC socket and read events
-        let tx_thread = tx.clone();
-        thread::spawn(move || {
-            // Connect to the niri IPC socket
-            let mut socket = match Socket::connect() {
-                Ok(s) => s,
-                Err(e) => {
-                    eprintln!("Failed to connect to niri socket: {}", e);
-                    return;
-                }
-            };
-
-            // Request the EventStream
-            match socket.send(Request::EventStream) {
-                Ok(Ok(response)) => match response {
-                    Response::Handled => {
-                        // Start reading events
-                        let mut read_event = socket.read_events();
-                        loop {
-                            match read_event() {
-                                Ok(event) => {
-                                    // Check for OverviewOpenedOrClosed events
-                                    if let Event::OverviewOpenedOrClosed { is_open } = event {
-                                        let _ = tx_thread.send(is_open);
-                                    }
-                                }
-                                Err(e) => {
-                                    eprintln!("Error reading niri event: {:?}", e);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    other => {
-                        eprintln!("Unexpected response to EventStream request: {:?}", other);
-                    }
-                },
-                Ok(Err(msg)) => eprintln!("niri rejected EventStream request: {}", msg),
-                Err(e) => eprintln!("Failed to request EventStream: {}", e),
-            }
-        });
 
         // Build one window per monitor so the overlay appears on all screens
         let display = adw::gtk::gdk::Display::default().expect("Could not connect to a display.");
@@ -394,7 +337,7 @@ fn main() {
         for i in 0..n_monitors {
             if let Some(obj) = monitors.item(i) {
                 if let Ok(monitor) = obj.downcast::<adw::gtk::gdk::Monitor>() {
-                    let (window, quick_cell) = make_window(app, Some(monitor.clone()), tx.clone());
+                    let (window, quick_cell) = make_window(app, Some(monitor.clone()));
                     #[allow(unused_must_use)]
                     {
                         let _ = window.set_monitor(Some(&monitor));
@@ -502,38 +445,14 @@ fn main() {
                     {
                         let _ = center_win.set_monitor(Some(&monitor));
                     }
-                    // Start hidden; only show when overlay is open
-                    center_win.hide();
+                    // Always show the center shell bar
+                    center_win.show();
 
                     center_windows.push((center_win, notif_cell));
                 }
             }
         }
-        // Poll the receiver in the main loop and show/hide all windows accordingly.
-        let windows_for_ipc = windows
-            .iter()
-            .chain(center_windows.iter())
-            .map(|(w, q)| (w.clone(), q.clone()))
-            .collect::<Vec<_>>();
-        glib::idle_add_local(move || {
-            while let Ok(is_open) = rx.try_recv() {
-                for (w, qcell) in &windows_for_ipc {
-                    if is_open {
-                        w.show();
-                    } else {
-                        // Hide main window
-                        w.hide();
-                        // Close quick-menu if open
-                        let mut maybe_q = qcell.borrow_mut();
-                        if let Some(qwin) = maybe_q.as_ref() {
-                            qwin.hide();
-                        }
-                        *maybe_q = None;
-                    }
-                }
-            }
-            ControlFlow::Continue(()).into()
-        });
+
     });
 
     application.run();
