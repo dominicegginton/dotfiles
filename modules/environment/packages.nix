@@ -17,5 +17,6 @@
     vulnix # Vulnerability scanner for Nix store paths
     vlock # Terminal locking utility for session security
     wget # Tool for retrieving files using HTTP, HTTPS, FTP and FTPS
+    sc # Curses-based spreadsheet program
   ];
 }

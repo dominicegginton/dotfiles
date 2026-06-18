@@ -196,9 +196,6 @@ in
           gnome-contacts
           gnome-firmware
 
-          sc
-
-          waybar
           swaynotificationcenter
           swayosd
           wl-clipboard
