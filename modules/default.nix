@@ -53,7 +53,8 @@ rec {
     # Secrets management (Bitwarden, Google Secret Manager, etc.)
     ./secrets.nix
 
-    # Security modules (AppArmor, PAM, Polkit, etc.)
+    # Security modules (ACME, AppArmor, PAM, Polkit, etc.)
+    ./security/acme.nix
     ./security/apparmor.nix
     ./security/pam.nix
     ./security/polkit.nix
