@@ -14,7 +14,7 @@
       "sherlock-launcher/config.toml".text = ''
         [default_apps]
         calendar_client = "${lib.getExe pkgs.gnome-calendar}"
-        terminal = "${lib.getExe pkgs.alacritty}"
+        terminal = "${lib.getExe pkgs.blackbox-terminal}"
         browser = "${lib.getExe pkgs.firefox} --name firefox %U"
         [units]
         lengths = "meters"
