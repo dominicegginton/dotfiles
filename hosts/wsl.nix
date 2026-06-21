@@ -1,7 +1,5 @@
 {
-  self,
   lib,
-  config,
   platform,
   ...
 }:

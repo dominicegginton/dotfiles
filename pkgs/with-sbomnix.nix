@@ -1,6 +1,4 @@
 {
-  lib,
-  stdenv,
   writeShellScriptBin,
   sbomnix,
 }:
@@ -17,7 +15,7 @@
 #
 pkg:
 # Override the package's attributes to add sbomnix-related passthru scripts
-pkg.overrideAttrs (old: {
+pkg.overrideAttrs (_: {
   # Adds a 'sbomnix' script to the package's passthru, which generates an SBOM for the package output
   passthru.sbomnix = writeShellScriptBin "sbomnix" ''
     ${sbomnix}/bin/sbomnix ${pkg.out} "$@"

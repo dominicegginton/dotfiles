@@ -2,7 +2,6 @@
   lib,
   osConfig,
   pkgs,
-  username,
   ...
 }:
 

@@ -11,77 +11,74 @@ in
 {
   options.services.gcs-backup = lib.mkOption {
     type = lib.types.attrsOf (
-      lib.types.submodule (
-        { name, ... }:
-        {
-          options = {
-            enable = lib.mkEnableOption "Google Cloud Storage backup job";
+      lib.types.submodule (_: {
+        options = {
+          enable = lib.mkEnableOption "Google Cloud Storage backup job";
 
-            bucket = lib.mkOption {
-              type = lib.types.str;
-              description = "The name of the GCS bucket to backup to (e.g., 'gs://my-backup-bucket').";
-              example = "gs://my-backups";
-            };
-
-            directories = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              description = "List of directories to backup to the GCS bucket.";
-              example = [
-                "/var/lib/my-app"
-                "/home/dom/documents"
-              ];
-            };
-
-            serviceAccountKeyFile = lib.mkOption {
-              type = lib.types.nullOr lib.types.path;
-              default = null;
-              description = "Path to the Google Cloud Service Account JSON key file for authentication.";
-            };
-
-            interval = lib.mkOption {
-              type = lib.types.str;
-              default = "daily";
-              description = "How often to run the backup (systemd.timer calendar expression).";
-              example = "hourly";
-            };
-
-            randomizedDelaySec = lib.mkOption {
-              type = lib.types.nullOr lib.types.str;
-              default = "1h";
-              description = "Delay the timer by a random amount of time up to this value (systemd.timer RandomizedDelaySec expression).";
-              example = "45min";
-            };
-
-            delete = lib.mkOption {
-              type = lib.types.bool;
-              default = false;
-              description = "Whether to delete files in the bucket that are not present in the source.";
-            };
-
-            extraArgs = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              description = "Extra arguments to pass to gcloud storage rsync.";
-              example = [
-                "--exclude=.*\\.tmp"
-              ];
-            };
-
-            wantedBy = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              description = "List of systemd units that should want this backup service.";
-            };
-
-            wants = lib.mkOption {
-              type = lib.types.listOf lib.types.str;
-              default = [ ];
-              description = "List of systemd units that this backup service should want.";
-            };
+          bucket = lib.mkOption {
+            type = lib.types.str;
+            description = "The name of the GCS bucket to backup to (e.g., 'gs://my-backup-bucket').";
+            example = "gs://my-backups";
           };
-        }
-      )
+
+          directories = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            description = "List of directories to backup to the GCS bucket.";
+            example = [
+              "/var/lib/my-app"
+              "/home/dom/documents"
+            ];
+          };
+
+          serviceAccountKeyFile = lib.mkOption {
+            type = lib.types.nullOr lib.types.path;
+            default = null;
+            description = "Path to the Google Cloud Service Account JSON key file for authentication.";
+          };
+
+          interval = lib.mkOption {
+            type = lib.types.str;
+            default = "daily";
+            description = "How often to run the backup (systemd.timer calendar expression).";
+            example = "hourly";
+          };
+
+          randomizedDelaySec = lib.mkOption {
+            type = lib.types.nullOr lib.types.str;
+            default = "1h";
+            description = "Delay the timer by a random amount of time up to this value (systemd.timer RandomizedDelaySec expression).";
+            example = "45min";
+          };
+
+          delete = lib.mkOption {
+            type = lib.types.bool;
+            default = false;
+            description = "Whether to delete files in the bucket that are not present in the source.";
+          };
+
+          extraArgs = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            description = "Extra arguments to pass to gcloud storage rsync.";
+            example = [
+              "--exclude=.*\\.tmp"
+            ];
+          };
+
+          wantedBy = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            description = "List of systemd units that should want this backup service.";
+          };
+
+          wants = lib.mkOption {
+            type = lib.types.listOf lib.types.str;
+            default = [ ];
+            description = "List of systemd units that this backup service should want.";
+          };
+        };
+      })
     );
     default = { };
     description = "Google Cloud Storage backup jobs.";

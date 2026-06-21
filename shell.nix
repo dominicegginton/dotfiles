@@ -4,7 +4,6 @@
   # Development shell for the dotfiles project, providing tools for Nix development, secrets management, and project automation.
   #
   # This shell is intended for use with `nix develop` and provides all tools needed for working on this repository.
-  self,
   lib,
   mkShell,
   writeShellScriptBin,
@@ -18,11 +17,6 @@
   nix-index,
   google-cloud-sdk,
   opentofu,
-  gum,
-  jq,
-  gnupg,
-  bws,
-  neovim,
   sops,
   age,
   ssh-to-age,
