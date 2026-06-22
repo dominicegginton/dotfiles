@@ -19,7 +19,11 @@
       useWindowsDriver = lib.mkForce true;
     };
 
-    environment.systemPackages = with pkgs; [ jetbrains.gateway ];
+    environment.systemPackages = with pkgs; [
+      jetbrains.gateway
+      nodejs
+      typescript
+    ];
 
     # Disable kernel module locking in WSL as it prevents Docker port mapping
     security.lockKernelModules = lib.mkForce false;

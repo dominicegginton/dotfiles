@@ -2,7 +2,6 @@
   lib,
   osConfig,
   pkgs,
-  username,
   ...
 }:
 
@@ -234,9 +233,6 @@
     home.packages =
       with pkgs;
       [
-        rnote
-        aseprite
-        krita
         bat
         eza
         twm
@@ -244,10 +240,18 @@
         gh-markdown-preview
         github-copilot-cli
         gh-stack
-        jellyfin-mpv-shim
-        nocturne
       ]
-      ++ (if (osConfig ? wsl && osConfig.wsl.enable) then [ jira-cli-go ] else [ youtube-tv ]);
+      ++ (
+        if (osConfig ? wsl && osConfig.wsl.enable) then
+          [ jira-cli-go ]
+        else
+          [
+            youtube-tv
+            aseprite
+            krita
+            rnote
+          ]
+      );
 
     # Load JIRA API token from a local secrets file on WSL (within user home)
     # Create the file manually with: `echo "token" > ~/.secrets/jira-api-token`

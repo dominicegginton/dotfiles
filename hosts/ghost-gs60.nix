@@ -4,7 +4,6 @@
   lib,
   hostname,
   platform,
-  tailnet,
   ...
 }:
 
