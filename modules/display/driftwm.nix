@@ -2,7 +2,6 @@
   config,
   lib,
   pkgs,
-  self,
   ...
 }:
 
@@ -196,9 +195,6 @@ in
           gnome-contacts
           gnome-firmware
 
-          sc
-
-          waybar
           swaynotificationcenter
           swayosd
           wl-clipboard

@@ -1,9 +1,8 @@
 { lib, ... }:
+
 {
   services.timesyncd = {
     enable = lib.mkForce true;
-    extraConfig = lib.mkDefault ''
-      PollIntervalMaxSec=60
-    '';
+    settings.Time.PollIntervalMaxSec = lib.mkForce 60;
   };
 }

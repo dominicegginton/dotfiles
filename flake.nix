@@ -89,7 +89,6 @@
       nixpkgs,
       home-manager,
       nix-github-actions,
-      nixos-wsl,
       ...
     }:
 
