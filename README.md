@@ -22,7 +22,7 @@ Declarative System, Package & Home Configurations - WIP Always
 - **Security & Compliance** – Hardened defaults, run0 integration, and SBOM-enabled package workflows.
 - **Continuous Integration** – Automated checks and workflows with _GitHub Actions_ and flake-native outputs.
 - **Automated Garbage Collection** – System prunes old Nix store paths automatically.
-- **Desktop Environments** – Wayland _GNOME_ (and _Niri_) desktop environments.
+- **Desktop Environments** – Wayland _GNOME_ & _DriftWM_ desktop environments.
 
 ## Workspace
 
