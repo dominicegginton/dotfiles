@@ -12,21 +12,21 @@ jobs:
   flake-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
       - uses: determinatesystems/flake-checker-action@v12
 
   formatter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
       - run: nix fmt -- --ci
 
   topology:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
       - uses: cachix/cachix-action@v17
         with:
@@ -45,7 +45,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
       - id: set-matrix
         name: Generate Nix Matrix
@@ -61,7 +61,7 @@ jobs:
     strategy:
       matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
       - uses: cachix/cachix-action@v17
         with:
@@ -72,7 +72,7 @@ jobs:
   latitude-7390:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
@@ -81,7 +81,7 @@ jobs:
   ghost-gs60:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
@@ -90,7 +90,7 @@ jobs:
   wsl:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
