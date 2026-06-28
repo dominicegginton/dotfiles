@@ -1,9 +1,4 @@
 {
-  # shell.nix
-  #
-  # Development shell for the dotfiles project, providing tools for Nix development, secrets management, and project automation.
-  #
-  # This shell is intended for use with `nix develop` and provides all tools needed for working on this repository.
   lib,
   mkShell,
   writeShellScriptBin,
@@ -23,6 +18,12 @@
   mkpasswd,
   ...
 }:
+
+let
+  edit-secrets = writeShellScriptBin "edit-secrets" ''
+    sops secrets/secrets.yaml
+  '';
+in
 
 mkShell rec {
   name = "github:" + lib.maintainers.dominicegginton.github + "/dotfiles";
@@ -44,10 +45,7 @@ mkShell rec {
     age
     ssh-to-age
     mkpasswd
-    # Helper to edit secrets
-    (writeShellScriptBin "edit-secrets" ''
-      sops secrets/secrets.yaml
-    '')
+    edit-secrets
   ];
 
   # Maintainer info for shell.nix

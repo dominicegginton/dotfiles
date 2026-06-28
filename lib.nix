@@ -79,6 +79,7 @@ rec {
           deadman.nixosModules.default
           tsnsrv.nixosModules.default
           # dit0.nixosModules.default
+          driftwm.nixosModules.default
           ./modules
           ./hosts/${hostname}.nix
         ]

@@ -209,7 +209,7 @@
           pkgs = nixpkgsFor.${system};
         in
         {
-          default = pkgs.callPackage ./shell.nix { inherit self; };
+          default = pkgs.callPackage ./shell.nix { };
           infrastructure = pkgs.callPackage ./infrastructure/shell.nix { };
         }
       );
