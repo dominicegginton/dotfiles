@@ -8,8 +8,8 @@
 with lib;
 
 {
-  options.services.oauth2-proxy = {
-    enable = mkEnableOption "OAuth2 Proxy";
+  options.services.oauth2-proxy-custom = {
+    enable = mkEnableOption "OAuth2 Proxy Custom Wrapper";
 
     port = mkOption {
       type = types.port;
@@ -74,41 +74,39 @@ with lib;
       default = "X-Auth-Request-Jwt";
       description = "The header name to use for passing the JWT to the upstream service.";
     };
-
   };
 
-  config = mkIf config.services.oauth2-proxy.enable {
+  config = mkIf config.services.oauth2-proxy-custom.enable {
     services.oauth2-proxy = {
       enable = true;
-      httpAddress = "127.0.0.1:${toString config.services.oauth2-proxy.port}";
-      upstream = [ config.services.oauth2-proxy.upstream ];
+      httpAddress = "127.0.0.1:${toString config.services.oauth2-proxy-custom.port}";
+      upstream = [ config.services.oauth2-proxy-custom.upstream ];
       provider = "oidc";
-      oidcIssuerUrl = config.services.oauth2-proxy.oidcIssuerUrl;
-      clientID = config.services.oauth2-proxy.oidcClientId;
-      clientSecretFile = config.services.oauth2-proxy.oidcClientSecretFile;
-      redirectURL = config.services.oauth2-proxy.oidcRedirectUrl;
-      scope = builtins.concatStringsSep " " config.services.oauth2-proxy.oidcScopes;
-      cookie.secretFile = config.services.oauth2-proxy.cookieSecretFile;
+      oidcIssuerUrl = config.services.oauth2-proxy-custom.oidcIssuerUrl;
+      clientID = config.services.oauth2-proxy-custom.oidcClientId;
+      clientSecretFile = config.services.oauth2-proxy-custom.oidcClientSecretFile;
+      redirectURL = config.services.oauth2-proxy-custom.oidcRedirectUrl;
+      scope = builtins.concatStringsSep " " config.services.oauth2-proxy-custom.oidcScopes;
+      cookie.secretFile = config.services.oauth2-proxy-custom.cookieSecretFile;
 
       extraConfig =
-        lib.mkIf config.services.oauth2-proxy.jwtUpstreamEnable {
+        lib.mkIf config.services.oauth2-proxy-custom.jwtUpstreamEnable {
           "--set-xauthrequest" = "true";
-          "--upstream-header" = "${config.services.oauth2-proxy.jwtUpstreamHeader}:${
+          "--upstream-header" = "${config.services.oauth2-proxy-custom.jwtUpstreamHeader}:${
             config.sops.secrets."${lib.last (
-              lib.splitString "/" config.services.oauth2-proxy.jwtUpstreamSecretFile
+              lib.splitString "/" config.services.oauth2-proxy-custom.jwtUpstreamSecretFile
             )}".path
           }";
-          "--jwt-session-header" = "${config.services.oauth2-proxy.jwtUpstreamHeader}";
+          "--jwt-session-header" = "${config.services.oauth2-proxy-custom.jwtUpstreamHeader}";
           "--jwt-session-cookie-name" = "_oauth2_proxy_jwt";
           "--jwt-session-secret" =
             config.sops.secrets."${lib.last (
-              lib.splitString "/" config.services.oauth2-proxy.jwtUpstreamSecretFile
+              lib.splitString "/" config.services.oauth2-proxy-custom.jwtUpstreamSecretFile
             )}".path;
         }
         // {
           # Add any other generic extra config here
         };
-      # };
     };
 
     # Ensure required services are enabled if oauth2-proxy needs them

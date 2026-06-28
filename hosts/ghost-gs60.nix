@@ -25,7 +25,7 @@
     jwtSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
   };
 
-  services.oauth2-proxy = {
+  services.oauth2-proxy-custom = {
     enable = true;
     upstream = "http://127.0.0.1:${toString config.services.onlyoffice-documentserver.port}";
     oidcIssuerUrl = "https://oidc.tailnet.ts.net"; # Placeholder, replace with actual OIDC issuer
@@ -41,8 +41,9 @@
     jwtUpstreamEnable = true;
     jwtUpstreamSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
     jwtUpstreamHeader = "X-WOPI-Signature-Key";
-    nginx.virtualHosts."office.ghost-gs60.local" = {};
   };
+
+  services.oauth2-proxy.nginx.virtualHosts."office.ghost-gs60.local" = {};
 
   services.tailscale.serve = {
     enable = true;
