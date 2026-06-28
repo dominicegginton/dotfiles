@@ -40,9 +40,6 @@ with lib;
       enable = true;
       inherit (config.services.onlyoffice-documentserver) hostname port;
 
-      # Disable Nginx here, as oauth2-proxy will be in front
-      nginx.enable = false;
-
       # You might need to configure these based on your setup
       # postgresHost = "...";
       # postgresName = "...";

@@ -41,6 +41,7 @@
     jwtUpstreamEnable = true;
     jwtUpstreamSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
     jwtUpstreamHeader = "X-WOPI-Signature-Key";
+    nginx.virtualHosts."office.ghost-gs60.local" = {};
   };
 
   services.tailscale.serve = {
@@ -48,7 +49,7 @@
     services = {
       onlyoffice = {
         hosts = [ "office.ghost-gs60.local" ];
-        localPort = config.services.oauth2-proxy.port;
+        localPort = 80;
         # Assuming oauth2-proxy handles HTTPS internally with Tailscale
         # proto = "https";
       };
