@@ -29,6 +29,14 @@ with lib;
       description = "Path to a file containing the secret to sign web requests using JSON Web Tokens.";
     };
 
+    securityNonceFile = mkOption {
+      type = types.path;
+      default = pkgs.writeText "onlyoffice-nonce.conf" ''
+        set $secure_link_secret "changeme";
+      '';
+      description = "Path to onlyoffice security nonce configuration file.";
+    };
+
     # Example of how to add PostgreSQL support, assuming it's managed elsewhere
     # services.postgresql.enable = mkDefault true;
     # services.onlyoffice-documentserver.postgresHost = "/run/postgresql";
@@ -44,7 +52,7 @@ with lib;
   config = mkIf config.services.onlyoffice-documentserver.enable {
     services.onlyoffice = {
       enable = true;
-      inherit (config.services.onlyoffice-documentserver) hostname port jwtSecretFile;
+      inherit (config.services.onlyoffice-documentserver) hostname port jwtSecretFile securityNonceFile;
 
       # You might need to configure these based on your setup
       # postgresHost = "...";
