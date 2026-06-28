@@ -27,9 +27,9 @@ with lib;
       description = "The OIDC issuer URL (e.g., https://accounts.google.com).";
     };
 
-    oidcClientIdFile = mkOption {
+    oidcClientId = mkOption {
       type = types.str;
-      description = "Path to a file containing the OIDC client ID.";
+      description = "The OIDC client ID.";
     };
 
     oidcClientSecretFile = mkOption {
@@ -84,24 +84,24 @@ with lib;
       upstreams = [ config.services.oauth2-proxy.upstream ];
       provider = "oidc";
       oidcIssuerUrl = config.services.oauth2-proxy.oidcIssuerUrl;
-      clientIdFile = config.services.oauth2-proxy.oidcClientIdFile;
+      clientID = config.services.oauth2-proxy.oidcClientId;
       clientSecretFile = config.services.oauth2-proxy.oidcClientSecretFile;
-      redirectUrl = config.services.oauth2-proxy.oidcRedirectUrl;
+      redirectURL = config.services.oauth2-proxy.oidcRedirectUrl;
       scope = builtins.concatStringsSep " " config.services.oauth2-proxy.oidcScopes;
-      cookieSecretFile = config.services.oauth2-proxy.cookieSecretFile;
+      cookie.secretFile = config.services.oauth2-proxy.cookieSecretFile;
 
       extraConfig =
         lib.mkIf config.services.oauth2-proxy.jwtUpstreamEnable {
           "--set-xauthrequest" = "true";
           "--upstream-header" = "${config.services.oauth2-proxy.jwtUpstreamHeader}:${
-            config.config.sops.secrets."${lib.last (
+            config.sops.secrets."${lib.last (
               lib.splitString "/" config.services.oauth2-proxy.jwtUpstreamSecretFile
             )}".path
           }";
           "--jwt-session-header" = "${config.services.oauth2-proxy.jwtUpstreamHeader}";
           "--jwt-session-cookie-name" = "_oauth2_proxy_jwt";
           "--jwt-session-secret" =
-            config.config.sops.secrets."${lib.last (
+            config.sops.secrets."${lib.last (
               lib.splitString "/" config.services.oauth2-proxy.jwtUpstreamSecretFile
             )}".path;
         }

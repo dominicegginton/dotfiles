@@ -29,7 +29,7 @@
     enable = true;
     upstream = "http://127.0.0.1:${toString config.services.onlyoffice-documentserver.port}";
     oidcIssuerUrl = "https://oidc.tailnet.ts.net"; # Placeholder, replace with actual OIDC issuer
-    oidcClientIdFile = config.sops.secrets."oauth2_proxy_oidc_client_id".path;
+    oidcClientId = "onlyoffice";
     oidcClientSecretFile = config.sops.secrets."oauth2_proxy_oidc_client_secret".path;
     oidcRedirectUrl = "https://office.ghost-gs60.local/oauth2/callback";
     oidcScopes = [

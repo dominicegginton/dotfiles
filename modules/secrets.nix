@@ -40,7 +40,6 @@ in
       "services/beszel/agent" = { };
       "services/beszel/hub" = { };
       "onlyoffice_jwt_secret" = { };
-      "oauth2_proxy_oidc_client_id" = { };
       "oauth2_proxy_oidc_client_secret" = { };
       "oauth2_proxy_cookie_secret" = { };
     });
