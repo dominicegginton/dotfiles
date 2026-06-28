@@ -264,7 +264,7 @@ in
               bg_color = base00;
               fg_color = base05;
               corner_radius = 10;
-              border_width = 1;
+              border_width = 0;
               border_color = base01;
               border_color_focused = base0D;
               shadow = true;
@@ -295,7 +295,7 @@ in
             snap = {
               gap = 10;
               distance = 20;
-              same_edge = true;
+              corers = true;
               edge_center = true;
             };
 

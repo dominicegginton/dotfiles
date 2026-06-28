@@ -19,6 +19,45 @@
     msi-gs60
   ];
 
+  config.services.onlyoffice-documentserver = {
+    enable = true;
+    hostname = "office.ghost-gs60.local";
+    jwtSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
+  };
+
+  config.services.oauth2-proxy = {
+    enable = true;
+    upstream = "http://127.0.0.1:${toString config.services.onlyoffice-documentserver.port}";
+    oidcIssuerUrl = "https://oidc.tailnet.ts.net"; # Placeholder, replace with actual OIDC issuer
+    oidcClientIdFile = config.sops.secrets."oauth2_proxy_oidc_client_id".path;
+    oidcClientSecretFile = config.sops.secrets."oauth2_proxy_oidc_client_secret".path;
+    oidcRedirectUrl = "https://office.ghost-gs60.local/oauth2/callback";
+    oidcScopes = [
+      "openid"
+      "profile"
+      "email"
+    ];
+    cookieSecretFile = config.sops.secrets."oauth2_proxy_cookie_secret".path;
+    jwtUpstreamEnable = true;
+    jwtUpstreamSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
+    jwtUpstreamHeader = "X-WOPI-Signature-Key";
+  };
+
+  services.tailscale.serve = {
+    enable = true;
+    services = {
+      onlyoffice = {
+        hosts = [ "office.ghost-gs60.local" ];
+        localPort = config.services.oauth2-proxy.port;
+        # Assuming oauth2-proxy handles HTTPS internally with Tailscale
+        # proto = "https";
+      };
+    };
+  };
+
+  services.postgresql.enable = true;
+  services.rabbitmq.enable = true;
+
   # Disko configuration for storage layout
   disko.devices = {
     disk = {

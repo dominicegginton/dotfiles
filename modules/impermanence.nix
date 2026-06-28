@@ -59,6 +59,8 @@
         "/var/lib/boltd"
         "/root"
         "/home/dom"
+        "/var/lib/onlyoffice/documentserver/App_Data"
+        "/var/lib/oauth2-proxy"
       ];
       users.dom.directories = [
         "Downloads"
