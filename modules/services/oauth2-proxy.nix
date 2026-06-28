@@ -81,7 +81,7 @@ with lib;
     services.oauth2-proxy = {
       enable = true;
       httpAddress = "127.0.0.1:${toString config.services.oauth2-proxy.port}";
-      upstreams = [ config.services.oauth2-proxy.upstream ];
+      upstream = [ config.services.oauth2-proxy.upstream ];
       provider = "oidc";
       oidcIssuerUrl = config.services.oauth2-proxy.oidcIssuerUrl;
       clientID = config.services.oauth2-proxy.oidcClientId;
