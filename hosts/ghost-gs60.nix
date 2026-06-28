@@ -19,13 +19,13 @@
     msi-gs60
   ];
 
-  config.services.onlyoffice-documentserver = {
+  services.onlyoffice-documentserver = {
     enable = true;
     hostname = "office.ghost-gs60.local";
     jwtSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
   };
 
-  config.services.oauth2-proxy = {
+  services.oauth2-proxy = {
     enable = true;
     upstream = "http://127.0.0.1:${toString config.services.onlyoffice-documentserver.port}";
     oidcIssuerUrl = "https://oidc.tailnet.ts.net"; # Placeholder, replace with actual OIDC issuer
