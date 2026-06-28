@@ -21,6 +21,7 @@
   age,
   ssh-to-age,
   mkpasswd,
+  ...
 }:
 
 mkShell rec {
