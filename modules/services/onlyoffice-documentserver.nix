@@ -23,6 +23,12 @@ with lib;
       description = "Port the OnlyOffice document server should listen on.";
     };
 
+    jwtSecretFile = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Path to a file containing the secret to sign web requests using JSON Web Tokens.";
+    };
+
     # Example of how to add PostgreSQL support, assuming it's managed elsewhere
     # services.postgresql.enable = mkDefault true;
     # services.onlyoffice-documentserver.postgresHost = "/run/postgresql";
@@ -38,7 +44,7 @@ with lib;
   config = mkIf config.services.onlyoffice-documentserver.enable {
     services.onlyoffice = {
       enable = true;
-      inherit (config.services.onlyoffice-documentserver) hostname port;
+      inherit (config.services.onlyoffice-documentserver) hostname port jwtSecretFile;
 
       # You might need to configure these based on your setup
       # postgresHost = "...";
