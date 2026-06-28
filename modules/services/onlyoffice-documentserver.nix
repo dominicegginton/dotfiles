@@ -39,7 +39,6 @@ with lib;
     services.onlyoffice = {
       enable = true;
       inherit (config.services.onlyoffice-documentserver) hostname port;
-      listenAddress = "127.0.0.1"; # Bind to localhost for Tailscale proxy
 
       # Disable Nginx here, as oauth2-proxy will be in front
       nginx.enable = false;
