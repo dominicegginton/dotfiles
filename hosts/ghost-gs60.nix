@@ -43,8 +43,8 @@
     jwtUpstreamHeader = "X-WOPI-Signature-Key";
   };
 
-  services.oauth2-proxy.nginx.virtualHosts."office.ghost-gs60.local" = {};
-
+  services.oauth2-proxy.nginx.virtualHosts."office.ghost-gs60.local" = { };
+  services.oauth2-proxy.nginx.domain = "office.ghost-gs60.local";
   services.tailscale.serve = {
     enable = true;
     services = {
