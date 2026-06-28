@@ -52,7 +52,8 @@ with lib;
   config = mkIf config.services.onlyoffice-documentserver.enable {
     services.onlyoffice = {
       enable = true;
-      inherit (config.services.onlyoffice-documentserver) hostname port jwtSecretFile securityNonceFile;
+      inherit (config.services.onlyoffice-documentserver) hostname port jwtSecretFile;
+      securityNonceFile = "${config.services.onlyoffice-documentserver.securityNonceFile}";
 
       # You might need to configure these based on your setup
       # postgresHost = "...";
