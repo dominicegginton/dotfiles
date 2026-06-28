@@ -49,10 +49,9 @@
     enable = true;
     services = {
       onlyoffice = {
-        hosts = [ "office.ghost-gs60.local" ];
-        localPort = 80;
-        # Assuming oauth2-proxy handles HTTPS internally with Tailscale
-        # proto = "https";
+        endpoints = {
+          "tcp:443" = "http://localhost:80";
+        };
       };
     };
   };
