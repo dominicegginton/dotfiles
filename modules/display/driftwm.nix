@@ -295,8 +295,8 @@ in
             snap = {
               gap = 10;
               distance = 20;
-              corers = true;
-              edge_center = true;
+              corners = true;
+              centers = true;
             };
 
             keybindings = {
