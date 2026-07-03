@@ -32,6 +32,10 @@
     dit0.url = "github:dominicegginton/dit0";
     dit0.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Amber package from the dotfiles maintainer's flake collection
+    amber.url = "github:dominicegginton/amber";
+    amber.inputs.nixpkgs.follows = "nixpkgs";
+
     # Generate network and infrastructure topology diagrams from NixOS configurations
     nix-topology.url = "github:oddlama/nix-topology";
     nix-topology.inputs.nixpkgs.follows = "nixpkgs";

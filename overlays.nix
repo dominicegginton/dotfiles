@@ -43,6 +43,9 @@ rec {
     # DriftWM — a trackpad-first infinite canvas Wayland compositor
     driftwm = self.inputs.driftwm.packages.${prev.system}.default;
 
+    # Amber package from the maintainer's flake
+    amber = self.inputs.amber.packages.${prev.system}.default;
+
     # Topology output is now a package
     topology = self.outputs.packages.${final.system}.topology;
 

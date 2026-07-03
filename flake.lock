@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "amber": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1783096305,
+        "narHash": "sha256-56Nd/W/LQrHRsOhvIWy3sTOBj112ST1Re7b9OlFtPCc=",
+        "owner": "dominicegginton",
+        "repo": "amber",
+        "rev": "d26956ff316053754c7016b0603c0227e9bccd08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dominicegginton",
+        "repo": "amber",
+        "type": "github"
+      }
+    },
     "base16": {
       "inputs": {
         "fromYaml": "fromYaml"
@@ -507,6 +527,7 @@
     },
     "root": {
       "inputs": {
+        "amber": "amber",
         "base16": "base16",
         "deadman": "deadman",
         "disko": "disko",
