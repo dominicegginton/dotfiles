@@ -45,11 +45,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780906033,
-        "narHash": "sha256-3Q34lc4XzdLmLNZMHhuXiRarmA0leEMR0YOEQJVCMi0=",
+        "lastModified": 1782582935,
+        "narHash": "sha256-h5XnngVH9zD1uEsZ2mZERdPfxmn/0/su7njHW8x8ok4=",
         "owner": "dominicegginton",
         "repo": "deadman",
-        "rev": "9264adc71725d5e534e28c1382372e4c3bcc7094",
+        "rev": "9441035682429243d49ed1a29ad347aa028890d8",
         "type": "github"
       },
       "original": {
