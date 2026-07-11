@@ -96,27 +96,20 @@ in
   config = lib.mkIf config.display.driftwm.enable (
     with config.scheme.withHashtag;
     {
+      # Enable DriftWM NixOS module
+      programs.driftwm.enable = true;
+
       # Enable hardware accelerated graphics drivers
       hardware.graphics.enable = lib.mkDefault true;
 
       # Enable hardware bluetooth support
       hardware.bluetooth.enable = lib.mkDefault true;
 
-      # Enable UNIX application-level authorizations via Polkit
-      security.polkit.enable = lib.mkDefault true;
-
-      # Enable Swaylock PAM service
-      security.pam.services.swaylock = lib.mkDefault { };
-
       # XDG Portal configuration for desktop integration
       xdg.portal = {
-        enable = lib.mkDefault true;
         wlr.enable = lib.mkDefault true;
-        configPackages = lib.mkDefault [ pkgs.driftwm ];
         extraPortals = lib.mkDefault [
           pkgs.xdg-desktop-portal-gnome
-          pkgs.xdg-desktop-portal-gtk
-          pkgs.xdg-desktop-portal-wlr
         ];
       };
 
@@ -125,18 +118,13 @@ in
       xdg.menus.enable = lib.mkDefault true;
       xdg.icons.enable = lib.mkDefault true;
 
-      services.graphical-desktop.enable = true;
-
       # Core system services
       services.printing.enable = true;
       services.pipewire.enable = true;
-      services.gnome.gnome-keyring.enable = true;
       services.power-profiles-daemon.enable = true;
 
       services.displayManager.gdm.enable = true;
-      services.displayManager.sessionPackages = [ pkgs.driftwm ];
 
-      systemd.packages = [ pkgs.driftwm ];
       systemd.user.services.driftwm = {
         environment = {
           DRIFTWM_CONFIG = "/etc/driftwm/config.toml";
