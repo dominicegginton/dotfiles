@@ -87,6 +87,7 @@ rec {
     ./services/onlyoffice-documentserver.nix
     ./services/oauth2-proxy.nix
     ./services/timesyncd.nix
+    ./services/transmission.nix
     ./services/tsidp.nix
     ./services/usbguard.nix
 

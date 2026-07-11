@@ -149,6 +149,9 @@
   # Enable Jellyfin Media Server Services
   services.jellyfin.enable = true;
 
+  # Enable Transmission BitTorrent client
+  services.transmission.enable = true;
+
   # Enable Frigate NVR & OD Services
   services.frigate = {
     enable = true;

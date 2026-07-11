@@ -23,6 +23,9 @@
       funnel = lib.mkDefault false;
     };
 
+    # Add jellyfin to transmission group to allow reading downloads
+    users.users.jellyfin.extraGroups = lib.optional config.services.transmission.enable "transmission";
+
     topology.self = {
       interfaces.tsnsrv-jellyfin = {
         network = tailnet;
