@@ -1,0 +1,170 @@
+{
+  "grants": [
+    {
+      "src": ["tag:ldap-client"],
+      "dst": ["tag:service-dit0"],
+      "ip":  ["3269"],
+      "app": {"dominicegginton.dev/cap/tsdit0": [{"allow_bind": true}]}
+    },
+
+    {
+      "src": ["dominic.egginton@gmail.com"],
+      "dst": ["tag:service-dit0"],
+      "ip":  ["*"],
+
+      "app": {
+        "dominicegginton.dev/cap/tsdit0": [
+          {
+            "allow_admin_ui": true,
+            "allow_bind":     true,
+            "allow_ui":       true
+          }
+        ]
+      }
+    },
+
+    {
+      "src": ["dominic.egginton@gmail.com"],
+      "dst": ["tag:service-idp"],
+      "ip":  ["*"],
+      "app": {
+        "tailscale.com/cap/tsidp": [
+          {
+            "allow_admin_ui":    true,
+            "allow_dcr":         true,
+            "extraClaims":       {"immich_role": "admin"},
+            "includeInUserInfo": true,
+            "resources":         ["*"],
+            "users":             ["*"]
+          }
+        ]
+      }
+    },
+
+    {
+      "src": ["*"],
+      "dst": ["tag:service-idp"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
+      "dst": ["tag:service-frigate"],
+      "ip":  ["tcp:443"]
+    },
+
+    {
+      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
+      "dst": ["autogroup:tagged"],
+      "ip":  ["tcp:22"]
+    },
+
+    {
+      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
+      "dst": ["tag:service-silverbullet"],
+      "ip":  ["tcp:443"]
+    },
+
+    {
+      "src": ["*"],
+      "dst": ["tag:service-immich"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": ["tag:device-latitude-7390"],
+      "dst": ["tag:service-jellyfin"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": ["tag:beszel-hub", "tag:beszel-agent"],
+      "dst": ["tag:beszel-hub", "tag:beszel-agent"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
+      "dst": ["tag:service-beszel"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": ["*"],
+      "dst": ["*"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": ["tag:device-latitude-7390", "dominic.egginton@gmail.com"],
+      "dst": ["tag:service-transmission"],
+      "ip":  ["*"]
+    }
+  ],
+
+  "postures": {
+    "posture:device-posture": [
+      "node:tsVersion >= '1.98.0'",
+      "node:osVersion >= '6.18.0'",
+      "node:tsStateEncrypted == true",
+      "node:tsReleaseTrack == 'stable'"
+    ]
+  },
+
+  "tagOwners": {
+    "tag:device-ghost-gs60":    [],
+    "tag:device-latitude-7390": [],
+    "tag:ldap-client":          [],
+    "tag:service-idp":          [],
+    "tag:service-dit0":         [],
+    "tag:service-immich":       [],
+    "tag:immich-user":          [],
+    "tag:service-silverbullet": [],
+    "tag:service-frigate":      [],
+    "tag:service-beszel":       [],
+    "tag:service-jellyfin":     [],
+    "tag:beszel-agent":         [],
+    "tag:beszel-hub":           [],
+    "tag:service-transmission": []
+  },
+
+  "ssh": [
+    {
+      "src": [
+        "tag:device-latitude-7390",
+        "dominic.egginton@gmail.com",
+        "tag:service-beszel"
+      ],
+      "dst":    ["autogroup:tagged"],
+      "users":  ["autogroup:nonroot", "root"],
+      "action": "accept"
+    }
+  ],
+
+  "autoApprovers": {"exitNode": []},
+
+  "nodeAttrs": [
+    {
+      "target": ["dominic.egginton@gmail.com"],
+      "app": {
+        "dominicegginton.dev/cap/tsdit0": [
+          {
+            "allow_bind": true,
+
+            "posix_groups": [
+              {
+                "gidNumber": 1,
+                "name":      "wheel"
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    {
+      "target": ["tag:service-idp", "tag:service-immich"],
+      "attr":   ["funnel"]
+    }
+  ]
+}
