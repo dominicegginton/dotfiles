@@ -17,17 +17,6 @@ const STYLE: &str = "
     .rounded-corners {
         border-radius: 30px;
     }
-    .transparent-background {
-        background-color: rgba(0, 0, 0, 0);
-        color: white;
-        transition: background-color 200ms ease;
-    }
-    .transparent-background:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-    .transparent-background:active {
-        background-color: rgba(255, 255, 255, 0.2);
-    }
 ";
 
 fn get_time() -> String {
@@ -161,6 +150,17 @@ fn main() {
             content.set_margin_bottom(margin / 2);
             content.set_margin_start(margin);
             content.set_margin_end(margin);
+
+            // Time label
+            let time_label = Label::new(Some(&get_time()));
+            content.append(&time_label);
+
+            // Update time every 1 second
+            let tl = time_label.clone();
+            glib::timeout_add_seconds_local(1, move || {
+                tl.set_label(&get_time());
+                ControlFlow::Continue(()).into()
+            });
 
             // Power state label
             let power_state = Label::new(Some("Power: N/A"));
@@ -296,7 +296,6 @@ fn main() {
 
             // Apply the rounded corners CSS class to the window
             right_window.add_css_class("rounded-corners");
-            right_window.add_css_class("transparent-background");
 
             // Set the layer to overlay so it appears above other windows
             right_window.set_layer(Layer::Overlay);
@@ -328,12 +327,6 @@ fn main() {
             ApplicationWindow,
             std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>>,
         )> = Vec::new();
-        // Build one window per monitor so the overlay appears on all screens
-        // Also create a centered time window per monitor which toggles a notification window on click.
-        let mut center_windows: Vec<(
-            ApplicationWindow,
-            std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>>,
-        )> = Vec::new();
         for i in 0..n_monitors {
             if let Some(obj) = monitors.item(i) {
                 if let Ok(monitor) = obj.downcast::<adw::gtk::gdk::Monitor>() {
@@ -346,109 +339,6 @@ fn main() {
                     // Keep size request flexible so margins and content determine sizing.
                     window.set_size_request(0, 0);
                     windows.push((window, quick_cell));
-
-                    // --- Center time window (per-monitor) ---
-                    let center_content = Box::new(Orientation::Vertical, margin);
-                    // Match the right window content padding: top/bottom half, start/end full
-                    center_content.set_margin_top(margin / 2);
-                    center_content.set_margin_bottom(margin / 2);
-                    center_content.set_margin_start(margin);
-                    center_content.set_margin_end(margin);
-
-                    let time_label = Label::new(Some(get_time().as_str()));
-                    center_content.append(&time_label);
-
-                    // Update center time every second
-                    let time_label_clone = time_label.clone();
-                    glib::timeout_add_seconds_local(1, move || {
-                        time_label_clone.set_label(&get_time());
-                        ControlFlow::Continue(()).into()
-                    });
-
-                    let center_win = ApplicationWindow::builder()
-                        .application(app)
-                        .content(&center_content)
-                        .build();
-
-                    // Notification window holder (lazy)
-                    let notif_cell: std::rc::Rc<std::cell::RefCell<Option<ApplicationWindow>>> =
-                        std::rc::Rc::new(std::cell::RefCell::new(None));
-                    let notif_cell_for_click = notif_cell.clone();
-                    let app_for_notif = app.clone();
-                    let monitor_for_center = monitor.clone();
-
-                    center_win.add_controller({
-                        let notif_cell_for_click = notif_cell_for_click.clone();
-                        let app_for_notif = app_for_notif.clone();
-                        let monitor_for_center = monitor_for_center.clone();
-                        let gesture = adw::gtk::GestureClick::new();
-                        gesture.connect_pressed(move |_, _, _, _| {
-                            let mut ncell = notif_cell_for_click.borrow_mut();
-                            if let Some(existing) = ncell.as_ref() {
-                                existing.hide();
-                                *ncell = None;
-                                return;
-                            }
-
-                            // Build notification content
-                            let notif_content = Box::new(Orientation::Vertical, margin);
-                            notif_content.set_margin_top(margin);
-                            notif_content.set_margin_bottom(margin);
-                            notif_content.set_margin_start(margin);
-                            notif_content.set_margin_end(margin);
-
-                            // Create the notification window
-                            let notif_win = ApplicationWindow::builder()
-                                .application(&app_for_notif)
-                                .content(&notif_content)
-                                .build();
-
-                            // Layer shell setup for notification
-                            notif_win.init_layer_shell();
-                            notif_win.add_css_class("rounded-corners");
-                            notif_win.add_css_class("dark-background");
-                            notif_win.set_layer(Layer::Overlay);
-                            notif_win.set_size_request(300, 100);
-                            // Anchor the notification near the top-center
-                            notif_win.set_anchor(Edge::Left, false);
-                            notif_win.set_anchor(Edge::Right, false);
-                            notif_win.set_anchor(Edge::Top, true);
-                            notif_win.set_anchor(Edge::Bottom, false);
-                            // Offset from the top
-                            notif_win.set_margin(Edge::Top, margin * 4);
-                            #[allow(unused_must_use)]
-                            {
-                                let _ = notif_win.set_monitor(Some(&monitor_for_center));
-                            }
-                            notif_win.show();
-                            *ncell = Some(notif_win);
-                        });
-                        gesture
-                    });
-
-                    center_win.init_layer_shell();
-                    center_win.add_css_class("rounded-corners");
-                    center_win.add_css_class("transparent-background");
-                    center_win.set_layer(Layer::Overlay);
-                    center_win.set_size_request(0, 0);
-                    // Anchor to the top and keep centered horizontally
-                    center_win.set_anchor(Edge::Left, false);
-                    center_win.set_anchor(Edge::Right, false);
-                    center_win.set_anchor(Edge::Top, true);
-                    center_win.set_anchor(Edge::Bottom, false);
-                    // Window margins — match the right window so padding is consistent
-                    center_win.set_margin(Edge::Left, margin);
-                    center_win.set_margin(Edge::Right, margin);
-                    center_win.set_margin(Edge::Top, margin);
-                    center_win.set_margin(Edge::Bottom, margin);
-                    #[allow(unused_must_use)]
-                    {
-                        let _ = center_win.set_monitor(Some(&monitor));
-                    }
-                    // Always show the center shell bar
-                    center_win.show();
-
-                    center_windows.push((center_win, notif_cell));
                 }
             }
         }
