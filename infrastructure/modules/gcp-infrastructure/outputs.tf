@@ -49,6 +49,17 @@ output "silverbullet_retention_policy" {
   value = google_storage_bucket.silverbullet_backup.retention_policy
 }
 
+output "tailscale_logs_bucket" {
+  description = "GCS Bucket name for Tailscale logs"
+  value       = google_storage_bucket.tailscale_logs.name
+}
+
+output "tailscale_logstream_key" {
+  description = "GCP Service Account Key for Tailscale logstream (base64 encoded)"
+  value       = google_service_account_key.tailscale_logstream.private_key
+  sensitive   = true
+}
+
 output "frigate_retention_policy" {
   value = google_storage_bucket.frigate_backup.retention_policy
 }

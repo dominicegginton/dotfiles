@@ -175,4 +175,30 @@ resource "google_storage_bucket_iam_member" "frigate_backup" {
   member = "serviceAccount:${google_service_account.frigate_backup.email}"
 }
 
+resource "google_storage_bucket" "tailscale_logs" {
+  name                        = "tailscale-logs-${random_id.terraform_remote_backend.hex}"
+  location                    = "EUROPE-WEST2"
+  force_destroy               = false
+  public_access_prevention    = "enforced"
+  uniform_bucket_level_access = true
+  versioning {
+    enabled = true
+  }
+}
+
+resource "google_service_account" "tailscale_logstream" {
+  account_id   = "tailscale-logstream"
+  display_name = "Tailscale Logstream Service Account"
+}
+
+resource "google_service_account_key" "tailscale_logstream" {
+  service_account_id = google_service_account.tailscale_logstream.name
+}
+
+resource "google_storage_bucket_iam_member" "tailscale_logstream" {
+  bucket = google_storage_bucket.tailscale_logs.name
+  role   = "roles/storage.objectAdmin"
+  member = "serviceAccount:${google_service_account.tailscale_logstream.email}"
+}
+
 

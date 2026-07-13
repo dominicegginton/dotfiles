@@ -27,7 +27,7 @@ provider "tailscale" {
   tailnet = var.tailscale_tailnet
 }
 
-resource "tailscale_contacts" "sample_contacts" {
+resource "tailscale_contacts" "contacts" {
   account {
     email = "dominic.egginton@gmail.com"
   }
@@ -41,7 +41,7 @@ resource "tailscale_contacts" "sample_contacts" {
   }
 }
 
-resource "tailscale_tailnet_settings" "sample_tailnet_settings" {
+resource "tailscale_tailnet_settings" "settings" {
   acls_externally_managed_on                  = false
   devices_approval_on                         = true
   devices_auto_updates_on                     = true
@@ -51,7 +51,7 @@ resource "tailscale_tailnet_settings" "sample_tailnet_settings" {
   https_enabled                               = true
 }
 
-resource "tailscale_dns_configuration" "sample_configuration" {
+resource "tailscale_dns_configuration" "dns_configuration" {
   nameservers {
     address            = "2a07:a8c0::cd:dfb8"
     use_with_exit_node = true
@@ -64,6 +64,14 @@ resource "tailscale_dns_configuration" "sample_configuration" {
 resource "tailscale_acl" "acl" {
   acl                        = file("${path.root}/tailscale_acl.json")
   overwrite_existing_content = true
+}
+
+resource "tailscale_logstream_configuration" "gcs_logstream" {
+  log_type         = "configuration"
+  destination_type = "gcs"
+  gcs_bucket       = module.gcp_infrastructure.tailscale_logs_bucket
+  gcs_credentials  = base64decode(module.gcp_infrastructure.tailscale_logstream_key)
+  gcs_scopes       = ["https://www.googleapis.com/auth/devstorage.read_write"]
 }
 
 data "tailscale_users" "all-users" {}
