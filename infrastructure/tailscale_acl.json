@@ -114,6 +114,7 @@
   "tagOwners": {
     "tag:device-ghost-gs60":    [],
     "tag:device-latitude-7390": [],
+    "tag:device-steamdeck":     [],
     "tag:ldap-client":          [],
     "tag:service-idp":          [],
     "tag:service-dit0":         [],
