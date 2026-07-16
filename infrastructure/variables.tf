@@ -1,6 +1,7 @@
 variable "gcp_project_id" {
   description = "GCP Project ID"
   type        = string
+  default     = "dominicegginton-personal"
 }
 
 variable "tailscale_api_key" {

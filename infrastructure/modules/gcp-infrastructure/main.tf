@@ -201,4 +201,24 @@ resource "google_storage_bucket_iam_member" "tailscale_logstream" {
   member = "serviceAccount:${google_service_account.tailscale_logstream.email}"
 }
 
+resource "google_secret_manager_secret" "tailscale_api_key" {
+  secret_id = "secretspec-${var.project_id}-default-TF_VAR_tailscale_api_key"
+
+  replication {
+    auto {}
+  }
+
+  depends_on = [google_project_service.secretmanager]
+}
+
+resource "google_secret_manager_secret" "tailscale_tailnet" {
+  secret_id = "secretspec-${var.project_id}-default-TF_VAR_tailscale_tailnet"
+
+  replication {
+    auto {}
+  }
+
+  depends_on = [google_project_service.secretmanager]
+}
+
 

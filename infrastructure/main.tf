@@ -72,6 +72,10 @@ resource "tailscale_logstream_configuration" "gcs_logstream" {
   gcs_bucket       = module.gcp_infrastructure.tailscale_logs_bucket
   gcs_credentials  = base64decode(module.gcp_infrastructure.tailscale_logstream_key)
   gcs_scopes       = ["https://www.googleapis.com/auth/devstorage.read_write"]
+
+  lifecycle {
+    ignore_changes = [gcs_credentials]
+  }
 }
 
 data "tailscale_users" "all-users" {}
