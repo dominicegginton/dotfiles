@@ -75,7 +75,6 @@ rec {
           impermanence.nixosModules.impermanence
           sops-nix.nixosModules.sops
           home-manager.nixosModules.default
-          run0-sudo-shim.nixosModules.default
           deadman.nixosModules.default
           tsnsrv.nixosModules.default
           # dit0.nixosModules.default
@@ -83,6 +82,8 @@ rec {
           ./modules
           ./hosts/${hostname}.nix
         ]
+        # find a better way to disable this
+        ++ (lib.optional (hostname != "wsl") run0-sudo-shim.nixosModules.default)
         ++ (lib.optional (user != null) ./modules/users/${user}.nix)
         ++ modules;
     };

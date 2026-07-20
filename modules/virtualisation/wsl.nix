@@ -32,7 +32,9 @@
     # Enable nix-ld to run unpatched Linux binaries
     programs.nix-ld.enable = lib.mkForce true;
 
+    security.run0.enable = lib.mkForce false;
     security.run0.wheelNeedsPassword = lib.mkForce false;
+    security.sudo.wheelNeedsPassword = lib.mkForce false;
     users.users.dom = {
       hashedPasswordFile = lib.mkForce null;
       initialPassword = "";
