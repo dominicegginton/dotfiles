@@ -98,4 +98,11 @@ jobs:
         with:
           name: dominicegginton-dotfiles
           authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
-      - run: nix build -L .#nixosConfigurations.wsl.config.system.build.toplevel
+      - run: nix build -L .#nixosConfigurations.wsl.config.system.build.tarballBuilder
+      - run: sudo ./result/bin/nixos-wsl-tarball-builder wsl.tar.gz
+      - uses: actions/upload-artifact@v7
+        with:
+          path: wsl.tar.gz
+          name: wsl
+          retention-days: 90
+          compression-level: 0
