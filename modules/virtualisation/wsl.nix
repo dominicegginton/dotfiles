@@ -19,6 +19,46 @@
       useWindowsDriver = lib.mkForce true;
     };
 
+    # Enable Nvidia graphics driver configuration for the WSL host
+    services.xserver.videoDrivers = [ "nvidia" ];
+    hardware.nvidia.open = true;
+
+    environment.sessionVariables = {
+      CUDA_PATH = "${pkgs.cudatoolkit}";
+      EXTRA_LDFLAGS = "-L/lib -L${pkgs.linuxPackages.nvidia_x11}/lib";
+      EXTRA_CCFLAGS = "-I/usr/include";
+      LD_LIBRARY_PATH = [
+        "/usr/lib/wsl/lib"
+        "${pkgs.linuxPackages.nvidia_x11}/lib"
+        "${pkgs.ncurses5}/lib"
+      ];
+      MESA_D3D12_DEFAULT_ADAPTER_NAME = "Nvidia";
+    };
+
+    # Enable Nvidia Container Toolkit for GPU acceleration inside Docker
+    hardware.nvidia-container-toolkit = {
+      enable = true;
+      mount-nvidia-executables = false;
+    };
+
+    # Automatically generate CDI specification for Nvidia Docker integration on boot / service startup
+    systemd.services.nvidia-cdi-generator = {
+      description = "Generate nvidia CDI specification";
+      wantedBy = [ "docker.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.nvidia-docker}/bin/nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml --nvidia-ctk-path=${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk";
+      };
+    };
+
+    # Configure Docker daemon to leverage Container Device Interface (CDI) specs
+    virtualisation.docker = {
+      daemon.settings = {
+        features.cdi = true;
+        cdi-spec-dirs = [ "/etc/cdi" ];
+      };
+    };
+
     environment.systemPackages = with pkgs; [
       jetbrains.gateway
       nodejs
