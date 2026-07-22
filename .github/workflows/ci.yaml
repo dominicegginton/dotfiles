@@ -28,10 +28,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
-      - uses: cachix/cachix-action@v17
-        with:
-          name: dominicegginton-dotfiles
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix build -L .\#packages.x86_64-linux.topology
       - uses: actions/upload-artifact@v7
         with:
@@ -63,10 +59,6 @@ jobs:
     steps:
       - uses: actions/checkout@v7.0.0
       - uses: ./.github/actions/install-nix
-      - uses: cachix/cachix-action@v17
-        with:
-          name: dominicegginton-dotfiles
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix build -L '.#${{ matrix.attr }}'
 
   latitude-7390:
@@ -94,10 +86,6 @@ jobs:
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
-      - uses: cachix/cachix-action@v17
-        with:
-          name: dominicegginton-dotfiles
-          authToken: "${{ secrets.CACHIX_AUTH_TOKEN }}"
       - run: nix build -L .#nixosConfigurations.wsl.config.system.build.tarballBuilder
       - run: sudo ./result/bin/nixos-wsl-tarball-builder wsl.tar.gz
       - uses: actions/upload-artifact@v7
