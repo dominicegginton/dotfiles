@@ -63,6 +63,8 @@
       jetbrains.gateway
       nodejs
       typescript
+      xdg-utils
+      wsl-open
     ];
 
     # Disable kernel module locking in WSL as it prevents Docker port mapping
