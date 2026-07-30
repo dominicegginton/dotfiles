@@ -12,21 +12,21 @@ jobs:
   flake-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
       - uses: determinatesystems/flake-checker-action@v13
 
   formatter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
       - run: nix fmt -- --ci
 
   topology:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
       - run: nix build -L .\#packages.x86_64-linux.topology
       - uses: actions/upload-artifact@v7
@@ -41,7 +41,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
       - id: set-matrix
         name: Generate Nix Matrix
@@ -57,14 +57,14 @@ jobs:
     strategy:
       matrix: ${{fromJSON(needs.nix-matrix.outputs.matrix)}}
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
       - run: nix build -L '.#${{ matrix.attr }}'
 
   latitude-7390:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
@@ -73,7 +73,7 @@ jobs:
   ghost-gs60:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
@@ -84,7 +84,7 @@ jobs:
     env:
       WORKSTATION_HOSTNAME: "MCCLT5CG53030HM"
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
