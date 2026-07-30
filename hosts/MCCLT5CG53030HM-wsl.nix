@@ -18,8 +18,5 @@
   services.tailscale.enable = lib.mkForce false;
 
   # Topology information
-  topology.self = {
-    hardware.info = "Windows Subsystem for Linux";
-    guestOf = "MCCLT5CG53030HM";
-  };
+  topology.self.hardware.info = "Windows Subsystem for Linux - GuestOf MCCLT5CG53030HM";
 }
