@@ -284,7 +284,7 @@
         };
 
         # Windows Subsystem for Linux environment
-        wsl = self.outputs.lib.nixosSystem { hostname = "wsl"; };
+        "MCCLT5CG53030HM-wsl" = self.outputs.lib.nixosSystem { hostname = "MCCLT5CG53030HM-wsl"; };
       };
     };
 }

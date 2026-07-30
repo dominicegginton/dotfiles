@@ -230,5 +230,14 @@ with config.lib.topology;
         ];
       };
     };
+
+    MCCLT5CG53030HM = mkDevice "MCCLT5CG53030HM" {
+      info = "Work Workstation (IT managed Windows)";
+      interfaces.wlan0 = {
+        network = "ribble";
+        type = "wifi";
+        physicalConnections = [ (mkConnection "router" "wlan0") ];
+      };
+    };
   };
 }

@@ -83,7 +83,7 @@ rec {
           ./hosts/${hostname}.nix
         ]
         # find a better way to disable this
-        ++ (lib.optional (hostname != "wsl") run0-sudo-shim.nixosModules.default)
+        ++ (lib.optional (hostname != "MCCLT5CG53030HM-wsl") run0-sudo-shim.nixosModules.default)
         ++ (lib.optional (user != null) ./modules/users/${user}.nix)
         ++ modules;
     };
