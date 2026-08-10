@@ -8,6 +8,9 @@
     authorizedKeysInHomedir = lib.mkForce false; # Keep keys in a central location
     settings = {
       KbdInteractiveAuthentication = lib.mkDefault false; # Disable interactive passwords by default
+      PasswordAuthentication = lib.mkDefault false; # Disable password authentication (force SSH keys)
+      MaxAuthTries = lib.mkDefault 3; # Reduce maximum authorization attempts
+      PermitEmptyPasswords = lib.mkDefault "no"; # Do not allow logins with empty passwords
       LogLevel = lib.mkForce "VERBOSE";
       PermitRootLogin = lib.mkForce "no";
       UsePAM = lib.mkForce true;

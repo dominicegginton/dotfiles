@@ -56,11 +56,14 @@ rec {
     # Security modules (ACME, AppArmor, PAM, Polkit, etc.)
     ./security/acme.nix
     ./security/apparmor.nix
+    ./security/boot.nix
+    ./security/fail2ban.nix
     ./security/pam.nix
     ./security/polkit.nix
     ./security/pwquality.nix
     ./security/run0.nix
     ./security/sudo.nix
+    ./security/systemd.nix
     ./security/tpm2.nix
 
     # Service modules (system daemons, servers)
