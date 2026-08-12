@@ -6,4 +6,7 @@
     intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
+
+  # Enable redistributable firmware for hardware support
+  hardware.enableRedistributableFirmware = lib.mkDefault true;
 }

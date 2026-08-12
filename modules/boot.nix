@@ -1,8 +1,33 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  # Secure kernel sysctl options (Solène, notashelf, k4yt3x sysctl, and standard security guidelines)
+  # Boot verbosity and logging
+  boot.consoleLogLevel = lib.mkDefault 0; # Log all boot messages
+  boot.initrd.verbose = lib.mkDefault false; # Disable verbose initrd
+
+  # Boot loader configuration
+  boot.loader = {
+    systemd-boot.enable = lib.mkDefault true; # Enable systemd-boot by default
+    efi.canTouchEfiVariables = lib.mkDefault true; # Allow EFI variable modification
+    efi.efiSysMountPoint = lib.mkForce "/boot"; # Enforce /boot as EFI mount point
+  };
+
+  # Boot splash screen
+  boot.plymouth = {
+    enable = lib.mkDefault true; # Enable plymouth boot splash
+    theme = lib.mkForce pkgs.plymouth-theme.name; # Enforce custom boot theme
+    themePackages = lib.mkForce [ pkgs.plymouth-theme ]; # Enforce theme package
+  };
+
   boot.kernel.sysctl = {
+    "net.ipv4.tcp_syncookies" = lib.mkDefault "1"; # Enable TCP SYN cookies
+    "kernel.randomize_va_space" = lib.mkDefault 2; # Enable full ASLR
+
     # Restrict kernel pointer exposure (restrict to root/admins)
     "kernel.kptr_restrict" = lib.mkForce 2;
 
@@ -100,10 +125,44 @@
     # Enable IPv6 privacy extensions
     "net.ipv6.conf.all.use_tempaddr" = lib.mkDefault 2;
     "net.ipv6.conf.default.use_tempaddr" = lib.mkDefault 2;
+
+    # --- Performance Tuning (Safe settings from Linux kernel tuning guide) ---
+    # Adjust swappiness to prefer RAM over swap for improved responsiveness
+    "vm.swappiness" = lib.mkDefault 10;
+
+    # Tune dirty page writeback ratios for improved write I/O performance
+    "vm.dirty_background_ratio" = lib.mkDefault 10;
+    "vm.dirty_ratio" = lib.mkDefault 40;
+
+    # Reboot automatically 10 seconds after a kernel panic
+    "kernel.panic" = lib.mkDefault 10;
+
+    # Increase network buffer sizes for high-bandwidth connections
+    "net.core.rmem_max" = lib.mkDefault 8388608;
+    "net.core.wmem_max" = lib.mkDefault 8388608;
+    "net.ipv4.tcp_rmem" = lib.mkDefault "4096 87380 8388608";
+    "net.ipv4.tcp_wmem" = lib.mkDefault "4096 87380 8388608";
+
+    # Adjust CFS scheduler parameters to decrease task context-switch frequency and improve CPU throughput
+    "kernel.sched_min_granularity_ns" = lib.mkDefault 10000000;
+    "kernel.sched_wakeup_granularity_ns" = lib.mkDefault 15000000;
+
+    # Increase system-wide maximum file descriptor limit to handle high-concurrency workloads
+    "fs.file-max" = lib.mkDefault 100000;
+
+    # Increase maximum queue length for pending network connections
+    "net.core.somaxconn" = lib.mkDefault 1024;
+
+    # Enable TCP window scaling to utilize large TCP window sizes on high-bandwidth links
+    "net.ipv4.tcp_window_scaling" = lib.mkDefault 1;
   };
 
-  # Extra boot parameters for security/hardening (NixOS hardened profile defaults), disabled on WSL as WSL uses the host Windows NT kernel
-  boot.kernelParams = lib.mkIf (!config.wsl.enable) [
+  boot.kernelParams = [
+    "fips=1" # Enable FIPS mode
+    "audit=1" # Enable auditing
+    "audit_backlog_limit=8192" # Increase audit backlog
+  ]
+  ++ lib.optionals (!config.wsl.enable) [
     "page_alloc.shuffle=1" # Randomize page allocator freelist
     "randomize_kstack_offset=on" # Randomize kernel stack offset on syscalls
     "vsyscall=none" # Disable legacy vsyscalls
@@ -125,4 +184,9 @@
     "iommu.strict=1" # Perform strict TLB invalidation for the IOMMU to avoid stale data leakage
     "efi=disable_early_pci_dma" # Disable early busmaster DMA on PCI bridges
   ];
+
+  # Harden kernel security by default
+  security.lockKernelModules = lib.mkDefault true;
+  security.protectKernelImage = lib.mkDefault true;
+  security.unprivilegedUsernsClone = lib.mkDefault true;
 }

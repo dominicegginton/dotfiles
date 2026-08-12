@@ -1,6 +1,5 @@
-{ config, lib, ... }:
+{ lib, ... }:
 
 {
-  # System-wide coredump disabling to prevent memory leaks/secrets exposure
-  systemd.coredump.enable = lib.mkDefault false;
+  systemd.coredump.enable = lib.mkDefault false; # Disable coredumps to prevent memory leaks and secrets exposure
 }
