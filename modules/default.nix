@@ -232,7 +232,6 @@ rec {
 
     kernel.sysctl = {
       "net.ipv4.tcp_syncookies" = "1"; # Enable TCP SYN cookies
-      "kernel.kptr_restrict" = 1; # Restrict kernel pointer exposure
       "kernel.randomize_va_space" = 2; # Enable full ASLR
     };
   };
