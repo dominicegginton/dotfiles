@@ -65,6 +65,7 @@ rec {
     ./security/sudo.nix
     ./security/systemd.nix
     ./security/tpm2.nix
+    ./security/yubikey.nix
 
     # Service
     ./services/beszel.nix
@@ -115,9 +116,18 @@ rec {
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
 
   programs = {
-    gnupg.agent.enable = lib.mkForce true; # Always enable GnuPG agent
-    # Only start SSH agent if GNOME gcr-ssh-agent is disabled
-    ssh.startAgent = lib.mkIf (config.services.gnome.gcr-ssh-agent.enable == false) true;
+    gnupg.agent = {
+      enable = lib.mkForce true; # Always enable GnuPG agent
+      enableSSHSupport = lib.mkDefault true; # Enable SSH support through GnuPG agent
+      pinentryPackage = lib.mkDefault (
+        if (config.display.gnome.enable || config.display.niri.enable || config.display.driftwm.enable) then
+          pkgs.pinentry-gnome3
+        else
+          pkgs.pinentry-curses
+      );
+    };
+    # Disable regular SSH agent to avoid conflicts with GnuPG SSH support
+    ssh.startAgent = lib.mkForce false;
     deadman.enable = lib.mkDefault true; # Enable deadman switch by default
   };
 
