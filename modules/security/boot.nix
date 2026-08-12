@@ -47,7 +47,7 @@
     "fs.protected_regular" = lib.mkDefault 2;
 
     # Limit maximum number of processes/PIDs to prevent fork bombs
-    "kernel.pid_max" = lib.mkDefault 65536;
+    "kernel.pid_max" = lib.mkForce 65536;
 
     # Spoof protection (reverse path filtering)
     "net.ipv4.conf.all.rp_filter" = lib.mkDefault 1;
