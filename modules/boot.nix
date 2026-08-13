@@ -13,6 +13,7 @@
   # Boot loader configuration
   boot.loader = {
     systemd-boot.enable = lib.mkDefault true; # Enable systemd-boot by default
+    systemd-boot.configurationLimit = lib.mkDefault 3; # Limit the number of generations in /boot to save space
     efi.canTouchEfiVariables = lib.mkDefault true; # Allow EFI variable modification
     efi.efiSysMountPoint = lib.mkForce "/boot"; # Enforce /boot as EFI mount point
   };
