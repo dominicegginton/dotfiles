@@ -26,4 +26,7 @@
       sc # Curses-based spreadsheet program
     ]
     ++ lib.optional (!config.wsl.enable) run0-sudo-shim;
+
+  # Avoid installing legacy default packages
+  environment.defaultPackages = lib.mkDefault [ ];
 }

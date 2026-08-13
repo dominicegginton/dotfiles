@@ -11,7 +11,9 @@ let
 in
 
 {
-  options.security.yubikey.enable = lib.mkEnableOption "Yubikey support" // { default = true; };
+  options.security.yubikey.enable = lib.mkEnableOption "Yubikey support" // {
+    default = true;
+  };
 
   config = lib.mkIf config.security.yubikey.enable {
     # Enable pcscd daemon for smartcard mode (required for GPG/PIV/etc.)

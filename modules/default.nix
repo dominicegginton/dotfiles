@@ -49,6 +49,7 @@ rec {
     ./programs/chromium.nix
     ./programs/dconf.nix
     ./programs/firefox.nix
+    ./programs/gnupg.nix
     ./programs/sherlock-launcher.nix
     ./programs/steam.nix
 
@@ -58,6 +59,7 @@ rec {
     # Security
     ./security/acme.nix
     ./security/apparmor.nix
+    ./security/audit.nix
     ./security/pam.nix
     ./security/polkit.nix
     ./security/pwquality.nix
@@ -115,21 +117,7 @@ rec {
   time.timeZone = lib.mkDefault "Europe/London";
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
 
-  programs = {
-    gnupg.agent = {
-      enable = lib.mkForce true; # Always enable GnuPG agent
-      enableSSHSupport = lib.mkDefault true; # Enable SSH support through GnuPG agent
-      pinentryPackage = lib.mkDefault (
-        if (config.display.gnome.enable || config.display.niri.enable || config.display.driftwm.enable) then
-          pkgs.pinentry-gnome3
-        else
-          pkgs.pinentry-curses
-      );
-    };
-    # Disable regular SSH agent to avoid conflicts with GnuPG SSH support
-    ssh.startAgent = lib.mkForce false;
-    deadman.enable = lib.mkDefault true; # Enable deadman switch by default
-  };
+  programs.deadman.enable = lib.mkDefault true; # Enable deadman switch by default
 
   services = {
     beszel.enable = lib.mkDefault true; # Enable Beszel service
@@ -140,6 +128,4 @@ rec {
     fwupd.enable = lib.mkDefault true; # Enable firmware updates by default
     fstrim.enable = lib.mkDefault true; # Enable periodic SSD TRIM by default
   };
-
-  environment.defaultPackages = lib.mkDefault [ ];
 }
