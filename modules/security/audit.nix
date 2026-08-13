@@ -45,14 +45,10 @@
       rules = [
         # System auditing configuration modifications
         "-w /etc/audit/ -p wa -k auditconfig"
-        "-w /etc/sysconfig/auditd -p wa -k auditconfig"
         "-w /var/log/audit/ -p wa -k auditlog"
 
         # Module loading and kernel operations
-        "-w /sbin/insmod -p x -k modules"
-        "-w /sbin/rmmod -p x -k modules"
-        "-w /sbin/modprobe -p x -k modules"
-        "-a always,exit -F arch=b64 -S init_module -S delete_module -k modules"
+        "-a always,exit -F arch=b64 -S init_module -S finit_module -S delete_module -k modules"
 
         # Core execution monitoring
         "-a always,exit -F arch=b64 -S execve -k execution"
@@ -69,9 +65,7 @@
         # Identity and group management tracking
         "-w /etc/group -p wa -k identity"
         "-w /etc/passwd -p wa -k identity"
-        "-w /etc/gshadow -p wa -k identity"
         "-w /etc/shadow -p wa -k identity"
-        "-w /etc/security/opasswd -p wa -k identity"
 
         # Login and session changes
         "-w /var/log/lastlog -p wa -k logins"
@@ -82,7 +76,6 @@
         # Network configuration modifications
         "-a always,exit -F arch=b64 -S sethostname -S setdomainname -k network"
         "-w /etc/issue -p wa -k network"
-        "-w /etc/issue.net -p wa -k network"
         "-w /etc/hosts -p wa -k network"
 
         # Mount/unmount actions

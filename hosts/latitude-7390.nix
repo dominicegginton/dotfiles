@@ -81,7 +81,7 @@
 
   # Graphical desktop environments
   display.gnome.enable = true;
-  display.driftwm.enable = true;
+  # display.driftwm.enable = true;
 
   users.sssd.enable = false;
 
