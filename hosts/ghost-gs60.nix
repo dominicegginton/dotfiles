@@ -15,7 +15,6 @@
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd
-    common-pc-laptop-hdd
     msi-gs60
   ];
 
