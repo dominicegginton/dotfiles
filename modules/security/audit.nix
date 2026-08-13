@@ -6,7 +6,7 @@
 }:
 
 {
-  options.security.audit = {
+  options.security.audit-compliance = {
     enable = lib.mkEnableOption "system auditing, OpenSCAP, and FIPS compliance" // {
       default = true;
     };
@@ -17,7 +17,7 @@
     };
   };
 
-  config = lib.mkIf config.security.audit.enable {
+  config = lib.mkIf config.security.audit-compliance.enable {
     # Install OpenSCAP and standard compliance guides
     environment.systemPackages = with pkgs; [
       openscap
@@ -32,7 +32,7 @@
         space_left_action = "ignore";
         admin_space_left = "5%";
         admin_space_left_action = "email";
-        action_mail_acct = config.security.audit.adminEmail;
+        action_mail_acct = config.security.audit-compliance.adminEmail;
         num_logs = 10;
         max_log_file = 100;
         max_log_file_action = "rotate";
