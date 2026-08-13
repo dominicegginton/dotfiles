@@ -41,7 +41,9 @@ rec {
     youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
 
     # DriftWM — a trackpad-first infinite canvas Wayland compositor
-    driftwm = self.inputs.driftwm.packages.${prev.system}.default;
+    driftwm = self.inputs.driftwm.packages.${prev.system}.default.overrideAttrs (oldAttrs: {
+      buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ final.libdisplay-info ];
+    });
 
     # Amber package from the maintainer's flake
     amber = self.inputs.amber.packages.${prev.system}.default;

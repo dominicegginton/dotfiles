@@ -247,8 +247,8 @@
         else
           [
             youtube-tv
-            aseprite
-            krita
+            # aseprite
+            # krita
             rnote
           ]
       );
