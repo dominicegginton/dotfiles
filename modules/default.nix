@@ -87,7 +87,6 @@ rec {
     ./services/jellyfin.nix
     ./services/journald.nix
     ./services/logind.nix
-    ./services/garage.nix
     ./services/nginx.nix
     ./services/pipewire.nix
     ./services/silverbullet.nix
