@@ -181,7 +181,10 @@
       cat = "bat";
       ls = "eza";
     };
-    programs.ssh.enable = true;
+    programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+    };
     programs.gpg.enable = true;
     services.gpg-agent = lib.mkIf pkgs.stdenv.isLinux {
       enable = true;
@@ -199,6 +202,7 @@
       enable = true;
       viAlias = true;
       vimAlias = true;
+      withPython3 = false;
       extraPackages = with pkgs; [
         ripgrep
         fd

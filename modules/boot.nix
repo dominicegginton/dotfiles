@@ -158,26 +158,14 @@
     "net.ipv4.tcp_window_scaling" = lib.mkDefault 1;
   };
 
-  # Cryptographic modules required for early boot FIPS self-tests in initrd
+  # Cryptographic modules required for early boot FIPS self-tests in initrd (only loadable modules)
   boot.initrd.kernelModules = lib.optionals (!config.wsl.enable) [
-    "tcrypt" # Cryptographic self-tests
     "ansi_cprng" # Pseudo-random number generator
-    "drbg" # Deterministic Random Bit Generator
-    "jitterentropy" # Entropy source
-    "hmac" # Keyed-Hash Message Authentication Code
-    "sha1" # Secure Hash Algorithm 1
-    "sha224" # Secure Hash Algorithm 224
-    "sha256" # Secure Hash Algorithm 256
-    "sha384" # Secure Hash Algorithm 384
-    "sha512" # Secure Hash Algorithm 512
-    "aes" # Advanced Encryption Standard
     "cbc" # Cipher Block Chaining
-    "ctr" # Counter mode
     "xts" # XTS mode
     "gcm" # Galois/Counter Mode
     "ccm" # Counter with CBC-MAC
     "ghash" # Galois Hash
-    "cryptomgr" # Crypto manager
     "crypto_user" # Crypto user configuration API
   ];
 
