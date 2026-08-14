@@ -19,11 +19,15 @@
   };
 
   config = lib.mkIf config.security.audit-compliance.enable {
-    # Install OpenSCAP and standard compliance guides
+    # Install OpenSCAP, vulnix, and standard compliance guides
     environment.systemPackages = with pkgs; [
       openscap
       scap-security-guide
+      vulnix # Vulnerability scanner for Nix store paths
     ];
+
+    # Enable and configure Stunnel FIPS mode globally if the stunnel service is ever enabled
+    services.stunnel.fipsMode = lib.mkDefault (!config.wsl.enable);
 
     # Enable audit daemon and configure settings
     security.auditd = {

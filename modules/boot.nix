@@ -201,4 +201,11 @@
   security.lockKernelModules = lib.mkDefault true;
   security.protectKernelImage = lib.mkDefault true;
   security.unprivilegedUsernsClone = lib.mkDefault true;
+
+  # Global environment variables to enforce FIPS mode for compliant runtimes (OpenSSL, Go, etc.)
+  environment.variables = lib.mkIf (!config.wsl.enable) {
+    OPENSSL_FORCE_FIPS_HEADER = "1";
+    OPENSSL_FIPS = "1";
+    GOWITHFIPS = "1";
+  };
 }
