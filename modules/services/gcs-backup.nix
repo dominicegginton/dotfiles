@@ -114,6 +114,30 @@ in
             Type = "oneshot";
             User = "root";
             StateDirectory = "gcs-backup/${name}";
+            NoNewPrivileges = true;
+            PrivateTmp = true;
+            PrivateDevices = true;
+            ProtectClock = true;
+            ProtectControlGroups = true;
+            ProtectHome = true;
+            ProtectHostname = true;
+            ProtectKernelLogs = true;
+            ProtectKernelModules = true;
+            ProtectKernelTunables = true;
+            ProtectSystem = "strict";
+            RestrictRealtime = true;
+            RestrictSUIDSGID = true;
+            RestrictNamespaces = true;
+            LockPersonality = true;
+            SystemCallArchitectures = "native";
+            RestrictAddressFamilies = [
+              "AF_INET"
+              "AF_INET6"
+              "AF_UNIX"
+            ];
+            ReadWritePaths = [
+              "/var/lib/gcs-backup/${name}"
+            ];
           };
         }
       ) enabledJobs;

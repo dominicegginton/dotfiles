@@ -22,6 +22,40 @@
       spaceDir = lib.mkDefault "/var/lib/silverbullet";
     };
 
+    systemd.services.silverbullet.serviceConfig = {
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+      PrivateDevices = true;
+      PrivateUsers = true;
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectSystem = "strict";
+      UMask = "0077";
+      LockPersonality = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      RestrictNamespaces = true;
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_UNIX"
+      ];
+      SystemCallArchitectures = "native";
+      SystemCallFilter = [
+        "@system-service"
+        "~@privileged"
+        "~@resources"
+      ];
+      ReadWritePaths = [
+        config.services.silverbullet.spaceDir
+      ];
+    };
+
     # Persistent storage for Silverbullet data
     environment.persistence."/persist".directories = [
       config.services.silverbullet.spaceDir
