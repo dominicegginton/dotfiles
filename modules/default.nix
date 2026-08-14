@@ -66,6 +66,7 @@ rec {
     ./security/run0.nix
     ./security/sudo.nix
     ./security/systemd.nix
+    ./security/systemd-analyze.nix
     ./security/tpm2.nix
     ./security/vulnix.nix
     ./security/yubikey.nix
