@@ -67,6 +67,7 @@ rec {
     ./security/sudo.nix
     ./security/systemd.nix
     ./security/tpm2.nix
+    ./security/vulnix.nix
     ./security/yubikey.nix
 
     # Service
