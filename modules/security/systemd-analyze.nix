@@ -31,6 +31,8 @@
         if ! command -v sendmail &>/dev/null; then
           echo "Warning: sendmail command not found. Cannot send email alert. Logging report instead:"
           systemd-analyze security --no-pager
+          # TODO: Configure a system-wide mail server / SMTP client (like msmtp) or setup a GCP Cloud Monitoring alert
+          # so that both this script and the auditd service can route and dispatch email alerts.
           exit 0
         fi
 
