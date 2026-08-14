@@ -31,6 +31,7 @@ in
       "services/tsnsrv/auth-key" = { };
       "services/sssd/client-secret" = { };
       "services/frigate/gcs-backup-key" = { };
+      "services/garage/rpc-secret" = { };
       "services/hermes/env" = { };
       "services/github/runner-token" = {
         mode = "0400";

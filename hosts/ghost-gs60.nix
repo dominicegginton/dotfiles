@@ -173,6 +173,9 @@
   # Enable SilverBullet Notes Services
   services.silverbullet.enable = true;
 
+  # Enable Garage S3 Storage Services
+  services.garage.enable = true;
+
   # Topology Definition
   topology.self = {
     hardware.info = "MSI Ghost GS60";

@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  self,
   ...
 }:
 
@@ -12,7 +13,7 @@
     };
     adminEmail = lib.mkOption {
       type = lib.types.str;
-      default = "root";
+      default = self.outputs.lib.maintainers.dominicegginton.email;
       description = "Email address to send audit space alerts to.";
     };
   };
