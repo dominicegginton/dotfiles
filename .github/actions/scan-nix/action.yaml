@@ -1,0 +1,19 @@
+name: Scan Nix Derivation
+description: Run vulnix and vulnxscan (sbomnix) to check a built Nix derivation for CVEs.
+
+inputs:
+  path:
+    description: "The path to the built Nix derivation or store path to scan (e.g. ./result)"
+    required: true
+    default: "./result"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Scan system derivation for CVEs (vulnix)
+      run: nix run nixpkgs#vulnix -- "${{ inputs.path }}"
+      shell: bash
+
+    - name: Scan system derivation for CVEs (vulnxscan)
+      run: nix shell nixpkgs#sbomnix -c vulnxscan "${{ inputs.path }}"
+      shell: bash
