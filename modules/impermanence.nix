@@ -71,6 +71,7 @@
         "dev"
         ".gnupg"
         ".ssh"
+        ".config/Yubico"
       ];
     };
   };

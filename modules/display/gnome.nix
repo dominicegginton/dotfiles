@@ -83,8 +83,7 @@ let
     report-technical-problems = false;
     send-software-usage-stats = false;
     show-full-name-in-top-bar = true;
-    usb-protection = true;
-    usb-protection-level = "lockscreen";
+    usb-protection = false;
   };
 
   # Lockscreen configuration

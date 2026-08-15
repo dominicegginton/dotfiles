@@ -22,6 +22,11 @@ in
     # Enable udev rules for Yubikey personalization and access
     services.udev.packages = [ pkgs.yubikey-personalization ];
 
+    # Whitelist Yubikeys in USBGuard
+    services.usbguard.extraRules = lib.mkIf config.services.usbguard.enable ''
+      allow id 1050:*
+    '';
+
     # Lock session on Yubikey removal (unless on WSL)
     services.udev.extraRules = lib.mkIf (!config.wsl.enable) ''
       ACTION=="remove",\
@@ -47,6 +52,7 @@ in
     # Configure PAM for FIDO2/U2F authentication
     security.pam.u2f = {
       enable = lib.mkDefault true;
+      control = lib.mkDefault "required"; # Enforce U2F authentication for all configured services
       settings = {
         cue = lib.mkDefault true; # Prompt user to touch the Yubikey (e.g. "Please touch the device.")
       };
@@ -57,9 +63,8 @@ in
       login.u2fAuth = lib.mkDefault true;
       sudo.u2fAuth = lib.mkDefault true;
       systemd-run0.u2fAuth = lib.mkDefault true;
-      gdm-password.u2fAuth = lib.mkIf (config.display.gnome.enable && !config.wsl.enable) (
-        lib.mkDefault true
-      );
+      gdm-password.u2fAuth = lib.mkIf config.services.displayManager.gdm.enable (lib.mkDefault true);
+      swaylock.u2fAuth = lib.mkIf isGraphical (lib.mkDefault true);
     };
   };
 }

@@ -21,9 +21,7 @@ in
     services = {
       login.text = lib.mkIf (!config.wsl.enable) (lib.mkDefault pamfile);
       sshd.text = lib.mkIf (!config.wsl.enable) (lib.mkDefault pamfile);
-      gdm-password.text = lib.mkIf (config.display.gnome.enable && !config.wsl.enable) (
-        lib.mkDefault pamfile
-      );
+      gdm-password.text = lib.mkIf config.services.displayManager.gdm.enable (lib.mkDefault pamfile);
       systemd-run0 = {
         setLoginUid = lib.mkDefault true;
         pamMount = lib.mkDefault true;
