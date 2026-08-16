@@ -238,6 +238,21 @@ resource "tailscale_device_tags" "transmission" {
   tags      = ["tag:service-transmission"]
 }
 
+data "tailscale_device" "cache" {
+  name     = "cache.soay-puffin.ts.net"
+  wait_for = "10s"
+}
+
+resource "tailscale_device_authorization" "cache" {
+  device_id  = data.tailscale_device.cache.node_id
+  authorized = true
+}
+
+resource "tailscale_device_tags" "cache" {
+  device_id = data.tailscale_device.cache.node_id
+  tags      = ["tag:service-cache"]
+}
+
 module "gcp_infrastructure" {
   project_id        = var.gcp_project_id
   backend_file_path = path.module

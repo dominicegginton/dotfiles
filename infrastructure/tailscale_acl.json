@@ -124,6 +124,7 @@
     "tag:service-frigate":      [],
     "tag:service-beszel":       [],
     "tag:service-jellyfin":     [],
+    "tag:service-cache":        [],
     "tag:beszel-agent":         [],
     "tag:beszel-hub":           [],
     "tag:service-transmission": []
