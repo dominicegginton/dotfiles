@@ -40,9 +40,17 @@ in
             hostName = "ghost-gs60.${tailnet}";
             sshUser = "nix-builder";
             sshKey = "/home/dom/.ssh/id_build_key"; # Dedicated build key on client
-            systems = [ "x86_64-linux" "aarch64-linux" ];
+            systems = [
+              "x86_64-linux"
+              "aarch64-linux"
+            ];
             maxJobs = 4;
-            supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+            supportedFeatures = [
+              "nixos-test"
+              "benchmark"
+              "big-parallel"
+              "kvm"
+            ];
           }
         ];
       };

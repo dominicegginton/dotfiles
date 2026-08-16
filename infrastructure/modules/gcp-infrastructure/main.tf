@@ -50,6 +50,13 @@ resource "google_storage_bucket" "dominicegginton" {
   versioning {
     enabled = true
   }
+  soft_delete_policy {
+    retention_duration_seconds = 604800 # 7 days
+  }
+  retention_policy {
+    retention_period = 2592000 # 30 days
+    is_locked        = false # Keep unlocked so you can modify it later if needed
+  }
 }
 
 resource "google_storage_bucket" "immich_backup" {

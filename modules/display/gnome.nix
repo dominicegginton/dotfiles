@@ -76,18 +76,42 @@ let
   };
 
   # Privacy preserving defaults
-  orgGnomeDesktopPrivacySettings = settings "org/gnome/desktop/privacy" {
-    remember-recent-files = false;
-    remove-old-temp-files = true;
-    remove-old-trash-files = true;
-    report-technical-problems = false;
-    send-software-usage-stats = false;
-    show-full-name-in-top-bar = true;
-    usb-protection = false;
+  orgGnomeDesktopPrivacySettings = {
+    locks = [
+      "org/gnome/desktop/privacy/usb-protection"
+      "org/gnome/desktop/privacy/usb-protection-level"
+    ];
+    settings = {
+      "org/gnome/desktop/privacy" = {
+        remember-recent-files = false;
+        remove-old-temp-files = true;
+        remove-old-trash-files = true;
+        report-technical-problems = false;
+        send-software-usage-stats = false;
+        show-full-name-in-top-bar = true;
+        # Disable GNOME USB protection so re-plugged USB devices (e.g. Yubikeys) are allowed
+        # while the session is locked or at the lock screen. USB authorization is managed
+        # explicitly via USBGuard instead.
+        usb-protection = false;
+      };
+    };
   };
 
-  # Lockscreen configuration
-  orgGnomeDesktopLockscreenSettings = settings "org/gnome/desktop/lockscreen" {
+  orgGnomeDesktopPrivacySettingsGdm = {
+    locks = [
+      "org/gnome/desktop/privacy/usb-protection"
+      "org/gnome/desktop/privacy/usb-protection-level"
+    ];
+    settings = {
+      "org/gnome/desktop/privacy" = {
+        # Disable GNOME USB protection in GDM greeter so Yubikeys plugged in at login can authenticate.
+        usb-protection = false;
+      };
+    };
+  };
+
+  # Screensaver & lockscreen configuration
+  orgGnomeDesktopLockscreenSettings = settings "org/gnome/desktop/screensaver" {
     idle-activation-enabled = true;
     lock-delay = lib.gvariant.mkInt32 0;
     lock-enabled = true;
@@ -367,6 +391,11 @@ with lib;
       orgGnomeShellSettings
       orgGnomeTerminalLockdownSettings
       orgGnomeConsoleSettings
+    ];
+
+    # Configure dconf GDM greeter settings
+    programs.dconf.profiles.gdm.databases = with lib.gvariant; [
+      orgGnomeDesktopPrivacySettingsGdm
     ];
 
     # Firefox Web Browser

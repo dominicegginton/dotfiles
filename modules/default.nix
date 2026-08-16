@@ -68,7 +68,6 @@ rec {
     ./security/systemd.nix
     ./security/systemd-analyze.nix
     ./security/tpm2.nix
-    ./security/vulnix.nix
     ./security/yubikey.nix
 
     # Service

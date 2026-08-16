@@ -52,18 +52,23 @@ in
     services.udev.extraRules = lib.mkIf (!config.wsl.enable) (
       let
         lockScript = pkgs.writeShellScript "yubikey-lock-session" ''
-          if [ -n "${toString (config.security.yubikey.homeSsid != null)}" ]; then
-            if ${pkgs.iwd}/bin/iwctl station show | grep -q "Connected network"; then
-              CURRENT_SSID=$(${pkgs.iwd}/bin/iwctl station show | grep "Connected network" | awk '{print $3}')
-              if [ "$CURRENT_SSID" = "${config.security.yubikey.homeSsid}" ]; then
+          if [ -n "${toString (config.security.yubikey.homeSsid != null)}" ] && [ -n "${toString config.security.yubikey.homeSsid}" ]; then
+            HOME_SSID="${toString config.security.yubikey.homeSsid}"
+
+            if [ -x "${pkgs.networkmanager}/bin/nmcli" ]; then
+              CURRENT_SSID=$("${pkgs.networkmanager}/bin/nmcli" -t -f ACTIVE,SSID dev wifi 2>/dev/null | grep "^yes:" | head -n1 | cut -d: -f2-)
+              if [ "$CURRENT_SSID" = "$HOME_SSID" ]; then
                 exit 0
               fi
             fi
-            if command -v nmcli >/dev/null 2>&1; then
-              CURRENT_SSID=$(nmcli -t -f ACTIVE,SSID dev wifi | grep "^yes:" | cut -d: -f2)
-              if [ "$CURRENT_SSID" = "${config.security.yubikey.homeSsid}" ]; then
-                exit 0
-              fi
+
+            if [ -x "${pkgs.iwd}/bin/iwctl" ]; then
+              for dev in $("${pkgs.iwd}/bin/iwctl" station list 2>/dev/null | awk 'NR>4 && $1!="" {print $1}'); do
+                CURRENT_SSID=$("${pkgs.iwd}/bin/iwctl" station "$dev" show 2>/dev/null | grep "Connected network" | awk -F'  +' '{print $NF}' | xargs)
+                if [ "$CURRENT_SSID" = "$HOME_SSID" ]; then
+                  exit 0
+                fi
+              done
             fi
           fi
 
@@ -73,9 +78,7 @@ in
       ''
         ACTION=="remove",\
          ENV{ID_BUS}=="usb",\
-         ENV{ID_MODEL_ID}=="0407",\
          ENV{ID_VENDOR_ID}=="1050",\
-         ENV{ID_VENDOR}=="Yubico",\
          RUN+="${lockScript}"
       ''
     );
@@ -107,12 +110,14 @@ in
       gnome-screensaver.u2fAuth = lib.mkIf config.services.displayManager.gdm.enable (lib.mkDefault true);
       gnome-shell.u2fAuth = lib.mkIf config.services.displayManager.gdm.enable (lib.mkDefault true);
       swaylock.u2fAuth = lib.mkIf config.display.niri.enable (lib.mkDefault true);
-      i3lock.u2fAuth = lib.mkIf (config.services.xserver.windowManager.i3.enable or false) (lib.mkDefault true);
+      i3lock.u2fAuth = lib.mkIf (config.services.xserver.windowManager.i3.enable or false) (
+        lib.mkDefault true
+      );
       gtklock.u2fAuth = lib.mkIf (config.programs.gtklock.enable or false) (lib.mkDefault true);
       waylock.u2fAuth = lib.mkIf (config.programs.waylock.enable or false) (lib.mkDefault true);
       vlock.u2fAuth = lib.mkDefault true;
 
-      # Identity Elevation 
+      # Identity Elevation
       sudo.u2fAuth = lib.mkDefault true;
       systemd-run0.u2fAuth = lib.mkDefault true;
       su.u2fAuth = lib.mkDefault true;
