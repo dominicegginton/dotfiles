@@ -17,7 +17,7 @@ in
 
   config = lib.mkIf cfg.enable {
     services.harmonia = {
-      enable = true;
+      cache.enable = true;
     };
 
     # Expose Harmonia over tsnsrv on your tailnet
