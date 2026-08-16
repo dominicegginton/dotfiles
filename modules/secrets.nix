@@ -42,23 +42,23 @@ in
         "services/tsnsrv/auth-key" = { };
         "services/beszel/agent" = { };
 
-        # Host-specific secrets (only defined/loaded if their host file exists)
-        "services/immich/oauth-secret" = hostSecret { };
-        "services/immich/gcs-backup-key" = hostSecret { };
-        "services/silverbullet/gcs-backup-key" = hostSecret { };
-        "services/sssd/client-secret" = hostSecret { };
-        "services/frigate/gcs-backup-key" = hostSecret { };
-        "services/garage/rpc-secret" = hostSecret { };
-        "services/hermes/env" = hostSecret { };
-        "services/github/runner-token" = hostSecret {
+        # Host-specific secrets (only defined/loaded if their host file exists and the service is enabled)
+        "services/immich/oauth-secret" = if config.services.immich.enable then hostSecret { } else null;
+        "services/immich/gcs-backup-key" = if config.services.immich.enable then hostSecret { } else null;
+        "services/silverbullet/gcs-backup-key" = if config.services.silverbullet.enable then hostSecret { } else null;
+        "services/sssd/client-secret" = if (config.users.sssd.enable or false) then hostSecret { } else null;
+        "services/frigate/gcs-backup-key" = if config.services.frigate.enable then hostSecret { } else null;
+        "services/garage/rpc-secret" = if (config.services.garage.enable or false) then hostSecret { } else null;
+        "services/hermes/env" = if (config.services.hermes.enable or false) then hostSecret { } else null;
+        "services/github/runner-token" = if (config.services.residence.githubRunner.enable or false) then hostSecret {
           mode = "0400";
           owner = "root";
           group = "root";
-        };
-        "services/beszel/hub" = hostSecret { };
-        "onlyoffice_jwt_secret" = hostSecret { };
-        "oauth2_proxy_oidc_client_secret" = hostSecret { };
-        "oauth2_proxy_cookie_secret" = hostSecret { };
+        } else null;
+        "services/beszel/hub" = if (config.services.beszel.hub.enable or false) then hostSecret { } else null;
+        "onlyoffice_jwt_secret" = if (config.services.onlyoffice-documentserver.enable or false) then hostSecret { } else null;
+        "oauth2_proxy_oidc_client_secret" = if (config.services.oauth2-proxy-custom.enable or false) then hostSecret { } else null;
+        "oauth2_proxy_cookie_secret" = if (config.services.oauth2-proxy-custom.enable or false) then hostSecret { } else null;
       }
     );
   };
