@@ -18,11 +18,12 @@ in
   config = lib.mkIf cfg.enable {
     services.harmonia = {
       cache.enable = true;
+      cache.settings.bind = "127.0.0.1:5005";
     };
 
     # Expose Harmonia over tsnsrv on your tailnet
     services.tsnsrv.services."cache" = {
-      toURL = "http://127.0.0.1:5000";
+      toURL = "http://127.0.0.1:5005";
     };
 
     # Topology metadata for the private cache service
@@ -34,7 +35,7 @@ in
 
       services.harmonia = {
         name = lib.mkForce "Harmonia Binary Cache";
-        details.listen.text = lib.mkForce "127.0.0.1:5000";
+        details.listen.text = lib.mkForce "127.0.0.1:5005";
       };
     };
   };
