@@ -90,8 +90,9 @@ resource "tailscale_device_authorization" "latitude-7390" {
 }
 
 resource "tailscale_device_tags" "latitude-7390" {
-  device_id = data.tailscale_device.latitude-7390.node_id
-  tags      = ["tag:device-latitude-7390"]
+  device_id  = data.tailscale_device.latitude-7390.node_id
+  tags       = ["tag:device-latitude-7390"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "ghost-gs60" {
@@ -104,8 +105,9 @@ resource "tailscale_device_authorization" "ghost-gs60" {
 }
 
 resource "tailscale_device_tags" "ghost-gs60" {
-  device_id = data.tailscale_device.ghost-gs60.node_id
-  tags      = ["tag:device-ghost-gs60"]
+  device_id  = data.tailscale_device.ghost-gs60.node_id
+  tags       = ["tag:device-ghost-gs60"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "steamdeck" {
@@ -118,8 +120,9 @@ resource "tailscale_device_authorization" "steamdeck" {
 }
 
 resource "tailscale_device_tags" "steamdeck" {
-  device_id = data.tailscale_device.steamdeck.node_id
-  tags      = ["tag:device-steamdeck"]
+  device_id  = data.tailscale_device.steamdeck.node_id
+  tags       = ["tag:device-steamdeck"]
+  depends_on = [tailscale_acl.acl]
 }
 
 
@@ -134,8 +137,9 @@ resource "tailscale_device_authorization" "doms-pixel-9" {
 }
 
 resource "tailscale_device_tags" "doms-pixel-9" {
-  device_id = data.tailscale_device.doms-pixel-9.node_id
-  tags      = []
+  device_id  = data.tailscale_device.doms-pixel-9.node_id
+  tags       = []
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "beszel" {
@@ -149,8 +153,9 @@ resource "tailscale_device_authorization" "beszel" {
 }
 
 resource "tailscale_device_tags" "beszel" {
-  device_id = data.tailscale_device.beszel.node_id
-  tags      = ["tag:service-beszel"]
+  device_id  = data.tailscale_device.beszel.node_id
+  tags       = ["tag:service-beszel"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "frigate" {
@@ -164,8 +169,9 @@ resource "tailscale_device_authorization" "frigate" {
 }
 
 resource "tailscale_device_tags" "frigate" {
-  device_id = data.tailscale_device.frigate.node_id
-  tags      = ["tag:service-frigate"]
+  device_id  = data.tailscale_device.frigate.node_id
+  tags       = ["tag:service-frigate"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "idp" {
@@ -178,8 +184,9 @@ resource "tailscale_device_authorization" "idp" {
 }
 
 resource "tailscale_device_tags" "idp" {
-  device_id = data.tailscale_device.idp.node_id
-  tags      = ["tag:service-idp"]
+  device_id  = data.tailscale_device.idp.node_id
+  tags       = ["tag:service-idp"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "immich" {
@@ -192,8 +199,9 @@ resource "tailscale_device_authorization" "immich" {
 }
 
 resource "tailscale_device_tags" "immich" {
-  device_id = data.tailscale_device.immich.node_id
-  tags      = ["tag:service-immich"]
+  device_id  = data.tailscale_device.immich.node_id
+  tags       = ["tag:service-immich"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "jellyfin" {
@@ -206,8 +214,9 @@ resource "tailscale_device_authorization" "jellyfin" {
 }
 
 resource "tailscale_device_tags" "jellyfin" {
-  device_id = data.tailscale_device.jellyfin.node_id
-  tags      = ["tag:service-jellyfin"]
+  device_id  = data.tailscale_device.jellyfin.node_id
+  tags       = ["tag:service-jellyfin"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "silverbullet" {
@@ -220,8 +229,9 @@ resource "tailscale_device_authorization" "silverbullet" {
 }
 
 resource "tailscale_device_tags" "silverbullet" {
-  device_id = data.tailscale_device.silverbullet.node_id
-  tags      = ["tag:service-silverbullet"]
+  device_id  = data.tailscale_device.silverbullet.node_id
+  tags       = ["tag:service-silverbullet"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "transmission" {
@@ -234,8 +244,9 @@ resource "tailscale_device_authorization" "transmission" {
 }
 
 resource "tailscale_device_tags" "transmission" {
-  device_id = data.tailscale_device.transmission.node_id
-  tags      = ["tag:service-transmission"]
+  device_id  = data.tailscale_device.transmission.node_id
+  tags       = ["tag:service-transmission"]
+  depends_on = [tailscale_acl.acl]
 }
 
 data "tailscale_device" "cache" {
@@ -249,8 +260,9 @@ resource "tailscale_device_authorization" "cache" {
 }
 
 resource "tailscale_device_tags" "cache" {
-  device_id = data.tailscale_device.cache.node_id
-  tags      = ["tag:service-cache"]
+  device_id  = data.tailscale_device.cache.node_id
+  tags       = ["tag:service-cache"]
+  depends_on = [tailscale_acl.acl]
 }
 
 module "gcp_infrastructure" {
