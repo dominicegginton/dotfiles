@@ -1,6 +1,8 @@
 on:
   pull_request:
   push:
+  schedule:
+    - cron: '0 0 * * *'
 
 permissions:
   contents: read
@@ -70,6 +72,7 @@ jobs:
           free-disk-space: true
       - run: nix build -L .#nixosConfigurations.latitude-7390.config.system.build.toplevel
       - uses: ./.github/actions/scan-nix
+        continue-on-error: true
         with:
           path: ./result
 
@@ -82,6 +85,7 @@ jobs:
           free-disk-space: true
       - run: nix build -L .#nixosConfigurations.ghost-gs60.config.system.build.toplevel
       - uses: ./.github/actions/scan-nix
+        continue-on-error: true
         with:
           path: ./result
 

@@ -52,7 +52,9 @@ in
     services.udev.extraRules = lib.mkIf (!config.wsl.enable) (
       let
         lockScript = pkgs.writeShellScript "yubikey-lock-session" ''
-          if [ -n "${toString (config.security.yubikey.homeSsid != null)}" ] && [ -n "${toString config.security.yubikey.homeSsid}" ]; then
+          if [ -n "${
+            toString (config.security.yubikey.homeSsid != null)
+          }" ] && [ -n "${toString config.security.yubikey.homeSsid}" ]; then
             HOME_SSID="${toString config.security.yubikey.homeSsid}"
 
             if [ -x "${pkgs.networkmanager}/bin/nmcli" ]; then
