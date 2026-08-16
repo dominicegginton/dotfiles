@@ -173,6 +173,10 @@
   # Enable SilverBullet Notes Services
   services.silverbullet.enable = true;
 
+  # Enable Nix Distributed Build and Harmonia services (Machine Mesh)
+  services.nix-builder.enable = true;
+  services.harmonia-custom.enable = true;
+
   # Topology Definition
   topology.self = {
     hardware.info = "MSI Ghost GS60";

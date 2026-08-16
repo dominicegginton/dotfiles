@@ -164,7 +164,7 @@
     },
 
     {
-      "target": ["tag:service-idp", "tag:service-immich"],
+      "target": ["tag:service-idp", "tag:service-immich", "tag:service-jellyfin"],
       "attr":   ["funnel"]
     }
   ]

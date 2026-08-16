@@ -83,12 +83,14 @@ rec {
     ./services/gcs-backup.nix
     ./services/github-runner.nix
     ./services/getty.nix
+    ./services/harmonia.nix
     ./services/home-assistant.nix
     ./services/immich.nix
     ./services/jellyfin.nix
     ./services/journald.nix
     ./services/logind.nix
     ./services/nginx.nix
+    ./services/nix-builder.nix
     ./services/pipewire.nix
     ./services/silverbullet.nix
     ./services/ssh.nix

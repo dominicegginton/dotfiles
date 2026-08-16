@@ -85,5 +85,8 @@
 
   users.sssd.enable = false;
 
+  # Enable Nix Distributed Build client (Machine Mesh)
+  services.nix-builder.client.enable = true;
+
   topology.self.hardware.info = "Workstation";
 }

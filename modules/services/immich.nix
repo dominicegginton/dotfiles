@@ -8,7 +8,7 @@
 {
   config = lib.mkIf config.services.immich.enable {
     services.immich = {
-      host = lib.mkDefault "0.0.0.0";
+      host = lib.mkDefault "127.0.0.1";
       port = lib.mkDefault 2283;
       settings = {
         server.externalDomain = lib.mkDefault "https://immich.${tailnet}";

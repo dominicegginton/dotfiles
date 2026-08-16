@@ -70,6 +70,7 @@ in
       keep-build-log = lib.mkForce false; # Don't keep build logs
       compress-build-log = lib.mkForce true; # Compress build logs
       require-sigs = lib.mkForce true; # Require signatures for substitutes
+      builders-use-substitutes = lib.mkForce true; # Let remote builders fetch substitutes
       allowed-users = lib.mkForce [
         "root"
         "@wheel"
@@ -77,7 +78,8 @@ in
       trusted-users = lib.mkForce [
         "root"
         "@wheel"
-      ]; # Only trust root and wheel
+        "nix-builder"
+      ]; # Only trust root, wheel, and the remote builder user
     };
   };
 
