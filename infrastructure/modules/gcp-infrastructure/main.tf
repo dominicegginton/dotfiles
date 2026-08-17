@@ -13,6 +13,11 @@ resource "google_project_service" "secretmanager" {
   service = "secretmanager.googleapis.com"
 }
 
+resource "google_project_service" "logging" {
+  project = var.project_id
+  service = "logging.googleapis.com"
+}
+
 resource "random_id" "terraform_remote_backend" {
   byte_length = 8
 }
@@ -193,6 +198,7 @@ resource "google_storage_bucket" "tailscale_logs" {
   }
 }
 
+
 resource "google_service_account" "tailscale_logstream" {
   account_id   = "tailscale-logstream"
   display_name = "Tailscale Logstream Service Account"
@@ -206,6 +212,23 @@ resource "google_storage_bucket_iam_member" "tailscale_logstream" {
   bucket = google_storage_bucket.tailscale_logs.name
   role   = "roles/storage.objectAdmin"
   member = "serviceAccount:${google_service_account.tailscale_logstream.email}"
+}
+
+
+
+resource "google_service_account" "gcp_logging" {
+  account_id   = "vector-gcp-logging"
+  display_name = "Vector GCP Cloud Logging Service Account"
+}
+
+resource "google_service_account_key" "gcp_logging" {
+  service_account_id = google_service_account.gcp_logging.name
+}
+
+resource "google_project_iam_member" "gcp_logging_writer" {
+  project = var.project_id
+  role    = "roles/logging.logWriter"
+  member  = "serviceAccount:${google_service_account.gcp_logging.email}"
 }
 
 resource "google_secret_manager_secret" "tailscale_api_key" {

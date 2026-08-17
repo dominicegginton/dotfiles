@@ -41,6 +41,7 @@ in
         };
         "services/tsnsrv/auth-key" = { };
         "services/beszel/agent" = { };
+        "services/gcp-logging/key" = if config.services.gcp-logging.enable then { } else null;
 
         # Host-specific secrets (only defined/loaded if their host file exists and the service is enabled)
         "services/immich/oauth-secret" = if config.services.immich.enable then hostSecret { } else null;

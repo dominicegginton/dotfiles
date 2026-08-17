@@ -20,7 +20,7 @@
 
   config = lib.mkIf (config.security.systemd-analyze.enable && !config.wsl.enable) {
     systemd.services.systemd-security-analyze = {
-      description = "Run systemd-analyze security and alert audit email";
+      description = "Run systemd-analyze security report to journald";
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
       path = with pkgs; [
@@ -28,25 +28,8 @@
       ];
 
       script = ''
-        if ! command -v sendmail &>/dev/null; then
-          echo "Warning: sendmail command not found. Cannot send email alert. Logging report instead:"
-          systemd-analyze security --no-pager
-          # TODO: Configure a system-wide mail server / SMTP client (like msmtp) or setup a GCP Cloud Monitoring alert
-          # so that both this script and the auditd service can route and dispatch email alerts.
-          exit 0
-        fi
-
-        echo "Generating systemd security report..."
-        report=$(systemd-analyze security --no-pager)
-
-        sendmail -t <<EOF
-        To: ${config.security.audit-compliance.adminEmail}
-        Subject: Systemd Security Analysis Report - $(hostname)
-        MIME-Version: 1.0
-        Content-Type: text/plain; charset=utf-8
-
-        $report
-        EOF
+        echo "Generating systemd security analysis report..."
+        systemd-analyze security --no-pager
       '';
 
       serviceConfig = {

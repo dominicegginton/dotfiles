@@ -64,6 +64,8 @@ output "frigate_retention_policy" {
   value = google_storage_bucket.frigate_backup.retention_policy
 }
 
+ 
+
 output "immich_backup_service_account" {
   description = "Service account email for Immich backups"
   value       = google_service_account.immich_backup.email
@@ -77,6 +79,17 @@ output "silverbullet_backup_service_account" {
 output "frigate_backup_service_account" {
   description = "Service account email for Frigate backups"
   value       = google_service_account.frigate_backup.email
+}
+
+output "gcp_logging_key" {
+  description = "GCP Service Account Key for Vector Cloud Logging (base64 encoded)"
+  value       = google_service_account_key.gcp_logging.private_key
+  sensitive   = true
+}
+
+output "gcp_logging_service_account" {
+  description = "Service account email for Vector GCP Cloud Logging"
+  value       = google_service_account.gcp_logging.email
 }
 
 output "project_id" {

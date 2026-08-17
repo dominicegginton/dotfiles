@@ -79,6 +79,7 @@ rec {
     ./services/fail2ban.nix
     ./services/flatpak.nix
     ./services/frigate.nix
+    ./services/gcp-logging.nix
     ./services/gcs-backup.nix
     ./services/github-runner.nix
     ./services/getty.nix

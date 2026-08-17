@@ -24,13 +24,9 @@ with builtins;
 with lib;
 
 let
-  edit-secrets = writeShellScriptBin "edit-secrets" ''
-    sops secrets/secrets.yaml
-  '';
-
   runTofuWithSecrets =
     tofuOperation:
-    "${getExe secretspec} run -f ./infrastructure/secretspec.toml ${getExe opentofu} -chdir=infrastructure ${tofuOperation}";
+    "${getExe secretspec} run --reason \"Infrastructure management via OpenTofu\" -f ./infrastructure/secretspec.toml ${getExe opentofu} -chdir=infrastructure ${tofuOperation}";
 
   infrastructure = {
     init = writeShellScriptBin "infrastructure-init" ''
@@ -71,7 +67,6 @@ mkShell rec {
     age
     ssh-to-age
     mkpasswd
-    edit-secrets
     infrastructure.init
     infrastructure.plan
     infrastructure.apply

@@ -30,3 +30,9 @@ output "frigate_backup_key" {
   value       = module.gcp_infrastructure.frigate_backup_key
   sensitive   = true
 }
+
+output "gcp_logging_key" {
+  description = "GCP Service Account Key for Vector Cloud Logging (base64 encoded)"
+  value       = module.gcp_infrastructure.gcp_logging_key
+  sensitive   = true
+}

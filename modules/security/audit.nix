@@ -34,9 +34,9 @@
       enable = lib.mkDefault (!config.wsl.enable);
       settings = {
         space_left = "10%";
-        space_left_action = "ignore";
+        space_left_action = "syslog";
         admin_space_left = "5%";
-        admin_space_left_action = "email";
+        admin_space_left_action = "syslog";
         action_mail_acct = config.security.audit-compliance.adminEmail;
         num_logs = 10;
         max_log_file = 100;
