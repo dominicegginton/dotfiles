@@ -21,6 +21,11 @@ in
       cache.settings.bind = "127.0.0.1:5005";
     };
 
+    # Override the default systemd socket activation port to 5005 to prevent conflict with Frigate (port 5000)
+    systemd.sockets.harmonia = {
+      socketConfig.ListenStream = lib.mkForce "127.0.0.1:5005";
+    };
+
     # Expose Harmonia over tsnsrv on your tailnet
     services.tsnsrv.services."cache" = {
       toURL = "http://127.0.0.1:5005";
