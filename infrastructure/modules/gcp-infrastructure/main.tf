@@ -18,6 +18,11 @@ resource "google_project_service" "logging" {
   service = "logging.googleapis.com"
 }
 
+resource "google_project_service" "billingbudgets" {
+  project = var.project_id
+  service = "billingbudgets.googleapis.com"
+}
+
 resource "random_id" "terraform_remote_backend" {
   byte_length = 8
 }
@@ -249,6 +254,53 @@ resource "google_secret_manager_secret" "tailscale_tailnet" {
   }
 
   depends_on = [google_project_service.secretmanager]
+}
+
+data "google_project" "current" {}
+
+resource "google_billing_budget" "budget" {
+  count           = var.billing_account_id != null ? 1 : 0
+  billing_account = var.billing_account_id
+  display_name    = "GCP Project Budget Alert"
+
+  budget_filter {
+    projects               = ["projects/${data.google_project.current.number}"]
+    credit_types_treatment = "INCLUDE_ALL_CREDITS"
+  }
+
+  amount {
+    specified_amount {
+      currency_code = "GBP"
+      units         = "10" # Default low threshold budget of £10/month
+    }
+  }
+
+  threshold_rules {
+    threshold_percent = 0.50 # Alert at 50% (£5)
+    spend_basis       = "CURRENT_SPEND"
+  }
+
+  threshold_rules {
+    threshold_percent = 0.90 # Alert at 90% (£9)
+    spend_basis       = "CURRENT_SPEND"
+  }
+
+  threshold_rules {
+    threshold_percent = 1.00 # Alert at 100% (£10)
+    spend_basis       = "CURRENT_SPEND"
+  }
+
+  threshold_rules {
+    # Forecast alert when on track to exceed monthly budget limit
+    threshold_percent = 1.00 
+    spend_basis       = "FORECASTED_SPEND"
+  }
+
+  # Removing empty all_updates_rule, as OpenTofu/GCP requires either
+  # monitoring_notification_channels or pubsub_topic to be supplied when defined.
+  # Email alerts to Billing Account Admins & Users are enabled by default anyway.
+
+  depends_on = [google_project_service.billingbudgets]
 }
 
 

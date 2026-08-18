@@ -4,6 +4,13 @@ variable "gcp_project_id" {
   default     = "dominicegginton-personal"
 }
 
+variable "gcp_billing_account_id" {
+  description = "The GCP Billing Account ID"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
 variable "tailscale_api_key" {
   description = "The API key for Tailscale"
   type        = string

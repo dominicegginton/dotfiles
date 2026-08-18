@@ -18,8 +18,10 @@ terraform {
 }
 
 provider "google" {
-  project = var.gcp_project_id # GCP project ID
-  region  = "europe-west2"     # GCP region
+  project                 = var.gcp_project_id # GCP project ID
+  region                  = "europe-west2"     # GCP region
+  user_project_override   = true
+  billing_project         = var.gcp_project_id
 }
 
 provider "tailscale" {
@@ -266,7 +268,8 @@ resource "tailscale_device_tags" "cache" {
 }
 
 module "gcp_infrastructure" {
-  project_id        = var.gcp_project_id
-  backend_file_path = path.module
-  source            = "./modules/gcp-infrastructure"
+  project_id         = var.gcp_project_id
+  backend_file_path  = path.module
+  billing_account_id = var.gcp_billing_account_id
+  source             = "./modules/gcp-infrastructure"
 }
