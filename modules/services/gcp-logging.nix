@@ -36,8 +36,32 @@ in
     };
   };
 
-  config = lib.mkIf (cfg.enable && cfg.credentialsFile != null) {
-    services.vector = {
+  config = lib.mkIf cfg.enable {
+    users.users.vector = {
+      isSystemUser = true;
+      group = "vector";
+      extraGroups = [ "systemd-journal" ];
+    };
+    users.groups.vector = { };
+
+    systemd.services.vector.serviceConfig = {
+      User = "vector";
+      Group = "vector";
+      DynamicUser = lib.mkForce false;
+    };
+
+    environment.persistence."/persist".directories =
+      lib.mkIf (config.environment.persistence ? "/persist")
+        [
+          {
+            directory = "/var/lib/vector";
+            user = "vector";
+            group = "vector";
+            mode = "0700";
+          }
+        ];
+
+    services.vector = lib.mkIf (cfg.credentialsFile != null) {
       enable = true;
       journaldAccess = true;
       settings = {
@@ -71,9 +95,5 @@ in
         };
       };
     };
-
-    environment.persistence."/persist".directories = lib.mkIf (config.environment.persistence ? "/persist") [
-      "/var/lib/vector"
-    ];
   };
 }
