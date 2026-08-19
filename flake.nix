@@ -79,6 +79,7 @@
     substituters = [
       "https://cache.nixos.org"
       "https://dominicegginton-dotfiles.cachix.org"
+      "https://cache.soay-puffin.ts.net"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
