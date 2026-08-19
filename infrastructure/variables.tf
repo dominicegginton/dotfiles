@@ -22,4 +22,12 @@ variable "tailscale_tailnet" {
   description = "The Tailscale tailnet to connect to"
   type        = string
   default     = null
+  sensitive   = true
+}
+
+variable "tailscale_dns_address" {
+  description = "The Tailscale DNS address"
+  type        = string
+  default     = null
+  sensitive   = true
 }

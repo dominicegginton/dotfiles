@@ -55,7 +55,7 @@ resource "tailscale_tailnet_settings" "settings" {
 
 resource "tailscale_dns_configuration" "dns_configuration" {
   nameservers {
-    address            = "2a07:a8c0::cd:dfb8"
+    address            = var.tailscale_dns_address
     use_with_exit_node = true
   }
   search_paths       = []
