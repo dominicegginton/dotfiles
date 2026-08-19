@@ -17,9 +17,11 @@ rec {
 
     # Nix configuration
     ./nix.nix
+    ./upgrade.nix
 
     # System-level configurations and branding
     ./system.nix
+    # ./impermanence.nix
 
     # Home Manager settings and shared modules
     ./home-manager.nix
