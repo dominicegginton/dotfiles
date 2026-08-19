@@ -36,7 +36,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable && cfg.credentialsFile != null) {
     users.users.vector = {
       isSystemUser = true;
       group = "vector";
@@ -50,6 +50,10 @@ in
       DynamicUser = lib.mkForce false;
     };
 
+    systemd.services.vector.environment = {
+      SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+    };
+
     environment.persistence."/persist".directories =
       lib.mkIf (config.environment.persistence ? "/persist")
         [
@@ -61,7 +65,7 @@ in
           }
         ];
 
-    services.vector = lib.mkIf (cfg.credentialsFile != null) {
+    services.vector = {
       enable = true;
       journaldAccess = true;
       settings = {
