@@ -36,7 +36,7 @@ in
     };
   };
 
-  config = lib.mkIf (cfg.enable && cfg.credentialsFile != null) {
+  config = lib.mkIf cfg.enable {
     users.users.vector = {
       isSystemUser = true;
       group = "vector";
@@ -65,7 +65,7 @@ in
           }
         ];
 
-    services.vector = {
+    services.vector = lib.mkIf (cfg.credentialsFile != null) {
       enable = true;
       journaldAccess = true;
       settings = {
