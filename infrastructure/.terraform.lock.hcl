@@ -84,3 +84,26 @@ provider "registry.opentofu.org/tailscale/tailscale" {
     "zh:b2604d5067f3f259ff9be9bb0c4f9ec801d27c905cbf6ceafee50fc2a23f8331",
   ]
 }
+
+provider "registry.terraform.io/carbans/nextdns" {
+  version     = "0.2.2"
+  constraints = "0.2.2"
+  hashes = [
+    "h1:eKnadwUg75WmZGIkUAcDGcRSR0Ieaue4f3WkcnP3BSk=",
+    "zh:0ebd389adfc368647cbab92e0d67568de306f4f3c82bc0632afb90d6d9e55a78",
+    "zh:1c3e89cf19118fc07d7b04257251fc9897e722c16e0a0df7b07fcd261f8c12e7",
+    "zh:22ed0cb6ce17c3541086232ae4ec7f6a0bb25d724e47805c5fe03dc78b91078b",
+    "zh:2dc1e6cbd743cb5cc0e2cad3285cf503cf69230d147ce83420f977da99ec3ddb",
+    "zh:4dcb3f6a0a0f94ebdcaf2145e356864a6930d4d88a7526bb9458a61e9c0c2854",
+    "zh:5001bd6ec2c6533d0aea1d9506178e336ef38fda66144f08ed589ae09e71eaf1",
+    "zh:5dcb1fbe973fb2851f6dcf211a7985e3cba2cb785ccaeb4773f6c52212c41014",
+    "zh:5ec5bae326de47caf744cf7538a6a5a43e27d81277469f766f7792c7849495dc",
+    "zh:65b69a8295bb9973ce99d1163638dc22bacd13ee42556516905e9449baa67cac",
+    "zh:65d09f0559f881d3c5d8e1c3a19d96a807eb244b3465f311c60f793314de23d9",
+    "zh:662ba96f227d5fba875e148f011df87ebf4391a803822b7a706cce682ff4522a",
+    "zh:8ba0fb2ba5e36e1423498b8181d55c8e3a964ec8b179c450b8cdc6ac516ddd88",
+    "zh:95930c22bb183b504f0ff3869be7d13a9c900de0ed9186f22aa6586f1e0058d7",
+    "zh:a750d3ae98c247b0cf3495e68e98346c5d5aa28175a6ab95f833d543d93761a9",
+    "zh:fa88f22e09eea680c46e369e87b98329a6b198ecac25197d8ce88954f38fba12",
+  ]
+}

@@ -25,9 +25,21 @@ variable "tailscale_tailnet" {
   sensitive   = true
 }
 
-variable "tailscale_dns_address" {
-  description = "The Tailscale DNS address"
+variable "nextdns_api_token" {
+  description = "The NextDNS API Token"
   type        = string
   default     = null
   sensitive   = true
+}
+
+variable "nextdns_profile_ribble" {
+  description = "The NextDNS Profile ID for Ribble"
+  type        = string
+  default     = null
+}
+
+variable "nextdns_profile_quandon" {
+  description = "The NextDNS Profile ID for Quandon"
+  type        = string
+  default     = null
 }

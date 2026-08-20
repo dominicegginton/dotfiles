@@ -14,6 +14,11 @@ terraform {
       source  = "tailscale/tailscale"
       version = ">= 0.17.0"
     }
+
+    nextdns = {
+      source  = "registry.terraform.io/carbans/nextdns"
+      version = "0.2.2"
+    }
   }
 }
 
@@ -27,6 +32,18 @@ provider "google" {
 provider "tailscale" {
   api_key = var.tailscale_api_key
   tailnet = var.tailscale_tailnet
+}
+
+provider "nextdns" {
+  api_key = var.nextdns_api_token
+}
+
+resource "nextdns_profile" "ribble" {
+  name = "Ribble"
+}
+
+resource "nextdns_profile" "quandon" {
+  name = "quandon"
 }
 
 resource "tailscale_contacts" "contacts" {
@@ -53,9 +70,17 @@ resource "tailscale_tailnet_settings" "settings" {
   https_enabled                               = true
 }
 
+data "nextdns_setup_endpoint" "ribble" {
+  profile_id = var.nextdns_profile_ribble
+}
+
 resource "tailscale_dns_configuration" "dns_configuration" {
   nameservers {
-    address            = var.tailscale_dns_address
+    address            = data.nextdns_setup_endpoint.ribble.ipv6[0]
+    use_with_exit_node = true
+  }
+  nameservers {
+    address            = data.nextdns_setup_endpoint.ribble.ipv6[1]
     use_with_exit_node = true
   }
   search_paths       = []
