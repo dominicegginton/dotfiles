@@ -72,6 +72,12 @@
     },
 
     {
+      "src": ["*"],
+      "dst": ["tag:service-cache"],
+      "ip":  ["*"]
+    },
+
+    {
       "src": ["tag:device-latitude-7390"],
       "dst": ["tag:service-jellyfin"],
       "ip":  ["*"]
