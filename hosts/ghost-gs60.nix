@@ -132,9 +132,13 @@
 
   programs.deadman.enable = false; # Disable deadman switch.
 
-  # Ignore events from the lid switch
+  # Ignore events from the lid switch and prevent system from sleeping/suspending to keep server online
   services.logind.settings.Login.HandleLidSwitch = "ignore";
   services.upower.ignoreLid = true;
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
 
   # Enable Tailscale Identity Provider (IdP)
   services.tsidp.enable = true;

@@ -173,6 +173,7 @@
     "fips=1" # Enable FIPS mode
     "audit=1" # Enable auditing
     "audit_backlog_limit=8192" # Increase audit backlog
+    "pci=realloc" # Force reallocation of PCI resources for hotplug/Thunderbolt bridges
   ]
   ++ lib.optionals (!config.wsl.enable) [
     "page_alloc.shuffle=1" # Randomize page allocator freelist

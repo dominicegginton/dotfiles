@@ -34,6 +34,23 @@ in
 
     # Nix daemon and CLI settings
     settings = {
+      # Binary caches / substituters (only include Tailscale cache if Tailscale is enabled)
+      substituters = lib.mkForce (
+        [
+          "https://cache.nixos.org"
+          "https://dominicegginton-dotfiles.cachix.org"
+        ]
+        ++ lib.optional config.services.tailscale.enable "https://cache.soay-puffin.ts.net"
+      );
+
+      trusted-public-keys = lib.mkForce (
+        [
+          "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+          "dominicegginton-dotfiles.cachix.org-1:gm9nclRacSnrdXSPqXso3Abg2TTuo3PrGUJFGlhAzDU="
+        ]
+        ++ lib.optional config.services.tailscale.enable "cache.soay-puffin.ts.net-1:INPz04sFo27aRWo+TRtwkJHLwwxmouXDiFwt3aBXRlk="
+      );
+
       # Enable experimental features for modern Nix workflows
       experimental-features = [
         "flakes" # Flake support

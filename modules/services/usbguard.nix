@@ -27,11 +27,13 @@ in
       "usbguard"
       "wheel"
     ];
-    # Allow Bluetooth and internal (hardwired) devices
+    # Allow Bluetooth and internal (hardwired) devices, as well as root/external hubs
     rules = lib.mkDefault (
       ''
         allow with-interface e0:01:01
         allow with-connect-type "hardwired"
+        allow id 1d6b:*
+        allow with-interface 09:00:00
       ''
       + cfg.extraRules
     );

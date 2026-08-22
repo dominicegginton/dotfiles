@@ -79,12 +79,10 @@
     substituters = [
       "https://cache.nixos.org"
       "https://dominicegginton-dotfiles.cachix.org"
-      "https://cache.soay-puffin.ts.net"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "dominicegginton-dotfiles.cachix.org-1:gm9nclRacSnrdXSPqXso3Abg2TTuo3PrGUJFGlhAzDU="
-      "cache.soay-puffin.ts.net-1:INPz04sFo27aRWo+TRtwkJHLwwxmouXDiFwt3aBXRlk="
     ];
   };
 
