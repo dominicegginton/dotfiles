@@ -27,6 +27,7 @@
     services.tsnsrv.services."immich" = {
       toURL = "http://127.0.0.1:${toString config.services.immich.port}";
       funnel = lib.mkDefault true;
+      tags = [ "tag:service-immich" ];
     };
 
     services.gcs-backup.immich = {

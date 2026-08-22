@@ -36,6 +36,7 @@ in
 
     services.tsnsrv.services."beszel" = lib.mkIf config.services.beszel.hub.enable {
       toURL = "http://127.0.0.1:${toString config.services.beszel.hub.port}";
+      tags = [ "tag:service-beszel" ];
     };
 
     services.beszel.agent = {

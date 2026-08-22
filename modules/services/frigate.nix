@@ -31,6 +31,7 @@
     # Tailscale Service Configuration for Frigate
     services.tsnsrv.services."frigate" = {
       toURL = "http://127.0.0.1:${toString 5000}";
+      tags = [ "tag:service-frigate" ];
     };
 
     services.gcs-backup.frigate = {

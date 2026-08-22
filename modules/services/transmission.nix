@@ -27,6 +27,7 @@
     # Expose transmission via tsnsrv reverse proxy
     services.tsnsrv.services."transmission" = {
       toURL = "http://127.0.0.1:9091";
+      tags = [ "tag:service-transmission" ];
     };
 
     topology.self = {

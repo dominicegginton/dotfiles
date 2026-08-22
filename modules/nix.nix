@@ -79,7 +79,7 @@ in
       narinfo-cache-positive-ttl = lib.mkForce 3600; # Cache narinfos for 1h
       narinfo-cache-negative-ttl = lib.mkForce 60; # Retry missing narinfos after 1m
       fsync-metadata = lib.mkForce false; # Faster on SSDs
-      connect-timeout = lib.mkForce 10; # 10s connection timeout
+      connect-timeout = lib.mkForce 3; # 3s connection timeout
       max-substitution-jobs = lib.mkForce 128; # Parallel substitutions
       http-connections = lib.mkForce 128; # Parallel HTTP connections
       cores = lib.mkForce 0; # Use all CPU cores

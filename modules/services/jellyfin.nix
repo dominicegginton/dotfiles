@@ -21,6 +21,7 @@
     services.tsnsrv.services."jellyfin" = {
       toURL = "http://127.0.0.1:8096";
       funnel = lib.mkDefault false;
+      tags = [ "tag:service-jellyfin" ];
     };
 
     # Add jellyfin to transmission group to allow reading downloads

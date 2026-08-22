@@ -63,6 +63,7 @@
 
     services.tsnsrv.services."silverbullet" = {
       toURL = "http://127.0.0.1:${toString config.services.silverbullet.listenPort}";
+      tags = [ "tag:service-silverbullet" ];
     };
 
     services.gcs-backup.silverbullet = {

@@ -30,6 +30,7 @@ in
     # Expose Harmonia over tsnsrv on your tailnet
     services.tsnsrv.services."cache" = {
       toURL = "http://127.0.0.1:5005";
+      tags = [ "tag:service-cache" ];
     };
 
     # Topology metadata for the private cache service
