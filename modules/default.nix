@@ -53,7 +53,6 @@ rec {
     ./programs/firefox.nix
     ./programs/gnupg.nix
     ./programs/sherlock-launcher.nix
-    ./programs/steam.nix
 
     # Secrets management
     ./secrets.nix

@@ -89,6 +89,19 @@ jobs:
         with:
           path: ./result
 
+  steamdeck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: ./.github/actions/install-nix
+        with:
+          free-disk-space: true
+      - run: nix build -L .#nixosConfigurations.steamdeck.config.system.build.toplevel
+      - uses: ./.github/actions/scan-nix
+        continue-on-error: true
+        with:
+          path: ./result
+
   wsl:
     runs-on: ubuntu-latest
     env:

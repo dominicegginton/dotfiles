@@ -79,6 +79,7 @@ rec {
           tsnsrv.nixosModules.default
           # dit0.nixosModules.default
           driftwm.nixosModules.default
+          jovian.nixosModules.default
           ./modules
           ./hosts/${hostname}.nix
         ]

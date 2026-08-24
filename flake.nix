@@ -66,6 +66,10 @@
     driftwm.url = "github:malbiruk/driftwm";
     driftwm.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Jovian-NixOS for Steam Deck and handheld gaming hardware support
+    jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
+    jovian.inputs.nixpkgs.follows = "nixpkgs";
+
   };
 
   # Flake configuration for nix commands
@@ -166,6 +170,10 @@
         "nvidia-settings"
         "nvidia-x11"
         "open-webui"
+        "steam"
+        "steam-original"
+        "steam-run"
+        "steam-unwrapped"
         "vscode"
         "vscode-extension-github-copilot"
         "vscode-with-extensions"
@@ -276,6 +284,9 @@
 
         # Dell Latitude 7390 Laptop
         latitude-7390 = self.outputs.lib.nixosSystem { hostname = "latitude-7390"; };
+
+        # Valve Steam Deck Handheld
+        steamdeck = self.outputs.lib.nixosSystem { hostname = "steamdeck"; };
 
         # Custom unattended installation media (Live ISO)
         infector = self.outputs.lib.nixosSystem {
