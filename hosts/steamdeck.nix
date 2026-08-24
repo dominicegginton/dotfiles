@@ -66,28 +66,11 @@
     timeout = 3;
   };
 
-  # Jovian-NixOS Steam Deck integration
-  jovian = {
-    devices.steamdeck.enable = true;
-    steam = {
-      enable = true;
-      autoStart = true;
-      user = "dom";
-      desktopSession = "gnome";
-    };
-    steamos.useSteamOSConfig = true;
-    hardware.has.amd.gpu = true;
-    decky-loader.enable = true;
-  };
+  # Enable shared Jovian SteamOS configuration
+  jovian.enable = true;
 
-  # Enable GNOME desktop environment
-  display.gnome.enable = true;
-
-  # Enable RTKit
-  security.rtkit.enable = true;
-
-  # Enable Bluetooth
-  hardware.bluetooth.enable = true;
+  # Jovian-NixOS Steam Deck handheld integration
+  jovian.devices.steamdeck.enable = true;
 
   # User 'dom' passwordless configuration
   users.users.dom = {

@@ -21,6 +21,7 @@ rec {
 
     # System-level configurations and branding
     ./system.nix
+    ./jovian.nix
     # ./impermanence.nix
 
     # Home Manager settings and shared modules

@@ -66,30 +66,8 @@
     timeout = 3;
   };
 
-  # Jovian-NixOS Steam Machine configuration
-  jovian = {
-    steam = {
-      enable = true;
-      autoStart = true;
-      user = "dom";
-      desktopSession = "gnome";
-    };
-    steamos.useSteamOSConfig = true;
-    hardware.has.amd.gpu = lib.mkDefault true;
-    decky-loader.enable = true;
-  };
-
-  # Enable GNOME desktop environment
-  display.gnome.enable = true;
-
-  # Enable RTKit
-  security.rtkit.enable = true;
-
-  # Enable Bluetooth
-  hardware.bluetooth.enable = true;
-
-  # Enable Nix Distributed Build client
-  services.nix-builder.client.enable = true;
+  # Enable shared Jovian SteamOS configuration
+  jovian.enable = true;
 
   topology.self.hardware.info = "Steam Machine Console";
 }

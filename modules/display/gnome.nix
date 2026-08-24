@@ -237,6 +237,9 @@ with lib;
     hardware.bluetooth.enable = mkDefault true;
     services.hardware.bolt.enable = mkDefault true;
 
+    # Enable GNOME Desktop Environment
+    services.desktopManager.gnome.enable = mkDefault true;
+
     # Enable GDM display manager
     services.displayManager.gdm.enable = mkDefault true;
 
