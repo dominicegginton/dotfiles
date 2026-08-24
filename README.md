@@ -28,6 +28,7 @@ Declarative System, Package & Home Configurations - WIP Always
   - Self-hosted GitHub Actions runner orchestration on NixOS.
   - Host network topology generated natively via `nix-topology`.
   - Support for OIDC/Oauth2 backed by Tailscale identities for SSO across all services.
-- **Desktop Environments & Services**:
+- **Desktop Environments**:
   - Wayland-native GNOME desktop experience.
+  - Gaming & HTPC consoles with a SteamOS (`steamdeck` and `steammachine`) via Jovian-NixOS.
   - Declarative media/home services accessible over the secure Tailnet VPN.
