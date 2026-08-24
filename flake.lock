@@ -247,6 +247,27 @@
         "type": "github"
       }
     },
+    "jovian": {
+      "inputs": {
+        "nix-github-actions": "nix-github-actions",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1787588947,
+        "narHash": "sha256-vopDnGOldf4OkjKPVbXKofNR8ombOhtfSps53/vmEwM=",
+        "owner": "Jovian-Experiments",
+        "repo": "Jovian-NixOS",
+        "rev": "ee06a054cfe10bcdf78dc4afca1d1b8c9e5721d1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Jovian-Experiments",
+        "repo": "Jovian-NixOS",
+        "type": "github"
+      }
+    },
     "niri": {
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -268,6 +289,28 @@
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
+          "jovian",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1729697500,
+        "narHash": "sha256-VFTWrbzDlZyFHHb1AlKRiD/qqCJIripXKiCSFS8fAOY=",
+        "owner": "zhaofengli",
+        "repo": "nix-github-actions",
+        "rev": "e418aeb728b6aa5ca8c5c71974e7159c2df1d8cf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "zhaofengli",
+        "ref": "matrix-name",
+        "repo": "nix-github-actions",
+        "type": "github"
+      }
+    },
+    "nix-github-actions_2": {
+      "inputs": {
+        "nixpkgs": [
           "nixpkgs"
         ]
       },
@@ -285,7 +328,7 @@
         "type": "github"
       }
     },
-    "nix-github-actions_2": {
+    "nix-github-actions_3": {
       "inputs": {
         "nixpkgs": [
           "run0-sudo-shim",
@@ -535,8 +578,9 @@
         "driftwm": "driftwm",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
+        "jovian": "jovian",
         "niri": "niri",
-        "nix-github-actions": "nix-github-actions",
+        "nix-github-actions": "nix-github-actions_2",
         "nix-topology": "nix-topology",
         "nixos-hardware": "nixos-hardware",
         "nixos-images": "nixos-images",
@@ -549,7 +593,7 @@
     },
     "run0-sudo-shim": {
       "inputs": {
-        "nix-github-actions": "nix-github-actions_2",
+        "nix-github-actions": "nix-github-actions_3",
         "nixpkgs": [
           "nixpkgs"
         ],

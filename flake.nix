@@ -288,6 +288,9 @@
         # Valve Steam Deck Handheld
         steamdeck = self.outputs.lib.nixosSystem { hostname = "steamdeck"; };
 
+        # Valve Steam Machine Console
+        steammachine = self.outputs.lib.nixosSystem { hostname = "steammachine"; };
+
         # Custom unattended installation media (Live ISO)
         infector = self.outputs.lib.nixosSystem {
           hostname = "infector";

@@ -212,24 +212,6 @@ with config.lib.topology;
         ];
       };
     };
-    steamdeck = mkDevice "steamdeck" {
-      info = "Steam Deck";
-      interfaces.wlan0 = {
-        network = "ribble";
-        type = "wifi";
-        physicalConnections = [ (mkConnection "router" "wlan0") ];
-      };
-      interfaces.tailscale0 = {
-        network = tailnet;
-        type = "tailscale";
-        icon = ./assets/tailscale.svg;
-        virtual = true;
-        addresses = [
-          "steamdeck"
-          "steamdeck.${tailnet}"
-        ];
-      };
-    };
 
     MCCLT5CG53030HM = mkDevice "MCCLT5CG53030HM" {
       info = "Work Workstation (IT managed Windows)";
