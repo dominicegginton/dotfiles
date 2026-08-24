@@ -230,7 +230,7 @@ with lib;
       '') config.display.gnome.sessionPath}
     '';
 
-    environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = "${nixos-gsettings-desktop-schemas}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+    environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${nixos-gsettings-desktop-schemas}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
 
     # Enable hardware support
     hardware.graphics.enable = mkDefault true;

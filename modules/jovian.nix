@@ -23,7 +23,6 @@
 
     # Enable GNOME desktop environment (session only, Jovian autoStart handles boot UI)
     display.gnome.enable = lib.mkDefault true;
-    services.displayManager.gdm.enable = lib.mkForce false;
     services.displayManager.sddm.enable = lib.mkForce false;
 
     # Enable RTKit and Bluetooth support
