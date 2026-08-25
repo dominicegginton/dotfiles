@@ -26,6 +26,7 @@ rec {
 
     # Custom packages available in all systems
     background = final.callPackage ./pkgs/background.nix { };
+    burn-infector = final.callPackage ./pkgs/burn-infector.nix { };
     deploy-host = final.callPackage ./pkgs/deploy-host.nix { };
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };

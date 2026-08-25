@@ -46,5 +46,9 @@
       flatpak
       bazaar
     ];
+
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      "/var/lib/flatpak"
+    ];
   };
 }

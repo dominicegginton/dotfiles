@@ -54,7 +54,7 @@ in
     };
 
     environment.persistence."/persist".directories =
-      lib.mkIf (config.environment.persistence ? "/persist")
+      lib.mkIf (config.impermanence.enable && config.services.gcp-logging.enable)
         [
           {
             directory = "/var/lib/vector";

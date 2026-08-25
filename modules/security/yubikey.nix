@@ -132,5 +132,10 @@ in
       gdm-password.u2fAuth = lib.mkIf config.services.displayManager.gdm.enable (lib.mkDefault true);
       gdm-autologin.u2fAuth = lib.mkIf config.services.displayManager.gdm.enable (lib.mkDefault true);
     };
+
+    # Persistent storage for YubiKey configuration
+    environment.persistence."/persist".users.dom.directories = lib.mkIf config.impermanence.enable [
+      ".config/Yubico"
+    ];
   };
 }

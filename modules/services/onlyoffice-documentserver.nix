@@ -69,12 +69,10 @@ with lib;
     services.postgresql.enable = mkDefault true; # OnlyOffice requires PostgreSQL
     services.rabbitmq.enable = mkDefault true; # OnlyOffice requires RabbitMQ
 
-    # Add to impermanence configuration if data needs to persist
-    # environment.persistence."/persist/var/lib/onlyoffice" = {
-    #   directories = [
-    #     "/var/lib/onlyoffice/documentserver/App_Data"
-    #   ];
-    # };
+    # Persistent storage for OnlyOffice DocumentServer App_Data
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      "/var/lib/onlyoffice/documentserver/App_Data"
+    ];
 
   };
 }

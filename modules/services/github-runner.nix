@@ -76,7 +76,7 @@ in
     };
 
     # Persistent storage for GitHub Runner state
-    environment.persistence."/persist".directories = [
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
       "/var/lib/github-runners"
     ];
 

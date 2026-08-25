@@ -14,7 +14,7 @@
     ];
 
     # Persistent storage for Bitmagnet data
-    environment.persistence."/persist".directories = [
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
       "/var/lib/bitmagnet"
     ];
   };

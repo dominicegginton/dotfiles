@@ -186,16 +186,18 @@
       enableDefaultConfig = false;
     };
     programs.gpg.enable = true;
-    services.gpg-agent = lib.mkIf pkgs.stdenv.isLinux {
-      enable = true;
-      enableSshSupport = true;
-    };
+    services.gpg-agent =
+      lib.mkIf (pkgs.stdenv.isLinux && !(osConfig.programs.gnupg.agent.enable or false))
+        {
+          enable = true;
+          enableSshSupport = true;
+        };
 
     home.sessionVariables = {
       EDITOR = "nvim";
       VISUAL = "nvim";
       SYSTEMD_EDITOR = "nvim";
-      SSH_AUTH_SOCK = "/home/dom/.bitwarden-ssh-socket/ssh_auth_sock";
+      SSH_AUTH_SOCK = lib.mkDefault "/home/dom/.bitwarden-ssh-socket/ssh_auth_sock";
     };
 
     programs.neovim = {

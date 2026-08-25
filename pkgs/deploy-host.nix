@@ -7,6 +7,7 @@
   openssh,
   ssh-to-age,
   gum,
+  coreutils,
 }:
 
 with lib;
@@ -21,7 +22,8 @@ writeShellScriptBin "deploy-host" ''
     GENERATE_HWCONFIG=false
     VM_TEST=false
     DEBUG=false
-    DRY_RUN=false
+    DRY_RUN=true
+    EXPLICIT_DRY_RUN=false
     HOSTNAME=""
     TARGET=""
 
@@ -43,7 +45,8 @@ writeShellScriptBin "deploy-host" ''
     -g, --generate-hwconfig Generate hardware config on target and save to hosts/<hostname>-hardware.nix
     -t, --vm-test           Test build & disko partitioning inside a local QEMU VM
     -d, --debug             Enable verbose debug mode for nixos-anywhere
-    -n, --dry-run           Perform dry run inspection without executing nixos-anywhere
+    -y, --yes, --execute    Execute deployment directly (skip dry-run confirmation)
+    -n, --dry-run           Force dry-run mode without execution prompt
     -h, --help              Display this help message
 
   KEY & SECRET CONSIDERATIONS:
@@ -92,8 +95,13 @@ writeShellScriptBin "deploy-host" ''
           DEBUG=true
           shift 1
           ;;
+        -y|--yes|-x|--execute|--no-dry-run)
+          DRY_RUN=false
+          shift 1
+          ;;
         -n|--dry-run)
           DRY_RUN=true
+          EXPLICIT_DRY_RUN=true
           shift 1
           ;;
         -*)
@@ -115,12 +123,12 @@ writeShellScriptBin "deploy-host" ''
       esac
     done
 
-    # Interactive selection for Hostname if missing using gum filter
+    # Interactive selection for Hostname if missing using gum choose
     if [[ -z "''${HOSTNAME}" ]]; then
       ${getExe gum} log --level info "No host specified. Select host configuration from flake:"
-      HOSTS_LIST="''$(${getExe nix} eval .#nixosConfigurations --apply 'builtins.attrNames' --json 2>/dev/null | ${getExe nix} run nixpkgs#jq -- -r '.[]' 2>/dev/null || echo "")"
+      HOSTS_LIST="''$(${getExe nix} eval --raw .#nixosConfigurations --apply 'attrs: builtins.concatStringsSep "\n" (builtins.attrNames attrs)' 2>/dev/null || echo "")"
       if [[ -n "''${HOSTS_LIST}" ]]; then
-        HOSTNAME="''$(echo "''${HOSTS_LIST}" | ${getExe gum} filter --header "Select host configuration to deploy")"
+        HOSTNAME="''$(echo "''${HOSTS_LIST}" | ${getExe gum} choose --header "Select host configuration to deploy:")"
       else
         HOSTNAME="''$(${getExe gum} input --placeholder "Enter host configuration name (e.g. ghost-gs60)")"
       fi
@@ -185,22 +193,11 @@ writeShellScriptBin "deploy-host" ''
     EXTRA_FILES="''${TEMP_DIR}/extra-files"
     mkdir -p "''${EXTRA_FILES}/etc/ssh" "''${EXTRA_FILES}/persist/etc/ssh"
 
-    # Stage YubiKey PAM U2F mappings if present on deploying machine
-    U2F_KEYS_FILE="''${HOME:-/home/dom}/.config/Yubico/u2f_keys"
-    if [[ -f "''${U2F_KEYS_FILE}" ]]; then
-      mkdir -p "''${EXTRA_FILES}/home/dom/.config/Yubico" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico"
-      cp "''${U2F_KEYS_FILE}" "''${EXTRA_FILES}/home/dom/.config/Yubico/u2f_keys"
-      cp "''${U2F_KEYS_FILE}" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico/u2f_keys"
-      chmod 700 "''${EXTRA_FILES}/home/dom/.config/Yubico" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico"
-      chmod 600 "''${EXTRA_FILES}/home/dom/.config/Yubico/u2f_keys" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico/u2f_keys"
-      ${getExe gum} log --level info "Staged YubiKey PAM U2F keys (~/.config/Yubico/u2f_keys)"
-    fi
-
     # Stage NetworkManager Wi-Fi/Ethernet system connections if present on deploying machine
     NM_CONNS_DIR=""
-    if [[ -d "/persist/etc/NetworkManager/system-connections" ]] && [[ -n "$(${pkgs.coreutils}/bin/ls -A /persist/etc/NetworkManager/system-connections 2>/dev/null)" ]]; then
+    if [[ -d "/persist/etc/NetworkManager/system-connections" ]] && [[ -n "$(${coreutils}/bin/ls -A /persist/etc/NetworkManager/system-connections 2>/dev/null)" ]]; then
       NM_CONNS_DIR="/persist/etc/NetworkManager/system-connections"
-    elif [[ -d "/etc/NetworkManager/system-connections" ]] && [[ -n "$(${pkgs.coreutils}/bin/ls -A /etc/NetworkManager/system-connections 2>/dev/null)" ]]; then
+    elif [[ -d "/etc/NetworkManager/system-connections" ]] && [[ -n "$(${coreutils}/bin/ls -A /etc/NetworkManager/system-connections 2>/dev/null)" ]]; then
       NM_CONNS_DIR="/etc/NetworkManager/system-connections"
     fi
 
@@ -340,8 +337,16 @@ writeShellScriptBin "deploy-host" ''
   Command that WOULD be executed:
     ''${ANYWHERE_CMD[*]}"
 
-      ${getExe gum} log --level info "Dry run completed successfully."
-      exit 0
+      if [[ "''${EXPLICIT_DRY_RUN}" = false ]] && [ -t 0 ]; then
+        if ${getExe gum} confirm "Proceed to deploy ''${HOSTNAME} to ''${TARGET:-VM}?"; then
+          DRY_RUN=false
+        fi
+      fi
+
+      if [[ "''${DRY_RUN}" = true ]]; then
+        ${getExe gum} log --level info "Dry run completed. Pass -y or --execute to run directly."
+        exit 0
+      fi
     fi
 
     ${getExe gum} log --level info "Running: ''${ANYWHERE_CMD[*]}"

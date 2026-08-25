@@ -23,7 +23,7 @@
     };
 
     # Persistent storage for the Dit0 LDAP server
-    environment.persistence."/persist".directories = [
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
       config.services.dit0.data_dir
     ];
 

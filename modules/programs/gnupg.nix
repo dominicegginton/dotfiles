@@ -20,4 +20,14 @@
     # Disable regular SSH agent to avoid conflicts with GnuPG SSH support
     ssh.startAgent = lib.mkForce false;
   };
+
+  # Set GPG_TTY dynamically for all interactive shell sessions
+  environment.interactiveShellInit = ''
+    export GPG_TTY=$(tty 2>/dev/null || echo "")
+  '';
+
+  # Persistent storage for user GnuPG keyring and trustdb
+  environment.persistence."/persist".users.dom.directories = lib.mkIf config.impermanence.enable [
+    ".gnupg"
+  ];
 }

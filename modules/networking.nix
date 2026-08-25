@@ -59,6 +59,13 @@ with config.lib.topology;
     ];
   };
 
+  # Persistent storage for networking configuration and connection states
+  environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+    "/etc/NetworkManager/system-connections"
+    "/var/lib/NetworkManager"
+    "/var/lib/iwd"
+  ];
+
   topology.self.interfaces = {
     loopback = {
       type = "loopback";

@@ -57,7 +57,7 @@
     };
 
     # Persistent storage for Silverbullet data
-    environment.persistence."/persist".directories = [
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
       config.services.silverbullet.spaceDir
     ];
 

@@ -21,6 +21,7 @@
   gnupg,
   openssh,
   deploy-host,
+  burn-infector,
   ...
 }:
 
@@ -75,6 +76,7 @@ mkShell rec {
     gnupg
     openssh
     deploy-host
+    burn-infector
     infrastructure.init
     infrastructure.plan
     infrastructure.apply

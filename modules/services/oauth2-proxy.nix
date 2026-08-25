@@ -118,5 +118,10 @@ with lib;
       group = "oauth2-proxy";
     };
     users.groups.oauth2-proxy = { };
+
+    # Persistent storage for OAuth2 Proxy state
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      "/var/lib/oauth2-proxy"
+    ];
   };
 }

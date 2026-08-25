@@ -84,7 +84,7 @@
     };
 
     # Persistent storage for Home Assistant configuration and data
-    environment.persistence."/persist".directories = [
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
       config.services.home-assistant.configDir
       config.services.home-assistant.dataDir
     ];

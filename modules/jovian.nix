@@ -30,5 +30,16 @@
 
     # Enable Nix Distributed Build client
     services.nix-builder.client.enable = lib.mkDefault true;
+
+    # Persistent storage for Jovian SteamOS and Decky Loader data
+    environment.persistence."/persist" = lib.mkIf config.impermanence.enable {
+      directories = [ "/var/lib/decky-loader" ];
+      users.dom.directories = [
+        ".steam"
+        ".local/share/Steam"
+        ".local/share/decky-loader"
+        ".var/app/com.valvesoftware.Steam"
+      ];
+    };
   };
 }

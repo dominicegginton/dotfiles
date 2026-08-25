@@ -41,6 +41,12 @@ in
         "users/dom/password" = {
           neededForUsers = true;
         };
+        "users/dom/u2f_keys" = {
+          owner = "dom";
+          group = "users";
+          mode = "0600";
+          path = "/home/dom/.config/Yubico/u2f_keys";
+        };
         "services/tsnsrv/auth-key" = { };
         "services/beszel/agent" = { };
         "services/gcp-logging/key" =

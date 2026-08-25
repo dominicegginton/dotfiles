@@ -17,6 +17,10 @@
       );
     }
     (lib.mkIf config.hardware.bluetooth.enable {
+      environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+        "/var/lib/bluetooth"
+      ];
+
       # Enable uinput and uhid modules to allow BlueZ to create input devices in userspace
       boot.kernelModules = [
         "uinput"

@@ -8,7 +8,7 @@
 {
   config = lib.mkIf config.virtualisation.docker.enable {
     environment = {
-      persistence."/persist".directories = lib.mkDefault [ "/var/lib/docker" ];
+      persistence."/persist".directories = lib.mkIf config.impermanence.enable [ "/var/lib/docker" ];
       systemPackages = with pkgs; [ docker ];
     };
 

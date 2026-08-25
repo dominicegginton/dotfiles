@@ -65,19 +65,10 @@
         "/var/log"
         "/var/lib/nixos"
         "/etc/ssl"
-        "/etc/NetworkManager/system-connections"
-        "/var/lib/NetworkManager"
-        "/var/lib/bluetooth"
-        "/var/lib/iwd"
         "/var/lib/AccountsService"
-        "/var/lib/flatpak"
         "/var/lib/boltd"
-        "/var/lib/decky-loader"
         "/var/lib/systemd"
         "/root"
-        "/home/dom"
-        "/var/lib/onlyoffice/documentserver/App_Data"
-        "/var/lib/oauth2-proxy"
       ];
       users.dom.directories = [
         "Downloads"
@@ -87,13 +78,8 @@
         "Videos"
         "dev"
         "homebrew"
-        ".gnupg"
         ".ssh"
-        ".steam"
-        ".local/share/Steam"
-        ".local/share/decky-loader"
-        ".var/app/com.valvesoftware.Steam"
-        ".config/Yubico"
+        ".local/share/keyrings"
       ];
     };
   };

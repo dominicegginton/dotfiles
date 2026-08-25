@@ -1,0 +1,158 @@
+{
+  lib,
+  writeShellScriptBin,
+  nix,
+  caligula,
+  gum,
+  coreutils,
+  findutils,
+}:
+
+with lib;
+
+writeShellScriptBin "burn-infector" ''
+    set -euo pipefail
+
+    SHOW_HELP=false
+    SKIP_BUILD=false
+    DRY_RUN=true
+    EXPLICIT_DRY_RUN=false
+    TARGET_DEVICE=""
+
+    usage() {
+      cat <<'EOF'
+  burn-infector - Build and burn the NixOS Infector live ISO image using Caligula
+
+  USAGE:
+    burn-infector [OPTIONS]
+
+  OPTIONS:
+    -s, --skip-build        Skip rebuilding .#infector-iso and use existing ./result ISO
+    -d, --device <path>     Specify target block device (e.g. /dev/sdb or /dev/disk/by-id/...)
+    -y, --yes, --execute    Execute build and burn directly (skip dry-run confirmation)
+    -n, --dry-run           Force dry-run mode without execution prompt
+    -h, --help              Display this help message
+
+  DESCRIPTION:
+    This script builds the unattended live ISO installer configuration (.#infector-iso)
+    and uses Caligula (a TUI disk imager) to safely burn the resulting ISO onto a USB flash drive.
+    By default, a dry-run summary is shown before asking for confirmation to execute.
+  EOF
+    }
+
+    while [[ $# -gt 0 ]]; do
+      case "$1" in
+        -h|--help)
+          usage
+          exit 0
+          ;;
+        -s|--skip-build)
+          SKIP_BUILD=true
+          shift 1
+          ;;
+        -d|--device)
+          TARGET_DEVICE="$2"
+          shift 2
+          ;;
+        -y|--yes|-x|--execute|--no-dry-run)
+          DRY_RUN=false
+          shift 1
+          ;;
+        -n|--dry-run)
+          DRY_RUN=true
+          EXPLICIT_DRY_RUN=true
+          shift 1
+          ;;
+        -*)
+          ${getExe gum} log --level error "Unknown option $1"
+          usage
+          exit 1
+          ;;
+        *)
+          ${getExe gum} log --level error "Unexpected argument $1"
+          usage
+          exit 1
+          ;;
+      esac
+    done
+
+    ${getExe gum} style \
+      --border double \
+      --margin "1 0" \
+      --padding "1 2" \
+      --border-foreground 212 \
+      "NIXOS INFECTOR ISO BURNER (Caligula)"
+
+    # Step 1: Build the ISO unless --skip-build is set
+    if [[ "''${SKIP_BUILD}" = false ]]; then
+      ${getExe gum} log --level info "Building .#infector-iso NixOS live installer..."
+      if [[ "''${DRY_RUN}" = true ]]; then
+        ${getExe gum} log --level info "[DRY RUN] Would run: nix build .#infector-iso"
+      else
+        ${getExe nix} build .#infector-iso
+      fi
+    else
+      ${getExe gum} log --level info "Skipping build (--skip-build set)."
+    fi
+
+    # Step 2: Locate the built ISO file
+    ISO_PATH=""
+    if [[ -d "./result" ]]; then
+      ISO_PATH="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
+    fi
+
+    if [[ -z "''${ISO_PATH}" ]] && [[ "''${DRY_RUN}" = false ]]; then
+      ${getExe gum} log --level error "Could not locate built .iso image under ./result. Ensure 'nix build .#infector-iso' succeeds."
+      exit 1
+    elif [[ -z "''${ISO_PATH}" ]] && [[ "''${DRY_RUN}" = true ]]; then
+      ISO_PATH="./result/iso/nixos-infector-installer-x86_64-linux.iso"
+    fi
+
+    ${getExe gum} log --level info "Located installer ISO: ''${ISO_PATH}"
+
+    # Step 3: Prepare Caligula burn command
+    BURN_CMD=("${getExe caligula}" "burn" "''${ISO_PATH}")
+
+    if [[ -n "''${TARGET_DEVICE}" ]]; then
+      BURN_CMD+=("--target" "''${TARGET_DEVICE}")
+    fi
+
+    if [[ "''${DRY_RUN}" = true ]]; then
+      ${getExe gum} style \
+        --border normal \
+        --margin "1 0" \
+        --padding "1 2" \
+        --border-foreground 214 \
+        "DRY RUN SUMMARY
+
+    ISO Image:      ''${ISO_PATH}
+    Target Device:  ''${TARGET_DEVICE:-Interactive selection in Caligula TUI}
+
+  Command that WOULD be executed:
+    ''${BURN_CMD[*]}"
+
+      if [[ "''${EXPLICIT_DRY_RUN}" = false ]] && [ -t 0 ]; then
+        if ${getExe gum} confirm "Proceed to build and burn ISO now?"; then
+          DRY_RUN=false
+        fi
+      fi
+
+      if [[ "''${DRY_RUN}" = true ]]; then
+        ${getExe gum} log --level info "Dry run completed. Pass -y or --execute to run directly."
+        exit 0
+      fi
+    fi
+
+    # Step 4: Build if skipped during dry-run step
+    if [[ "''${SKIP_BUILD}" = false ]] && [[ ! -f "''${ISO_PATH}" ]]; then
+      ${getExe gum} log --level info "Building .#infector-iso NixOS live installer..."
+      ${getExe nix} build .#infector-iso
+      ISO_PATH="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
+    fi
+
+    # Step 5: Execute Caligula
+    ${getExe gum} log --level info "Launching Caligula disk imager..."
+    echo ""
+
+    exec "''${BURN_CMD[@]}"
+''
