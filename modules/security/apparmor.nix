@@ -12,6 +12,9 @@
     # Disable killUnconfinedConfinables as aa-remove-unknown currently has an upstream nixpkgs packaging bug
     killUnconfinedConfinables = lib.mkDefault false;
     enableCache = lib.mkDefault true;
-    packages = [ pkgs.apparmor-profiles ];
+    packages = [
+      pkgs.apparmor-profiles
+      pkgs.apparmor-parser
+    ];
   };
 }

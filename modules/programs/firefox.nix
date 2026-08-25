@@ -77,5 +77,32 @@
         isAllowed = true;
       };
     };
+
+    # AppArmor confinement profile for Firefox
+    security.apparmor.policies."usr.bin.firefox" = lib.mkIf config.security.apparmor.enable {
+      state = "enforce";
+      profile = ''
+        #include <tunables/global>
+
+        /usr/bin/firefox {
+          #include <abstractions/base>
+          #include <abstractions/nameservice>
+          #include <abstractions/audio>
+          #include <abstractions/fonts>
+          #include <abstractions/private-files-strict>
+          #include <abstractions/ssl_certs>
+
+          /usr/bin/firefox mr,
+          /nix/store/** rmix,
+          @{HOME}/.mozilla/ rw,
+          @{HOME}/.mozilla/** rw,
+          @{HOME}/Downloads/ rw,
+          @{HOME}/Downloads/** rw,
+
+          network inet stream,
+          network inet6 stream,
+        }
+      '';
+    };
   };
 }
