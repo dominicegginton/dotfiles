@@ -185,6 +185,17 @@ writeShellScriptBin "deploy-host" ''
     EXTRA_FILES="''${TEMP_DIR}/extra-files"
     mkdir -p "''${EXTRA_FILES}/etc/ssh" "''${EXTRA_FILES}/persist/etc/ssh"
 
+    # Stage YubiKey PAM U2F mappings if present on deploying machine
+    U2F_KEYS_FILE="''${HOME:-/home/dom}/.config/Yubico/u2f_keys"
+    if [[ -f "''${U2F_KEYS_FILE}" ]]; then
+      mkdir -p "''${EXTRA_FILES}/home/dom/.config/Yubico" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico"
+      cp "''${U2F_KEYS_FILE}" "''${EXTRA_FILES}/home/dom/.config/Yubico/u2f_keys"
+      cp "''${U2F_KEYS_FILE}" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico/u2f_keys"
+      chmod 700 "''${EXTRA_FILES}/home/dom/.config/Yubico" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico"
+      chmod 600 "''${EXTRA_FILES}/home/dom/.config/Yubico/u2f_keys" "''${EXTRA_FILES}/persist/home/dom/.config/Yubico/u2f_keys"
+      ${getExe gum} log --level info "Staged YubiKey PAM U2F keys (~/.config/Yubico/u2f_keys)"
+    fi
+
     ${getExe gum} log --level info "3. Managing Host SSH Keys & SOPS Secrets..."
 
     if [[ -n "''${SSH_KEY_PATH}" ]]; then
