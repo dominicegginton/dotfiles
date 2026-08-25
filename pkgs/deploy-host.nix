@@ -159,7 +159,7 @@ writeShellScriptBin "deploy-host" ''
 
     ${getExe gum} log --level info "2. Validating host configuration '.#nixosConfigurations.''${HOSTNAME}'..."
     if ! ${getExe nix} eval ".#nixosConfigurations.''${HOSTNAME}.config.system.build.toplevel.drvPath" >/dev/null 2>&1; then
-      ${getExe gum} log --level error "Host '''${HOSTNAME}' is not defined under nixosConfigurations in flake.nix!"
+      ${getExe gum} log --level error "Host \"''${HOSTNAME}\" is not defined under nixosConfigurations in flake.nix!"
       exit 1
     fi
 
@@ -189,7 +189,7 @@ writeShellScriptBin "deploy-host" ''
 
     if [[ -n "''${SSH_KEY_PATH}" ]]; then
       if [[ ! -f "''${SSH_KEY_PATH}" ]]; then
-        ${getExe gum} log --level error "SSH key file '''${SSH_KEY_PATH}' does not exist!"
+        ${getExe gum} log --level error "SSH key file \"''${SSH_KEY_PATH}\" does not exist!"
         exit 1
       fi
       ${getExe gum} log --level info "Using provided host key: ''${SSH_KEY_PATH}"
