@@ -139,9 +139,26 @@ writeShellScriptBin "deploy-host" ''
       fi
     fi
 
+    # Determine mode if not specified
+    if [[ -z "''${MODE}" ]]; then
+      if [[ -f .sops.yaml ]] && grep -q "''${HOSTNAME}" .sops.yaml 2>/dev/null; then
+        MODE="reinstall"
+      else
+        MODE="new"
+      fi
+    fi
+
+    if [[ "''${MODE}" == "reinstall" ]] && [[ -z "''${SSH_KEY_PATH}" ]] && [[ "''${COPY_HOST_KEYS}" = false ]]; then
+      COPY_HOST_KEYS=true
+    fi
+
     # Interactive input for Target if missing and not VM testing
     if [[ -z "''${TARGET}" ]] && [[ "''${VM_TEST}" = false ]]; then
-      TARGET="''$(${getExe gum} input --placeholder "root@<ip-or-domain>" --header "Enter remote target SSH destination")"
+      if [[ "''${MODE}" == "reinstall" ]]; then
+        TARGET="''$(${getExe gum} input --value "root@''${HOSTNAME}.${tailnet}" --placeholder "root@<ip-or-domain>" --header "Enter remote target SSH destination")"
+      else
+        TARGET="''$(${getExe gum} input --placeholder "root@<ip-or-domain>" --header "Enter remote target SSH destination")"
+      fi
       if [[ -z "''${TARGET}" ]]; then
         ${getExe gum} log --level error "Target SSH destination is required."
         exit 1
@@ -170,21 +187,6 @@ writeShellScriptBin "deploy-host" ''
       ${getExe gum} log --level error "Host \"''${HOSTNAME}\" is not defined under nixosConfigurations in flake.nix!"
       exit 1
     fi
-
-    # Determine mode if not specified
-    if [[ -z "''${MODE}" ]]; then
-      if [[ -f .sops.yaml ]] && grep -q "''${HOSTNAME}" .sops.yaml 2>/dev/null; then
-        MODE="reinstall"
-      else
-        MODE="new"
-      fi
-    fi
-
-    if [[ "''${MODE}" == "reinstall" ]] && [[ -z "''${SSH_KEY_PATH}" ]] && [[ "''${COPY_HOST_KEYS}" = false ]]; then
-      COPY_HOST_KEYS=true
-    fi
-
-    ${getExe gum} log --level info "Deployment Mode: ''${MODE}"
 
     # Setup temporary directory for extra-files
     TEMP_DIR="''$(mktemp -d)"
