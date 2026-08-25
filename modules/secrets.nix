@@ -47,6 +47,15 @@ in
           mode = "0600";
           path = "/home/dom/.config/Yubico/u2f_keys";
         };
+        "services/usbguard/rules" =
+          if config.services.usbguard.enable then
+            {
+              owner = "root";
+              group = "root";
+              mode = "0600";
+            }
+          else
+            null;
         "services/tsnsrv/auth-key" = { };
         "services/beszel/agent" = { };
         "services/gcp-logging/key" =

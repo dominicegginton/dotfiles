@@ -12,6 +12,7 @@ run0 aa-status
 ```
 
 Example output:
+
 ```text
 apparmor module is loaded.
 42 profiles are loaded.
@@ -59,7 +60,7 @@ security.apparmor.policies."my-profile" = {
 
     /path/to/binary {
       #include <abstractions/base>
-      
+
       /path/to/binary mr,
       /path/to/data/* rw,
     }

@@ -27,6 +27,7 @@ To add a new host to `.sops.yaml`:
 
 2. **Update `.sops.yaml`**:
    Add the host key and creation rules to `.sops.yaml`:
+
    ```yaml
    keys:
      - &dom_key C11BEB9007709C34FABBB5314C79CE4F82847A9F

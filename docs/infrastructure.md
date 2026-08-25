@@ -16,16 +16,19 @@ gcloud auth application-default login
 Dedicated wrapper scripts in `shell.nix` invoke OpenTofu through `secretspec` to ensure GCP credentials and secrets are injected securely at runtime.
 
 ### Initializing Infrastructure
+
 ```bash
 infrastructure-init
 ```
 
 ### Planning Infrastructure Changes
+
 ```bash
 infrastructure-plan
 ```
 
 ### Applying Infrastructure Changes
+
 ```bash
 infrastructure-apply
 ```

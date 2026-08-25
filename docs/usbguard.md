@@ -1,52 +1,49 @@
-# USBGuard Whitelisting & Device Discovery
+# USBGuard Whitelisting & Policy Management
 
-USBGuard enforces bus-level authorization policies for USB devices. When a new USB device is blocked or needs to be whitelisted permanently, use the following imperative commands to discover its attributes and add it to your NixOS configuration.
+USBGuard controls access to USB devices. All permanent device policies are fully managed inside encrypted SOPS secrets (`sops-nix`) to prevent hardware cloning/spoofing attacks on public dotfiles repositories.
 
-## 1. Discovering USB Devices
+---
 
-To inspect connected USB devices and find their vendor/product IDs, serial numbers, or device hashes:
+## 1. Show USB Devices
+
+To show connected USB devices and find device IDs or serial numbers:
 
 ```bash
-# List all USB devices tracked by USBGuard (requires elevation)
+# Show all USB devices in USBGuard
 run0 usbguard list-devices
 
-# Alternatively, list raw USB devices on the bus
+# Show USB devices on the bus
 lsusb
 ```
 
 Example `usbguard list-devices` output:
+
 ```text
 15: allow id 1050:0407 serial "0008123456" name "YubiKey OTP+FIDO+CCID" ...
 18: block id 18d1:4ee1 serial "12345678" name "Pixel 9" ...
 ```
 
-## 2. Whitelisting Devices Declaratively
+## 2. Managing the Whitelist Policy
 
-Once you identify the target device ID (e.g. `18d1:4ee1`), update your host or module configuration.
+All allowed devices and system defaults are defined inside `secrets/global.yaml` under `services/usbguard/rules`:
 
-### Option A: Global or Module Rule (`modules/services/usbguard.nix`)
-Add an `allow` rule to `services.usbguard.extraRules`:
+1. Open global SOPS secrets:
+   ```bash
+   sops secrets/global.yaml
+   ```
+2. Define the complete rule policy under the `services/usbguard/rules` key:
+   ```yaml
+   services:
+     usbguard:
+       rules: |
+         allow id 0000:0000
+   ```
 
-```nix
-services.usbguard.extraRules = ''
-  allow id 18d1:4ee1
-'';
-```
+## 3. Allow Devices Temporarily
 
-### Option B: Rule by Serial Number or Interface
-For stricter matching:
-
-```nix
-services.usbguard.extraRules = ''
-  allow id 18d1:4ee1 serial "12345678"
-'';
-```
-
-## 3. Temporary / Runtime Authorization
-
-To temporarily allow a blocked device during the current session without modifying NixOS config:
+To allow a blocked USB device during your current session:
 
 ```bash
-# Allow device by ID number from 'usbguard list-devices'
+# Allow the device by ID number from 'usbguard list-devices'
 run0 usbguard allow-device 18
 ```

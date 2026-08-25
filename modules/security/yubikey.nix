@@ -43,11 +43,6 @@ in
     # Enable udev rules for Yubikey personalization and access
     services.udev.packages = [ pkgs.yubikey-personalization ];
 
-    # Whitelist Yubikeys in USBGuard
-    services.usbguard.extraRules = lib.mkIf config.services.usbguard.enable ''
-      allow id 1050:*
-    '';
-
     # Lock session on Yubikey removal (unless on WSL)
     services.udev.extraRules = lib.mkIf (!config.wsl.enable) (
       let

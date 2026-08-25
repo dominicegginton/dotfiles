@@ -7,6 +7,7 @@ This document describes how to manage YubiKey devices, GPG smartcard operations,
 You can manage YubiKey U2F keys with SOPS secrets (`sops-nix`). The decrypted keys are stored at `/home/dom/.config/Yubico/u2f_keys`.
 
 ### Add a New YubiKey Device
+
 To register a new YubiKey for login and `run0` elevation:
 
 ```bash
@@ -15,6 +16,7 @@ pamu2fcfg -u dom
 ```
 
 ### Update SOPS Secrets
+
 1. Show your current key string:
    ```bash
    cat ~/.config/Yubico/u2f_keys
@@ -37,6 +39,7 @@ pamu2fcfg -u dom
 GPG smartcard support uses the `pcscd` service and the `gpg-agent` program.
 
 ### Show Smartcard Status
+
 ```bash
 # Show GPG smartcard data
 gpg --card-status
@@ -96,4 +99,5 @@ gpg --card-edit
 ## 5. Lock Session on YubiKey Removal
 
 A `udev` rule locks your session when you remove the YubiKey from the computer.
+
 - **Trusted Network**: The system does not lock the session if the computer is connected to your home Wi-Fi network.

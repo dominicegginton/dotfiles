@@ -18,6 +18,7 @@ burn-infector -y
 ```
 
 When you start the `infector` ISO on the remote machine, the screen shows:
+
 - The random password for the `root` user
 - The IP address and SSH target (`root@<IP>`)
 - A QR code to scan with your device
