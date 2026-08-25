@@ -11,6 +11,9 @@
   # Set host platform
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
+  # Explicitly disable impermanence on this machine
+  impermanence.enable = false;
+
   # Hardware-specific modules
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop

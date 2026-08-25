@@ -9,6 +9,9 @@
   # Set host platform
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
+  # Enable impermanence with ephemeral Btrfs root
+  impermanence.enable = true;
+
   # Disko storage layout
   disko.devices.disk.main = {
     type = "disk";
@@ -32,9 +35,31 @@
         root = {
           size = "100%";
           content = {
-            type = "filesystem";
-            format = "ext4";
-            mountpoint = "/";
+            type = "btrfs";
+            extraArgs = [ "-f" ];
+            subvolumes = {
+              "/root" = {
+                mountpoint = "/";
+                mountOptions = [
+                  "compress=zstd"
+                  "noatime"
+                ];
+              };
+              "/persist" = {
+                mountpoint = "/persist";
+                mountOptions = [
+                  "compress=zstd"
+                  "noatime"
+                ];
+              };
+              "/nix" = {
+                mountpoint = "/nix";
+                mountOptions = [
+                  "compress=zstd"
+                  "noatime"
+                ];
+              };
+            };
           };
         };
       };
