@@ -19,7 +19,14 @@ in
         "usbguard"
         "wheel"
       ];
-      rules = "''$(builtins.readFile config.sops.secrets.\"services/usbguard/rules\".path)";
+      # Allow Bluetooth and internal (hardwired) devices, as well as root/external hubs
+      rules = lib.mkDefault ''
+        allow with-interface e0:01:01
+        allow with-connect-type "hardwired"
+        allow id 1d6b:*
+        allow with-interface 09:00:00
+        allow id 1050:*
+      '';
     };
   };
 }
