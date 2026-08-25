@@ -112,7 +112,8 @@
     "net.ipv4.tcp_rfc1337" = lib.mkDefault 1;
 
     # Reduce time sockets stay in TIME_WAIT state to resist resource exhaustion
-    "net.ipv4.tcp_fin_timeout" = lib.mkDefault 15;
+    # (Uses mkOverride 1100 so Jovian SteamOS tcp_fin_timeout=5 overrides this on SteamDeck/SteamMachine)
+    "net.ipv4.tcp_fin_timeout" = lib.mkOverride 1100 15;
 
     # Limit SYN backlog queue size
     "net.ipv4.tcp_max_syn_backlog" = lib.mkDefault 2048;
