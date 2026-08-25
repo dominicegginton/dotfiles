@@ -34,7 +34,7 @@ in
         hostSecret = opt: if useHostSops then { sopsFile = hostSopsFile; } // opt else null;
 
         # Filter out null values from the secrets attrset
-        filterNulls = lib.filterAttrs (name: value: value != null);
+        filterNulls = lib.filterAttrs (_: value: value != null);
       in
       filterNulls {
         # Global secrets (shared across all non-WSL hosts)

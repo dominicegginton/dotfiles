@@ -17,6 +17,10 @@
   age,
   ssh-to-age,
   mkpasswd,
+  nixos-anywhere,
+  gnupg,
+  openssh,
+  deploy-host,
   ...
 }:
 
@@ -67,6 +71,10 @@ mkShell rec {
     age
     ssh-to-age
     mkpasswd
+    nixos-anywhere
+    gnupg
+    openssh
+    deploy-host
     infrastructure.init
     infrastructure.plan
     infrastructure.apply

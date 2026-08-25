@@ -8,33 +8,33 @@
 }:
 
 let
-  # Get the target NixOS configuration from environment
-  nixosConfiguration = builtins.getEnv "NIXOS_CONFIGURATION";
-in
+  # Helper script to display IP address, root password, QR code, and deployment command
+  installerInfo = pkgs.writeShellScriptBin "installer-info" ''
+    IP_ADDR="$(${pkgs.iproute2}/bin/ip -4 addr show scope global | ${pkgs.gnugrep}/bin/grep -oP '(?<=inet\s)\d+(\.\d+){3}' | ${pkgs.coreutils}/bin/head -n1 || echo "No IP detected")"
+    ROOT_PASS="$(${pkgs.coreutils}/bin/cat /var/shared/root-password 2>/dev/null || echo "unknown")"
 
-let
-  # Recursively collect all flake input paths for the closure
-  childInputs = child: if child ? inputs && child.inputs != { } then (collector child) else [ ];
+    ${pkgs.gum}/bin/gum style \
+      --border double \
+      --margin "1 0" \
+      --padding "1 2" \
+      --border-foreground 212 \
+      "Target IP Address: $IP_ADDR
+    Root Password:     $ROOT_PASS
+    SSH Destination:   root@$IP_ADDR"
 
-  collect = child: [ child.outPath ] ++ childInputs child;
-
-  collector = parent: map collect (lib.attrValues parent.inputs);
-
-  flakeOutPaths = lib.unique (lib.flatten (collector self));
-
-  # Define all dependencies required for an offline/unattended installation
-  dependencies = flakeOutPaths ++ [
-    self.nixosConfigurations.${nixosConfiguration}.config.system.build.toplevel
-    self.nixosConfigurations.${nixosConfiguration}.config.system.build.diskoScript
-    self.nixosConfigurations.${nixosConfiguration}.config.system.build.diskoScript.drvPath
-    self.nixosConfigurations.${nixosConfiguration}.pkgs.stdenv.drvPath
-    self.nixosConfigurations.${nixosConfiguration}.pkgs.perlPackages.ConfigIniFiles
-    self.nixosConfigurations.${nixosConfiguration}.pkgs.perlPackages.FileSlurp
-    (self.nixosConfigurations.${nixosConfiguration}.pkgs.closureInfo { rootPaths = [ ]; }).drvPath
-  ];
-
-  # Generate closure information for the installer
-  closureInfo = pkgs.closureInfo { rootPaths = dependencies; };
+    if [ "$IP_ADDR" != "No IP detected" ]; then
+      ${pkgs.gum}/bin/gum style --foreground 214 "Scan QR Code for SSH target destination (root@$IP_ADDR):"
+      echo ""
+      ${pkgs.qrencode}/bin/qrencode -t UTF8 "root@$IP_ADDR" || true
+      echo ""
+      ${pkgs.gum}/bin/gum style \
+        --border normal \
+        --margin "0 0 1 0" \
+        --padding "0 1" \
+        --border-foreground 82 \
+        "Deploy from your host machine with: deploy-host <hostname> root@$IP_ADDR"
+    fi
+  '';
 in
 
 {
@@ -46,7 +46,16 @@ in
   console.earlySetup = true;
 
   # Enable SSH for remote access during installation
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = lib.mkForce "yes";
+      PasswordAuthentication = lib.mkForce true;
+    };
+  };
+
+  # Authorize maintainer SSH keys for root on the live ISO installer
+  users.users.root.openssh.authorizedKeys.keys = self.outputs.lib.maintainers.dominicegginton.sshKeys;
 
   # Auto-login as root for ease of use
   services.getty.autologinUser = lib.mkForce "root";
@@ -63,15 +72,15 @@ in
     echo "root:$(cat /var/shared/root-password)" | chpasswd
   '';
 
-  # Provide the list of store paths required for the installation
-  environment.etc."install-closure".source = "${closureInfo}/store-paths";
+  # Installer info helper script to show IP, root password, QR code, and deploy-host command
+  environment.systemPackages = [ installerInfo ];
 
-  # Custom installation script
-  environment.systemPackages = [
-    (pkgs.writeShellScript "custom-install-script" ''
-      # ...
-    '')
-  ];
+  # Automatically display installer info upon root login on TTY
+  environment.interactiveShellInit = ''
+    if [ "$(id -u)" -eq 0 ] && [ -t 0 ]; then
+      installer-info
+    fi
+  '';
 
   # Disable Beszel monitoring for the installer
   services.beszel.enable = lib.mkForce false;
