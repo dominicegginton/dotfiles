@@ -196,6 +196,30 @@ writeShellScriptBin "deploy-host" ''
       ${getExe gum} log --level info "Staged YubiKey PAM U2F keys (~/.config/Yubico/u2f_keys)"
     fi
 
+    # Stage NetworkManager Wi-Fi/Ethernet system connections if present on deploying machine
+    NM_CONNS_DIR=""
+    if [[ -d "/persist/etc/NetworkManager/system-connections" ]] && [[ -n "$(${pkgs.coreutils}/bin/ls -A /persist/etc/NetworkManager/system-connections 2>/dev/null)" ]]; then
+      NM_CONNS_DIR="/persist/etc/NetworkManager/system-connections"
+    elif [[ -d "/etc/NetworkManager/system-connections" ]] && [[ -n "$(${pkgs.coreutils}/bin/ls -A /etc/NetworkManager/system-connections 2>/dev/null)" ]]; then
+      NM_CONNS_DIR="/etc/NetworkManager/system-connections"
+    fi
+
+    if [[ -n "''${NM_CONNS_DIR}" ]]; then
+      mkdir -p "''${EXTRA_FILES}/etc/NetworkManager/system-connections" "''${EXTRA_FILES}/persist/etc/NetworkManager/system-connections"
+      cp -a "''${NM_CONNS_DIR}/"* "''${EXTRA_FILES}/etc/NetworkManager/system-connections/" 2>/dev/null || true
+      cp -a "''${NM_CONNS_DIR}/"* "''${EXTRA_FILES}/persist/etc/NetworkManager/system-connections/" 2>/dev/null || true
+      chmod -R 600 "''${EXTRA_FILES}/etc/NetworkManager/system-connections/" "''${EXTRA_FILES}/persist/etc/NetworkManager/system-connections/"
+      ${getExe gum} log --level info "Staged NetworkManager system connections (from ''${NM_CONNS_DIR})"
+    fi
+
+    # Check host SOPS secret configuration
+    HOST_SOPS_FILE="secrets/hosts/''${HOSTNAME}.yaml"
+    if [[ -f "''${HOST_SOPS_FILE}" ]]; then
+      ${getExe gum} log --level info "Found host-specific SOPS secrets file: ''${HOST_SOPS_FILE}"
+    else
+      ${getExe gum} log --level info "No host-specific SOPS file found at ''${HOST_SOPS_FILE} (using global secrets)"
+    fi
+
     ${getExe gum} log --level info "3. Managing Host SSH Keys & SOPS Secrets..."
 
     if [[ -n "''${SSH_KEY_PATH}" ]]; then

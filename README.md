@@ -22,7 +22,7 @@ Declarative System, Package & Home Configurations - WIP Always
   - **Auditing & Compliance**: Auditd, OpenSCAP tooling, and FIPS 140-3 validated crypto.
 - **Hybrid Infrastructure & Orchestration**:
   - Multi-host infrastructure managed via Terraform on GCP.
-  - Remote deployment & re-installation via `nixos-anywhere`.
+  - Interactive remote deployment & re-installation via `deploy-host` and `nixos-anywhere` with Disko partitioning, `gum` UI, automatic SSH/Age host key staging into `/persist`, NetworkManager connection profile transfer, YubiKey PAM U2F key staging, and SOPS secret validation.
   - Journald logs ship to GCP Cloud Logging via a Vector agent.
   - Automated systemd cloud backups to GCS buckets.
   - Private Harmonia binary cache for faster Nix deployments.
