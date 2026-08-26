@@ -1,47 +1,10 @@
 {
   self,
   lib,
-  pkgs,
-  config,
-  modulesPath,
   ...
 }:
 
-let
-  # Helper script to display IP address, root password, QR code, and deployment command
-  installerInfo = pkgs.writeShellScriptBin "installer-info" ''
-    IP_ADDR="$(${pkgs.iproute2}/bin/ip -4 addr show scope global | ${pkgs.gnugrep}/bin/grep -oP '(?<=inet\s)\d+(\.\d+){3}' | ${pkgs.coreutils}/bin/head -n1 || echo "No IP detected")"
-    ROOT_PASS="$(${pkgs.coreutils}/bin/cat /var/shared/root-password 2>/dev/null || echo "unknown")"
-
-    ${pkgs.gum}/bin/gum style \
-      --border double \
-      --margin "1 0" \
-      --padding "1 2" \
-      --border-foreground 212 \
-      "Target IP Address: $IP_ADDR
-    Root Password:     $ROOT_PASS
-    SSH Destination:   root@$IP_ADDR"
-
-    if [ "$IP_ADDR" != "No IP detected" ]; then
-      ${pkgs.gum}/bin/gum style --foreground 214 "Scan QR Code for SSH target destination (root@$IP_ADDR):"
-      echo ""
-      ${pkgs.qrencode}/bin/qrencode -t UTF8 "root@$IP_ADDR" || true
-      echo ""
-      ${pkgs.gum}/bin/gum style \
-        --border normal \
-        --margin "0 0 1 0" \
-        --padding "0 1" \
-        --border-foreground 82 \
-        "Deploy from your host machine with: deploy-host <hostname> root@$IP_ADDR"
-    fi
-  '';
-in
-
 {
-  imports = [ self.inputs.nixos-images.nixosModules.image-installer ];
-
-  image.baseName = lib.mkDefault "${config.nixos.distroId}-installer";
-
   console.earlySetup = true;
 
   # Enable SSH for remote access during installation
@@ -69,13 +32,4 @@ in
   services.tsnsrv.enable = lib.mkForce false;
   services.usbguard.enable = lib.mkForce false;
   services.beszel.enable = lib.mkForce false;
-
-  environment.systemPackages = [ installerInfo ];
-
-  environment.interactiveShellInit = ''
-    if [ "$(id -u)" -eq 0 ] && [ -t 0 ]; then
-      installer-info
-    fi
-  '';
-
 }

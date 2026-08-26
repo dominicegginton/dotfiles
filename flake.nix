@@ -274,6 +274,9 @@
           latitude-7390 = self.outputs.nixosConfigurations.latitude-7390.config.system.build.toplevel;
           steamdeck = self.outputs.nixosConfigurations.steamdeck.config.system.build.toplevel;
           steammachine = self.outputs.nixosConfigurations.steammachine.config.system.build.toplevel;
+          infector-iso = self.outputs.packages.${system}.infector-iso;
+          infector-netboot = self.outputs.packages.${system}.infector-netboot;
+          infector-kexec = self.outputs.packages.${system}.infector-kexec;
         }
       );
 
@@ -295,9 +298,9 @@
             }).config.output;
         }
         // lib.optionalAttrs (system == "x86_64-linux") {
-          # Custom live installer ISO (infector)
-          # Only buildable on x86_64-linux by default
           infector-iso = self.nixosConfigurations.infector.config.system.build.isoImage;
+          infector-netboot = self.nixosConfigurations.infector-netboot.config.system.build.netboot;
+          infector-kexec = self.nixosConfigurations.infector-kexec.config.system.build.kexecInstallerTarball;
         }
       );
 
@@ -331,6 +334,26 @@
         infector = self.outputs.lib.nixosSystem {
           hostname = "infector";
           user = null;
+          modules = [
+            self.inputs.nixos-images.nixosModules.image-installer
+            ({ lib, config, ... }: {
+              image.baseName = lib.mkDefault "${config.nixos.distroId}-installer";
+            })
+          ];
+        };
+
+        # Unattended network boot installation media (Netboot)
+        infector-netboot = self.outputs.lib.nixosSystem {
+          hostname = "infector";
+          user = null;
+          modules = [ self.inputs.nixos-images.nixosModules.netboot-installer ];
+        };
+
+        # Unattended in-place installation media (Kexec Tarball)
+        infector-kexec = self.outputs.lib.nixosSystem {
+          hostname = "infector";
+          user = null;
+          modules = [ self.inputs.nixos-images.nixosModules.kexec-installer ];
         };
 
         # Windows Subsystem for Linux environment

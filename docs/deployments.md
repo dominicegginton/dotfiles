@@ -2,9 +2,13 @@
 
 You can run both `deploy-host` and `burn-infector` scripts in dry-run mode. The scripts show a summary and ask for your confirmation before they make system or disk changes.
 
-## 1. Installer ISO (`burn-infector`)
+## 1. Installer Media Configurations (`infector`)
 
-To make the unattended live ISO installer (`.#infector-iso`) and write it to a USB drive:
+We support three formats of the unattended installer media powered by `nixos-images` optimization presets:
+
+### A. Bootable Installer ISO (`infector-iso`)
+
+Used for writing to a USB flash drive to install NixOS locally on physical hardware.
 
 ```bash
 # Make .#infector-iso and start Caligula disk imager
@@ -17,12 +21,30 @@ burn-infector -s
 burn-infector -y
 ```
 
-When you start the `infector` ISO on the remote machine, the screen shows:
+When you start the `infector` ISO on the machine, the screen automatically launches a frame-buffered `network-status` display:
 
-- The random password for the `root` user
-- The IP address and SSH target (`root@<IP>`)
-- A QR code to scan with your device
-- The pre-filled `deploy-host` command
+- Displays the random password generated for the `root` user
+- Displays the detected IP address and SSH target (`root@<IP>`)
+- Displays a scanable QR code containing the SSH destination string
+- Recommends the pre-filled `deploy-host` command
+
+### B. Network Boot Image (`infector-netboot`)
+
+Used for booting machines over the network via PXE/iPXE without any local physical media.
+
+```bash
+# Build the netboot kernel and initrd images
+nix build .#infector-netboot
+```
+
+### C. In-Place Kexec Tarball (`infector-kexec`)
+
+Used for booting the NixOS installer directly on a running remote Linux machine without rebooting, allowing a fresh partition format and setup (e.g. on virtual servers).
+
+```bash
+# Build the kexec-compatible installer tarball
+nix build .#infector-kexec
+```
 
 ## 2. Remote Host Deployment (`deploy-host`)
 
