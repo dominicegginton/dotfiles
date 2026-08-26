@@ -24,7 +24,7 @@ in
     # sops-nix will look for this key on the system
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-    secrets = lib.mkIf (!config.wsl.enable && config.users.users ? dom) (
+    secrets = lib.mkIf (!config.wsl.enable && config.networking.hostName != "infector") (
       let
         hostSopsFile = ../secrets/hosts + "/${config.networking.hostName}.yaml";
         useHostSops = builtins.pathExists hostSopsFile;
@@ -53,6 +53,7 @@ in
               owner = "root";
               group = "root";
               mode = "0600";
+              path = "/etc/usbguard/rules.conf";
             }
           else
             null;

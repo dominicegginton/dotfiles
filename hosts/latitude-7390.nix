@@ -54,6 +54,7 @@
     "vhost_vsock" # Virtio socket support
     "i2c-dev" # I2C device access
     "ddcci_backlight" # DDC/CI monitor control
+    "hid-apple" # Keychron / Apple keyboard support (must be pre-loaded because lockKernelModules is active)
   ];
 
   # Additional kernel drivers

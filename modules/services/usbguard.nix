@@ -6,6 +6,7 @@
 
 let
   notWSL = !config.wsl.enable;
+  hasSopsRules = config.sops.secrets ? "services/usbguard/rules";
 in
 
 {
@@ -18,14 +19,20 @@ in
         "usbguard"
         "wheel"
       ];
-      # Allow Bluetooth and internal (hardwired) devices, as well as root/external hubs
-      rules = lib.mkDefault ''
-        allow with-interface e0:01:01
-        allow with-connect-type "hardwired"
-        allow id 1d6b:*
-        allow with-interface 09:00:00
-        allow id 1050:*
-      '';
+      # If SOPS rules exist, let USBGuard read from the decrypted SOPS file.
+      # Otherwise, fall back to safe baseline rules for bootstrap/recovery.
+      rules =
+        if hasSopsRules then
+          null
+        else
+          lib.mkDefault ''
+            allow with-interface e0:01:01
+            allow with-connect-type "hardwired"
+            allow id 1d6b:*
+            allow with-interface 09:00:00
+            allow id 1050:*
+          '';
+      ruleFile = if hasSopsRules then config.sops.secrets."services/usbguard/rules".path else null;
     };
   };
 }
