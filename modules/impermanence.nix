@@ -70,7 +70,9 @@ in
 
     # Rollback root filesystem to a blank state on every boot
     # Support both scripted initrd and systemd initrd
-    boot.initrd.postDeviceCommands = lib.mkIf (!config.boot.initrd.systemd.enable) (lib.mkAfter rollbackScript);
+    boot.initrd.postDeviceCommands = lib.mkIf (!config.boot.initrd.systemd.enable) (
+      lib.mkAfter rollbackScript
+    );
 
     boot.initrd.systemd.services.rollback = lib.mkIf config.boot.initrd.systemd.enable {
       description = "Rollback Btrfs root subvolume";
