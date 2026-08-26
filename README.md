@@ -46,3 +46,4 @@ Operational procedural guides in [`docs/`](docs/):
 - [YubiKey PAM, GPG Smartcard & SSH Operations](docs/yubikey.md)
 - [AppArmor Status Inspection & Denial Debugging](docs/apparmor.md)
 - [Nix Store Maintenance, Garbage Collection & Diffs](docs/maintenance.md)
+- [GCP Bucket Backups & Restore Operations Guide](docs/gcp-backups.md)

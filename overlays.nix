@@ -31,6 +31,10 @@ rec {
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
     gpg-import-bucket = final.callPackage ./pkgs/gpg-import-bucket.nix { };
+    gcs-restore = final.callPackage ./pkgs/gcs-restore.nix {
+      nix = final.nix;
+      jq = final.jq;
+    };
     solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
     intelli-extension = final.callPackage ./pkgs/intelli-extension { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };

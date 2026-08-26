@@ -23,6 +23,7 @@
   deploy-host,
   burn-infector,
   gpg-import-bucket,
+  gcs-restore,
   ...
 }:
 
@@ -79,6 +80,7 @@ mkShell rec {
     deploy-host
     burn-infector
     gpg-import-bucket
+    gcs-restore
     infrastructure.init
     infrastructure.plan
     infrastructure.apply
