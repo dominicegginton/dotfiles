@@ -17,8 +17,7 @@
           stateVersion = lib.mkForce "25.11"; # Pin Home Manager state version
           enableNixpkgsReleaseCheck = lib.mkForce false; # Disable release check
           file.".gnupg/common.conf".text = ''
-            # Disable keyboxd to avoid GnuPG SQLite database locking issues
-            disable-keyboxd
+            use-keyboxd
           '';
         };
         programs = {
