@@ -50,7 +50,17 @@ ykman openpgp info
 
 ### Import GPG Keys on a New Host
 
-To use your GPG keys on a new computer:
+To import GPG keys interactively from cloud storage (GCS):
+
+```bash
+# Interactively select, dry-run, import and set key trust
+gpg-import-bucket
+
+# Execute directly skipping dry-run confirmation
+gpg-import-bucket --execute
+```
+
+To use your GPG keys with a YubiKey:
 
 ```bash
 # 1. Import your public GPG key from GitHub

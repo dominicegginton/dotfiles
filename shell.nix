@@ -22,6 +22,7 @@
   openssh,
   deploy-host,
   burn-infector,
+  gpg-import-bucket,
   ...
 }:
 
@@ -77,6 +78,7 @@ mkShell rec {
     openssh
     deploy-host
     burn-infector
+    gpg-import-bucket
     infrastructure.init
     infrastructure.plan
     infrastructure.apply

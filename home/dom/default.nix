@@ -242,6 +242,7 @@
       [
         bat
         eza
+        gpg-import-bucket
         twm
         twx
         gh-markdown-preview

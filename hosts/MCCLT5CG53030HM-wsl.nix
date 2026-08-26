@@ -10,6 +10,7 @@
 
   # Enable WSL compatibility
   wsl.enable = true;
+  environment.sessionVariables.VSCODE_SKIP_SERVER_REQUIREMENTS_CHECK = "1";
 
   # Enable Docker integration
   virtualisation.docker.enable = true;

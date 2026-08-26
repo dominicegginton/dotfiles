@@ -30,6 +30,7 @@ rec {
     deploy-host = final.callPackage ./pkgs/deploy-host.nix { };
     dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
     extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
+    gpg-import-bucket = final.callPackage ./pkgs/gpg-import-bucket.nix { };
     solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
     intelli-extension = final.callPackage ./pkgs/intelli-extension { };
     lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
