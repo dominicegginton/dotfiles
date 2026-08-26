@@ -38,8 +38,7 @@ let
 in
 
 {
-  # Base installer image
-  imports = [ (modulesPath + "/installer/cd-dvd/installation-cd-base.nix") ];
+  imports = [ self.inputs.nixos-images.nixosModules.image-installer ];
 
   image.baseName = lib.mkDefault "${config.nixos.distroId}-installer";
 
@@ -62,26 +61,21 @@ in
 
   networking.tempAddresses = "disabled";
 
-  # Create a shared directory for password transfer
-  systemd.tmpfiles.rules = [ "d /var/shared 0777 root root - -" ];
+  boot.plymouth.enable = lib.mkForce false;
+  boot.loader.systemd-boot.enable = lib.mkForce false;
+  networking.networkmanager.enable = lib.mkForce false;
+  programs.deadman.enable = lib.mkForce false;
+  services.tailscale.enable = lib.mkForce false;
+  services.tsnsrv.enable = lib.mkForce false;
+  services.usbguard.enable = lib.mkForce false;
+  services.beszel.enable = lib.mkForce false;
 
-  # Generate a random root password and store it in /var/shared
-  system.activationScripts.root-password = ''
-    mkdir -p /var/shared
-    ${pkgs.xkcdpass}/bin/xkcdpass --numwords 3 --delimiter - --count 1 > /var/shared/root-password
-    echo "root:$(cat /var/shared/root-password)" | chpasswd
-  '';
-
-  # Installer info helper script to show IP, root password, QR code, and deploy-host command
   environment.systemPackages = [ installerInfo ];
 
-  # Automatically display installer info upon root login on TTY
   environment.interactiveShellInit = ''
     if [ "$(id -u)" -eq 0 ] && [ -t 0 ]; then
       installer-info
     fi
   '';
 
-  # Disable Beszel monitoring for the installer
-  services.beszel.enable = lib.mkForce false;
 }
