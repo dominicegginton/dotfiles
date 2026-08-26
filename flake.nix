@@ -238,14 +238,44 @@
 
       # GitHub Actions workflow matrix generation
       githubActions = nix-github-actions.lib.mkGithubMatrix {
-        checks = lib.getAttrs githubPlatformsForSystems self.outputs.devShells;
+        checks = lib.getAttrs githubPlatformsForSystems self.outputs.checks;
       };
 
       # Continuous integration checks
-      checks = forAllSystems (system: {
-        # Check that the flake and its outputs are valid
-        formatter = self.outputs.formatter.${system};
-      });
+      checks = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
+        {
+          # Check for dead/unused code in Nix files
+          deadnix =
+            pkgs.runCommand "deadnix"
+              {
+                nativeBuildInputs = [ pkgs.deadnix ];
+              }
+              ''
+                deadnix --fail ${self}
+                touch $out
+              '';
+
+          # Check that the flake and its outputs are valid
+          formatter = self.outputs.formatter.${system};
+
+          # Network topology diagram
+          topology = self.outputs.packages.${system}.topology;
+
+          # Development shells
+          devShell-default = self.outputs.devShells.${system}.default;
+          devShell-infrastructure = self.outputs.devShells.${system}.infrastructure;
+        }
+        // lib.optionalAttrs (system == "x86_64-linux") {
+          ghost-gs60 = self.outputs.nixosConfigurations.ghost-gs60.config.system.build.toplevel;
+          latitude-7390 = self.outputs.nixosConfigurations.latitude-7390.config.system.build.toplevel;
+          steamdeck = self.outputs.nixosConfigurations.steamdeck.config.system.build.toplevel;
+          steammachine = self.outputs.nixosConfigurations.steammachine.config.system.build.toplevel;
+        }
+      );
 
       # Legacy packages for backward compatibility
       legacyPackages = nixpkgsFor;

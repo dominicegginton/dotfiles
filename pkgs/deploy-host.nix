@@ -148,7 +148,9 @@ writeShellScriptBin "deploy-host" ''
       fi
     fi
 
-    if [[ "''${MODE}" == "reinstall" ]] && [[ -z "''${SSH_KEY_PATH}" ]] && [[ "''${COPY_HOST_KEYS}" = false ]]; then
+    if [[ "''${MODE}" == "new" ]]; then
+      GENERATE_HWCONFIG=true
+    elif [[ "''${MODE}" == "reinstall" ]] && [[ -z "''${SSH_KEY_PATH}" ]] && [[ "''${COPY_HOST_KEYS}" = false ]]; then
       COPY_HOST_KEYS=true
     fi
 

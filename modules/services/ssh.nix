@@ -12,7 +12,7 @@
       MaxAuthTries = lib.mkDefault 3; # Reduce maximum authorization attempts
       PermitEmptyPasswords = lib.mkDefault "no"; # Do not allow logins with empty passwords
       LogLevel = lib.mkForce "VERBOSE";
-      PermitRootLogin = lib.mkForce "no";
+      PermitRootLogin = lib.mkDefault "no";
       UsePAM = lib.mkForce true;
 
       # Restrict to secure HMACs and Ciphers

@@ -83,41 +83,26 @@ writeShellScriptBin "burn-infector" ''
       --border-foreground 212 \
       "NIXOS INFECTOR ISO BURNER (Caligula)"
 
-    # Step 1: Build the ISO unless --skip-build is set
-    if [[ "''${SKIP_BUILD}" = false ]]; then
-      ${getExe gum} log --level info "Building .#infector-iso NixOS live installer..."
-      if [[ "''${DRY_RUN}" = true ]]; then
-        ${getExe gum} log --level info "[DRY RUN] Would run: nix build .#infector-iso"
-      else
-        ${getExe nix} build .#infector-iso
-      fi
-    else
-      ${getExe gum} log --level info "Skipping build (--skip-build set)."
-    fi
-
-    # Step 2: Locate the built ISO file
-    ISO_PATH=""
-    if [[ -d "./result" ]]; then
-      ISO_PATH="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
-    fi
-
-    if [[ -z "''${ISO_PATH}" ]] && [[ "''${DRY_RUN}" = false ]]; then
-      ${getExe gum} log --level error "Could not locate built .iso image under ./result. Ensure 'nix build .#infector-iso' succeeds."
-      exit 1
-    elif [[ -z "''${ISO_PATH}" ]] && [[ "''${DRY_RUN}" = true ]]; then
-      ISO_PATH="./result/iso/nixos-infector-installer-x86_64-linux.iso"
-    fi
-
-    ${getExe gum} log --level info "Located installer ISO: ''${ISO_PATH}"
-
-    # Step 3: Prepare Caligula burn command
-    BURN_CMD=("${getExe caligula}" "burn" "''${ISO_PATH}")
-
-    if [[ -n "''${TARGET_DEVICE}" ]]; then
-      BURN_CMD+=("--target" "''${TARGET_DEVICE}")
-    fi
-
+    # Handle Dry Run
     if [[ "''${DRY_RUN}" = true ]]; then
+      DISPLAY_ISO=""
+      if [[ -d "./result" ]]; then
+        DISPLAY_ISO="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
+      fi
+      if [[ -z "''${DISPLAY_ISO}" ]]; then
+        DISPLAY_ISO="./result/iso/*.iso"
+      fi
+
+      DRY_BURN_CMD=("${getExe caligula}" "burn" "''${DISPLAY_ISO}")
+      if [[ -n "''${TARGET_DEVICE}" ]]; then
+        DRY_BURN_CMD+=("--target" "''${TARGET_DEVICE}")
+      fi
+
+      BUILD_MSG="nix build .#infector-iso"
+      if [[ "''${SKIP_BUILD}" = true ]]; then
+        BUILD_MSG="[Skipped via --skip-build]"
+      fi
+
       ${getExe gum} style \
         --border normal \
         --margin "1 0" \
@@ -125,11 +110,12 @@ writeShellScriptBin "burn-infector" ''
         --border-foreground 214 \
         "DRY RUN SUMMARY
 
-    ISO Image:      ''${ISO_PATH}
+    Build Action:   ''${BUILD_MSG}
+    ISO Image:      ''${DISPLAY_ISO}
     Target Device:  ''${TARGET_DEVICE:-Interactive selection in Caligula TUI}
 
   Command that WOULD be executed:
-    ''${BURN_CMD[*]}"
+    ''${DRY_BURN_CMD[*]}"
 
       if [[ "''${EXPLICIT_DRY_RUN}" = false ]] && [ -t 0 ]; then
         if ${getExe gum} confirm "Proceed to build and burn ISO now?"; then
@@ -143,14 +129,31 @@ writeShellScriptBin "burn-infector" ''
       fi
     fi
 
-    # Step 4: Build if skipped during dry-run step
-    if [[ "''${SKIP_BUILD}" = false ]] && [[ ! -f "''${ISO_PATH}" ]]; then
+    # Execution phase
+    if [[ "''${SKIP_BUILD}" = false ]]; then
       ${getExe gum} log --level info "Building .#infector-iso NixOS live installer..."
       ${getExe nix} build .#infector-iso
+    else
+      ${getExe gum} log --level info "Skipping build (--skip-build set)."
+    fi
+
+    ISO_PATH=""
+    if [[ -d "./result" ]]; then
       ISO_PATH="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
     fi
 
-    # Step 5: Execute Caligula
+    if [[ -z "''${ISO_PATH}" ]] || [[ ! -f "''${ISO_PATH}" ]]; then
+      ${getExe gum} log --level error "Could not locate built .iso image under ./result. Ensure 'nix build .#infector-iso' succeeds."
+      exit 1
+    fi
+
+    ${getExe gum} log --level info "Located installer ISO: ''${ISO_PATH}"
+
+    BURN_CMD=("${getExe caligula}" "burn" "''${ISO_PATH}")
+    if [[ -n "''${TARGET_DEVICE}" ]]; then
+      BURN_CMD+=("--target" "''${TARGET_DEVICE}")
+    fi
+
     ${getExe gum} log --level info "Launching Caligula disk imager..."
     echo ""
 
