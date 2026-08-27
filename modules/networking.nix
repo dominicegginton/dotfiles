@@ -9,7 +9,7 @@ with config.lib.topology;
 
 {
   networking = {
-    hostName = hostname;
+    hostName = lib.mkDefault hostname;
     useDHCP = lib.mkDefault true;
     # Use modern nftables for firewall backend
     nftables.enable = lib.mkDefault true;

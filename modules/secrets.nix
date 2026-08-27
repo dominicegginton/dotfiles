@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  hostname,
+  ...
+}:
 
 let
   userPasswordDefined = (config.users.users.dom.hashedPasswordFile or null) != null;
@@ -24,7 +29,7 @@ in
     # sops-nix will look for this key on the system
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
-    secrets = lib.mkIf (!config.wsl.enable && config.networking.hostName != "infector") (
+    secrets = lib.mkIf (!config.wsl.enable && hostname != "infector") (
       let
         hostSopsFile = ../secrets/hosts + "/${config.networking.hostName}.yaml";
         useHostSops = builtins.pathExists hostSopsFile;
