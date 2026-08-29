@@ -275,7 +275,8 @@
           latitude-7390 = self.outputs.nixosConfigurations.latitude-7390.config.system.build.toplevel;
           steamdeck = self.outputs.nixosConfigurations.steamdeck.config.system.build.toplevel;
           steammachine = self.outputs.nixosConfigurations.steammachine.config.system.build.toplevel;
-          MCCLT5CG53030HM-wsl = self.outputs.nixosConfigurations."MCCLT5CG53030HM-wsl".config.system.build.toplevel;
+          MCCLT5CG53030HM-wsl =
+            self.outputs.nixosConfigurations."MCCLT5CG53030HM-wsl".config.system.build.toplevel;
           infector-iso = self.outputs.packages.${system}.infector-iso;
           infector-netboot = self.outputs.packages.${system}.infector-netboot;
           infector-kexec = self.outputs.packages.${system}.infector-kexec;
@@ -307,16 +308,9 @@
       );
 
       # Development shells for various tasks
-      devShells = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgsFor.${system};
-        in
-        {
-          default = pkgs.callPackage ./shell.nix { };
-          infrastructure = pkgs.callPackage ./infrastructure/shell.nix { };
-        }
-      );
+      devShells = forAllSystems (system: {
+        default = nixpkgsFor.${system}.callPackage ./shell.nix { };
+      });
 
       # NixOS host configurations
       nixosConfigurations = {
