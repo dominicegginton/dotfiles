@@ -1,3 +1,15 @@
+resource "nextdns_profile" "ribble" {
+  name = "Ribble"
+}
+
+resource "nextdns_profile" "quandon" {
+  name = "quandon"
+}
+
+data "nextdns_setup_endpoint" "ribble" {
+  profile_id = var.nextdns_profile_ribble
+}
+
 resource "nextdns_privacy" "ribble" {
   allow_affiliate    = false
   blocklists         = ["nextdns-recommended", "adguard-dns-filter", "oisd"]

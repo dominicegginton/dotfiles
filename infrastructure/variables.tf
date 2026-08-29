@@ -43,3 +43,23 @@ variable "nextdns_profile_quandon" {
   type        = string
   default     = null
 }
+
+variable "cloudflare_api_token" {
+  description = "The Cloudflare API Token"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
+variable "cloudflare_account_id" {
+  description = "The Cloudflare Account ID"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+
+variable "cloudflare_zone_id" {
+  description = "The Cloudflare Zone ID for dominicegginton.dev"
+  type        = string
+  default     = null
+}
