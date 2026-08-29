@@ -268,7 +268,6 @@
 
           # Development shells
           devShell-default = self.outputs.devShells.${system}.default;
-          devShell-infrastructure = self.outputs.devShells.${system}.infrastructure;
         }
         // lib.optionalAttrs (system == "x86_64-linux") {
           ghost-gs60 = self.outputs.nixosConfigurations.ghost-gs60.config.system.build.toplevel;
