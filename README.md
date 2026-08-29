@@ -41,7 +41,7 @@ Operational procedural guides in [`docs/`](docs/):
 
 - [Remote Deployments & ISO Burning (`deploy-host` & `burn-infector`)](docs/deployments.md)
 - [SOPS Secret Management & Host Onboarding](docs/secrets.md)
-- [Cloud Infrastructure Management (`opentofu` & `secretspec`)](docs/infrastructure.md)
+- [Cloud Infrastructure Management (`terraform` & `secretspec`)](docs/infrastructure.md)
 - [USBGuard Device Discovery & Whitelisting](docs/usbguard.md)
 - [YubiKey PAM, GPG Smartcard & SSH Operations](docs/yubikey.md)
 - [AppArmor Status Inspection & Denial Debugging](docs/apparmor.md)

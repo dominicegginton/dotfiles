@@ -1,7 +1,7 @@
 {
   lib,
+  pkgs,
   mkShell,
-  writeShellScriptBin,
   nix,
   nix-output-monitor,
   deadnix,
@@ -11,7 +11,6 @@
   nix-health,
   nix-index,
   google-cloud-sdk,
-  opentofu,
   secretspec,
   sops,
   age,
@@ -31,24 +30,22 @@ with builtins;
 with lib;
 
 let
-  runTofuWithSecrets =
-    tofuOperation:
-    "${getExe secretspec} run --reason \"Infrastructure management via OpenTofu\" -f ./infrastructure/secretspec.toml ${getExe opentofu} -chdir=infrastructure ${tofuOperation}";
+  tfHelpers = lib.terraform pkgs;
 
-  infrastructure = {
-    init = writeShellScriptBin "infrastructure-init" ''
+  terraformWithPlugins = tfHelpers.mkTerraformDerivation {
+    name = "personal-infra";
+    package = pkgs.terraform;
+    providers = tfHelpers.defaultProviders;
+    paths = [ ./infrastructure ];
+    validate = false;
+    preCommand = ''
       if ! ${getExe google-cloud-sdk} auth application-default print-access-token > /dev/null 2>&1; then
         ${getExe google-cloud-sdk} auth application-default login
       fi
-      ${runTofuWithSecrets "init"}
-    '';
-    plan = writeShellScriptBin "infrastructure-plan" ''
-      ${getExe infrastructure.init}
-      ${runTofuWithSecrets "plan"}
-    '';
-    apply = writeShellScriptBin "infrastructure-apply" ''
-      ${getExe infrastructure.plan}
-      ${runTofuWithSecrets "apply"}
+      if [ -z "''${SECRETSPEC_LOADED:-}" ] && [ -f "$dir/secretspec.toml" ]; then
+        export SECRETSPEC_LOADED=1
+        exec ${getExe secretspec} run --reason "Infrastructure management via Terraform" -f "$dir/secretspec.toml" -- "$0" "$@"
+      fi
     '';
   };
 in
@@ -68,7 +65,7 @@ mkShell rec {
     nix-health
     nix-index
     google-cloud-sdk
-    opentofu
+    terraformWithPlugins
     secretspec
     sops
     age
@@ -81,9 +78,6 @@ mkShell rec {
     burn-infector
     gpg-import-bucket
     gcs-restore
-    infrastructure.init
-    infrastructure.plan
-    infrastructure.apply
   ];
 
   # Maintainer info for shell.nix

@@ -180,6 +180,7 @@
         "steamdeck-firmware"
         "steamdeck-hw-theme"
         "jupiter-dock-updater-bin"
+        "terraform"
         "vscode"
         "vscode-extension-github-copilot"
         "vscode-with-extensions"
