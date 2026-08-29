@@ -65,6 +65,13 @@ jobs:
         with:
           free-disk-space: true
       - run: nix build -L '.#${{ matrix.attr }}'
+      - name: Upload ISO artifact
+        if: contains(matrix.attr, 'infector-iso')
+        uses: actions/upload-artifact@v7
+        with:
+          name: infector-iso
+          path: result/
+          retention-days: 14
       - uses: ./.github/actions/scan-nix
         continue-on-error: true
         with:

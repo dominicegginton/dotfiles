@@ -126,7 +126,7 @@ writeShellScriptBin "deploy-host" ''
     # Interactive selection for Hostname if missing using gum choose
     if [[ -z "''${HOSTNAME}" ]]; then
       ${getExe gum} log --level info "No host specified. Select host configuration from flake:"
-      HOSTS_LIST="''$(${getExe nix} eval --raw .#nixosConfigurations --apply 'attrs: builtins.concatStringsSep "\n" (builtins.attrNames attrs)' 2>/dev/null || echo "")"
+      HOSTS_LIST="''$(${getExe nix} eval --raw .#nixosConfigurations --apply 'attrs: builtins.concatStringsSep "\n" (builtins.filter (name: builtins.match "infector.*" name == null) (builtins.attrNames attrs))' 2>/dev/null || echo "")"
       if [[ -n "''${HOSTS_LIST}" ]]; then
         HOSTNAME="''$(echo "''${HOSTS_LIST}" | ${getExe gum} choose --header "Select host configuration to deploy:")"
       else
@@ -185,6 +185,12 @@ writeShellScriptBin "deploy-host" ''
     fi
 
     ${getExe gum} log --level info "2. Validating host configuration '.#nixosConfigurations.''${HOSTNAME}'..."
+    if [[ "''${HOSTNAME}" == infector* ]]; then
+      ${getExe gum} log --level error "Host \"''${HOSTNAME}\" is an installation media configuration and cannot be deployed using deploy-host!"
+      ${getExe gum} log --level error "If you want to build and burn the installer ISO, use: burn-infector"
+      exit 1
+    fi
+
     if ! ${getExe nix} eval ".#nixosConfigurations.''${HOSTNAME}.config.system.build.toplevel.drvPath" >/dev/null 2>&1; then
       ${getExe gum} log --level error "Host \"''${HOSTNAME}\" is not defined under nixosConfigurations in flake.nix!"
       exit 1

@@ -6,6 +6,7 @@
   gum,
   coreutils,
   findutils,
+  gh,
 }:
 
 with lib;
@@ -15,6 +16,7 @@ writeShellScriptBin "burn-infector" ''
 
     SHOW_HELP=false
     SKIP_BUILD=false
+    PULL_GITHUB=false
     DRY_RUN=true
     EXPLICIT_DRY_RUN=false
     TARGET_DEVICE=""
@@ -28,6 +30,7 @@ writeShellScriptBin "burn-infector" ''
 
   OPTIONS:
     -s, --skip-build        Skip rebuilding .#infector-iso and use existing ./result ISO
+    -p, --pull              Pull the latest built ISO from GitHub Actions artifacts
     -d, --device <path>     Specify target block device (e.g. /dev/sdb or /dev/disk/by-id/...)
     -y, --yes, --execute    Execute build and burn directly (skip dry-run confirmation)
     -n, --dry-run           Force dry-run mode without execution prompt
@@ -47,6 +50,11 @@ writeShellScriptBin "burn-infector" ''
           exit 0
           ;;
         -s|--skip-build)
+          SKIP_BUILD=true
+          shift 1
+          ;;
+        -p|--pull)
+          PULL_GITHUB=true
           SKIP_BUILD=true
           shift 1
           ;;
@@ -86,11 +94,20 @@ writeShellScriptBin "burn-infector" ''
     # Handle Dry Run
     if [[ "''${DRY_RUN}" = true ]]; then
       DISPLAY_ISO=""
-      if [[ -d "./result" ]]; then
-        DISPLAY_ISO="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
-      fi
-      if [[ -z "''${DISPLAY_ISO}" ]]; then
-        DISPLAY_ISO="./result/iso/*.iso"
+      if [[ "''${PULL_GITHUB}" = true ]]; then
+        if [[ -d "./result-github" ]]; then
+          DISPLAY_ISO="''$(${getExe' findutils "find"} -L ./result-github -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
+        fi
+        if [[ -z "''${DISPLAY_ISO}" ]]; then
+          DISPLAY_ISO="./result-github/*.iso"
+        fi
+      else
+        if [[ -d "./result" ]]; then
+          DISPLAY_ISO="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
+        fi
+        if [[ -z "''${DISPLAY_ISO}" ]]; then
+          DISPLAY_ISO="./result/iso/*.iso"
+        fi
       fi
 
       DRY_BURN_CMD=("${getExe caligula}" "burn" "''${DISPLAY_ISO}")
@@ -99,7 +116,9 @@ writeShellScriptBin "burn-infector" ''
       fi
 
       BUILD_MSG="nix build .#infector-iso"
-      if [[ "''${SKIP_BUILD}" = true ]]; then
+      if [[ "''${PULL_GITHUB}" = true ]]; then
+        BUILD_MSG="[Pull latest from GitHub Actions]"
+      elif [[ "''${SKIP_BUILD}" = true ]]; then
         BUILD_MSG="[Skipped via --skip-build]"
       fi
 
@@ -130,7 +149,15 @@ writeShellScriptBin "burn-infector" ''
     fi
 
     # Execution phase
-    if [[ "''${SKIP_BUILD}" = false ]]; then
+    if [[ "''${PULL_GITHUB}" = true ]]; then
+      ${getExe gum} log --level info "Downloading latest 'infector-iso' artifact from GitHub..."
+      rm -rf ./result-github
+      mkdir -p ./result-github
+      if ! ${getExe gh} run download --repo dominicegginton/dotfiles --name infector-iso --dir ./result-github; then
+        ${getExe gum} log --level error "Failed to download 'infector-iso' artifact from GitHub. Make sure you are authenticated with 'gh auth login' and the artifact exists."
+        exit 1
+      fi
+    elif [[ "''${SKIP_BUILD}" = false ]]; then
       ${getExe gum} log --level info "Building .#infector-iso NixOS live installer..."
       ${getExe nix} build .#infector-iso
     else
@@ -138,13 +165,22 @@ writeShellScriptBin "burn-infector" ''
     fi
 
     ISO_PATH=""
-    if [[ -d "./result" ]]; then
-      ISO_PATH="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
-    fi
-
-    if [[ -z "''${ISO_PATH}" ]] || [[ ! -f "''${ISO_PATH}" ]]; then
-      ${getExe gum} log --level error "Could not locate built .iso image under ./result. Ensure 'nix build .#infector-iso' succeeds."
-      exit 1
+    if [[ "''${PULL_GITHUB}" = true ]]; then
+      if [[ -d "./result-github" ]]; then
+        ISO_PATH="''$(${getExe' findutils "find"} -L ./result-github -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
+      fi
+      if [[ -z "''${ISO_PATH}" ]] || [[ ! -f "''${ISO_PATH}" ]]; then
+        ${getExe gum} log --level error "Could not locate downloaded .iso image under ./result-github."
+        exit 1
+      fi
+    else
+      if [[ -d "./result" ]]; then
+        ISO_PATH="''$(${getExe' findutils "find"} -L ./result -name "*.iso" -type f | ${getExe' coreutils "head"} -n1 || echo "")"
+      fi
+      if [[ -z "''${ISO_PATH}" ]] || [[ ! -f "''${ISO_PATH}" ]]; then
+        ${getExe gum} log --level error "Could not locate built .iso image under ./result. Ensure 'nix build .#infector-iso' succeeds."
+        exit 1
+      fi
     fi
 
     ${getExe gum} log --level info "Located installer ISO: ''${ISO_PATH}"

@@ -1,10 +1,13 @@
 {
   self,
   lib,
+  hostname,
   ...
 }:
 
 {
+  networking.hostName = lib.mkForce hostname;
+
   console.earlySetup = true;
 
   # Enable SSH for remote access during installation
