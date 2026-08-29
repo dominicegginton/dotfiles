@@ -275,6 +275,7 @@
           latitude-7390 = self.outputs.nixosConfigurations.latitude-7390.config.system.build.toplevel;
           steamdeck = self.outputs.nixosConfigurations.steamdeck.config.system.build.toplevel;
           steammachine = self.outputs.nixosConfigurations.steammachine.config.system.build.toplevel;
+          MCCLT5CG53030HM-wsl = self.outputs.nixosConfigurations."MCCLT5CG53030HM-wsl".config.system.build.toplevel;
           infector-iso = self.outputs.packages.${system}.infector-iso;
           infector-netboot = self.outputs.packages.${system}.infector-netboot;
           infector-kexec = self.outputs.packages.${system}.infector-kexec;
