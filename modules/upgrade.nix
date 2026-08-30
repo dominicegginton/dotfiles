@@ -9,10 +9,11 @@
   system = {
     autoUpgrade = {
       enable = lib.mkForce true;
-      dates = lib.mkDefault "02:00";
+      dates = lib.mkDefault "weekly";
       flake = lib.mkForce "github:${self.outputs.lib.maintainers.dominicegginton.github}/dotfiles";
       operation = lib.mkForce "switch";
       persistent = lib.mkForce true;
+      runGarbageCollection = lib.mkForce true;
     };
 
     activationScripts.upgrade.text = lib.mkForce ''
