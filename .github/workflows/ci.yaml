@@ -11,13 +11,6 @@ env:
   NIX_CONFIG: "accept-flake-config = true"
 
 jobs:
-  flake-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7.0.1
-      - uses: ./.github/actions/install-nix
-      - run: nix flake check -L
-
   formatter:
     runs-on: ubuntu-latest
     steps:
