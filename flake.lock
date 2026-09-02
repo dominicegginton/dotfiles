@@ -7,11 +7,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783098174,
-        "narHash": "sha256-Um7ObfiaDGPfsX8tdokljkD6JK9gT3Xym3/HLo5qLcE=",
+        "lastModified": 1787132662,
+        "narHash": "sha256-S2mW8+Mpt3yKAOYgaI/4/Vpnoj3xATdHIJd4U/1QRr8=",
         "owner": "dominicegginton",
         "repo": "amber",
-        "rev": "ac72f1505aeed00095548184e9ac9260ae717370",
+        "rev": "8666deed424920dcb7aa0603a7afc1284685a09a",
         "type": "github"
       },
       "original": {
