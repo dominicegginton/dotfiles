@@ -324,41 +324,6 @@
         };
       });
 
-      # Terranix Flake Apps (nix run .#tf-plan, nix run .#tf-apply, etc.)
-      apps = forAllSystems (system: {
-        default = self.outputs.apps.${system}.tf-plan;
-
-        tf-init = {
-          type = "app";
-          program = lib.getExe (
-            nixpkgsFor.${system}.writeShellScriptBin "tf-init" ''
-              set -euo pipefail
-              exec ${self.outputs.devShells.${system}.default.nativeBuildInputs or ""}/bin/terraform init "$@"
-            ''
-          );
-        };
-
-        tf-plan = {
-          type = "app";
-          program = lib.getExe (
-            nixpkgsFor.${system}.writeShellScriptBin "tf-plan" ''
-              set -euo pipefail
-              exec ${nixpkgsFor.${system}.terraform}/bin/terraform plan "$@"
-            ''
-          );
-        };
-
-        tf-apply = {
-          type = "app";
-          program = lib.getExe (
-            nixpkgsFor.${system}.writeShellScriptBin "tf-apply" ''
-              set -euo pipefail
-              exec ${nixpkgsFor.${system}.terraform}/bin/terraform apply "$@"
-            ''
-          );
-        };
-      });
-
       # NixOS host configurations
       nixosConfigurations = {
         # MSI GS60 Ghost Laptop
