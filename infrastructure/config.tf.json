@@ -1,0 +1,1018 @@
+{
+  "data": {
+    "google_project": {
+      "current": {}
+    },
+    "nextdns_setup_endpoint": {
+      "ribble": {
+        "profile_id": "${var.nextdns_profile_ribble}"
+      }
+    },
+    "tailscale_device": {
+      "beszel": {
+        "name": "beszel.soay-puffin.ts.net",
+        "wait_for": "10s"
+      },
+      "cache": {
+        "name": "cache.soay-puffin.ts.net",
+        "wait_for": "10s"
+      },
+      "doms-pixel-9": {
+        "name": "doms-pixel-9.soay-puffin.ts.net",
+        "wait_for": "10s"
+      },
+      "frigate": {
+        "name": "frigate.soay-puffin.ts.net",
+        "wait_for": "10s"
+      },
+      "ghost-gs60": {
+        "name": "ghost-gs60.soay-puffin.ts.net"
+      },
+      "idp": {
+        "name": "idp.soay-puffin.ts.net"
+      },
+      "immich": {
+        "name": "immich.soay-puffin.ts.net"
+      },
+      "jellyfin": {
+        "name": "jellyfin.soay-puffin.ts.net"
+      },
+      "latitude-7390": {
+        "name": "latitude-7390.soay-puffin.ts.net"
+      },
+      "silverbullet": {
+        "name": "silverbullet.soay-puffin.ts.net"
+      },
+      "steamdeck": {
+        "name": "steamdeck.soay-puffin.ts.net"
+      },
+      "steammachine": {
+        "name": "steammachine.soay-puffin.ts.net"
+      },
+      "transmission": {
+        "name": "transmission.soay-puffin.ts.net"
+      }
+    },
+    "tailscale_users": {
+      "all-users": {}
+    }
+  },
+  "import": [
+    {
+      "id": "${var.cloudflare_zone_id}",
+      "to": "cloudflare_zone.domain"
+    }
+  ],
+  "output": {
+    "dominicegginton_bucket": {
+      "description": "GCS Bucket name for dominicegginton",
+      "value": "${google_storage_bucket.dominicegginton.name}"
+    },
+    "frigate_backup_key": {
+      "description": "GCP Service Account Key for Frigate backup (base64 encoded)",
+      "sensitive": true,
+      "value": "${google_service_account_key.frigate_backup.private_key}"
+    },
+    "gcp_logging_key": {
+      "description": "GCP Service Account Key for Vector Cloud Logging (base64 encoded)",
+      "sensitive": true,
+      "value": "${google_service_account_key.gcp_logging.private_key}"
+    },
+    "gcp_project_id": {
+      "description": "GCP Project ID",
+      "value": "${google_project_service.iam.project}"
+    },
+    "immich_backup_key": {
+      "description": "GCP Service Account Key for Immich backup (base64 encoded)",
+      "sensitive": true,
+      "value": "${google_service_account_key.immich_backup.private_key}"
+    },
+    "silverbullet_backup_key": {
+      "description": "GCP Service Account Key for SilverBullet backup (base64 encoded)",
+      "sensitive": true,
+      "value": "${google_service_account_key.silverbullet_backup.private_key}"
+    },
+    "terraform_backend_bucket": {
+      "description": "GCS Bucket name for Terraform remote backend",
+      "value": "${google_storage_bucket.terraform_remote_backend.name}"
+    }
+  },
+  "provider": {
+    "cloudflare": {
+      "api_token": "${var.cloudflare_api_token}"
+    },
+    "google": {
+      "billing_project": "dominicegginton-personal",
+      "project": "dominicegginton-personal",
+      "region": "europe-west2",
+      "user_project_override": true
+    },
+    "nextdns": {
+      "api_key": "${var.nextdns_api_token}"
+    },
+    "tailscale": {
+      "api_key": "${var.tailscale_api_key}",
+      "tailnet": "${var.tailscale_tailnet}"
+    }
+  },
+  "resource": {
+    "cloudflare_dns_record": {
+      "apex_a_c627c996": {
+        "comment": "Firebase",
+        "content": "199.36.158.100",
+        "name": "dominicegginton.dev",
+        "proxied": true,
+        "ttl": 1,
+        "type": "A",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "apex_mx_3bc8a442": {
+        "content": "route3.mx.cloudflare.net",
+        "name": "dominicegginton.dev",
+        "priority": 92,
+        "proxied": false,
+        "ttl": 1,
+        "type": "MX",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "apex_mx_86bb5e93": {
+        "content": "route2.mx.cloudflare.net",
+        "name": "dominicegginton.dev",
+        "priority": 91,
+        "proxied": false,
+        "ttl": 1,
+        "type": "MX",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "apex_mx_b57fff93": {
+        "content": "route1.mx.cloudflare.net",
+        "name": "dominicegginton.dev",
+        "priority": 33,
+        "proxied": false,
+        "ttl": 1,
+        "type": "MX",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "apex_txt_0443df3f": {
+        "content": "hosting-site=dominicegginton-dev",
+        "name": "dominicegginton.dev",
+        "proxied": false,
+        "ttl": 1,
+        "type": "TXT",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "apex_txt_d2e973be": {
+        "content": "\"v=spf1 include:_spf.mx.cloudflare.net ~all\"",
+        "name": "dominicegginton.dev",
+        "proxied": false,
+        "ttl": 1,
+        "type": "TXT",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "apex_txt_eb201ba6": {
+        "content": "\"google-site-verification=S1BTH47J5buEQEAP9Y1y68xTm-0Qe8KMSygydP2U2-4\"",
+        "name": "dominicegginton.dev",
+        "proxied": false,
+        "ttl": 1,
+        "type": "TXT",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "cf2024_1_domainkey_apex_txt_674fb19b": {
+        "content": "\"v=DKIM1; h=sha256; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiweykoi+o48IOGuP7GR3X0MOExCUDY/BCRHoWBnh3rChl7WhdyCxW3jgq1daEjPPqoi7sJvdg5hEQVsgVRQP4DcnQDVjGMbASQtrY4WmB1VebF+RPJB2ECPsEDTpeiI5ZyUAwJaVX7r6bznU67g7LvFq35yIo4sdlmtZGV+i0H4cpYH9+3JJ78k\" \"m4KXwaf9xUJCWF6nxeD+qG6Fyruw1Qlbds2r85U9dkNDVAS3gioCvELryh1TxKGiVTkg4wqHTyHfWsp7KD3WQHYJn0RyfJJu6YEmL77zonn7p2SRMvTMP3ZEXibnC9gz3nnhR6wcYL8Q7zXypKTMD58bTixDSJwIDAQAB\"",
+        "name": "cf2024-1._domainkey.dominicegginton.dev",
+        "proxied": false,
+        "ttl": 1,
+        "type": "TXT",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "discord_apex_txt_d087ef02": {
+        "content": "\"dh=3c906a7b54763145faf924a3b5542390cbd3f109\"",
+        "name": "_discord.dominicegginton.dev",
+        "proxied": false,
+        "ttl": 1,
+        "type": "TXT",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "dmarc_apex_txt_67f4a4c5": {
+        "content": "v=DMARC1; p=reject; sp=reject; adkim=s; aspf=s; rua=mailto:290ed8f266a8446e869b16b262582586@dmarc-reports.cloudflare.net,mailto:dominic.egginton@gmail.com",
+        "name": "_dmarc.dominicegginton.dev",
+        "proxied": false,
+        "ttl": 1,
+        "type": "TXT",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "wildcard_domainkey_apex_txt_a7bb20d8": {
+        "content": "v=DKIM1; p=",
+        "name": "*._domainkey.dominicegginton.dev",
+        "proxied": false,
+        "ttl": 1,
+        "type": "TXT",
+        "zone_id": "${var.cloudflare_zone_id}"
+      },
+      "www_apex_a_57eb3ee3": {
+        "comment": "Firebase",
+        "content": "199.36.158.100",
+        "name": "www.dominicegginton.dev",
+        "proxied": true,
+        "ttl": 1,
+        "type": "A",
+        "zone_id": "${var.cloudflare_zone_id}"
+      }
+    },
+    "cloudflare_zone": {
+      "domain": {
+        "account": {
+          "id": "${var.cloudflare_account_id}"
+        },
+        "name": "dominicegginton.dev"
+      }
+    },
+    "google_billing_budget": {
+      "budget": {
+        "amount": {
+          "specified_amount": {
+            "currency_code": "GBP",
+            "units": "10"
+          }
+        },
+        "billing_account": "${var.gcp_billing_account_id}",
+        "budget_filter": {
+          "credit_types_treatment": "INCLUDE_ALL_CREDITS",
+          "projects": [
+            "projects/${data.google_project.current.number}"
+          ]
+        },
+        "count": "${var.gcp_billing_account_id != \"\" && var.gcp_billing_account_id != null ? 1 : 0}",
+        "depends_on": [
+          "google_project_service.billingbudgets"
+        ],
+        "display_name": "GCP Project Budget Alert",
+        "threshold_rules": [
+          {
+            "spend_basis": "CURRENT_SPEND",
+            "threshold_percent": 0.5
+          },
+          {
+            "spend_basis": "CURRENT_SPEND",
+            "threshold_percent": 0.9
+          },
+          {
+            "spend_basis": "CURRENT_SPEND",
+            "threshold_percent": 1.0
+          },
+          {
+            "spend_basis": "FORECASTED_SPEND",
+            "threshold_percent": 1.0
+          }
+        ]
+      }
+    },
+    "google_project_iam_member": {
+      "gcp_logging_writer": {
+        "member": "serviceAccount:${google_service_account.gcp_logging.email}",
+        "project": "dominicegginton-personal",
+        "role": "roles/logging.logWriter"
+      }
+    },
+    "google_project_service": {
+      "billingbudgets": {
+        "project": "dominicegginton-personal",
+        "service": "billingbudgets.googleapis.com"
+      },
+      "iam": {
+        "project": "dominicegginton-personal",
+        "service": "iam.googleapis.com"
+      },
+      "iamcredentials": {
+        "project": "dominicegginton-personal",
+        "service": "iamcredentials.googleapis.com"
+      },
+      "logging": {
+        "project": "dominicegginton-personal",
+        "service": "logging.googleapis.com"
+      },
+      "secretmanager": {
+        "project": "dominicegginton-personal",
+        "service": "secretmanager.googleapis.com"
+      }
+    },
+    "google_secret_manager_secret": {
+      "tailscale_api_key": {
+        "depends_on": [
+          "google_project_service.secretmanager"
+        ],
+        "replication": {
+          "auto": {}
+        },
+        "secret_id": "secretspec-dominicegginton-personal-default-TF_VAR_tailscale_api_key"
+      },
+      "tailscale_tailnet": {
+        "depends_on": [
+          "google_project_service.secretmanager"
+        ],
+        "replication": {
+          "auto": {}
+        },
+        "secret_id": "secretspec-dominicegginton-personal-default-TF_VAR_tailscale_tailnet"
+      }
+    },
+    "google_service_account": {
+      "frigate_backup": {
+        "account_id": "frigate-backup",
+        "display_name": "Frigate Backup Service Account"
+      },
+      "gcp_logging": {
+        "account_id": "vector-gcp-logging",
+        "display_name": "Vector GCP Cloud Logging Service Account"
+      },
+      "immich_backup": {
+        "account_id": "immich-backup",
+        "display_name": "Immich Backup Service Account"
+      },
+      "silverbullet_backup": {
+        "account_id": "silverbullet-backup",
+        "display_name": "Silverbullet Backup Service Account"
+      },
+      "tailscale_logstream": {
+        "account_id": "tailscale-logstream",
+        "display_name": "Tailscale Logstream Service Account"
+      }
+    },
+    "google_service_account_key": {
+      "frigate_backup": {
+        "service_account_id": "${google_service_account.frigate_backup.name}"
+      },
+      "gcp_logging": {
+        "service_account_id": "${google_service_account.gcp_logging.name}"
+      },
+      "immich_backup": {
+        "service_account_id": "${google_service_account.immich_backup.name}"
+      },
+      "silverbullet_backup": {
+        "service_account_id": "${google_service_account.silverbullet_backup.name}"
+      },
+      "tailscale_logstream": {
+        "service_account_id": "${google_service_account.tailscale_logstream.name}"
+      }
+    },
+    "google_storage_bucket": {
+      "dominicegginton": {
+        "force_destroy": false,
+        "location": "EUROPE-WEST2",
+        "name": "dominicegginton",
+        "public_access_prevention": "enforced",
+        "retention_policy": {
+          "is_locked": false,
+          "retention_period": 2592000
+        },
+        "soft_delete_policy": {
+          "retention_duration_seconds": 604800
+        },
+        "uniform_bucket_level_access": true,
+        "versioning": {
+          "enabled": true
+        }
+      },
+      "frigate_backup": {
+        "force_destroy": false,
+        "lifecycle_rule": [
+          {
+            "action": {
+              "type": "Delete"
+            },
+            "condition": {
+              "days_since_noncurrent_time": 30
+            }
+          }
+        ],
+        "location": "EUROPE-WEST2",
+        "name": "frigate-backup-${random_id.terraform_remote_backend.hex}",
+        "public_access_prevention": "enforced",
+        "retention_policy": {
+          "is_locked": false,
+          "retention_period": 2592000
+        },
+        "soft_delete_policy": {
+          "retention_duration_seconds": 604800
+        },
+        "uniform_bucket_level_access": true,
+        "versioning": {
+          "enabled": true
+        }
+      },
+      "immich_backup": {
+        "force_destroy": false,
+        "lifecycle_rule": [
+          {
+            "action": {
+              "type": "Delete"
+            },
+            "condition": {
+              "days_since_noncurrent_time": 30
+            }
+          }
+        ],
+        "location": "EUROPE-WEST2",
+        "name": "immich-backup-${random_id.terraform_remote_backend.hex}",
+        "public_access_prevention": "enforced",
+        "retention_policy": {
+          "is_locked": false,
+          "retention_period": 2592000
+        },
+        "soft_delete_policy": {
+          "retention_duration_seconds": 604800
+        },
+        "uniform_bucket_level_access": true,
+        "versioning": {
+          "enabled": true
+        }
+      },
+      "silverbullet_backup": {
+        "force_destroy": false,
+        "lifecycle_rule": [
+          {
+            "action": {
+              "type": "Delete"
+            },
+            "condition": {
+              "days_since_noncurrent_time": 30
+            }
+          }
+        ],
+        "location": "EUROPE-WEST2",
+        "name": "silverbullet-backup-${random_id.terraform_remote_backend.hex}",
+        "public_access_prevention": "enforced",
+        "retention_policy": {
+          "is_locked": false,
+          "retention_period": 2592000
+        },
+        "soft_delete_policy": {
+          "retention_duration_seconds": 604800
+        },
+        "uniform_bucket_level_access": true,
+        "versioning": {
+          "enabled": true
+        }
+      },
+      "tailscale_logs": {
+        "force_destroy": false,
+        "location": "EUROPE-WEST2",
+        "name": "tailscale-logs-${random_id.terraform_remote_backend.hex}",
+        "public_access_prevention": "enforced",
+        "uniform_bucket_level_access": true,
+        "versioning": {
+          "enabled": true
+        }
+      },
+      "terraform_remote_backend": {
+        "force_destroy": false,
+        "location": "EUROPE-WEST2",
+        "name": "${random_id.terraform_remote_backend.hex}-terraform-remote-backend",
+        "public_access_prevention": "enforced",
+        "uniform_bucket_level_access": true,
+        "versioning": {
+          "enabled": true
+        }
+      }
+    },
+    "google_storage_bucket_iam_member": {
+      "frigate_backup": {
+        "bucket": "${google_storage_bucket.frigate_backup.name}",
+        "member": "serviceAccount:${google_service_account.frigate_backup.email}",
+        "role": "roles/storage.objectAdmin"
+      },
+      "immich_backup": {
+        "bucket": "${google_storage_bucket.immich_backup.name}",
+        "member": "serviceAccount:${google_service_account.immich_backup.email}",
+        "role": "roles/storage.objectAdmin"
+      },
+      "silverbullet_backup": {
+        "bucket": "${google_storage_bucket.silverbullet_backup.name}",
+        "member": "serviceAccount:${google_service_account.silverbullet_backup.email}",
+        "role": "roles/storage.objectAdmin"
+      },
+      "tailscale_logstream": {
+        "bucket": "${google_storage_bucket.tailscale_logs.name}",
+        "member": "serviceAccount:${google_service_account.tailscale_logstream.email}",
+        "role": "roles/storage.objectAdmin"
+      }
+    },
+    "nextdns_allowlist": {
+      "quandon": {
+        "domain": [
+          {
+            "active": true,
+            "id": "analytics.google.com"
+          },
+          {
+            "active": true,
+            "id": "arup.com"
+          },
+          {
+            "active": true,
+            "id": "azure.com"
+          },
+          {
+            "active": true,
+            "id": "azurestaticapps.net"
+          },
+          {
+            "active": true,
+            "id": "dell.com"
+          },
+          {
+            "active": true,
+            "id": "qa.com"
+          },
+          {
+            "active": true,
+            "id": "reolink.com"
+          },
+          {
+            "active": true,
+            "id": "suunto.com"
+          }
+        ],
+        "profile_id": "${var.nextdns_profile_quandon}"
+      },
+      "ribble": {
+        "domain": [
+          {
+            "active": true,
+            "id": "analytics.google.com"
+          },
+          {
+            "active": true,
+            "id": "arup.com"
+          },
+          {
+            "active": true,
+            "id": "azure.com"
+          },
+          {
+            "active": true,
+            "id": "azurestaticapps.net"
+          },
+          {
+            "active": true,
+            "id": "reolink.com"
+          },
+          {
+            "active": true,
+            "id": "suunto.com"
+          }
+        ],
+        "profile_id": "${var.nextdns_profile_ribble}"
+      }
+    },
+    "nextdns_parental_control": {
+      "quandon": {
+        "block_bypass": false,
+        "profile_id": "${var.nextdns_profile_quandon}",
+        "recreation": {
+          "timezone": ""
+        },
+        "safe_search": false,
+        "youtube_restricted_mode": false
+      },
+      "ribble": {
+        "block_bypass": false,
+        "profile_id": "${var.nextdns_profile_ribble}",
+        "recreation": {
+          "timezone": ""
+        },
+        "safe_search": false,
+        "youtube_restricted_mode": false
+      }
+    },
+    "nextdns_privacy": {
+      "quandon": {
+        "allow_affiliate": true,
+        "blocklists": [],
+        "disguised_trackers": false,
+        "natives": [],
+        "profile_id": "${var.nextdns_profile_quandon}"
+      },
+      "ribble": {
+        "allow_affiliate": false,
+        "blocklists": [
+          "nextdns-recommended",
+          "adguard-dns-filter",
+          "oisd"
+        ],
+        "disguised_trackers": true,
+        "natives": [],
+        "profile_id": "${var.nextdns_profile_ribble}"
+      }
+    },
+    "nextdns_profile": {
+      "quandon": {
+        "name": "quandon"
+      },
+      "ribble": {
+        "name": "Ribble"
+      }
+    },
+    "nextdns_security": {
+      "quandon": {
+        "ai_threat_detection": false,
+        "crypto_jacking": false,
+        "csam": false,
+        "ddns": false,
+        "dga": false,
+        "dns_rebinding": false,
+        "google_safe_browsing": false,
+        "idn_homographs": false,
+        "nrd": false,
+        "parking": false,
+        "profile_id": "${var.nextdns_profile_quandon}",
+        "threat_intelligence_feeds": false,
+        "tlds": [],
+        "typo_squatting": false
+      },
+      "ribble": {
+        "ai_threat_detection": true,
+        "crypto_jacking": true,
+        "csam": true,
+        "ddns": true,
+        "dga": true,
+        "dns_rebinding": true,
+        "google_safe_browsing": true,
+        "idn_homographs": true,
+        "nrd": true,
+        "parking": true,
+        "profile_id": "${var.nextdns_profile_ribble}",
+        "threat_intelligence_feeds": true,
+        "tlds": [],
+        "typo_squatting": true
+      }
+    },
+    "nextdns_settings": {
+      "quandon": {
+        "block_page": {
+          "enabled": true
+        },
+        "logs": {
+          "enabled": true,
+          "location": "eu",
+          "privacy": {
+            "log_clients_ip": true,
+            "log_domains": true
+          },
+          "retention": "3 months"
+        },
+        "performance": {
+          "cache_boost": false,
+          "cname_flattening": false,
+          "ecs": false
+        },
+        "profile_id": "${var.nextdns_profile_quandon}",
+        "web3": true
+      },
+      "ribble": {
+        "block_page": {
+          "enabled": true
+        },
+        "logs": {
+          "enabled": true,
+          "location": "eu",
+          "privacy": {
+            "log_clients_ip": true,
+            "log_domains": true
+          },
+          "retention": "3 months"
+        },
+        "performance": {
+          "cache_boost": true,
+          "cname_flattening": true,
+          "ecs": true
+        },
+        "profile_id": "${var.nextdns_profile_ribble}",
+        "web3": true
+      }
+    },
+    "random_id": {
+      "terraform_remote_backend": {
+        "byte_length": 8
+      }
+    },
+    "tailscale_acl": {
+      "acl": {
+        "acl": "{\n  \"grants\": [\n    {\n      \"src\": [\"tag:ldap-client\"],\n      \"dst\": [\"tag:service-dit0\"],\n      \"ip\":  [\"3269\"],\n      \"app\": {\"dominicegginton.dev/cap/tsdit0\": [{\"allow_bind\": true}]}\n    },\n\n    {\n      \"src\": [\"dominic.egginton@gmail.com\"],\n      \"dst\": [\"tag:service-dit0\"],\n      \"ip\":  [\"*\"],\n\n      \"app\": {\n        \"dominicegginton.dev/cap/tsdit0\": [\n          {\n            \"allow_admin_ui\": true,\n            \"allow_bind\":     true,\n            \"allow_ui\":       true\n          }\n        ]\n      }\n    },\n\n    {\n      \"src\": [\"dominic.egginton@gmail.com\"],\n      \"dst\": [\"tag:service-idp\"],\n      \"ip\":  [\"*\"],\n      \"app\": {\n        \"tailscale.com/cap/tsidp\": [\n          {\n            \"allow_admin_ui\":    true,\n            \"allow_dcr\":         true,\n            \"extraClaims\":       {\"immich_role\": \"admin\"},\n            \"includeInUserInfo\": true,\n            \"resources\":         [\"*\"],\n            \"users\":             [\"*\"]\n          }\n        ]\n      }\n    },\n\n    {\n      \"src\": [\"*\"],\n      \"dst\": [\"tag:service-idp\"],\n      \"ip\":  [\"*\"]\n    },\n\n    {\n      \"src\": [\"dominic.egginton@gmail.com\", \"tag:device-latitude-7390\"],\n      \"dst\": [\"tag:service-frigate\"],\n      \"ip\":  [\"tcp:443\"]\n    },\n\n    {\n      \"src\": [\"dominic.egginton@gmail.com\", \"tag:device-latitude-7390\"],\n      \"dst\": [\"autogroup:tagged\"],\n      \"ip\":  [\"tcp:22\"]\n    },\n\n    {\n      \"src\": [\"dominic.egginton@gmail.com\", \"tag:device-latitude-7390\"],\n      \"dst\": [\"tag:service-silverbullet\"],\n      \"ip\":  [\"tcp:443\"]\n    },\n\n    {\n      \"src\": [\"*\"],\n      \"dst\": [\"tag:service-immich\"],\n      \"ip\":  [\"*\"]\n    },\n\n    {\n      \"src\": [\"*\"],\n      \"dst\": [\"tag:service-cache\"],\n      \"ip\":  [\"*\"]\n    },\n\n    {\n      \"src\": [\"tag:device-latitude-7390\"],\n      \"dst\": [\"tag:service-jellyfin\"],\n      \"ip\":  [\"*\"]\n    },\n\n    {\n      \"src\": [\"tag:beszel-hub\", \"tag:beszel-agent\"],\n      \"dst\": [\"tag:beszel-hub\", \"tag:beszel-agent\"],\n      \"ip\":  [\"*\"]\n    },\n\n    {\n      \"src\": [\"dominic.egginton@gmail.com\", \"tag:device-latitude-7390\"],\n      \"dst\": [\"tag:service-beszel\"],\n      \"ip\":  [\"*\"]\n    },\n\n    {\n      \"src\": [\"*\"],\n      \"dst\": [\"*\"],\n      \"ip\":  [\"*\"]\n    },\n\n    {\n      \"src\": [\"tag:device-latitude-7390\", \"dominic.egginton@gmail.com\"],\n      \"dst\": [\"tag:service-transmission\"],\n      \"ip\":  [\"*\"]\n    }\n  ],\n\n  \"postures\": {\n    \"posture:device-posture\": [\n      \"node:tsVersion >= '1.98.0'\",\n      \"node:osVersion >= '6.18.0'\",\n      \"node:tsStateEncrypted == true\",\n      \"node:tsReleaseTrack == 'stable'\"\n    ]\n  },\n\n  \"tagOwners\": {\n    \"tag:device-ghost-gs60\":    [],\n    \"tag:device-latitude-7390\": [],\n    \"tag:device-steamdeck\":     [],\n    \"tag:device-steammachine\":  [],\n    \"tag:ldap-client\":          [],\n    \"tag:service-idp\":          [],\n    \"tag:service-dit0\":         [],\n    \"tag:service-immich\":       [],\n    \"tag:immich-user\":          [],\n    \"tag:service-silverbullet\": [],\n    \"tag:service-frigate\":      [],\n    \"tag:service-beszel\":       [],\n    \"tag:service-jellyfin\":     [],\n    \"tag:service-cache\":        [],\n    \"tag:beszel-agent\":         [],\n    \"tag:beszel-hub\":           [],\n    \"tag:service-transmission\": []\n  },\n\n  \"ssh\": [\n    {\n      \"src\": [\n        \"tag:device-latitude-7390\",\n        \"dominic.egginton@gmail.com\",\n        \"tag:service-beszel\"\n      ],\n      \"dst\":    [\"autogroup:tagged\"],\n      \"users\":  [\"autogroup:nonroot\", \"root\"],\n      \"action\": \"accept\"\n    }\n  ],\n\n  \"autoApprovers\": {\"exitNode\": []},\n\n  \"nodeAttrs\": [\n    {\n      \"target\": [\"dominic.egginton@gmail.com\"],\n      \"app\": {\n        \"dominicegginton.dev/cap/tsdit0\": [\n          {\n            \"allow_bind\": true,\n\n            \"posix_groups\": [\n              {\n                \"gidNumber\": 1,\n                \"name\":      \"wheel\"\n              }\n            ]\n          }\n        ]\n      }\n    },\n\n    {\n      \"target\": [\"tag:service-idp\", \"tag:service-immich\", \"tag:service-jellyfin\"],\n      \"attr\":   [\"funnel\"]\n    }\n  ]\n}\n",
+        "overwrite_existing_content": true
+      }
+    },
+    "tailscale_contacts": {
+      "contacts": {
+        "account": {
+          "email": "dominic.egginton@gmail.com"
+        },
+        "security": {
+          "email": "dominic.egginton@gmail.com"
+        },
+        "support": {
+          "email": "dominic.egginton@gmail.com"
+        }
+      }
+    },
+    "tailscale_device_authorization": {
+      "beszel": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.beszel.node_id}"
+      },
+      "cache": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.cache.node_id}"
+      },
+      "doms-pixel-9": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.doms-pixel-9.node_id}"
+      },
+      "frigate": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.frigate.node_id}"
+      },
+      "ghost-gs60": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.ghost-gs60.node_id}"
+      },
+      "idp": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.idp.node_id}"
+      },
+      "immich": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.immich.node_id}"
+      },
+      "jellyfin": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.jellyfin.node_id}"
+      },
+      "latitude-7390": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.latitude-7390.node_id}"
+      },
+      "silverbullet": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.silverbullet.node_id}"
+      },
+      "steamdeck": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.steamdeck.node_id}"
+      },
+      "steammachine": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.steammachine.node_id}"
+      },
+      "transmission": {
+        "authorized": true,
+        "device_id": "${data.tailscale_device.transmission.node_id}"
+      }
+    },
+    "tailscale_device_tags": {
+      "beszel": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.beszel.node_id}",
+        "tags": [
+          "tag:service-beszel"
+        ]
+      },
+      "cache": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.cache.node_id}",
+        "tags": [
+          "tag:service-cache"
+        ]
+      },
+      "doms-pixel-9": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.doms-pixel-9.node_id}",
+        "tags": []
+      },
+      "frigate": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.frigate.node_id}",
+        "tags": [
+          "tag:service-frigate"
+        ]
+      },
+      "ghost-gs60": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.ghost-gs60.node_id}",
+        "tags": [
+          "tag:device-ghost-gs60"
+        ]
+      },
+      "idp": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.idp.node_id}",
+        "tags": [
+          "tag:service-idp"
+        ]
+      },
+      "immich": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.immich.node_id}",
+        "tags": [
+          "tag:service-immich"
+        ]
+      },
+      "jellyfin": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.jellyfin.node_id}",
+        "tags": [
+          "tag:service-jellyfin"
+        ]
+      },
+      "latitude-7390": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.latitude-7390.node_id}",
+        "tags": [
+          "tag:device-latitude-7390"
+        ]
+      },
+      "silverbullet": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.silverbullet.node_id}",
+        "tags": [
+          "tag:service-silverbullet"
+        ]
+      },
+      "steamdeck": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.steamdeck.node_id}",
+        "tags": [
+          "tag:device-steamdeck"
+        ]
+      },
+      "steammachine": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.steammachine.node_id}",
+        "tags": [
+          "tag:device-steammachine"
+        ]
+      },
+      "transmission": {
+        "depends_on": [
+          "tailscale_acl.acl"
+        ],
+        "device_id": "${data.tailscale_device.transmission.node_id}",
+        "tags": [
+          "tag:service-transmission"
+        ]
+      }
+    },
+    "tailscale_dns_configuration": {
+      "dns_configuration": {
+        "magic_dns": true,
+        "nameservers": [
+          {
+            "address": "${data.nextdns_setup_endpoint.ribble.ipv6[0]}",
+            "use_with_exit_node": true
+          },
+          {
+            "address": "${data.nextdns_setup_endpoint.ribble.ipv6[1]}",
+            "use_with_exit_node": true
+          }
+        ],
+        "override_local_dns": true,
+        "search_paths": []
+      }
+    },
+    "tailscale_logstream_configuration": {
+      "gcs_logstream": {
+        "destination_type": "gcs",
+        "gcs_bucket": "${google_storage_bucket.tailscale_logs.name}",
+        "gcs_credentials": "${base64decode(google_service_account_key.tailscale_logstream.private_key)}",
+        "gcs_scopes": [
+          "https://www.googleapis.com/auth/devstorage.read_write"
+        ],
+        "lifecycle": {
+          "ignore_changes": [
+            "gcs_credentials"
+          ]
+        },
+        "log_type": "configuration"
+      }
+    },
+    "tailscale_tailnet_settings": {
+      "settings": {
+        "acls_externally_managed_on": false,
+        "devices_approval_on": true,
+        "devices_auto_updates_on": true,
+        "devices_key_duration_days": 5,
+        "https_enabled": true,
+        "users_approval_on": true,
+        "users_role_allowed_to_join_external_tailnet": "member"
+      }
+    }
+  },
+  "terraform": {
+    "backend": {
+      "gcs": {
+        "bucket": "66ea520add6c51fb-terraform-remote-backend"
+      }
+    },
+    "required_providers": {
+      "cloudflare": {
+        "source": "cloudflare/cloudflare",
+        "version": ">= 4.0.0"
+      },
+      "google": {
+        "source": "hashicorp/google",
+        "version": ">= 4.0.0"
+      },
+      "local": {
+        "source": "hashicorp/local",
+        "version": ">= 2.0.0"
+      },
+      "nextdns": {
+        "source": "carbans/nextdns",
+        "version": "0.2.2"
+      },
+      "random": {
+        "source": "hashicorp/random",
+        "version": ">= 3.0.0"
+      },
+      "tailscale": {
+        "source": "tailscale/tailscale",
+        "version": ">= 0.17.0"
+      }
+    }
+  },
+  "variable": {
+    "cloudflare_account_id": {
+      "description": "The Cloudflare Account ID",
+      "sensitive": true,
+      "type": "string"
+    },
+    "cloudflare_api_token": {
+      "description": "The Cloudflare API Token",
+      "sensitive": true,
+      "type": "string"
+    },
+    "cloudflare_zone_id": {
+      "description": "The Cloudflare Zone ID for dominicegginton.dev",
+      "type": "string"
+    },
+    "gcp_billing_account_id": {
+      "default": "",
+      "description": "The GCP Billing Account ID",
+      "sensitive": true,
+      "type": "string"
+    },
+    "gcp_project_id": {
+      "default": "dominicegginton-personal",
+      "description": "GCP Project ID",
+      "type": "string"
+    },
+    "nextdns_api_token": {
+      "description": "The NextDNS API Token",
+      "sensitive": true,
+      "type": "string"
+    },
+    "nextdns_profile_quandon": {
+      "description": "The NextDNS Profile ID for Quandon",
+      "type": "string"
+    },
+    "nextdns_profile_ribble": {
+      "description": "The NextDNS Profile ID for Ribble",
+      "type": "string"
+    },
+    "tailscale_api_key": {
+      "description": "The API key for Tailscale",
+      "sensitive": true,
+      "type": "string"
+    },
+    "tailscale_tailnet": {
+      "default": "soay-puffin.ts.net",
+      "description": "The Tailscale tailnet to connect to",
+      "sensitive": true,
+      "type": "string"
+    }
+  }
+}
