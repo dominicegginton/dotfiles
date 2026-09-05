@@ -48,6 +48,10 @@
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Terranix for Nix-based Terraform infrastructure management
+    terranix.url = "github:terranix/terranix";
+    terranix.inputs.nixpkgs.follows = "nixpkgs";
+
     # Theming system following the Base16 architecture
     base16.url = "github:SenchoPens/base16.nix";
 
@@ -289,6 +293,13 @@
       packages = forAllSystems (
         system:
         {
+          # Terranix evaluated Terraform JSON configuration
+          terranix-config = self.inputs.terranix.lib.terranixConfiguration {
+            inherit system;
+            pkgs = nixpkgsFor.${system};
+            modules = [ ./infrastructure ];
+          };
+
           # Network topology diagram
           topology =
             (import self.inputs.nix-topology {
@@ -308,7 +319,44 @@
 
       # Development shells for various tasks
       devShells = forAllSystems (system: {
-        default = nixpkgsFor.${system}.callPackage ./shell.nix { };
+        default = nixpkgsFor.${system}.callPackage ./shell.nix {
+          terranix = self.inputs.terranix;
+        };
+      });
+
+      # Terranix Flake Apps (nix run .#tf-plan, nix run .#tf-apply, etc.)
+      apps = forAllSystems (system: {
+        default = self.outputs.apps.${system}.tf-plan;
+
+        tf-init = {
+          type = "app";
+          program = lib.getExe (
+            nixpkgsFor.${system}.writeShellScriptBin "tf-init" ''
+              set -euo pipefail
+              exec ${self.outputs.devShells.${system}.default.nativeBuildInputs or ""}/bin/terraform init "$@"
+            ''
+          );
+        };
+
+        tf-plan = {
+          type = "app";
+          program = lib.getExe (
+            nixpkgsFor.${system}.writeShellScriptBin "tf-plan" ''
+              set -euo pipefail
+              exec ${nixpkgsFor.${system}.terraform}/bin/terraform plan "$@"
+            ''
+          );
+        };
+
+        tf-apply = {
+          type = "app";
+          program = lib.getExe (
+            nixpkgsFor.${system}.writeShellScriptBin "tf-apply" ''
+              set -euo pipefail
+              exec ${nixpkgsFor.${system}.terraform}/bin/terraform apply "$@"
+            ''
+          );
+        };
       });
 
       # NixOS host configurations

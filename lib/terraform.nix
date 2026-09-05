@@ -21,6 +21,7 @@ rec {
   # Standardized set of Terraform provider plugins used in this repository
   defaultProviders = [
     "hashicorp_google"
+    "hashicorp_local"
     "hashicorp_random"
     "tailscale_tailscale"
     "cloudflare_cloudflare"
@@ -45,12 +46,17 @@ rec {
     {
       package,
       providers ? [ ],
+      writeRequiredProviders ? false,
     }:
 
     let
       filename = "versions.tf.json";
 
-      packageWithProviders = package.withPlugins (p: map (name: p.${name}) providers);
+      packageWithProviders =
+        if providers != [ ] then
+          package.withPlugins (p: map (name: if builtins.isString name then p.${name} else name) providers)
+        else
+          package;
 
       mainProgram = package.meta.mainProgram or "terraform";
       version = lib.pipe package [
@@ -59,11 +65,14 @@ rec {
         builtins.head
       ];
 
-      useDependencyLockfile = providers != [ ] && lib.versionAtLeast version "0.14.0";
+      useDependencyLockfile =
+        writeRequiredProviders && providers != [ ] && lib.versionAtLeast version "0.14.0";
 
       config = {
         terraform = {
           required_version = version;
+        }
+        // lib.optionalAttrs (writeRequiredProviders && providers != [ ]) {
           required_providers = lib.listToAttrs (
             map (
               name:
@@ -127,16 +136,16 @@ rec {
 
     let
       mainProgram = package.meta.mainProgram or "terraform";
-      packageWithProviders = package.withPlugins (p: map (name: p.${name}) providers);
+      packageWithProviders =
+        if providers != [ ] then
+          package.withPlugins (p: map (name: if builtins.isString name then p.${name} else name) providers)
+        else
+          package;
     in
 
     symlinkJoin {
       name = "${name}-tf";
-      paths = [
-        # Add versions file
-        (writeTerraformVersions { inherit providers package; })
-      ]
-      ++ paths;
+      inherit paths;
 
       postBuild =
         let
@@ -150,7 +159,7 @@ rec {
                 fi
               ''
               "--run"
-              ''dir="$(${coreutils}/bin/readlink -f "''${0%/*}/..")"''
+              ''dir="''${TF_ROOT_DIR:-$PWD}"''
               "--run"
               ''export TF_DATA_DIR="''${TF_DATA_DIR:-''${TMPDIR:-/tmp}/.terraform-''${dir##*/}}"''
             ]
@@ -159,20 +168,20 @@ rec {
               preCommand
             ]
             ++ (
-              if lib.versionAtLeast (lib.getVersion package) "0.15.0" then
+              if lib.versionAtLeast (lib.getVersion package) "0.15.0" && providers != [ ] then
                 [
                   "--prefix"
                   "TF_CLI_ARGS_init"
                   " "
-                  "-lockfile=readonly"
-                  "--add-flags"
-                  ''-chdir="$dir"''
+                  "-plugin-dir=${packageWithProviders}/libexec/terraform-providers"
                 ]
-              else
+              else if !(lib.versionAtLeast (lib.getVersion package) "0.15.0") then
                 [
                   "--run"
                   ''cd "$dir"''
                 ]
+              else
+                [ ]
             )
           );
         in
