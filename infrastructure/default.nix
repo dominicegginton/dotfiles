@@ -26,6 +26,18 @@
         description = "GCP Billing Account ID";
       };
 
+      adminEmail = lib.mkOption {
+        type = lib.types.str;
+        default = "dominic.egginton@gmail.com";
+        description = "Admin email address for notification channels";
+      };
+
+      notificationChannels = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+        description = "Additional GCP Monitoring Notification Channel IDs or names (e.g. mobile app channels)";
+      };
+
       backendBucket = lib.mkOption {
         type = lib.types.str;
         default = "66ea520add6c51fb-terraform-remote-backend";

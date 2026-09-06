@@ -12,7 +12,6 @@ let
     jq
     makeWrapper
     symlinkJoin
-    coreutils
     terraform
     ;
 in

@@ -37,8 +37,6 @@ let
     modules = [ ./infrastructure ];
   };
 
-  terranixCli = terranix.packages.${pkgs.system}.default or pkgs.terranix or null;
-
   terraformWithTerranix = pkgs.writeShellScriptBin "terraform" ''
     set -euo pipefail
 

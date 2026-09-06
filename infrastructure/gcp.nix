@@ -30,6 +30,11 @@ in
         service = "logging.googleapis.com";
       };
 
+      monitoring = {
+        project = gcp.projectId;
+        service = "monitoring.googleapis.com";
+      };
+
       billingbudgets = {
         project = gcp.projectId;
         service = "billingbudgets.googleapis.com";
@@ -302,6 +307,44 @@ in
       ];
 
       depends_on = [ "google_project_service.billingbudgets" ];
+    };
+
+    google_monitoring_notification_channel = {
+      email_admin = {
+        project = gcp.projectId;
+        display_name = "Admin Email Notification Channel";
+        type = "email";
+        labels = {
+          email_address = gcp.adminEmail;
+        };
+        depends_on = [ "google_project_service.monitoring" ];
+      };
+    };
+
+    google_monitoring_alert_policy = {
+      high_severity_logs = {
+        project = gcp.projectId;
+        display_name = "High Severity Log Alert";
+        combiner = "OR";
+        notification_channels = [
+          "\${google_monitoring_notification_channel.email_admin.name}"
+        ]
+        ++ gcp.notificationChannels;
+        conditions = [
+          {
+            display_name = "High severity log entry detected (ERROR, CRITICAL, ALERT, or EMERGENCY)";
+            condition_matched_log = {
+              filter = ''resource.type="global" AND logName="projects/${gcp.projectId}/logs/journald" AND severity >= ERROR'';
+            };
+          }
+        ];
+        alert_strategy = {
+          notification_rate_limit = {
+            period = "300s"; # 5 minute rate limit between notifications
+          };
+        };
+        depends_on = [ "google_project_service.monitoring" ];
+      };
     };
   };
 

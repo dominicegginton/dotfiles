@@ -80,6 +80,28 @@ in
             inputs = [ "journald" ];
             source = ''
               .hostname = "${config.networking.hostName}"
+
+              # Map journald PRIORITY (syslog 0-7) to GCP severity strings
+              p = to_int(.PRIORITY) ?? 6
+              if p == 0 {
+                .severity = "EMERGENCY"
+              } else if p == 1 {
+                .severity = "ALERT"
+              } else if p == 2 {
+                .severity = "CRITICAL"
+              } else if p == 3 {
+                .severity = "ERROR"
+              } else if p == 4 {
+                .severity = "WARNING"
+              } else if p == 5 {
+                .severity = "NOTICE"
+              } else if p == 6 {
+                .severity = "INFO"
+              } else if p == 7 {
+                .severity = "DEBUG"
+              } else {
+                .severity = "DEFAULT"
+              }
             '';
           };
         };

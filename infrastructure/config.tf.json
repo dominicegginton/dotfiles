@@ -267,6 +267,45 @@
         ]
       }
     },
+    "google_monitoring_alert_policy": {
+      "high_severity_logs": {
+        "alert_strategy": {
+          "notification_rate_limit": {
+            "period": "300s"
+          }
+        },
+        "combiner": "OR",
+        "conditions": [
+          {
+            "condition_matched_log": {
+              "filter": "resource.type=\"global\" AND logName=\"projects/dominicegginton-personal/logs/journald\" AND severity >= ERROR"
+            },
+            "display_name": "High severity log entry detected (ERROR, CRITICAL, ALERT, or EMERGENCY)"
+          }
+        ],
+        "depends_on": [
+          "google_project_service.monitoring"
+        ],
+        "display_name": "High Severity Log Alert",
+        "notification_channels": [
+          "${google_monitoring_notification_channel.email_admin.name}"
+        ],
+        "project": "dominicegginton-personal"
+      }
+    },
+    "google_monitoring_notification_channel": {
+      "email_admin": {
+        "depends_on": [
+          "google_project_service.monitoring"
+        ],
+        "display_name": "Admin Email Notification Channel",
+        "labels": {
+          "email_address": "dominic.egginton@gmail.com"
+        },
+        "project": "dominicegginton-personal",
+        "type": "email"
+      }
+    },
     "google_project_iam_member": {
       "gcp_logging_writer": {
         "member": "serviceAccount:${google_service_account.gcp_logging.email}",
@@ -290,6 +329,10 @@
       "logging": {
         "project": "dominicegginton-personal",
         "service": "logging.googleapis.com"
+      },
+      "monitoring": {
+        "project": "dominicegginton-personal",
+        "service": "monitoring.googleapis.com"
       },
       "secretmanager": {
         "project": "dominicegginton-personal",
