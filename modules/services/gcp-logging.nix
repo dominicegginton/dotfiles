@@ -43,14 +43,23 @@ in
     };
     users.groups.vector = { };
 
-    systemd.services.vector.serviceConfig = {
-      User = "vector";
-      Group = "vector";
-      DynamicUser = lib.mkForce false;
-    };
-
-    systemd.services.vector.environment = {
-      SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+    systemd.services.vector = {
+      wants = [
+        "sops-nix.service"
+        "network-online.target"
+      ];
+      after = [
+        "sops-nix.service"
+        "network-online.target"
+      ];
+      serviceConfig = {
+        User = "vector";
+        Group = "vector";
+        DynamicUser = lib.mkForce false;
+      };
+      environment = {
+        SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";
+      };
     };
 
     environment.persistence."/persist".directories =
@@ -83,6 +92,13 @@ in
 
               # Map journald PRIORITY (syslog 0-7) to GCP severity strings
               p = to_int(.PRIORITY) ?? 6
+
+              # Linux kernel audit logs (_TRANSPORT = "audit") default to PRIORITY 0 in journald,
+              # which would incorrectly map to EMERGENCY. Map audit logs to INFO (6).
+              if ._TRANSPORT == "audit" || .SYSLOG_IDENTIFIER == "audit" || exists(._AUDIT_TYPE) {
+                p = 6
+              }
+
               if p == 0 {
                 .severity = "EMERGENCY"
               } else if p == 1 {
@@ -113,6 +129,7 @@ in
             project_id = cfg.projectId;
             log_id = cfg.logId;
             credentials_path = cfg.credentialsFile;
+            severity_key = "severity";
             resource = {
               type = "global";
             };

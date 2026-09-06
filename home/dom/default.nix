@@ -258,6 +258,7 @@
             # aseprite
             # krita
             rnote
+            delfin
           ]
       );
 

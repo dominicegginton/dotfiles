@@ -69,6 +69,7 @@ in
             {
               owner = "vector";
               group = "vector";
+              restartUnits = [ "vector.service" ];
             }
           else
             null;
