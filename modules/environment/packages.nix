@@ -13,6 +13,8 @@
       clamav # Antivirus engine for detecting trojans, viruses, malware
       curl # Command line tool for transferring data with URLs
       git # Distributed version control system
+      git-lfs # Git extension for versioning large files
+      gitleaks # Static analysis tool for detecting secrets in git repositories
       gnupg # GNU Privacy Guard for encryption and signing
       nix-gc-dangling-links # Utility to clean up dangling symlinks in the Nix store
       nix-output-monitor # Monitor and colorize Nix build output

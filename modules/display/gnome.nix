@@ -268,10 +268,9 @@ with lib;
     xdg.mime.enable = mkDefault true;
     xdg.icons.enable = mkDefault true;
     xdg.portal.enable = mkDefault true;
-    xdg.portal.extraPortals = with pkgs; [
-      xdg-desktop-portal-gnome
-      xdg-desktop-portal-gtk
-    ];
+    # extraPortals is set by services.desktopManager.gnome (nixpkgs); do not
+    # override here — a duplicate xdg-desktop-portal-gnome entry causes dbus-broker
+    # "Ignoring duplicate name" errors at session start.
 
     # Gnome portals requires Gnome session
     xdg.portal.configPackages = mkDefault [ pkgs.gnome-session ];

@@ -1,6 +1,7 @@
 {
   lib,
   platform,
+  pkgs,
   ...
 }:
 
@@ -11,6 +12,11 @@
   # Enable WSL compatibility
   wsl.enable = true;
   environment.sessionVariables.VSCODE_SKIP_SERVER_REQUIREMENTS_CHECK = "1";
+
+  # Install Cursor CLI
+  environment.systemPackages = [
+    pkgs.cursor-cli
+  ];
 
   # Enable Docker integration
   virtualisation.docker.enable = true;

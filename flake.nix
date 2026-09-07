@@ -118,6 +118,7 @@
         "YouTube_full_color_icon_2017.svg"
         "aseprite"
         "bws"
+        "cursor-cli"
         "cudatoolkit"
         "cuda-merged"
         "cuda_cuobjdump"

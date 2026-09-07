@@ -6,6 +6,8 @@
   nix,
   nix-output-monitor,
   deadnix,
+  gitleaks,
+  git-lfs,
   statix,
   nix-diff,
   nix-tree,
@@ -80,6 +82,8 @@ mkShell rec {
     nix-output-monitor
     deadnix
     statix
+    gitleaks
+    git-lfs
     nix-diff
     nix-tree
     nix-health
