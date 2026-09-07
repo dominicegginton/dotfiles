@@ -5,10 +5,14 @@
   ...
 }:
 
+let
+  cfg = config.programs.sherlock-launcher;
+in
+
 {
   options.programs.sherlock-launcher.enable = lib.mkEnableOption "Sherlock Launcher";
 
-  config.environment = lib.mkIf config.programs.sherlock-launcher.enable {
+  config.environment = lib.mkIf cfg.enable {
     systemPackages = [ pkgs.sherlock-launcher ];
     etc = {
       "sherlock-launcher/config.toml".text = ''

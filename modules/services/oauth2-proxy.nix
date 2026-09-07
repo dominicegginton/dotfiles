@@ -6,6 +6,10 @@
 
 with lib;
 
+let
+  cfg = config.services.oauth2-proxy-custom;
+in
+
 {
   options.services.oauth2-proxy-custom = {
     enable = mkEnableOption "OAuth2 Proxy Custom Wrapper";
@@ -75,33 +79,29 @@ with lib;
     };
   };
 
-  config = mkIf config.services.oauth2-proxy-custom.enable {
+  config = mkIf cfg.enable {
     services.oauth2-proxy = {
       enable = true;
-      httpAddress = "127.0.0.1:${toString config.services.oauth2-proxy-custom.port}";
-      upstream = [ config.services.oauth2-proxy-custom.upstream ];
+      httpAddress = "127.0.0.1:${toString cfg.port}";
+      upstream = [ cfg.upstream ];
       provider = "oidc";
-      oidcIssuerUrl = config.services.oauth2-proxy-custom.oidcIssuerUrl;
-      clientID = config.services.oauth2-proxy-custom.oidcClientId;
-      clientSecretFile = config.services.oauth2-proxy-custom.oidcClientSecretFile;
-      redirectURL = config.services.oauth2-proxy-custom.oidcRedirectUrl;
-      scope = builtins.concatStringsSep " " config.services.oauth2-proxy-custom.oidcScopes;
-      cookie.secretFile = config.services.oauth2-proxy-custom.cookieSecretFile;
+      oidcIssuerUrl = cfg.oidcIssuerUrl;
+      clientID = cfg.oidcClientId;
+      clientSecretFile = cfg.oidcClientSecretFile;
+      redirectURL = cfg.oidcRedirectUrl;
+      scope = builtins.concatStringsSep " " cfg.oidcScopes;
+      cookie.secretFile = cfg.cookieSecretFile;
 
       extraConfig =
-        lib.mkIf config.services.oauth2-proxy-custom.jwtUpstreamEnable {
+        lib.mkIf cfg.jwtUpstreamEnable {
           "--set-xauthrequest" = "true";
-          "--upstream-header" = "${config.services.oauth2-proxy-custom.jwtUpstreamHeader}:${
-            config.sops.secrets."${lib.last (
-              lib.splitString "/" config.services.oauth2-proxy-custom.jwtUpstreamSecretFile
-            )}".path
+          "--upstream-header" = "${cfg.jwtUpstreamHeader}:${
+            config.sops.secrets."${lib.last (lib.splitString "/" cfg.jwtUpstreamSecretFile)}".path
           }";
-          "--jwt-session-header" = "${config.services.oauth2-proxy-custom.jwtUpstreamHeader}";
+          "--jwt-session-header" = "${cfg.jwtUpstreamHeader}";
           "--jwt-session-cookie-name" = "_oauth2_proxy_jwt";
           "--jwt-session-secret" =
-            config.sops.secrets."${lib.last (
-              lib.splitString "/" config.services.oauth2-proxy-custom.jwtUpstreamSecretFile
-            )}".path;
+            config.sops.secrets."${lib.last (lib.splitString "/" cfg.jwtUpstreamSecretFile)}".path;
         }
         // {
           # Add any other generic extra config here

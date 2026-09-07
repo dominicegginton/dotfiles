@@ -5,8 +5,12 @@
   ...
 }:
 
+let
+  cfg = config.services.frigate;
+in
+
 {
-  config = lib.mkIf config.services.frigate.enable {
+  config = lib.mkIf cfg.enable {
     assertions = [
       {
         assertion = config.services.tailscale.enable;
@@ -45,6 +49,11 @@
       wantedBy = [ "frigate.service" ];
       wants = [ "frigate.service" ];
     };
+
+    # Persistent storage for Frigate recordings and database
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      "/var/lib/frigate"
+    ];
 
     topology.self = {
       interfaces.tsnsrv-frigate = {

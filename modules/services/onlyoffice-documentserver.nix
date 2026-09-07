@@ -7,6 +7,10 @@
 
 with lib;
 
+let
+  cfg = config.services.onlyoffice-documentserver;
+in
+
 {
   options.services.onlyoffice-documentserver = {
     enable = mkEnableOption "OnlyOffice DocumentServer";
@@ -49,11 +53,11 @@ with lib;
 
   };
 
-  config = mkIf config.services.onlyoffice-documentserver.enable {
+  config = mkIf cfg.enable {
     services.onlyoffice = {
       enable = true;
-      inherit (config.services.onlyoffice-documentserver) hostname port jwtSecretFile;
-      securityNonceFile = "${config.services.onlyoffice-documentserver.securityNonceFile}";
+      inherit (cfg) hostname port jwtSecretFile;
+      securityNonceFile = "${cfg.securityNonceFile}";
 
       # You might need to configure these based on your setup
       # postgresHost = "...";

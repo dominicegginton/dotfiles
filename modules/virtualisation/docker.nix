@@ -5,8 +5,12 @@
   ...
 }:
 
+let
+  cfg = config.virtualisation.docker;
+in
+
 {
-  config = lib.mkIf config.virtualisation.docker.enable {
+  config = lib.mkIf cfg.enable {
     environment = {
       persistence."/persist".directories = lib.mkIf config.impermanence.enable [ "/var/lib/docker" ];
       systemPackages = with pkgs; [ docker ];

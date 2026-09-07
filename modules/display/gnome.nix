@@ -22,9 +22,11 @@ let
     favorite-apps=[ 'org.gnome.Epiphany.desktop', 'org.gnome.Geary.desktop', 'org.gnome.Calendar.desktop', 'org.gnome.Music.desktop', 'org.gnome.Nautilus.desktop' ]
   '';
 
+  cfg = config.display.gnome;
+
   # Gnome settings overrides
   nixos-gsettings-desktop-schemas = pkgs.gnome.nixos-gsettings-overrides.override {
-    inherit (config.display.gnome)
+    inherit (cfg)
       extraGSettingsOverrides
       extraGSettingsOverridePackages
       favoriteAppsOverride
@@ -122,12 +124,12 @@ let
   };
 
   extensions = with pkgs.gnomeExtensions; [
-    all-in-one-clipboard # All-in-One Clipboard Extension
-    intelli-extension # Intelli Extension
-    lock-guard # Lock Guard - Enhanced lock screen security
-    rounded-window-corners-reborn # Rounded Window Corners Reborn
-    solar-theme-switcher # Solar sunrise/sunset theme switcher
-    vscode-search-provider # VSCode Search Provider Extension
+    # all-in-one-clipboard # All-in-One Clipboard Extension
+    # intelli-extension # Intelli Extension
+    # lock-guard # Lock Guard - Enhanced lock screen security
+    # rounded-window-corners-reborn # Rounded Window Corners Reborn
+    # solar-theme-switcher # Solar sunrise/sunset theme switcher
+    # vscode-search-provider # VSCode Search Provider Extension
   ];
 
   uuid =
@@ -145,7 +147,11 @@ let
     development-tools = false;
     disable-extension-change = true;
     disable-user-extensions = true;
-    enabled-extensions = lib.map extensionUuid extensions;
+    enabled-extensions =
+      if extensions == [ ] then
+        lib.gvariant.mkEmptyArray lib.gvariant.type.string
+      else
+        lib.map extensionUuid extensions;
     favorite-apps = [
       "org.gnome.Epiphany.desktop"
       "org.gnome.Nautilus.desktop"
@@ -206,7 +212,7 @@ with lib;
     '';
   };
 
-  config = mkIf config.display.gnome.enable {
+  config = mkIf cfg.enable {
     system.nixos-generate-config.desktopConfiguration = [
       ''
         # Enable the GNOME Desktop Environment.

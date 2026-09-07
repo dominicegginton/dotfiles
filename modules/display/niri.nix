@@ -87,12 +87,14 @@ let
 
     wait
   '';
+
+  cfg = config.display.niri;
 in
 
 {
   options.display.niri.enable = lib.mkEnableOption "Niri";
 
-  config = lib.mkIf config.display.niri.enable (
+  config = lib.mkIf cfg.enable (
     with config.scheme.withHashtag;
     {
       # Enable hardware accelerated graphics drivers

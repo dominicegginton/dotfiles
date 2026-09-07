@@ -1,7 +1,11 @@
 { lib, config, ... }:
 
+let
+  cfg = config.programs.firefox;
+in
+
 {
-  config = lib.mkIf config.programs.firefox.enable {
+  config = lib.mkIf cfg.enable {
     programs.firefox = {
       policies = {
         # Performance and security basics
@@ -77,6 +81,11 @@
         isAllowed = true;
       };
     };
+
+    # Persistent storage for Firefox profile
+    environment.persistence."/persist".users.dom.directories = lib.mkIf config.impermanence.enable [
+      ".mozilla"
+    ];
 
     # AppArmor confinement profile for Firefox
     security.apparmor.policies."usr.bin.firefox" = lib.mkIf config.security.apparmor.enable {

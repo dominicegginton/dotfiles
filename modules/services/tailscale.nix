@@ -37,6 +37,12 @@ in
     defaults.authKeyPath = config.sops.secrets."services/tsnsrv/auth-key".path;
   };
 
+  # Persistent storage for Tailscale and tsnsrv state
+  environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+    "/var/lib/tailscale"
+    "/var/lib/tsnsrv"
+  ];
+
   environment.systemPackages = with pkgs; [ tailscale ];
 
   # Topology metadata for Tailscale interface

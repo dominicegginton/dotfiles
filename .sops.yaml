@@ -4,29 +4,36 @@ keys:
   # Host SSH keys
   - &ghost_gs60 age1w60ja93482gldvnf86707u4290pxtjfmwq6z3fnupuz4jkdhcytscujrjt
   - &latitude_7390 age102fsxz33ww9cqdh95s4yzshuvnnjq7eneczm3nctapakntc4jvzqvfr06u
-  - &steamdeck age1rgv3n294vcccf50egtfn5hal3h76z50dr58neg58vdry0zpjrgws6695sy
+  - &steamdeck age13xaal0m4k39h5d06q8cms4jx2g2y6xdlje2zqcgmxqnjyav8negs8uwtp4
+  - &steammachine age13xaal0m4k39h5d06q8cms4jx2g2y6xdlje2zqcgmxqnjyav8negs8uwtp4
 
 creation_rules:
   # 1. Global secrets (decryptable by all hosts)
   - path_regex: secrets/global\.yaml$
     key_groups:
       - pgp: [ *dom_key ]
-        age: [ *ghost_gs60, *latitude_7390, *steamdeck ]
+        age: [ *ghost_gs60, *latitude_7390, *steamdeck, *steammachine ]
 
-  # 2. ghost-gs60 specific secrets (decryptable ONLY by ghost-gs60 and you)
+  # 2. ghost-gs60 specific secrets (decryptable ONLY by ghost-gs60 and dom)
   - path_regex: secrets/hosts/ghost-gs60\.yaml$
     key_groups:
       - pgp: [ *dom_key ]
         age: [ *ghost_gs60 ]
 
-  # 3. latitude-7390 specific secrets (decryptable ONLY by latitude-7390 and you)
+  # 3. latitude-7390 specific secrets (decryptable ONLY by latitude-7390 and dom)
   - path_regex: secrets/hosts/latitude-7390\.yaml$
     key_groups:
       - pgp: [ *dom_key ]
         age: [ *latitude_7390 ]
 
-  # 4. steamdeck specific secrets (decryptable ONLY by steamdeck and you)
+  # 4. steamdeck specific secrets (decryptable ONLY by steamdeck and dom)
   - path_regex: secrets/hosts/steamdeck\.yaml$
     key_groups:
       - pgp: [ *dom_key ]
         age: [ *steamdeck ]
+
+  # 5. steammachine specific secrets (decryptable ONLY by steammachine and dom)
+  - path_regex: secrets/hosts/steammachine\.yaml$
+    key_groups:
+      - pgp: [ *dom_key ]
+        age: [ *steammachine ]

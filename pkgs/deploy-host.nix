@@ -27,6 +27,9 @@ writeShellScriptBin "deploy-host" ''
     HOSTNAME=""
     TARGET=""
 
+    BUILD_KEXEC=false
+    KEXEC_PATH=""
+
     usage() {
       cat <<'EOF'
   deploy-host - Deploy a new machine or reinstall an existing machine remotely using nixos-anywhere
@@ -41,6 +44,8 @@ writeShellScriptBin "deploy-host" ''
   OPTIONS:
     -m, --mode <mode>       Deployment mode: 'reinstall' (existing host) or 'new' (fresh machine)
     -k, --ssh-key <path>    Path to local host SSH private key (/etc/ssh/ssh_host_ed25519_key)
+    --kexec [path]          Use kexec installer tarball (builds .#infector-kexec if path omitted or 'auto')
+    --build-kexec           Build .#infector-kexec installer tarball locally before deployment
     -c, --copy-host-keys    Copy existing host SSH keys from remote target (default for reinstall)
     -g, --generate-hwconfig Generate hardware config on target and save to hosts/<hostname>-hardware.nix
     -t, --vm-test           Test build & disko partitioning inside a local QEMU VM
@@ -78,6 +83,23 @@ writeShellScriptBin "deploy-host" ''
         -k|--ssh-key)
           SSH_KEY_PATH="$2"
           shift 2
+          ;;
+        --kexec)
+          if [[ $# -gt 1 ]] && [[ "$2" != -* ]]; then
+            if [[ "$2" == "auto" ]] || [[ "$2" == "build" ]]; then
+              BUILD_KEXEC=true
+            else
+              KEXEC_PATH="$2"
+            fi
+            shift 2
+          else
+            BUILD_KEXEC=true
+            shift 1
+          fi
+          ;;
+        --build-kexec)
+          BUILD_KEXEC=true
+          shift 1
           ;;
         -c|--copy-host-keys)
           COPY_HOST_KEYS=true
@@ -303,10 +325,26 @@ writeShellScriptBin "deploy-host" ''
 
     ${getExe gum} log --level info "4. Executing nixos-anywhere..."
 
+    if [[ "''${BUILD_KEXEC}" = true ]] && [[ -z "''${KEXEC_PATH}" ]]; then
+      ${getExe gum} log --level info "Building in-place kexec installer tarball (.#infector-kexec)..."
+      KEXEC_STORE_PATH="''$(${getExe nix} build .#infector-kexec --print-out-paths)"
+      FOUND_TARBALL="''$(find "''${KEXEC_STORE_PATH}" -name "*.tar.gz" 2>/dev/null | head -n1 || true)"
+      if [[ -n "''${FOUND_TARBALL}" ]]; then
+        KEXEC_PATH="''${FOUND_TARBALL}"
+      else
+        KEXEC_PATH="''${KEXEC_STORE_PATH}"
+      fi
+      ${getExe gum} log --level info "Built kexec installer: ''${KEXEC_PATH}"
+    fi
+
     ANYWHERE_CMD=("${getExe nixos-anywhere}" "--flake" ".#''${HOSTNAME}")
 
     if [[ -d "''${EXTRA_FILES}" ]] && [[ -n "''$(ls -A "''${EXTRA_FILES}/etc/ssh")" ]]; then
       ANYWHERE_CMD+=("--extra-files" "''${EXTRA_FILES}")
+    fi
+
+    if [[ -n "''${KEXEC_PATH}" ]]; then
+      ANYWHERE_CMD+=("--kexec" "''${KEXEC_PATH}")
     fi
 
     if [[ "''${COPY_HOST_KEYS}" = true ]]; then

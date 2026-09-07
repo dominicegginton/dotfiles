@@ -88,12 +88,14 @@ let
       b = (b1 * 16 + b2) / 255.0;
     in
     "vec3(${toString r}, ${toString g}, ${toString b})";
+
+  cfg = config.display.driftwm;
 in
 
 {
   options.display.driftwm.enable = lib.mkEnableOption "DriftWM";
 
-  config = lib.mkIf config.display.driftwm.enable (
+  config = lib.mkIf cfg.enable (
     with config.scheme.withHashtag;
     {
       # Enable DriftWM NixOS module

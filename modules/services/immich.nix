@@ -5,8 +5,12 @@
   ...
 }:
 
+let
+  cfg = config.services.immich;
+in
+
 {
-  config = lib.mkIf config.services.immich.enable {
+  config = lib.mkIf cfg.enable {
     services.immich = {
       host = lib.mkDefault "127.0.0.1";
       port = lib.mkDefault 2283;
@@ -41,6 +45,12 @@
       wantedBy = [ "immich-server.service" ];
       wants = [ "immich-server.service" ];
     };
+
+    # Persistent storage for Immich media and PostgreSQL database
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      config.services.immich.mediaLocation
+      "/var/lib/postgresql"
+    ];
 
     topology.self = {
       interfaces.tsnsrv-immich = {

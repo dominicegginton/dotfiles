@@ -5,13 +5,22 @@
   ...
 }:
 
+let
+  cfg = config.services.tsidp;
+in
+
 {
-  config = lib.mkIf config.services.tsidp.enable {
+  config = lib.mkIf cfg.enable {
     services.tsidp.settings = {
       # Enable OAuth token exchange using RFC 8693
       enableSts = lib.mkDefault true;
       enableFunnel = lib.mkDefault true;
     };
+
+    # Persistent storage for Tailscale IDP database and state
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      "/var/lib/tsidp"
+    ];
 
     topology.self = {
       interfaces.tsidp = {

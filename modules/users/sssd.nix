@@ -83,6 +83,11 @@ in
     # Enable Keyboard Interactive Authentication for SSH to allow SSSD IdP flow
     services.openssh.settings.KbdInteractiveAuthentication = lib.mkForce true;
 
+    # Persistent storage for SSSD cache
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      "/var/lib/sss"
+    ];
+
     # Include SSSD utilities for debugging
     environment.systemPackages = [ pkgs.sssd ];
   };

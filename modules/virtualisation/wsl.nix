@@ -6,8 +6,12 @@
   ...
 }:
 
+let
+  cfg = config.wsl;
+in
+
 {
-  config = lib.mkIf config.wsl.enable {
+  config = lib.mkIf cfg.enable {
     # Apply the WSL overlay to add WSL-specific configurations and packages
     nixpkgs.overlays = [ self.outputs.overlays.wsl ];
 

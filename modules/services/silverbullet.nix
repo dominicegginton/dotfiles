@@ -5,8 +5,12 @@
   ...
 }:
 
+let
+  cfg = config.services.silverbullet;
+in
+
 {
-  config = lib.mkIf config.services.silverbullet.enable {
+  config = lib.mkIf cfg.enable {
     assertions = [
       {
         assertion = config.services.tailscale.enable;

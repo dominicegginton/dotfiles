@@ -6,6 +6,8 @@
 }:
 
 let
+  cfg = config.security.yubikey;
+
   isGraphical =
     config.display.gnome.enable || config.display.niri.enable || config.display.driftwm.enable;
 
@@ -36,7 +38,7 @@ in
     };
   };
 
-  config = lib.mkIf config.security.yubikey.enable {
+  config = lib.mkIf cfg.enable {
     # Enable pcscd daemon for smartcard mode (required for GPG/PIV/etc.)
     services.pcscd.enable = lib.mkDefault true;
 

@@ -6,6 +6,10 @@
   ...
 }:
 
+let
+  cfg = config.security.audit-compliance;
+in
+
 {
   options.security.audit-compliance = {
     enable = lib.mkEnableOption "system auditing, OpenSCAP, and FIPS compliance" // {
@@ -18,7 +22,7 @@
     };
   };
 
-  config = lib.mkIf config.security.audit-compliance.enable {
+  config = lib.mkIf cfg.enable {
     # Install OpenSCAP, vulnix, and standard compliance guides
     environment.systemPackages = with pkgs; [
       openscap

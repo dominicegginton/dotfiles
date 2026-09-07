@@ -5,10 +5,14 @@
   ...
 }:
 
+let
+  cfg = config.programs.alacritty;
+in
+
 {
   options.programs.alacritty.enable = lib.mkEnableOption "Alacritty terminal emulator";
 
-  config = lib.mkIf config.programs.alacritty.enable {
+  config = lib.mkIf cfg.enable {
     environment = {
       systemPackages = [ pkgs.alacritty ];
       etc."alacritty.toml".text = ''

@@ -4,8 +4,12 @@
   ...
 }:
 
+let
+  cfg = config.services.bitmagnet;
+in
+
 {
-  config = lib.mkIf config.services.bitmagnet.enable {
+  config = lib.mkIf cfg.enable {
     assertions = [
       {
         assertion = config.services.tailscale.enable;

@@ -1,7 +1,11 @@
 { lib, config, ... }:
 
+let
+  cfg = config.programs.chromium;
+in
+
 {
-  config = lib.mkIf config.programs.chromium.enable {
+  config = lib.mkIf cfg.enable {
     # Chromium privacy and behavior policies
     programs.chromium = {
       extraOpts = lib.mkDefault {
@@ -12,5 +16,10 @@
         "SpellcheckLanguage" = [ "en-UK" ];
       };
     };
+
+    # Persistent storage for Chromium profile
+    environment.persistence."/persist".users.dom.directories = lib.mkIf config.impermanence.enable [
+      ".config/chromium"
+    ];
   };
 }

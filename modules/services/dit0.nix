@@ -5,8 +5,12 @@
   ...
 }:
 
+let
+  cfg = config.services.dit0;
+in
+
 {
-  config = lib.mkIf config.services.dit0.enable {
+  config = lib.mkIf cfg.enable {
     # Directory Information Tree & LDAP Services
     services.dit0 = {
       base_dn = "dc=T2YHuJgy2121CNTRL,dc=com";

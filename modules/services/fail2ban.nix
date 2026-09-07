@@ -17,4 +17,11 @@
       };
     };
   };
+
+  # Persistent storage for Fail2ban database
+  environment.persistence."/persist".directories =
+    lib.mkIf (config.impermanence.enable && config.services.fail2ban.enable)
+      [
+        "/var/lib/fail2ban"
+      ];
 }

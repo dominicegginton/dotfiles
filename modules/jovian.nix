@@ -4,10 +4,14 @@
   ...
 }:
 
+let
+  cfg = config.jovian;
+in
+
 {
   options.jovian.enable = lib.mkEnableOption "Jovian SteamOS environment";
 
-  config = lib.mkIf config.jovian.enable {
+  config = lib.mkIf cfg.enable {
     jovian = {
       steam = {
         enable = lib.mkDefault true;

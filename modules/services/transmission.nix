@@ -5,8 +5,12 @@
   ...
 }:
 
+let
+  cfg = config.services.transmission;
+in
+
 {
-  config = lib.mkIf config.services.transmission.enable {
+  config = lib.mkIf cfg.enable {
     services.transmission.settings = {
       download-dir = "/mnt/data/transmission/Downloads";
       incomplete-dir = "/mnt/data/transmission/.incomplete";
@@ -29,6 +33,11 @@
       toURL = "http://127.0.0.1:9091";
       tags = [ "tag:service-transmission" ];
     };
+
+    # Persistent storage for Transmission state and configuration
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      "/var/lib/transmission"
+    ];
 
     topology.self = {
       interfaces.tsnsrv-transmission = {

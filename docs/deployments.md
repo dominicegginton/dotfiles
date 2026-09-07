@@ -78,9 +78,9 @@ You can install NixOS on a machine that runs Linux or SteamOS over SSH without a
    ```bash
    ssh-copy-id root@<TARGET_IP>
    ```
-3. On your workstation, run `deploy-host`:
+3. On your workstation, run `deploy-host` (pass `--build-kexec` for non-NixOS targets standard Linux distributions to automatically build and upload a kexec installer with `cpio`):
    ```bash
-   deploy-host --mode new steamdeck root@<TARGET_IP>
+   deploy-host --mode new --build-kexec steamdeck deck@<TARGET_IP>
    ```
    The `nixos-anywhere` tool uploads the installer to RAM, boots the installer, formats the NVMe drive with Disko, and installs NixOS.
 

@@ -5,6 +5,10 @@
   ...
 }:
 
+let
+  cfg = config.security.systemd-analyze;
+in
+
 {
   options.security.systemd-analyze = {
     enable = lib.mkEnableOption "systemd-analyze security reporting" // {
@@ -18,7 +22,7 @@
     };
   };
 
-  config = lib.mkIf (config.security.systemd-analyze.enable && !config.wsl.enable) {
+  config = lib.mkIf (cfg.enable && !config.wsl.enable) {
     systemd.services.systemd-security-analyze = {
       description = "Run systemd-analyze security report to journald";
       after = [ "network-online.target" ];
