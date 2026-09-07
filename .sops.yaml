@@ -4,13 +4,14 @@ keys:
   # Host SSH keys
   - &ghost_gs60 age1w60ja93482gldvnf86707u4290pxtjfmwq6z3fnupuz4jkdhcytscujrjt
   - &latitude_7390 age102fsxz33ww9cqdh95s4yzshuvnnjq7eneczm3nctapakntc4jvzqvfr06u
+  - &steamdeck age1rgv3n294vcccf50egtfn5hal3h76z50dr58neg58vdry0zpjrgws6695sy
 
 creation_rules:
   # 1. Global secrets (decryptable by all hosts)
   - path_regex: secrets/global\.yaml$
     key_groups:
       - pgp: [ *dom_key ]
-        age: [ *ghost_gs60, *latitude_7390 ]
+        age: [ *ghost_gs60, *latitude_7390, *steamdeck ]
 
   # 2. ghost-gs60 specific secrets (decryptable ONLY by ghost-gs60 and you)
   - path_regex: secrets/hosts/ghost-gs60\.yaml$
@@ -23,3 +24,9 @@ creation_rules:
     key_groups:
       - pgp: [ *dom_key ]
         age: [ *latitude_7390 ]
+
+  # 4. steamdeck specific secrets (decryptable ONLY by steamdeck and you)
+  - path_regex: secrets/hosts/steamdeck\.yaml$
+    key_groups:
+      - pgp: [ *dom_key ]
+        age: [ *steamdeck ]
