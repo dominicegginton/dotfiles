@@ -309,11 +309,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1787066149,
-        "narHash": "sha256-uJKImwjqQ6Y+5b1IN93j6rEKGRoR0CsOuC/7vqluhJM=",
+        "lastModified": 1787337984,
+        "narHash": "sha256-BNZUEVR2H96hCKENNKoLSSTFT8W4smp7v94hJc4Ehfc=",
         "owner": "niri-wm",
         "repo": "niri",
-        "rev": "e9b215fef4b11ad36776553fb8bd45118ef03b03",
+        "rev": "dd75865f547f0eac0e9b6c4d86d2cd00c0744252",
         "type": "github"
       },
       "original": {
