@@ -14,7 +14,7 @@ jobs:
   gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v2
@@ -24,21 +24,21 @@ jobs:
   flake-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
       - uses: determinatesystems/flake-checker-action@v13
 
   formatter:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
       - run: nix fmt -- --ci
 
   topology:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
       - run: nix build -L .\#packages.x86_64-linux.topology
       - uses: actions/upload-artifact@v7
@@ -53,7 +53,7 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
       - id: set-matrix
         name: Generate Nix Matrix
@@ -70,7 +70,7 @@ jobs:
       fail-fast: false
       matrix: ${{ fromJSON(needs.nix-matrix.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
@@ -92,7 +92,7 @@ jobs:
     env:
       WORKSTATION_HOSTNAME: "MCCLT5CG53030HM"
     steps:
-      - uses: actions/checkout@v7.0.1
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
         with:
           free-disk-space: true
