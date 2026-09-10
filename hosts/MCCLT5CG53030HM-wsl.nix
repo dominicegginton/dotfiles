@@ -1,6 +1,7 @@
 {
   lib,
   platform,
+  pkgs,
   ...
 }:
 
@@ -12,9 +13,17 @@
   # Set host platform
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
+  environment.systemPackages = with pkgs; [
+    cursor-cli
+    jetbrains.gateway
+    nodejs
+    typescript
+  ];
+
   # Enable WSL compatibility
   wsl = {
     enable = true;
+    defaultUser = "dom";
     nvidia.enable = true;
     wrappedShell.enable = false;
   };

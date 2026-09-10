@@ -20,6 +20,10 @@ in
     }
 
     (lib.mkIf (config.wsl.enable && cfg.enable) {
+      environment.sessionVariables = {
+        VSCODE_SKIP_SERVER_REQUIREMENTS_CHECK = "1";
+      };
+
       # Wrap /bin/bash with WSL shell wrapper so non-interactive bash invocations
       # (e.g. VS Code / Cursor remote server installer scripts) have PATH populated.
       wsl.extraBin =

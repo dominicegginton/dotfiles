@@ -15,23 +15,10 @@ in
     # Apply the WSL overlay to add WSL-specific configurations and packages
     nixpkgs.overlays = [ self.outputs.overlays.wsl ];
 
-    wsl = {
-      # Default user for WSL environment
-      defaultUser = "dom";
-
-      # Register binfmt_misc handler for Windows binaries (.exe)
-      interop.register = lib.mkDefault true;
-    };
-
-    environment.sessionVariables = {
-      VSCODE_SKIP_SERVER_REQUIREMENTS_CHECK = "1";
-    };
+    # Register binfmt_misc handler for Windows binaries (.exe)
+    wsl.interop.register = lib.mkDefault true;
 
     environment.systemPackages = with pkgs; [
-      cursor-cli
-      jetbrains.gateway
-      nodejs
-      typescript
       xdg-utils
       wsl-open
     ];
@@ -47,7 +34,7 @@ in
     # Enable nix-ld to run unpatched Linux binaries
     programs.nix-ld.enable = lib.mkForce true;
 
-    users.users.dom = {
+    users.users.${cfg.defaultUser} = {
       hashedPasswordFile = lib.mkForce null;
       initialPassword = "";
     };
