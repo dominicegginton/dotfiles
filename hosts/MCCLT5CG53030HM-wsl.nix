@@ -1,7 +1,6 @@
 {
   lib,
   platform,
-  pkgs,
   ...
 }:
 
@@ -11,18 +10,15 @@
 
   # Enable WSL compatibility
   wsl.enable = true;
-  environment.sessionVariables.VSCODE_SKIP_SERVER_REQUIREMENTS_CHECK = "1";
+  wsl.nvidia.enable = true;
+  wsl.wrappedShell.enable = false;
 
-  # Install Cursor CLI
-  environment.systemPackages = [
-    pkgs.cursor-cli
-  ];
-
-  # Enable Docker integration
-  virtualisation.docker.enable = true;
-
-  # Disable Tailscale on WSL as blocked by host environment
+  # Disable Tailscale on WSL by default as blocked by host environment
   services.tailscale.enable = lib.mkForce false;
+  services.tsnsrv.enable = lib.mkForce false;
+
+  # Enable containerization support via Docker
+  virtualisation.docker.enable = true;
 
   # Topology information
   topology.self.hardware.info = "Windows Subsystem for Linux - GuestOf MCCLT5CG53030HM";

@@ -112,7 +112,7 @@ rec {
     ./virtualisation/docker.nix
     ./virtualisation/vm-variant.nix
     ./virtualisation/waydroid.nix
-    ./virtualisation/wsl.nix
+    ./virtualisation/wsl
   ];
 
   # System-wide color scheme (used by Home Manager and theming modules)
