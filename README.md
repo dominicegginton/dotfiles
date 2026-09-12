@@ -3,7 +3,7 @@
 # There's no place like ~
 
 ```ocaml
-Declarative hardened amnesic nixos configuration
+Declarative - Hardened - Amnesic - Orchestrated NixOS
 ```
 
 ## Features
