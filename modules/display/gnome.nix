@@ -127,8 +127,8 @@ let
     # all-in-one-clipboard # All-in-One Clipboard Extension
     # intelli-extension # Intelli Extension
     # lock-guard # Lock Guard - Enhanced lock screen security
-    # rounded-window-corners-reborn # Rounded Window Corners Reborn
-    # solar-theme-switcher # Solar sunrise/sunset theme switcher
+    rounded-window-corners-reborn # Rounded Window Corners Reborn
+    solar-theme-switcher # Solar sunrise/sunset theme switcher
     # vscode-search-provider # VSCode Search Provider Extension
   ];
 
@@ -213,6 +213,9 @@ with lib;
   };
 
   config = mkIf cfg.enable {
+    # Desktop environments require unprivileged user namespaces for sandboxing (e.g. bubblewrap/flatpak/browsers)
+    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+
     system.nixos-generate-config.desktopConfiguration = [
       ''
         # Enable the GNOME Desktop Environment.

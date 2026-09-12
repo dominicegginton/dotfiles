@@ -1,194 +1,125 @@
 # Google Cloud Storage Backups and Restore Guide
 
-<!-- TODO: Rename backup service, restore package, and documentation files for naming consistency -->
-
-This guide describes how to do backup and restore operations for services.
-It uses Google Cloud Storage (GCS) buckets.
+This guide describes how backup and restore operations work across services using **Restic snapshots** stored in Google Cloud Storage (GCS) buckets.
 
 ---
 
-## 1. Description of the System
+## 1. System Overview
 
-The system configuration manages backups.
-The system uses the NixOS module `modules/services/gcs-backup.nix`.
+Backups are defined declaratively within each service module (e.g., `modules/services/silverbullet.nix`, `modules/services/immich.nix`, `modules/services/frigate.nix`) using standard NixOS `services.restic.backups.<service-name>` options.
 
-- **Operation**: Systemd timers (`gcs-backup-<job-name>.timer`) start systemd services (`gcs-backup-<job-name>.service`).
-- **Tool**: The system uses `gcloud storage rsync` to copy data directories to GCS.
-- **Authentication**: The system uses a Google Cloud Service Account JSON key. The file path is `/run/secrets/services/<service-name>/gcs-backup-key`.
-- **Storage**: Data directories are in the persistent `/persist` filesystem.
+- **Automated Backup Timers**: Systemd timers (`restic-backups-<service-name>.timer`) start systemd backup jobs (`restic-backups-<service-name>.service`).
+- **NixOS Generated Wrappers**: NixOS automatically builds wrapper binaries named `restic-<service-name>` on `$PATH` (`restic-silverbullet`, `restic-immich`, `restic-frigate`). These wrappers automatically export all required repository credentials (`RESTIC_REPOSITORY`, `RESTIC_PASSWORD_FILE`, `GOOGLE_APPLICATION_CREDENTIALS`, and `RESTIC_CACHE_DIR`).
+- **Authentication**: Service Account JSON keys decrypted via `sops-nix` (`/run/secrets/services/<service-name>/gcs-backup-key`).
+- **Pruning**: Automatic retention pruning (`keep-daily: 7`, `keep-weekly: 4`, `keep-monthly: 12`) runs `restic forget --prune` after every backup.
 
-### GCS Destination Paths
+### GCS Destination Repository Schema
 
-The backup script organizes files in GCS to prevent overwriting.
-It uses this path schema:
+Restic repositories are structured in GCS as:
 
 ```
-gs://<bucket-name>/<hostname>/<job-name>/<absolute-path-to-directory>
+gs:<bucket-name>:/<hostname>/<service-name>
 ```
 
-Example for the `silverbullet` service on host `ghost-gs60`:
-
-- **Source**: `/var/lib/silverbullet`
-- **GCS Destination**: `gs://<bucket-name>/ghost-gs60/silverbullet/var/lib/silverbullet/`
+Examples:
+- **Silverbullet**: `gs:silverbullet-backup-66ea520add6c51fb:/ghost-gs60/silverbullet`
+- **Immich**: `gs:immich-backup-66ea520add6c51fb:/ghost-gs60/immich`
+- **Frigate**: `gs:frigate-backup-66ea520add6c51fb:/ghost-gs60/frigate`
 
 ---
 
-## 2. Interactive Restore Tool (`gcs-restore`)
+## 2. Operations & Management
 
-Use the `gcs-restore` tool in `pkgs/gcs-restore.nix`.
-This tool does these steps:
+Using the official NixOS generated wrappers (`restic-<service>`), you can interact with any restic repository without having to manually set environment variables or passwords.
 
-1. It stops the target systemd service.
-2. It uses the decrypted `sops` key file to authenticate `gcloud`.
-3. It shows a list of hostnames from the bucket. Select one hostname.
-4. It does a dry run to show changes.
-5. It copies the backup files to the local host.
-6. It changes file ownership permissions (`chown`).
-7. It starts the systemd service.
-
-### Run the Interactive Restore Tool
-
-Open the repository shell.
-Run this command with root privileges:
+### Show Active Backup Timers
 
 ```bash
-run0 gcs-restore
+systemctl list-timers "restic-backups-*"
 ```
 
-### Script Options
-
-You can add these options to the command:
+### Start a Backup Job Manually
 
 ```bash
-run0 gcs-restore [OPTIONS]
+run0 systemctl start restic-backups-<service-name>.service
+```
 
-OPTIONS:
-  -s, --service <name>   The service name (e.g., 'silverbullet', 'immich', 'frigate')
-  -b, --bucket <gs://..> GCS bucket URI
-  -o, --old-host <name>  The source hostname of the backup
-  -d, --dir <path>       The target local directory for restore
-  -u, --user <name>      The target owner user
-  -g, --group <name>     The target owner group
-  -k, --key <path>       The path to the Service Account key file
-  --delete               Delete local files that are not in the backup
-  -y, --yes              Do the restore and do not ask for dry-run confirmation
-  -n, --dry-run          Do a dry run only and stop the script
+### View Backup Service Logs
+
+```bash
+journalctl -u restic-backups-<service-name>.service -f
 ```
 
 ---
 
-## 3. Operations and Monitoring
+## 3. Official Restore Procedures
 
-### Show Backup Timers
-
-Run this command to show all active backup timers:
-
-```bash
-systemctl list-timers "gcs-backup-*"
-```
-
-### Start a Backup Manually
-
-Run this command to start a backup immediately:
-
-```bash
-run0 systemctl start gcs-backup-<job-name>.service
-```
-
-_Note: Replace `<job-name>` with the service name (e.g., `silverbullet`, `immich`, or `frigate`)._
-
-### Show Backup Logs
-
-Run this command to show the active logs of a backup:
-
-```bash
-journalctl -u gcs-backup-<job-name>.service -f
-```
+NixOS provides pre-configured wrapper scripts (`restic-<service-name>`) for each service backup job.
 
 ---
 
-## 4. Restore Procedures (Manual Steps)
+### Procedure A: Standard Service Restore (Same Host)
 
-Use these manual steps if you do not use the `gcs-restore` tool.
+Use this procedure if local data or a database is corrupted and needs to be restored to a clean snapshot.
 
----
-
-### Procedure A: Restore to the Same Host
-
-Use this procedure if the host fails and you must restore data to the same host.
-
-#### Step 1: Deploy the Host Configuration
-
-1. Use the `deploy-host` script to install the host.
-2. The installation makes systemd services and decrypts keys.
-
-#### Step 2: Stop the Service
-
-Stop the service immediately to prevent data corruption:
+#### Step 1: Stop the Service
+Stop the target systemd service to prevent concurrent state writes:
 
 ```bash
 run0 systemctl stop <service-name>.service
 ```
 
-#### Step 3: Authenticate gcloud
-
-Use the decrypted Service Account key file to authenticate:
-
+Example:
 ```bash
-run0 gcloud auth activate-service-account --key-file=/run/secrets/services/<service-name>/gcs-backup-key
+run0 systemctl stop silverbullet.service
 ```
 
-#### Step 4: Do a Dry Run
-
-Do a dry run to verify the connection and show the changes:
+#### Step 2: List Available Snapshots
+Use the official wrapper to query the repository:
 
 ```bash
-run0 gcloud storage rsync -r -n \
-  "gs://<bucket-name>/<hostname>/<job-name><dir>" \
-  "<dir>"
+run0 restic-<service-name> snapshots
 ```
 
-Example for the `silverbullet` service on host `ghost-gs60`:
-
+Example:
 ```bash
-run0 gcloud storage rsync -r -n \
-  "gs://<bucket-name>/ghost-gs60/silverbullet/var/lib/silverbullet" \
-  "/var/lib/silverbullet"
+run0 restic-silverbullet snapshots
 ```
 
-#### Step 5: Do the Restore
-
-Run this command to copy the files from GCS:
+#### Step 3: Inspect Snapshot Contents (Optional)
+Check the files in a specific snapshot ID or `latest`:
 
 ```bash
-run0 gcloud storage rsync -r \
-  "gs://<bucket-name>/<hostname>/<job-name><dir>" \
-  "<dir>"
+run0 restic-<service-name> ls latest
 ```
 
-#### Step 6: Change File Ownership
-
-Change the owner and group of the files to match the service user:
+#### Step 4: Perform the Restore
+Restore files directly to disk:
 
 ```bash
-run0 chown -R <service-user>:<service-group> "<dir>"
+run0 restic-<service-name> restore latest --target /
+```
+
+Example:
+```bash
+run0 restic-silverbullet restore latest --target /
+```
+
+#### Step 5: Fix File Ownership
+Ensure restored files match the system service user/group permissions:
+
+```bash
+run0 chown -R <service-user>:<service-group> /var/lib/<service-name>
 ```
 
 Examples:
-
 ```bash
-# Silverbullet
 run0 chown -R silverbullet:silverbullet /var/lib/silverbullet
-
-# Immich
 run0 chown -R immich:immich /var/lib/immich
-
-# Frigate
 run0 chown -R frigate:frigate /var/lib/frigate
 ```
 
-#### Step 7: Start the Service and Check Logs
-
+#### Step 6: Start the Service and Verify
 Start the service and check the logs:
 
 ```bash
@@ -198,100 +129,57 @@ journalctl -u <service-name>.service -f
 
 ---
 
-### Procedure B: Move a Service to a Different Host
+### Procedure B: FUSE Mount (Inspect or Selective Restore)
 
-Use this procedure to move a service from a source host (e.g., `ghost-gs60`) to a target host (e.g., `latitude-7390`).
+You can mount the restic snapshot repository as a read-only FUSE directory to browse or copy specific files interactively:
 
-#### Step 1: Stop the Service on the Source Host
+```bash
+# 1. Create a mount target
+mkdir -p /tmp/restic-mount
 
-Stop the service on the source host to prevent new writes:
+# 2. Mount repository
+run0 restic-<service-name> mount /tmp/restic-mount
 
+# 3. Browse files in another terminal / shell
+ls -la /tmp/restic-mount/snapshots/latest/
+
+# 4. Unmount when finished
+fusermount -u /tmp/restic-mount
+```
+
+---
+
+### Procedure C: Restoring Backup to a New Host
+
+When moving a service or restoring onto a new machine (where the source host name in the GCS path differs):
+
+#### Step 1: Stop the Target Service on New Host
 ```bash
 run0 systemctl stop <service-name>.service
 ```
 
-#### Step 2: Start a Backup on the Source Host
-
-Run a manual backup to copy the latest files to GCS:
+#### Step 2: Run Restore Overriding the Source Repository Path
+Override the `RESTIC_REPOSITORY` environment variable to point to the source hostname:
 
 ```bash
-run0 systemctl start gcs-backup-<job-name>.service
+run0 env GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/services/<service-name>/gcs-backup-key \
+  RESTIC_REPOSITORY="gs:<bucket-name>:/<source-hostname>/<service-name>" \
+  RESTIC_PASSWORD_FILE=/run/secrets/services/<service-name>/gcs-backup-key \
+  restic restore latest --target /
 ```
 
-#### Step 3: Change the Repository Configuration
-
-1. Open the repository in VS Code.
-2. Remove the service from the source host file (e.g., `hosts/ghost-gs60.nix`).
-3. Add the service to the target host file (e.g., `hosts/latitude-7390.nix`).
-4. Edit the sops secrets file for the target host:
-   ```bash
-   sops secrets/hosts/<target-hostname>.yaml
-   ```
-   _Note: Paste the correct `gcs-backup-key` into this file._
-5. Commit and push the changes.
-
-#### Step 4: Deploy the Target Host
-
-Deploy the configuration to the target host:
-
+Example (moving `silverbullet` from `ghost-gs60` to `latitude-7390`):
 ```bash
-deploy-host
+run0 env GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/services/silverbullet/gcs-backup-key \
+  RESTIC_REPOSITORY="gs:silverbullet-backup-66ea520add6c51fb:/ghost-gs60/silverbullet" \
+  RESTIC_PASSWORD_FILE=/run/secrets/services/silverbullet/gcs-backup-key \
+  restic restore latest --target /
 ```
 
-#### Step 5: Stop the Service on the Target Host
-
-Stop the service on the target host:
-
+#### Step 3: Apply Ownership and Start Service
 ```bash
-run0 systemctl stop <service-name>.service
-```
-
-#### Step 6: Copy Files from the Source Host Path
-
-Authenticate and copy files from GCS. Use the source hostname in the GCS path:
-
-```bash
-# 1. Authenticate with the target host key file
-run0 gcloud auth activate-service-account --key-file=/run/secrets/services/<service-name>/gcs-backup-key
-
-# 2. Copy the files
-run0 gcloud storage rsync -r \
-  "gs://<bucket-name>/<source-hostname>/<job-name><dir>" \
-  "<dir>"
-```
-
-Example to move `silverbullet` from `ghost-gs60` to `latitude-7390`:
-
-```bash
-run0 gcloud storage rsync -r \
-  "gs://<bucket-name>/ghost-gs60/silverbullet/var/lib/silverbullet" \
-  "/var/lib/silverbullet"
-```
-
-#### Step 7: Change File Ownership
-
-Change the owner and group of the files to match the service user on the target host:
-
-```bash
-run0 chown -R <service-user>:<service-group> "<dir>"
-```
-
-#### Step 8: Start the Service and Check Logs
-
-Start the service on the target host and check the logs:
-
-```bash
+run0 chown -R <service-user>:<service-group> /var/lib/<service-name>
 run0 systemctl start <service-name>.service
-journalctl -u <service-name>.service -f
 ```
 
-#### Step 9: Start a New Backup
 
-Start a manual backup on the target host. This makes a new backup path in GCS with the target hostname:
-
-```bash
-run0 systemctl start gcs-backup-<job-name>.service
-```
-
-Future backups will now automatically run on their timers and upload to:
-`gs://<bucket-name>/<new-hostname>/<job-name><dir>`

@@ -43,6 +43,9 @@ in
         # Systemd Service Hardening
         NoNewPrivileges = true;
         PrivateTmp = true;
+        PrivateDevices = true;
+        PrivateMounts = true;
+        PrivateNetwork = true;
         ProtectClock = true;
         ProtectControlGroups = true;
         ProtectHome = true;
@@ -51,11 +54,23 @@ in
         ProtectKernelModules = true;
         ProtectKernelTunables = true;
         ProtectSystem = "strict";
+        ProtectProc = "invisible";
+        ProcSubset = "pid";
+        LockPersonality = true;
+        MemoryDenyWriteExecute = true;
         RestrictRealtime = true;
         RestrictSUIDSGID = true;
         RestrictNamespaces = true;
-        LockPersonality = true;
         SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@privileged"
+          "~@resources"
+        ];
+        CapabilityBoundingSet = "";
+        RestrictAddressFamilies = [ "AF_UNIX" ];
+        KeyringMode = "private";
+        UMask = "0077";
       };
     };
 

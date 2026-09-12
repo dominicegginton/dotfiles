@@ -34,3 +34,23 @@ run0 nix-store --gc
 # Deduplicate identical files across the Nix store
 run0 nix-store --optimise
 ```
+
+## 4. Handling Proprietary / EULA Prefetch Packages (DisplayLink)
+
+Certain proprietary packages (such as `displaylink`) are subject to strict End User License Agreements (EULAs) that prevent NixOS from redistributing the binary output on public substituter caches.
+
+When building a system with `hardware.displaylink.enable = true`, `nixos-rebuild` will fail if the zip payload is not already in the Nix store.
+
+### Prefetching the DisplayLink Binary
+
+If `nixos-rebuild` fails with `Cannot build ... displaylink-*.zip.drv`:
+
+```bash
+# Prefetch the DisplayLink driver archive into the local Nix store
+nix-prefetch-url --name displaylink-620.zip https://www.synaptics.com/sites/default/files/exe_files/2025-09/DisplayLink%20USB%20Graphics%20Software%20for%20Ubuntu6.2-EXE.zip
+```
+
+Once prefetched, rerun `sudo nixos-rebuild switch --flake .` to complete system activation.
+
+> **Note**: If DisplayLink USB graphics adapters/docks are not used (e.g. using native USB-C DisplayPort Alt Mode), `hardware.displaylink.enable = false` can be configured in the host config to avoid manual prefetching.
+

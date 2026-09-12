@@ -123,5 +123,41 @@ in
     environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
       "/var/lib/oauth2-proxy"
     ];
+
+    systemd.services.oauth2-proxy.serviceConfig = {
+      NoNewPrivileges = true;
+      PrivateTmp = true;
+      PrivateDevices = true;
+      PrivateMounts = true;
+      ProtectClock = true;
+      ProtectControlGroups = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectSystem = "strict";
+      ProtectProc = "invisible";
+      ProcSubset = "pid";
+      LockPersonality = true;
+      MemoryDenyWriteExecute = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      RestrictNamespaces = true;
+      SystemCallArchitectures = "native";
+      SystemCallFilter = [
+        "@system-service"
+        "~@privileged"
+        "~@resources"
+      ];
+      RestrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_UNIX"
+      ];
+      CapabilityBoundingSet = "";
+      KeyringMode = "private";
+      UMask = "0077";
+    };
   };
 }

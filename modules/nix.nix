@@ -15,6 +15,10 @@ in
     # Pin the Nix package version for reproducibility
     package = lib.mkForce pkgs.nix;
 
+    # Lower daemon scheduling priority so background builds do not starve system services
+    daemonCPUSchedPolicy = lib.mkForce "idle";
+    daemonIOSchedClass = lib.mkForce "idle";
+
     # Enable automatic garbage collection (GC)
     gc = {
       automatic = lib.mkForce true; # Always enable GC

@@ -98,6 +98,9 @@ in
   config = lib.mkIf cfg.enable (
     with config.scheme.withHashtag;
     {
+      # Desktop environments require unprivileged user namespaces for sandboxing (e.g. bubblewrap/flatpak/browsers)
+      boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+
       # Enable DriftWM NixOS module
       programs.driftwm.enable = true;
 
@@ -130,6 +133,20 @@ in
       systemd.user.services.driftwm = {
         environment = {
           DRIFTWM_CONFIG = "/etc/driftwm/config.toml";
+        };
+        serviceConfig = {
+          NoNewPrivileges = true;
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          LockPersonality = true;
+          RestrictRealtime = true;
+          RestrictSUIDSGID = true;
+          SystemCallArchitectures = "native";
+          UMask = "0077";
         };
       };
 

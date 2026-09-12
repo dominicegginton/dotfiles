@@ -25,7 +25,6 @@
   deploy-host,
   burn-infector,
   gpg-import-bucket,
-  gcs-restore,
   ...
 }:
 
@@ -101,7 +100,6 @@ mkShell rec {
     deploy-host
     burn-infector
     gpg-import-bucket
-    gcs-restore
   ];
 
   # Maintainer info for shell.nix

@@ -49,6 +49,7 @@ lib.nixosSystem {
       # dit0.nixosModules.default
       driftwm.nixosModules.default
       jovian.nixosModules.default
+      velvet.nixosModules.default
       ../modules
       ../hosts/${hostname}.nix
     ]

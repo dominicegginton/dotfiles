@@ -74,6 +74,9 @@
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
     jovian.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Velvet — a TV-first Wayland compositor and OS shell
+    velvet.url = "git+https://github.com/dominicegginton/velvet.git";
+    velvet.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # Flake configuration for nix commands
@@ -120,6 +123,7 @@
         "bws"
         "cursor-cli"
         "cudatoolkit"
+        "displaylink"
         "cuda-merged"
         "cuda_cuobjdump"
         "cuda_gdb"
@@ -208,6 +212,7 @@
             nix-topology.overlays.default
             nix-topology.overlays.topology
             run0-sudo-shim.overlays.default
+            velvet.overlays.default
             self.outputs.overlays.default
             self.outputs.overlays.withSbom
           ];

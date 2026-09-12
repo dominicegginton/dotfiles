@@ -53,6 +53,9 @@
     # Restrict loading TTY line disciplines to prevent unprivileged exploits
     "dev.tty.ldisc_autoload" = lib.mkDefault 0;
 
+    # Restrict unprivileged user namespaces by default to minimize kernel attack surface (overridden by containers/desktops)
+    "user.max_user_namespaces" = lib.mkOptionDefault 0;
+
     # Restrict userfaultfd() syscall to prevent use-after-free heap exploits
     "vm.unprivileged_userfaultfd" = lib.mkDefault 0;
 
@@ -203,7 +206,6 @@
   # Harden kernel security by default
   security.lockKernelModules = lib.mkDefault true;
   security.protectKernelImage = lib.mkDefault true;
-  security.unprivilegedUsernsClone = lib.mkDefault true;
 
   # Global environment variables to enforce FIPS mode for compliant runtimes (OpenSSL, Go, etc.)
   environment.variables = lib.mkIf (!config.wsl.enable) {

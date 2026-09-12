@@ -53,6 +53,38 @@
             "${pkgs.nvidia-docker}/bin/nvidia-ctk cdi generate"
             + " --output=/etc/cdi/nvidia.yaml"
             + " --nvidia-ctk-path=${pkgs.nvidia-container-toolkit}/bin/nvidia-ctk";
+
+          NoNewPrivileges = true;
+          PrivateTmp = true;
+          PrivateDevices = true;
+          PrivateMounts = true;
+          PrivateNetwork = true;
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHome = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          ProtectSystem = "strict";
+          ProtectProc = "invisible";
+          ProcSubset = "pid";
+          LockPersonality = true;
+          MemoryDenyWriteExecute = true;
+          RestrictRealtime = true;
+          RestrictSUIDSGID = true;
+          RestrictNamespaces = true;
+          SystemCallArchitectures = "native";
+          SystemCallFilter = [
+            "@system-service"
+            "~@privileged"
+            "~@resources"
+          ];
+          CapabilityBoundingSet = "";
+          RestrictAddressFamilies = [ "AF_UNIX" ];
+          ReadWritePaths = [ "/etc/cdi" ];
+          KeyringMode = "private";
+          UMask = "0077";
         };
       };
     })

@@ -42,6 +42,8 @@ rec {
     # Hardware modules
     ./hardware/bluetooth.nix
     ./hardware/cpu.nix
+    ./hardware/displaylink.nix
+    ./hardware/huion.nix
 
     # Networking stack
     ./networking.nix
@@ -81,7 +83,6 @@ rec {
     ./services/flatpak.nix
     ./services/frigate.nix
     ./services/gcp-logging.nix
-    ./services/gcs-backup.nix
     ./services/github-runner.nix
     ./services/getty.nix
     ./services/harmonia.nix

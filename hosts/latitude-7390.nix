@@ -73,15 +73,9 @@
 
   # Enable host-specific features
   hardware.bluetooth.enable = true;
+  hardware.huion.enable = true; # Huion tablet support (Digimend + huion-switcher)
+  services.thermald.enable = true; # Intel thermal management daemon
   programs.vscode.enable = true;
-
-  # Enable digimend for Huion tablet support
-  services.xserver.digimend.enable = true;
-
-  # Add huion-switcher to system packages
-  environment.systemPackages = with pkgs; [
-    huion-switcher
-  ];
 
   # Graphical desktop environments
   display.gnome.enable = true;

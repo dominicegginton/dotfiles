@@ -143,14 +143,37 @@
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
+  # Thermal daemon to regulate temperature on headless laptop server
+  services.thermald.enable = true;
+
+  # Hardware-accelerated graphics drivers for VA-API media transcoding
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      intel-vaapi-driver
+    ];
+  };
+
+  # Headless NVIDIA GPU configuration for hardware media transcoding & compute
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    nvidiaSettings = false; # Disable X11 GUI settings app on headless server
+  };
+
   # Enable Tailscale Identity Provider (IdP)
   services.tsidp.enable = true;
 
   # Enable Beszel monitoring (Hub and Agent)
   services.beszel.hub.enable = true;
 
-  # Enable Immich Photos/Video Management Services
-  services.immich.enable = true;
+  # Enable Immich Photos/Video Management Services with CUDA acceleration
+  services.immich = {
+    enable = true;
+    acceleration = "cuda";
+  };
 
   # Enable Jellyfin Media Server Services
   services.jellyfin.enable = true;
@@ -162,17 +185,28 @@
   services.frigate = {
     enable = true;
     settings = {
+      detectors = {
+        tensorrt = {
+          type = "tensorrt";
+          device = 0;
+        };
+      };
       cameras = {
-        "Frontdoor".ffmpeg.inputs = [
-          {
-            path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";
-            roles = [ "record" ];
-          }
-          {
-            path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub";
-            roles = [ "detect" ];
-          }
-        ];
+        "Frontdoor" = {
+          ffmpeg = {
+            hwaccel_args = "preset-vaapi";
+            inputs = [
+              {
+                path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";
+                roles = [ "record" ];
+              }
+              {
+                path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub";
+                roles = [ "detect" ];
+              }
+            ];
+          };
+        };
       };
     };
   };

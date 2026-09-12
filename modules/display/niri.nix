@@ -97,6 +97,9 @@ in
   config = lib.mkIf cfg.enable (
     with config.scheme.withHashtag;
     {
+      # Desktop environments require unprivileged user namespaces for sandboxing (e.g. bubblewrap/flatpak/browsers)
+      boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+
       # Enable hardware accelerated graphics drivers
       hardware.graphics.enable = lib.mkDefault true;
 
@@ -146,6 +149,34 @@ in
         serviceConfig = {
           ExecStart = "${swayWallpaper}/bin/sway-wallpaper";
           Restart = "on-failure";
+
+          NoNewPrivileges = true;
+          PrivateTmp = true;
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          ProtectProc = "invisible";
+          ProcSubset = "pid";
+          LockPersonality = true;
+          MemoryDenyWriteExecute = true;
+          RestrictRealtime = true;
+          RestrictSUIDSGID = true;
+          SystemCallArchitectures = "native";
+          SystemCallFilter = [
+            "@system-service"
+            "~@privileged"
+            "~@resources"
+          ];
+          RestrictAddressFamilies = [
+            "AF_UNIX"
+            "AF_INET"
+            "AF_INET6"
+          ];
+          KeyringMode = "private";
+          UMask = "0077";
         };
       };
 

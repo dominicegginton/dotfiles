@@ -385,6 +385,27 @@
         "type": "github"
       }
     },
+    "nix-github-actions_4": {
+      "inputs": {
+        "nixpkgs": [
+          "velvet",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1737420293,
+        "narHash": "sha256-F1G5ifvqTpJq7fdkT34e/Jy9VCyzd5XfJ9TO8fHhJWE=",
+        "owner": "nix-community",
+        "repo": "nix-github-actions",
+        "rev": "f4158fa080ef4503c8f4c820967d946c2af31ec9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "nix-github-actions",
+        "type": "github"
+      }
+    },
     "nix-topology": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -590,11 +611,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1786514691,
-        "narHash": "sha256-9dkt1i5JNbEfPb+EjLcSDNs8zqEHQ/1JlSaKgj0SBAg=",
+        "lastModified": 1789149629,
+        "narHash": "sha256-H6GwaZzZf+4npqv0tph94w9tZddSjFjmQrVsW0z78uk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "867dcbc30bafe3c862ef88620f2e7a109d7d3be5",
+        "rev": "eaad089433ca2bb662274377d33df3d0e51ef28b",
         "type": "github"
       },
       "original": {
@@ -625,7 +646,8 @@
         "run0-sudo-shim": "run0-sudo-shim",
         "sops-nix": "sops-nix",
         "terranix": "terranix",
-        "tsnsrv": "tsnsrv"
+        "tsnsrv": "tsnsrv",
+        "velvet": "velvet"
       }
     },
     "run0-sudo-shim": {
@@ -748,6 +770,27 @@
         "owner": "boinkor-net",
         "repo": "tsnsrv",
         "type": "github"
+      }
+    },
+    "velvet": {
+      "inputs": {
+        "nix-github-actions": "nix-github-actions_4",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788940097,
+        "narHash": "sha256-4U7zpOtoxmV8cy/kgkH6/pF0DpFnZIIxCw5HtO/raNI=",
+        "ref": "refs/heads/main",
+        "rev": "54d7b5178b72aa5f783324441df4274990184e20",
+        "revCount": 18,
+        "type": "git",
+        "url": "https://github.com/dominicegginton/velvet.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://github.com/dominicegginton/velvet.git"
       }
     }
   },

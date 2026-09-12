@@ -11,6 +11,9 @@ in
 
 {
   config = lib.mkIf cfg.enable {
+    # Waydroid container runtime requires user namespaces
+    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+
     environment.systemPackages = with pkgs; [
       waydroid
       waydroid-helper
