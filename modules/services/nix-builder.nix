@@ -32,6 +32,11 @@ in
     })
 
     (lib.mkIf cfg.client.enable {
+      programs.ssh.extraConfig = ''
+        Host ghost-gs60.${tailnet}
+          StrictHostKeyChecking accept-new
+      '';
+
       nix = {
         distributedBuilds = true;
         buildMachines = [
