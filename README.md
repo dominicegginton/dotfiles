@@ -3,7 +3,7 @@
 # There's no place like ~
 
 ```ocaml
-Declarative System, Package & Home Configurations - WIP Always
+Declarative hardened amnesic nixos configuration
 ```
 
 ## Features
@@ -14,14 +14,14 @@ Declarative System, Package & Home Configurations - WIP Always
   - Custom package overlays, automated store garbage collection and scheduled system upgrades.
 - **Hardening, Security & Compliance**:
   - **Fortified Kernel**: Strict sysctls, Yama, ASLR, and memory scrubbing.
-  - **Impermanence**: Ephemeral `/` (Btrfs rollback on boot) with `/persist` mapping.
+  - **Amnesic Root & Impermanence**: Ephemeral `/` (Btrfs rollback on boot) with `/persist` mapping.
   - **Identity & Elevation**: Zero-sudo `run0`, SSSD OAuth2 authentication and PAM lockouts.
-  - **Hardware Roots**: TPM 2.0 and mandatory interactive Yubikey auth.
-  - **Isolation**: Bus-level USBGuard, default-drop `nftables`, and AppArmor.
+  - **Hardware Roots & Anti-Tamper**: TPM 2.0, mandatory interactive Yubikey auth, and `deadman` USB kill switch.
+  - **Isolation & Threat Prevention**: Bus-level USBGuard, default-drop `nftables`, AppArmor, Fail2ban, and ClamAV scans.
   - **Runtime Secrets**: Git-encrypted Age/SOPS decrypted at activation time (`sops-nix`).
   - **Auditing & Compliance**: Auditd, OpenSCAP tooling, and FIPS 140-3 validated crypto.
 - **Hybrid Infrastructure & Orchestration**:
-  - Multi-host infrastructure managed via Terraform on GCP.
+  - Multi-host infrastructure managed via Terraform on GCP, NextDNS, and Cloudflare.
   - Interactive remote deployment & re-installation via `deploy-host` and `nixos-anywhere` with Disko partitioning, `gum` UI, automatic SSH/Age host key staging into `/persist`, NetworkManager connection profile transfer, SOPS U2F key management, and SOPS secret validation.
   - Live installer ISO (`infector`) built with automated random root passwords, TTY QR code output, and TUI image burning (`burn-infector` with Caligula).
   - Journald logs ship to GCP Cloud Logging via a Vector agent.
@@ -29,11 +29,16 @@ Declarative System, Package & Home Configurations - WIP Always
   - Private Harmonia binary cache for faster Nix deployments.
   - Self-hosted GitHub Actions runner orchestration on NixOS.
   - Host network topology generated natively via `nix-topology`.
-  - Support for OIDC/Oauth2 backed by Tailscale identities for SSO across all services.
-- **Desktop Environments**:
+  - Support for OIDC/OAuth2 backed by Tailscale identities for SSO across all services.
+- **Desktop Environments & Utilities**:
   - Wayland-native GNOME desktop experience.
-  - Gaming & HTPC consoles with a SteamOS (`steamdeck` and `steammachine`) via Jovian-NixOS.
-  - Declarative media/home services accessible over the secure Tailnet VPN.
+  - Gaming & HTPC consoles with SteamOS (`steamdeck` and `steammachine`) via Jovian-NixOS.
+  - Custom desktop tooling: Sherlock launcher and solar-based automatic light/dark theme switcher.
+  - Containerized Android apps via Waydroid alongside Docker and Flatpak support.
+- **Declarative Self-Hosted Services**:
+  - Media & Home Automation: Home Assistant, Frigate (AI NVR), Jellyfin, BitMagnet, and Transmission.
+  - Productivity & Knowledge: Immich (photo management), SilverBullet, and OnlyOffice DocumentServer.
+  - Infrastructure & Monitoring: Beszel metrics hub/agent and secure access over Tailnet VPN.
 
 ## Documentation
 
