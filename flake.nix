@@ -75,8 +75,8 @@
     jovian.inputs.nixpkgs.follows = "nixpkgs";
 
     # Velvet — a TV-first Wayland compositor and OS shell
-    velvet.url = "git+https://github.com/dominicegginton/velvet.git";
-    velvet.inputs.nixpkgs.follows = "nixpkgs";
+    # velvet.url = "git+https://github.com/dominicegginton/velvet.git";
+    # velvet.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # Flake configuration for nix commands
@@ -212,7 +212,7 @@
             nix-topology.overlays.default
             nix-topology.overlays.topology
             run0-sudo-shim.overlays.default
-            velvet.overlays.default
+            # velvet.overlays.default
             self.outputs.overlays.default
             self.outputs.overlays.withSbom
           ];
@@ -347,26 +347,18 @@
         # Custom unattended installation media (Live ISO)
         infector = self.outputs.lib.nixosSystem {
           hostname = "infector";
-          user = null;
-          modules = [
-            self.inputs.nixos-images.nixosModules.image-installer
-            ({ lib, config, ... }: {
-              image.baseName = lib.mkDefault "${config.nixos.distroId}-installer";
-            })
-          ];
+          modules = [ self.inputs.nixos-images.nixosModules.image-installer ];
         };
 
         # Unattended network boot installation media (Netboot)
         infector-netboot = self.outputs.lib.nixosSystem {
           hostname = "infector";
-          user = null;
           modules = [ self.inputs.nixos-images.nixosModules.netboot-installer ];
         };
 
         # Unattended in-place installation media (Kexec Tarball)
         infector-kexec = self.outputs.lib.nixosSystem {
           hostname = "infector";
-          user = null;
           modules = [ self.inputs.nixos-images.nixosModules.kexec-installer ];
         };
 

@@ -77,6 +77,8 @@
   services.thermald.enable = true; # Intel thermal management daemon
   programs.vscode.enable = true;
 
+  programs.deadman.enable = false;
+
   # Graphical desktop environments
   display.gnome.enable = true;
   # display.driftwm.enable = true;

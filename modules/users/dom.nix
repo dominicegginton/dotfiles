@@ -14,7 +14,13 @@ let
 in
 
 {
-  config = {
+  options.users.dom.enable = mkOption {
+    type = types.bool;
+    default = true;
+    description = "Enable primary user dom configuration.";
+  };
+
+  config = mkIf config.users.dom.enable {
     # Primary user configuration
     users.users.${username} = {
       enable = lib.mkDefault true;

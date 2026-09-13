@@ -385,27 +385,6 @@
         "type": "github"
       }
     },
-    "nix-github-actions_4": {
-      "inputs": {
-        "nixpkgs": [
-          "velvet",
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1737420293,
-        "narHash": "sha256-F1G5ifvqTpJq7fdkT34e/Jy9VCyzd5XfJ9TO8fHhJWE=",
-        "owner": "nix-community",
-        "repo": "nix-github-actions",
-        "rev": "f4158fa080ef4503c8f4c820967d946c2af31ec9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "nix-github-actions",
-        "type": "github"
-      }
-    },
     "nix-topology": {
       "inputs": {
         "flake-parts": "flake-parts",
@@ -646,8 +625,7 @@
         "run0-sudo-shim": "run0-sudo-shim",
         "sops-nix": "sops-nix",
         "terranix": "terranix",
-        "tsnsrv": "tsnsrv",
-        "velvet": "velvet"
+        "tsnsrv": "tsnsrv"
       }
     },
     "run0-sudo-shim": {
@@ -770,27 +748,6 @@
         "owner": "boinkor-net",
         "repo": "tsnsrv",
         "type": "github"
-      }
-    },
-    "velvet": {
-      "inputs": {
-        "nix-github-actions": "nix-github-actions_4",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1788940097,
-        "narHash": "sha256-4U7zpOtoxmV8cy/kgkH6/pF0DpFnZIIxCw5HtO/raNI=",
-        "ref": "refs/heads/main",
-        "rev": "54d7b5178b72aa5f783324441df4274990184e20",
-        "revCount": 18,
-        "type": "git",
-        "url": "https://github.com/dominicegginton/velvet.git"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://github.com/dominicegginton/velvet.git"
       }
     }
   },

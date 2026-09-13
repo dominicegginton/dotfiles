@@ -11,8 +11,6 @@
   platform ? "x86_64-linux",
   # Extra modules to include
   modules ? [ ],
-  # Default user to include
-  user ? "dom",
   ...
 }:
 
@@ -49,12 +47,10 @@ lib.nixosSystem {
       # dit0.nixosModules.default
       driftwm.nixosModules.default
       jovian.nixosModules.default
-      velvet.nixosModules.default
+      # velvet.nixosModules.default
+      run0-sudo-shim.nixosModules.default
       ../modules
       ../hosts/${hostname}.nix
     ]
-    # find a better way to disable this
-    ++ (lib.optional (hostname != "MCCLT5CG53030HM-wsl") run0-sudo-shim.nixosModules.default)
-    ++ (lib.optional (user != null) ../modules/users/${user}.nix)
     ++ modules;
 }

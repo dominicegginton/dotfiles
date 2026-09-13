@@ -1,5 +1,7 @@
 {
   self,
+  config,
+  options,
   lib,
   hostname,
   ...
@@ -9,6 +11,9 @@
   networking.hostName = lib.mkForce hostname;
 
   console.earlySetup = true;
+
+  # Installer image naming
+  image.baseName = lib.mkIf (options ? image) (lib.mkDefault "${config.nixos.distroId}-installer");
 
   # Enable SSH for remote access during installation
   services.openssh = {
@@ -27,6 +32,8 @@
 
   networking.tempAddresses = "disabled";
 
+  # Disable non-installer user and services
+  users.dom.enable = false;
   boot.plymouth.enable = lib.mkForce false;
   boot.loader.systemd-boot.enable = lib.mkForce false;
   networking.networkmanager.enable = lib.mkForce false;

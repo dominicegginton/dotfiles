@@ -1,10 +1,15 @@
 {
+  self,
   lib,
   platform,
   ...
 }:
 
 {
+  disabledModules = [
+    self.inputs.run0-sudo-shim.nixosModules.default
+  ];
+
   # Set host platform
   nixpkgs.hostPlatform = lib.mkDefault platform;
 

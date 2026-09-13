@@ -105,6 +105,7 @@ rec {
     ./services/usbguard.nix
 
     # User
+    ./users/dom.nix
     ./users/ldap.nix
     ./users/sssd.nix
     ./users/root.nix
