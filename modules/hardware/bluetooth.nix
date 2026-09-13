@@ -17,6 +17,44 @@
       );
     }
     (lib.mkIf config.hardware.bluetooth.enable {
+      # Enable MPRIS proxy to handle Bluetooth headset media control buttons
+      systemd.user.services.mpris-proxy = {
+        description = "Mpris proxy";
+        after = [
+          "network.target"
+          "sound.target"
+        ];
+        wantedBy = [ "default.target" ];
+        serviceConfig = {
+          ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
+          CapabilityBoundingSet = "";
+          LockPersonality = true;
+          MemoryDenyWriteExecute = true;
+          NoNewPrivileges = true;
+          PrivateDevices = true;
+          PrivateTmp = true;
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHome = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          ProtectProc = "invisible";
+          ProtectSystem = "strict";
+          ProcSubset = "pid";
+          RestrictAddressFamilies = [ "AF_UNIX" ];
+          RestrictNamespaces = true;
+          RestrictRealtime = true;
+          RestrictSUIDSGID = true;
+          SystemCallArchitectures = "native";
+          SystemCallFilter = [
+            "@system-service"
+            "~@privileged"
+            "~@resources"
+          ];
+        };
+      };
       environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
         "/var/lib/bluetooth"
       ];
@@ -39,8 +77,7 @@
           General = {
             MultiProfile = lib.mkDefault "multiple"; # Allow multiple Bluetooth profiles simultaneously
             FastConnectable = lib.mkDefault true; # Quicker pairing and reconnection
-            Enable = lib.mkDefault "Source,Sink,Media,Socket,Input,Hogp"; # Enable audio, media control, input, and BLE HID profiles
-            Experimental = lib.mkDefault true; # Enable experimental BlueZ features
+            Experimental = lib.mkDefault true; # Enable experimental BlueZ features (e.g. battery level reporting)
           };
 
           # Configure Input settings for Bluetooth keyboards and mice

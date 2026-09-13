@@ -43,6 +43,7 @@ rec {
     ./hardware/bluetooth.nix
     ./hardware/cpu.nix
     ./hardware/displaylink.nix
+    ./hardware/headsetcontrol.nix
     ./hardware/huion.nix
 
     # Networking stack

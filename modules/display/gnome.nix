@@ -123,14 +123,7 @@ let
     user-switch-enabled = false;
   };
 
-  extensions = with pkgs.gnomeExtensions; [
-    # all-in-one-clipboard # All-in-One Clipboard Extension
-    # intelli-extension # Intelli Extension
-    # lock-guard # Lock Guard - Enhanced lock screen security
-    rounded-window-corners-reborn # Rounded Window Corners Reborn
-    solar-theme-switcher # Solar sunrise/sunset theme switcher
-    # vscode-search-provider # VSCode Search Provider Extension
-  ];
+  extensions = cfg.extensions;
 
   uuid =
     ext:
@@ -210,6 +203,15 @@ with lib;
 
       Note that this should be a last resort; patching the package is preferred (see GPaste).
     '';
+  };
+
+  options.display.gnome.extensions = mkOption {
+    default = with pkgs.gnomeExtensions; [
+      rounded-window-corners-reborn
+      solar-theme-switcher
+    ];
+    type = types.listOf types.package;
+    description = "List of GNOME Shell extensions to install and enable.";
   };
 
   config = mkIf cfg.enable {
