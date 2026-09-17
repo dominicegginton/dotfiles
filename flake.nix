@@ -74,6 +74,10 @@
     jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
     jovian.inputs.nixpkgs.follows = "nixpkgs";
 
+    # Seamless git hooks integration
+    git-hooks.url = "github:cachix/git-hooks.nix";
+    git-hooks.inputs.nixpkgs.follows = "nixpkgs";
+
     # Velvet — a TV-first Wayland compositor and OS shell
     # velvet.url = "git+https://github.com/dominicegginton/velvet.git";
     # velvet.inputs.nixpkgs.follows = "nixpkgs";
@@ -104,6 +108,7 @@
       nixpkgs,
       home-manager,
       nix-github-actions,
+      git-hooks,
       ...
     }:
 
@@ -259,6 +264,17 @@
           pkgs = nixpkgsFor.${system};
         in
         {
+          # Git pre-commit hooks check
+          git-hooks-check = git-hooks.lib.${system}.run {
+            src = ./.;
+            hooks = {
+              deadnix.enable = true;
+              statix.enable = true;
+              gitleaks.enable = true;
+              nixfmt-rfc-style.enable = true;
+            };
+          };
+
           # Check for dead/unused code in Nix files
           deadnix =
             pkgs.runCommand "deadnix"
@@ -327,6 +343,7 @@
       devShells = forAllSystems (system: {
         default = nixpkgsFor.${system}.callPackage ./shell.nix {
           terranix = self.inputs.terranix;
+          shellHook = self.outputs.checks.${system}.git-hooks-check.shellHook;
         };
       });
 

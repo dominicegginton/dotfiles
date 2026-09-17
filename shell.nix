@@ -3,6 +3,7 @@
   pkgs,
   mkShell,
   terranix,
+  shellHook ? "",
   nix,
   nix-output-monitor,
   deadnix,
@@ -72,6 +73,7 @@ let
 in
 
 mkShell rec {
+  inherit shellHook;
   name = "github:" + maintainers.dominicegginton.github + "/dotfiles";
   keys = [ "root@dominicegginton.dev" ];
 

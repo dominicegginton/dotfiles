@@ -8,7 +8,6 @@
   helper = store
 [core]
   editor = nvim
-  hooksPath = .githooks
   excludesfile = ~/.gitignore
   autocrlf = input
 [alias]
