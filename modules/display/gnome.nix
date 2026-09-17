@@ -33,7 +33,7 @@ let
       ;
   };
 
-  settingWrapper = settings: { settings = settings; };
+  settingWrapper = settings: { inherit settings; };
   settings = name: settings: settingWrapper { "${name}" = settings; };
 
   orgGnomeMutterSettings = settings "org/gnome/mutter" {
@@ -132,7 +132,7 @@ let
       "extensionUuid"
     ] null ext) ext) ext;
 
-  extensionUuid = ext: uuid ext;
+  extensionUuid = uuid;
 
   # Gnome Shell configuration
   orgGnomeShellSettings = settings "org/gnome/shell" {
@@ -166,52 +166,54 @@ in
 with lib;
 
 {
-  options.display.gnome.enable = mkEnableOption "Gnome";
+  options.display.gnome = {
+    enable = mkEnableOption "Gnome";
 
-  options.display.gnome.favoriteAppsOverride = mkOption {
-    internal = true; # this is messy
-    default = defaultFavoriteAppsOverride;
-    type = types.lines;
-    example = literalExpression ''
-      '''
-        [org.gnome.shell]
-        favorite-apps=[ 'firefox.desktop', 'org.gnome.Calendar.desktop' ]
-      '''
-    '';
-    description = "List of desktop files to put as favorite apps into pkgs.gnome-shell. These need to be installed somehow globally.";
-  };
+    favoriteAppsOverride = mkOption {
+      internal = true; # this is messy
+      default = defaultFavoriteAppsOverride;
+      type = types.lines;
+      example = literalExpression ''
+        '''
+          [org.gnome.shell]
+          favorite-apps=[ 'firefox.desktop', 'org.gnome.Calendar.desktop' ]
+        '''
+      '';
+      description = "List of desktop files to put as favorite apps into pkgs.gnome-shell. These need to be installed somehow globally.";
+    };
 
-  options.display.gnome.extraGSettingsOverrides = mkOption {
-    default = "";
-    type = types.lines;
-    description = "Additional gsettings overrides.";
-  };
+    extraGSettingsOverrides = mkOption {
+      default = "";
+      type = types.lines;
+      description = "Additional gsettings overrides.";
+    };
 
-  options.display.gnome.extraGSettingsOverridePackages = mkOption {
-    default = [ ];
-    type = types.listOf types.path;
-    description = "List of packages for which gsettings are overridden.";
-  };
+    extraGSettingsOverridePackages = mkOption {
+      default = [ ];
+      type = types.listOf types.path;
+      description = "List of packages for which gsettings are overridden.";
+    };
 
-  options.display.gnome.sessionPath = mkOption {
-    default = [ ];
-    type = types.listOf types.package;
-    example = literalExpression "[ pkgs.gpaste ]";
-    description = ''
-      Additional list of packages to be added to the session search path.
-      Useful for GNOME Shell extensions or GSettings-conditional autostart.
+    sessionPath = mkOption {
+      default = [ ];
+      type = types.listOf types.package;
+      example = literalExpression "[ pkgs.gpaste ]";
+      description = ''
+        Additional list of packages to be added to the session search path.
+        Useful for GNOME Shell extensions or GSettings-conditional autostart.
 
-      Note that this should be a last resort; patching the package is preferred (see GPaste).
-    '';
-  };
+        Note that this should be a last resort; patching the package is preferred (see GPaste).
+      '';
+    };
 
-  options.display.gnome.extensions = mkOption {
-    default = with pkgs.gnomeExtensions; [
-      rounded-window-corners-reborn
-      solar-theme-switcher
-    ];
-    type = types.listOf types.package;
-    description = "List of GNOME Shell extensions to install and enable.";
+    extensions = mkOption {
+      default = with pkgs.gnomeExtensions; [
+        rounded-window-corners-reborn
+        solar-theme-switcher
+      ];
+      type = types.listOf types.package;
+      description = "List of GNOME Shell extensions to install and enable.";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -226,84 +228,145 @@ with lib;
       ''
     ];
 
-    services.displayManager.sessionPackages = [ pkgs.gnome-session.sessions ];
+    environment = {
+      extraInit = ''
+        ${lib.concatMapStrings (p: ''
+          if [ -d "${p}/share/gsettings-schemas/${p.name}" ]; then
+            export XDG_DATA_DIRS=$XDG_DATA_DIRS''${XDG_DATA_DIRS:+:}${p}/share/gsettings-schemas/${p.name}
+          fi
 
-    environment.extraInit = ''
-      ${lib.concatMapStrings (p: ''
-        if [ -d "${p}/share/gsettings-schemas/${p.name}" ]; then
-          export XDG_DATA_DIRS=$XDG_DATA_DIRS''${XDG_DATA_DIRS:+:}${p}/share/gsettings-schemas/${p.name}
-        fi
+          if [ -d "${p}/lib/girepository-1.0" ]; then
+            export GI_TYPELIB_PATH=$GI_TYPELIB_PATH''${GI_TYPELIB_PATH:+:}${p}/lib/girepository-1.0
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH''${LD_LIBRARY_PATH:+:}${p}/lib
+          fi
+        '') config.display.gnome.sessionPath}
+      '';
 
-        if [ -d "${p}/lib/girepository-1.0" ]; then
-          export GI_TYPELIB_PATH=$GI_TYPELIB_PATH''${GI_TYPELIB_PATH:+:}${p}/lib/girepository-1.0
-          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH''${LD_LIBRARY_PATH:+:}${p}/lib
-        fi
-      '') config.display.gnome.sessionPath}
-    '';
+      sessionVariables = {
+        NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${nixos-gsettings-desktop-schemas}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+        # Let nautilus find extensions
+        NAUTILUS_4_EXTENSION_DIR = lib.mkForce "${config.system.path}/lib/nautilus/extensions-4";
+        # Override default mimeapps for nautilus
+        XDG_DATA_DIRS = lib.mkForce [ "${mimeAppsList}/share" ];
+      };
 
-    environment.sessionVariables.NIX_GSETTINGS_OVERRIDES_DIR = lib.mkForce "${nixos-gsettings-desktop-schemas}/share/gsettings-schemas/nixos-gsettings-overrides/glib-2.0/schemas";
+      # Required for themes and backgrounds
+      pathsToLink = [ "/share" ];
+    };
 
     # Enable hardware support
     hardware.graphics.enable = mkDefault true;
     hardware.bluetooth.enable = mkDefault true;
-    services.hardware.bolt.enable = mkDefault true;
-
-    # Enable GNOME Desktop Environment
-    services.desktopManager.gnome.enable = mkDefault true;
-
-    # Enable GDM display manager
-    services.displayManager.gdm.enable = mkDefault true;
 
     # Enable required Gnome services and features
     i18n.inputMethod.enable = mkDefault true;
     i18n.inputMethod.type = mkDefault "ibus";
-    programs.dconf.enable = mkDefault true;
+
     security.polkit.enable = mkDefault true;
     security.rtkit.enable = mkDefault true;
-    services.pipewire.enable = mkDefault true;
-    services.accounts-daemon.enable = mkDefault true;
-    services.dleyna.enable = mkDefault true;
-    services.power-profiles-daemon.enable = mkDefault true;
-    services.gnome.at-spi2-core.enable = mkDefault true;
-    services.gnome.evolution-data-server.enable = mkDefault true;
-    services.gnome.gnome-keyring.enable = mkDefault true;
-    services.gnome.gcr-ssh-agent.enable = mkDefault true;
-    services.gnome.gnome-online-accounts.enable = mkDefault true;
-    services.gnome.localsearch.enable = mkDefault true;
-    services.gnome.tinysparql.enable = mkDefault true;
-    services.udisks2.enable = mkDefault true;
-    services.upower.enable = mkDefault true;
-    services.libinput.enable = mkDefault true;
-
-    # Enable XDG features
-    xdg.mime.enable = mkDefault true;
-    xdg.icons.enable = mkDefault true;
-    xdg.portal.enable = mkDefault true;
-    # extraPortals is set by services.desktopManager.gnome (nixpkgs); do not
-    # override here — a duplicate xdg-desktop-portal-gnome entry causes dbus-broker
-    # "Ignoring duplicate name" errors at session start.
-
-    # Gnome portals requires Gnome session
-    xdg.portal.configPackages = mkDefault [ pkgs.gnome-session ];
 
     # Gnome relies on NetworkManager for network configuration
     networking.networkmanager.enable = mkDefault true;
 
-    # Gnome Shell relies on D-Bus environment variables to be set for the session
-    services.xserver.updateDbusEnvironment = mkDefault true;
+    services = {
+      displayManager = {
+        sessionPackages = [ pkgs.gnome-session.sessions ];
+        gdm.enable = mkDefault true;
+      };
 
-    # Required for themes and backgrounds
-    environment.pathsToLink = [ "/share" ];
+      hardware.bolt.enable = mkDefault true;
 
-    # Ensure Gnome Shell is available as a session option for the display manager
-    services.desktopManager.gnome.sessionPath = [ pkgs.gnome-shell ];
+      # Enable GNOME Desktop Environment
+      desktopManager.gnome = {
+        enable = mkDefault true;
+        sessionPath = [ pkgs.gnome-shell ];
+      };
 
-    # Add mutter to udev packages to ensure it gets restarted when necessary
-    services.udev.packages = with pkgs; [
-      mutter
-      gnome-settings-daemon
-      gnome-bluetooth
-    ];
+      pipewire.enable = mkDefault true;
+      accounts-daemon.enable = mkDefault true;
+      dleyna.enable = mkDefault true;
+      power-profiles-daemon.enable = mkDefault true;
+      gnome = {
+        at-spi2-core.enable = mkDefault true;
+        evolution-data-server.enable = mkDefault true;
+        gnome-keyring.enable = mkDefault true;
+        gcr-ssh-agent.enable = mkDefault true;
+        gnome-online-accounts.enable = mkDefault true;
+        localsearch.enable = mkDefault true;
+        tinysparql.enable = mkDefault true;
+        glib-networking.enable = mkForce true;
+        gnome-browser-connector.enable = mkForce true;
+        gnome-initial-setup.enable = mkDefault true;
+        gnome-remote-desktop.enable = mkDefault true;
+        gnome-settings-daemon.enable = mkDefault true;
+        gnome-user-share.enable = mkDefault true;
+        rygel.enable = mkDefault true;
+        sushi.enable = mkDefault true;
+      };
+      udisks2.enable = mkDefault true;
+      upower.enable = mkDefault true;
+      libinput.enable = mkDefault true;
+
+      # Gnome Shell relies on D-Bus environment variables to be set for the session
+      xserver.updateDbusEnvironment = mkDefault true;
+
+      # Add mutter to udev packages to ensure it gets restarted when necessary
+      udev.packages = with pkgs; [
+        mutter
+        gnome-settings-daemon
+        gnome-bluetooth
+      ];
+
+      # Enable required Gnome services
+      colord.enable = mkForce true;
+      gvfs.enable = mkDefault true;
+      avahi.enable = mkDefault true;
+      orca.enable = mkDefault true;
+
+      # Enable system-config-printer if printing is enabled, since Gnome's printer settings rely on it
+      system-config-printer.enable = mkIf config.services.printing.enable (mkDefault true);
+
+      # Enable geoclue2 for location service,
+      # Gnome has its own geoclue agent
+      geoclue2 = {
+        enable = mkDefault true;
+        enableDemoAgent = lib.mkIf config.services.geoclue2.enable (mkForce false);
+        appConfig = lib.mkIf config.services.geoclue2.enable {
+          gnome-datetime-panel = lib.mkForce {
+            isAllowed = true;
+            isSystem = true;
+          };
+
+          gnome-color-panel = lib.mkForce {
+            isAllowed = true;
+            isSystem = true;
+          };
+
+          "org.gnome.Shell" = lib.mkForce {
+            isAllowed = true;
+            isSystem = true;
+          };
+        };
+      };
+    };
+
+    programs = {
+      dconf.enable = mkDefault true;
+      seahorse.enable = mkDefault true;
+      gnome-disks.enable = mkDefault true;
+    };
+
+    # Enable XDG features
+    xdg = {
+      mime.enable = mkDefault true;
+      icons.enable = mkDefault true;
+      portal = {
+        enable = mkDefault true;
+
+        # Gnome portals requires Gnome session
+        configPackages = mkDefault [ pkgs.gnome-session ];
+      };
+    };
 
     # Append Gnome session and shell to system packages
     # ensuring they are available for the display manager
@@ -318,76 +381,30 @@ with lib;
       xdg-user-dirs-gtk
     ];
 
-    # Enable required Gnome services
-    services.colord.enable = mkForce true;
-    services.gnome.glib-networking.enable = mkForce true;
-    services.gnome.gnome-browser-connector.enable = mkForce true;
-    services.gnome.gnome-initial-setup.enable = mkDefault true;
-    services.gnome.gnome-remote-desktop.enable = mkDefault true;
-    services.gnome.gnome-settings-daemon.enable = mkDefault true;
-    services.gnome.gnome-user-share.enable = mkDefault true;
-    services.gnome.rygel.enable = mkDefault true;
-    services.gnome.sushi.enable = mkDefault true;
-    services.gvfs.enable = mkDefault true;
-    services.avahi.enable = mkDefault true;
-    services.orca.enable = mkDefault true;
-    programs.seahorse.enable = mkDefault true;
-    programs.gnome-disks.enable = mkDefault true;
-
-    # Enable system-config-printer if printing is enabled, since Gnome's printer settings rely on it
-    services.system-config-printer.enable = (mkIf config.services.printing.enable (mkDefault true));
-
-    # Enable geoclue2 for location service,
-    # Gnome has its own geoclue agent
-    services.geoclue2 = {
-      enable = mkDefault true;
-      enableDemoAgent = (lib.mkIf config.services.geoclue2.enable (mkForce false));
-      appConfig = lib.mkIf config.services.geoclue2.enable {
-        gnome-datetime-panel = lib.mkForce {
-          isAllowed = true;
-          isSystem = true;
-        };
-
-        gnome-color-panel = lib.mkForce {
-          isAllowed = true;
-          isSystem = true;
-        };
-
-        "org.gnome.Shell" = lib.mkForce {
-          isAllowed = true;
-          isSystem = true;
-        };
-      };
-    };
-
-    # Let nautilus find extensions
-    environment.sessionVariables.NAUTILUS_4_EXTENSION_DIR = lib.mkForce "${config.system.path}/lib/nautilus/extensions-4";
-
-    # Override default mimeapps for nautilus
-    environment.sessionVariables.XDG_DATA_DIRS = lib.mkForce [ "${mimeAppsList}/share" ];
-
     # Font Definitions
-    fonts.enableDefaultPackages = mkForce false;
-    fonts.fontDir.enable = mkForce true;
-    fonts.packages = with pkgs; [
-      font-manager # Font Manager Application
-      adwaita-fonts # Default Gnome Fonts
-      ibm-plex # IBM Plex Fonts
-      nerd-fonts.blex-mono # Nerd Font Mono
-    ];
-    fonts.fontconfig = {
-      enable = mkForce true;
-      antialias = mkForce true;
-      hinting.autohint = mkForce true;
-      hinting.enable = mkForce true;
-      defaultFonts = {
-        emoji = [ "Nerd Font Emoji" ];
-        serif = [ "Ibm Plex Serif" ];
-        sansSerif = [ "Ibm Plex Sans" ];
-        monospace = [
-          "Ibm Plex Mono"
-          "Nerd Font Mono"
-        ];
+    fonts = {
+      enableDefaultPackages = mkForce false;
+      fontDir.enable = mkForce true;
+      packages = with pkgs; [
+        font-manager # Font Manager Application
+        adwaita-fonts # Default Gnome Fonts
+        ibm-plex # IBM Plex Fonts
+        nerd-fonts.blex-mono # Nerd Font Mono
+      ];
+      fontconfig = {
+        enable = mkForce true;
+        antialias = mkForce true;
+        hinting.autohint = mkForce true;
+        hinting.enable = mkForce true;
+        defaultFonts = {
+          emoji = [ "Nerd Font Emoji" ];
+          serif = [ "Ibm Plex Serif" ];
+          sansSerif = [ "Ibm Plex Sans" ];
+          monospace = [
+            "Ibm Plex Mono"
+            "Nerd Font Mono"
+          ];
+        };
       };
     };
 

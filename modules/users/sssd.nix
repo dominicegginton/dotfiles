@@ -73,13 +73,6 @@ in
       '';
     };
 
-    # Ensure SSSD secret is present
-    sops.secrets."services/sssd/client-secret" = {
-      owner = "root";
-      group = "root";
-      mode = "0440"; # Allow group read just in case
-    };
-
     # Enable Keyboard Interactive Authentication for SSH to allow SSSD IdP flow
     services.openssh.settings.KbdInteractiveAuthentication = lib.mkForce true;
 

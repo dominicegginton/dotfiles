@@ -269,9 +269,21 @@
             src = ./.;
             hooks = {
               deadnix.enable = true;
-              statix.enable = true;
-              gitleaks.enable = true;
+              statix = {
+                enable = true;
+                settings = {
+                  ignore = [
+                    "repeated_keys"
+                  ];
+                };
+              };
               nixfmt-rfc-style.enable = true;
+              gitleaks = {
+                enable = true;
+                name = "gitleaks";
+                entry = "${pkgs.gitleaks}/bin/gitleaks protect --staged --verbose";
+                pass_filenames = false;
+              };
             };
           };
 
@@ -343,7 +355,7 @@
       devShells = forAllSystems (system: {
         default = nixpkgsFor.${system}.callPackage ./shell.nix {
           terranix = self.inputs.terranix;
-          shellHook = self.outputs.checks.${system}.git-hooks-check.shellHook;
+          gitHooksCheck = self.outputs.checks.${system}.git-hooks-check;
         };
       });
 

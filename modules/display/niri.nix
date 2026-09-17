@@ -113,32 +113,36 @@ in
       security.pam.services.swaylock = lib.mkDefault { };
 
       # XDG Portal configuration for desktop integration
-      xdg.portal = {
-        enable = lib.mkDefault true;
-        wlr.enable = lib.mkDefault true;
-        configPackages = lib.mkDefault [ pkgs.niri ];
-        extraPortals = lib.mkDefault [
-          pkgs.xdg-desktop-portal-gnome
-          pkgs.xdg-desktop-portal-gtk
-        ];
+      xdg = {
+        portal = {
+          enable = lib.mkDefault true;
+          wlr.enable = lib.mkDefault true;
+          configPackages = lib.mkDefault [ pkgs.niri ];
+          extraPortals = lib.mkDefault [
+            pkgs.xdg-desktop-portal-gnome
+            pkgs.xdg-desktop-portal-gtk
+          ];
+        };
+
+        # Standard XDG support
+        autostart.enable = lib.mkDefault true;
+        menus.enable = lib.mkDefault true;
+        icons.enable = lib.mkDefault true;
       };
 
-      # Standard XDG support
-      xdg.autostart.enable = lib.mkDefault true;
-      xdg.menus.enable = lib.mkDefault true;
-      xdg.icons.enable = lib.mkDefault true;
+      services = {
+        graphical-desktop.enable = true;
 
-      services.graphical-desktop.enable = true;
+        # Core system services
+        printing.enable = true;
+        pipewire.enable = true;
+        gnome.gnome-keyring.enable = true;
+        power-profiles-daemon.enable = true;
 
-      # Core system services
-      services.printing.enable = true;
-      services.pipewire.enable = true;
-      services.gnome.gnome-keyring.enable = true;
-      services.power-profiles-daemon.enable = true;
-
-      # Display manager configuration
-      services.displayManager.gdm.enable = true;
-      services.geoclue2.enableDemoAgent = lib.mkDefault true;
+        # Display manager configuration
+        displayManager.gdm.enable = true;
+        geoclue2.enableDemoAgent = lib.mkDefault true;
+      };
 
       # Systemd service to sync GNOME wallpaper settings to swaybg
       systemd.user.services.sway-wallpaper = {

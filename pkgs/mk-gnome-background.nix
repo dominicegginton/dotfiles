@@ -76,10 +76,9 @@ stdenv.mkDerivation {
   # Export useful attributes for other modules to consume
   # These can be accessed via pkgs.background (e.g., pkgs.background.backgroundImage)
   passthru = {
-    inherit primaryColor secondaryColor;
+    inherit primaryColor secondaryColor gnomeBackgroundXml;
     backgroundImage = src;
     darkBackgroundImage = srcDark;
-    gnomeBackgroundXml = gnomeBackgroundXml;
   };
 
   meta = with lib; {

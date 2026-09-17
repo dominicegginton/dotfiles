@@ -37,14 +37,16 @@ in
     ];
 
     # Disable kernel module locking in WSL as it prevents Docker port mapping
-    security.lockKernelModules = lib.mkForce false;
-    security.protectKernelImage = lib.mkForce false;
+    security = {
+      lockKernelModules = lib.mkForce false;
+      protectKernelImage = lib.mkForce false;
+      run0.enable = lib.mkForce false;
+      sudo.wheelNeedsPassword = lib.mkForce false;
+    };
 
     # Enable nix-ld to run unpatched Linux binaries
     programs.nix-ld.enable = lib.mkForce true;
 
-    security.run0.enable = lib.mkForce false;
-    security.sudo.wheelNeedsPassword = lib.mkForce false;
     users.users.dom = {
       hashedPasswordFile = lib.mkForce null;
       initialPassword = "";

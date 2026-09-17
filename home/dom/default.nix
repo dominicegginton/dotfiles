@@ -7,116 +7,160 @@
 
 {
   config = {
-    # Home directory file symlinks
-    home.file = {
-      ".face".source = ./face.jpg;
-      ".config".source = ./sources/.config;
-      ".config".recursive = true;
-      ".copilot".source = ./sources/.copilot;
-      ".copilot".recursive = true;
-      ".arup.gitconfig".source = ./sources/.arup.gitconfig;
-      ".editorconfig".source = ./sources/.editorconfig;
-      ".gitconfig".source = ./sources/.gitconfig;
-      ".gitignore".source = ./sources/.gitignore;
-      ".ideavimrc".source = ./sources/.ideavimrc;
-      # Custom tool configuration for TWM
-      ".config/twm/twm.yaml".text = ''
-        search_paths:
-          - "~/.dotfiles"
-          - "~/dev"
-          - "~/playgrounds"
+    # Home directory file symlinks and user environment settings
+    home = {
+      file = {
+        ".face".source = ./face.jpg;
+        ".config".source = ./sources/.config;
+        ".config".recursive = true;
+        ".copilot".source = ./sources/.copilot;
+        ".copilot".recursive = true;
+        ".arup.gitconfig".source = ./sources/.arup.gitconfig;
+        ".editorconfig".source = ./sources/.editorconfig;
+        ".gitconfig".source = ./sources/.gitconfig;
+        ".gitignore".source = ./sources/.gitignore;
+        ".ideavimrc".source = ./sources/.ideavimrc;
+        # Custom tool configuration for TWM
+        ".config/twm/twm.yaml".text = ''
+          search_paths:
+            - "~/.dotfiles"
+            - "~/dev"
+            - "~/playgrounds"
+        '';
+      };
+
+      sessionVariables = {
+        EDITOR = "nvim";
+        VISUAL = "nvim";
+        SYSTEMD_EDITOR = "nvim";
+        SSH_AUTH_SOCK = lib.mkDefault "/home/dom/.bitwarden-ssh-socket/ssh_auth_sock";
+      };
+
+      # Load JIRA API token from a local secrets file on WSL (within user home)
+      # Create the file manually with: `echo "token" > ~/.secrets/jira-api-token`
+      sessionVariablesExtra = lib.mkIf (osConfig ? wsl && osConfig.wsl.enable) ''
+        if [ -f "$HOME/.secrets/jira-api-token" ]; then
+          export JIRA_API_TOKEN=$(cat "$HOME/.secrets/jira-api-token")
+        fi
       '';
+
+      packages =
+        with pkgs;
+        [
+          bat
+          eza
+          gpg-import-bucket
+          twm
+          twx
+          gh-markdown-preview
+          github-copilot-cli
+          gh-stack
+        ]
+        ++ (
+          if (osConfig ? wsl && osConfig.wsl.enable) then
+            [ jira-cli-go ]
+          else
+            [
+              youtube-tv
+              # aseprite
+              # krita
+              rnote
+              delfin
+            ]
+        );
     };
 
-    # Tmux terminal multiplexer configuration
-    programs.tmux = {
-      enable = true;
-      shortcut = "a";
-      keyMode = "vi";
-      baseIndex = 1;
-      newSession = true;
-      escapeTime = 0;
-      aggressiveResize = true;
-      # Detailed tmux appearance and keybindings
-      extraConfig = ''
-        set -g status on
-        set -g default-terminal "tmux-256color"
-        set -ga terminal-overrides ",xterm-256color:Tc"
-        set -g repeat-time 2000
-        set -g mouse on
-        set -g history-limit 50000
-        set -g display-time 4000
-        set -g status-interval 5
-        set -g set-clipboard on
-        set -g focus-events on
-        set -g window-size latest
-        set -g base-index 1
-        set-window-option -g base-index 1
-        set -g pane-base-index 1
-        set-window-option -g pane-base-index 1
-        setw -g monitor-activity on
-        set -g visual-bell on
-        set -g visual-activity on
-        set -g status on
-        set -g status-justify left
-        set -g status-left-length 100
-        set -g status-right-length 100
-        set -g status-style fg=black,bg=blue
-        set -g status-left " #S "
-        set -g status-right " %d-%m %H:%M #h "
-        set -g message-style fg=black,bg=red
-        set -g message-command-style fg=black,bg=red
-        set -g pane-border-style fg=black,bg=default
-        set -g pane-active-border-style fg=blue,bg=default
-        set -g window-status-style fg=default,bg=default
-        set -g window-status-current-style fg=black,bg=brightwhite
-        set -g window-status-activity-style fg=black,bg=yellow
-        set -g window-status-separator ""
-        set -g window-status-format " #I #W "
-        set -g window-status-current-format " #I #W "
-        set -g clock-mode-colour blue
-        set -g mode-style fg=brightwhite,bg=red,bold
-
-        # Vim-like pane navigation
-        bind h select-pane -L
-        bind j select-pane -D
-        bind k select-pane -U
-        bind l select-pane -R
-
-        # Window navigation
-        bind -r C-h select-window -t :-
-        bind -r C-l select-window -t :+
-
-        # Pane resizing
-        bind -r H resize-pane -L 5
-        bind -r J resize-pane -D 5
-        bind -r K resize-pane -U 5
-        bind -r L resize-pane -R 5
-
-        # Window splitting
-        bind % split-window -h -c "#{pane_current_path}"
-        bind '"' split-window -v -c "#{pane_current_path}"
-
-        # Custom script bindings
-        bind-key -r f run-shell "tmux neww twm"
-        bind-key -r F run-shell "tmux neww twm -g"
-        bind-key -r e run-shell "tmux neww twm -n shell -p $HOME"
-
-        # Copy mode keybindings
-        bind-key -T copy-mode-vi v send-keys -X begin-selection
-        bind-key -T copy-mode-vi V send-keys -X select-line
-        bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
-        bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
-        bind-key -T copy-mode-vi 'C-h' select-pane -L
-        bind-key -T copy-mode-vi 'C-j' select-pane -D
-        bind-key -T copy-mode-vi 'C-k' select-pane -U
-        bind-key -T copy-mode-vi 'C-l' select-pane -R
-        bind-key -T copy-mode-vi 'C-\' select-pane -l
-      '';
-    };
-
+    # Program configurations
     programs = {
+      # Tmux terminal multiplexer configuration
+      tmux = {
+        enable = true;
+        shortcut = "a";
+        keyMode = "vi";
+        baseIndex = 1;
+        newSession = true;
+        escapeTime = 0;
+        aggressiveResize = true;
+        # Detailed tmux appearance and keybindings
+        extraConfig = ''
+          set -g status on
+          set -g default-terminal "tmux-256color"
+          set -ga terminal-overrides ",xterm-256color:Tc"
+          set -g repeat-time 2000
+          set -g mouse on
+          set -g history-limit 50000
+          set -g display-time 4000
+          set -g status-interval 5
+          set -g set-clipboard on
+          set -g focus-events on
+          set -g window-size latest
+          set -g base-index 1
+          set-window-option -g base-index 1
+          set -g pane-base-index 1
+          set-window-option -g pane-base-index 1
+          setw -g monitor-activity on
+          set -g visual-bell on
+          set -g visual-activity on
+          set -g status on
+          set -g status-justify left
+          set -g status-left-length 100
+          set -g status-right-length 100
+          set -g status-style fg=black,bg=blue
+          set -g status-left " #S "
+          set -g status-right " %d-%m %H:%M #h "
+          set -g message-style fg=black,bg=red
+          set -g message-command-style fg=black,bg=red
+          set -g pane-border-style fg=black,bg=default
+          set -g pane-active-border-style fg=blue,bg=default
+          set -g window-status-style fg=default,bg=default
+          set -g window-status-current-style fg=black,bg=brightwhite
+          set -g window-status-activity-style fg=black,bg=yellow
+          set -g window-status-separator ""
+          set -g window-status-format " #I #W "
+          set -g window-status-current-format " #I #W "
+          set -g clock-mode-colour blue
+          set -g mode-style fg=brightwhite,bg=red,bold
+
+          # Vim-like pane navigation
+          bind h select-pane -L
+          bind j select-pane -D
+          bind k select-pane -U
+          bind l select-pane -R
+
+          # Window navigation
+          bind -r C-h select-window -t :-
+          bind -r C-l select-window -t :+
+
+          # Pane resizing
+          bind -r H resize-pane -L 5
+          bind -r J resize-pane -D 5
+          bind -r K resize-pane -U 5
+          bind -r L resize-pane -R 5
+
+          # Window splitting
+          bind % split-window -h -c "#{pane_current_path}"
+          bind '"' split-window -v -c "#{pane_current_path}"
+
+          # Custom script bindings
+          bind-key -r f run-shell "tmux neww twm"
+          bind-key -r F run-shell "tmux neww twm -g"
+          bind-key -r e run-shell "tmux neww twm -n shell -p $HOME"
+
+          # Copy mode keybindings
+          bind-key -T copy-mode-vi v send-keys -X begin-selection
+          bind-key -T copy-mode-vi V send-keys -X select-line
+          bind-key -T copy-mode-vi C-v send-keys -X rectangle-toggle
+          bind-key -T copy-mode-vi y send-keys -X copy-selection-and-cancel
+          bind-key -T copy-mode-vi 'C-h' select-pane -L
+          bind-key -T copy-mode-vi 'C-j' select-pane -D
+          bind-key -T copy-mode-vi 'C-k' select-pane -U
+          bind-key -T copy-mode-vi 'C-l' select-pane -R
+          bind-key -T copy-mode-vi 'C-\' select-pane -l
+        '';
+      };
+
       git.enable = true;
+
       gh = {
         enable = true;
         extensions = with pkgs; [
@@ -130,144 +174,108 @@
           prompt = "enabled";
         };
       };
-    };
 
-    programs.vscode = lib.mkIf (osConfig ? programs && osConfig.programs.vscode.enable) {
-      enable = true;
-      profiles.default = {
-        extensions = with pkgs.vscode-extensions; [
-          vscodevim.vim
-          github.vscode-pull-request-github
-          github.vscode-github-actions
-          github.copilot
-          docker.docker
-          bbenoist.nix
-          sumneko.lua
-          ms-python.python
-          tekumara.typos-vscode
-        ];
-        userSettings = {
-          editor = {
-            minimap.enabled = false;
-            renderLineHighlight = "none";
-          };
-          extensions.ignoreRecommendations = true;
-          extensions.autoCheckUpdates = false;
-          extensions.autoUpdate = false;
-          updates.mode = "none";
-          window = {
-            titleBarStyle = "custom";
-            commandCenter = true;
-            autoDetectColorScheme = true;
-          };
-          workbench = {
-            activityBar.location = "top";
-            sideBar.location = "right";
-            startupEditor = "none";
-            iconTheme = null;
-            tree.indent = 12;
-          };
-          github.copilot.enable = {
-            "*" = true;
-            plaintext = false;
-            markdown = true;
-            scminput = false;
+      vscode = lib.mkIf (osConfig ? programs && osConfig.programs.vscode.enable) {
+        enable = true;
+        profiles.default = {
+          extensions = with pkgs.vscode-extensions; [
+            vscodevim.vim
+            github.vscode-pull-request-github
+            github.vscode-github-actions
+            github.copilot
+            docker.docker
+            bbenoist.nix
+            sumneko.lua
+            ms-python.python
+            tekumara.typos-vscode
+          ];
+          userSettings = {
+            editor = {
+              minimap.enabled = false;
+              renderLineHighlight = "none";
+            };
+            extensions = {
+              ignoreRecommendations = true;
+              autoCheckUpdates = false;
+              autoUpdate = false;
+            };
+            updates.mode = "none";
+            window = {
+              titleBarStyle = "custom";
+              commandCenter = true;
+              autoDetectColorScheme = true;
+            };
+            workbench = {
+              activityBar.location = "top";
+              sideBar.location = "right";
+              startupEditor = "none";
+              iconTheme = null;
+              tree.indent = 12;
+            };
+            github.copilot.enable = {
+              "*" = true;
+              plaintext = false;
+              markdown = true;
+              scminput = false;
+            };
           };
         };
       };
+
+      zsh.shellAliases = {
+        cat = "bat";
+        ls = "eza";
+      };
+
+      ssh = {
+        enable = true;
+        enableDefaultConfig = false;
+      };
+
+      gpg.enable = true;
+
+      neovim = {
+        enable = true;
+        viAlias = true;
+        vimAlias = true;
+        withPython3 = false;
+        withRuby = false;
+        extraPackages = with pkgs; [
+          ripgrep
+          fd
+          fzf
+          tree-sitter
+          nixd
+          gcc
+          rustc
+          cargo
+          rust-analyzer
+          nodejs
+          typescript
+          terraform-lsp
+          lua-language-server
+          docker-language-server
+          vim-language-server
+          bash-language-server
+          yaml-language-server
+          typescript-language-server
+          angular-language-server
+          vscode-langservers-extracted
+          prettierd
+          eslint_d
+          nixpkgs-fmt
+          stylua
+          typos-lsp
+          pyright
+        ];
+      };
     };
 
-    programs.zsh.shellAliases = {
-      cat = "bat";
-      ls = "eza";
-    };
-    programs.ssh = {
-      enable = true;
-      enableDefaultConfig = false;
-    };
-    programs.gpg.enable = true;
     services.gpg-agent =
       lib.mkIf (pkgs.stdenv.isLinux && !(osConfig.programs.gnupg.agent.enable or false))
         {
           enable = true;
           enableSshSupport = true;
         };
-
-    home.sessionVariables = {
-      EDITOR = "nvim";
-      VISUAL = "nvim";
-      SYSTEMD_EDITOR = "nvim";
-      SSH_AUTH_SOCK = lib.mkDefault "/home/dom/.bitwarden-ssh-socket/ssh_auth_sock";
-    };
-
-    programs.neovim = {
-      enable = true;
-      viAlias = true;
-      vimAlias = true;
-      withPython3 = false;
-      withRuby = false;
-      extraPackages = with pkgs; [
-        ripgrep
-        fd
-        fzf
-        tree-sitter
-        nixd
-        gcc
-        rustc
-        cargo
-        rust-analyzer
-        nodejs
-        typescript
-        terraform-lsp
-        lua-language-server
-        docker-language-server
-        vim-language-server
-        bash-language-server
-        yaml-language-server
-        typescript-language-server
-        angular-language-server
-        vscode-langservers-extracted
-        prettierd
-        eslint_d
-        nixpkgs-fmt
-        stylua
-        typos-lsp
-        pyright
-
-      ];
-    };
-
-    home.packages =
-      with pkgs;
-      [
-        bat
-        eza
-        gpg-import-bucket
-        twm
-        twx
-        gh-markdown-preview
-        github-copilot-cli
-        gh-stack
-      ]
-      ++ (
-        if (osConfig ? wsl && osConfig.wsl.enable) then
-          [ jira-cli-go ]
-        else
-          [
-            youtube-tv
-            # aseprite
-            # krita
-            rnote
-            delfin
-          ]
-      );
-
-    # Load JIRA API token from a local secrets file on WSL (within user home)
-    # Create the file manually with: `echo "token" > ~/.secrets/jira-api-token`
-    home.sessionVariablesExtra = lib.mkIf (osConfig ? wsl && osConfig.wsl.enable) ''
-      if [ -f "$HOME/.secrets/jira-api-token" ]; then
-        export JIRA_API_TOKEN=$(cat "$HOME/.secrets/jira-api-token")
-      fi
-    '';
   };
 }

@@ -39,14 +39,15 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Enable pcscd daemon for smartcard mode (required for GPG/PIV/etc.)
-    services.pcscd.enable = lib.mkDefault true;
+    services = {
+      # Enable pcscd daemon for smartcard mode (required for GPG/PIV/etc.)
+      pcscd.enable = lib.mkDefault true;
 
-    # Enable udev rules for Yubikey personalization and access
-    services.udev.packages = [ pkgs.yubikey-personalization ];
+      # Enable udev rules for Yubikey personalization and access
+      udev.packages = [ pkgs.yubikey-personalization ];
 
-    # Lock session on Yubikey removal (unless on WSL)
-    services.udev.extraRules = lib.mkIf (!config.wsl.enable) (
+      # Lock session on Yubikey removal (unless on WSL)
+      udev.extraRules = lib.mkIf (!config.wsl.enable) (
       let
         lockScript = pkgs.writeShellScript "yubikey-lock-session" ''
           if [ -n "${
@@ -81,8 +82,9 @@ in
          RUN+="${lockScript}"
       ''
     );
+  };
 
-    # Install Yubikey management and configuration utilities
+  # Install Yubikey management and configuration utilities
     environment.systemPackages =
       with pkgs;
       [

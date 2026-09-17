@@ -71,20 +71,22 @@ with config.lib.topology;
           "eth4"
         ]
       ];
-      interfaces.eth0 = {
-        network = "internet";
-        addresses = [ "dhcp" ];
-        type = "ethernet";
-      };
-      interfaces.eth1 = {
-        network = "ribble";
-        addresses = [ "192.168.1.1" ];
-        type = "ethernet";
-      };
-      interfaces.wlan0 = {
-        network = "ribble";
-        addresses = [ "192.168.1.1" ];
-        type = "wifi";
+      interfaces = {
+        eth0 = {
+          network = "internet";
+          addresses = [ "dhcp" ];
+          type = "ethernet";
+        };
+        eth1 = {
+          network = "ribble";
+          addresses = [ "192.168.1.1" ];
+          type = "ethernet";
+        };
+        wlan0 = {
+          network = "ribble";
+          addresses = [ "192.168.1.1" ];
+          type = "wifi";
+        };
       };
     };
 
@@ -187,29 +189,31 @@ with config.lib.topology;
     pixel-9 = mkDevice "pixel-9" {
       info = "Google Pixel 9";
       deviceIcon = ./assets/google.svg;
-      interfaces."5g-radio" = {
-        type = "cellular";
-        network = "internet";
-        physicalConnections = [ (mkConnection "internet" "*") ];
-      };
-      interfaces.hotspot = {
-        network = "pixel-9";
-        type = "wifi";
-      };
-      interfaces.wlan0 = {
-        network = "ribble";
-        type = "wifi";
-        physicalConnections = [ (mkConnection "router" "wlan0") ];
-      };
-      interfaces.tailscale0 = {
-        network = tailnet;
-        type = "tailscale";
-        icon = ./assets/tailscale.svg;
-        virtual = true;
-        addresses = [
-          "pixel-9"
-          "pixel-9.${tailnet}"
-        ];
+      interfaces = {
+        "5g-radio" = {
+          type = "cellular";
+          network = "internet";
+          physicalConnections = [ (mkConnection "internet" "*") ];
+        };
+        hotspot = {
+          network = "pixel-9";
+          type = "wifi";
+        };
+        wlan0 = {
+          network = "ribble";
+          type = "wifi";
+          physicalConnections = [ (mkConnection "router" "wlan0") ];
+        };
+        tailscale0 = {
+          network = tailnet;
+          type = "tailscale";
+          icon = ./assets/tailscale.svg;
+          virtual = true;
+          addresses = [
+            "pixel-9"
+            "pixel-9.${tailnet}"
+          ];
+        };
       };
     };
 

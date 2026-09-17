@@ -126,7 +126,7 @@ in
     # Declarative device authorizations
     tailscale_device_authorization = lib.listToAttrs (
       map (dev: {
-        name = dev.name;
+        inherit (dev) name;
         value = {
           device_id = "\${data.tailscale_device.${dev.name}.node_id}";
           authorized = true;
@@ -137,10 +137,10 @@ in
     # Declarative device tags
     tailscale_device_tags = lib.listToAttrs (
       map (dev: {
-        name = dev.name;
+        inherit (dev) name;
         value = {
+          inherit (dev) tags;
           device_id = "\${data.tailscale_device.${dev.name}.node_id}";
-          tags = dev.tags;
           depends_on = [ "tailscale_acl.acl" ];
         };
       }) devices
@@ -153,7 +153,7 @@ in
 
     tailscale_device = lib.listToAttrs (
       map (dev: {
-        name = dev.name;
+        inherit (dev) name;
         value = {
           name = "${dev.name}.${tailnet}";
         }

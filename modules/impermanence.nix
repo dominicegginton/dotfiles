@@ -64,24 +64,26 @@ in
 
   config = lib.mkIf cfg.enable {
     programs.fuse.userAllowOther = true;
-    boot.initrd.supportedFilesystems = [ "btrfs" ];
-    boot.initrd.kernelModules = [ "btrfs" ];
-    fileSystems."/persist".neededForBoot = true;
 
-    # Rollback root filesystem to a blank state on every boot
-    # Support both scripted initrd and systemd initrd
-    boot.initrd.postDeviceCommands = lib.mkIf (!config.boot.initrd.systemd.enable) (
-      lib.mkAfter rollbackScript
-    );
+    boot.initrd = {
+      supportedFilesystems = [ "btrfs" ];
+      kernelModules = [ "btrfs" ];
 
-    boot.initrd.systemd.services.rollback = lib.mkIf config.boot.initrd.systemd.enable {
-      description = "Rollback Btrfs root subvolume";
-      wantedBy = [ "initrd.target" ];
-      before = [ "sysroot.mount" ];
-      unitConfig.DefaultDependencies = "no";
-      serviceConfig.Type = "oneshot";
-      script = rollbackScript;
+      # Rollback root filesystem to a blank state on every boot
+      # Support both scripted initrd and systemd initrd
+      postDeviceCommands = lib.mkIf (!config.boot.initrd.systemd.enable) (lib.mkAfter rollbackScript);
+
+      systemd.services.rollback = lib.mkIf config.boot.initrd.systemd.enable {
+        description = "Rollback Btrfs root subvolume";
+        wantedBy = [ "initrd.target" ];
+        before = [ "sysroot.mount" ];
+        unitConfig.DefaultDependencies = "no";
+        serviceConfig.Type = "oneshot";
+        script = rollbackScript;
+      };
     };
+
+    fileSystems."/persist".neededForBoot = true;
 
     # Persistent files and directories across reboots
     environment.persistence."/persist" = {

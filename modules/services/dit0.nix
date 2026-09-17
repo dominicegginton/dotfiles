@@ -17,13 +17,12 @@ in
       ldap_port = 636;
       web_port = 443;
       data_dir = "/var/lib/dit0";
-      otp_hmac_key_file = "/run/secrets/otp_hmac_key";
-      tailscale = {
-        id = "T2YHuJgy2121CNTRL";
-        hostname = "dit0";
-        api_base_url = "https://api.tailscale.com/api/v2";
-        api_key_file = "/run/secrets/ts_api_key";
-      };
+      yubico_api_url = "https://api.yubico.com/wsapi/2.0/verify";
+      ts_id = "T2YHuJgy2121CNTRL";
+      ts_hostname = "dit0";
+      ts_api_base_url = "https://api.tailscale.com/api/v2";
+      ts_api_key_file = config.sops.secrets."services/dit0/ts-api-key".path;
+      ts_auth_key_file = config.sops.secrets."services/dit0/ts-auth-key".path;
     };
 
     # Persistent storage for the Dit0 LDAP server

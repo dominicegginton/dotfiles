@@ -3,7 +3,7 @@
   pkgs,
   mkShell,
   terranix,
-  shellHook ? "",
+  gitHooksCheck ? null,
   nix,
   nix-output-monitor,
   deadnix,
@@ -73,7 +73,7 @@ let
 in
 
 mkShell rec {
-  inherit shellHook;
+  shellHook = lib.optionalString (gitHooksCheck != null) gitHooksCheck.shellHook;
   name = "github:" + maintainers.dominicegginton.github + "/dotfiles";
   keys = [ "root@dominicegginton.dev" ];
 
@@ -102,7 +102,8 @@ mkShell rec {
     deploy-host
     burn-infector
     gpg-import-bucket
-  ];
+  ]
+  ++ lib.optionals (gitHooksCheck != null) gitHooksCheck.enabledPackages;
 
   # Maintainer info for shell.nix
   meta.maintainers = [ maintainers.dominicegginton ];

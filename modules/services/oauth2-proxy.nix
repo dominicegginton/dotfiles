@@ -85,7 +85,7 @@ in
       httpAddress = "127.0.0.1:${toString cfg.port}";
       upstream = [ cfg.upstream ];
       provider = "oidc";
-      oidcIssuerUrl = cfg.oidcIssuerUrl;
+      inherit (cfg) oidcIssuerUrl;
       clientID = cfg.oidcClientId;
       clientSecretFile = cfg.oidcClientSecretFile;
       redirectURL = cfg.oidcRedirectUrl;

@@ -12,7 +12,7 @@
     sharedModules = [
       self.inputs.base16.homeManagerModule # Base16 theming for Home Manager
       {
-        scheme = config.scheme;
+        inherit (config) scheme;
         home = {
           stateVersion = lib.mkForce "25.11"; # Pin Home Manager state version
           enableNixpkgsReleaseCheck = lib.mkForce false; # Disable release check

@@ -1,6 +1,5 @@
 {
   self,
-  pkgs,
   lib,
   config,
   platform,
@@ -84,6 +83,7 @@
   # display.driftwm.enable = true;
 
   users.sssd.enable = false;
+  users.ldap.enable = false;
 
   # Enable Nix Distributed Build client (Machine Mesh)
   services.nix-builder.client.enable = true;

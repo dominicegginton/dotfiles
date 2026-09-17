@@ -16,9 +16,11 @@ in
 
   config = lib.mkIf cfg.enable {
     services.harmonia = {
-      cache.enable = true;
-      cache.settings.bind = "127.0.0.1:5005";
-      cache.signKeyPaths = [ config.sops.secrets."services/harmonia/sign-key".path ];
+      cache = {
+        enable = true;
+        settings.bind = "127.0.0.1:5005";
+        signKeyPaths = [ config.sops.secrets."services/harmonia/sign-key".path ];
+      };
     };
 
     # Override the default systemd socket activation port to 5005 to prevent conflict with Frigate (port 5000)

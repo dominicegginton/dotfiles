@@ -2,3 +2,4 @@
 .terraform
 result
 .tfvars
+.pre-commit-config.yaml

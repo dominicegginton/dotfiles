@@ -9,7 +9,7 @@
 
     {
       "src": ["dominic.egginton@gmail.com"],
-      "dst": ["tag:service-dit0"],
+      "dst": ["tag:service-dit0", "tag:dit0", "dominic.egginton@gmail.com"],
       "ip":  ["*"],
 
       "app": {

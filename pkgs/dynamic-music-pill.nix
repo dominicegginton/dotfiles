@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
     extensionPortalSlug = pname;
     extensionUuid = uuid;
     tests = {
-      gnome-extensions = nixosTests.gnome-extensions;
+      inherit (nixosTests) gnome-extensions;
     };
   };
 }

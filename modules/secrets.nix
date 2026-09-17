@@ -33,10 +33,18 @@ in
       let
         hostSopsFile = ../secrets/hosts + "/${config.networking.hostName}.yaml";
         useHostSops = builtins.pathExists hostSopsFile;
+        sharedSopsFile = ../secrets/secrets.yaml;
+        useSharedSops = builtins.pathExists sharedSopsFile;
 
         # Helper to set the sopsFile to the host-specific file if it exists,
-        # otherwise we return null to filter it out and avoid evaluation errors.
-        hostSecret = opt: if useHostSops then { sopsFile = hostSopsFile; } // opt else null;
+        # otherwise fallback to shared secrets.yaml if it exists, otherwise return null.
+        hostSecret = opt:
+          if useHostSops then
+            { sopsFile = hostSopsFile; } // opt
+          else if useSharedSops then
+            { sopsFile = sharedSopsFile; } // opt
+          else
+            null;
 
         # Filter out null values from the secrets attrset
         filterNulls = lib.filterAttrs (_: value: value != null);
@@ -80,7 +88,14 @@ in
         "services/silverbullet/gcs-backup-key" =
           if config.services.silverbullet.enable then hostSecret { } else null;
         "services/sssd/client-secret" =
-          if (config.users.sssd.enable or false) then hostSecret { } else null;
+          if (config.users.sssd.enable or false) then
+            hostSecret {
+              owner = "root";
+              group = "root";
+              mode = "0440";
+            }
+          else
+            null;
         "services/frigate/gcs-backup-key" = if config.services.frigate.enable then hostSecret { } else null;
         "services/garage/rpc-secret" =
           if (config.services.garage.enable or false) then hostSecret { } else null;
@@ -98,6 +113,10 @@ in
           if (config.services.beszel.hub.enable or false) then hostSecret { } else null;
         "services/harmonia/sign-key" =
           if config.services.harmonia-custom.enable then hostSecret { } else null;
+        "services/dit0/ts-api-key" =
+          if (config.services.dit0.enable or false) then hostSecret { } else null;
+        "services/dit0/ts-auth-key" =
+          if (config.services.dit0.enable or false) then hostSecret { } else null;
         "onlyoffice_jwt_secret" =
           if (config.services.onlyoffice-documentserver.enable or false) then hostSecret { } else null;
         "oauth2_proxy_oidc_client_secret" =

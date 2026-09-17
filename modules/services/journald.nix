@@ -1,4 +1,4 @@
-{ ... }:
+_:
 
 {
   # Limit journal logs retention to 1 day and secure/limit size to prevent log bloating attacks (notashelf's guide)

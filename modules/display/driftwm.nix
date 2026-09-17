@@ -111,24 +111,28 @@ in
       hardware.bluetooth.enable = lib.mkDefault true;
 
       # XDG Portal configuration for desktop integration
-      xdg.portal = {
-        wlr.enable = lib.mkDefault true;
-        extraPortals = lib.mkDefault [
-          pkgs.xdg-desktop-portal-gnome
-        ];
+      xdg = {
+        portal = {
+          wlr.enable = lib.mkDefault true;
+          extraPortals = lib.mkDefault [
+            pkgs.xdg-desktop-portal-gnome
+          ];
+        };
+
+        # Standard XDG support
+        autostart.enable = lib.mkDefault true;
+        menus.enable = lib.mkDefault true;
+        icons.enable = lib.mkDefault true;
       };
 
-      # Standard XDG support
-      xdg.autostart.enable = lib.mkDefault true;
-      xdg.menus.enable = lib.mkDefault true;
-      xdg.icons.enable = lib.mkDefault true;
-
       # Core system services
-      services.printing.enable = true;
-      services.pipewire.enable = true;
-      services.power-profiles-daemon.enable = true;
+      services = {
+        printing.enable = true;
+        pipewire.enable = true;
+        power-profiles-daemon.enable = true;
 
-      services.displayManager.gdm.enable = true;
+        displayManager.gdm.enable = true;
+      };
 
       systemd.user.services.driftwm = {
         environment = {

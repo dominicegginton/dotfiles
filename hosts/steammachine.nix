@@ -67,27 +67,30 @@
   };
 
   # Kernel & hardware support (Semi-custom AMD Zen 4 6C/12T CPU & RDNA 3 GPU)
-  boot.initrd.availableKernelModules = [
-    "nvme"
-    "xhci_pci"
-    "usbhid"
-    "usb_storage"
-    "sd_mod"
-    "sdhci_pci"
-  ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot = {
+    initrd.availableKernelModules = [
+      "nvme"
+      "xhci_pci"
+      "usbhid"
+      "usb_storage"
+      "sd_mod"
+      "sdhci_pci"
+    ];
+    kernelModules = [ "kvm-amd" ];
+
+    # Bootloader configuration
+    loader = {
+      systemd-boot = {
+        enable = lib.mkDefault true;
+        configurationLimit = 10;
+      };
+      efi.canTouchEfiVariables = lib.mkDefault true;
+      timeout = 3;
+    };
+  };
+
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.enableRedistributableFirmware = true;
-
-  # Bootloader configuration
-  boot.loader = {
-    systemd-boot = {
-      enable = lib.mkDefault true;
-      configurationLimit = 10;
-    };
-    efi.canTouchEfiVariables = lib.mkDefault true;
-    timeout = 3;
-  };
 
   # Enable shared Jovian SteamOS configuration
   jovian.enable = true;

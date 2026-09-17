@@ -13,7 +13,7 @@ with self.outputs.lib;
 let
   # Helper function to map withSbomnix over a set of packages
   # This is used to add SBOM and provenance utilities to all packages in a set
-  wrapWithSbomnix = withSbomnix: pkgs: (builtins.mapAttrs (_: pkg: withSbomnix pkg) pkgs);
+  wrapWithSbomnix = withSbomnix: pkgs: (builtins.mapAttrs (_: withSbomnix) pkgs);
 in
 
 rec {
@@ -73,7 +73,7 @@ rec {
     # This overlay is meant to be applied on top of the default overlay to add sbomnix passthru utilities to all packages
     # It does not add any new packages, but wraps existing ones with sbomnix utilities
     # This allows you to generate SBOMs, dependency graphs, provenance, and vulnerability scans for any package in the system
-    withSbom = wrapWithSbomnix (final.withSbomnix) prev;
+    withSbom = wrapWithSbomnix final.withSbomnix prev;
   };
 
   wsl = final: prev: {

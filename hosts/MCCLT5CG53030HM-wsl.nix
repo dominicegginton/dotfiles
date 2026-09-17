@@ -14,9 +14,11 @@
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
   # Enable WSL compatibility
-  wsl.enable = true;
-  wsl.nvidia.enable = true;
-  wsl.wrappedShell.enable = false;
+  wsl = {
+    enable = true;
+    nvidia.enable = true;
+    wrappedShell.enable = false;
+  };
 
   # Disable Tailscale on WSL by default as blocked by host environment
   services.tailscale.enable = lib.mkForce false;

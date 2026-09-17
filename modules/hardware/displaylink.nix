@@ -18,8 +18,10 @@ in
     services.xserver.videoDrivers = lib.mkDefault [ "displaylink" ];
 
     # EVDI (Extensible Virtual Display Interface) kernel module for Wayland compatibility
-    boot.extraModulePackages = [ config.boot.kernelPackages.evdi ];
-    boot.kernelModules = [ "evdi" ];
-    boot.initrd.kernelModules = [ "evdi" ];
+    boot = {
+      extraModulePackages = [ config.boot.kernelPackages.evdi ];
+      kernelModules = [ "evdi" ];
+      initrd.kernelModules = [ "evdi" ];
+    };
   };
 }

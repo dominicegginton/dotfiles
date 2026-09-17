@@ -54,24 +54,26 @@ in
   };
 
   config = mkIf cfg.enable {
-    services.onlyoffice = {
-      enable = true;
-      inherit (cfg) hostname port jwtSecretFile;
-      securityNonceFile = "${cfg.securityNonceFile}";
-
-      # You might need to configure these based on your setup
-      # postgresHost = "...";
-      # postgresName = "...";
-      # postgresUser = "...";
-      # postgresPasswordFile = "...";
-      # rabbitmqUrl = "...";
-      # jwtSecretFile = "...";
-    };
-
     # Ensure required services are enabled
-    services.nginx.enable = mkDefault true;
-    services.postgresql.enable = mkDefault true; # OnlyOffice requires PostgreSQL
-    services.rabbitmq.enable = mkDefault true; # OnlyOffice requires RabbitMQ
+    services = {
+      onlyoffice = {
+        enable = true;
+        inherit (cfg) hostname port jwtSecretFile;
+        securityNonceFile = "${cfg.securityNonceFile}";
+
+        # You might need to configure these based on your setup
+        # postgresHost = "...";
+        # postgresName = "...";
+        # postgresUser = "...";
+        # postgresPasswordFile = "...";
+        # rabbitmqUrl = "...";
+        # jwtSecretFile = "...";
+      };
+
+      nginx.enable = mkDefault true;
+      postgresql.enable = mkDefault true; # OnlyOffice requires PostgreSQL
+      rabbitmq.enable = mkDefault true; # OnlyOffice requires RabbitMQ
+    };
 
     # Persistent storage for OnlyOffice DocumentServer App_Data
     environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [

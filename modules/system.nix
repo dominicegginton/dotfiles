@@ -18,7 +18,7 @@
       vendorName = lib.mkForce self.outputs.lib.maintainers.dominicegginton.name; # Branding
       vendorId = lib.mkForce self.outputs.lib.maintainers.dominicegginton.github; # Branding
       tags = lib.mkForce [
-        (lib.optionalString (pkgs.stdenv.isLinux) "residence-linux")
+        (lib.optionalString pkgs.stdenv.isLinux "residence-linux")
         (lib.optionalString config.wsl.enable "wsl")
       ];
     };

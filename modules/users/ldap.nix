@@ -15,8 +15,20 @@ in
     users.ldap = {
       server = lib.mkDefault "ldaps://dit0.${tailnet}:636";
       useTLS = lib.mkDefault true;
-      base = lib.mkDefault "dc=${tailnetId}";
+      base = lib.mkDefault "dc=T2YHuJgy2121CNTRL";
       daemon.enable = lib.mkDefault true;
+      extraConfig = ''
+        tls_reqcert allow
+        base passwd ou=people,dc=T2YHuJgy2121CNTRL
+        base group ou=groups,dc=T2YHuJgy2121CNTRL
+        base shadow ou=people,dc=T2YHuJgy2121CNTRL
+      '';
+    };
+
+    # Force enable keyboard-interactive and password authentication in SSH for LDAP/YubiKey logins
+    services.openssh.settings = {
+      KbdInteractiveAuthentication = lib.mkForce true;
+      PasswordAuthentication = lib.mkForce true;
     };
 
     security.pam.services = {

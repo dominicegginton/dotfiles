@@ -117,34 +117,103 @@
       };
     };
   };
-  boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "ehci_pci"
-    "ahci"
-    "usb_storage"
-    "sd_mod"
-    "sr_mod"
-  ];
+  boot = {
+    initrd.availableKernelModules = [
+      "xhci_pci"
+      "ehci_pci"
+      "ahci"
+      "usb_storage"
+      "sd_mod"
+      "sr_mod"
+    ];
 
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
+    initrd.kernelModules = [ ];
+    kernelModules = [ "kvm-intel" ];
+    extraModulePackages = [ ];
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+  };
 
   programs.deadman.enable = false; # Disable deadman switch.
 
-  # Ignore events from the lid switch and prevent system from sleeping/suspending to keep server online
-  services.logind.settings.Login.HandleLidSwitch = "ignore";
-  services.upower.ignoreLid = true;
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
+  # Systemd configuration to prevent system from sleeping/suspending
+  systemd.targets = {
+    sleep.enable = false;
+    suspend.enable = false;
+    hibernate.enable = false;
+    hybrid-sleep.enable = false;
+  };
 
-  # Thermal daemon to regulate temperature on headless laptop server
-  services.thermald.enable = true;
+  # Hardware services and application servers
+  services = {
+    # Ignore events from the lid switch to keep server online
+    logind.settings.Login.HandleLidSwitch = "ignore";
+    upower.ignoreLid = true;
+
+    # Thermal daemon to regulate temperature on headless laptop server
+    thermald.enable = true;
+
+    # Headless NVIDIA GPU configuration for hardware media transcoding & compute
+    xserver.videoDrivers = [ "nvidia" ];
+
+    # Enable Tailscale Identity Provider (IdP)
+    tsidp.enable = true;
+
+    # Enable Beszel monitoring (Hub and Agent)
+    beszel.hub.enable = true;
+
+    # Enable Immich Photos/Video Management Services with CUDA acceleration
+    immich = {
+      enable = true;
+      acceleration = "cuda";
+    };
+
+    # Enable Jellyfin Media Server Services
+    jellyfin.enable = true;
+
+    # Enable Transmission BitTorrent client
+    transmission.enable = true;
+
+    # Enable Frigate NVR & OD Services
+    frigate = {
+      enable = true;
+      settings = {
+        detectors = {
+          tensorrt = {
+            type = "tensorrt";
+            device = 0;
+          };
+        };
+        cameras = {
+          "Frontdoor" = {
+            ffmpeg = {
+              hwaccel_args = "preset-vaapi";
+              inputs = [
+                {
+                  path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";
+                  roles = [ "record" ];
+                }
+                {
+                  path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub";
+                  roles = [ "detect" ];
+                }
+              ];
+            };
+          };
+        };
+      };
+    };
+
+    # Enable SilverBullet Notes Services
+    silverbullet.enable = true;
+
+    # Enable Nix Distributed Build and Harmonia services (Machine Mesh)
+    nix-builder.enable = true;
+    harmonia-custom.enable = true;
+  };
 
   # Hardware-accelerated graphics drivers for VA-API media transcoding
   hardware.graphics = {
@@ -155,68 +224,11 @@
     ];
   };
 
-  # Headless NVIDIA GPU configuration for hardware media transcoding & compute
-  services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     modesetting.enable = true;
     open = false;
     nvidiaSettings = false; # Disable X11 GUI settings app on headless server
   };
-
-  # Enable Tailscale Identity Provider (IdP)
-  services.tsidp.enable = true;
-
-  # Enable Beszel monitoring (Hub and Agent)
-  services.beszel.hub.enable = true;
-
-  # Enable Immich Photos/Video Management Services with CUDA acceleration
-  services.immich = {
-    enable = true;
-    acceleration = "cuda";
-  };
-
-  # Enable Jellyfin Media Server Services
-  services.jellyfin.enable = true;
-
-  # Enable Transmission BitTorrent client
-  services.transmission.enable = true;
-
-  # Enable Frigate NVR & OD Services
-  services.frigate = {
-    enable = true;
-    settings = {
-      detectors = {
-        tensorrt = {
-          type = "tensorrt";
-          device = 0;
-        };
-      };
-      cameras = {
-        "Frontdoor" = {
-          ffmpeg = {
-            hwaccel_args = "preset-vaapi";
-            inputs = [
-              {
-                path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";
-                roles = [ "record" ];
-              }
-              {
-                path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub";
-                roles = [ "detect" ];
-              }
-            ];
-          };
-        };
-      };
-    };
-  };
-
-  # Enable SilverBullet Notes Services
-  services.silverbullet.enable = true;
-
-  # Enable Nix Distributed Build and Harmonia services (Machine Mesh)
-  services.nix-builder.enable = true;
-  services.harmonia-custom.enable = true;
 
   # Topology Definition
   topology.self = {
