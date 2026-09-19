@@ -123,7 +123,7 @@ let
     user-switch-enabled = false;
   };
 
-  extensions = cfg.extensions;
+  inherit (cfg) extensions;
 
   uuid =
     ext:
