@@ -2,6 +2,7 @@
   self,
   config,
   lib,
+  pkgs,
   hostname,
   platform,
   ...
