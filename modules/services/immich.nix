@@ -49,17 +49,17 @@ in
         ];
         pruneOpts = [
           "--keep-daily 7"
-        "--keep-weekly 4"
-        "--keep-monthly 12"
-      ];
-      timerConfig = {
-        OnCalendar = "02:00:00";
-        Persistent = true;
+          "--keep-weekly 4"
+          "--keep-monthly 12"
+        ];
+        timerConfig = {
+          OnCalendar = "02:00:00";
+          Persistent = true;
+        };
       };
     };
-  };
 
-  # Pass GCP Service Account credentials to Restic and set systemd ordering after Immich server
+    # Pass GCP Service Account credentials to Restic and set systemd ordering after Immich server
     systemd.services.restic-backups-immich = {
       environment.GOOGLE_APPLICATION_CREDENTIALS =
         config.sops.secrets."services/immich/gcs-backup-key".path;

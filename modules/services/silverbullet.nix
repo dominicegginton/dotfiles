@@ -44,16 +44,16 @@ in
         pruneOpts = [
           "--keep-daily 7"
           "--keep-weekly 4"
-        "--keep-monthly 12"
-      ];
-      timerConfig = {
-        OnCalendar = "01:00:00";
-        Persistent = true;
+          "--keep-monthly 12"
+        ];
+        timerConfig = {
+          OnCalendar = "01:00:00";
+          Persistent = true;
+        };
       };
     };
-  };
 
-  # Pass GCP Service Account credentials to Restic and set systemd ordering after Silverbullet service
+    # Pass GCP Service Account credentials to Restic and set systemd ordering after Silverbullet service
     systemd.services.restic-backups-silverbullet = {
       environment.GOOGLE_APPLICATION_CREDENTIALS =
         config.sops.secrets."services/silverbullet/gcs-backup-key".path;

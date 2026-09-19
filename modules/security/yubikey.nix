@@ -48,43 +48,43 @@ in
 
       # Lock session on Yubikey removal (unless on WSL)
       udev.extraRules = lib.mkIf (!config.wsl.enable) (
-      let
-        lockScript = pkgs.writeShellScript "yubikey-lock-session" ''
-          if [ -n "${
-            toString (config.security.yubikey.homeSsid != null)
-          }" ] && [ -n "${toString config.security.yubikey.homeSsid}" ]; then
-            HOME_SSID="${toString config.security.yubikey.homeSsid}"
+        let
+          lockScript = pkgs.writeShellScript "yubikey-lock-session" ''
+            if [ -n "${
+              toString (config.security.yubikey.homeSsid != null)
+            }" ] && [ -n "${toString config.security.yubikey.homeSsid}" ]; then
+              HOME_SSID="${toString config.security.yubikey.homeSsid}"
 
-            if [ -x "${pkgs.networkmanager}/bin/nmcli" ]; then
-              CURRENT_SSID=$("${pkgs.networkmanager}/bin/nmcli" -t -f ACTIVE,SSID dev wifi 2>/dev/null | grep "^yes:" | head -n1 | cut -d: -f2-)
-              if [ "$CURRENT_SSID" = "$HOME_SSID" ]; then
-                exit 0
-              fi
-            fi
-
-            if [ -x "${pkgs.iwd}/bin/iwctl" ]; then
-              for dev in $("${pkgs.iwd}/bin/iwctl" station list 2>/dev/null | awk 'NR>4 && $1!="" {print $1}'); do
-                CURRENT_SSID=$("${pkgs.iwd}/bin/iwctl" station "$dev" show 2>/dev/null | grep "Connected network" | awk -F'  +' '{print $NF}' | xargs)
+              if [ -x "${pkgs.networkmanager}/bin/nmcli" ]; then
+                CURRENT_SSID=$("${pkgs.networkmanager}/bin/nmcli" -t -f ACTIVE,SSID dev wifi 2>/dev/null | grep "^yes:" | head -n1 | cut -d: -f2-)
                 if [ "$CURRENT_SSID" = "$HOME_SSID" ]; then
                   exit 0
                 fi
-              done
+              fi
+
+              if [ -x "${pkgs.iwd}/bin/iwctl" ]; then
+                for dev in $("${pkgs.iwd}/bin/iwctl" station list 2>/dev/null | awk 'NR>4 && $1!="" {print $1}'); do
+                  CURRENT_SSID=$("${pkgs.iwd}/bin/iwctl" station "$dev" show 2>/dev/null | grep "Connected network" | awk -F'  +' '{print $NF}' | xargs)
+                  if [ "$CURRENT_SSID" = "$HOME_SSID" ]; then
+                    exit 0
+                  fi
+                done
+              fi
             fi
-          fi
 
-          ${pkgs.systemd}/bin/loginctl lock-sessions
-        '';
-      in
-      ''
-        ACTION=="remove",\
-         ENV{ID_BUS}=="usb",\
-         ENV{ID_VENDOR_ID}=="1050",\
-         RUN+="${lockScript}"
-      ''
-    );
-  };
+            ${pkgs.systemd}/bin/loginctl lock-sessions
+          '';
+        in
+        ''
+          ACTION=="remove",\
+           ENV{ID_BUS}=="usb",\
+           ENV{ID_VENDOR_ID}=="1050",\
+           RUN+="${lockScript}"
+        ''
+      );
+    };
 
-  # Install Yubikey management and configuration utilities
+    # Install Yubikey management and configuration utilities
     environment.systemPackages =
       with pkgs;
       [

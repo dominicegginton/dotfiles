@@ -54,19 +54,19 @@ in
           "*.db-shm"
           "*.db-wal"
         ];
-      pruneOpts = [
-        "--keep-daily 7"
-        "--keep-weekly 4"
-        "--keep-monthly 12"
-      ];
-      timerConfig = {
-        OnCalendar = "04:00:00";
-        Persistent = true;
+        pruneOpts = [
+          "--keep-daily 7"
+          "--keep-weekly 4"
+          "--keep-monthly 12"
+        ];
+        timerConfig = {
+          OnCalendar = "04:00:00";
+          Persistent = true;
+        };
       };
     };
-  };
 
-  # Pass GCP Service Account credentials to Restic and set systemd ordering after Frigate
+    # Pass GCP Service Account credentials to Restic and set systemd ordering after Frigate
     systemd.services.restic-backups-frigate = {
       environment.GOOGLE_APPLICATION_CREDENTIALS =
         config.sops.secrets."services/frigate/gcs-backup-key".path;

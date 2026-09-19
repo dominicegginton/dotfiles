@@ -38,7 +38,8 @@ in
 
         # Helper to set the sopsFile to the host-specific file if it exists,
         # otherwise fallback to shared secrets.yaml if it exists, otherwise return null.
-        hostSecret = opt:
+        hostSecret =
+          opt:
           if useHostSops then
             { sopsFile = hostSopsFile; } // opt
           else if useSharedSops then

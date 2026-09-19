@@ -1,5 +1,4 @@
 {
-  self,
   lib,
   platform,
   ...
@@ -7,7 +6,7 @@
 
 {
   disabledModules = [
-    self.inputs.run0-sudo-shim.nixosModules.default
+    "nixos/modules/security/sudo.nix"
   ];
 
   # Set host platform

@@ -6,10 +6,6 @@
   ...
 }:
 
-let
-  tailnetId = "T2YHuJgy2121CNTRL";
-in
-
 {
   config = lib.mkIf config.users.ldap.enable {
     users.ldap = {
