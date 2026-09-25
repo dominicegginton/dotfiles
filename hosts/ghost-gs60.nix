@@ -169,7 +169,7 @@
     # Enable Immich Photos/Video Management Services with CUDA acceleration
     immich = {
       enable = true;
-      acceleration = "cuda";
+      accelerationDevices = [ "cuda" ];
     };
 
     # Enable Jellyfin Media Server Services
