@@ -180,6 +180,7 @@
         "linux-firmware"
         "nvidia-container-toolkit"
         "nvidia-docker"
+        "nvidia-kernel-modules"
         "nvidia-persistenced"
         "nvidia-settings"
         "nvidia-x11"
