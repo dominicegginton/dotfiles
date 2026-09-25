@@ -61,7 +61,7 @@ in
       ];
       CapabilityBoundingSet = "";
       KeyringMode = "private";
-      UMask = "0077";
+      UMask = lib.mkForce "0077";
     };
 
     # Expose Harmonia over tsnsrv on your tailnet
