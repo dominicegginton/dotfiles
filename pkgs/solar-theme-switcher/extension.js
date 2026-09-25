@@ -1,9 +1,9 @@
-import { Extension } from 'resource:///org/gnome/shell/extensions/extension.js';
-import GLib from 'gi://GLib';
-import Geoclue from 'gi://Geoclue';
-import Gio from 'gi://Gio';
-import St from 'gi://St';
-import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
+import GLib from "gi://GLib";
+import Geoclue from "gi://Geoclue";
+import Gio from "gi://Gio";
+import St from "gi://St";
+import * as Main from "resource:///org/gnome/shell/ui/main.js";
 
 const DEG = Math.PI / 180;
 
@@ -43,25 +43,18 @@ function getSunTimes(lat, lon, date) {
   const Jstar = n - lon / 360;
 
   // Solar mean anomaly (degrees)
-  const M = ((357.5291 + 0.98560028 * Jstar) % 360 + 360) % 360;
+  const M = (((357.5291 + 0.98560028 * Jstar) % 360) + 360) % 360;
   const Mrad = M * DEG;
 
   // Equation of centre
-  const C =
-    1.9148 * Math.sin(Mrad) +
-    0.02 * Math.sin(2 * Mrad) +
-    0.0003 * Math.sin(3 * Mrad);
+  const C = 1.9148 * Math.sin(Mrad) + 0.02 * Math.sin(2 * Mrad) + 0.0003 * Math.sin(3 * Mrad);
 
   // Ecliptic longitude (degrees)
-  const lambda = ((M + C + 180 + 102.9372) % 360 + 360) % 360;
+  const lambda = (((M + C + 180 + 102.9372) % 360) + 360) % 360;
   const lambdaRad = lambda * DEG;
 
   // Solar transit (Julian date)
-  const Jtransit =
-    2451545.0 +
-    Jstar +
-    0.0053 * Math.sin(Mrad) -
-    0.0069 * Math.sin(2 * lambdaRad);
+  const Jtransit = 2451545.0 + Jstar + 0.0053 * Math.sin(Mrad) - 0.0069 * Math.sin(2 * lambdaRad);
 
   // Declination of the Sun
   const sinD = Math.sin(lambdaRad) * Math.sin(23.4397 * DEG);
@@ -69,13 +62,10 @@ function getSunTimes(lat, lon, date) {
 
   // Hour angle at horizon (-0.833° accounts for atmospheric refraction and solar disc size)
   const cosW0 =
-    (Math.sin(-0.833 * DEG) - Math.sin(lat * DEG) * sinD) /
-    (Math.cos(lat * DEG) * cosD);
+    (Math.sin(-0.833 * DEG) - Math.sin(lat * DEG) * sinD) / (Math.cos(lat * DEG) * cosD);
 
-  if (cosW0 < -1)
-    return { sunrise: null, sunset: null, polarDay: true, polarNight: false };
-  if (cosW0 > 1)
-    return { sunrise: null, sunset: null, polarDay: false, polarNight: true };
+  if (cosW0 < -1) return { sunrise: null, sunset: null, polarDay: true, polarNight: false };
+  if (cosW0 > 1) return { sunrise: null, sunset: null, polarDay: false, polarNight: true };
 
   const W0 = Math.acos(cosW0) / DEG;
 
@@ -91,9 +81,9 @@ export default class SolarThemeSwitcher extends Extension {
   enable() {
     this._savedColorScheme = Main.sessionMode.colorScheme;
     this._interfaceSettings = new Gio.Settings({
-      schema_id: 'org.gnome.desktop.interface',
+      schema_id: "org.gnome.desktop.interface",
     });
-    this._savedInterfaceColorScheme = this._interfaceSettings.get_string('color-scheme');
+    this._savedInterfaceColorScheme = this._interfaceSettings.get_string("color-scheme");
     this._lat = null;
     this._lon = null;
     this._timerId = null;
@@ -120,7 +110,7 @@ export default class SolarThemeSwitcher extends Extension {
 
     if (this._interfaceSettings && this._savedInterfaceColorScheme) {
       try {
-        this._interfaceSettings.set_string('color-scheme', this._savedInterfaceColorScheme);
+        this._interfaceSettings.set_string("color-scheme", this._savedInterfaceColorScheme);
       } catch (e) {
         console.warn(`[SolarThemeSwitcher] Failed to restore interface color-scheme: ${e.message}`);
       }
@@ -134,7 +124,7 @@ export default class SolarThemeSwitcher extends Extension {
 
   _startGeoclue() {
     Geoclue.Simple.new(
-      'solar-theme-switcher@dominicegginton',
+      "solar-theme-switcher@dominicegginton",
       Geoclue.AccuracyLevel.CITY,
       null,
       (source, result) => {
@@ -142,16 +132,15 @@ export default class SolarThemeSwitcher extends Extension {
           this._geoclue = Geoclue.Simple.new_finish(result);
 
           // Watch for future location updates (e.g., roaming between networks)
-          this._locationChangedId = this._geoclue.connect(
-            'notify::location',
-            () => this._onLocationChanged()
+          this._locationChangedId = this._geoclue.connect("notify::location", () =>
+            this._onLocationChanged(),
           );
 
           this._onLocationChanged();
         } catch (e) {
           console.error(`[SolarThemeSwitcher] Failed to acquire location: ${e.message}`);
         }
-      }
+      },
     );
   }
 
@@ -182,11 +171,7 @@ export default class SolarThemeSwitcher extends Extension {
     if (this._lat === null || this._lon === null) return;
 
     const now = new Date();
-    const { sunrise, sunset, polarDay, polarNight } = getSunTimes(
-      this._lat,
-      this._lon,
-      now
-    );
+    const { sunrise, sunset, polarDay, polarNight } = getSunTimes(this._lat, this._lon, now);
 
     let isDark;
     let nextSwitch;
@@ -216,32 +201,28 @@ export default class SolarThemeSwitcher extends Extension {
       }
     }
 
-    this._applyScheme(isDark ? 'prefer-dark' : 'prefer-light');
+    this._applyScheme(isDark ? "prefer-dark" : "prefer-light");
 
     if (nextSwitch !== null) {
       const delaySecs = Math.max(1, Math.ceil((nextSwitch - now) / 1000));
-      this._timerId = GLib.timeout_add_seconds(
-        GLib.PRIORITY_DEFAULT,
-        delaySecs,
-        () => {
-          this._timerId = null;
-          this._scheduleNextSwitch();
-          return GLib.SOURCE_REMOVE;
-        }
-      );
+      this._timerId = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, delaySecs, () => {
+        this._timerId = null;
+        this._scheduleNextSwitch();
+        return GLib.SOURCE_REMOVE;
+      });
     }
   }
 
   _updateColorScheme(scheme) {
     Main.sessionMode.colorScheme = scheme;
-    St.Settings.get().notify('color-scheme');
+    St.Settings.get().notify("color-scheme");
 
     if (!this._interfaceSettings) return;
 
     try {
       // GNOME interface setting reliably accepts default/prefer-dark.
-      const interfaceScheme = scheme === 'prefer-dark' ? 'prefer-dark' : 'default';
-      this._interfaceSettings.set_string('color-scheme', interfaceScheme);
+      const interfaceScheme = scheme === "prefer-dark" ? "prefer-dark" : "default";
+      this._interfaceSettings.set_string("color-scheme", interfaceScheme);
     } catch (e) {
       console.warn(`[SolarThemeSwitcher] Failed to set interface color-scheme: ${e.message}`);
     }
@@ -254,6 +235,6 @@ export default class SolarThemeSwitcher extends Extension {
   _applyFallbackScheme() {
     const hour = new Date().getHours();
     const isDark = hour < 7 || hour >= 19;
-    this._applyScheme(isDark ? 'prefer-dark' : 'prefer-light');
+    this._applyScheme(isDark ? "prefer-dark" : "prefer-light");
   }
 }

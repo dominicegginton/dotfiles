@@ -9,7 +9,7 @@
 
     {
       "src": ["dominic.egginton@gmail.com"],
-      "dst": ["tag:service-dit0", "tag:dit0", "dominic.egginton@gmail.com"],
+      "dst": ["tag:service-dit0", "dominic.egginton@gmail.com"],
       "ip":  ["*"],
 
       "app": {
@@ -96,12 +96,6 @@
     },
 
     {
-      "src": ["*"],
-      "dst": ["*"],
-      "ip":  ["*"]
-    },
-
-    {
       "src": ["tag:device-latitude-7390", "dominic.egginton@gmail.com"],
       "dst": ["tag:service-transmission"],
       "ip":  ["*"]
@@ -174,6 +168,65 @@
     {
       "target": ["tag:service-idp", "tag:service-immich", "tag:service-jellyfin"],
       "attr":   ["funnel"]
+    }
+  ],
+
+  "tests": [
+    {
+      "src": "dominic.egginton@gmail.com",
+      "accept": [
+        "tag:service-beszel:443",
+        "tag:service-transmission:80",
+        "tag:service-frigate:443",
+        "tag:service-silverbullet:443",
+        "tag:service-idp:80"
+      ]
+    },
+    {
+      "src": "tag:device-latitude-7390",
+      "accept": [
+        "tag:service-beszel:443",
+        "tag:service-transmission:80",
+        "tag:service-frigate:443",
+        "tag:service-jellyfin:8080"
+      ]
+    },
+    {
+      "src": "tag:beszel-hub",
+      "accept": [
+        "tag:beszel-agent:2222"
+      ],
+      "deny": [
+        "tag:service-frigate:443"
+      ]
+    },
+    {
+      "src": "tag:ldap-client",
+      "accept": [
+        "tag:service-dit0:3269"
+      ],
+      "deny": [
+        "tag:service-frigate:443",
+        "tag:service-jellyfin:8080"
+      ]
+    }
+  ],
+
+  "sshTests": [
+    {
+      "src": "dominic.egginton@gmail.com",
+      "dst": ["tag:device-latitude-7390"],
+      "accept": ["root", "dom"]
+    },
+    {
+      "src": "tag:device-latitude-7390",
+      "dst": ["tag:device-ghost-gs60"],
+      "accept": ["root", "dom"]
+    },
+    {
+      "src": "tag:service-beszel",
+      "dst": ["tag:device-latitude-7390"],
+      "accept": ["dom"]
     }
   ]
 }

@@ -81,7 +81,7 @@ in
     };
 
     tailscale_tailnet_settings.settings = {
-      acls_externally_managed_on = false;
+      acls_externally_managed_on = true;
       devices_approval_on = true;
       devices_auto_updates_on = true;
       devices_key_duration_days = 5;

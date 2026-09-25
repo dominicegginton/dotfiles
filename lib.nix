@@ -26,8 +26,10 @@ rec {
   # This allows using personal maintainer info in package definitions and overlays.
   maintainers = import ./lib/maintainers.nix { inherit lib; };
 
-  # Terraform helpers for declarative, reproducible infrastructure builds
-  terraform = pkgs: import ./lib/terraform.nix { inherit pkgs; };
+  # OpenTofu helpers for declarative, reproducible infrastructure builds
+  opentofu = pkgs: import ./lib/opentofu.nix { inherit pkgs; };
+  tofu = opentofu;
+  terraform = opentofu;
 
   # Helper to define a NixOS system with standard defaults
   # Used in flake.nix for all host definitions

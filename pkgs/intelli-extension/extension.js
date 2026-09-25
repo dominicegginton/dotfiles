@@ -10,10 +10,7 @@ import Meta from "gi://Meta";
 import Shell from "gi://Shell";
 import GLib from "gi://GLib";
 
-import {
-  Extension,
-  gettext as _,
-} from "resource:///org/gnome/shell/extensions/extension.js";
+import { Extension, gettext as _ } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
 import * as PopupMenu from "resource:///org/gnome/shell/ui/popupMenu.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";

@@ -22,6 +22,7 @@ gs:<bucket-name>:/<hostname>/<service-name>
 ```
 
 Examples:
+
 - **Silverbullet**: `gs:silverbullet-backup-66ea520add6c51fb:/ghost-gs60/silverbullet`
 - **Immich**: `gs:immich-backup-66ea520add6c51fb:/ghost-gs60/immich`
 - **Frigate**: `gs:frigate-backup-66ea520add6c51fb:/ghost-gs60/frigate`
@@ -63,6 +64,7 @@ NixOS provides pre-configured wrapper scripts (`restic-<service-name>`) for each
 Use this procedure if local data or a database is corrupted and needs to be restored to a clean snapshot.
 
 #### Step 1: Stop the Service
+
 Stop the target systemd service to prevent concurrent state writes:
 
 ```bash
@@ -70,11 +72,13 @@ run0 systemctl stop <service-name>.service
 ```
 
 Example:
+
 ```bash
 run0 systemctl stop silverbullet.service
 ```
 
 #### Step 2: List Available Snapshots
+
 Use the official wrapper to query the repository:
 
 ```bash
@@ -82,11 +86,13 @@ run0 restic-<service-name> snapshots
 ```
 
 Example:
+
 ```bash
 run0 restic-silverbullet snapshots
 ```
 
 #### Step 3: Inspect Snapshot Contents (Optional)
+
 Check the files in a specific snapshot ID or `latest`:
 
 ```bash
@@ -94,6 +100,7 @@ run0 restic-<service-name> ls latest
 ```
 
 #### Step 4: Perform the Restore
+
 Restore files directly to disk:
 
 ```bash
@@ -101,11 +108,13 @@ run0 restic-<service-name> restore latest --target /
 ```
 
 Example:
+
 ```bash
 run0 restic-silverbullet restore latest --target /
 ```
 
 #### Step 5: Fix File Ownership
+
 Ensure restored files match the system service user/group permissions:
 
 ```bash
@@ -113,6 +122,7 @@ run0 chown -R <service-user>:<service-group> /var/lib/<service-name>
 ```
 
 Examples:
+
 ```bash
 run0 chown -R silverbullet:silverbullet /var/lib/silverbullet
 run0 chown -R immich:immich /var/lib/immich
@@ -120,6 +130,7 @@ run0 chown -R frigate:frigate /var/lib/frigate
 ```
 
 #### Step 6: Start the Service and Verify
+
 Start the service and check the logs:
 
 ```bash
@@ -154,11 +165,13 @@ fusermount -u /tmp/restic-mount
 When moving a service or restoring onto a new machine (where the source host name in the GCS path differs):
 
 #### Step 1: Stop the Target Service on New Host
+
 ```bash
 run0 systemctl stop <service-name>.service
 ```
 
 #### Step 2: Run Restore Overriding the Source Repository Path
+
 Override the `RESTIC_REPOSITORY` environment variable to point to the source hostname:
 
 ```bash
@@ -169,6 +182,7 @@ run0 env GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/services/<service-name>/gcs
 ```
 
 Example (moving `silverbullet` from `ghost-gs60` to `latitude-7390`):
+
 ```bash
 run0 env GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/services/silverbullet/gcs-backup-key \
   RESTIC_REPOSITORY="gs:silverbullet-backup-66ea520add6c51fb:/ghost-gs60/silverbullet" \
@@ -177,9 +191,8 @@ run0 env GOOGLE_APPLICATION_CREDENTIALS=/run/secrets/services/silverbullet/gcs-b
 ```
 
 #### Step 3: Apply Ownership and Start Service
+
 ```bash
 run0 chown -R <service-user>:<service-group> /var/lib/<service-name>
 run0 systemctl start <service-name>.service
 ```
-
-

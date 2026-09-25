@@ -48,7 +48,7 @@
     run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
     run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Terranix for Nix-based Terraform infrastructure management
+    # Terranix for Nix-based OpenTofu/Terraform infrastructure management
     terranix.url = "github:terranix/terranix";
     terranix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -194,7 +194,6 @@
         "steamdeck-firmware"
         "steamdeck-hw-theme"
         "jupiter-dock-updater-bin"
-        "terraform"
         "vscode"
         "vscode-extension-github-copilot"
         "vscode-with-extensions"
@@ -269,37 +268,33 @@
             src = ./.;
             hooks = {
               deadnix.enable = true;
-              statix = {
+              statix.enable = true;
+              nixfmt.enable = true;
+              prettier = {
                 enable = true;
                 settings = {
-                  ignore = [
-                    "repeated_keys"
-                  ];
+                  print-width = 100;
+                  prose-wrap = "preserve";
                 };
+                excludes = [
+                  "infrastructure/tailscale_acl\\.json$"
+                  "infrastructure/config\\.tf\\.json$"
+                ];
               };
-              nixfmt-rfc-style.enable = true;
               gitleaks = {
                 enable = true;
                 name = "gitleaks";
                 entry = "${pkgs.gitleaks}/bin/gitleaks protect --staged --verbose";
                 pass_filenames = false;
               };
+              tofu-fmt = {
+                enable = true;
+                name = "tofu-fmt";
+                entry = "${pkgs.opentofu}/bin/tofu fmt -check -recursive";
+                files = "\\.(tf|tfvars|tofu)$";
+              };
             };
           };
-
-          # Check for dead/unused code in Nix files
-          deadnix =
-            pkgs.runCommand "deadnix"
-              {
-                nativeBuildInputs = [ pkgs.deadnix ];
-              }
-              ''
-                deadnix --fail ${self}
-                touch $out
-              '';
-
-          # Check that the flake and its outputs are valid
-          formatter = self.outputs.formatter.${system};
 
           # Network topology diagram
           topology = self.outputs.packages.${system}.topology;

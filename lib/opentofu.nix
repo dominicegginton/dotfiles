@@ -1,7 +1,7 @@
-# lib/terraform.nix
+# lib/opentofu.nix
 #
-# Custom Terraform helpers for declarative, reproducible builds
-# of Terraform configurations under Nix.
+# Custom OpenTofu helpers for declarative, reproducible builds
+# of OpenTofu configurations under Nix.
 
 { pkgs }:
 
@@ -12,38 +12,32 @@ let
     jq
     makeWrapper
     symlinkJoin
-    terraform
+    opentofu
     ;
 in
 
 rec {
-  # Standardized set of Terraform provider plugins used in this repository
-  defaultProviders = [
-    "hashicorp_google"
-    "hashicorp_local"
-    "hashicorp_random"
-    "tailscale_tailscale"
-    "cloudflare_cloudflare"
-  ];
-
-  # Wrapper package containing Terraform preconfigured with all default provider plugins.
-  # Can be parameterized with custom paths and validation options.
-  terraformWithPlugins =
+  # Wrapper package containing OpenTofu preconfigured with provider plugins.
+  # Can be parameterized with custom providers, paths, and validation options.
+  opentofuWithPlugins =
     {
+      providers ? [ ],
       paths ? [ ],
       validate ? false,
     }:
-    mkTerraformDerivation {
+    mkOpenTofuDerivation {
       name = "personal-infra";
-      package = terraform;
-      providers = defaultProviders;
-      inherit paths validate;
+      package = opentofu;
+      inherit providers paths validate;
     };
 
-  # Create a versions.tf.json file and lock file for given terraform package and list of provider names.
-  writeTerraformVersions =
+  # Backwards-compatible alias
+  terraformWithPlugins = opentofuWithPlugins;
+
+  # Create a versions.tf.json file and lock file for given opentofu package and list of provider names.
+  writeOpenTofuVersions =
     {
-      package,
+      package ? opentofu,
       providers ? [ ],
       writeRequiredProviders ? false,
     }:
@@ -57,7 +51,7 @@ rec {
         else
           package;
 
-      mainProgram = package.meta.mainProgram or "terraform";
+      mainProgram = package.meta.mainProgram or "tofu";
       version = lib.pipe package [
         lib.getVersion
         (lib.splitString "-")
@@ -121,11 +115,13 @@ rec {
       };
     };
 
-  # Create a derivation of a terraform root module directory for a terraform package and list of provider names.
-  mkTerraformDerivation =
+  writeTerraformVersions = writeOpenTofuVersions;
+
+  # Create a derivation of an opentofu root module directory for an opentofu package and list of provider names.
+  mkOpenTofuDerivation =
     {
       name,
-      package,
+      package ? opentofu,
       providers ? [ ],
       paths ? [ ],
       validate ? true,
@@ -134,7 +130,7 @@ rec {
     }:
 
     let
-      mainProgram = package.meta.mainProgram or "terraform";
+      mainProgram = package.meta.mainProgram or "tofu";
       packageWithProviders =
         if providers != [ ] then
           package.withPlugins (p: map (name: if builtins.isString name then p.${name} else name) providers)
@@ -197,6 +193,9 @@ rec {
 
       meta = {
         inherit mainProgram;
+        description = "OpenTofu derivation for ${name} with providers: ${lib.concatStringsSep ", " providers}";
       };
     };
+
+  mkTerraformDerivation = mkOpenTofuDerivation;
 }

@@ -53,4 +53,3 @@ nix-prefetch-url --name displaylink-620.zip https://www.synaptics.com/sites/defa
 Once prefetched, rerun `sudo nixos-rebuild switch --flake .` to complete system activation.
 
 > **Note**: If DisplayLink USB graphics adapters/docks are not used (e.g. using native USB-C DisplayPort Alt Mode), `hardware.displaylink.enable = false` can be configured in the host config to avoid manual prefetching.
-

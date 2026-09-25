@@ -1,6 +1,6 @@
 keys:
   - &dom_key C11BEB9007709C34FABBB5314C79CE4F82847A9F # dominic.egginton@gmail.com (GPG)
-  
+
   # Host SSH keys
   - &ghost_gs60 age1w60ja93482gldvnf86707u4290pxtjfmwq6z3fnupuz4jkdhcytscujrjt
   - &latitude_7390 age102fsxz33ww9cqdh95s4yzshuvnnjq7eneczm3nctapakntc4jvzqvfr06u
@@ -11,29 +11,29 @@ creation_rules:
   # 1. Global secrets (decryptable by all hosts)
   - path_regex: secrets/global\.yaml$
     key_groups:
-      - pgp: [ *dom_key ]
-        age: [ *ghost_gs60, *latitude_7390, *steamdeck, *steammachine ]
+      - pgp: [*dom_key]
+        age: [*ghost_gs60, *latitude_7390, *steamdeck, *steammachine]
 
   # 2. ghost-gs60 specific secrets (decryptable ONLY by ghost-gs60 and dom)
   - path_regex: secrets/hosts/ghost-gs60\.yaml$
     key_groups:
-      - pgp: [ *dom_key ]
-        age: [ *ghost_gs60 ]
+      - pgp: [*dom_key]
+        age: [*ghost_gs60]
 
   # 3. latitude-7390 specific secrets (decryptable ONLY by latitude-7390 and dom)
   - path_regex: secrets/hosts/latitude-7390\.yaml$
     key_groups:
-      - pgp: [ *dom_key ]
-        age: [ *latitude_7390 ]
+      - pgp: [*dom_key]
+        age: [*latitude_7390]
 
   # 4. steamdeck specific secrets (decryptable ONLY by steamdeck and dom)
   - path_regex: secrets/hosts/steamdeck\.yaml$
     key_groups:
-      - pgp: [ *dom_key ]
-        age: [ *steamdeck ]
+      - pgp: [*dom_key]
+        age: [*steamdeck]
 
   # 5. steammachine specific secrets (decryptable ONLY by steammachine and dom)
   - path_regex: secrets/hosts/steammachine\.yaml$
     key_groups:
-      - pgp: [ *dom_key ]
-        age: [ *steammachine ]
+      - pgp: [*dom_key]
+        age: [*steammachine]

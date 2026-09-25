@@ -5,15 +5,6 @@
   terranix,
   gitHooksCheck ? null,
   nix,
-  nix-output-monitor,
-  deadnix,
-  gitleaks,
-  git-lfs,
-  statix,
-  nix-diff,
-  nix-tree,
-  nix-health,
-  nix-index,
   google-cloud-sdk,
   secretspec,
   sops,
@@ -39,7 +30,7 @@ let
     modules = [ ./infrastructure ];
   };
 
-  terraformWithTerranix = pkgs.writeShellScriptBin "terraform" ''
+  tofuWithTerranix = pkgs.writeShellScriptBin "tofu" ''
     set -euo pipefail
 
     dir="''${TF_ROOT_DIR:-$PWD}"
@@ -68,7 +59,7 @@ let
       fi
     fi
 
-    exec ${getExe pkgs.terraform} "$@"
+    exec ${getExe pkgs.opentofu} "$@"
   '';
 in
 
@@ -80,17 +71,8 @@ mkShell rec {
   # Development tools and project scripts
   packages = [
     nix
-    nix-output-monitor
-    deadnix
-    statix
-    gitleaks
-    git-lfs
-    nix-diff
-    nix-tree
-    nix-health
-    nix-index
     google-cloud-sdk
-    terraformWithTerranix
+    tofuWithTerranix
     secretspec
     sops
     age

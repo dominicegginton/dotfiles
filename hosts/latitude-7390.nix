@@ -44,31 +44,35 @@
     }
   ];
 
-  boot.loader.systemd-boot.enable = lib.mkDefault true;
-  boot.loader.efi.canTouchEfiVariables = lib.mkDefault true;
+  boot = {
+    loader = {
+      systemd-boot.enable = lib.mkDefault true;
+      efi.canTouchEfiVariables = lib.mkDefault true;
+    };
 
-  # Kernel modules for hardware support
-  boot.kernelModules = [
-    "kvm-intel" # Virtualization
-    "vhost_vsock" # Virtio socket support
-    "i2c-dev" # I2C device access
-    "ddcci_backlight" # DDC/CI monitor control
-    "hid-apple" # Keychron / Apple keyboard support (must be pre-loaded because lockKernelModules is active)
-  ];
+    # Kernel modules for hardware support
+    kernelModules = [
+      "kvm-intel" # Virtualization
+      "vhost_vsock" # Virtio socket support
+      "i2c-dev" # I2C device access
+      "ddcci_backlight" # DDC/CI monitor control
+      "hid-apple" # Keychron / Apple keyboard support (must be pre-loaded because lockKernelModules is active)
+    ];
 
-  # Additional kernel drivers
-  boot.extraModulePackages = [
-    config.boot.kernelPackages.ddcci-driver # DDC/CI driver
-  ];
+    # Additional kernel drivers
+    extraModulePackages = [
+      config.boot.kernelPackages.ddcci-driver # DDC/CI driver
+    ];
 
-  # Initrd modules for boot-time hardware access
-  boot.initrd.availableKernelModules = [
-    "xhci_pci" # USB 3.0
-    "ahci" # SATA
-    "usb_storage" # USB storage
-    "sd_mod" # SD card
-    "nvme" # NVMe storage
-  ];
+    # Initrd modules for boot-time hardware access
+    initrd.availableKernelModules = [
+      "xhci_pci" # USB 3.0
+      "ahci" # SATA
+      "usb_storage" # USB storage
+      "sd_mod" # SD card
+      "nvme" # NVMe storage
+    ];
+  };
 
   # Enable host-specific features
   hardware.bluetooth.enable = true;

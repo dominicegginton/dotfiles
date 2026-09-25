@@ -252,7 +252,7 @@
           rust-analyzer
           nodejs
           typescript
-          terraform-lsp
+          opentofu
           lua-language-server
           docker-language-server
           vim-language-server

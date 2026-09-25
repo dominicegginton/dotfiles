@@ -26,6 +26,7 @@ burn-infector -y
 ```
 
 When the target machine boots from the `infector` ISO, it starts a frame-buffered `network-status` screen:
+
 - It creates a random `root` password.
 - It shows the detected IP address and SSH target (`root@<IP>`).
 - It shows a QR code with SSH connection details.
@@ -156,5 +157,3 @@ Follow these steps to add a new host profile:
   ```bash
   systemctl status sops-nix.service
   ```
-
-

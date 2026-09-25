@@ -21,7 +21,7 @@ Declarative - Hardened - Amnesic - Orchestrated NixOS
   - **Runtime Secrets**: Git-encrypted Age/SOPS decrypted at activation time (`sops-nix`).
   - **Auditing & Compliance**: Auditd, OpenSCAP tooling, and FIPS 140-3 validated crypto.
 - **Hybrid Infrastructure & Orchestration**:
-  - Multi-host infrastructure managed via Terraform on GCP, NextDNS, and Cloudflare.
+  - Multi-host infrastructure managed via OpenTofu on GCP, NextDNS, and Cloudflare.
   - Interactive remote deployment & re-installation via `deploy-host` and `nixos-anywhere` with Disko partitioning, `gum` UI, automatic SSH/Age host key staging into `/persist`, NetworkManager connection profile transfer, SOPS U2F key management, and SOPS secret validation.
   - Live installer ISO (`infector`) built with automated random root passwords, TTY QR code output, and TUI image burning (`burn-infector` with Caligula).
   - Journald logs ship to GCP Cloud Logging via a Vector agent.
@@ -46,7 +46,7 @@ Operational procedural guides in [`docs/`](docs/):
 
 - [Remote Deployments & ISO Burning (`deploy-host` & `burn-infector`)](docs/deployments.md)
 - [SOPS Secret Management & Host Onboarding](docs/secrets.md)
-- [Cloud Infrastructure Management (`terraform` & `secretspec`)](docs/infrastructure.md)
+- [Cloud Infrastructure Management (`tofu` & `secretspec`)](docs/infrastructure.md)
 - [USBGuard Device Discovery & Whitelisting](docs/usbguard.md)
 - [YubiKey PAM, GPG Smartcard & SSH Operations](docs/yubikey.md)
 - [AppArmor Status Inspection & Denial Debugging](docs/apparmor.md)

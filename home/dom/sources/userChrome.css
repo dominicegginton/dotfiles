@@ -119,9 +119,7 @@ close-button,
   border-right: 0px solid var(--window) !important;
   margin-left: -4px !important;
 }
-.tabbrowser-tab:is([visuallyselected="true"], [multiselected])
-  > .tab-stack
-  > .tab-background {
+.tabbrowser-tab:is([visuallyselected="true"], [multiselected]) > .tab-stack > .tab-background {
   box-shadow: none !important;
 }
 .tabbrowser-tab[last-visible-tab="true"] {
