@@ -86,7 +86,7 @@ in
         addresses = [ "https://frigate.${tailnet}" ];
       };
 
-      services.frigate = {
+      services.frigate = lib.mkForce {
         name = "Frigate";
         details.listen.text = config.services.frigate.hostname + ":5000";
       };
