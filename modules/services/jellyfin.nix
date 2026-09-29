@@ -11,6 +11,9 @@ in
 
 {
   config = lib.mkIf cfg.enable {
+    # Jellyfin and tsnsrv use systemd PrivateUsers / DynamicUser and require user namespaces
+    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+
     # Ensure Tailscale is available for secure access
     assertions = [
       {

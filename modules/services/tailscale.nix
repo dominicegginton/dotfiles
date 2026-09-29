@@ -37,6 +37,11 @@ in
     defaults.authKeyPath = config.sops.secrets."services/tsnsrv/auth-key".path;
   };
 
+  # tsnsrv services use systemd PrivateUsers / DynamicUser and require user namespaces
+  boot.kernel.sysctl = lib.mkIf (config.services.tsnsrv.enable && config.services.tsnsrv.services != { }) {
+    "user.max_user_namespaces" = lib.mkDefault 10000;
+  };
+
   # Persistent storage for Tailscale and tsnsrv state
   environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
     "/var/lib/tailscale"

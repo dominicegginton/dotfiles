@@ -26,7 +26,13 @@ in
         settings = {
           auth.enabled = false; # Authentication is handled upstream at the Tailnet / tsnsrv layer
           motion.enabled = true;
-          record.enabled = true;
+          record = {
+            enabled = true;
+            retain = {
+              days = 30;
+              mode = "all";
+            };
+          };
           snapshots.enabled = true;
           detect = {
             enabled = true;

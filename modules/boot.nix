@@ -54,7 +54,7 @@
       # Restrict loading TTY line disciplines to prevent unprivileged exploits
       "dev.tty.ldisc_autoload" = lib.mkDefault 0;
 
-      # Restrict unprivileged user namespaces by default to minimize kernel attack surface (overridden by containers/desktops)
+      # Restrict unprivileged user namespaces by default to minimize kernel attack surface (overridden by containers/desktops/services)
       "user.max_user_namespaces" = lib.mkOptionDefault 0;
 
       # Restrict userfaultfd() syscall to prevent use-after-free heap exploits

@@ -11,6 +11,9 @@ in
 
 {
   config = lib.mkIf cfg.enable {
+    # Immich/Redis and tsnsrv use systemd PrivateUsers / DynamicUser and require user namespaces
+    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+
     services = {
       # Core Immich photo and video management server configuration
       immich = {
