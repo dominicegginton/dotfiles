@@ -8,7 +8,7 @@
 {
   config = lib.mkIf config.services.flatpak.enable {
     # Flatpak requires unprivileged user namespaces for sandbox creation
-    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+    security.unprivilegedUserNamespaces.enable = true;
 
     # Systemd service to add Flathub repository at boot
     systemd = {

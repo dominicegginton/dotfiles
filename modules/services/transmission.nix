@@ -12,7 +12,7 @@ in
 {
   config = lib.mkIf cfg.enable {
     # Transmission and tsnsrv use systemd PrivateUsers / DynamicUser and require user namespaces
-    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+    security.unprivilegedUserNamespaces.enable = true;
 
     services.transmission.settings = {
       download-dir = "/mnt/data/transmission/Downloads";

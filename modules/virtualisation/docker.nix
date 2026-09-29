@@ -12,7 +12,7 @@ in
 {
   config = lib.mkIf cfg.enable {
     # Container runtime requires user namespaces for rootless containers/sandboxing
-    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+    security.unprivilegedUserNamespaces.enable = true;
 
     environment = {
       persistence."/persist".directories = lib.mkIf config.impermanence.enable [ "/var/lib/docker" ];

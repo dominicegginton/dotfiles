@@ -218,7 +218,7 @@ with lib;
 
   config = mkIf cfg.enable {
     # Desktop environments require unprivileged user namespaces for sandboxing (e.g. bubblewrap/flatpak/browsers)
-    boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+    security.unprivilegedUserNamespaces.enable = true;
 
     system.nixos-generate-config.desktopConfiguration = [
       ''

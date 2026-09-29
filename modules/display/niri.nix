@@ -98,7 +98,7 @@ in
     with config.scheme.withHashtag;
     {
       # Desktop environments require unprivileged user namespaces for sandboxing (e.g. bubblewrap/flatpak/browsers)
-      boot.kernel.sysctl."user.max_user_namespaces" = lib.mkDefault 10000;
+      security.unprivilegedUserNamespaces.enable = true;
 
       # Enable hardware accelerated graphics drivers
       hardware.graphics.enable = lib.mkDefault true;
