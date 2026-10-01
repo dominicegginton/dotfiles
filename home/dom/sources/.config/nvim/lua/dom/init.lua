@@ -9,9 +9,13 @@ require('dom.modules.mini-extra')
 
 -- Language Server Protocol and Syntax Highlighting
 require('dom.modules.lspconfig')
+require('dom.modules.nvim-cmp')
 require('dom.modules.treesitter')
 require('dom.modules.lsp-lens')
 require('dom.modules.trouble')
+
+-- Debugging
+require('dom.dap')
 
 -- Completion
 require('dom.modules.mini-completion')

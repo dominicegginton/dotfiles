@@ -41,8 +41,19 @@ add('VidocqH/lsp-lens.nvim') -- Render references and document symbols
 -- GitHub Copilot
 add('github/copilot.vim') -- GitHub Copilot integration
 
+-- Debugging (DAP)
+add('mfussenegger/nvim-dap') -- Debug Adapter Protocol
+add('rcarriga/nvim-dap-ui') -- DAP UI
+add('nvim-neotest/nvim-nio') -- Async utilities for DAP UI
+
 -- Completion
 add('echasnovski/mini.completion') -- Completion and signature help
+add('hrsh7th/nvim-cmp') -- Completion engine (optional, for better completion)
+add('hrsh7th/cmp-nvim-lsp') -- LSP source for nvim-cmp
+add('hrsh7th/cmp-buffer') -- Buffer source for nvim-cmp
+add('hrsh7th/cmp-path') -- Path source for nvim-cmp
+add('L3MON4D3/LuaSnip') -- Snippet engine
+add('saadparwaiz1/cmp_luasnip') -- Snippet source for nvim-cmp
 
 -- Picker
 add('echasnovski/mini.pick') -- Pick anything

@@ -267,6 +267,7 @@
           stylua
           typos-lsp
           pyright
+          vscode-js-debug
         ];
       };
     };
