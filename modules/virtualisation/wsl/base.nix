@@ -15,8 +15,13 @@ in
     # Apply the WSL overlay to add WSL-specific configurations and packages
     nixpkgs.overlays = [ self.outputs.overlays.wsl ];
 
-    # Register binfmt_misc handler for Windows binaries (.exe)
-    wsl.interop.register = lib.mkDefault true;
+    # Register binfmt_misc handler for Windows binaries (.exe) - modern WSL handles this natively
+    wsl.interop.register = lib.mkDefault false;
+
+    # Symlink /bin/true for WSL systemd generator units (e.g. wsl-mnt-guard.service)
+    wsl.extraBin = [
+      { src = "${pkgs.coreutils}/bin/true"; }
+    ];
 
     environment.systemPackages = with pkgs; [
       xdg-utils

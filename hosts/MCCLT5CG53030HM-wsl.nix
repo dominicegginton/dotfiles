@@ -14,6 +14,7 @@
   nixpkgs.hostPlatform = lib.mkDefault platform;
 
   environment.systemPackages = with pkgs; [
+    acli
     cursor-cli
     jetbrains.gateway
     nodejs
@@ -25,7 +26,7 @@
     enable = true;
     defaultUser = "dom";
     nvidia.enable = true;
-    wrappedShell.enable = false;
+    wrappedShell.enable = true;
   };
 
   # Disable Tailscale on WSL by default as blocked by host environment

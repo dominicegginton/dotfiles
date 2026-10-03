@@ -20,4 +20,3 @@ vim.keymap.set('i', '<CR>', [[pumvisible() ? "\<C-y>" : "\<CR>"]], { noremap = t
 -- Completion keybindings
 vim.keymap.set('i', '<C-n>', [[<C-r>=v:lua.MiniCompletion.goto_next()<CR>]])
 vim.keymap.set('i', '<C-p>', [[<C-r>=v:lua.MiniCompletion.goto_prev()<CR>]])
-

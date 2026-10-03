@@ -26,7 +26,8 @@ in
 
       # Wrap /bin/bash with WSL shell wrapper so non-interactive bash invocations
       # (e.g. VS Code / Cursor remote server installer scripts) have PATH populated.
-      wsl.extraBin =
+      # mkAfter: NixOS-WSL also links unwrapped bash in extraBin; this entry must win.
+      wsl.extraBin = lib.mkAfter (
         let
           wrapShell =
             shellPath:
@@ -44,7 +45,8 @@ in
             src = "${wrapShell "${pkgs.bashInteractive}/bin/bash"}/wrapper";
             name = "bash";
           }
-        ];
+        ]
+      );
     })
   ];
 }

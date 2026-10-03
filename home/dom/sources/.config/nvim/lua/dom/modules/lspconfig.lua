@@ -1,5 +1,5 @@
-local lspconfig = require('lspconfig')
 local lsp = vim.lsp
+local uv = vim.uv or vim.loop
 
 -- Setup capabilities with cmp support if available
 local has_cmp, cmp_lsp = pcall(require, 'cmp_nvim_lsp')
@@ -43,30 +43,38 @@ local function on_attach(client, bufnr)
   vim.keymap.set('n', ']d', function() vim.diagnostic.goto_next() end, opts)
   vim.keymap.set('n', '<leader>q', function() vim.diagnostic.setloclist() end, opts)
 
-  -- Format on save for formatters
-  if client.supports_method('textDocument/formatting') then
+  -- ESLint keybinding and auto-fix on save
+  if client and client.name == 'eslint' then
+    vim.keymap.set('n', '<leader>fe', '<cmd>EslintFixAll<CR>', opts)
     vim.api.nvim_create_autocmd('BufWritePre', {
       buffer = bufnr,
-      callback = function() lsp.buf.format() end,
+      callback = function() vim.cmd('EslintFixAll') end,
+    })
+  end
+
+  -- Format on save for formatters
+  if client and client.supports_method and client:supports_method('textDocument/formatting', bufnr) then
+    vim.api.nvim_create_autocmd('BufWritePre', {
+      buffer = bufnr,
+      callback = function() lsp.buf.format({ bufnr = bufnr }) end,
     })
   end
 end
 
--- ESLint on_attach with auto-fix
-local function eslint_on_attach(client, bufnr)
-  on_attach(client, bufnr)
-  local opts = { buffer = bufnr }
-  vim.keymap.set('n', '<leader>fe', '<cmd>EslintFixAll<CR>', opts)
-  vim.api.nvim_create_autocmd('BufWritePre', {
-    buffer = bufnr,
-    callback = function() vim.cmd('EslintFixAll') end,
-  })
-end
+-- Setup LspAttach autocommand for buffer-local keymaps
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', { clear = true }),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    on_attach(client, args.buf)
+  end,
+})
 
 -- Server configurations
 local servers = {
   -- TypeScript/JavaScript
   ts_ls = {
+    root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
     init_options = {
       preferences = {
         disableSuggestions = false,
@@ -75,6 +83,9 @@ local servers = {
     },
     settings = {
       typescript = {
+        preferences = {
+          includePackageJsonAutoImports = 'auto',
+        },
         inlayHints = {
           includeInlayParameterNameHints = 'all',
           includeInlayParameterNameHintsWhenArgumentMatchesName = true,
@@ -85,6 +96,9 @@ local servers = {
         },
       },
       javascript = {
+        preferences = {
+          includePackageJsonAutoImports = 'auto',
+        },
         inlayHints = {
           includeInlayParameterNameHints = 'all',
           includeInlayParameterNameHintsWhenArgumentMatchesName = true,
@@ -144,9 +158,7 @@ local servers = {
     on_init = function(client)
       if client.workspace_folders then
         local path = client.workspace_folders[1].name
-        if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-          return
-        end
+        if uv.fs_stat(path .. '/.luarc.json') or uv.fs_stat(path .. '/.luarc.jsonc') then return end
       end
     end,
     settings = {
@@ -203,23 +215,33 @@ local servers = {
 
   -- Angular
   angularls = {},
+
+  -- ESLint
+  eslint = {},
 }
 
--- Setup all servers with lspconfig
-for server, config in pairs(servers) do
-  local server_config = vim.tbl_deep_extend('force', {
+-- Setup servers via native vim.lsp.config (Neovim 0.11+) or fallback to lspconfig
+if vim.lsp.config and vim.lsp.enable then
+  vim.lsp.config('*', {
     capabilities = capabilities,
-    on_attach = on_attach,
-  }, config)
+  })
 
-  lspconfig[server].setup(server_config)
+  for server, config in pairs(servers) do
+    vim.lsp.config(server, config)
+    vim.lsp.enable(server)
+  end
+else
+  local ok, lspconfig = pcall(require, 'lspconfig')
+  if ok and lspconfig then
+    for server, config in pairs(servers) do
+      local server_config = vim.tbl_deep_extend('force', {
+        capabilities = capabilities,
+        on_attach = on_attach,
+      }, config)
+      lspconfig[server].setup(server_config)
+    end
+  end
 end
-
--- Special setup for ESLint (needs custom on_attach)
-lspconfig.eslint.setup({
-  capabilities = capabilities,
-  on_attach = eslint_on_attach,
-})
 
 -- Diagnostic configuration
 vim.diagnostic.config({

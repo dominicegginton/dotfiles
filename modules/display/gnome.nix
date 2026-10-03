@@ -218,7 +218,11 @@ with lib;
 
   config = mkIf cfg.enable {
     # Desktop environments require unprivileged user namespaces for sandboxing (e.g. bubblewrap/flatpak/browsers)
-    security.unprivilegedUserNamespaces.enable = true;
+    security = {
+      unprivilegedUserNamespaces.enable = true;
+      polkit.enable = mkDefault true;
+      rtkit.enable = mkDefault true;
+    };
 
     system.nixos-generate-config.desktopConfiguration = [
       ''
@@ -261,9 +265,6 @@ with lib;
     # Enable required Gnome services and features
     i18n.inputMethod.enable = mkDefault true;
     i18n.inputMethod.type = mkDefault "ibus";
-
-    security.polkit.enable = mkDefault true;
-    security.rtkit.enable = mkDefault true;
 
     # Gnome relies on NetworkManager for network configuration
     networking.networkmanager.enable = mkDefault true;

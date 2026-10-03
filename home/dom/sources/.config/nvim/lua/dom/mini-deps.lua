@@ -1,6 +1,7 @@
+local uv = vim.uv or vim.loop
 local path_package = vim.fn.stdpath('data') .. '/site/'
 local mini_path = path_package .. 'pack/deps/start/mini.nvim'
-if not vim.loop.fs_stat(mini_path) then
+if not uv.fs_stat(mini_path) then
   vim.cmd('echo "Installing `mini.nvim`" | redraw')
   local clone_cmd = {
     'git',
@@ -45,6 +46,7 @@ add('github/copilot.vim') -- GitHub Copilot integration
 add('mfussenegger/nvim-dap') -- Debug Adapter Protocol
 add('rcarriga/nvim-dap-ui') -- DAP UI
 add('nvim-neotest/nvim-nio') -- Async utilities for DAP UI
+add('Vigemus/iron.nvim') -- REPL integration (live eval / send to repl)
 
 -- Completion
 add('echasnovski/mini.completion') -- Completion and signature help
@@ -52,6 +54,7 @@ add('hrsh7th/nvim-cmp') -- Completion engine (optional, for better completion)
 add('hrsh7th/cmp-nvim-lsp') -- LSP source for nvim-cmp
 add('hrsh7th/cmp-buffer') -- Buffer source for nvim-cmp
 add('hrsh7th/cmp-path') -- Path source for nvim-cmp
+add('hrsh7th/cmp-cmdline') -- Ex/search command-line completion for nvim-cmp
 add('L3MON4D3/LuaSnip') -- Snippet engine
 add('saadparwaiz1/cmp_luasnip') -- Snippet source for nvim-cmp
 
@@ -88,4 +91,3 @@ add('echasnovski/mini.comment') -- Comment lines
 add('echasnovski/mini.trailspace') -- Trailspace (highlight and remove)
 add('echasnovski/mini.bracketed') -- Go forward/backward with square brackets
 add('echasnovski/mini.surround') -- Surround actions
-add('echasnovski/mini.visits') -- Track and reuse file system visits

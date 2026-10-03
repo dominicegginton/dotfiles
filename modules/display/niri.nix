@@ -98,19 +98,19 @@ in
     with config.scheme.withHashtag;
     {
       # Desktop environments require unprivileged user namespaces for sandboxing (e.g. bubblewrap/flatpak/browsers)
-      security.unprivilegedUserNamespaces.enable = true;
+      security = {
+        unprivilegedUserNamespaces.enable = true;
+        # Enable UNIX application-level authorizations via Polkit
+        polkit.enable = lib.mkDefault true;
+        # Enable Swaylock PAM service
+        pam.services.swaylock = lib.mkDefault { };
+      };
 
       # Enable hardware accelerated graphics drivers
       hardware.graphics.enable = lib.mkDefault true;
 
       # Enable hardware bluetooth support
       hardware.bluetooth.enable = lib.mkDefault true;
-
-      # Enable UNIX application-level authorizations via Polkit
-      security.polkit.enable = lib.mkDefault true;
-
-      # Enable Swaylock PAM service
-      security.pam.services.swaylock = lib.mkDefault { };
 
       # XDG Portal configuration for desktop integration
       xdg = {

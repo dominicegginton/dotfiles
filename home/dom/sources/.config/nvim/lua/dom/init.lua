@@ -15,7 +15,8 @@ require('dom.modules.lsp-lens')
 require('dom.modules.trouble')
 
 -- Debugging
-require('dom.dap')
+require('dom.modules.dap')
+require('dom.modules.iron')
 
 -- Completion
 require('dom.modules.mini-completion')
@@ -47,7 +48,6 @@ require('dom.modules.mini-comment')
 require('dom.modules.mini-trailspace')
 require('dom.modules.mini-bracketed')
 require('dom.modules.mini-surround')
-require('dom.modules.mini-visits')
 require('dom.modules.cmd-palette')
 
 vim.cmd('colorscheme minischeme')

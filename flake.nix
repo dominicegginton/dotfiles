@@ -123,6 +123,8 @@
 
       # List of unfree packages allowed in the system
       unfreePackages = [
+        "acli"
+        "acli-unwrapped"
         "YouTube_full_color_icon_2017.svg"
         "aseprite"
         "bws"

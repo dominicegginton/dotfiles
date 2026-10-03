@@ -6,7 +6,9 @@ option.mouse = 'a'
 option.clipboard = 'unnamedplus'
 option.swapfile = false
 option.backup = false
-option.completeopt = 'menuone,noinsert,noselect'
+option.completeopt = 'menu,menuone,noinsert,noselect'
+option.wildmenu = true
+option.wildmode = 'longest:full,full'
 
 -- UI
 option.number = true

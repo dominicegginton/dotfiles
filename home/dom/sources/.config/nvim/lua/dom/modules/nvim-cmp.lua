@@ -3,9 +3,7 @@ local luasnip = require('luasnip')
 
 cmp.setup({
   snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
+    expand = function(args) luasnip.lsp_expand(args.body) end,
   },
 
   window = {
@@ -94,11 +92,18 @@ cmp.setup({
   },
 })
 
--- Disable cmp in command mode if using mini.completion for consistency
-cmp.setup.cmdline(':', {
+cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = 'path' },
-    { name = 'cmdline' },
+    { name = 'buffer' },
   },
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  }),
 })
