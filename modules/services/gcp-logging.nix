@@ -52,44 +52,32 @@ in
         "sops-nix.service"
         "network-online.target"
       ];
-      serviceConfig = {
+      serviceConfig = lib.mkHardenedSystemdServiceConfig {
         User = "vector";
         Group = "vector";
         DynamicUser = lib.mkForce false;
-        NoNewPrivileges = true;
-        PrivateTmp = true;
-        PrivateDevices = true;
-        PrivateMounts = true;
-        ProtectClock = true;
-        ProtectControlGroups = true;
-        ProtectHome = true;
-        ProtectHostname = true;
-        ProtectKernelLogs = true;
-        ProtectKernelModules = true;
-        ProtectKernelTunables = true;
-        ProtectSystem = "strict";
-        ProtectProc = "invisible";
-        ProcSubset = "pid";
-        LockPersonality = true;
-        MemoryDenyWriteExecute = true;
-        RestrictRealtime = true;
-        RestrictSUIDSGID = true;
-        RestrictNamespaces = true;
-        SystemCallArchitectures = "native";
-        SystemCallFilter = [
+        # Vector (Tokio) needs epoll/eventfd; default hardening denies @resources syscalls.
+        memoryDenyWriteExecute = false;
+        systemCallFilter = [
           "@system-service"
           "~@privileged"
-          "~@resources"
         ];
-        CapabilityBoundingSet = "";
-        RestrictAddressFamilies = [
+        restrictAddressFamilies = [
           "AF_INET"
           "AF_INET6"
           "AF_UNIX"
+          "AF_NETLINK"
         ];
-        KeyringMode = "private";
-        UMask = "0077";
         ReadWritePaths = [ "/var/lib/vector" ];
+        BindReadOnlyPaths = [
+          "/var/log/journal"
+          "/run/log/journal"
+          "/run/systemd/journal"
+          "/etc/ssl/certs"
+        ]
+        ++ lib.optional (cfg.credentialsFile != null) cfg.credentialsFile;
+        # nixpkgs sets AmbientCapabilities; empty bounding set would drop them.
+        CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
       };
       environment = {
         SSL_CERT_FILE = "/etc/ssl/certs/ca-bundle.crt";

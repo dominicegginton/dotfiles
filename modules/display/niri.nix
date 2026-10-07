@@ -539,11 +539,9 @@ in
           MOZ_USE_XINPUT2 = "1";
           MOZ_USE_XINPUT2_BY_DEFAULT = "1";
         };
-        systemPackages =
-          pkgs.lib.packageSetToList pkgs.waylandDesktop
-          ++ [
-            pkgs.lock
-          ];
+        systemPackages = pkgs.lib.packageSetToList pkgs.waylandDesktop ++ [
+          pkgs.lock
+        ];
       };
     }
   );

@@ -25,34 +25,9 @@
           "sound.target"
         ];
         wantedBy = [ "default.target" ];
-        serviceConfig = {
+        serviceConfig = lib.mkHardenedSystemdServiceConfig {
+          restrictAddressFamilies = [ "AF_UNIX" ];
           ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
-          CapabilityBoundingSet = "";
-          LockPersonality = true;
-          MemoryDenyWriteExecute = true;
-          NoNewPrivileges = true;
-          PrivateDevices = true;
-          PrivateTmp = true;
-          ProtectClock = true;
-          ProtectControlGroups = true;
-          ProtectHome = true;
-          ProtectHostname = true;
-          ProtectKernelLogs = true;
-          ProtectKernelModules = true;
-          ProtectKernelTunables = true;
-          ProtectProc = "invisible";
-          ProtectSystem = "strict";
-          ProcSubset = "pid";
-          RestrictAddressFamilies = [ "AF_UNIX" ];
-          RestrictNamespaces = true;
-          RestrictRealtime = true;
-          RestrictSUIDSGID = true;
-          SystemCallArchitectures = "native";
-          SystemCallFilter = [
-            "@system-service"
-            "~@privileged"
-            "~@resources"
-          ];
         };
       };
       environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [

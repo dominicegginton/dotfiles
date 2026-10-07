@@ -15,13 +15,21 @@
 }:
 
 let
-  lib = self.inputs.nixpkgs.lib;
+  nixpkgsLib = self.inputs.nixpkgs.lib;
+  lib = nixpkgsLib.extend (
+    _: prev:
+    prev
+    // {
+      inherit (self.outputs.lib) mkHardenedSystemdServiceConfig;
+    }
+  );
 in
 lib.nixosSystem {
   pkgs = self.outputs.legacyPackages.${platform};
 
   specialArgs = {
     inherit
+      lib
       self
       tailnet
       hostname

@@ -20,33 +20,9 @@
         script = ''
           flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
         '';
-        serviceConfig = {
+        serviceConfig = lib.mkHardenedSystemdServiceConfig {
           Type = "oneshot";
-          NoNewPrivileges = true;
-          PrivateTmp = true;
-          PrivateDevices = true;
-          PrivateMounts = true;
-          ProtectClock = true;
-          ProtectControlGroups = true;
-          ProtectHome = true;
-          ProtectHostname = true;
-          ProtectKernelLogs = true;
-          ProtectKernelModules = true;
-          ProtectKernelTunables = true;
-          ProtectSystem = "strict";
-          ProtectProc = "invisible";
-          ProcSubset = "pid";
-          LockPersonality = true;
-          MemoryDenyWriteExecute = true;
-          RestrictRealtime = true;
-          RestrictSUIDSGID = true;
-          SystemCallArchitectures = "native";
-          SystemCallFilter = [
-            "@system-service"
-            "~@privileged"
-            "~@resources"
-          ];
-          RestrictAddressFamilies = [
+          restrictAddressFamilies = [
             "AF_INET"
             "AF_INET6"
             "AF_UNIX"
@@ -54,8 +30,6 @@
           ];
           ReadWritePaths = [ "/var/lib/flatpak" ];
           StateDirectory = "flatpak";
-          KeyringMode = "private";
-          UMask = "0077";
         };
       };
 
@@ -69,33 +43,9 @@
         script = ''
           flatpak update -y
         '';
-        serviceConfig = {
+        serviceConfig = lib.mkHardenedSystemdServiceConfig {
           Type = "oneshot";
-          NoNewPrivileges = true;
-          PrivateTmp = true;
-          PrivateDevices = true;
-          PrivateMounts = true;
-          ProtectClock = true;
-          ProtectControlGroups = true;
-          ProtectHome = true;
-          ProtectHostname = true;
-          ProtectKernelLogs = true;
-          ProtectKernelModules = true;
-          ProtectKernelTunables = true;
-          ProtectSystem = "strict";
-          ProtectProc = "invisible";
-          ProcSubset = "pid";
-          LockPersonality = true;
-          MemoryDenyWriteExecute = true;
-          RestrictRealtime = true;
-          RestrictSUIDSGID = true;
-          SystemCallArchitectures = "native";
-          SystemCallFilter = [
-            "@system-service"
-            "~@privileged"
-            "~@resources"
-          ];
-          RestrictAddressFamilies = [
+          restrictAddressFamilies = [
             "AF_INET"
             "AF_INET6"
             "AF_UNIX"
@@ -103,8 +53,6 @@
           ];
           ReadWritePaths = [ "/var/lib/flatpak" ];
           StateDirectory = "flatpak";
-          KeyringMode = "private";
-          UMask = "0077";
         };
       };
 

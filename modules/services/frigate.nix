@@ -72,6 +72,27 @@ in
       };
     };
 
+    systemd.services.frigate.serviceConfig = lib.mkHardenedSystemdServiceConfig {
+      privateDevices = false;
+      privateMounts = false;
+      memoryDenyWriteExecute = false;
+      restrictAddressFamilies = [
+        "AF_INET"
+        "AF_INET6"
+        "AF_UNIX"
+        "AF_NETLINK"
+      ];
+      systemCallFilter = [
+        "@system-service"
+        "~@privileged"
+      ];
+      umask = "0027";
+      PrivateDevices = lib.mkForce false;
+      PrivateMounts = lib.mkForce false;
+      MemoryDenyWriteExecute = lib.mkForce false;
+      UMask = lib.mkForce "0027";
+    };
+
     # Pass GCP Service Account credentials to Restic and set systemd ordering after Frigate
     systemd.services.restic-backups-frigate = {
       environment.GOOGLE_APPLICATION_CREDENTIALS =

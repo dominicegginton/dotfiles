@@ -37,4 +37,6 @@ rec {
   # Helper to define a NixOS system with standard defaults
   # Used in flake.nix for all host definitions
   nixosSystem = import ./lib/nixos.nix { inherit self tailnet; };
+
+  inherit (import ./lib/systemd.nix { inherit lib; }) mkHardenedSystemdServiceConfig;
 }

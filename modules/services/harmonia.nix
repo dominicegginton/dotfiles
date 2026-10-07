@@ -28,39 +28,7 @@ in
       socketConfig.ListenStream = lib.mkForce "127.0.0.1:5005";
     };
 
-    systemd.services.harmonia.serviceConfig = {
-      NoNewPrivileges = true;
-      PrivateTmp = true;
-      PrivateDevices = true;
-      PrivateMounts = true;
-      ProtectClock = true;
-      ProtectControlGroups = true;
-      ProtectHome = true;
-      ProtectHostname = true;
-      ProtectKernelLogs = true;
-      ProtectKernelModules = true;
-      ProtectKernelTunables = true;
-      ProtectSystem = "strict";
-      ProtectProc = "invisible";
-      ProcSubset = "pid";
-      LockPersonality = true;
-      MemoryDenyWriteExecute = true;
-      RestrictRealtime = true;
-      RestrictSUIDSGID = true;
-      RestrictNamespaces = true;
-      SystemCallArchitectures = "native";
-      SystemCallFilter = [
-        "@system-service"
-        "~@privileged"
-        "~@resources"
-      ];
-      RestrictAddressFamilies = [
-        "AF_INET"
-        "AF_INET6"
-        "AF_UNIX"
-      ];
-      CapabilityBoundingSet = "";
-      KeyringMode = "private";
+    systemd.services.harmonia.serviceConfig = lib.mkHardenedSystemdServiceConfig {
       UMask = lib.mkForce "0077";
     };
 
