@@ -35,7 +35,7 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf (cfg.enable && cfg.credentialsFile != null) {
     users.users.vector = {
       isSystemUser = true;
       group = "vector";
@@ -68,14 +68,21 @@ in
           "AF_UNIX"
           "AF_NETLINK"
         ];
+        # ProtectProc = "invisible" and ProcSubset = "pid" hide /proc/sys/kernel/random/boot_id
+        # which journalctl needs to retrieve the boot ID.
+        ProtectProc = lib.mkForce "default";
+        ProcSubset = lib.mkForce "all";
         ReadWritePaths = [ "/var/lib/vector" ];
         BindReadOnlyPaths = [
-          "/var/log/journal"
-          "/run/log/journal"
-          "/run/systemd/journal"
-          "/etc/ssl/certs"
+          "-/var/log/journal"
+          "-/run/log/journal"
+          "-/run/systemd/journal"
+          "-/etc/ssl/certs"
+          "-/run/secrets"
+          "-/run/secrets.d"
+          "-/proc/sys/kernel/random/boot_id"
         ]
-        ++ lib.optional (cfg.credentialsFile != null) cfg.credentialsFile;
+        ++ lib.optional (cfg.credentialsFile != null) "-${cfg.credentialsFile}";
         # nixpkgs sets AmbientCapabilities; empty bounding set would drop them.
         CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
       };
@@ -84,18 +91,16 @@ in
       };
     };
 
-    environment.persistence."/persist".directories =
-      lib.mkIf (config.impermanence.enable && config.services.gcp-logging.enable)
-        [
-          {
-            directory = "/var/lib/vector";
-            user = "vector";
-            group = "vector";
-            mode = "0700";
-          }
-        ];
+    environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
+      {
+        directory = "/var/lib/vector";
+        user = "vector";
+        group = "vector";
+        mode = "0700";
+      }
+    ];
 
-    services.vector = lib.mkIf (cfg.credentialsFile != null) {
+    services.vector = {
       enable = true;
       journaldAccess = true;
       settings = {
