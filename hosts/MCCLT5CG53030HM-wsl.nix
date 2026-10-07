@@ -15,6 +15,7 @@
 
   environment.systemPackages = with pkgs; [
     acli
+    sonar-scanner-cli
     cursor-cli
     jetbrains.gateway
     nodejs

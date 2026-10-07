@@ -196,6 +196,7 @@
         "steamdeck-bios-fwupd"
         "steamdeck-firmware"
         "steamdeck-hw-theme"
+        "sonar-scanner"
         "jupiter-dock-updater-bin"
         "vscode"
         "vscode-extension-github-copilot"
