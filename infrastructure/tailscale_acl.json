@@ -61,18 +61,6 @@
     },
 
     {
-      "src": ["tag:beszel-hub", "tag:beszel-agent"],
-      "dst": ["tag:beszel-hub", "tag:beszel-agent"],
-      "ip":  ["*"]
-    },
-
-    {
-      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
-      "dst": ["tag:service-beszel"],
-      "ip":  ["*"]
-    },
-
-    {
       "src": ["tag:device-latitude-7390", "dominic.egginton@gmail.com"],
       "dst": ["tag:service-transmission"],
       "ip":  ["*"]
@@ -98,11 +86,8 @@
     "tag:immich-user":          [],
     "tag:service-silverbullet": [],
     "tag:service-frigate":      [],
-    "tag:service-beszel":       [],
     "tag:service-jellyfin":     [],
     "tag:service-cache":        [],
-    "tag:beszel-agent":         [],
-    "tag:beszel-hub":           [],
     "tag:service-transmission": []
   },
 
@@ -110,8 +95,7 @@
     {
       "src": [
         "tag:device-latitude-7390",
-        "dominic.egginton@gmail.com",
-        "tag:service-beszel"
+        "dominic.egginton@gmail.com"
       ],
       "dst":    ["autogroup:tagged"],
       "users":  ["autogroup:nonroot", "root"],
@@ -132,7 +116,6 @@
     {
       "src": "dominic.egginton@gmail.com",
       "accept": [
-        "tag:service-beszel:443",
         "tag:service-transmission:80",
         "tag:service-frigate:443",
         "tag:service-silverbullet:443",
@@ -142,19 +125,9 @@
     {
       "src": "tag:device-latitude-7390",
       "accept": [
-        "tag:service-beszel:443",
         "tag:service-transmission:80",
         "tag:service-frigate:443",
         "tag:service-jellyfin:8080"
-      ]
-    },
-    {
-      "src": "tag:beszel-hub",
-      "accept": [
-        "tag:beszel-agent:2222"
-      ],
-      "deny": [
-        "tag:service-frigate:443"
       ]
     }
   ],
@@ -169,11 +142,6 @@
       "src": "tag:device-latitude-7390",
       "dst": ["tag:device-ghost-gs60"],
       "accept": ["root", "dom"]
-    },
-    {
-      "src": "tag:service-beszel",
-      "dst": ["tag:device-latitude-7390"],
-      "accept": ["dom"]
     }
   ]
 }

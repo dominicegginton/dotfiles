@@ -32,7 +32,6 @@
     tailscale.enable = lib.mkForce false;
     tsnsrv.enable = lib.mkForce false;
     usbguard.enable = lib.mkForce false;
-    beszel.enable = lib.mkForce false;
   };
 
   # Authorize maintainer SSH keys for root on the live ISO installer

@@ -29,11 +29,6 @@ let
       waitFor = "10s";
     }
     {
-      name = "beszel";
-      tags = [ "tag:service-beszel" ];
-      waitFor = "10s";
-    }
-    {
       name = "frigate";
       tags = [ "tag:service-frigate" ];
       waitFor = "10s";

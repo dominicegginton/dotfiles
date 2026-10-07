@@ -72,7 +72,6 @@ in
           else
             null;
         "services/tsnsrv/auth-key" = { };
-        "services/beszel/agent" = { };
         "services/gcp-logging/key" =
           if config.services.gcp-logging.enable then
             {
@@ -110,8 +109,6 @@ in
             }
           else
             null;
-        "services/beszel/hub" =
-          if (config.services.beszel.hub.enable or false) then hostSecret { } else null;
         "services/harmonia/sign-key" =
           if config.services.harmonia-custom.enable then hostSecret { } else null;
         "onlyoffice_jwt_secret" =

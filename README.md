@@ -39,7 +39,7 @@ Declarative - Hardened - Amnesic - Orchestrated NixOS
 - **Declarative Self-Hosted Services**:
   - Media & Home Automation: Home Assistant, Frigate (AI NVR), Jellyfin, BitMagnet, and Transmission.
   - Productivity & Knowledge: Immich (photo management), SilverBullet, and OnlyOffice DocumentServer.
-  - Infrastructure & Monitoring: Beszel metrics hub/agent and secure access over Tailnet VPN.
+  - Infrastructure & Monitoring: Secure access over Tailnet VPN.
 
 ## Documentation
 

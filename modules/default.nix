@@ -75,7 +75,6 @@ rec {
     ./security/yubikey.nix
 
     # Service
-    ./services/beszel.nix
     ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/displaymanager.nix
@@ -127,7 +126,6 @@ rec {
   programs.deadman.enable = lib.mkDefault true; # Enable deadman switch by default
 
   services = {
-    beszel.enable = lib.mkDefault true; # Enable Beszel service
     dbus.enable = lib.mkForce true; # Always enable D-Bus system bus
     smartd.enable = lib.mkDefault true; # Enable SMART disk monitoring by default
     thermald.enable = lib.mkDefault true; # Enable thermal management by default

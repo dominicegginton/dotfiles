@@ -163,9 +163,6 @@
     # Enable Tailscale Identity Provider (IdP)
     tsidp.enable = true;
 
-    # Enable Beszel monitoring (Hub and Agent)
-    beszel.hub.enable = true;
-
     # Enable Immich Photos/Video Management Services with CUDA acceleration
     immich = {
       enable = true;
