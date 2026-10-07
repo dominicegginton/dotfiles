@@ -20,7 +20,7 @@ let
     _: prev:
     prev
     // {
-      inherit (self.outputs.lib) mkHardenedSystemdServiceConfig;
+      inherit (self.outputs.lib) mkHardenedSystemdServiceConfig mkSingletonAssertion;
     }
   );
 in

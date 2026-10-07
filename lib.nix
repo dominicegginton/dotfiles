@@ -25,6 +25,18 @@ rec {
   # Hostnames defined in the flake outputs, extracted from nixosConfigurations
   hostnames = lib.attrNames self.outputs.nixosConfigurations;
 
+  # Helper to create a singleton service assertion across the infrastructure
+  mkSingletonAssertion = name: enablePath:
+    let
+      enabledHosts = lib.filter (
+        host: lib.attrByPath enablePath false self.outputs.nixosConfigurations.${host}.config
+      ) hostnames;
+    in
+    {
+      assertion = lib.length enabledHosts <= 1;
+      message = "services.${name} is a singleton service and can only be enabled on one host in the infrastructure at a time. Enabled hosts: ${lib.concatStringsSep ", " enabledHosts}";
+    };
+
   # Custom maintainer definitions merged with nixpkgs.
   # This allows using personal maintainer info in package definitions and overlays.
   maintainers = import ./lib/maintainers.nix { inherit lib; };

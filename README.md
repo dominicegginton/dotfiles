@@ -26,6 +26,7 @@ Declarative - Hardened - Amnesic - Orchestrated NixOS
   - Live installer ISO (`infector`) built with automated random root passwords, TTY QR code output, and TUI image burning (`burn-infector` with Caligula).
   - Journald logs ship to GCP Cloud Logging via a Vector agent.
   - Automated systemd cloud backups to GCS buckets.
+  - Infrastructure-wide singleton service enforcement via static module assertions (`lib.mkSingletonAssertion`) preventing multi-host configuration conflicts.
   - Private Harmonia binary cache for faster Nix deployments.
   - Self-hosted GitHub Actions runner orchestration on NixOS.
   - Host network topology generated natively via `nix-topology`.

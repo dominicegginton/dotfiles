@@ -17,6 +17,7 @@ in
         assertion = config.services.tailscale.enable;
         message = "services.tailscale.enable must be set to true";
       }
+      (lib.mkSingletonAssertion "frigate" [ "services" "frigate" "enable" ])
     ];
 
     # Primary Frigate NVR configuration

@@ -8,6 +8,7 @@ This guide describes how backup and restore operations work across services usin
 
 Backups are defined declaratively within each service module (e.g., `modules/services/silverbullet.nix`, `modules/services/immich.nix`, `modules/services/frigate.nix`) using standard NixOS `services.restic.backups.<service-name>` options.
 
+- **Singleton Assertions**: To prevent concurrent state writes or out-of-sync backups from multiple hosts to the same GCS bucket, service modules with backup configurations implement a static assertion ensuring that the service is configured as a singleton across all defined `nixosConfigurations`. The build will fail if more than one host has the service enabled simultaneously.
 - **Automated Backup Timers**: Systemd timers (`restic-backups-<service-name>.timer`) start systemd backup jobs (`restic-backups-<service-name>.service`).
 - **NixOS Generated Wrappers**: NixOS automatically builds wrapper binaries named `restic-<service-name>` on `$PATH` (`restic-silverbullet`, `restic-immich`, `restic-frigate`). These wrappers automatically export all required repository credentials (`RESTIC_REPOSITORY`, `RESTIC_PASSWORD_FILE`, `GOOGLE_APPLICATION_CREDENTIALS`, and `RESTIC_CACHE_DIR`).
 - **Authentication**: Service Account JSON keys decrypted via `sops-nix` (`/run/secrets/services/<service-name>/gcs-backup-key`).

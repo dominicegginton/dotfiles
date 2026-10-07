@@ -11,6 +11,10 @@ in
 
 {
   config = lib.mkIf cfg.enable {
+    assertions = [
+      (lib.mkSingletonAssertion "transmission" [ "services" "transmission" "enable" ])
+    ];
+
     # Transmission and tsnsrv use systemd PrivateUsers / DynamicUser and require user namespaces
     security.unprivilegedUserNamespaces.enable = true;
 

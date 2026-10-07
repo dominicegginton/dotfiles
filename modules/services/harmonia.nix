@@ -15,6 +15,10 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      (lib.mkSingletonAssertion "harmonia-custom" [ "services" "harmonia-custom" "enable" ])
+    ];
+
     services.harmonia = {
       cache = {
         enable = true;

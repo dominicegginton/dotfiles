@@ -20,6 +20,7 @@ in
         assertion = config.services.tailscale.enable;
         message = "services.tailscale.enable must be set to true";
       }
+      (lib.mkSingletonAssertion "jellyfin" [ "services" "jellyfin" "enable" ])
     ];
 
     # Keep the local firewall closed as we use Tailscale Serve

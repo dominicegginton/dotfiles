@@ -18,6 +18,7 @@ in
         assertion = config.services.tailscale.enable;
         message = "services.tailscale.enable must be set to true for Beszel";
       }
+      (lib.mkSingletonAssertion "beszel.hub" [ "services" "beszel" "hub" "enable" ])
     ];
 
     services = {
