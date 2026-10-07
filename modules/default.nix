@@ -79,7 +79,6 @@ rec {
     ./services/bitmagnet.nix
     ./services/calmav.nix
     ./services/displaymanager.nix
-    # ./services/dit0.nix # Disabled: experimental LDAP server
     ./services/fail2ban.nix
     ./services/flatpak.nix
     ./services/frigate.nix

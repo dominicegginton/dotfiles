@@ -114,10 +114,6 @@ in
           if (config.services.beszel.hub.enable or false) then hostSecret { } else null;
         "services/harmonia/sign-key" =
           if config.services.harmonia-custom.enable then hostSecret { } else null;
-        "services/dit0/ts-api-key" =
-          if (config.services.dit0.enable or false) then hostSecret { } else null;
-        "services/dit0/ts-auth-key" =
-          if (config.services.dit0.enable or false) then hostSecret { } else null;
         "onlyoffice_jwt_secret" =
           if (config.services.onlyoffice-documentserver.enable or false) then hostSecret { } else null;
         "oauth2_proxy_oidc_client_secret" =

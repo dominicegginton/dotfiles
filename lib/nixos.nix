@@ -49,7 +49,6 @@ lib.nixosSystem {
       home-manager.nixosModules.default
       deadman.nixosModules.default
       tsnsrv.nixosModules.default
-      # dit0.nixosModules.default
       driftwm.nixosModules.default
       jovian.nixosModules.default
       # velvet.nixosModules.default

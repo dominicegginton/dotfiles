@@ -28,10 +28,6 @@
     deadman.url = "github:dominicegginton/deadman";
     deadman.inputs.nixpkgs.follows = "nixpkgs";
 
-    # Dit0 is a tailnet native LDAP directory server for managing users, groups, and devices in a Tailscale network
-    dit0.url = "github:dominicegginton/dit0";
-    dit0.inputs.nixpkgs.follows = "nixpkgs";
-
     # Amber package from the dotfiles maintainer's flake collection
     amber.url = "github:dominicegginton/amber";
     amber.inputs.nixpkgs.follows = "nixpkgs";
@@ -216,7 +212,6 @@
           # Apply system-wide overlays
           overlays = with self.inputs; [
             deadman.overlays.default
-            dit0.overlays.default
             nix-topology.overlays.default
             nix-topology.overlays.topology
             run0-sudo-shim.overlays.default
