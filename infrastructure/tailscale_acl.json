@@ -1,29 +1,6 @@
 {
   "grants": [
     {
-      "src": ["tag:ldap-client"],
-      "dst": ["tag:service-dit0"],
-      "ip":  ["3269"],
-      "app": {"dominicegginton.dev/cap/tsdit0": [{"allow_bind": true}]}
-    },
-
-    {
-      "src": ["dominic.egginton@gmail.com"],
-      "dst": ["tag:service-dit0", "dominic.egginton@gmail.com"],
-      "ip":  ["*"],
-
-      "app": {
-        "dominicegginton.dev/cap/tsdit0": [
-          {
-            "allow_admin_ui": true,
-            "allow_bind":     true,
-            "allow_ui":       true
-          }
-        ]
-      }
-    },
-
-    {
       "src": ["dominic.egginton@gmail.com"],
       "dst": ["tag:service-idp"],
       "ip":  ["*"],
@@ -116,9 +93,7 @@
     "tag:device-latitude-7390": [],
     "tag:device-steamdeck":     [],
     "tag:device-steammachine":  [],
-    "tag:ldap-client":          [],
     "tag:service-idp":          [],
-    "tag:service-dit0":         [],
     "tag:service-immich":       [],
     "tag:immich-user":          [],
     "tag:service-silverbullet": [],
@@ -147,24 +122,6 @@
   "autoApprovers": {"exitNode": []},
 
   "nodeAttrs": [
-    {
-      "target": ["dominic.egginton@gmail.com"],
-      "app": {
-        "dominicegginton.dev/cap/tsdit0": [
-          {
-            "allow_bind": true,
-
-            "posix_groups": [
-              {
-                "gidNumber": 1,
-                "name":      "wheel"
-              }
-            ]
-          }
-        ]
-      }
-    },
-
     {
       "target": ["tag:service-idp", "tag:service-immich", "tag:service-jellyfin"],
       "attr":   ["funnel"]
@@ -198,16 +155,6 @@
       ],
       "deny": [
         "tag:service-frigate:443"
-      ]
-    },
-    {
-      "src": "tag:ldap-client",
-      "accept": [
-        "tag:service-dit0:3269"
-      ],
-      "deny": [
-        "tag:service-frigate:443",
-        "tag:service-jellyfin:8080"
       ]
     }
   ],
