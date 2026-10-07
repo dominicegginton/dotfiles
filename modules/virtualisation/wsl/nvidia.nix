@@ -31,9 +31,7 @@
           ]
         );
       };
-      environment.systemPackages = [
-        pkgs.cudatoolkit
-      ];
+      environment.systemPackages = [ pkgs.cudatoolkit ];
     })
 
     (lib.mkIf (config.wsl.enable && config.wsl.nvidia.enable && config.wsl.nvidia.docker.enable) {

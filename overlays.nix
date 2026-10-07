@@ -20,54 +20,59 @@ rec {
 
   # Default overlay containing custom packages, library extensions, and sbomnix passthru wrappers
   # This overlay is always applied to all systems
-  default = final: prev: rec {
-    # Import the withSbomnix wrapper function
-    withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
+  default =
+    final: prev:
+    let
+      waylandDesktopBundle = import ./pkgs/wayland-desktop { pkgs = final; };
+    in
+    rec {
+      # Import the withSbomnix wrapper function
+      withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
 
-    # Custom packages available in all systems
-    background = final.callPackage ./pkgs/background.nix { };
-    burn-infector = final.callPackage ./pkgs/burn-infector.nix { };
-    deploy-host = final.callPackage ./pkgs/deploy-host.nix { };
-    dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
-    extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
-    gpg-import-bucket = final.callPackage ./pkgs/gpg-import-bucket.nix { };
-    solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
-    intelli-extension = final.callPackage ./pkgs/intelli-extension { };
-    lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
-    mkGnomeBackground = final.callPackage ./pkgs/mk-gnome-background.nix { };
-    nix-gc-dangling-links = final.callPackage ./pkgs/nix-gc-dangling-links.nix { };
-    my-shell = final.callPackage ./pkgs/shell { };
-    my-shell-settings = final.callPackage ./pkgs/shell-settings { };
-    plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
-    theme = final.callPackage ./pkgs/theme.nix { };
-    twx = final.callPackage ./pkgs/twx.nix { };
-    youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
+      # Custom packages available in all systems
+      background = final.callPackage ./pkgs/background.nix { };
+      burn-infector = final.callPackage ./pkgs/burn-infector.nix { };
+      deploy-host = final.callPackage ./pkgs/deploy-host.nix { };
+      dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
+      extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
+      gpg-import-bucket = final.callPackage ./pkgs/gpg-import-bucket.nix { };
+      solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
+      lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
+      mkGnomeBackground = final.callPackage ./pkgs/mk-gnome-background.nix { };
+      nix-gc-dangling-links = final.callPackage ./pkgs/nix-gc-dangling-links.nix { };
+      my-shell = final.callPackage ./pkgs/shell { };
+      my-shell-settings = final.callPackage ./pkgs/shell-settings { };
+      plymouth-theme = final.callPackage ./pkgs/plymouth-theme.nix { };
+      theme = final.callPackage ./pkgs/theme.nix { };
+      twx = final.callPackage ./pkgs/twx.nix { };
+      youtube-tv = prev.callPackage ./pkgs/youtube-tv.nix { };
 
-    # DriftWM — a trackpad-first infinite canvas Wayland compositor
-    driftwm = self.inputs.driftwm.packages.${prev.system}.default.overrideAttrs (oldAttrs: {
-      buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ final.libdisplay-info ];
-    });
+      devTools = import ./pkgs/dev-tools { pkgs = final; };
+      waylandDesktop = waylandDesktopBundle.apps;
+      waylandDesktopScripts = waylandDesktopBundle.scripts;
+      gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
+        inherit (final)
+          dynamic-music-pill
+          solar-theme-switcher
+          ;
+      };
 
-    # Amber package from the maintainer's flake
-    amber = self.inputs.amber.packages.${prev.system}.default;
+      # DriftWM — a trackpad-first infinite canvas Wayland compositor
+      driftwm = self.inputs.driftwm.packages.${prev.system}.default.overrideAttrs (oldAttrs: {
+        buildInputs = (oldAttrs.buildInputs or [ ]) ++ [ final.libdisplay-info ];
+      });
 
-    # Topology output is now a package
-    topology = self.outputs.packages.${final.system}.topology;
+      # Amber package from the maintainer's flake
+      amber = self.inputs.amber.packages.${prev.system}.default;
 
-    # Merge custom library with nixpkgs lib
-    # This allows you to extend or override lib functions globally
-    lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
+      # Topology output is now a package
+      topology = self.outputs.packages.${final.system}.topology;
 
-    # Extend GNOME extensions with custom ones
-    # These are also wrapped with sbomnix utilities for SBOM/provenance
-    gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
-      inherit (final)
-        dynamic-music-pill
-        solar-theme-switcher
-        intelli-extension
-        ;
+      # Merge custom library with nixpkgs lib
+      # This allows you to extend or override lib functions globally
+      lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
+
     };
-  };
 
   withSbom = final: prev: {
     # This overlay is meant to be applied on top of the default overlay to add sbomnix passthru utilities to all packages

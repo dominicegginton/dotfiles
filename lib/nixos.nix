@@ -18,10 +18,8 @@ let
   lib = self.inputs.nixpkgs.lib;
 in
 lib.nixosSystem {
-  # Use nixpkgs instance from flake outputs
   pkgs = self.outputs.legacyPackages.${platform};
 
-  # Pass self, inputs, and lib to all modules
   specialArgs = {
     inherit
       self
@@ -31,7 +29,6 @@ lib.nixosSystem {
       ;
   };
 
-  # Define list of NixOS modules to include for all systems.
   modules =
     with self.inputs;
     [

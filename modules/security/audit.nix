@@ -23,11 +23,9 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    # Install OpenSCAP, vulnix, and standard compliance guides
     environment.systemPackages = with pkgs; [
       openscap
       scap-security-guide
-      vulnix # Vulnerability scanner for Nix store paths
     ];
 
     # Enable and configure Stunnel FIPS mode globally if the stunnel service is ever enabled

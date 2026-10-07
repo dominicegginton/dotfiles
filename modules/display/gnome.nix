@@ -387,10 +387,10 @@ with lib;
       enableDefaultPackages = mkForce false;
       fontDir.enable = mkForce true;
       packages = with pkgs; [
-        font-manager # Font Manager Application
-        adwaita-fonts # Default Gnome Fonts
-        ibm-plex # IBM Plex Fonts
-        nerd-fonts.blex-mono # Nerd Font Mono
+        font-manager
+        adwaita-fonts
+        ibm-plex
+        nerd-fonts.blex-mono
       ];
       fontconfig = {
         enable = mkForce true;
@@ -435,40 +435,36 @@ with lib;
     environment.systemPackages =
       with pkgs;
       [
-        adwaita-icon-theme # Icon Theme - Required by Gnome Application
-        sound-theme-freedesktop # Sound Theme - Gnome's default alert sound theme still inherits from it
-        glib # GLib Library - Required by Gnome Applications
-        gtk3.out # GTK3 Library - Required by gtk-launch program
-        xdg-user-dirs # Updates User Directories
-        xdg-user-dirs-gtk # Updates User Directories - GTK Integration
-        gnome-shell # Shell
-        gnome-menus # Gnome Menus
-        background # Background Definition
-        epiphany # Web Browser
-        gnome-control-center # Control Center
-        gnome-bluetooth # Bluetooth Settings - Required by Gnome Control Center
-        gnome-color-manager # Color Management - Required by Gnome Control Center
-        gnome-text-editor # Text Editor Applet
-        gnome-calculator # Calculator Applet
-        gnome-calendar # Calendar Applet
-        gnome-characters # Characters Applet
-        gnome-clocks # Clocks and Alarms Applet
-        gnome-console # Console
-        gnome-contacts # Contacts Applet
-        gnome-font-viewer # Font Viewer Applet
-        gnome-weather # Weather Applet
-        loupe # Magnifier Applet
-        nautilus # File Manager
-        papers # Papers Applet
-        gnome-firmware # Firmware Updater Applet
-        lock # Encrypt / Decrypt Applet
-        resources # System Monitor
+        adwaita-icon-theme
+        sound-theme-freedesktop
+        glib
+        gtk3.out
+        xdg-user-dirs
+        xdg-user-dirs-gtk
+        gnome-shell
+        gnome-menus
+        background
+        epiphany
+        gnome-control-center
+        gnome-bluetooth
+        gnome-color-manager
+        gnome-text-editor
+        gnome-calculator
+        gnome-calendar
+        gnome-characters
+        gnome-clocks
+        gnome-console
+        gnome-contacts
+        gnome-font-viewer
+        gnome-weather
+        loupe
+        nautilus
+        papers
+        gnome-firmware
+        lock
+        resources
       ]
-
-      # Gnome Extension
       ++ extensions
-
-      # Session Path Packages
       ++ config.display.gnome.sessionPath;
   };
 }

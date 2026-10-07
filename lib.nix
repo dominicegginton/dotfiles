@@ -13,6 +13,9 @@ let
 in
 
 rec {
+  # Derivations from an overlay package set (ignores recurseForDerivations).
+  packageSetToList = set: lib.filter lib.isDerivation (lib.attrValues set);
+
   # Primary domain for the infrastructure (used for FQDNs, certs, etc.)
   domain = "dominicegginton.dev";
 

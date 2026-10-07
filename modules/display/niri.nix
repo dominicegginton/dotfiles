@@ -10,83 +10,7 @@ let
   # Helper for KDL generation
   toKDL = self.inputs.home-manager.lib.hm.generators.toKDL { };
 
-  # Helper script for screen locking using swaylock-effects
-  screenLock = pkgs.writeShellScriptBin "screen-lock" ''
-    PATH=${
-      lib.makeBinPath [
-        pkgs.swaylock-effects
-        pkgs.maim
-        pkgs.imagemagick
-        pkgs.ffmpegthumbnailer
-        pkgs.xclip
-      ]
-    }
-    TEMP_IMG=$(mktemp /tmp/screen-lock-XXXXXX.png)
-    maim -u | convert - -blur 0x8 -scale 10% -scale 1000% $TEMP_IMG
-    swaylock-effects -f -i $TEMP_IMG --effect-blur 10x10
-    rm $TEMP_IMG
-  '';
-
-  # Helper script for taking full-output screenshots
-  screenshotOutput = pkgs.writeShellScriptBin "screenshot-output" ''
-    PATH=${
-      lib.makeBinPath [
-        pkgs.wl-clipboard
-        pkgs.gradia
-      ]
-    }
-    gradia --screenshot=FULL
-  '';
-
-  # Helper script for taking region screenshots
-  screenshotRegion = pkgs.writeShellScriptBin "screenshot-region" ''
-    PATH=${
-      lib.makeBinPath [
-        pkgs.wl-clipboard
-        pkgs.gradia
-      ]
-    }
-    gradia --screenshot
-  '';
-
-  # Helper script to sync GNOME background settings with swaybg
-  swayWallpaper = pkgs.writeShellScriptBin "sway-wallpaper" ''
-    PATH=${
-      lib.makeBinPath [
-        pkgs.glib
-        pkgs.swaybg
-        pkgs.procps
-        pkgs.coreutils
-        pkgs.gnugrep
-        pkgs.findutils
-      ]
-    }
-
-    update_wallpaper() {
-      THEME=$(gsettings get org.gnome.desktop.interface color-scheme | tr -d "'")
-      if [ "$THEME" = "prefer-dark" ]; then
-        IMAGE=$(gsettings get org.gnome.desktop.background picture-uri-dark | tr -d "'" | sed 's/file:\/\///')
-      else
-        IMAGE=$(gsettings get org.gnome.desktop.background picture-uri | tr -d "'" | sed 's/file:\/\///')
-      fi
-
-      if [ -f "$IMAGE" ]; then
-        # Use pkill to clear old instances, then start new one
-        pkill swaybg || true
-        swaybg -i "$IMAGE" -m fill &
-      fi
-    }
-
-    # Initial set
-    update_wallpaper
-
-    # Monitor for changes and update
-    gsettings monitor org.gnome.desktop.interface color-scheme | while read -r _; do update_wallpaper; done &
-    gsettings monitor org.gnome.desktop.background picture-uri | while read -r _; do update_wallpaper; done &
-    gsettings monitor org.gnome.desktop.background picture-uri-dark | while read -r _; do update_wallpaper; done &
-
-    wait
-  '';
+  scripts = pkgs.waylandDesktopScripts;
 
   cfg = config.display.niri;
 in
@@ -151,7 +75,7 @@ in
         partOf = [ "graphical-session.target" ];
         after = [ "graphical-session.target" ];
         serviceConfig = {
-          ExecStart = "${swayWallpaper}/bin/sway-wallpaper";
+          ExecStart = "${scripts.sway-wallpaper}/bin/sway-wallpaper";
           Restart = "on-failure";
 
           NoNewPrivileges = true;
@@ -373,9 +297,9 @@ in
                 "--config-dir"
                 "/etc/sherlock-launcher/"
               ];
-              "Mod+Shift+L".spawn = [ (lib.getExe screenLock) ];
-              "Mod+Shift+3".spawn = [ (lib.getExe screenshotOutput) ];
-              "Mod+Shift+4".spawn = [ (lib.getExe screenshotRegion) ];
+              "Mod+Shift+L".spawn = [ (lib.getExe scripts.screen-lock) ];
+              "Mod+Shift+3".spawn = [ (lib.getExe scripts.screenshot-output) ];
+              "Mod+Shift+4".spawn = [ (lib.getExe scripts.screenshot-region) ];
               "Mod+Shift+E".quit = [ ];
               "Mod+Shift+P".power-off-monitors = [ ];
               "Ctrl+Alt+Delete".spawn = [ (lib.getExe pkgs.mission-center) ];
@@ -615,28 +539,11 @@ in
           MOZ_USE_XINPUT2 = "1";
           MOZ_USE_XINPUT2_BY_DEFAULT = "1";
         };
-        systemPackages = with pkgs; [
-          gnome-keyring
-
-          my-shell
-          my-shell-settings
-          mission-center
-          wdisplays
-          swaysettings
-
-          lock
-
-          nautilus
-          sushi
-          clapper
-          loupe
-          evince
-          gnome-font-viewer
-          gnome-calendar
-          gnome-logs
-          gnome-contacts
-          gnome-firmware
-        ];
+        systemPackages =
+          pkgs.lib.packageSetToList pkgs.waylandDesktop
+          ++ [
+            pkgs.lock
+          ];
       };
     }
   );

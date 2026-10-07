@@ -84,17 +84,14 @@ in
       );
     };
 
-    # Install Yubikey management and configuration utilities
     environment.systemPackages =
       with pkgs;
       [
-        yubikey-manager # CLI management tool (ykman)
-        yubikey-personalization # CLI personalization tool (ykpersonalize)
-        yubico-piv-tool # CLI PIV tool (yubico-piv-tool)
+        yubikey-manager
+        yubikey-personalization
+        yubico-piv-tool
       ]
-      ++ lib.optionals isGraphical [
-        yubioath-flutter # GUI manager
-      ];
+      ++ lib.optionals isGraphical [ yubioath-flutter ];
 
     # Configure PAM for FIDO2/U2F authentication
     security.pam.u2f = {

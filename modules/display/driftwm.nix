@@ -6,44 +6,7 @@
 }:
 
 let
-  # Helper script for screen locking using swaylock-effects
-  screenLock = pkgs.writeShellScriptBin "screen-lock" ''
-    PATH=${
-      lib.makeBinPath [
-        pkgs.swaylock-effects
-        pkgs.maim
-        pkgs.imagemagick
-        pkgs.ffmpegthumbnailer
-        pkgs.xclip
-      ]
-    }
-    TEMP_IMG=$(mktemp /tmp/screen-lock-XXXXXX.png)
-    maim -u | convert - -blur 0x8 -scale 10% -scale 1000% $TEMP_IMG
-    swaylock-effects -f -i $TEMP_IMG --effect-blur 10x10
-    rm $TEMP_IMG
-  '';
-
-  # Helper script for taking full-output screenshots
-  screenshotOutput = pkgs.writeShellScriptBin "screenshot-output" ''
-    PATH=${
-      lib.makeBinPath [
-        pkgs.wl-clipboard
-        pkgs.gradia
-      ]
-    }
-    gradia --screenshot=FULL
-  '';
-
-  # Helper script for taking region screenshots
-  screenshotRegion = pkgs.writeShellScriptBin "screenshot-region" ''
-    PATH=${
-      lib.makeBinPath [
-        pkgs.wl-clipboard
-        pkgs.gradia
-      ]
-    }
-    gradia --screenshot
-  '';
+  scripts = pkgs.waylandDesktopScripts;
 
   hexToDec =
     c:
@@ -188,30 +151,13 @@ in
           MOZ_USE_XINPUT2_BY_DEFAULT = "1";
           DRIFTWM_CONFIG = "/etc/driftwm/config.toml";
         };
-        systemPackages = with pkgs; [
-          gnome-keyring
-
-          mission-center
-          wdisplays
-          swaysettings
-
-          nautilus
-          sushi
-          clapper
-          loupe
-          evince
-          gnome-font-viewer
-          gnome-calendar
-          gnome-logs
-          gnome-contacts
-          gnome-firmware
-
-          swaynotificationcenter
-          swayosd
-          wl-clipboard
-          my-shell
-          my-shell-settings
-        ];
+        systemPackages =
+          pkgs.lib.packageSetToList pkgs.waylandDesktop
+          ++ (with pkgs; [
+            swaynotificationcenter
+            swayosd
+            wl-clipboard
+          ]);
       };
 
       environment.etc."driftwm/wallpapers/dot_grid.glsl".text = ''
@@ -314,7 +260,7 @@ in
               "mod+return" = "exec ${lib.getExe pkgs.blackbox-terminal}";
               "mod+space" = "exec ${lib.getExe pkgs.sherlock-launcher} --config-dir /etc/sherlock-launcher/";
               "XF86LaunchA" = "home-toggle";
-              "mod+l" = "spawn ${lib.getExe screenLock}";
+              "mod+l" = "spawn ${lib.getExe scripts.screen-lock}";
               "mod+n" = "spawn swaync-client -t";
               "XF86AudioRaiseVolume" = "spawn swayosd-client --output-volume raise";
               "XF86AudioLowerVolume" = "spawn swayosd-client --output-volume lower";
@@ -323,8 +269,8 @@ in
               "XF86MonBrightnessDown" = "spawn swayosd-client --brightness lower";
               "mod+m" = "fit-window-snapped";
               "mod+shift+m" = "fit-window";
-              "mod+shift+3" = "spawn ${lib.getExe screenshotOutput}";
-              "mod+shift+4" = "spawn ${lib.getExe screenshotRegion}";
+              "mod+shift+3" = "spawn ${lib.getExe scripts.screenshot-output}";
+              "mod+shift+4" = "spawn ${lib.getExe scripts.screenshot-region}";
               "mod+1" = "go-to 0 1500";
               "mod+shift+escape" = "quit";
               "mod+shift+q" = "close-window";
