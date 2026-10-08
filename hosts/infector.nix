@@ -41,5 +41,4 @@
   users.dom.enable = false;
   boot.plymouth.enable = lib.mkForce false;
   boot.loader.systemd-boot.enable = lib.mkForce false;
-  programs.deadman.enable = lib.mkForce false;
 }

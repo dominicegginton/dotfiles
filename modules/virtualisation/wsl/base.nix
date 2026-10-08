@@ -45,7 +45,6 @@ in
     };
 
     # Disable security services not applicable to WSL
-    programs.deadman.enable = lib.mkForce false;
     services.usbguard.enable = lib.mkForce false;
 
     services = {

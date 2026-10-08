@@ -24,10 +24,6 @@
     # Tools for managing persistent files on ephemeral/impermanent root filesystems
     impermanence.url = "github:nix-community/impermanence";
 
-    # USB user session native systemd deadmans kill switch for emergency system lockdown
-    deadman.url = "github:dominicegginton/deadman";
-    deadman.inputs.nixpkgs.follows = "nixpkgs";
-
     # Amber package from the dotfiles maintainer's flake collection
     amber.url = "github:dominicegginton/amber";
     amber.inputs.nixpkgs.follows = "nixpkgs";
@@ -211,7 +207,6 @@
           };
           # Apply system-wide overlays
           overlays = with self.inputs; [
-            deadman.overlays.default
             nix-topology.overlays.default
             nix-topology.overlays.topology
             run0-sudo-shim.overlays.default

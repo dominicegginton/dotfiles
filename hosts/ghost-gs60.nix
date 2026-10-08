@@ -138,8 +138,6 @@
     };
   };
 
-  programs.deadman.enable = false; # Disable deadman switch.
-
   # Systemd configuration to prevent system from sleeping/suspending
   systemd.targets = {
     sleep.enable = false;

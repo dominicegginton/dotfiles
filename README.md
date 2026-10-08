@@ -16,7 +16,7 @@ Declarative - Hardened - Amnesic - Orchestrated NixOS
   - **Fortified Kernel**: Strict sysctls, Yama, ASLR, and memory scrubbing.
   - **Amnesic Root & Impermanence**: Ephemeral `/` (Btrfs rollback on boot) with `/persist` mapping.
   - **Identity & Elevation**: Zero-sudo `run0`, SSSD OAuth2 authentication and PAM lockouts.
-  - **Hardware Roots & Anti-Tamper**: TPM 2.0, mandatory interactive Yubikey auth, and `deadman` USB kill switch.
+  - **Hardware Roots & Anti-Tamper**: TPM 2.0 & mandatory interactive Yubikey auth.
   - **Isolation & Threat Prevention**: Bus-level USBGuard, default-drop `nftables`, AppArmor, Fail2ban, and ClamAV scans.
   - **Runtime Secrets**: Git-encrypted Age/SOPS decrypted at activation time (`sops-nix`).
   - **Auditing & Compliance**: Auditd, OpenSCAP tooling, and FIPS 140-3 validated crypto.

@@ -47,7 +47,6 @@ lib.nixosSystem {
       impermanence.nixosModules.impermanence
       sops-nix.nixosModules.sops
       home-manager.nixosModules.default
-      deadman.nixosModules.default
       tsnsrv.nixosModules.default
       driftwm.nixosModules.default
       jovian.nixosModules.default

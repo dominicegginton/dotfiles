@@ -38,26 +38,6 @@
         "type": "github"
       }
     },
-    "deadman": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1787132098,
-        "narHash": "sha256-AmbRR/6SIyZeRRBpXYd5wv/z+s6o8Qcxu1gjxZplV7A=",
-        "owner": "dominicegginton",
-        "repo": "deadman",
-        "rev": "f9f768dad5a408ff02097f8226e0611e35090ca8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "dominicegginton",
-        "repo": "deadman",
-        "type": "github"
-      }
-    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -625,7 +605,6 @@
       "inputs": {
         "amber": "amber",
         "base16": "base16",
-        "deadman": "deadman",
         "disko": "disko",
         "driftwm": "driftwm",
         "git-hooks": "git-hooks",

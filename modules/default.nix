@@ -123,8 +123,6 @@ rec {
   time.timeZone = lib.mkDefault "Europe/London";
   i18n.defaultLocale = lib.mkDefault "en_GB.UTF-8";
 
-  programs.deadman.enable = lib.mkDefault true; # Enable deadman switch by default
-
   services = {
     dbus.enable = lib.mkForce true; # Always enable D-Bus system bus
     smartd.enable = lib.mkDefault true; # Enable SMART disk monitoring by default
