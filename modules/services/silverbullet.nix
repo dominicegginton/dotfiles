@@ -73,11 +73,8 @@ in
         addresses = [ "https://silverbullet.${tailnet}" ];
       };
 
-      services.silverbullet = {
-        name = "Silverbullet";
-        details.listen.text =
-          config.services.silverbullet.listenAddress + ":" + toString config.services.silverbullet.listenPort;
-      };
+      services.silverbullet.details.listen.text =
+        config.services.silverbullet.listenAddress + ":" + toString config.services.silverbullet.listenPort;
     };
   };
 }

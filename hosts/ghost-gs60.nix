@@ -188,7 +188,7 @@
         cameras = {
           "Frontdoor" = {
             ffmpeg = {
-              hwaccel_args = "preset-vaapi";
+              # hwaccel_args = "preset-vaapi";
               inputs = [
                 {
                   path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";

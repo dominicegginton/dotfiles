@@ -91,10 +91,8 @@ in
         addresses = [ "https://immich.${tailnet}" ];
       };
 
-      services.immich = {
-        name = "Immich";
-        details.listen.text = config.services.immich.host + ":" + toString config.services.immich.port;
-      };
+      services.immich.details.listen.text =
+        config.services.immich.host + ":" + toString config.services.immich.port;
     };
   };
 }
