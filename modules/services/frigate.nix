@@ -17,7 +17,11 @@ in
         assertion = config.services.tailscale.enable;
         message = "services.tailscale.enable must be set to true";
       }
-      (lib.mkSingletonAssertion "frigate" [ "services" "frigate" "enable" ])
+      (lib.mkSingletonAssertion "frigate" [
+        "services"
+        "frigate"
+        "enable"
+      ])
     ];
 
     # Primary Frigate NVR configuration
@@ -73,38 +77,15 @@ in
       };
     };
 
-    systemd.services.frigate.serviceConfig = lib.mkHardenedSystemdServiceConfig {
-      privateDevices = false;
-      privateMounts = false;
-      memoryDenyWriteExecute = false;
-      restrictAddressFamilies = [
-        "AF_INET"
-        "AF_INET6"
-        "AF_UNIX"
-        "AF_NETLINK"
-      ];
-      systemCallFilter = [
-        "@system-service"
-        "~@privileged"
-      ];
-      umask = "0027";
-      PrivateDevices = lib.mkForce false;
-      PrivateMounts = lib.mkForce false;
+    # Frigate is already hardened out-of-the-box by upstream NixOS (nixos/modules/services/video/frigate.nix).
+    # Generic mkHardenedSystemdServiceConfig breaks Frigate's mount namespacing (TemporaryFileSystem=/dev/shm
+    # needed for POSIX shared memory /Frontdoor) and hides child processes from the Frigate watchdog.
+    systemd.services.frigate.serviceConfig = {
+      # TensorRT / CUDA requires executable memory for PTX / kernel JIT compilation
       MemoryDenyWriteExecute = lib.mkForce false;
-      UMask = lib.mkForce "0027";
-      # Stats API (psutil): /proc/cpuinfo, /proc/stat, ffmpeg worker CPU, GPU tools.
+      # Allow Frigate and psutil to monitor ffmpeg and detector child processes
       ProtectProc = lib.mkForce "default";
       ProcSubset = lib.mkForce "all";
-      ProtectControlGroups = lib.mkForce false;
-      ProtectKernelTunables = lib.mkForce false;
-      CapabilityBoundingSet = [ "CAP_PERFMON" ];
-      BindReadOnlyPaths = [
-        "-/proc/cpuinfo"
-        "-/proc/stat"
-        "-/proc/meminfo"
-        "-/sys/class/drm"
-        "-/sys/devices/system/cpu"
-      ];
     };
 
     # Pass GCP Service Account credentials to Restic and set systemd ordering after Frigate

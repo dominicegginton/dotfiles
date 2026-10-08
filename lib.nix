@@ -26,7 +26,8 @@ rec {
   hostnames = lib.attrNames self.outputs.nixosConfigurations;
 
   # Helper to create a singleton service assertion across the infrastructure
-  mkSingletonAssertion = name: enablePath:
+  mkSingletonAssertion =
+    name: enablePath:
     let
       enabledHosts = lib.filter (
         host: lib.attrByPath enablePath false self.outputs.nixosConfigurations.${host}.config

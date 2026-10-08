@@ -12,7 +12,11 @@ in
 {
   config = lib.mkIf cfg.enable {
     assertions = [
-      (lib.mkSingletonAssertion "immich" [ "services" "immich" "enable" ])
+      (lib.mkSingletonAssertion "immich" [
+        "services"
+        "immich"
+        "enable"
+      ])
     ];
 
     # Immich/Redis and tsnsrv use systemd PrivateUsers / DynamicUser and require user namespaces

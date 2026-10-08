@@ -17,7 +17,11 @@ in
         assertion = config.services.tailscale.enable;
         message = "services.tailscale.enable must be set to true";
       }
-      (lib.mkSingletonAssertion "silverbullet" [ "services" "silverbullet" "enable" ])
+      (lib.mkSingletonAssertion "silverbullet" [
+        "services"
+        "silverbullet"
+        "enable"
+      ])
     ];
 
     # Core Silverbullet markdown notebook service settings
