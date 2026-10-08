@@ -273,6 +273,8 @@
                 excludes = [
                   "infrastructure/tailscale_acl\\.json$"
                   "infrastructure/config\\.tf\\.json$"
+                  "secrets/global\\.yaml"
+                  "secrets/hosts/ghost-gs60\\.yaml"
                 ];
               };
               gitleaks = {
