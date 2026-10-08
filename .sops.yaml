@@ -18,7 +18,7 @@ creation_rules:
   - path_regex: secrets/hosts/ghost-gs60\.yaml$
     key_groups:
       - pgp: [*dom_key]
-        age: [*ghost_gs60]
+        age: [*ghost_gs60, *latitude_7390]
 
   # 3. latitude-7390 specific secrets (decryptable ONLY by latitude-7390 and dom)
   - path_regex: secrets/hosts/latitude-7390\.yaml$
