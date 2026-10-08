@@ -92,6 +92,19 @@ in
       PrivateMounts = lib.mkForce false;
       MemoryDenyWriteExecute = lib.mkForce false;
       UMask = lib.mkForce "0027";
+      # Stats API (psutil): /proc/cpuinfo, /proc/stat, ffmpeg worker CPU, GPU tools.
+      ProtectProc = lib.mkForce "default";
+      ProcSubset = lib.mkForce "all";
+      ProtectControlGroups = lib.mkForce false;
+      ProtectKernelTunables = lib.mkForce false;
+      CapabilityBoundingSet = [ "CAP_PERFMON" ];
+      BindReadOnlyPaths = [
+        "-/proc/cpuinfo"
+        "-/proc/stat"
+        "-/proc/meminfo"
+        "-/sys/class/drm"
+        "-/sys/devices/system/cpu"
+      ];
     };
 
     # Pass GCP Service Account credentials to Restic and set systemd ordering after Frigate
