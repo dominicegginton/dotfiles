@@ -2,6 +2,7 @@
   lib,
   osConfig,
   pkgs,
+  config,
   ...
 }:
 
@@ -25,6 +26,42 @@
             - "~/dev"
             - "~/playgrounds"
         '';
+        ".local/bin/tmux-git-status" = {
+          executable = true;
+          text = ''
+            #!${pkgs.bash}/bin/bash
+            dir=''${1:?"usage: tmux-git-status <directory>"}
+            cd "$dir" 2>/dev/null || exit 0
+            git rev-parse --is-inside-work-tree &>/dev/null || exit 0
+
+            branch=$(git branch --show-current 2>/dev/null)
+            if [[ -z "$branch" ]]; then
+              branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null) || exit 0
+              if [[ "$branch" == HEAD ]]; then
+                branch=$(git rev-parse --short HEAD 2>/dev/null)
+              fi
+            fi
+
+            marks=""
+            git diff --no-ext-diff --quiet 2>/dev/null || marks+='*'
+            git diff --no-ext-diff --cached --quiet 2>/dev/null || marks+='+'
+            if [[ -n $(git ls-files --others --exclude-standard 2>/dev/null) ]]; then
+              marks+='?'
+            fi
+
+            ab=""
+            upstream_ref="@{upstream}"
+            if upstream=$(git rev-parse --abbrev-ref "$upstream_ref" 2>/dev/null); then
+              read -r ahead behind < <(
+                git rev-list --left-right --count "HEAD...$upstream_ref" 2>/dev/null || echo "0 0"
+              )
+              (( ahead > 0 )) && ab+="↑$ahead"
+              (( behind > 0 )) && ab+="↓$behind"
+            fi
+
+            printf ' %s%s%s ' "$branch" "$marks" "$ab"
+          '';
+        };
       };
 
       sessionVariables = {
@@ -102,10 +139,10 @@
           set -g status on
           set -g status-justify left
           set -g status-left-length 100
-          set -g status-right-length 100
+          set -g status-right-length 160
           set -g status-style fg=black,bg=blue
           set -g status-left " #S "
-          set -g status-right " %d-%m %H:%M #h "
+          set -g status-right "#(${config.home.homeDirectory}/.local/bin/tmux-git-status #{pane_current_path}) %d-%m %H:%M #h "
           set -g message-style fg=black,bg=red
           set -g message-command-style fg=black,bg=red
           set -g pane-border-style fg=black,bg=default
