@@ -61,7 +61,8 @@ function getSunTimes(lat, lon, date) {
   const cosD = Math.cos(Math.asin(sinD));
 
   // Hour angle at horizon (-0.833° accounts for atmospheric refraction and solar disc size)
-  const cosW0 = (Math.sin(-0.833 * DEG) - Math.sin(lat * DEG) * sinD) / (Math.cos(lat * DEG) * cosD);
+  const cosW0 =
+    (Math.sin(-0.833 * DEG) - Math.sin(lat * DEG) * sinD) / (Math.cos(lat * DEG) * cosD);
 
   if (cosW0 < -1) return { sunrise: null, sunset: null, polarDay: true, polarNight: false };
   if (cosW0 > 1) return { sunrise: null, sunset: null, polarDay: false, polarNight: true };
@@ -122,18 +123,25 @@ export default class SolarThemeSwitcher extends Extension {
   }
 
   _startGeoclue() {
-    Geoclue.Simple.new("solar-theme-switcher@dominicegginton", Geoclue.AccuracyLevel.CITY, null, (source, result) => {
-      try {
-        this._geoclue = Geoclue.Simple.new_finish(result);
+    Geoclue.Simple.new(
+      "solar-theme-switcher@dominicegginton",
+      Geoclue.AccuracyLevel.CITY,
+      null,
+      (source, result) => {
+        try {
+          this._geoclue = Geoclue.Simple.new_finish(result);
 
-        // Watch for future location updates (e.g., roaming between networks)
-        this._locationChangedId = this._geoclue.connect("notify::location", () => this._onLocationChanged());
+          // Watch for future location updates (e.g., roaming between networks)
+          this._locationChangedId = this._geoclue.connect("notify::location", () =>
+            this._onLocationChanged(),
+          );
 
-        this._onLocationChanged();
-      } catch (e) {
-        console.error(`[SolarThemeSwitcher] Failed to acquire location: ${e.message}`);
-      }
-    });
+          this._onLocationChanged();
+        } catch (e) {
+          console.error(`[SolarThemeSwitcher] Failed to acquire location: ${e.message}`);
+        }
+      },
+    );
   }
 
   _onLocationChanged() {
