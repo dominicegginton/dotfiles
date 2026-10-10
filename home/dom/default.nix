@@ -308,7 +308,7 @@
     };
 
     services.gpg-agent =
-      lib.mkIf (pkgs.stdenv.isLinux && !(osConfig.programs.gnupg.agent.enable or false))
+      lib.mkIf (pkgs.stdenv.hostPlatform.isLinux && !(osConfig.programs.gnupg.agent.enable or false))
         {
           enable = true;
           enableSshSupport = true;

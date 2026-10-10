@@ -36,13 +36,13 @@ To add a new host to `.sops.yaml`:
    creation_rules:
      - path_regex: secrets/global\.yaml$
        key_groups:
-         - pgp: [ *dom_key ]
-           age: [ *ghost_gs60, *my_new_host ]
+         - pgp: [*dom_key]
+           age: [*ghost_gs60, *my_new_host]
 
      - path_regex: secrets/hosts/my-new-host\.yaml$
        key_groups:
-         - pgp: [ *dom_key ]
-           age: [ *my_new_host ]
+         - pgp: [*dom_key]
+           age: [*my_new_host]
    ```
 
 3. **Update Secret Files**:
