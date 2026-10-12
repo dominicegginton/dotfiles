@@ -37,7 +37,7 @@ stdenv.mkDerivation {
 
   src = fetchurl {
     url = "https://github.com/denoland/celld/releases/download/v${version}/celld-${source.target}.gz";
-    sha256 = source.sha256;
+    inherit (source) sha256;
   };
 
   dontUnpack = true;

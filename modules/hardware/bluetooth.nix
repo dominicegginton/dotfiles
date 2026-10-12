@@ -27,17 +27,23 @@
         wantedBy = [ "default.target" ];
         serviceConfig = lib.mkHardenedSystemdServiceConfig {
           restrictAddressFamilies = [ "AF_UNIX" ];
-          ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
+          ExecStart = [
+            ""
+            "${pkgs.bluez}/bin/mpris-proxy -e"
+          ];
         };
       };
       environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
         "/var/lib/bluetooth"
       ];
 
-      # Enable uinput and uhid modules to allow BlueZ to create input devices in userspace
+      # Enable uinput, uhid, and bluetooth protocol modules to allow BlueZ full functionality
+      # when security.lockKernelModules is enabled.
       boot.kernelModules = [
         "uinput"
         "uhid"
+        "rfcomm"
+        "bnep"
       ];
 
       hardware.bluetooth = {

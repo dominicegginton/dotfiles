@@ -117,6 +117,13 @@ in
             source = ''
               .hostname = "${config.networking.hostName}"
 
+              msg = to_string(.MESSAGE) ?? ""
+
+              # Filter out harmless D-Bus duplicate service activation notices
+              if starts_with(msg, "Ignoring duplicate name") {
+                abort
+              }
+
               # Map journald PRIORITY (syslog 0-7) to GCP severity strings
               p = to_int(.PRIORITY) ?? 6
 
@@ -124,6 +131,21 @@ in
               # which would incorrectly map to EMERGENCY. Map audit logs to INFO (6).
               if ._TRANSPORT == "audit" || .SYSLOG_IDENTIFIER == "audit" || exists(._AUDIT_TYPE) {
                 p = 6
+              }
+
+              # Transient PipeWire / ALSA audio device disconnect notices (logged to stderr as err)
+              if contains(msg, "spa.alsa: open failed: No such device") {
+                p = 6
+              }
+
+              # Transient dock / USB / PCIe hot-unplug and power transition errors (demote to WARNING)
+              if contains(msg, "HC died; cleaning up") || contains(msg, "xHCI host controller not responding") || contains(msg, "Unable to change power state from D3hot to D0") {
+                p = 4
+              }
+
+              # BlueZ RFCOMM profile server failures (demote to WARNING)
+              if contains(msg, "RFCOMM server failed") {
+                p = 4
               }
 
               if p == 0 {
