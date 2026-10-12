@@ -44,7 +44,8 @@ stdenv.mkDerivation {
 
   nativeBuildInputs = [
     makeWrapper
-  ] ++ lib.optionals (stdenv.hostPlatform.isLinux && autoPatchelfHook != null) [
+  ]
+  ++ lib.optionals (stdenv.hostPlatform.isLinux && autoPatchelfHook != null) [
     autoPatchelfHook
   ];
 
