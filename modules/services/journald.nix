@@ -1,11 +1,11 @@
 _:
 
 {
-  # Limit journal logs retention to 1 day and secure/limit size to prevent log bloating attacks (notashelf's guide)
-  services.journald.settings.Journal = {
-    MaxRetentionSec = "1d";
-    SystemMaxUse = "100M";
-    RuntimeMaxUse = "50M";
-    SystemMaxFiles = "100";
-  };
+  # Limit journal logs retention to 1 day and secure/limit size to prevent log bloating attacks
+  services.journald.extraConfig = ''
+    MaxRetentionSec=1d
+    SystemMaxUse=100M
+    RuntimeMaxUse=50M
+    SystemMaxFiles=100
+  '';
 }
