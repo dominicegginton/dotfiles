@@ -71,7 +71,7 @@ in
             }
           else
             null;
-        "services/tsnsrv/auth-key" = { };
+        "services/tailscale/auth-key".key = "services/tsnsrv/auth-key";
         "services/gcp-logging/key" =
           if config.services.gcp-logging.enable then
             {

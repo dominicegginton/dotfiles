@@ -91,10 +91,6 @@ in
           address = "\${data.nextdns_setup_endpoint.ribble.ipv6[0]}";
           use_with_exit_node = true;
         }
-        {
-          address = "\${data.nextdns_setup_endpoint.ribble.ipv6[1]}";
-          use_with_exit_node = true;
-        }
       ];
       search_paths = [ ];
       override_local_dns = true;

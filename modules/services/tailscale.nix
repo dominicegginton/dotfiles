@@ -21,12 +21,17 @@ in
   # Tailscale service configuration
   services.tailscale = {
     enable = lib.mkDefault true;
+    authKeyFile = lib.mkIf (!config.wsl.enable && hostname != "infector") (
+      lib.mkDefault config.sops.secrets."services/tailscale/auth-key".path
+    );
     useRoutingFeatures = lib.mkForce (if notWSL then "both" else "client");
     extraUpFlags = [
       "--ssh"
       "--accept-dns"
-    ]
-    ++ lib.optionals notWSL [ "--accept-routes" ];
+      "--accept-routes"
+      "--advertise-tags=tag:device-${hostname}"
+      "--reset"
+    ];
     extraSetFlags = [ "--posture-checking=true" ];
     interfaceName = lib.mkForce tailscaleInterface;
   };
@@ -34,7 +39,7 @@ in
   # tsnsrv configuration
   services.tsnsrv = {
     enable = lib.mkDefault true;
-    defaults.authKeyPath = config.sops.secrets."services/tsnsrv/auth-key".path;
+    defaults.authKeyPath = config.sops.secrets."services/tailscale/auth-key".path;
   };
 
   # tsnsrv services use systemd PrivateUsers / DynamicUser and require user namespaces

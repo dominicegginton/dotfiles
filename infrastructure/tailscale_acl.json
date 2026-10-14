@@ -77,18 +77,18 @@
   },
 
   "tagOwners": {
-    "tag:device-ghost-gs60":    [],
-    "tag:device-latitude-7390": [],
-    "tag:device-steamdeck":     [],
-    "tag:device-steammachine":  [],
-    "tag:service-idp":          [],
-    "tag:service-immich":       [],
-    "tag:immich-user":          [],
-    "tag:service-silverbullet": [],
-    "tag:service-frigate":      [],
-    "tag:service-jellyfin":     [],
-    "tag:service-cache":        [],
-    "tag:service-transmission": []
+    "tag:device-ghost-gs60":    ["autogroup:admin"],
+    "tag:device-latitude-7390": ["autogroup:admin"],
+    "tag:device-steamdeck":     ["autogroup:admin"],
+    "tag:device-steammachine":  ["autogroup:admin"],
+    "tag:service-idp":          ["autogroup:admin"],
+    "tag:service-immich":       ["autogroup:admin"],
+    "tag:immich-user":          ["autogroup:admin"],
+    "tag:service-silverbullet": ["autogroup:admin"],
+    "tag:service-frigate":      ["autogroup:admin"],
+    "tag:service-jellyfin":     ["autogroup:admin"],
+    "tag:service-cache":        ["autogroup:admin"],
+    "tag:service-transmission": ["autogroup:admin"]
   },
 
   "ssh": [
