@@ -15,6 +15,7 @@ in
       # Enable OAuth token exchange using RFC 8693
       enableSts = lib.mkDefault true;
       enableFunnel = lib.mkDefault true;
+      tags = lib.mkDefault [ "tag:service-idp" ];
     };
 
     # Persistent storage for Tailscale IDP database and state
