@@ -30,9 +30,9 @@ in
       "--accept-dns"
       "--accept-routes"
       "--advertise-tags=tag:device-${hostname}"
+      "--report-posture"
       "--reset"
     ];
-    extraSetFlags = [ "--posture-checking=true" ];
     interfaceName = lib.mkForce tailscaleInterface;
   };
 

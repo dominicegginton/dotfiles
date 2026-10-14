@@ -27,19 +27,22 @@
     {
       "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
       "dst": ["tag:service-frigate"],
-      "ip":  ["tcp:443"]
+      "ip":  ["tcp:443"],
+      "srcPosture": ["posture:device-posture"]
     },
 
     {
       "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
       "dst": ["autogroup:tagged"],
-      "ip":  ["tcp:22"]
+      "ip":  ["tcp:22"],
+      "srcPosture": ["posture:device-posture"]
     },
 
     {
       "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
       "dst": ["tag:service-silverbullet"],
-      "ip":  ["tcp:443"]
+      "ip":  ["tcp:443"],
+      "srcPosture": ["posture:device-posture"]
     },
 
     {
