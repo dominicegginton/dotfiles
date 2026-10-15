@@ -25,21 +25,52 @@
     },
 
     {
-      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
+      "src": [
+        "dominic.egginton@gmail.com",
+        "tag:device-latitude-7390"
+      ],
       "dst": ["tag:service-frigate"],
       "ip":  ["tcp:443"]
     },
 
     {
-      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
+      "src": [
+        "dominic.egginton@gmail.com",
+        "tag:device-latitude-7390"
+      ],
       "dst": ["autogroup:tagged"],
       "ip":  ["tcp:22"]
     },
 
     {
-      "src": ["dominic.egginton@gmail.com", "tag:device-latitude-7390"],
+      "src": [
+        "dominic.egginton@gmail.com",
+        "tag:device-latitude-7390"
+      ],
       "dst": ["tag:service-silverbullet"],
       "ip":  ["tcp:443"]
+    },
+
+    {
+      "src": [
+        "dominic.egginton@gmail.com", 
+        "tag:device-latitude-7390",
+        "tag:device-steamdeck",
+        "tag:device-steammachine"
+      ],
+      "dst": ["tag:service-jellyfin"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": [
+        "dominic.egginton@gmail.com", 
+        "tag:device-latitude-7390",
+        "tag:device-steamdeck",
+        "tag:device-steammachine"
+      ],
+      "dst": ["tag:service-transmission"],
+      "ip":  ["*"]
     },
 
     {
@@ -51,18 +82,6 @@
     {
       "src": ["*"],
       "dst": ["tag:service-cache"],
-      "ip":  ["*"]
-    },
-
-    {
-      "src": ["tag:device-latitude-7390"],
-      "dst": ["tag:service-jellyfin"],
-      "ip":  ["*"]
-    },
-
-    {
-      "src": ["tag:device-latitude-7390", "dominic.egginton@gmail.com"],
-      "dst": ["tag:service-transmission"],
       "ip":  ["*"]
     }
   ],
