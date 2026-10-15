@@ -1,5 +1,6 @@
 .idea
 .terraform
+infrastructure/config.tf.json
 result
 .tfvars
 .pre-commit-config.yaml

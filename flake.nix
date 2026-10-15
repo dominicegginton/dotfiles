@@ -283,12 +283,6 @@
                 entry = "${pkgs.gitleaks}/bin/gitleaks protect --staged --verbose";
                 pass_filenames = false;
               };
-              tofu-fmt = {
-                enable = true;
-                name = "tofu-fmt";
-                entry = "${pkgs.opentofu}/bin/tofu fmt -check -recursive";
-                files = "\\.(tf|tfvars|tofu)$";
-              };
             };
           };
 
