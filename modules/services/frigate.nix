@@ -80,12 +80,17 @@ in
     # Frigate is already hardened out-of-the-box by upstream NixOS (nixos/modules/services/video/frigate.nix).
     # Generic mkHardenedSystemdServiceConfig breaks Frigate's mount namespacing (TemporaryFileSystem=/dev/shm
     # needed for POSIX shared memory /Frontdoor) and hides child processes from the Frigate watchdog.
-    systemd.services.frigate.serviceConfig = {
-      # TensorRT / CUDA requires executable memory for PTX / kernel JIT compilation
-      MemoryDenyWriteExecute = lib.mkForce false;
-      # Allow Frigate and psutil to monitor ffmpeg and detector child processes
-      ProtectProc = lib.mkForce "default";
-      ProcSubset = lib.mkForce "all";
+    systemd.services.frigate = {
+      environment.PYTHONWARNINGS = "ignore:::multiprocessing.resource_tracker";
+      serviceConfig = {
+        # Ensure adequate shared memory size (1GB tmpfs) for high-resolution video frame buffers
+        TemporaryFileSystem = lib.mkForce [ "/dev/shm:mode=1777,nosuid,nodev,size=1G" ];
+        # TensorRT / CUDA requires executable memory for PTX / kernel JIT compilation
+        MemoryDenyWriteExecute = lib.mkForce false;
+        # Allow Frigate and psutil to monitor ffmpeg and detector child processes
+        ProtectProc = lib.mkForce "default";
+        ProcSubset = lib.mkForce "all";
+      };
     };
 
     # Pass GCP Service Account credentials to Restic and set systemd ordering after Frigate
