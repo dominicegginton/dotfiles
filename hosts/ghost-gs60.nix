@@ -22,46 +22,6 @@
     msi-gs60
   ];
 
-  # services.onlyoffice-documentserver = {
-  #   enable = true;
-  #   hostname = "office.ghost-gs60.local";
-  #   jwtSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
-  # };
-
-  # services.oauth2-proxy-custom = {
-  #   enable = true;
-  #   upstream = "http://127.0.0.1:${toString config.services.onlyoffice-documentserver.port}";
-  #   oidcIssuerUrl = "https://oidc.tailnet.ts.net"; # Placeholder, replace with actual OIDC issuer
-  #   oidcClientId = "onlyoffice";
-  #   oidcClientSecretFile = config.sops.secrets."oauth2_proxy_oidc_client_secret".path;
-  #   oidcRedirectUrl = "https://office.ghost-gs60.local/oauth2/callback";
-  #   oidcScopes = [
-  #     "openid"
-  #     "profile"
-  #     "email"
-  #   ];
-  #   cookieSecretFile = config.sops.secrets."oauth2_proxy_cookie_secret".path;
-  #   jwtUpstreamEnable = true;
-  #   jwtUpstreamSecretFile = config.sops.secrets."onlyoffice_jwt_secret".path;
-  #   jwtUpstreamHeader = "X-WOPI-Signature-Key";
-  # };
-
-  # services.oauth2-proxy.nginx.virtualHosts."office.ghost-gs60.local" = { };
-  # services.oauth2-proxy.nginx.domain = "office.ghost-gs60.local";
-  # services.tailscale.serve = {
-  #   enable = true;
-  #   services = {
-  #     onlyoffice = {
-  #       endpoints = {
-  #         "tcp:443" = "http://localhost:80";
-  #       };
-  #     };
-  #   };
-  # };
-
-  # services.postgresql.enable = true;
-  # services.rabbitmq.enable = true;
-
   # Disko configuration for storage layout
   disko.devices = {
     disk = {
@@ -177,16 +137,9 @@
     frigate = {
       enable = true;
       settings = {
-        detectors = {
-          tensorrt = {
-            type = "tensorrt";
-            device = 0;
-          };
-        };
         cameras = {
           "Frontdoor" = {
             ffmpeg = {
-              # hwaccel_args = "preset-vaapi";
               inputs = [
                 {
                   path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";
@@ -221,9 +174,11 @@
   };
 
   hardware.nvidia = {
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     modesetting.enable = true;
     open = false;
     nvidiaSettings = false; # Disable X11 GUI settings app on headless server
+    nvidiaPersistenced = true;
   };
 
   # Topology Definition

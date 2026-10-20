@@ -83,6 +83,8 @@ in
     systemd.services.frigate = {
       environment.PYTHONWARNINGS = "ignore:::multiprocessing.resource_tracker";
       serviceConfig = {
+        Restart = lib.mkForce "always";
+        RestartSec = lib.mkDefault "5s";
         # Ensure adequate shared memory size (1GB tmpfs) for high-resolution video frame buffers
         TemporaryFileSystem = lib.mkForce [ "/dev/shm:mode=1777,nosuid,nodev,size=1G" ];
         # TensorRT / CUDA requires executable memory for PTX / kernel JIT compilation
@@ -93,12 +95,10 @@ in
       };
     };
 
-    # Pass GCP Service Account credentials to Restic and set systemd ordering after Frigate
+    # Pass GCP Service Account credentials to Restic
     systemd.services.restic-backups-frigate = {
       environment.GOOGLE_APPLICATION_CREDENTIALS =
         config.sops.secrets."services/frigate/gcs-backup-key".path;
-      after = [ "frigate.service" ];
-      wants = [ "frigate.service" ];
     };
 
     # Impermanence configuration: persist Frigate data directory across ephemeral root reboots
