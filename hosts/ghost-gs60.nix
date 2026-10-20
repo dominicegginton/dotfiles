@@ -173,6 +173,9 @@
     ];
   };
 
+  # Accept NVIDIA driver proprietary license
+  nixpkgs.config.nvidia.acceptLicense = true;
+
   hardware.nvidia = {
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     modesetting.enable = true;

@@ -204,6 +204,7 @@
           config = {
             # Allow specific unfree packages
             allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) unfreePackages;
+            nvidia.acceptLicense = true;
           };
           # Apply system-wide overlays
           overlays = with self.inputs; [
