@@ -48,7 +48,6 @@ nixpkgsLib.nixosSystem {
       # velvet.nixosModules.default
       run0-sudo-shim.nixosModules.default
       ../modules
-      ../topology.nix
       ../hosts/${hostname}.nix
     ]
     ++ modules;

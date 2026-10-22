@@ -141,7 +141,19 @@
             ffmpeg = {
               inputs =
                 let
-                  cameraIp = builtins.head config.nodes.security-camera.interfaces.eth0.addresses;
+                  topologyData = import ../topology.nix {
+                    inherit pkgs;
+                    config = {
+                      lib.topology = {
+                        mkInternet = _: { };
+                        mkRouter = _: x: x;
+                        mkSwitch = _: x: x;
+                        mkDevice = _: x: x;
+                        mkConnection = _: _: { };
+                      };
+                    };
+                  };
+                  cameraIp = builtins.head topologyData.nodes.security-camera.interfaces.eth0.addresses;
                 in
                 [
                   {
