@@ -79,12 +79,12 @@ with config.lib.topology;
         };
         eth1 = {
           network = "ribble";
-          addresses = [ "192.168.1.1" ];
+          addresses = [ "192.168.1.254" ];
           type = "ethernet";
         };
         wlan0 = {
           network = "ribble";
-          addresses = [ "192.168.1.1" ];
+          addresses = [ "192.168.1.254" ];
           type = "wifi";
         };
       };
@@ -122,6 +122,7 @@ with config.lib.topology;
       deviceIcon = ./assets/reolink.svg;
       interfaces.eth0 = {
         network = "ribble";
+        addresses = [ "192.168.1.226" ];
         type = "ethernet";
         physicalConnections = [ (mkConnection "switch" "eth1") ];
       };
@@ -131,6 +132,7 @@ with config.lib.topology;
       deviceIcon = ./assets/google.svg;
       interfaces.wlan0 = {
         network = "ribble";
+        addresses = [ "192.168.1.166" ];
         type = "wifi";
         physicalConnections = [ (mkConnection "router" "wlan0") ];
       };
@@ -149,6 +151,7 @@ with config.lib.topology;
       info = "Sonoff Living Room Lamp Switch";
       interfaces.wlan0 = {
         network = "ribble";
+        addresses = [ "192.168.1.74" ];
         type = "wifi";
         physicalConnections = [ (mkConnection "router" "wlan0") ];
       };
@@ -157,6 +160,7 @@ with config.lib.topology;
       info = "Sonoff Kitchen Lamp Switch";
       interfaces.wlan0 = {
         network = "ribble";
+        addresses = [ "192.168.1.236" ];
         type = "wifi";
         physicalConnections = [ (mkConnection "router" "wlan0") ];
       };
@@ -165,6 +169,7 @@ with config.lib.topology;
       info = "Sonoff Office Lamp Switch";
       interfaces.wlan0 = {
         network = "ribble";
+        addresses = [ "192.168.1.244" ];
         type = "wifi";
         physicalConnections = [ (mkConnection "router" "wlan0") ];
       };
@@ -182,6 +187,7 @@ with config.lib.topology;
       deviceIcon = ./assets/google.svg;
       interfaces.wlan0 = {
         network = "ribble";
+        addresses = [ "192.168.1.214" ];
         type = "wifi";
         physicalConnections = [ (mkConnection "router" "wlan0") ];
       };

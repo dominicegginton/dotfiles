@@ -139,16 +139,20 @@
         cameras = {
           "Frontdoor" = {
             ffmpeg = {
-              inputs = [
-                {
-                  path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_main";
-                  roles = [ "record" ];
-                }
-                {
-                  path = "rtsp://frigate:frigate123@192.168.1.226:554/Preview_01_sub";
-                  roles = [ "detect" ];
-                }
-              ];
+              inputs =
+                let
+                  cameraIp = builtins.head config.nodes.security-camera.interfaces.eth0.addresses;
+                in
+                [
+                  {
+                    path = "rtsp://frigate:frigate123@${cameraIp}:554/Preview_01_main";
+                    roles = [ "record" ];
+                  }
+                  {
+                    path = "rtsp://frigate:frigate123@${cameraIp}:554/Preview_01_sub";
+                    roles = [ "detect" ];
+                  }
+                ];
             };
           };
         };
