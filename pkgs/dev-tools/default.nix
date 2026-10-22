@@ -6,6 +6,7 @@ with pkgs;
 pkgs.lib.recurseIntoAttrs {
   inherit
     age
+    age-plugin-pq
     burn-infector
     deploy-host
     google-cloud-sdk

@@ -96,6 +96,7 @@ in
         "/etc/ssh/ssh_host_rsa_key.pub"
       ];
       directories = [
+        "/var/lib/sops-nix"
         "/var/log"
         "/var/lib/nixos"
         "/etc/ssl"

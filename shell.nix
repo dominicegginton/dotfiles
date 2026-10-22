@@ -9,6 +9,7 @@
   secretspec,
   sops,
   age,
+  age-plugin-pq,
   ssh-to-age,
   mkpasswd,
   nixos-anywhere,
@@ -76,6 +77,7 @@ mkShell rec {
     secretspec
     sops
     age
+    age-plugin-pq
     ssh-to-age
     mkpasswd
     nixos-anywhere

@@ -25,8 +25,10 @@ in
     defaultSopsFile = ../secrets/global.yaml;
     defaultSopsFormat = "yaml";
 
-    # Use the host's SSH key for decryption
-    # sops-nix will look for this key on the system
+    # Path to host's dedicated Age key on persistent storage
+    age.keyFile = "/persist/var/lib/sops-nix/key.txt";
+
+    # Fallback to host's SSH key during transition
     age.sshKeyPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 
     secrets = lib.mkIf (!config.wsl.enable && hostname != "infector") (
