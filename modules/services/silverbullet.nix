@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  tailnet,
-  ...
+{ config
+, lib
+, tailnet
+, ...
 }:
 
 let
@@ -11,6 +10,12 @@ in
 
 {
   config = lib.mkIf cfg.enable {
+    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+      "services/silverbullet/gcs-backup-key" = {
+        sopsFile = lib.sopsFileForHost config;
+      };
+    };
+
     # Ensure Tailscale is enabled, as Silverbullet relies on tsnsrv for secure access
     assertions = [
       {

@@ -1,9 +1,8 @@
-{
-  self,
-  lib,
-  config,
-  platform,
-  ...
+{ self
+, lib
+, config
+, platform
+, ...
 }:
 
 {

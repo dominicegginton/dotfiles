@@ -1,12 +1,12 @@
-{
-  lib,
-  writeShellScriptBin,
-  nix,
-  caligula,
-  gum,
-  coreutils,
-  findutils,
-  gh,
+{ lib
+, writeShellScriptBin
+, nix
+, caligula
+, gum
+, coreutils
+, findutils
+, gh
+,
 }:
 
 with lib;

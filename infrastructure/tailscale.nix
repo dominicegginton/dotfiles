@@ -116,25 +116,29 @@ in
 
     # Declarative device authorizations
     tailscale_device_authorization = lib.listToAttrs (
-      map (dev: {
-        inherit (dev) name;
-        value = {
-          device_id = "\${data.tailscale_device.${dev.name}.node_id}";
-          authorized = true;
-        };
-      }) devices
+      map
+        (dev: {
+          inherit (dev) name;
+          value = {
+            device_id = "\${data.tailscale_device.${dev.name}.node_id}";
+            authorized = true;
+          };
+        })
+        devices
     );
 
     # Declarative device tags
     tailscale_device_tags = lib.listToAttrs (
-      map (dev: {
-        inherit (dev) name;
-        value = {
-          inherit (dev) tags;
-          device_id = "\${data.tailscale_device.${dev.name}.node_id}";
-          depends_on = [ "tailscale_acl.acl" ];
-        };
-      }) devices
+      map
+        (dev: {
+          inherit (dev) name;
+          value = {
+            inherit (dev) tags;
+            device_id = "\${data.tailscale_device.${dev.name}.node_id}";
+            depends_on = [ "tailscale_acl.acl" ];
+          };
+        })
+        devices
     );
   };
 
@@ -143,15 +147,17 @@ in
     tailscale_users.all-users = { };
 
     tailscale_device = lib.listToAttrs (
-      map (dev: {
-        inherit (dev) name;
-        value = {
-          name = "${dev.name}.${tailnet}";
-        }
-        // lib.optionalAttrs (dev ? waitFor) {
-          wait_for = dev.waitFor;
-        };
-      }) devices
+      map
+        (dev: {
+          inherit (dev) name;
+          value = {
+            name = "${dev.name}.${tailnet}";
+          }
+          // lib.optionalAttrs (dev ? waitFor) {
+            wait_for = dev.waitFor;
+          };
+        })
+        devices
     );
   };
 }

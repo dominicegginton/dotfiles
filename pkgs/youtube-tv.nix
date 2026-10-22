@@ -1,12 +1,12 @@
-{
-  fetchurl,
-  google-chrome,
-  lib,
-  makeDesktopItem,
-  runtimeShell,
-  symlinkJoin,
-  writeScriptBin,
-  commandLineArgs ? [ ],
+{ fetchurl
+, google-chrome
+, lib
+, makeDesktopItem
+, runtimeShell
+, symlinkJoin
+, writeScriptBin
+, commandLineArgs ? [ ]
+,
 }:
 
 let

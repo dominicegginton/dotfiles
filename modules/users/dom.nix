@@ -1,9 +1,8 @@
-{
-  self,
-  config,
-  lib,
-  hostname,
-  ...
+{ self
+, config
+, lib
+, hostname
+, ...
 }:
 
 with lib;
@@ -21,14 +20,20 @@ in
   };
 
   config = mkIf config.users.dom.enable {
+    sops.secrets."users/${username}/password" = lib.mkIf (!config.wsl.enable) {
+      neededForUsers = true;
+    };
+
     # Primary user configuration
     users.users.${username} = {
       enable = lib.mkDefault true;
       isNormalUser = lib.mkDefault true;
       description = self.outputs.lib.maintainers.dominicegginton.name;
-      hashedPasswordFile = lib.mkIf (
-        !config.wsl.enable
-      ) config.sops.secrets."users/${username}/password".path;
+      hashedPasswordFile = lib.mkIf
+        (
+          !config.wsl.enable
+        )
+        config.sops.secrets."users/${username}/password".path;
       homeMode = "0755";
       # Group memberships
       extraGroups = [

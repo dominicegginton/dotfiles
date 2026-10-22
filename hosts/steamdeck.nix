@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  platform,
-  ...
+{ config
+, lib
+, platform
+, ...
 }:
 
 {

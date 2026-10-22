@@ -1,8 +1,8 @@
-{
-  writeShellApplication,
-  findutils,
-  gum,
-  coreutils,
+{ writeShellApplication
+, findutils
+, gum
+, coreutils
+,
 }:
 
 writeShellApplication {

@@ -1,8 +1,7 @@
-{
-  modulesPath,
-  lib,
-  pkgs,
-  ...
+{ modulesPath
+, lib
+, pkgs
+, ...
 }:
 
 rec {

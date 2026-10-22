@@ -1,11 +1,11 @@
-{
-  lib,
-  stdenv,
-  fetchurl,
-  makeWrapper,
-  esbuild,
-  zlib,
-  autoPatchelfHook ? null,
+{ lib
+, stdenv
+, fetchurl
+, makeWrapper
+, esbuild
+, zlib
+, autoPatchelfHook ? null
+,
 }:
 
 let

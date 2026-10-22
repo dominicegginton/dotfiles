@@ -95,13 +95,12 @@
 
   # Flake outputs
   outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      nix-github-actions,
-      git-hooks,
-      ...
+    { self
+    , nixpkgs
+    , home-manager
+    , nix-github-actions
+    , git-hooks
+    , ...
     }:
 
     let
@@ -226,7 +225,7 @@
 
     {
       # Auto-formatter for all nix files in the repository
-      formatter = forAllSystems (system: nixpkgsFor.${system}.nixfmt-tree);
+      formatter = forAllSystems (system: nixpkgsFor.${system}.nixpkgs-fmt);
 
       # Custom library functions
       lib = import ./lib.nix { inherit self; };
@@ -264,7 +263,7 @@
             hooks = {
               deadnix.enable = true;
               statix.enable = true;
-              nixfmt.enable = true;
+              nixpkgs-fmt.enable = true;
               prettier = {
                 enable = true;
                 settings = {

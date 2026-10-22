@@ -5,26 +5,21 @@
 
 { self, tailnet }:
 
-{
-  hostname,
-  # Default to x86_64-linux
-  platform ? "x86_64-linux",
-  # Extra modules to include
-  modules ? [ ],
-  ...
+{ hostname
+, # Default to x86_64-linux
+  platform ? "x86_64-linux"
+, # Extra modules to include
+  modules ? [ ]
+, ...
 }:
 
 let
   nixpkgsLib = self.inputs.nixpkgs.lib;
   lib = nixpkgsLib.extend (
-    _: prev:
-    prev
-    // {
-      inherit (self.outputs.lib) mkHardenedSystemdServiceConfig mkSingletonAssertion;
-    }
+    _: prev: prev // (builtins.removeAttrs self.outputs.lib [ "nixosSystem" ])
   );
 in
-lib.nixosSystem {
+nixpkgsLib.nixosSystem {
   pkgs = self.outputs.legacyPackages.${platform};
 
   specialArgs = {

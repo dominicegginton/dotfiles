@@ -1,13 +1,13 @@
-{
-  lib,
-  writeShellScriptBin,
-  nix,
-  nixos-anywhere,
-  gnupg,
-  openssh,
-  ssh-to-age,
-  gum,
-  coreutils,
+{ lib
+, writeShellScriptBin
+, nix
+, nixos-anywhere
+, gnupg
+, openssh
+, ssh-to-age
+, gum
+, coreutils
+,
 }:
 
 with lib;

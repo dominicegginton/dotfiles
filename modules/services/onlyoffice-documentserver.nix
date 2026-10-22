@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 with lib;
@@ -54,6 +53,12 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+      "onlyoffice_jwt_secret" = {
+        sopsFile = lib.sopsFileForHost config;
+      };
+    };
+
     # Ensure required services are enabled
     services = {
       onlyoffice = {

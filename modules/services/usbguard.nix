@@ -1,7 +1,6 @@
-{
-  lib,
-  config,
-  ...
+{ lib
+, config
+, ...
 }:
 
 let
@@ -11,6 +10,13 @@ in
 
 {
   config = lib.mkIf notWSL {
+    sops.secrets."services/usbguard/rules" = {
+      owner = "root";
+      group = "root";
+      mode = "0600";
+      path = "/etc/usbguard/rules.conf";
+    };
+
     services.usbguard = {
       enable = lib.mkDefault true;
       presentControllerPolicy = lib.mkDefault "allow";

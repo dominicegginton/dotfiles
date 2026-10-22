@@ -1,10 +1,9 @@
-{
-  config,
-  lib,
-  pkgs,
-  hostname,
-  tailnet,
-  ...
+{ config
+, lib
+, pkgs
+, hostname
+, tailnet
+, ...
 }:
 
 with config.lib.topology;
@@ -17,6 +16,12 @@ in
 {
   # Ensure tailscale SSL directory exists
   systemd.tmpfiles.rules = [ "d /etc/ssl/tailscale 0755 root root -" ];
+
+  sops.secrets."services/tailscale/auth-key" =
+    lib.mkIf (!config.wsl.enable && hostname != "infector")
+      {
+        key = "services/tsnsrv/auth-key";
+      };
 
   # Tailscale service configuration
   services.tailscale = {
@@ -43,9 +48,11 @@ in
   };
 
   # tsnsrv services use systemd PrivateUsers / DynamicUser and require user namespaces
-  security.unprivilegedUserNamespaces.enable = lib.mkIf (
-    config.services.tsnsrv.enable && config.services.tsnsrv.services != { }
-  ) true;
+  security.unprivilegedUserNamespaces.enable = lib.mkIf
+    (
+      config.services.tsnsrv.enable && config.services.tsnsrv.services != { }
+    )
+    true;
 
   # Persistent storage for Tailscale and tsnsrv state
   environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [

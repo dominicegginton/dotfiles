@@ -1,10 +1,9 @@
-{
-  self,
-  config,
-  options,
-  lib,
-  hostname,
-  ...
+{ self
+, config
+, options
+, lib
+, hostname
+, ...
 }:
 
 {

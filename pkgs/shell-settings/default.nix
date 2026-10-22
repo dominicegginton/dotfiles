@@ -5,17 +5,17 @@
 # - Audio: Volume and device selection per input/output
 # - Display: Resolution, scaling, refresh rate, brightness
 
-{
-  lib,
-  makeDesktopItem,
-  rustPlatform,
-  rustfmt,
-  pkg-config,
-  gcc,
-  glib,
-  gtk4,
-  libadwaita,
-  cairo,
+{ lib
+, makeDesktopItem
+, rustPlatform
+, rustfmt
+, pkg-config
+, gcc
+, glib
+, gtk4
+, libadwaita
+, cairo
+,
 }:
 
 let

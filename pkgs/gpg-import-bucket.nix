@@ -1,12 +1,12 @@
-{
-  lib,
-  writeShellScriptBin,
-  google-cloud-sdk,
-  gnupg,
-  gum,
-  coreutils,
-  gnugrep,
-  gawk,
+{ lib
+, writeShellScriptBin
+, google-cloud-sdk
+, gnupg
+, gum
+, coreutils
+, gnugrep
+, gawk
+,
 }:
 
 with lib;

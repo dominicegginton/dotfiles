@@ -1,11 +1,10 @@
-{
-  self,
-  config,
-  lib,
-  pkgs,
-  hostname,
-  platform,
-  ...
+{ self
+, config
+, lib
+, pkgs
+, hostname
+, platform
+, ...
 }:
 
 {

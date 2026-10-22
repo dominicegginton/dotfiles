@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 let
@@ -127,10 +126,16 @@ let
 
   uuid =
     ext:
-    lib.attrByPath [ "extensionUuid" ] (lib.attrByPath [ "uuid" ] (lib.attrByPath [
-      "passthru"
-      "extensionUuid"
-    ] null ext) ext) ext;
+    lib.attrByPath [ "extensionUuid" ]
+      (lib.attrByPath [ "uuid" ]
+        (lib.attrByPath [
+          "passthru"
+          "extensionUuid"
+        ]
+          null
+          ext)
+        ext)
+      ext;
 
   extensionUuid = uuid;
 

@@ -1,13 +1,12 @@
 # mk-gnome-background is a helper function to create a GNOME background package
 # from a source image. It automatically generates a darkened version of the image
 # if one is not provided and creates the necessary GNOME background XML properties.
-{
-  lib,
-  stdenv,
-  imagemagick,
-  writeText,
-  runCommand,
-  ...
+{ lib
+, stdenv
+, imagemagick
+, writeText
+, runCommand
+, ...
 }:
 
 let
@@ -20,18 +19,18 @@ let
 in
 {
   # The source image for the background
-  src,
-  # The dark version of the source image, defaults to a darkened version of src
-  srcDark ? (darken src),
-  # The name of the background package
-  name ? src.name,
-  # Primary and secondary colors for the background properties
-  primaryColor ? "#333555",
-  secondaryColor ? "#555577",
-  # Metadata descriptions and licenses
-  description ? src.meta.description,
-  license ? src.meta.license,
-  ...
+  src
+, # The dark version of the source image, defaults to a darkened version of src
+  srcDark ? (darken src)
+, # The name of the background package
+  name ? src.name
+, # Primary and secondary colors for the background properties
+  primaryColor ? "#333555"
+, secondaryColor ? "#555577"
+, # Metadata descriptions and licenses
+  description ? src.meta.description
+, license ? src.meta.license
+, ...
 }:
 
 let

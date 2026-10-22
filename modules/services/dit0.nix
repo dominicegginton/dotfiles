@@ -1,8 +1,7 @@
-{
-  lib,
-  config,
-  tailnet,
-  ...
+{ lib
+, config
+, tailnet
+, ...
 }:
 
 let

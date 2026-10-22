@@ -1,9 +1,8 @@
-{
-  lib,
-  runCommand,
-  imagemagick,
-  mkGnomeBackground,
-  ...
+{ lib
+, runCommand
+, imagemagick
+, mkGnomeBackground
+, ...
 }:
 
 let

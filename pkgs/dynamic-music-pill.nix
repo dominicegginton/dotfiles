@@ -1,10 +1,10 @@
-{
-  stdenv,
-  fetchFromGitHub,
-  lib,
-  nixosTests,
-  buildPackages,
-  unzip,
+{ stdenv
+, fetchFromGitHub
+, lib
+, nixosTests
+, buildPackages
+, unzip
+,
 }:
 
 stdenv.mkDerivation rec {

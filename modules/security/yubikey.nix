@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 let
@@ -39,6 +38,13 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets."users/dom/u2f_keys" = lib.mkIf (!config.wsl.enable) {
+      owner = "dom";
+      group = "users";
+      mode = "0600";
+      path = "/home/dom/.config/Yubico/u2f_keys";
+    };
+
     services = {
       # Enable pcscd daemon for smartcard mode (required for GPG/PIV/etc.)
       pcscd.enable = lib.mkDefault true;

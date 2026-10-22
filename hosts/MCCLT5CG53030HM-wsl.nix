@@ -1,8 +1,7 @@
-{
-  lib,
-  platform,
-  pkgs,
-  ...
+{ lib
+, platform
+, pkgs
+, ...
 }:
 
 {

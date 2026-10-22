@@ -1,9 +1,8 @@
-{
-  config,
-  lib,
-  pkgs,
-  hostname,
-  ...
+{ config
+, lib
+, pkgs
+, hostname
+, ...
 }:
 
 let
@@ -65,6 +64,15 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+      "services/github/runner-token" = {
+        sopsFile = lib.sopsFileForHost config;
+        mode = "0400";
+        owner = "root";
+        group = "root";
+      };
+    };
+
     services.github-runners.${cfg.runnerName} = {
       enable = true;
       url = lib.mkDefault cfg.url;

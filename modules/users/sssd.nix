@@ -1,9 +1,8 @@
-{
-  config,
-  lib,
-  pkgs,
-  tailnet,
-  ...
+{ config
+, lib
+, pkgs
+, tailnet
+, ...
 }:
 
 let
@@ -26,6 +25,15 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+      "services/sssd/client-secret" = {
+        sopsFile = lib.sopsFileForHost config;
+        owner = "root";
+        group = "root";
+        mode = "0440";
+      };
+    };
+
     # Disable legacy LDAP if SSSD is enabled
     users.ldap.enable = lib.mkForce false;
 

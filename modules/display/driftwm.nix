@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
+{ config
+, lib
+, pkgs
+, ...
 }:
 
 let
@@ -33,8 +32,7 @@ let
       "D" = 13;
       "E" = 14;
       "F" = 15;
-    }
-    .${c};
+    }.${c};
 
   hexToFloat =
     h:

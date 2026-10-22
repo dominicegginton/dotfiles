@@ -30,17 +30,18 @@ rec {
       withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
 
       # Custom packages available in all systems
-      age-plugin-pq = prev.age-plugin-pq or (final.buildGoModule {
-        pname = "age-plugin-pq";
-        inherit (final.age) version src vendorHash;
-        subPackages = [ "extra/age-plugin-pq" ];
-        meta = with prev.lib; {
-          description = "Post-quantum hybrid ML-KEM-768 + X25519 plugin for age";
-          homepage = "https://filippo.io/age";
-          license = licenses.bsd3;
-          mainProgram = "age-plugin-pq";
-        };
-      });
+      age-plugin-pq =
+        prev.age-plugin-pq or (final.buildGoModule {
+          pname = "age-plugin-pq";
+          inherit (final.age) version src vendorHash;
+          subPackages = [ "extra/age-plugin-pq" ];
+          meta = with prev.lib; {
+            description = "Post-quantum hybrid ML-KEM-768 + X25519 plugin for age";
+            homepage = "https://filippo.io/age";
+            license = licenses.bsd3;
+            mainProgram = "age-plugin-pq";
+          };
+        });
       background = final.callPackage ./pkgs/background.nix { };
       burn-infector = final.callPackage ./pkgs/burn-infector.nix { };
       deploy-host = final.callPackage ./pkgs/deploy-host.nix { };
@@ -82,7 +83,7 @@ rec {
 
       # Merge custom library with nixpkgs lib
       # This allows you to extend or override lib functions globally
-      lib = prev.lib.recursiveUpdate prev.lib self.outputs.lib;
+      lib = prev.lib.recursiveUpdate prev.lib (builtins.removeAttrs self.outputs.lib [ "nixosSystem" ]);
 
     };
 

@@ -29,9 +29,11 @@ rec {
   mkSingletonAssertion =
     name: enablePath:
     let
-      enabledHosts = lib.filter (
-        host: lib.attrByPath enablePath false self.outputs.nixosConfigurations.${host}.config
-      ) hostnames;
+      enabledHosts = lib.filter
+        (
+          host: lib.attrByPath enablePath false self.outputs.nixosConfigurations.${host}.config
+        )
+        hostnames;
     in
     {
       assertion = lib.length enabledHosts <= 1;
@@ -50,6 +52,20 @@ rec {
   # Helper to define a NixOS system with standard defaults
   # Used in flake.nix for all host definitions
   nixosSystem = import ./lib/nixos.nix { inherit self tailnet; };
+
+  # Helper to resolve host-specific or shared sops secret file path for a NixOS config
+  sopsFileForHost =
+    config:
+    let
+      hostSopsFile = ./secrets/hosts + "/${config.networking.hostName}.yaml";
+      sharedSopsFile = ./secrets/secrets.yaml;
+    in
+    if builtins.pathExists hostSopsFile then
+      hostSopsFile
+    else if builtins.pathExists sharedSopsFile then
+      sharedSopsFile
+    else
+      null;
 
   inherit (import ./lib/systemd.nix { inherit lib; }) mkHardenedSystemdServiceConfig;
 }

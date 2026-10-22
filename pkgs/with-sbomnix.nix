@@ -1,6 +1,6 @@
-{
-  writeShellScriptBin,
-  sbomnix,
+{ writeShellScriptBin
+, sbomnix
+,
 }:
 
 # This function wraps a given Nix package with additional passthru utilities

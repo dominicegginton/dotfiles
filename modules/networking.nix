@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  hostname,
-  ...
+{ config
+, lib
+, hostname
+, ...
 }:
 
 with config.lib.topology;
@@ -17,9 +16,11 @@ with config.lib.topology;
       enable = lib.mkDefault true;
       # Trust all traffic from the Tailscale interface
       trustedInterfaces = lib.mkDefault (
-        lib.optional (
-          config.services.tailscale.interfaceName != "userspace-networking"
-        ) config.services.tailscale.interfaceName
+        lib.optional
+          (
+            config.services.tailscale.interfaceName != "userspace-networking"
+          )
+          config.services.tailscale.interfaceName
       );
       # Loose reverse path filtering for Tailscale compatibility
       checkReversePath = lib.mkDefault "loose";

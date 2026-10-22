@@ -1,9 +1,8 @@
-{
-  lib,
-  stdenv,
-  background,
-  extract-theme,
-  ...
+{ lib
+, stdenv
+, background
+, extract-theme
+, ...
 }:
 
 stdenv.mkDerivation rec {

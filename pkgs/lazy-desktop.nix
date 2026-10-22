@@ -1,8 +1,8 @@
-{
-  lib,
-  stdenv,
-  nix-index,
-  desktop-file-utils,
+{ lib
+, stdenv
+, nix-index
+, desktop-file-utils
+,
 }:
 
 let

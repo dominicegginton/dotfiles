@@ -1,7 +1,6 @@
-{
-  config,
-  lib,
-  ...
+{ config
+, lib
+, ...
 }:
 
 with lib;
@@ -80,6 +79,15 @@ in
   };
 
   config = mkIf cfg.enable {
+    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+      "oauth2_proxy_oidc_client_secret" = {
+        sopsFile = lib.sopsFileForHost config;
+      };
+      "oauth2_proxy_cookie_secret" = {
+        sopsFile = lib.sopsFileForHost config;
+      };
+    };
+
     services.oauth2-proxy = {
       enable = true;
       httpAddress = "127.0.0.1:${toString cfg.port}";
@@ -93,16 +101,17 @@ in
       cookie.secretFile = cfg.cookieSecretFile;
 
       extraConfig =
-        lib.mkIf cfg.jwtUpstreamEnable {
-          "--set-xauthrequest" = "true";
-          "--upstream-header" = "${cfg.jwtUpstreamHeader}:${
+        lib.mkIf cfg.jwtUpstreamEnable
+          {
+            "--set-xauthrequest" = "true";
+            "--upstream-header" = "${cfg.jwtUpstreamHeader}:${
             config.sops.secrets."${lib.last (lib.splitString "/" cfg.jwtUpstreamSecretFile)}".path
           }";
-          "--jwt-session-header" = "${cfg.jwtUpstreamHeader}";
-          "--jwt-session-cookie-name" = "_oauth2_proxy_jwt";
-          "--jwt-session-secret" =
-            config.sops.secrets."${lib.last (lib.splitString "/" cfg.jwtUpstreamSecretFile)}".path;
-        }
+            "--jwt-session-header" = "${cfg.jwtUpstreamHeader}";
+            "--jwt-session-cookie-name" = "_oauth2_proxy_jwt";
+            "--jwt-session-secret" =
+              config.sops.secrets."${lib.last (lib.splitString "/" cfg.jwtUpstreamSecretFile)}".path;
+          }
         // {
           # Add any other generic extra config here
         };

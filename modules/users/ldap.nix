@@ -1,9 +1,8 @@
-{
-  config,
-  lib,
-  pkgs,
-  tailnet,
-  ...
+{ config
+, lib
+, pkgs
+, tailnet
+, ...
 }:
 
 {

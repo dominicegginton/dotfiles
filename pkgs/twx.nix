@@ -1,7 +1,7 @@
-{
-  lib,
-  writeShellScriptBin,
-  tmux,
+{ lib
+, writeShellScriptBin
+, tmux
+,
 }:
 
 # Utility script to kill all tmux sessions

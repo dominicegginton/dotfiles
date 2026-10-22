@@ -1,8 +1,8 @@
-{
-  lib,
-  stdenv,
-  fetchFromGitHub,
-  plymouth,
+{ lib
+, stdenv
+, fetchFromGitHub
+, plymouth
+,
 }:
 
 stdenv.mkDerivation rec {

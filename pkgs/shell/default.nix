@@ -4,17 +4,17 @@
 # - Right-aligned widgets: Battery, network, volume
 # - Quick settings: System controls, toggles, and sliders
 
-{
-  lib,
-  rustPlatform,
-  rustfmt,
-  pkg-config,
-  gcc,
-  glib,
-  gtk4,
-  gtk4-layer-shell,
-  libadwaita,
-  cairo,
+{ lib
+, rustPlatform
+, rustfmt
+, pkg-config
+, gcc
+, glib
+, gtk4
+, gtk4-layer-shell
+, libadwaita
+, cairo
+,
 }:
 
 rustPlatform.buildRustPackage rec {

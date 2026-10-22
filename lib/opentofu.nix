@@ -20,10 +20,10 @@ rec {
   # Wrapper package containing OpenTofu preconfigured with provider plugins.
   # Can be parameterized with custom providers, paths, and validation options.
   opentofuWithPlugins =
-    {
-      providers ? [ ],
-      paths ? [ ],
-      validate ? false,
+    { providers ? [ ]
+    , paths ? [ ]
+    , validate ? false
+    ,
     }:
     mkOpenTofuDerivation {
       name = "personal-infra";
@@ -36,10 +36,10 @@ rec {
 
   # Create a versions.tf.json file and lock file for given opentofu package and list of provider names.
   writeOpenTofuVersions =
-    {
-      package ? opentofu,
-      providers ? [ ],
-      writeRequiredProviders ? false,
+    { package ? opentofu
+    , providers ? [ ]
+    , writeRequiredProviders ? false
+    ,
     }:
 
     let
@@ -67,20 +67,22 @@ rec {
         }
         // lib.optionalAttrs (writeRequiredProviders && providers != [ ]) {
           required_providers = lib.listToAttrs (
-            map (
-              name:
-              let
-                provider = package.plugins.${name};
-                localName = lib.last (lib.splitString "/" provider.provider-source-address);
-              in
-              {
-                name = localName;
-                value = {
-                  version = lib.getVersion provider;
-                  source = provider.provider-source-address;
-                };
-              }
-            ) providers
+            map
+              (
+                name:
+                let
+                  provider = package.plugins.${name};
+                  localName = lib.last (lib.splitString "/" provider.provider-source-address);
+                in
+                {
+                  name = localName;
+                  value = {
+                    version = lib.getVersion provider;
+                    source = provider.provider-source-address;
+                  };
+                }
+              )
+              providers
           );
         };
       };
@@ -119,14 +121,13 @@ rec {
 
   # Create a derivation of an opentofu root module directory for an opentofu package and list of provider names.
   mkOpenTofuDerivation =
-    {
-      name,
-      package ? opentofu,
-      providers ? [ ],
-      paths ? [ ],
-      validate ? true,
-      preCommand ? "",
-      ...
+    { name
+    , package ? opentofu
+    , providers ? [ ]
+    , paths ? [ ]
+    , validate ? true
+    , preCommand ? ""
+    , ...
     }:
 
     let

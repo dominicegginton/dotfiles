@@ -1,24 +1,23 @@
-{
-  lib,
-  pkgs,
-  mkShell,
-  terranix,
-  gitHooksCheck ? null,
-  nix,
-  google-cloud-sdk,
-  secretspec,
-  sops,
-  age,
-  age-plugin-pq,
-  ssh-to-age,
-  mkpasswd,
-  nixos-anywhere,
-  gnupg,
-  openssh,
-  deploy-host,
-  burn-infector,
-  gpg-import-bucket,
-  ...
+{ lib
+, pkgs
+, mkShell
+, terranix
+, gitHooksCheck ? null
+, nix
+, google-cloud-sdk
+, secretspec
+, sops
+, age
+, age-plugin-pq
+, ssh-to-age
+, mkpasswd
+, nixos-anywhere
+, gnupg
+, openssh
+, deploy-host
+, burn-infector
+, gpg-import-bucket
+, ...
 }:
 
 with builtins;

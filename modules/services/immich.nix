@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  tailnet,
-  ...
+{ config
+, lib
+, tailnet
+, ...
 }:
 
 let
@@ -11,6 +10,15 @@ in
 
 {
   config = lib.mkIf cfg.enable {
+    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+      "services/immich/oauth-secret" = {
+        sopsFile = lib.sopsFileForHost config;
+      };
+      "services/immich/gcs-backup-key" = {
+        sopsFile = lib.sopsFileForHost config;
+      };
+    };
+
     assertions = [
       (lib.mkSingletonAssertion "immich" [
         "services"

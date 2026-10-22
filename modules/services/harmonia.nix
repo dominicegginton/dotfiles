@@ -1,8 +1,7 @@
-{
-  config,
-  lib,
-  tailnet,
-  ...
+{ config
+, lib
+, tailnet
+, ...
 }:
 
 let
@@ -15,6 +14,12 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+      "services/harmonia/sign-key" = {
+        sopsFile = lib.sopsFileForHost config;
+      };
+    };
+
     assertions = [
       (lib.mkSingletonAssertion "harmonia-custom" [
         "services"
