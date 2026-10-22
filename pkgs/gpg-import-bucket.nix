@@ -122,7 +122,7 @@ writeShellScriptBin "gpg-import-bucket" ''
     else
       ${getExe gum} log --level info "2. Querying cloud storage for whitelisted GPG key objects..."
       RAW_FILES="$(${getExe google-cloud-sdk} storage ls "''${BUCKET}/**" 2>/dev/null || true)"
-      
+
       # Deep whitelisting: restrict strictly to valid OpenPGP key extensions (.asc, .gpg, .pgp, .key)
       WHITELISTED_KEYS="$(echo "''${RAW_FILES}" | ${getExe gnugrep} -E '^gs://.+\.(asc|gpg|pgp|key)$' | ${getExe' coreutils "sort"} -u || true)"
 

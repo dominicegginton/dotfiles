@@ -261,9 +261,13 @@
           git-hooks-check = git-hooks.lib.${system}.run {
             src = ./.;
             hooks = {
+              check-merge-conflicts.enable = true;
+              end-of-file-fixer.enable = true;
+              trim-trailing-whitespace.enable = true;
               deadnix.enable = true;
               statix.enable = true;
               nixpkgs-fmt.enable = true;
+              actionlint.enable = true;
               prettier = {
                 enable = true;
                 settings = {

@@ -23,11 +23,13 @@ To add a new host to `.sops.yaml`:
 
 1. **Generate the Post-Quantum Host Key**:
    Generate a new ML-KEM-768 + X25519 key pair for the new host:
+
    ```bash
    age-keygen -pq -o /tmp/my-new-host.key
    ```
 
 2. **Get the Public Recipient**:
+
    ```bash
    age-keygen -y /tmp/my-new-host.key
    # Output: age1pq1...
@@ -53,6 +55,7 @@ To add a new host to `.sops.yaml`:
 
 4. **Update Secret Files**:
    Re-encrypt the secret files so the new host can decrypt them:
+
    ```bash
    sops updatekeys secrets/global.yaml
    ```
