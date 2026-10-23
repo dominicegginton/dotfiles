@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
-      - run: nix fmt -- --ci
+      - run: nix fmt -- --check
 
   topology:
     runs-on: ubuntu-latest
