@@ -28,12 +28,12 @@ jobs:
       - uses: ./.github/actions/install-nix
       - uses: determinatesystems/flake-checker-action@v14
 
-  formatter:
+  pre-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: ./.github/actions/install-nix
-      - run: nix fmt -- --check
+      - run: nix develop -c pre-commit run --all-files
 
   topology:
     runs-on: ubuntu-latest
