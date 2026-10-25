@@ -10,7 +10,7 @@ in
 
 {
   config = lib.mkIf notWSL {
-    sops.secrets."services/usbguard/rules" = {
+    sops.secrets."services/usbguard/rules" = lib.mkIf config.services.usbguard.enable {
       owner = "root";
       group = "root";
       mode = "0600";

@@ -31,7 +31,10 @@
     tailscale.enable = lib.mkForce false;
     tsnsrv.enable = lib.mkForce false;
     usbguard.enable = lib.mkForce false;
+    gcp-logging.enable = lib.mkForce false;
   };
+
+  security.yubikey.enable = lib.mkForce false;
 
   # Authorize maintainer SSH keys for root on the live ISO installer
   users.users.root.openssh.authorizedKeys.keys = self.outputs.lib.maintainers.dominicegginton.sshKeys;
