@@ -92,6 +92,7 @@ rec {
     ./services/nginx.nix
     ./services/nix-builder.nix
     ./services/pipewire.nix
+    ./services/restic.nix
     ./services/silverbullet.nix
     ./services/ssh.nix
     ./services/tailscale.nix

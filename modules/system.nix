@@ -6,6 +6,31 @@
 }:
 
 {
+  systemd = lib.mkIf (!config.wsl.enable) {
+    timers.security-reboot = {
+      description = "Weekly security reboot";
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = "Sun *-*-* 04:00:00";
+        Persistent = true;
+      };
+    };
+
+    services.security-reboot = {
+      description = "Reboot after backup jobs have finished";
+      after = map (name: "restic-backups-${name}.service") (
+        builtins.attrNames config.services.restic.backups
+      );
+      unitConfig.StartLimitIntervalSec = 0;
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.systemd}/bin/systemctl --check-inhibitors=yes reboot";
+        Restart = "on-failure";
+        RestartSec = "60s";
+      };
+    };
+  };
+
   system = {
     # NixOS state version (enforced for system compatibility)
     stateVersion = lib.mkForce config.system.nixos.release;
