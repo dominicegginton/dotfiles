@@ -39,11 +39,22 @@ in
           record = {
             enabled = true;
             retain = {
-              days = 30;
-              mode = "all";
+              days = lib.mkDefault 7; # 7 days continuous 24/7 video retention
+              mode = lib.mkDefault "all";
+            };
+            events = {
+              retain = {
+                default = lib.mkDefault 30; # 30 days for motion/object detection events
+                mode = lib.mkDefault "active_objects";
+              };
             };
           };
-          snapshots.enabled = true;
+          snapshots = {
+            enabled = true;
+            retain = {
+              default = lib.mkDefault 14; # 14 days for snapshots
+            };
+          };
           detect = {
             enabled = true;
             fps = 5;
