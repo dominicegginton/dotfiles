@@ -103,7 +103,7 @@
     };
 
     velvet = {
-      url = "git+https://github.com/dominicegginton/velvet.git";
+      url = "github:dominicegginton/velvet";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

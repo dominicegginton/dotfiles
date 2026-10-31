@@ -137,7 +137,13 @@
     jellyfin.enable = true;
 
     # Enable Transmission BitTorrent client
-    transmission.enable = true;
+    transmission = {
+      enable = true;
+      settings = {
+        download-dir = "/mnt/data/transmission/Downloads";
+        incomplete-dir = "/mnt/data/transmission/.incomplete";
+      };
+    };
 
     # Enable Frigate NVR & OD Services
     frigate = {

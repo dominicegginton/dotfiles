@@ -22,20 +22,19 @@ in
     security.unprivilegedUserNamespaces.enable = true;
 
     services.transmission.settings = {
-      download-dir = "/mnt/data/transmission/Downloads";
-      incomplete-dir = "/mnt/data/transmission/.incomplete";
-      incomplete-dir-enabled = true;
-      rpc-bind-address = "127.0.0.1";
-      rpc-port = 9091;
-      rpc-whitelist-enabled = false;
-      rpc-host-whitelist-enabled = false;
+      download-dir = lib.mkDefault "/var/lib/transmission/Downloads";
+      incomplete-dir = lib.mkDefault "/var/lib/transmission/.incomplete";
+      incomplete-dir-enabled = lib.mkDefault true;
+      rpc-bind-address = lib.mkDefault "127.0.0.1";
+      rpc-port = lib.mkDefault 9091;
+      rpc-whitelist-enabled = lib.mkDefault false;
+      rpc-host-whitelist-enabled = lib.mkDefault false;
     };
 
     # Ensure directories exist with the correct permissions
     systemd.tmpfiles.rules = [
-      "d /mnt/data/transmission 0775 transmission transmission -"
-      "d /mnt/data/transmission/Downloads 0775 transmission transmission -"
-      "d /mnt/data/transmission/.incomplete 0775 transmission transmission -"
+      "d ${config.services.transmission.settings.download-dir} 0775 transmission transmission -"
+      "d ${config.services.transmission.settings.incomplete-dir} 0775 transmission transmission -"
     ];
 
     # Expose transmission via tsnsrv reverse proxy

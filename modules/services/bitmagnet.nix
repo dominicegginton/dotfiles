@@ -12,7 +12,7 @@ in
     assertions = [
       {
         assertion = config.services.tailscale.enable;
-        message = "services.tailsclae.enable must be set to true";
+        message = "services.tailscale.enable must be set to true";
       }
     ];
 
