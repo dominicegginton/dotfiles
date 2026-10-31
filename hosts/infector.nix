@@ -18,7 +18,7 @@
   # Installer image naming
   image.baseName = lib.mkIf (options ? image) (lib.mkDefault "${config.nixos.distroId}-installer");
 
-  # Enable SSH for remote access during installation
+  # Enable SSH for remote access during installation (root password authentication allowed)
   services = {
     openssh = {
       enable = true;

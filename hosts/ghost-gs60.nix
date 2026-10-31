@@ -130,6 +130,7 @@
     immich = {
       enable = true;
       accelerationDevices = [ "cuda" ];
+      settings.ffmpeg.accel = "nvenc";
     };
 
     # Enable Jellyfin Media Server Services
@@ -142,6 +143,7 @@
     frigate = {
       enable = true;
       settings = {
+        ffmpeg.hwaccel_args = "preset-nvidia-h264";
         cameras = {
           "Frontdoor" = {
             ffmpeg = {

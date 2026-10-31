@@ -35,6 +35,7 @@ in
         hostname = "frigate.${tailnet}";
         settings = {
           auth.enabled = false; # Authentication is handled upstream at the Tailnet / tsnsrv layer
+          ffmpeg.hwaccel_args = lib.mkDefault "preset-nvidia-h264";
           motion.enabled = true;
           record = {
             enabled = true;

@@ -4,7 +4,7 @@ let
   userPasswordDefined = (config.users.users.dom.hashedPasswordFile or null) != null;
   userPasswordSet =
     (userPasswordDefined && (config.users.users.dom.hashedPasswordFile != ""))
-    || ((config.users.users.dom.hashedPassword or null) != null);
+    || ((config.users.users.dom.hashedPassword or null) != null && config.users.users.dom.hashedPassword != "");
   secretsDefined = (config.sops.secrets or { }) != { };
 in
 
