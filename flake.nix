@@ -102,10 +102,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    velvet = {
-      url = "github:dominicegginton/velvet";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # Velvet — a TV-first Wayland compositor and OS shell
+    # velvet = {
+    #   url = "git+https://github.com/dominicegginton/velvet.git";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
   };
 
   nixConfig = {
@@ -239,7 +240,7 @@
             nix-topology.overlays.default
             nix-topology.overlays.topology
             run0-sudo-shim.overlays.default
-            velvet.overlays.default
+            # velvet.overlays.default
             self.outputs.overlays.default
             self.outputs.overlays.withSbom
           ];

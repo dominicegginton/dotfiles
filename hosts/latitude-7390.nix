@@ -81,7 +81,7 @@
   # Services configuration
   services = {
     thermald.enable = true; # Intel thermal management daemon
-    displayManager.velvet.enable = true;
+    # displayManager.velvet.enable = true;
     nix-builder.client.enable = true; # Enable Nix Distributed Build client (Machine Mesh)
   };
 
