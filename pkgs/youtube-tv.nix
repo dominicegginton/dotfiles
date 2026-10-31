@@ -46,9 +46,9 @@ let
       ${lib.escapeShellArgs commandLineArgs} \
       --app=${url} \
       --class=youtube-tv \
+      --name=youtube-tv \
       --new-window \
       --user-agent="Mozilla/5.0 (PS4; Leanback Shell) Gecko/20100101 Firefox/65.0 LeanbackShell/01.00.01.75 Sony PS4/ (PS4, , no, CH)" \
-      --window-size=4096,2160 \
       --force-device-scale-factor=1 \
       --start-fullscreen \
       --no-default-browser-check \
