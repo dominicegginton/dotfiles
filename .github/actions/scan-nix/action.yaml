@@ -1,5 +1,5 @@
 name: Scan Nix Derivation
-description: Run vulnix and vulnxscan (sbomnix) to check a built Nix derivation for CVEs, logging only exit status codes.
+description: Run vulnix and vulnxscan (sbomnix) to check a built Nix derivation for CVEs.
 
 inputs:
   path:
@@ -14,7 +14,7 @@ runs:
       continue-on-error: true
       run: |
         set +e
-        nix run nixpkgs#vulnix -- "${{ inputs.path }}" > /dev/null 2>&1
+        nix run nixpkgs#vulnix -- "${{ inputs.path }}"
         code=$?
         echo "vulnix scan completed with exit code: $code"
       shell: bash
@@ -23,7 +23,7 @@ runs:
       continue-on-error: true
       run: |
         set +e
-        nix shell nixpkgs#sbomnix -c vulnxscan "${{ inputs.path }}" > /dev/null 2>&1
+        nix shell nixpkgs#sbomnix -c vulnxscan "${{ inputs.path }}"
         code=$?
         echo "vulnxscan completed with exit code: $code"
       shell: bash

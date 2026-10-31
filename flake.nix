@@ -6,90 +6,119 @@
 
     # Collection of NixOS modules for common hardware devices
     nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
 
     # Integration for running NixOS as a WSL2 distribution
     nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
+    nixos-wsl.inputs.nixpkgs.follows = "nixpkgs";
 
     # Community-maintained collection of various NixOS images
     nixos-images.url = "github:nix-community/nixos-images";
 
     # Declarative configuration and state management for user environments
-    home-manager.url = "github:nix-community/home-manager/release-26.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Declarative disk partitioning, formatting, and mounting tools
-    disko.url = "github:nix-community/disko";
-    disko.inputs.nixpkgs.follows = "nixpkgs";
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Tools for managing persistent files on ephemeral/impermanent root filesystems
-    impermanence.url = "github:nix-community/impermanence";
+    impermanence = {
+      url = "github:nix-community/impermanence";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Amber package from the dotfiles maintainer's flake collection
-    amber.url = "github:dominicegginton/amber";
-    amber.inputs.nixpkgs.follows = "nixpkgs";
+    amber = {
+      url = "github:dominicegginton/amber";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Generate network and infrastructure topology diagrams from NixOS configurations
-    nix-topology.url = "github:oddlama/nix-topology";
-    nix-topology.inputs.nixpkgs.follows = "nixpkgs";
+    nix-topology = {
+      url = "github:oddlama/nix-topology";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Generate matrix configurations for GitHub Actions workflows
-    nix-github-actions.url = "github:nix-community/nix-github-actions";
-    nix-github-actions.inputs.nixpkgs.follows = "nixpkgs";
+    nix-github-actions = {
+      url = "github:nix-community/nix-github-actions";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Compatibility shim for run0 to support legacy sudo-style commands
-    run0-sudo-shim.url = "github:lordgrimmauld/run0-sudo-shim";
-    run0-sudo-shim.inputs.nixpkgs.follows = "nixpkgs";
+    run0-sudo-shim = {
+      url = "github:lordgrimmauld/run0-sudo-shim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Terranix for Nix-based OpenTofu/Terraform infrastructure management
-    terranix.url = "github:terranix/terranix";
-    terranix.inputs.nixpkgs.follows = "nixpkgs";
+    terranix = {
+      url = "github:terranix/terranix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Theming system following the Base16 architecture
     base16.url = "github:SenchoPens/base16.nix";
 
     # Secret management with SOPS
-    sops-nix.url = "github:Mic92/sops-nix";
-    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # tsnsrv is a reverse proxy on your tailnet
-    tsnsrv.url = "github:boinkor-net/tsnsrv";
-    tsnsrv.inputs.nixpkgs.follows = "nixpkgs";
+    tsnsrv = {
+      url = "github:boinkor-net/tsnsrv";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Niri flake for latest features and modules
-    niri.url = "github:niri-wm/niri";
+    niri = {
+      url = "github:niri-wm/niri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # DriftWM — a trackpad-first infinite canvas Wayland compositor
-    driftwm.url = "github:malbiruk/driftwm";
-    driftwm.inputs.nixpkgs.follows = "nixpkgs";
+    driftwm = {
+      url = "github:malbiruk/driftwm";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Jovian-NixOS for Steam Deck and handheld gaming hardware support
-    jovian.url = "github:Jovian-Experiments/Jovian-NixOS";
-    jovian.inputs.nixpkgs.follows = "nixpkgs";
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Seamless git hooks integration
-    git-hooks.url = "github:cachix/git-hooks.nix";
-    git-hooks.inputs.nixpkgs.follows = "nixpkgs";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    # Velvet — a TV-first Wayland compositor and OS shell
-    # velvet.url = "git+https://github.com/dominicegginton/velvet.git";
-    # velvet.inputs.nixpkgs.follows = "nixpkgs";
+    velvet = {
+      url = "git+https://github.com/dominicegginton/velvet.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  # Flake configuration for nix commands
   nixConfig = {
     experimental-features = [
       "flakes"
       "nix-command"
     ];
     builders-use-substitutes = true;
-    # Custom binary caches to speed up builds
     substituters = [
       "https://cache.nixos.org"
-      "https://dominicegginton-dotfiles.cachix.org"
     ];
     trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-      "dominicegginton-dotfiles.cachix.org-1:gm9nclRacSnrdXSPqXso3Abg2TTuo3PrGUJFGlhAzDU="
     ];
   };
 
@@ -210,7 +239,7 @@
             nix-topology.overlays.default
             nix-topology.overlays.topology
             run0-sudo-shim.overlays.default
-            # velvet.overlays.default
+            velvet.overlays.default
             self.outputs.overlays.default
             self.outputs.overlays.withSbom
           ];
@@ -277,8 +306,7 @@
                 excludes = [
                   "infrastructure/tailscale_acl\\.json$"
                   "infrastructure/config\\.tf\\.json$"
-                  "secrets/global\\.yaml"
-                  "secrets/hosts/ghost-gs60\\.yaml"
+                  "^secrets/.*\\.ya?ml$"
                 ];
               };
               gitleaks = {

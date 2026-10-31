@@ -45,7 +45,7 @@ nixpkgsLib.nixosSystem {
       tsnsrv.nixosModules.default
       driftwm.nixosModules.default
       jovian.nixosModules.default
-      # velvet.nixosModules.default
+      velvet.nixosModules.default
       run0-sudo-shim.nixosModules.default
       ../modules
       ../hosts/${hostname}.nix

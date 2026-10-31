@@ -76,8 +76,14 @@
   # Enable host-specific features
   hardware.bluetooth.enable = true;
   hardware.huion.enable = true; # Huion tablet support (Digimend + huion-switcher)
-  services.thermald.enable = true; # Intel thermal management daemon
   programs.vscode.enable = true;
+
+  # Services configuration
+  services = {
+    thermald.enable = true; # Intel thermal management daemon
+    displayManager.velvet.enable = true;
+    nix-builder.client.enable = true; # Enable Nix Distributed Build client (Machine Mesh)
+  };
 
   # Graphical desktop environments
   display.gnome.enable = true;
@@ -85,9 +91,6 @@
 
   users.sssd.enable = false;
   users.ldap.enable = false;
-
-  # Enable Nix Distributed Build client (Machine Mesh)
-  services.nix-builder.client.enable = true;
 
   topology.self.hardware.info = "Workstation";
 }
