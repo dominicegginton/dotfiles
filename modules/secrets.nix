@@ -1,17 +1,25 @@
-{ config, ... }:
+{ config, lib, ... }:
 
 let
-  userPasswordDefined = (config.users.users.dom.hashedPasswordFile or null) != null;
-  userPasswordSet =
-    (userPasswordDefined && (config.users.users.dom.hashedPasswordFile != ""))
-    || ((config.users.users.dom.hashedPassword or null) != null && config.users.users.dom.hashedPassword != "");
-  secretsDefined = (config.sops.secrets or { }) != { };
+  hasHashedPasswordFile = u: (u.hashedPasswordFile or null) != null && u.hashedPasswordFile != "";
+  hasHashedPassword = u: (u.hashedPassword or null) != null;
+  hasPlainTextPassword = u: (u.password or null) != null;
+  hasInitialPassword = u: (u.initialPassword or null) != null;
+
+  userHasPassword = u:
+    hasHashedPasswordFile u
+    || hasHashedPassword u
+    || hasPlainTextPassword u
+    || hasInitialPassword u;
+
+  anyUserPasswordSet = config: lib.any userHasPassword (lib.attrValues config.users.users);
+  hasSecretsDefined = config: (config.sops.secrets or { }) != { };
 in
 
 {
   assertions = [
     {
-      assertion = !secretsDefined || userPasswordSet;
+      assertion = !hasSecretsDefined config || anyUserPasswordSet config;
       message = "Secrets must not be deployed to hosts where the user password is not set.";
     }
   ];
