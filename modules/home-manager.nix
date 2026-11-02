@@ -1,12 +1,14 @@
 { self
 , config
 , lib
+, tailnet
 , ...
 }:
 
 {
   home-manager = {
     useGlobalPkgs = lib.mkForce true; # Always use global pkgs for Home Manager
+    extraSpecialArgs = { inherit tailnet; };
     backupFileExtension = lib.mkForce "backup"; # Set backup extension for Home Manager
     sharedModules = [
       self.inputs.base16.homeManagerModule # Base16 theming for Home Manager

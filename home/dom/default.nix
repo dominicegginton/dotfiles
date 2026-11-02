@@ -2,6 +2,7 @@
 , osConfig
 , pkgs
 , config
+, tailnet
 , ...
 }:
 
@@ -252,6 +253,7 @@
               markdown = true;
               scminput = false;
             };
+            "ollama.endpoint" = "https://ollama.${tailnet}";
           };
         };
       };
