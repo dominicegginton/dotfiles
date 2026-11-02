@@ -191,7 +191,7 @@
     # Enable Ollama AI Service with CUDA acceleration
     ollama = {
       enable = true;
-      acceleration = "cuda";
+      package = pkgs.ollama-cuda;
     };
 
     # Enable Open WebUI for Ollama
