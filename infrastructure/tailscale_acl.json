@@ -83,6 +83,24 @@
       "src": ["*"],
       "dst": ["tag:service-cache"],
       "ip":  ["*"]
+    },
+
+    {
+      "src": [
+        "dominic.egginton@gmail.com",
+        "tag:device-latitude-7390"
+      ],
+      "dst": ["tag:service-ollama"],
+      "ip":  ["*"]
+    },
+
+    {
+      "src": [
+        "dominic.egginton@gmail.com",
+        "tag:device-latitude-7390"
+      ],
+      "dst": ["tag:service-open-webui"],
+      "ip":  ["*"]
     }
   ],
 
@@ -107,7 +125,9 @@
     "tag:service-frigate":      ["autogroup:admin"],
     "tag:service-jellyfin":     ["autogroup:admin"],
     "tag:service-cache":        ["autogroup:admin"],
-    "tag:service-transmission": ["autogroup:admin"]
+    "tag:service-transmission": ["autogroup:admin"],
+    "tag:service-ollama":       ["autogroup:admin"],
+    "tag:service-open-webui":   ["autogroup:admin"]
   },
 
   "ssh": [

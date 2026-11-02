@@ -91,6 +91,8 @@ rec {
     ./services/logind.nix
     ./services/nginx.nix
     ./services/nix-builder.nix
+    ./services/ollama.nix
+    ./services/open-webui.nix
     ./services/pipewire.nix
     ./services/restic.nix
     ./services/silverbullet.nix

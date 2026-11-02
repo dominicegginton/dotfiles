@@ -188,6 +188,15 @@
     # Enable SilverBullet Notes Services
     silverbullet.enable = true;
 
+    # Enable Ollama AI Service with CUDA acceleration
+    ollama = {
+      enable = true;
+      acceleration = "cuda";
+    };
+
+    # Enable Open WebUI for Ollama
+    open-webui.enable = true;
+
     # Enable Nix Distributed Build and Harmonia services (Machine Mesh)
     nix-builder.enable = true;
     harmonia-custom.enable = true;

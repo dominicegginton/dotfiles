@@ -58,6 +58,16 @@ let
       tags = [ "tag:service-cache" ];
       waitFor = "10s";
     }
+    {
+      name = "ollama";
+      tags = [ "tag:service-ollama" ];
+      waitFor = "10s";
+    }
+    {
+      name = "open-webui";
+      tags = [ "tag:service-open-webui" ];
+      waitFor = "10s";
+    }
   ];
 in
 
