@@ -4,6 +4,10 @@
 , ...
 }:
 
+let
+  hasGraphical =
+    config.display.gnome.enable || config.display.niri.enable || config.display.driftwm.enable;
+in
 {
   # Core system packages
   environment.systemPackages =
@@ -26,7 +30,8 @@
       wget
       sc
     ]
-    ++ lib.optional (!config.wsl.enable) run0-sudo-shim;
+    ++ lib.optional (!config.wsl.enable) run0-sudo-shim
+    ++ lib.optional hasGraphical vimb;
 
   environment.defaultPackages = lib.mkDefault [ ];
 }

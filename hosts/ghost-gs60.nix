@@ -188,10 +188,16 @@
     # Enable SilverBullet Notes Services
     silverbullet.enable = true;
 
-    # Enable Ollama AI Service with CUDA acceleration
+    # Enable Ollama AI Service with CUDA acceleration and preloaded models
     ollama = {
       enable = true;
       package = pkgs.ollama-cuda;
+      loadModels = [
+        "llama3.2:3b"
+        "deepseek-r1:1.5b"
+        "qwen2.5-coder:3b"
+        "phi3.5:3.8b"
+      ];
     };
 
     # Enable Open WebUI for Ollama
