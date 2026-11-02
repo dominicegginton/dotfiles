@@ -158,7 +158,9 @@
         "tag:service-transmission:80",
         "tag:service-frigate:443",
         "tag:service-silverbullet:443",
-        "tag:service-idp:80"
+        "tag:service-idp:80",
+        "tag:service-ollama:443",
+        "tag:service-open-webui:443"
       ]
     },
     {
@@ -166,7 +168,9 @@
       "accept": [
         "tag:service-transmission:80",
         "tag:service-frigate:443",
-        "tag:service-jellyfin:8080"
+        "tag:service-jellyfin:8080",
+        "tag:service-ollama:443",
+        "tag:service-open-webui:443"
       ]
     }
   ],
