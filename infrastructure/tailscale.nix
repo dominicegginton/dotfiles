@@ -64,11 +64,6 @@ let
       waitFor = "10s";
     }
     {
-      name = "open-webui";
-      tags = [ "tag:service-open-webui" ];
-      waitFor = "10s";
-    }
-    {
       name = "code-server";
       tags = [ "tag:service-code-server" ];
       waitFor = "10s";

@@ -99,15 +99,6 @@
         "dominic.egginton@gmail.com",
         "tag:device-latitude-7390"
       ],
-      "dst": ["tag:service-open-webui"],
-      "ip":  ["*"]
-    },
-
-    {
-      "src": [
-        "dominic.egginton@gmail.com",
-        "tag:device-latitude-7390"
-      ],
       "dst": ["tag:service-code-server"],
       "ip":  ["*"]
     }
@@ -136,7 +127,6 @@
     "tag:service-cache":        ["autogroup:admin"],
     "tag:service-transmission": ["autogroup:admin"],
     "tag:service-ollama":       ["autogroup:admin"],
-    "tag:service-open-webui":   ["autogroup:admin"],
     "tag:service-code-server":  ["autogroup:admin"]
   },
 
@@ -178,7 +168,6 @@
         "tag:service-silverbullet:443",
         "tag:service-idp:80",
         "tag:service-ollama:443",
-        "tag:service-open-webui:443",
         "tag:service-code-server:443"
       ]
     },
@@ -189,7 +178,6 @@
         "tag:service-frigate:443",
         "tag:service-jellyfin:8080",
         "tag:service-ollama:443",
-        "tag:service-open-webui:443",
         "tag:service-code-server:443"
       ]
     }
