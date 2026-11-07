@@ -19,6 +19,10 @@
         ".gitconfig".source = ./sources/.gitconfig;
         ".gitignore".source = ./sources/.gitignore;
         ".ideavimrc".source = ./sources/.ideavimrc;
+        ".local/share/code-server/User/settings.json" =
+          lib.mkIf (osConfig ? services && osConfig.services.code-server.enable) {
+            text = builtins.toJSON config.programs.vscode.profiles.default.userSettings;
+          };
         # Custom tool configuration for TWM
         ".config/twm/twm.yaml".text = ''
           search_paths:
@@ -210,53 +214,58 @@
         };
       };
 
-      vscode = lib.mkIf (osConfig ? programs && osConfig.programs.vscode.enable) {
-        enable = true;
-        profiles.default = {
-          extensions = with pkgs.vscode-extensions; [
-            vscodevim.vim
-            github.vscode-pull-request-github
-            github.vscode-github-actions
-            github.copilot
-            docker.docker
-            bbenoist.nix
-            sumneko.lua
-            ms-python.python
-            tekumara.typos-vscode
-          ];
-          userSettings = {
-            editor = {
-              minimap.enabled = false;
-              renderLineHighlight = "none";
+      vscode = lib.mkIf
+        (
+          (osConfig ? programs && osConfig.programs.vscode.enable)
+          || (osConfig ? services && osConfig.services.code-server.enable)
+        )
+        {
+          enable = true;
+          profiles.default = {
+            extensions = with pkgs.vscode-extensions; [
+              vscodevim.vim
+              github.vscode-pull-request-github
+              github.vscode-github-actions
+              github.copilot
+              docker.docker
+              bbenoist.nix
+              sumneko.lua
+              ms-python.python
+              tekumara.typos-vscode
+            ];
+            userSettings = {
+              editor = {
+                minimap.enabled = false;
+                renderLineHighlight = "none";
+              };
+              extensions = {
+                ignoreRecommendations = true;
+                autoCheckUpdates = false;
+                autoUpdate = false;
+              };
+              updates.mode = "none";
+              window = {
+                titleBarStyle = "custom";
+                commandCenter = true;
+                autoDetectColorScheme = true;
+              };
+              workbench = {
+                activityBar.location = "top";
+                sideBar.location = "right";
+                startupEditor = "none";
+                iconTheme = null;
+                tree.indent = 12;
+              };
+              github.copilot.enable = {
+                "*" = true;
+                plaintext = false;
+                markdown = true;
+                scminput = false;
+              };
+              "ollama.endpoint" = "https://ollama.${tailnet}";
             };
-            extensions = {
-              ignoreRecommendations = true;
-              autoCheckUpdates = false;
-              autoUpdate = false;
-            };
-            updates.mode = "none";
-            window = {
-              titleBarStyle = "custom";
-              commandCenter = true;
-              autoDetectColorScheme = true;
-            };
-            workbench = {
-              activityBar.location = "top";
-              sideBar.location = "right";
-              startupEditor = "none";
-              iconTheme = null;
-              tree.indent = 12;
-            };
-            github.copilot.enable = {
-              "*" = true;
-              plaintext = false;
-              markdown = true;
-              scminput = false;
-            };
-            "ollama.endpoint" = "https://ollama.${tailnet}";
           };
         };
-      };
 
       zsh.shellAliases = {
         cat = "bat";

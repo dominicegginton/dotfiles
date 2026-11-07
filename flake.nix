@@ -323,6 +323,7 @@
                 enable = true;
                 name = "gitleaks";
                 entry = "${pkgs.gitleaks}/bin/gitleaks protect --staged --verbose";
+                args = [ ];
                 pass_filenames = false;
               };
             };

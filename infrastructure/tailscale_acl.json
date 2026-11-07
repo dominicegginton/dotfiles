@@ -147,7 +147,11 @@
         "dominic.egginton@gmail.com"
       ],
       "dst":    ["autogroup:tagged"],
-      "users":  ["autogroup:nonroot", "root", "dom"],
+      "users":  [
+        "autogroup:nonroot",
+        "root",
+        "dom"
+      ],
       "action": "accept"
     }
   ],
@@ -156,7 +160,11 @@
 
   "nodeAttrs": [
     {
-      "target": ["tag:service-idp", "tag:service-immich", "tag:service-jellyfin"],
+      "target": [
+        "tag:service-idp",
+        "tag:service-immich",
+        "tag:service-jellyfin"
+      ],
       "attr":   ["funnel"]
     }
   ],
@@ -190,13 +198,22 @@
   "sshTests": [
     {
       "src": "dominic.egginton@gmail.com",
-      "dst": ["tag:device-latitude-7390"],
-      "accept": ["root", "dom"]
+      "dst": [
+        "tag:device-latitude-7390",
+        "tag:device-ghost-gs60"
+      ],
+      "accept": [
+        "root",
+        "dom"
+      ]
     },
     {
       "src": "tag:device-latitude-7390",
       "dst": ["tag:device-ghost-gs60"],
-      "accept": ["root", "dom"]
+      "accept": [
+        "root",
+        "dom"
+      ]
     }
   ]
 }

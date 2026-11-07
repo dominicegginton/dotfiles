@@ -1,5 +1,6 @@
 { config
 , lib
+, pkgs
 , tailnet
 , ...
 }:
@@ -29,9 +30,23 @@ in
         auth = lib.mkDefault "none";
         user = lib.mkDefault "dom";
         group = lib.mkDefault "users";
+        userDataDir = lib.mkDefault "${config.users.users.${cfg.user}.home}/.local/share/code-server";
         disableUpdateCheck = lib.mkDefault true;
         disableTelemetry = lib.mkDefault true;
         disableWorkspaceTrust = lib.mkDefault true;
+        disableGettingStartedOverride = lib.mkDefault true;
+        extraPackages = with pkgs; [
+          git
+          nix
+          ripgrep
+          fd
+          fzf
+          gcc
+          nodejs
+        ];
+        extraEnvironment = lib.mkDefault {
+          OLLAMA_HOST = "https://ollama.${tailnet}";
+        };
       };
 
       # Expose code-server securely on the Tailnet using tsnsrv

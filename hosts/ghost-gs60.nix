@@ -212,7 +212,7 @@
     };
 
     # Enable Open WebUI for Ollama
-    open-webui.enable = true;
+    open-webui.enable = false;
 
     # Enable Nix Distributed Build and Harmonia services (Machine Mesh)
     nix-builder.enable = true;
