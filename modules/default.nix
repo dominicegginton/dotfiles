@@ -76,6 +76,7 @@ rec {
     # Service
     ./services/bitmagnet.nix
     ./services/calmav.nix
+    ./services/code-server.nix
     ./services/displaymanager.nix
     ./services/fail2ban.nix
     ./services/flatpak.nix

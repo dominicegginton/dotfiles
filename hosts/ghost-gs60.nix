@@ -77,6 +77,14 @@
       };
     };
   };
+  # Permanent Swap configuration to prevent out-of-memory issues during builds
+  swapDevices = [
+    {
+      device = "/swapfile";
+      size = 16384; # 16 GB swap file
+    }
+  ];
+
   boot = {
     initrd.availableKernelModules = [
       "xhci_pci"
@@ -187,6 +195,9 @@
 
     # Enable SilverBullet Notes Services
     silverbullet.enable = true;
+
+    # Enable VS Code Server Service
+    code-server.enable = true;
 
     # Enable Ollama AI Service with preloaded models
     ollama = {
