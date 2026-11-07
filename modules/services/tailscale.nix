@@ -55,10 +55,12 @@ in
     true;
 
   # Persistent storage for Tailscale and tsnsrv state
-  environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
-    "/var/lib/tailscale"
-    "/var/lib/tsnsrv"
-  ];
+  environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable (
+    [
+      "/var/lib/tailscale"
+    ]
+    ++ (map (name: "/var/lib/tsnsrv-${name}") (builtins.attrNames config.services.tsnsrv.services))
+  );
 
   environment.systemPackages = with pkgs; [ tailscale ];
 
