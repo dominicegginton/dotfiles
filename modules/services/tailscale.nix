@@ -19,9 +19,14 @@ in
 
   sops.secrets."services/tailscale/auth-key" =
     lib.mkIf (!config.wsl.enable && hostname != "infector")
-      {
-        key = "services/tsnsrv/auth-key";
-      };
+      (
+        {
+          key = "services/tsnsrv/auth-key";
+        }
+        // lib.optionalAttrs (lib.sopsFileForHost config != null) {
+          sopsFile = lib.sopsFileForHost config;
+        }
+      );
 
   # Tailscale service configuration
   services.tailscale = {
