@@ -24,7 +24,7 @@
       lovelaceConfigWritable = true;
       configWritable = true;
       config = {
-        lovelace.mode = "storage";
+        lovelace.resource_mode = "storage";
         frontend.themes = "!include_dir_merge_named themes";
         homeassistant = {
           name = "Ribble";
