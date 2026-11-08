@@ -193,6 +193,9 @@
       };
     };
 
+    # Enable Home Assistant Service
+    home-assistant.enable = true;
+
     # Enable SilverBullet Notes Services
     silverbullet.enable = true;
 

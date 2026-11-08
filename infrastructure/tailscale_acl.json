@@ -101,6 +101,17 @@
       ],
       "dst": ["tag:service-code-server"],
       "ip":  ["*"]
+    },
+
+    {
+      "src": [
+        "dominic.egginton@gmail.com",
+        "tag:device-latitude-7390",
+        "tag:device-steamdeck",
+        "tag:device-steammachine"
+      ],
+      "dst": ["tag:service-home-assistant"],
+      "ip":  ["*"]
     }
   ],
 
@@ -127,7 +138,8 @@
     "tag:service-cache":        ["autogroup:admin"],
     "tag:service-transmission": ["autogroup:admin"],
     "tag:service-ollama":       ["autogroup:admin"],
-    "tag:service-code-server":  ["autogroup:admin"]
+    "tag:service-code-server":  ["autogroup:admin"],
+    "tag:service-home-assistant": ["autogroup:admin"]
   },
 
   "ssh": [
@@ -168,7 +180,8 @@
         "tag:service-silverbullet:443",
         "tag:service-idp:80",
         "tag:service-ollama:443",
-        "tag:service-code-server:443"
+        "tag:service-code-server:443",
+        "tag:service-home-assistant:443"
       ]
     },
     {

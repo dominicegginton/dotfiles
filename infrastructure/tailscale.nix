@@ -68,6 +68,11 @@ let
       tags = [ "tag:service-code-server" ];
       waitFor = "10s";
     }
+    {
+      name = "home-assistant";
+      tags = [ "tag:service-home-assistant" ];
+      waitFor = "10s";
+    }
   ];
 in
 

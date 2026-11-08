@@ -1,6 +1,7 @@
 { config
 , lib
 , pkgs
+, tailnet
 , ...
 }:
 
@@ -11,11 +12,16 @@
         assertion = config.services.tailscale.enable;
         message = "services.tailscale.enable must be set to true";
       }
+      (lib.mkSingletonAssertion "home-assistant" [
+        "services"
+        "home-assistant"
+        "enable"
+      ])
     ];
 
     services.home-assistant = {
       package = pkgs.home-assistant;
-      openFirewall = lib.mkDefault true;
+      openFirewall = lib.mkDefault false;
       lovelaceConfigWritable = true;
       configWritable = true;
       config = {
@@ -33,6 +39,11 @@
         http = {
           server_host = [ "0.0.0.0" ];
           server_port = 8123;
+          use_x_forwarded_for = true;
+          trusted_proxies = [
+            "127.0.0.1"
+            "::1"
+          ];
         };
       };
       customComponents = with pkgs.home-assistant-custom-components; [
@@ -82,10 +93,30 @@
       ];
     };
 
+    # Expose Home Assistant securely on the Tailnet using tsnsrv
+    services.tsnsrv.services."home-assistant" = {
+      toURL = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
+      funnel = lib.mkDefault false;
+      tags = [ "tag:service-home-assistant" ];
+    };
+
     # Persistent storage for Home Assistant configuration and data
     environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
       config.services.home-assistant.configDir
       config.services.home-assistant.dataDir
     ];
+
+    # Network topology visualizer metadata
+    topology.self = {
+      interfaces.tsnsrv-home-assistant = {
+        network = tailnet;
+        addresses = [ "https://home-assistant.${tailnet}" ];
+      };
+
+      services.home-assistant = {
+        name = "Home Assistant";
+        details.listen.text = "127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
+      };
+    };
   };
 }
