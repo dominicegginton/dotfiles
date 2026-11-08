@@ -21,7 +21,6 @@
 
     services.home-assistant = {
       package = pkgs.home-assistant;
-      openFirewall = lib.mkDefault false;
       lovelaceConfigWritable = true;
       configWritable = true;
       config = {
