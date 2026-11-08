@@ -49,24 +49,147 @@
         ];
       };
 
+      # Enable Matter Server daemon for local Matter/Thread device control
+      matter-server.enable = lib.mkDefault true;
+
+      # Enable Wyoming local voice daemons (Piper TTS & Whisper STT)
+      wyoming = {
+        piper.servers."en" = {
+          enable = true;
+          voice = "en_GB-alan-low";
+          uri = "tcp://127.0.0.1:10200";
+        };
+        whisper.servers."en" = {
+          enable = true;
+          model = "base.en";
+          uri = "tcp://127.0.0.1:10300";
+        };
+      };
+
       home-assistant = {
         package = pkgs.home-assistant;
         lovelaceConfigWritable = true;
         configWritable = true;
+        lovelaceConfig = {
+          title = "Ribble Home";
+          views = [
+            {
+              title = "Overview";
+              icon = "mdi:home-outline";
+              cards = [
+                {
+                  type = "custom:clock-weather-card";
+                  entity = "weather.metoffice";
+                  sun_entity = "sun.sun";
+                  temperature_sensor = "sensor.processor_temperature";
+                }
+                {
+                  type = "custom:advanced-camera-card";
+                  title = "Front Door Camera";
+                  cameras = [
+                    {
+                      camera_entity = "camera.frontdoor";
+                      frigate = {
+                        client_id = "frigate";
+                        camera_name = "Frontdoor";
+                      };
+                    }
+                  ];
+                }
+                {
+                  type = "custom:mushroom-light-card";
+                  entity = "light.wled";
+                  name = "WLED Ambient";
+                  show_brightness_control = true;
+                  show_color_temp_control = true;
+                }
+                {
+                  type = "custom:mini-media-player";
+                  entity = "media_player.jellyfin";
+                  name = "Jellyfin Server";
+                  artwork = "cover";
+                }
+              ];
+            }
+            {
+              title = "System";
+              icon = "mdi:server-network";
+              cards = [
+                {
+                  type = "custom:mini-graph-card";
+                  entities = [ "sensor.processor_use" ];
+                  name = "ghost-gs60 CPU Load";
+                  line_color = "#3498db";
+                }
+                {
+                  type = "custom:mini-graph-card";
+                  entities = [ "sensor.memory_use_percent" ];
+                  name = "RAM Usage";
+                  line_color = "#e74c3c";
+                }
+                {
+                  type = "custom:mini-graph-card";
+                  entities = [ "sensor.disk_use_percent_var" ];
+                  name = "Disk Usage (/var)";
+                  line_color = "#2ecc71";
+                }
+              ];
+            }
+            {
+              title = "Cameras";
+              icon = "mdi:cctv";
+              cards = [
+                {
+                  type = "custom:advanced-camera-card";
+                  title = "Frigate NVR - Frontdoor";
+                  cameras = [
+                    {
+                      camera_entity = "camera.frontdoor";
+                      live_provider = "ha";
+                      frigate = {
+                        client_id = "frigate";
+                        camera_name = "Frontdoor";
+                      };
+                    }
+                  ];
+                  live = {
+                    preload = true;
+                  };
+                }
+              ];
+            }
+          ];
+        };
         config = {
           lovelace.resource_mode = "storage";
           frontend.themes = "!include_dir_merge_named themes";
+          automation = "!include automations.yaml";
+          script = "!include scripts.yaml";
+          scene = "!include scenes.yaml";
           homeassistant = {
             name = "Ribble";
             unit_system = "metric";
             time_zone = "Europe/London";
             temperature_unit = "C";
+            auth_providers = [
+              { type = "homeassistant"; }
+            ];
           };
           default_config = { };
           mobile_app = { };
           history = { };
           recorder = {
             db_url = "postgresql://@/homeassistant";
+            purge_keep_days = 30;
+            auto_purge = true;
+            exclude = {
+              domains = [ "updater" ];
+              entity_globs = [
+                "sensor.time*"
+                "sensor.date*"
+                "sensor.uptime*"
+              ];
+            };
           };
           http = {
             server_host = [ "0.0.0.0" ];
@@ -132,6 +255,7 @@
           "ping"
           "mqtt"
           "recorder"
+          "wyoming"
         ];
       };
 
