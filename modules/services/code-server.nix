@@ -69,7 +69,7 @@ in
       };
 
       services.code-server = {
-        name = "VS Code Server";
+        name = lib.mkForce "VS Code Server";
         details.listen.text =
           config.services.code-server.host + ":" + toString config.services.code-server.port;
       };

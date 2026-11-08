@@ -229,6 +229,8 @@
               github.copilot
               docker.docker
               bbenoist.nix
+              jnoortheen.nix-ide
+              arrterian.nix-env-selector
               sumneko.lua
               ms-python.python
               tekumara.typos-vscode
@@ -236,7 +238,7 @@
             userSettings = {
               editor = {
                 minimap.enabled = false;
-                renderLineHighlight = "none";
+                renderLineHighlight = "all";
               };
               extensions = {
                 ignoreRecommendations = true;
@@ -262,7 +264,7 @@
                 markdown = true;
                 scminput = false;
               };
-              "ollama.endpoint" = "https://ollama.${tailnet}";
+              ollama.endpoint = "https://ollama.${tailnet}";
             };
           };
         };

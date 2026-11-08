@@ -58,7 +58,7 @@ rec {
     config:
     let
       hostSopsFile = ./secrets/hosts + "/${config.networking.hostName}.yaml";
-      sharedSopsFile = ./secrets/secrets.yaml;
+      sharedSopsFile = ./secrets/global.yaml;
     in
     if builtins.pathExists hostSopsFile then
       hostSopsFile
