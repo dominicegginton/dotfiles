@@ -7,11 +7,12 @@
 
 {
   config = lib.mkIf config.services.home-assistant.enable {
-    sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
-      "services/home-assistant/gcs-backup-key" = {
-        sopsFile = lib.sopsFileForHost config;
-      };
-    };
+    # SOPS Secret for Restic GCS Backups (uncomment once added to secrets/hosts/<host>.yaml)
+    # sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
+    #   "services/home-assistant/gcs-backup-key" = {
+    #     sopsFile = lib.sopsFileForHost config;
+    #   };
+    # };
 
     assertions = [
       {
@@ -266,30 +267,31 @@
       };
 
       # Declarative Restic snapshot backup job to Google Cloud Storage (GCS)
-      restic.backups.home-assistant = {
-        repository = "gs:home-assistant-backup-66ea520add6c51fb:/${config.networking.hostName}/home-assistant";
-        passwordFile = config.sops.secrets."services/home-assistant/gcs-backup-key".path;
-        initialize = true;
-        paths = [ config.services.home-assistant.configDir ];
-        pruneOpts = [
-          "--keep-daily 7"
-          "--keep-weekly 4"
-          "--keep-monthly 12"
-        ];
-        timerConfig = {
-          OnCalendar = "03:00:00";
-          Persistent = true;
-        };
-      };
+      # Uncomment once "services/home-assistant/gcs-backup-key" is added to SOPS host secrets
+      # restic.backups.home-assistant = {
+      #   repository = "gs:home-assistant-backup-66ea520add6c51fb:/${config.networking.hostName}/home-assistant";
+      #   passwordFile = config.sops.secrets."services/home-assistant/gcs-backup-key".path;
+      #   initialize = true;
+      #   paths = [ config.services.home-assistant.configDir ];
+      #   pruneOpts = [
+      #     "--keep-daily 7"
+      #     "--keep-weekly 4"
+      #     "--keep-monthly 12"
+      #   ];
+      #   timerConfig = {
+      #     OnCalendar = "03:00:00";
+      #     Persistent = true;
+      #   };
+      # };
     };
 
     # Pass GCP Service Account credentials to Restic and set systemd ordering after Home Assistant service
-    systemd.services.restic-backups-home-assistant = {
-      environment.GOOGLE_APPLICATION_CREDENTIALS =
-        config.sops.secrets."services/home-assistant/gcs-backup-key".path;
-      after = [ "home-assistant.service" ];
-      wants = [ "home-assistant.service" ];
-    };
+    # systemd.services.restic-backups-home-assistant = {
+    #   environment.GOOGLE_APPLICATION_CREDENTIALS =
+    #     config.sops.secrets."services/home-assistant/gcs-backup-key".path;
+    #   after = [ "home-assistant.service" ];
+    #   wants = [ "home-assistant.service" ];
+    # };
 
     # Persistent storage for Home Assistant configuration and data
     environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
