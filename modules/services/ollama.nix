@@ -17,6 +17,11 @@ in
       }
     ];
 
+    # Configure Ollama environment variables to allow CORS and external host headers over Tailnet
+    services.ollama.environmentVariables = {
+      OLLAMA_ORIGINS = "*";
+    };
+
     # Expose Ollama backend securely over Tailscale using tsnsrv
     services.tsnsrv.services."ollama" = {
       toURL = "http://127.0.0.1:${toString config.services.ollama.port}";

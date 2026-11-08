@@ -86,10 +86,7 @@
     },
 
     {
-      "src": [
-        "dominic.egginton@gmail.com",
-        "tag:device-latitude-7390"
-      ],
+      "src": ["*"],
       "dst": ["tag:service-ollama"],
       "ip":  ["*"]
     },
