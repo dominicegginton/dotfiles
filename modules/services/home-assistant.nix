@@ -62,6 +62,7 @@
         faster-whisper.servers."en" = {
           enable = true;
           model = "base.en";
+          language = "en";
           uri = "tcp://127.0.0.1:10300";
         };
       };
@@ -190,15 +191,6 @@
                 "sensor.uptime*"
               ];
             };
-          };
-          http = {
-            server_host = [ "0.0.0.0" ];
-            server_port = 8123;
-            use_x_forwarded_for = true;
-            trusted_proxies = [
-              "127.0.0.1"
-              "::1"
-            ];
           };
         };
         customComponents = with pkgs.home-assistant-custom-components; [
