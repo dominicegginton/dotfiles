@@ -179,7 +179,7 @@
           mobile_app = { };
           history = { };
           recorder = {
-            db_url = "postgresql://@/homeassistant";
+            db_url = "postgresql://@/hass";
             purge_keep_days = 30;
             auto_purge = true;
             exclude = {
