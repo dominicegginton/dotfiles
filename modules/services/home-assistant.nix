@@ -48,14 +48,19 @@
       customComponents = with pkgs.home-assistant-custom-components; [
         adaptive_lighting
         frigate
+        hacs
+        localtuya
         waste_collection_schedule
       ];
       customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
         advanced-camera-card
+        apexcharts-card
+        auto-entities
         bubble-card
         card-mod
         clock-weather-card
         mini-graph-card
+        mini-media-player
         mushroom
       ];
       extraComponents = [
@@ -75,7 +80,6 @@
         "moon"
         "hue"
         "matter"
-        "keyboard"
         "media_player"
         "rest_command"
         "mobile_app"
@@ -89,6 +93,12 @@
         "time_date"
         "timer"
         "tod"
+        "jellyfin"
+        "transmission"
+        "ollama"
+        "systemmonitor"
+        "uptime"
+        "ping"
       ];
     };
 
