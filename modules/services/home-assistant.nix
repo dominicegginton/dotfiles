@@ -48,8 +48,6 @@
       customComponents = with pkgs.home-assistant-custom-components; [
         adaptive_lighting
         frigate
-        hacs
-        localtuya
         waste_collection_schedule
       ];
       customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
