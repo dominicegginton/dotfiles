@@ -260,7 +260,7 @@
 
       # Expose Home Assistant securely on the Tailnet using tsnsrv
       tsnsrv.services."home-assistant" = {
-        toURL = "http://127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
+        toURL = "http://127.0.0.1:8123";
         funnel = lib.mkDefault false;
         tags = [ "tag:service-home-assistant" ];
       };
@@ -307,7 +307,7 @@
 
       services.home-assistant = {
         name = "Home Assistant";
-        details.listen.text = "127.0.0.1:${toString config.services.home-assistant.config.http.server_port}";
+        details.listen.text = "127.0.0.1:8123";
       };
     };
   };
