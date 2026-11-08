@@ -40,7 +40,7 @@
       # Enable PostgreSQL database server for Home Assistant recorder backend
       postgresql = {
         enable = lib.mkDefault true;
-        ensureDatabases = [ "homeassistant" ];
+        ensureDatabases = [ "hass" ];
         ensureUsers = [
           {
             name = "hass";
