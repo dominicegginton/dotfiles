@@ -52,14 +52,14 @@
       # Enable Matter Server daemon for local Matter/Thread device control
       matter-server.enable = lib.mkDefault true;
 
-      # Enable Wyoming local voice daemons (Piper TTS & Whisper STT)
+      # Enable Wyoming local voice daemons (Piper TTS & Faster-Whisper STT)
       wyoming = {
         piper.servers."en" = {
           enable = true;
           voice = "en_GB-alan-low";
           uri = "tcp://127.0.0.1:10200";
         };
-        whisper.servers."en" = {
+        faster-whisper.servers."en" = {
           enable = true;
           model = "base.en";
           uri = "tcp://127.0.0.1:10300";
