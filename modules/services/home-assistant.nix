@@ -177,7 +177,6 @@
               { type = "homeassistant"; }
             ];
           };
-          default_config = { };
           mobile_app = { };
           history = { };
           recorder = {
