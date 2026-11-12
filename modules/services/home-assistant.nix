@@ -5,15 +5,12 @@
 , ...
 }:
 
-{
-  config = lib.mkIf config.services.home-assistant.enable {
-    # SOPS Secret for Restic GCS Backups (uncomment once added to secrets/hosts/<host>.yaml)
-    # sops.secrets = lib.mkIf (lib.sopsFileForHost config != null) {
-    #   "services/home-assistant/gcs-backup-key" = {
-    #     sopsFile = lib.sopsFileForHost config;
-    #   };
-    # };
+let
+  cfg = config.services.home-assistant;
+in
 
+{
+  config = lib.mkIf cfg.enable {
     assertions = [
       {
         assertion = config.services.tailscale.enable;
@@ -170,38 +167,12 @@
         funnel = lib.mkDefault false;
         tags = [ "tag:service-home-assistant" ];
       };
-
-      # Declarative Restic snapshot backup job to Google Cloud Storage (GCS)
-      # Uncomment once "services/home-assistant/gcs-backup-key" is added to SOPS host secrets
-      # restic.backups.home-assistant = {
-      #   repository = "gs:home-assistant-backup-66ea520add6c51fb:/${config.networking.hostName}/home-assistant";
-      #   passwordFile = config.sops.secrets."services/home-assistant/gcs-backup-key".path;
-      #   initialize = true;
-      #   paths = [ config.services.home-assistant.configDir ];
-      #   pruneOpts = [
-      #     "--keep-daily 7"
-      #     "--keep-weekly 4"
-      #     "--keep-monthly 12"
-      #   ];
-      #   timerConfig = {
-      #     OnCalendar = "03:00:00";
-      #     Persistent = true;
-      #   };
-      # };
     };
-
-    # Pass GCP Service Account credentials to Restic and set systemd ordering after Home Assistant service
-    # systemd.services.restic-backups-home-assistant = {
-    #   environment.GOOGLE_APPLICATION_CREDENTIALS =
-    #     config.sops.secrets."services/home-assistant/gcs-backup-key".path;
-    #   after = [ "home-assistant.service" ];
-    #   wants = [ "home-assistant.service" ];
-    # };
 
     # Persistent storage for Home Assistant configuration and data
     environment.persistence."/persist".directories = lib.mkIf config.impermanence.enable [
-      config.services.home-assistant.configDir
-      config.services.home-assistant.dataDir
+      cfg.configDir
+      cfg.dataDir
       "/var/lib/postgresql"
     ];
 
@@ -212,10 +183,26 @@
         addresses = [ "https://home-assistant.${tailnet}" ];
       };
 
-      services.home-assistant = {
+      services.home-assistant = lib.mkForce {
         name = "Home Assistant";
+        icon = "services.home-assistant";
         details.listen.text = "127.0.0.1:8123";
       };
+
+      services.mosquitto = lib.mkIf config.services.mosquitto.enable (lib.mkForce {
+        name = "Mosquitto";
+        icon = "services.mosquitto";
+        details = lib.listToAttrs (lib.imap0
+          (i: listener: {
+            name = "listen[${toString i}]";
+            value.text =
+              let
+                address = if listener.address == null then "[::]" else listener.address;
+              in
+              if listener.port == 0 then address else "${address}:${toString listener.port}";
+          })
+          config.services.mosquitto.listeners);
+      });
     };
   };
 }

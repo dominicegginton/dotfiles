@@ -222,7 +222,22 @@ with config.lib.topology;
         };
       };
     };
-
+    ipad = mkDevice "iPad Pro" {
+      info = "Apple iPad Pro";
+      interfaces = {
+        wlan0 = {
+          network = "ribble";
+          type = "wifi";
+          physicalConnections = [ (mkConnection "router" "wlan0") ];
+        };
+        tailscale0 = {
+          network = tailnet;
+          type = "tailscale";
+          icon = ./assets/tailscale.svg;
+          virtual = true;
+        };
+      };
+    };
     MCCLT5CG53030HM = mkDevice "MCCLT5CG53030HM" {
       info = "Work Workstation (IT managed Windows)";
       interfaces.wlan0 = {
