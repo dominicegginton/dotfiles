@@ -2,7 +2,6 @@
   development = [
     "acli"
     "acli-unwrapped"
-    "cursor-cli"
     "gateway"
     "github-copilot-cli"
     "sonar-scanner"
