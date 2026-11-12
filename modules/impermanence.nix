@@ -1,11 +1,16 @@
 { config
 , lib
+, options
 , pkgs
 , ...
 }:
 
 let
   cfg = config.impermanence;
+  # TODO: Remove scripted initrd support and this compatibility check once older nixpkgs support is dropped.
+  systemdInitrd =
+    !(options.boot.initrd.systemd.enable.visible or true)
+    || config.boot.initrd.systemd.enable;
 
   rollbackScript = ''
     MNT_DEV=""
@@ -70,9 +75,9 @@ in
 
       # Rollback root filesystem to a blank state on every boot
       # Support both scripted initrd and systemd initrd
-      postDeviceCommands = lib.mkIf (!config.boot.initrd.systemd.enable) (lib.mkAfter rollbackScript);
+      postDeviceCommands = lib.mkIf (!systemdInitrd) (lib.mkAfter rollbackScript);
 
-      systemd.services.rollback = lib.mkIf config.boot.initrd.systemd.enable {
+      systemd.services.rollback = lib.mkIf systemdInitrd {
         description = "Rollback Btrfs root subvolume";
         wantedBy = [ "initrd.target" ];
         before = [ "sysroot.mount" ];

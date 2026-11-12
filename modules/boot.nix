@@ -1,5 +1,6 @@
 { config
 , lib
+, options
 , pkgs
 , ...
 }:
@@ -15,7 +16,8 @@ in
     boot = {
       # Boot verbosity and logging
       consoleLogLevel = lib.mkDefault 0; # Log all boot messages
-      initrd.verbose = lib.mkDefault false; # Disable verbose initrd
+      # TODO: Remove this setting once older nixpkgs with scripted initrd is no longer supported.
+      initrd.verbose = lib.mkIf (options.boot.initrd.verbose.visible or true) (lib.mkDefault false);
 
       # Boot loader configuration
       loader = {

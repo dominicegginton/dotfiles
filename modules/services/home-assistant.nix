@@ -106,6 +106,7 @@ in
         customComponents = with pkgs.home-assistant-custom-components; [
           adaptive_lighting
           frigate
+          uix
           waste_collection_schedule
         ];
         customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [
@@ -113,7 +114,6 @@ in
           apexcharts-card
           auto-entities
           bubble-card
-          card-mod
           clock-weather-card
           mini-graph-card
           mini-media-player
@@ -183,12 +183,14 @@ in
         addresses = [ "https://home-assistant.${tailnet}" ];
       };
 
+      # TODO: Remove this override once nix-topology handles optional Home Assistant HTTP settings.
       services.home-assistant = lib.mkForce {
         name = "Home Assistant";
         icon = "services.home-assistant";
         details.listen.text = "127.0.0.1:8123";
       };
 
+      # TODO: Remove this override once nix-topology handles null Mosquitto listener addresses.
       services.mosquitto = lib.mkIf config.services.mosquitto.enable (lib.mkForce {
         name = "Mosquitto";
         icon = "services.mosquitto";

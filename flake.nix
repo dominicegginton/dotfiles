@@ -142,97 +142,24 @@
       # Helper to generate attributes for all systems
       forAllSystems = lib.genAttrs systems;
 
-      # List of unfree packages allowed in the system
-      unfreePackages = [
-        "acli"
-        "acli-unwrapped"
-        "YouTube_full_color_icon_2017.svg"
-        "aseprite"
-        "bws"
-        "cursor-cli"
-        "cudatoolkit"
-        "displaylink"
-        "cuda-merged"
-        "cuda_cuobjdump"
-        "cuda_gdb"
-        "cuda_nvcc"
-        "cuda_nvdisasm"
-        "cuda_nvprof"
-        "cuda_nvprune"
-        "cuda_nvrtc"
-        "cuda_nvtx"
-        "cuda_nvvm"
-        "cuda_nvvm-tools"
-        "cuda_cccl"
-        "cuda_cudart"
-        "cuda_cufft"
-        "cuda_cupti"
-        "cuda_cusolver"
-        "cuda_cusparse"
-        "cuda_cuxxfilt"
-        "cuda_nvml_dev"
-        "cuda_profiler_api"
-        "cuda_sanitizer_api"
-        "cuda_driver"
-        "libcublas"
-        "libcudadevrt"
-        "libcudart"
-        "libcufft"
-        "libcufftw"
-        "libcudnn"
-        "libcudnn_cnn_infer"
-        "libcudnn_cnn_train"
-        "libcudnn_ops_infer"
-        "libcudnn_ops_train"
-        "libcurand"
-        "libcusolver"
-        "libcusparse"
-        "libnpp"
-        "libnvjpeg"
-        "libnvidia-ml-dev"
-        "libnvidia-ml1"
-        "libnvidia-ml1-dev"
-        "libnvidia-ml1-static"
-        "libnvidia-ml1-static-dev"
-        "libnvjitlink"
-        "libnvrtc"
-        "libnvrtc-dev"
-        "galileo-firmware"
-        "gateway"
-        "github-copilot-cli"
-        "google-chrome"
-        "jupiter-dock-updater-bin"
-        "jupiter-fan-control"
-        "jupiter-firmware"
-        "jupiter-hw-support"
-        "jupiter-hw-support-unwrapped"
-        "linux-firmware"
-        "nvidia-container-toolkit"
-        "nvidia-docker"
-        "nvidia-kernel-modules"
-        "nvidia-persistenced"
-        "nvidia-settings"
-        "nvidia-x11"
-        "open-webui"
-        "sonar-scanner"
-        "steam"
-        "steam-jupiter"
-        "steam-jupiter-original"
-        "steam-jupiter-pipewire-config"
-        "steam-jupiter-unwrapped"
-        "steam-original"
-        "steam-run"
-        "steam-unwrapped"
-        "steamdeck-bios-fwupd"
-        "steamdeck-dsp"
-        "steamdeck-firmware"
-        "steamdeck-hw-theme"
-        "valve-hardware-audio-processing"
-        "vscode"
-        "vscode-extension-github-copilot"
-        "vscode-with-extensions"
-        "youtube-tv"
-      ];
+      # Combine the categorized allowlists for all configured systems.
+      unfreePackages = lib.concatLists (lib.attrValues (import ./lib/unfree-packages.nix));
+
+      # nixos-images still sets an initrd option removed by newer nixpkgs.
+      # TODO: Remove this override and its installer call sites once nixos-images fixes the removed option.
+      installerInitrdCompatibility = { options, ... }:
+        let
+          modulePath = "${self.inputs.nixos-images}/nix/restore-remote-access.nix";
+          upstream = import modulePath;
+        in
+        {
+          disabledModules = [ modulePath ];
+          boot.initrd.systemd =
+            builtins.removeAttrs upstream.boot.initrd.systemd [ "enable" ]
+            // lib.optionalAttrs (options.boot.initrd.systemd.enable.visible or true) {
+              enable = true;
+            };
+        };
 
       # Configured nixpkgs instances for each system
       nixpkgsFor = forAllSystems (
@@ -413,13 +340,19 @@
         # Unattended network boot installation media (Netboot)
         infector-netboot = self.outputs.lib.nixosSystem {
           hostname = "infector";
-          modules = [ self.inputs.nixos-images.nixosModules.netboot-installer ];
+          modules = [
+            self.inputs.nixos-images.nixosModules.netboot-installer
+            installerInitrdCompatibility
+          ];
         };
 
         # Unattended in-place installation media (Kexec Tarball)
         infector-kexec = self.outputs.lib.nixosSystem {
           hostname = "infector";
-          modules = [ self.inputs.nixos-images.nixosModules.kexec-installer ];
+          modules = [
+            self.inputs.nixos-images.nixosModules.kexec-installer
+            installerInitrdCompatibility
+          ];
         };
 
         # Windows Subsystem for Linux environment
