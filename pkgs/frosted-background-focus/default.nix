@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
   passthru.extensionUuid = uuid;
 
   meta = {
-    description = "Blur unfocused windows in GNOME Shell";
+    description = "Blur all screen content except the focused window in GNOME Shell";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ dominicegginton ];

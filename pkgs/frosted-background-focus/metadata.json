@@ -1,6 +1,6 @@
 {
   "name": "Frosted Background Focus",
-  "description": "Blurs unfocused windows and adds a panel indicator.",
+  "description": "Blurs all screen content except the focused window.",
   "uuid": "frosted-background-focus@dominicegginton",
   "shell-version": ["45", "46", "47", "48", "49", "50"],
   "version": 1,
