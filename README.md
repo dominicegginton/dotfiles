@@ -30,7 +30,9 @@ Declarative - Hardened - Amnesic - Orchestrated NixOS
   - Private Harmonia binary cache for faster Nix deployments.
   - Self-hosted GitHub Actions runner orchestration on NixOS.
   - Host network topology generated natively via `nix-topology`.
-  - Support for OIDC/OAuth2 backed by Tailscale identities for SSO across all services.
+  - OIDC/OAuth2 backed by Tailscale identities for SSO across all services.
+  - Plan 9-inspired distributed namespace using Tailscale for the encrypted mesh, 9P for mountable resource namespaces, and a composed `/srv/plan9` tree for storage, services, builds, apps, and namespace views.
+  - Linux-first approximation of Plan 9: service discovery, remote mounts, and networked resource trees rather than a full kernel-native Plan 9 OS.
 - **Desktop Environments & Utilities**:
   - Wayland-native GNOME desktop experience.
   - Gaming & HTPC consoles with SteamOS (`steamdeck` and `steammachine`) via Jovian-NixOS.
