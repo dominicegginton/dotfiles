@@ -214,6 +214,7 @@ with lib;
     extensions = mkOption {
       default = with pkgs.gnomeExtensions; [
         rounded-window-corners-reborn
+        frosted-background-focus
         solar-theme-switcher
       ];
       type = types.listOf types.package;

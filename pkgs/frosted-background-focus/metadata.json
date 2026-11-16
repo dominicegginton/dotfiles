@@ -1,0 +1,8 @@
+{
+  "name": "Frosted Background Focus",
+  "description": "Blurs unfocused windows and adds a panel indicator.",
+  "uuid": "frosted-background-focus@dominicegginton",
+  "shell-version": ["45", "46", "47", "48", "49", "50"],
+  "version": 1,
+  "url": "https://github.com/dominicegginton/dotfiles"
+}
