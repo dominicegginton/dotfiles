@@ -106,7 +106,6 @@ in
         customComponents = with pkgs.home-assistant-custom-components; [
           adaptive_lighting
           frigate
-          uix
           waste_collection_schedule
         ];
         customLovelaceModules = with pkgs.home-assistant-custom-lovelace-modules; [

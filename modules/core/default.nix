@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -6,10 +6,11 @@
     ./distributed.nix
   ];
 
-  system.stateVersion = "26.05";
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.auto-optimise-store = true;
+  boot = {
+    kernelModules = [ "9p" "9pnet_virtio" "9pnet_tcp" ];
+    initrd.kernelModules = [ "9p" "9pnet_virtio" "9pnet_tcp" ];
+    supportedFilesystems = [ "9p" "overlay" ];
+  };
 
   environment.systemPackages = with pkgs; [
     git
