@@ -14,7 +14,6 @@
   # Explicitly disable impermanence on this machine
   impermanence.enable = false;
 
-  # Hardware-specific modules
   imports = with self.inputs.nixos-hardware.nixosModules; [
     common-pc-laptop
     common-pc-laptop-ssd

@@ -10,6 +10,9 @@ rec {
     "${modulesPath}/installer/scan/not-detected.nix"
     "${modulesPath}/profiles/qemu-guest.nix"
 
+    # Shared system foundation, mesh, and namespace modules
+    ./core
+
     # Boot modules
     ./boot.nix
 
