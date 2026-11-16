@@ -4,9 +4,11 @@
 }:
 
 stdenv.mkDerivation rec {
-  pname = "gnome-shell-extension-frosted-background-focus";
+  pname = "gnome-shell-extension-no-startup-overview";
   version = "1.0.0";
+
   src = ./.;
+
   dontBuild = true;
 
   installPhase = ''
@@ -16,14 +18,16 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  uuid = "frosted-background-focus@dominicegginton";
-
-  passthru.extensionUuid = uuid;
-
   meta = {
-    description = "Blur all screen content except the focused window in GNOME Shell";
+    description = "Disable the GNOME Shell overview at startup";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
     maintainers = with lib.maintainers; [ dominicegginton ];
+  };
+
+  uuid = "no-startup-overview@dominicegginton";
+
+  passthru = {
+    extensionUuid = uuid;
   };
 }

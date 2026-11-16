@@ -1,0 +1,15 @@
+{
+  "name": "No Startup Overview",
+  "description": "Disable the GNOME Shell overview at startup",
+  "uuid": "no-startup-overview@dominicegginton",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48",
+    "49",
+    "50"
+  ],
+  "url": "https://github.com/dominicegginton/dotfiles",
+  "version": 1
+}

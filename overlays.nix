@@ -48,8 +48,8 @@ rec {
       celld = final.callPackage ./pkgs/celld.nix { };
       dynamic-music-pill = final.callPackage ./pkgs/dynamic-music-pill.nix { };
       extract-theme = final.callPackage ./pkgs/extract-theme.nix { };
-      frosted-background-focus = final.callPackage ./pkgs/frosted-background-focus { };
       gpg-import-bucket = final.callPackage ./pkgs/gpg-import-bucket.nix { };
+      no-startup-overview = final.callPackage ./pkgs/no-startup-overview { };
       solar-theme-switcher = final.callPackage ./pkgs/solar-theme-switcher { };
       lazy-desktop = prev.callPackage ./pkgs/lazy-desktop.nix { };
       mkGnomeBackground = final.callPackage ./pkgs/mk-gnome-background.nix { };
@@ -67,7 +67,7 @@ rec {
       gnomeExtensions = prev.lib.recursiveUpdate prev.gnomeExtensions {
         inherit (final)
           dynamic-music-pill
-          frosted-background-focus
+          no-startup-overview
           solar-theme-switcher
           ;
       };
