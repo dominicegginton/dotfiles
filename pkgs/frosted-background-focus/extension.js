@@ -1,9 +1,8 @@
 import Clutter from "gi://Clutter";
 import Shell from "gi://Shell";
-import St from "gi://St";
 import { Extension } from "resource:///org/gnome/shell/extensions/extension.js";
 import * as Main from "resource:///org/gnome/shell/ui/main.js";
-import * as PanelMenu from "resource:///org/gnome/shell/ui/panelMenu.js";
+import * as QuickSettings from "resource:///org/gnome/shell/ui/quickSettings.js";
 
 const EFFECT_NAME = "frosted-background-focus-blur";
 const BLUR_RADIUS = 12;
@@ -13,28 +12,35 @@ const TRANSITION_DURATION = 240;
 
 export default class FrostedBackgroundFocus extends Extension {
   enable() {
+    this._focusModeEnabled = true;
     this._originalOpacities = new Map();
     this._shellActors = new Set();
     this._uiGroup = Main.layoutManager.uiGroup;
-    this._uiGroupAddedSignal = this._uiGroup.connect("actor-added", (_group, actor) => {
+    this._uiGroupAddedSignal = this._uiGroup.connect("child-added", (_group, actor) => {
       this._addShellBlur(actor);
     });
-    this._uiGroupRemovedSignal = this._uiGroup.connect("actor-removed", (_group, actor) => {
+    this._uiGroupRemovedSignal = this._uiGroup.connect("child-removed", (_group, actor) => {
       this._removeShellBlur(actor);
     });
     this._addShellBlur(Main.layoutManager._backgroundGroup);
     for (const actor of this._uiGroup.get_children())
       this._addShellBlur(actor);
 
-    this._indicator = new PanelMenu.Button(0.0, this.metadata.name, false);
-    this._indicator.add_child(new St.Icon({
-      icon_name: "face-laugh-symbolic",
-      style_class: "system-status-icon",
-    }));
-    this._indicator.connect("button-press-event", () => {
-      console.log(`${this.metadata.uuid}: Panel button clicked!`);
+    this._systemIndicator = new QuickSettings.SystemIndicator();
+    this._indicator = this._systemIndicator._addIndicator();
+    this._indicator.icon_name = "view-conceal-symbolic";
+    this._indicator.visible = this._focusModeEnabled;
+    this._toggle = new QuickSettings.QuickToggle({
+      title: "Focus mode",
+      iconName: "view-conceal-symbolic",
+      toggleMode: true,
+      checked: this._focusModeEnabled,
     });
-    Main.panel.addToStatusArea(this.uuid, this._indicator);
+    this._toggle.connect("notify::checked", () => {
+      this._setFocusModeEnabled(this._toggle.checked);
+    });
+    this._systemIndicator.quickSettingsItems.push(this._toggle);
+    Main.panel.statusArea.quickSettings.addExternalIndicator(this._systemIndicator);
 
     this._focusSignal = global.display.connect("notify::focus-window", () => {
       this._updateWindowEffects();
@@ -50,10 +56,38 @@ export default class FrostedBackgroundFocus extends Extension {
     global.window_manager.disconnect(this._mapSignal);
     this._uiGroup.disconnect(this._uiGroupAddedSignal);
     this._uiGroup.disconnect(this._uiGroupRemovedSignal);
+    this._clearFocusEffects();
+    this._uiGroup = null;
+    this._toggle.destroy();
+    this._systemIndicator.destroy();
+    this._toggle = null;
+    this._systemIndicator = null;
+    this._indicator = null;
+  }
+
+  _setFocusModeEnabled(enabled) {
+    if (enabled === this._focusModeEnabled)
+      return;
+
+    this._focusModeEnabled = enabled;
+    this._indicator.visible = enabled;
+    this._indicator.icon_name = enabled ? "view-conceal-symbolic" : "view-reveal-symbolic";
+
+    if (!enabled) {
+      this._clearFocusEffects();
+      return;
+    }
+
+    this._addShellBlur(Main.layoutManager._backgroundGroup);
+    for (const actor of this._uiGroup.get_children())
+      this._addShellBlur(actor);
+    this._updateWindowEffects();
+  }
+
+  _clearFocusEffects() {
     for (const actor of this._shellActors)
       this._removeShellBlur(actor);
     this._shellActors.clear();
-    this._uiGroup = null;
 
     for (const actor of global.get_window_actors()) {
       const effect = actor.get_effect(EFFECT_NAME);
@@ -64,17 +98,21 @@ export default class FrostedBackgroundFocus extends Extension {
         actor.set_opacity(state.opacity);
     }
     this._originalOpacities.clear();
-    this._indicator.destroy();
-    this._indicator = null;
   }
 
   _updateWindowEffects() {
+    if (!this._focusModeEnabled)
+      return;
+
     const focusedWindow = global.display.get_focus_window();
     for (const actor of global.get_window_actors())
       this._updateActor(actor, focusedWindow);
   }
 
   _updateActor(actor, focusedWindow) {
+    if (!this._focusModeEnabled)
+      return;
+
     const window = actor.get_meta_window();
     const effect = actor.get_effect(EFFECT_NAME);
     if (!window || window === focusedWindow) {
@@ -114,6 +152,9 @@ export default class FrostedBackgroundFocus extends Extension {
   }
 
   _addShellBlur(actor) {
+    if (!this._focusModeEnabled)
+      return;
+
     if (actor === global.window_group || actor === global.top_window_group)
       return;
 

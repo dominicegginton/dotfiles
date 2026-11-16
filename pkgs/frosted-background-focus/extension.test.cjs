@@ -69,11 +69,11 @@ class ActorGroup extends Signals {
   }
   add(child) {
     this.children.push(child);
-    this.emit("actor-added", child);
+    this.emit("child-added", child);
   }
   remove(child) {
     this.children = this.children.filter(current => current !== child);
-    this.emit("actor-removed", child);
+    this.emit("child-removed", child);
   }
 }
 
@@ -88,8 +88,29 @@ for (const legacy of [false, true]) {
       this.amount = value;
     };
 
-    class Button extends Signals {
-      add_child(child) { this.child = child; }
+    class QuickToggle extends Signals {
+      constructor(options) {
+        super();
+        Object.assign(this, options);
+        this._checked = options.checked;
+      }
+      get checked() { return this._checked; }
+      set checked(value) {
+        if (this._checked === value)
+          return;
+        this._checked = value;
+        this.emit("notify::checked");
+      }
+      destroy() { this.destroyed = true; }
+    }
+    class SystemIndicator {
+      constructor() {
+        this.quickSettingsItems = [];
+      }
+      _addIndicator() {
+        this.indicator = { icon_name: null, visible: false };
+        return this.indicator;
+      }
       destroy() { this.destroyed = true; }
     }
     const display = new Signals();
@@ -106,10 +127,11 @@ for (const legacy of [false, true]) {
     let focused = first.window;
     display.get_focus_window = () => focused;
     let indicator;
+    let quickToggle;
+    let systemIndicator;
     const context = {
       Shell: { BlurEffect, BlurMode: { ACTOR: "actor" } },
-      St: { Icon: class { constructor(options) { this.options = options; } } },
-      PanelMenu: { Button },
+      QuickSettings: { QuickToggle, SystemIndicator },
       Extension: class {
         constructor() {
           this.uuid = "focus-test";
@@ -125,7 +147,17 @@ for (const legacy of [false, true]) {
         get_window_actors: () => actors,
       },
       Main: {
-        panel: { addToStatusArea: (_uuid, button) => { indicator = button; } },
+        panel: {
+          statusArea: {
+            quickSettings: {
+              addExternalIndicator: value => {
+                systemIndicator = value;
+                quickToggle = value.quickSettingsItems[0];
+                indicator = value.indicator;
+              },
+            },
+          },
+        },
         layoutManager: { uiGroup, _backgroundGroup: backgroundGroup },
       },
       console,
@@ -145,23 +177,48 @@ for (const legacy of [false, true]) {
     assert.equal(backgroundGroup.effects.size, 1);
     assert.equal(windowGroup.effects.size, 0);
     assert.equal(topWindowGroup.effects.size, 0);
+    assert.equal(quickToggle.checked, true);
+    assert.equal(indicator.visible, true);
+
+    quickToggle.checked = false;
+    assert.equal(first.effects.size, 0);
+    assert.equal(second.effects.size, 0);
+    assert.equal(dialog.effects.size, 0);
+    assert.equal(first.get_opacity(), 255);
+    assert.equal(shellChrome.effects.size, 0);
+    assert.equal(backgroundGroup.effects.size, 0);
+    assert.equal(indicator.visible, false);
+    assert.equal(indicator.icon_name, "view-reveal-symbolic");
 
     focused = second.window;
     display.emit("notify::focus-window");
-    assert.equal(first.effects.size, 1);
+    assert.equal(first.effects.size, 0);
     assert.equal(second.effects.size, 0);
-    assert.equal(first.get_opacity(), 240);
+    assert.equal(first.get_opacity(), 255);
     assert.equal(second.get_opacity(), 255);
 
     const added = actor("normal");
     actors.push(added);
     manager.emit("map", added);
-    assert.equal(added.effects.size, 1);
-    assert.equal(added.get_opacity(), 240);
+    assert.equal(added.effects.size, 0);
+    assert.equal(added.get_opacity(), 255);
 
     const newShellActor = new ActorGroup();
     uiGroup.add(newShellActor);
+    assert.equal(newShellActor.effects.size, 0);
+
+    quickToggle.checked = true;
+    assert.equal(first.effects.size, 1);
+    assert.equal(second.effects.size, 0);
+    assert.equal(dialog.effects.size, 1);
+    assert.equal(added.effects.size, 1);
+    assert.equal(added.get_opacity(), 240);
+    assert.equal(shellChrome.effects.size, 1);
+    assert.equal(backgroundGroup.effects.size, 1);
     assert.equal(newShellActor.effects.size, 1);
+    assert.equal(indicator.visible, true);
+    assert.equal(indicator.icon_name, "view-conceal-symbolic");
+
     uiGroup.remove(newShellActor);
     assert.equal(newShellActor.effects.size, 0);
 
@@ -175,6 +232,7 @@ for (const legacy of [false, true]) {
     assert.equal(display.handlers.size, 0);
     assert.equal(manager.handlers.size, 0);
     assert.equal(uiGroup.handlers.size, 0);
-    assert.equal(indicator.destroyed, true);
+    assert.equal(quickToggle.destroyed, true);
+    assert.equal(systemIndicator.destroyed, true);
   });
 }
