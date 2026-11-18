@@ -14,7 +14,7 @@
     "@automerge/vanillajs": "2.5.6"
   },
   "devDependencies": {
-    "vite": "6.4.1",
+    "vite": "6.4.6",
     "vite-plugin-wasm": "3.4.1"
   }
 }
