@@ -301,6 +301,9 @@
 
           # celld distributed Durable Objects daemon
           celld = nixpkgsFor.${system}.celld;
+
+          # Automerge-backed shared to-do list
+          automerge-todo-list = nixpkgsFor.${system}.automerge-todo-list;
         }
         // lib.optionalAttrs (system == "x86_64-linux") {
           infector-iso = self.nixosConfigurations.infector.config.system.build.isoImage;

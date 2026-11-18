@@ -1,0 +1,20 @@
+{
+  "name": "automerge-todo-list",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "sync": "automerge-repo-sync-server",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@automerge/automerge-repo-sync-server": "0.3.0",
+    "@automerge/vanillajs": "2.5.6"
+  },
+  "devDependencies": {
+    "vite": "6.4.1",
+    "vite-plugin-wasm": "3.4.1"
+  }
+}

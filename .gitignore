@@ -1,5 +1,9 @@
 .idea
 .terraform
+node_modules
+dist
+.amrg
+.vite
 infrastructure/config.tf.json
 result
 .tfvars

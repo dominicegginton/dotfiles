@@ -30,6 +30,7 @@ rec {
       withSbomnix = prev.callPackage ./pkgs/with-sbomnix.nix { };
 
       # Custom packages available in all systems
+      automerge-todo-list = final.callPackage ./pkgs/automerge-todo-list { };
       age-plugin-pq =
         prev.age-plugin-pq or (final.buildGoModule {
           pname = "age-plugin-pq";
