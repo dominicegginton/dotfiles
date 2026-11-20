@@ -38,8 +38,8 @@
         "dominic.egginton@gmail.com",
         "tag:device-latitude-7390"
       ],
-      "dst": ["autogroup:tagged"],
-      "ip":  ["tcp:22"]
+      "dst": ["autogroup:tagged", "dominic.egginton@gmail.com"],
+      "ip":  ["*"]
     },
 
     {
@@ -178,7 +178,11 @@
         "tag:service-idp:80",
         "tag:service-ollama:443",
         "tag:service-code-server:443",
-        "tag:service-home-assistant:443"
+        "tag:service-home-assistant:443",
+        "tag:device-latitude-7390:443",
+        "tag:device-latitude-7390:8080",
+        "tag:device-ghost-gs60:443",
+        "tag:device-ghost-gs60:8080"
       ]
     },
     {
