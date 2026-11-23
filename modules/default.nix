@@ -11,7 +11,8 @@ rec {
     "${modulesPath}/profiles/qemu-guest.nix"
 
     # Shared system foundation, mesh, and namespace modules
-    ./core
+    # TEMP: disabled
+    # ./core
 
     # Boot modules
     ./boot.nix

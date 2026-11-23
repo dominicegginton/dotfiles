@@ -1,7 +1,13 @@
-{ config, lib, pkgs, tailnet, ... }:
+{ config, lib, tailnet, ... }:
 
 let
   plan9Root = "/srv/plan9";
+  # The kernel's 9p TCP transport does not resolve hostnames.
+  remoteStoreAddress = lib.findSingle
+    (address: builtins.elem "ghost-gs60.${tailnet}" config.networking.hosts.${address})
+    (throw "No address configured for the remote-store host")
+    (throw "Multiple addresses configured for the remote-store host")
+    (builtins.attrNames config.networking.hosts);
 in
 {
   boot.kernelModules = [ "9p" "9pnet_virtio" "9pnet_tcp" ];
@@ -20,9 +26,10 @@ in
   ];
 
   fileSystems."/mnt/remote-store" = lib.mkIf (config.networking.hostName != "ghost-gs60") {
-    device = "ghost-gs60.${tailnet}";
+    device = remoteStoreAddress;
     fsType = "9p";
     options = [
+      "_netdev"
       "trans=tcp"
       "port=5640"
       "msize=262144"
@@ -32,9 +39,10 @@ in
   };
 
   fileSystems."${plan9Root}/storage/remote-store" = lib.mkIf (config.networking.hostName != "ghost-gs60") {
-    device = "ghost-gs60.${tailnet}";
+    device = remoteStoreAddress;
     fsType = "9p";
     options = [
+      "_netdev"
       "trans=tcp"
       "port=5640"
       "msize=262144"
