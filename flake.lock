@@ -637,11 +637,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1794131829,
+        "lastModified": 1794690605,
         "narHash": "sha256-EGpG3et0sMZEVYBV5fsH3zHp40mjPm6xxsTUOhxJKbc=",
         "owner": "terranix",
         "repo": "terranix",
-        "rev": "f69600e5b85abd0f47ed4c42fc6cb488a54628df",
+        "rev": "163b78792792fcdf24571856028997d0dd5b2e9a",
         "type": "github"
       },
       "original": {
